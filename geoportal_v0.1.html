@@ -1,0 +1,1073 @@
+		<html>
+		<head>
+				<meta charset="utf-8">
+				<meta http-equiv="Cache-control" content="no-cache">
+				<meta http-equiv="Cache-control" content="no-store">
+
+				<title>Geoportal Leaflet</title>
+
+				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+			    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+			    
+			    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+			    <!-- <link rel="stylesheet" href="javascripts/leaflet/leaflet.css" /> -->
+
+				<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+
+				<!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+
+				<link rel="stylesheet" href="stylesheets/smoothness/jquery-ui.css">
+				<link rel="stylesheet" type="text/css" href="stylesheets/toastr.css">
+				<!-- <link rel="stylesheet" href="plugins/sidebar/css/leaflet-sidebar.css" /> -->
+				<!-- En servidor -->
+				<link rel="stylesheet" type="text/css" href="stylesheets/test_lt.css">
+
+				<!-- desde archivo -->
+				<!-- <link rel="stylesheet" type="text/css" href="public/stylesheets/test_lt.css"> -->
+				<!-- En servidor -->
+				<link rel="stylesheet" href="assets/dist/themes/proton/style.css" />
+				<!-- <link rel="stylesheet" href="assets/docs.css" /> -->
+				<!-- <link rel="icon" href="assets/favicon.ico" type="image/x-icon" /> -->
+				<!-- <link rel="apple-touch-icon-precomposed" href="assets/apple-touch-icon-precomposed.png" /> -->
+
+
+				<!-- Desde archivo -->
+				<!-- <link rel="stylesheet" href="public/assets/dist/themes/proton/style.css" />
+				<link rel="stylesheet" href="public/assets/docs.css" />
+				<link rel="icon" href="public/assets/favicon.ico" type="image/x-icon" />
+				<link rel="apple-touch-icon-precomposed" href="public/assets/apple-touch-icon-precomposed.png" /> -->
+
+				<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+				<link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+
+				<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+
+				
+				<link rel="stylesheet" href="plugins/easybutton/src/easy-button.css">
+				<link rel="stylesheet" href="plugins/markercluster/dist/MarkerCluster.css" />
+				<link rel="stylesheet" href="plugins/markercluster/dist/MarkerCluster.Default.css" />
+				<!-- <link rel="stylesheet" href="plugins/markercluster/dist/screen.css" /> -->
+
+
+				
+		        <!-- <link rel="stylesheet" href="bs_css/animate.css" />
+		        <link rel="stylesheet" href="bs_css/bootstrap.css" />
+		        <link rel="stylesheet" href="bs_css/et-line-icons.css" />
+		        <link rel="stylesheet" href="bs_css/font-awesome.min.css" />
+		        <link rel="stylesheet" href="bs_css/extralayers.css" />
+		        <link rel="stylesheet" href="bs_css/settings.css" />
+		        <link rel="stylesheet" href="bs_css/magnific-popup.css" />
+		        <link rel="stylesheet" href="bs_css/owl.carousel.css" />
+		        <link rel="stylesheet" href="bs_css/owl.transitions.css" />
+		        <link rel="stylesheet" href="bs_css/full-slider.css" />
+		        <link rel="stylesheet" href="bs_css/text-effect.css" />
+		        <link rel="stylesheet" href="bs_css/menu-hamburger.css" />
+		        <link rel="stylesheet" href="bs_css/style.css" />
+		        <link rel="stylesheet" href="bs_css/responsive.css" /> -->
+		        <!--[if IE]>
+		            <link rel="stylesheet" href="bs_css/style-ie.css" />
+		        <![endif]-->
+		        <!--[if IE]>
+		            <script src="js/html5shiv.js"></script>
+		        <![endif]-->
+
+
+
+
+
+				<style>
+			        body {
+			            /*padding: 0;
+			            margin: 0;*/
+			        }
+
+			        html, body, #map {
+			            height: 95%;
+			            /*font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;*/
+			        }
+			    </style>
+
+				<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+				<script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+
+				<script type="text/javascript" src="plugins/jsonc/jsonc.min.js"></script>
+
+				<script type="text/javascript" src="plugins/router/cbsplit.js"></script>
+			 	<script type="text/javascript" src="plugins/router/jquery.ba-hashchange.js"></script>
+			 	<script type="text/javascript" src="plugins/router/jquery.router.js"></script>
+			 
+
+				<!--<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>-->
+				<!-- // <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
+
+				<script src="javascripts/jquery-ui/jquery-ui.js"></script>
+				
+				<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+				<script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+				
+				<script src="http://d3js.org/d3.v3.min.js"></script>
+				<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+
+				<script src="plugins/d3-tip/index.js"></script>
+			 	<!-- // <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
+
+
+				
+				<script src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+				<script src="http://www.amcharts.com/lib/3/serial.js"></script>
+				<script src="http://www.amcharts.com/lib/3/themes/light.js"></script>
+				
+				<script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
+				
+				<script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+				<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+				<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+				<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+				<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+				<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+				<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+
+
+
+
+				<script id="vshader" type="x-shader/x-vertex">
+			        uniform mat4 u_matrix;
+			        attribute vec4 a_vertex;
+			        attribute float a_pointSize;
+			        attribute vec4 a_color;
+			        varying vec4 v_color;
+
+			        void main() {
+			        // Set the size of the point
+			        gl_PointSize =  a_pointSize;
+
+			        // multiply each vertex by a matrix.
+			        gl_Position = u_matrix * a_vertex;
+
+
+			        // pass the color to the fragment shader
+			        v_color = a_color;
+			        }
+			    </script>
+			    <!-- fragment shader -->
+
+
+
+			    <script id="fshader" type="x-shader/x-fragment">
+			        precision mediump float;
+			        varying vec4 v_color;
+
+			        void main() {
+
+			        // -- squares
+			        gl_FragColor = v_color;
+			        gl_FragColor.a = 0.8;
+			     //   gl_FragColor =vec4(0.8, 0.1,0.1, 0.9); // v_color;
+
+			       
+			        }
+
+			    </script>
+
+				
+
+
+
+
+			    <!-- //code.jquery.com/jquery-1.12.4.js
+			    https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js
+			    https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js
+
+			    //cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js
+			    //cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js
+			    //cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js
+			    //cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js
+			    
+			    //cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js
+			    //cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js -->
+
+
+
+				
+
+
+				<script>
+					  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+					  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+					  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+					  ga('create', 'UA-83773501-1', 'auto');
+					  ga('send', 'pageview');
+
+				</script>
+				
+
+				<!-- <script>
+
+					// Declaracion globales 
+					var _val_json;
+					var _val_preconfig;
+					
+					$(document).ready(function(){
+
+						// Script para regeneracion de resultados:
+						var val_preconfig = false;
+
+						if(val_preconfig){
+							
+							_val_json = val_json
+							_val_preconfig = val_preconfig;
+
+							$("#modalCarga").modal();
+
+						}
+
+					});
+
+				</script> -->
+
+
+				<script type="text/javascript">
+					
+					// variable sglobal para la configuración y regeneración del enlace
+					var _json_config;
+
+
+				      $(function() {
+
+				      	var result = $('#result');
+				      	
+
+				        // Print a hash
+				        $.print = function(dict) {
+
+				        	return JSON.stringify(dict);
+
+				        }
+
+				        // Setup routes
+				        result
+				            .route('link/', function(request) {
+			                return $.print(request.params);
+			            });
+
+
+				        var hash = location.hash.replace(/^#/, '');
+			            
+			            if (hash) {
+
+			            	console.log("enlace");
+
+			                var match = $.routeMatches(hash);
+			                
+			                if (match) {
+			                    var template = $(match.route.template);
+			                    
+			                    if (template.length) {
+			                        var text = match.route.callback.apply(match.route.callback, match.args);
+			                        // template.text(text);
+			                        // console.log(template);
+			                        _json_config = JSON.parse(text)
+			                        
+			                        
+			                    }
+
+			                }
+
+
+
+			            }
+			            else{
+			            	console.log("inicio");
+			            }
+
+				      })
+
+
+
+				</script>
+				
+
+
+			  	<!--Plugins-->
+
+				<!-- <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.css' rel='stylesheet' /> -->
+				<!-- <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css' rel='stylesheet' /> -->
+
+
+			    <!-- <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+			    <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:600' rel='stylesheet' type='text/css'>
+			    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'> -->
+			    <!-- <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'> -->
+
+
+		</head>
+		<body>
+
+			
+			<div id="main_container" class="container-fluid">
+
+				<header id="main-header">
+				    
+				    <span id="lb_titulo" class="site-name"></span>
+				    <span id="lb_sub_titulo" class="site-desc"></span>
+				    
+				    <div class="link_nicho">
+						<button id="nicho_link" type="button" class="btn btn-info"></button>
+					</div>
+
+					<div class="language_drop">
+						
+							<div class="input-group dropdown_group ">
+											      
+							      <div class="input-group-btn pull-right">
+
+							      		<button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+
+								        <ul class="dropdown-menu dropdown_idioma">
+									          <li><a id="a_espanol" class="idioma " value="es_MX" label="Español ">Español </a></li>
+									          <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
+								        </ul>
+
+								        
+
+							      </div>
+
+						    </div>
+
+					</div>
+
+					<!-- <div class="link_content">
+
+						<div class="link_gen_input">
+
+							<div class="input-group">
+							  	<span id="" class="input-group-addon" id="basic-addon1">Link:</span>
+
+							  	<input id="input_gen" type="text" class="form-control" placeholder="Regenerar resultados" value="" />
+							</div>
+
+						</div>
+
+						<button id="link_gen" class="btn btn-warning glyphicon glyphicon-refresh" type="button" title="Generar configuración a partir de enalce" ></button>
+
+					</div> -->
+
+				</header>
+				
+
+				<!-- <section> -->
+
+					<div class="row-fluid row_panel">
+
+					
+			            <div class="sidebar-pane" id="especie">
+
+			                <h3 id="lb_especie" class="sidebar-header"></h3>
+
+			                <!-- <a href="#link/?sp_data=">Test</a><br /> -->
+			                <div id="result"></div>
+							
+							<div class="input-group text-input">
+							  
+							  	<input id="nom_sp" type="text" class="form-control" />
+								<span id="lb_example" class="input-group-addon" id="basic-addon1"></span>
+
+							</div>
+
+							<div class="myScrollableBlockConstrian">
+
+									<!-- <h4 id="lb_restricciones"></h4> -->
+									<!-- <h4 id="lb_resumen"></h4> -->
+
+									<div class="nav_container_especie">
+
+										<ul class="nav nav-tabs">
+
+										  	<li class="active">
+										  		<a data-toggle="tab" href="#tab_resumen">Resumen</a>
+										  	</li>
+										  	<li>
+										  		<a data-toggle="tab" href="#tab_filtros">Validación & Filtros</a>
+										  	</li>
+
+										</ul>
+
+										<div class="tab-content">
+											
+											<div id="tab_resumen" class="tab-pane active">
+
+												<div class="myScrollableBlockConstrianParams">
+
+													<table id="tbl_summary" class="tbl_summary_species">
+
+														<tr>
+															<td><h5 id="lb_sum_especie" class="summary_lb"></h5></td>
+															<td><h5 id="lb_sum_especie_res" class="summary_lb"></h5></td>
+														</tr>
+														<tr>
+															<td><h5 id="lb_occ" class="summary_lb"></h5></td>
+															<td><h5 id="num_occ" class="summary_lb"></h5></td>
+														</tr>
+														<tr>
+															<td><h5 id="lb_occ_celda" class="summary_lb"></h5></td>
+															<td><h5 id="num_occ_celda" class="summary_lb"></h5></td>
+														</tr>
+
+
+
+														<tr>
+															<td><h5 id="lb_sum_reino" class="summary_lb"></h5></td>
+															<td><h5 id="lb_sum_reino_res" class="summary_lb"></h5></td>
+														</tr>
+														<tr>
+															<td><h5 id="lb_sum_phylum" class="summary_lb"></h5></td>
+															<td><h5 id="lb_sum_phylum_res" class="summary_lb"></h5></td>
+														</tr>
+														<tr>
+															<td><h5 id="lb_sum_clase" class="summary_lb"></h5></td>
+															<td><h5 id="lb_sum_clase_res" class="summary_lb"></h5></td>
+														</tr>
+														<tr>
+															<td><h5 id="lb_sum_orden" class="summary_lb"></h5></td>
+															<td><h5 id="lb_sum_orden_res" class="summary_lb"></h5></td>
+														</tr>
+														<tr>
+															<td><h5 id="lb_sum_familia" class="summary_lb"></h5></td>
+															<td><h5 id="lb_sum_familia_res" class="summary_lb"></h5></td>
+														</tr>
+														<tr>
+															<td><h5 id="lb_sum_genero" class="summary_lb"></h5></td>
+															<td><h5 id="lb_sum_genero_res" class="summary_lb"></h5></td>
+														</tr>
+														
+													</table>
+										
+												</div>
+												
+												
+
+											</div>
+											<div id="tab_filtros" class="tab-pane">
+
+
+												<div class="myScrollableBlockCheckBox">
+
+													<table id="" class="tbl_summary_conf">
+														<tr>
+															<td class="summary_lb_conf_lb1"><h5 id="lb_validacion"></h5></td>
+															<td class="summary_lb_conf_lb2">
+																<div class="checkValidation">
+																      <input id="chkValidation" class="checkbox_item" type="checkbox"/>
+																      <div class="slider_item" id="sliderValidation"></div>
+																      <label class="label_item" id="labelValidation" type="label">70%</label>
+															    </div>
+															</td>
+														</tr>
+
+														<tr>
+															<td class="summary_lb_conf_lb1"><h5 id="lb_occ_min"></h5></td>
+															<td class="summary_lb_conf_lb2">
+																<div class="checkValidation">
+																	  <input id="chkMinOcc" class="checkbox_item" type="checkbox"/>
+																      <input id="occ_number" class="occ_number" type="number" min="1" disabled="true" value="1">
+															    </div>
+															</td>
+														</tr>
+
+														<tr>
+															<td class="summary_lb_conf_lb1"><h5 id="lb_apriori"></h5></td>
+															<td class="summary_lb_conf_lb2">
+																<div class="checkValidation">
+																      <input id="chkApriori" class="checkbox_item" type="checkbox" />
+																      <label class="label_item" id="lb_do_apriori" type="label"></label>
+															    </div>
+															</td>
+														</tr>
+
+														<tr>
+															<td class="summary_lb_conf_lb1"><h5 id="lb_mapprob"></h5></td>
+															<td class="summary_lb_conf_lb2">
+																<div class="checkValidation">
+																      <input id="chkMapaProb" class="checkbox_item" type="checkbox" />
+																      <label class="label_item" id="lb_mapa_prob" type="label"></label>
+															    </div>
+															</td>
+														</tr>
+
+
+														<tr>
+															<td class="summary_lbfecha_izq"><h5 id="">Incluir registros sin fecha:</h5></td>
+															<td class="summary_lbfecha_der">
+																<div id="div_chkFecha" class="checkValidation">
+																      <input id="chkFecha" class="checkbox_item" type="checkbox" checked/>
+																      <label class="label_item" id="lb_sfecha" type="label">Si</label>
+															    </div>
+															</td>
+														</tr>
+
+
+														<tr>
+															<td class="summary_lb_conf_lb1"><h5 id="lb_fecha_sp">Filtrar por fecha:</h5></td>
+															<td class="summary_lb_conf_lb2">
+																<div id="div_sliderFecha" class="checkValidation">
+																      <div class="slider_item_fecha" id="sliderFecha"></div>
+																      <label class="label_item" id="labelFecha" type="label">1500-Actual</label>
+															    </div>
+															</td>
+														</tr>
+
+														<tr>
+															<td colspan="2" class="row_fechacolecta">
+																<div id="hist_fecha_container" class="fecha_container">
+
+																</div>
+
+															</td>
+														</tr>
+
+														<!-- <tr>
+															<td class="summary_lb_conf_lb1"><h5 id="">Registros sin fecha:</h5></td>
+															<td class="summary_lb_conf_lb2">
+																<div class="checkValidation">
+																      <label class="label_item" id="lb_regfecha" type="label"></label>
+															    </div>
+															</td>
+														</tr> -->
+
+
+														<tr>
+															<td class="summary_lb_conf_lb3"colspan="2" >
+
+																<button disabled="true" id="reload_map" class="btn btn-primary " type="button">Regenerar</button>
+
+															</td>
+															
+														</tr>
+
+
+													</table>
+
+												</div>
+
+											</div>
+										</div>
+
+									</div>
+
+									  
+							</div>
+
+
+			            </div>
+
+
+			            <!-- <div class="sidebar-pane" id="region" >
+
+			                <h3 id="lb_panel_region" class="sidebar-header"></h3>
+
+								<div class="bs-example ">
+
+								    <div class="panel-group " id="accordion">
+
+										<div id="panel-region" class="panel panel-default ">
+
+											<div class="panel-heading ">
+
+									            <h4 id="lb_seccion_region" class="panel-title">
+
+													<input type="radio" name="group1" value="1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" >
+									                    
+									            </h4>
+								            </div>
+
+								            <div id="collapseOne" class="panel-collapse collapse item_panel_region in">
+
+								                <div class="panel-body">
+
+								                	<div class="region_div">
+								                		<table>
+									                		<tr>
+									                			<td width="90%"	>
+									                				<h5 id="lb_estados"></h5>
+									                			</td>
+									                			<td>
+									                				<button id="obtiene_estados" class="btn btn-primary glyphicon glyphicon-download pull-right " type="button" > </button>
+									                			</td>
+									                		</tr>
+
+									                		<tr>
+									                			<td>
+									                				<h5 id="lb_ecos" ></h5>
+									                			</td>
+									                			<td>
+									                				<button id="obtiene_ecoregiones" class="btn btn-primary glyphicon glyphicon-download pull-right " type="button" disabled="true"> </button>
+									                			</td>
+									                		</tr>
+
+
+								                		</table>
+														
+													</div>
+
+													<br/>
+
+													<div class="myScrollableBlock">
+														<div id="jstree-estados"></div>
+														<div id="jstree-ecoregiones"></div>
+													</div>
+
+
+													 <div class="progress progress-bar-item">
+													  <div id="progress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" >
+													  </div>
+													</div> 
+
+													 <button class="btn btn-primary glyphicon glyphicon-info-sign pull-right" type="button" data-toggle="modal" data-target="#modalStates"></button> 
+
+													
+
+								                </div>
+								            </div>
+								        </div>
+
+								        <div id="panel-tools" class="panel panel-default">
+								            <div class="panel-heading">
+								                <h4 id="lb_seccion_tools" class="panel-title">
+													<input type="radio" name="group1" value="2" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+													
+								                </h4>
+								            </div>
+								            <div id="collapseTwo" class="panel-collapse collapse item_panel_region">
+								                <div class="panel-body">
+													<div class="input-group text-input col-sm-12 ">
+														<p id="lb_tools_ayuda"></p>
+														<br/>
+													    <button class="btn btn-primary glyphicon glyphicon-info-sign pull-right" type="button" data-toggle="modal" data-target="#modalTools"></button>
+
+													</div>
+								                </div>
+								            </div>
+								        </div>
+
+								        
+								    </div>
+								</div>
+										
+			            </div> -->
+
+
+			            <div class="sidebar-pane" >
+
+			            	<div class="variable_refresh_container">
+
+				            	<div class="var-pane" id="variables"></div>
+				            	<div class="btn-pane">
+				            		
+				            		<button id="show_gen" class="btn btn-warning glyphicon glyphicon-link" type="button" title="Guardar enlace de resultados" style="visibility: hidden"  ></button>
+				            		
+				            		<button id="get_esc_ep" class="btn btn-primary" type="button" ></button>
+
+				            	</div>
+
+				            	
+
+				            </div>
+
+			            </div>
+
+		            
+
+		            
+		            
+					
+					</div>
+					
+
+				<!-- </section> -->
+
+				<!-- <section> -->
+
+					<div class="row_panel_map">
+
+						<!-- <h3 id="lb_map" class="sidebar-header-map">Mapa</h3> -->
+
+						<div id="map">
+
+							<div class="link_shape">
+								<button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
+							</div>
+
+							<div id="escala_color" class="link_shape pull-right">					
+							</div>				
+
+						</div>
+
+					</div>
+
+				<!-- </section> -->
+				
+				<!-- <section> -->
+
+					<!-- <div class="row-fluid row_panel" id="tbl_hist" style="visibility: hidden;"> -->
+					<div class="row-fluid row_panel" id="tbl_hist" >
+
+
+						<div class="rowTableHistContainer" >
+
+							<h3 id="lb_resultados" class="sidebar-header-map"></h3>
+
+			            	<!-- <h1 class="title_element">Tablas e histogramas</h1> -->
+
+
+			            	<!-- <div class="histcontainer"> -->
+								<!-- <h3 class="title_element">Score-decil</h3> -->
+								<div id="myScrollableBlockEpsilonDecil" class="myScrollableBlockEpsilonDecil">
+									<button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Decil'); $('#lb_body_info').text('Muestra el valor promedio del score por grupo de variable en cada decil.'); $('#modalInfo').modal()" ></button>
+
+									<div id="chartdiv_score_decil"></div>	
+								</div>
+							<!-- </div> -->
+
+							<div id="div_example" class="myScrollableBlockDecilList">
+								
+								<table id="example" class="display compact cell-border" cellspacing="0"></table>
+								
+							</div>
+
+
+
+							<!-- <div class="histcontainer"> -->
+								<!-- <h3 class="title_element">Epsilon-especie</h3> -->
+
+								<div id="histcontainer_row" class="histcontainer_row">
+
+									<div class="myScrollableBlockEpsilonSmallHist">
+										<button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Epsilon Especie'); $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las especies por su valor de epsilon.'); $('#modalInfo').modal()" ></button>
+
+										<div id="chartdiv_epsilon"></div>	
+									</div>
+
+									<div class="myScrollableBlockEpsilonSmallHist">
+										<button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Especie'); $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las especies por su valor de score.'); $('#modalInfo').modal()" ></button>
+										
+										<div id="chartdiv_score"></div>	
+									</div>	
+									<div class="myScrollableBlockEpsilonSmallHist">
+										<button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Celda'); $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las celdas por su valor de score.'); $('#modalInfo').modal()" ></button>
+
+										<div id="chartdiv_score_celda"></div>	
+									</div>
+
+								</div>
+
+								
+							<!-- </div> -->
+						
+							<!-- <div class="histcontainer"> -->
+								<!-- <h3 class="title_element">Score-especie</h3> -->
+								
+							<!-- </div> -->
+						
+							<!-- <div class="histcontainer"> -->
+								<!-- <h3 class="title_element">Score-celda</h3> -->
+								
+							<!-- </div> -->
+							
+
+							<!-- <h3 class="title_element">Lista-decil</h3> -->
+							
+
+
+
+			        		<div class="histcontainer">
+
+						  		<div id="treeAddedPanel"  class="myScrollableBlockEpsilonTable">
+			            			<table id="tdisplay" class="display compact cell-border" ></table>
+								</div>
+
+								<!-- <div class="myScrollableBlockButton">
+			            			<button id="csv_request" class="btn btn-primary glyphicon glyphicon-download-alt pull-right" type="button" data-toggle="modal" data-target="#modalMail"></button>	
+								</div> -->
+								
+							</div>
+
+							
+
+							<br/>					
+										
+
+			            </div>	
+
+
+					</div>
+					
+
+					<!-- </section> -->
+
+				
+
+				
+				
+
+			</div>
+
+			
+			
+
+		  
+
+
+		 <!-- Modals -->
+		<div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			
+			<div class="modal-dialog" role="document">
+				 
+				<div class="modal-content">
+
+					<div class="modal-header">
+
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 id="lb_modal_csv" class="modal-title" id="myModalLabel"></h4>
+
+					</div>
+					
+					
+					<div id="" class="modal-body">
+
+						<h5 id="lb_des_modal_csv"></h5>
+
+						 <br/>
+						 
+					    <div class="input-group emial_component">
+
+					      <input id="email_address" type="email" class="custom_form_control" placeholder="Correo" required>
+					      <span class="input-group-btn">
+					        <button id="send_email_csv" class="btn btn-primary" type="button"></button>
+					      </span>
+					    </div>
+						  
+
+					 </div>
+
+
+
+					<div class="modal-footer">
+						<button id="cancel_email_csv" type="button" class="btn btn-primary" data-dismiss="modal"></button>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+
+
+		<div class="modal fade mymodals" id="modalMailShape" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			 <div class="modal-dialog" role="document">
+				 <div class="modal-content">
+					 <div class="modal-header">
+						 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						 <h4  id="lb_modal_shp" class="modal-title" id="myModalLabel"></h4>
+					 </div>
+					 
+					 <div class="modal-body">
+
+						 <h5 id="lb_des_modal_shp"></h5>
+
+						 <br/>
+		  				 
+					    <div class="input-group emial_component">
+					      <input id="email_address_shp" type="email" class="custom_form_control" placeholder=" Correo" required>
+					      <span class="input-group-btn">
+					        <button id="send_email_shp" class="btn btn-primary" type="button"></button>
+					      </span>
+					    </div>
+						  
+
+					 </div>
+					 <div class="modal-footer">
+						 <button id="cancel_email_shp" type="button" class="btn btn-primary" data-dismiss="modal"></button>
+					 </div>
+				 </div>
+			 </div>
+		</div>
+
+
+
+		<div class="modal fade mymodals_info" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			 <div class="modal-dialog" role="document">
+				 <div class="modal-content">
+					 
+					 <div class="modal-header">
+						 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						 <h4  id="lb_header_info" class="modal-title" ></h4>
+					 </div>
+					 
+					 <div class="modal-body">
+						 <p id="lb_body_info"></p>
+						 <div id="div_formula" class="div_formula">
+						 </div>
+					 </div>
+
+				 </div>
+			 </div>
+		</div>
+
+
+
+		 <!-- <div class="modal fade mymodals_info" id="modalCarga" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			 <div class="modal-dialog modal-sm" role="document">
+				 <div class="modal-content">
+					 
+					 <div class="modal-header">
+						 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						 <h4  id="lb_header_carga" class="modal-title" >Carga de análisis</h4>
+					 </div>
+					 
+					 <div class="modal-body">
+						 <p id="lb_body_info">¿Desea cargar la configuración guardada en el enlace?</p>
+						 <button id="loadData" class="btn btn-primary" type="button" disabled="true">Cargar</button>
+					 </div>
+
+				 </div>
+			 </div>
+		 </div> -->
+
+
+		 <div class="modal fade mymodals_info" id="modalRegenera" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			 <div class="modal-dialog modal-md" role="document">
+				 <div class="modal-content" style="height: 200px;">
+					 
+						<div class="modal-header">
+							 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							 <h4  id="lb_header_carga" class="modal-title" >Regenerar resultados</h4>
+						</div>
+					 
+					 	<div class="modal-body">
+
+
+						 	<div class="form-group">
+							  	<label for="usr">Para regenerar tus resultados copia el siguiente enlace y pegalo en tu explorador:</label>
+							  	<input type="text" class="form-control" id="lb_enlace" >
+							</div>
+
+
+							<!-- <div class="form-group" style="width: 100%;">
+							  	
+							  	<label for="usr">Pega el enlace en la parte superior derecha en "Regenerar resultados" y da click en el botón para regenerar tus resultados</label>
+							  	
+							  	<div style="width: 100%; text-align: center; margin-top: 10px;">
+							  		<img src="images/refresh.png" class="img_link" style="margin: auto; border-radius: 5px;"> 	
+							  	</div>
+							  	
+							  	
+							</div> -->
+							 
+							 <button id="accept_link" class="btn btn-primary pull-right" type="button" >Aceptar</button>
+
+					 	</div>
+
+				 </div>
+			 </div>
+		 </div>
+
+
+			
+
+
+
+
+			 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+			 <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+			 <!-- // <script src="javascripts/leaflet/leaflet-src.js"></script> -->
+
+			 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+			 <!-- // <script src="plugins/sidebar/js/leaflet-sidebar.js"></script> -->
+
+			 <!-- <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.js'></script> -->
+			 <!-- <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script> -->
+		   <!-- <script src="dist/libs/jquery.js"></script> -->
+
+			 <!-- En servidor -->
+			 <script src="assets/dist/jstree.min.js"></script>
+			 <script type="text/javascript" src="javascripts/crossfilter.min.js"></script>
+			 
+			 <script src="javascripts/L.TileLayer.BetterWMS.js"></script>
+			 <script type="text/javascript" src="javascripts/toastr.js"></script>
+			 <script type="text/javascript" src="javascripts/in/jquery.i18n.properties.min.js"></script>
+
+			 
+
+			 <!-- // <script type="text/javascript" src="javascripts/test_lt.js"></script>  -->
+			 <script type="text/javascript" src="javascripts/pede_nicho.js"></script>
+			 <script type="text/javascript" src="javascripts/map_module.js"></script>
+			 <script type="text/javascript" src="javascripts/variable_module.js"></script>
+			 <script type="text/javascript" src="javascripts/res_display_module.js"></script>
+			 <script type="text/javascript" src="javascripts/region_module.js"></script> 
+			 <script type="text/javascript" src="javascripts/validation_module.js"></script>
+			 <script type="text/javascript" src="javascripts/histogram_module.js"></script> 
+			 <script type="text/javascript" src="javascripts/table_module.js"></script> 
+			 <script type="text/javascript" src="javascripts/language_module.js"></script> 
+			 <script type="text/javascript" src="javascripts/toast_module.js"></script> 
+
+			 <script type="text/javascript" src="plugins/easybutton/src/easy-button.js"></script>
+
+			 
+
+			 <script type="text/javascript" src="https://rawgit.com/ricmoo/aes-js/master/index.js"></script>
+
+
+			 <script src="plugins/markercluster/dist/leaflet.markercluster-src.js"></script>
+
+
+			<script src="http://www.sumbera.com/gist/js/vt/geojson-vt-dev.js"></script>
+		   	<script src="http://www.sumbera.com/gist/js/leaflet/canvas/L.CanvasTiles.js"></script>
+		   	<!-- <script src="http://www.sumbera.com/gist/data/CZDistricts.js"></script>  -->
+
+
+			<script src="http://www.sumbera.com/gist/js/leaflet/canvas/L.CanvasOverlay.js"></script>
+		   	<script>
+			    // -- module, require mockups so we can use orig files unmodified
+			    module = {};
+		    </script>
+		   	<script src="http://www.sumbera.com/gist/js/earcut/earcut-1.4.2.js"></script>
+
+
+
+			 <!-- <script src="plugins/markercluster/src/MarkerCluster.js"></script>
+			 // <script src="plugins/markercluster/src/MarkerClusterGroup.js"></script> -->
+			 
+
+			 <!-- <a href="https://github.com/Turbo87/sidebar-v2/"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Hecho en Conabio"></a> -->
+
+			 <!-- desde archivo -->
+			 <!-- <script src="public/assets/dist/jstree.min.js"></script>
+			 <script type="text/javascript" src="public/javascripts/test_lt.js"></script> -->
+
+
+
+			<!-- <script type="text/javascript" src="bs_js/jquery.appear.js"></script>
+		    <script type="text/javascript" src="bs_js/wow.min.js"></script>
+		    <script type="text/javascript" src="bs_js/page-scroll.js"></script>
+		    <script type="text/javascript" src="bs_js/jquery.easypiechart.js"></script>
+		    <script type="text/javascript" src="bs_js/jquery.parallax-1.1.3.js"></script>
+		    <script type="text/javascript" src="bs_js/jquery.isotope.min.js"></script> 
+		    <script type="text/javascript" src="bs_js/owl.carousel.min.js"></script>
+		    <script type="text/javascript" src="bs_js/jquery.magnific-popup.min.js"></script>
+		    <script type="text/javascript" src="bs_js/popup-gallery.js"></script>
+		    <script type="text/javascript" src="bs_js/text-effect.js"></script>
+		    <script type="text/javascript" src="bs_js/jquery.tools.min.js"></script>
+		    <script type="text/javascript" src="bs_js/jquery.revolution.js"></script>
+		    <script type="text/javascript" src="bs_js/counter.js"></script>
+		    <script type="text/javascript" src="bs_js/jquery.countTo.js"></script>
+		    <script type="text/javascript" src="bs_js/jquery.fitvids.js"></script>
+		    <script type="text/javascript" src="bs_js/imagesloaded.pkgd.min.js"></script>
+		    <script type="text/javascript" src="bs_js/classie.js"></script>
+		    <script type="text/javascript" src="bs_js/hamburger-menu.js"></script>
+		    <script type="text/javascript" src="bs_js/main.js"></script> -->
+
+		</body>
+		</html>

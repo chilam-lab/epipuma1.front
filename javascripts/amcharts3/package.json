@@ -1,0 +1,31 @@
+{
+  "name": "amcharts3",
+  "version": "3.17.1",
+  "description": "JavaScript Charts V3",
+  "main": "amcharts/amcharts.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amcharts/amcharts3.git"
+  },
+  "keywords": [
+    "amcharts",
+    "javascript",
+    "charts"
+  ],
+  "author": {
+    "name": "amCharts",
+    "email": "contact@amcharts.com"
+  },
+  "license": "Custom",
+  "bugs": {
+    "url": "https://github.com/amcharts/amcharts3/issues"
+  },
+  "homepage": "http://www.amcharts.com/",
+  "gitHead": "405eff0f704c1f21d6128bac5779de140fd8d27f",
+  "readme": "# amcharts3\n\nAn official repository for amCharts JavaScript Charts V3 (free version).\n\n## Installing\n\n### Using bower\n\n```\nbower install amcharts3\n```\n\n## Usage\n\nInclude `amcharts.js` plus files you will be using for each chart type, i.e.\n`serial.js`, `pie.js`:\n\n```\n<script src=\"/bower_components/amcharts3/amcharts/amcharts.js\"></script>\n<script src=\"/bower_components/amcharts3/amcharts/serial.js\"></script>\n```\n\n## License\n\nThis amCharts software is free under a linkware license.\n\nThis means you may not remove or hide in any other way link to amCharts\nweb site - www.amcharts.com.\n\nIf you wish to remove the link, you should purchase commercial license.\n\nYou may not redistribute, sublicense or sell this program without written\npermission of Antanas Marcelionis, the author of amcharts software.\n\nThis software is provided without warranty.\n\n## Commercial license\n\nTo purchase a commercial license for the current version of this library, visit\n[amCharts Online Store](http://www.amcharts.com/online-store/)\n\n## More info\n\nVisit [amCharts website](http://www.amcharts.com/) for more information and \ndocumentation.\n\n## Contact us\n\n* Email: contact@amcharts.com\n* Web: http://www.amcharts.com/\n* Facebook: https://www.facebook.com/amcharts\n* Twitter: https://twitter.com/amcharts",
+  "readmeFilename": "README.md",
+  "_id": "amcharts3@3.17.1",
+  "_shasum": "7f1d5a81886bfff3ef6020921216622d0e3e5ff3",
+  "_from": "amcharts/amcharts3",
+  "_resolved": "git://github.com/amcharts/amcharts3.git#405eff0f704c1f21d6128bac5779de140fd8d27f"
+}

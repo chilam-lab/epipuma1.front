@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test GUI</title>
+<meta charset="utf-8">
+
+
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
+
+
+
+
+<style type="text/css">
+
+html, body { height: 100%; padding: 0; margin: 0; }
+#div1 { width: 50%; height: 50%; float: left; border-style: solid; overflow-y: scroll; overflow-x: scroll;  resize: both;}
+#map { background: #AAA; width: 50%; height: 50%; float: left; border-style: solid;  resize: both;}
+#hist { background: white; width: 50%; height: 50%; float: left; border-style: solid;overflow-y: scroll; overflow-x: scroll;  resize: both;}
+#dtable { background: white;  width: 50%; height: 50%; float: left;border-style: solid; overflow-y: scroll; overflow-x: scroll;  resize: both;}
+#wkt{min-width: 100px; width: 95%; min-height:150px; text-align: center !important; }
+#phylum{min-width: 100px; width: 95%;}
+#clase{min-width: 100px; width: 95%;}
+#orden{min-width: 100px; width: 95%;}
+#familia{min-width: 100px; width: 95%;}
+#genero{min-width: 100px; width: 95%;}
+#nom_sp{min-width: 100px; width: 95%;}
+#spid{min-width: 100px; width: 95%;}
+
+.form-control{max-width:600px;margin-right:20px;margin-top:20px;margin-bottom:20px;}
+.select-field{max-width:200px;margin-right:20px;margin-top:20px;margin-bottom:20px;}
+.form-inline{margin-left:20px;}
+.form-group{margin-left:20px; margin-bottom: 10px;}
+#scenter {min-width: 300px; background-color: #808080; margin-top: 15px; margin-right:15px; margin-left: 15px;}
+#sfilters {min-width: 300px; background-color: YellowGreen;margin-top:15px;margin-bottom:20px;margin-right:15px; margin-left: 15px;}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.axis text {
+	font-family: sans-serif;
+	font-size: 11px;
+}
+.bar {
+  fill: orange;
+}
+
+.bar:hover {
+  fill: orangered ;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+#dtable ul
+{
+margin: 0;
+padding: 0;
+list-style-type: none !important;
+text-align: center;
+}
+
+#dtable ul li { display: inline; }
+
+#dtable ul li a
+{
+text-decoration: none;
+padding: .2em 1em;
+color: #fff;
+background-color: #036;
+}
+
+#dtable ul li a:hover
+{
+color: #fff;
+background-color: #369;
+}
+
+/*
+test
+*/
+</style>
+</head>
+
+
+<div id="div1">
+
+  
+  <form role="form" id="sendform">
+	<div id="scenter">
+    <div class="form-inline">
+	 <div class="form-group">
+      <label for="nomsp">Nombre específico:</label>
+      <input type="text" class="form-control" id="nom_sp" placeholder="Introduce un nombre específico">
+	  </div>
+	   <div class="form-group">
+	  <label for="id">Id:</label>
+      <input type="text" class="form-control" id="spid" placeholder="Introduce un identificador" disabled>
+	  </div>
+	  <div class="form-inline">
+  <button type="button" id="limpiar" class="btn btn-default"  style="margin-right: 20px; margin-bottom: 15px;">Limpiar filtros</button>
+  <button type="button" id="enviar" class="btn btn-default"  style="margin-right: 20px; margin-bottom: 15px;" disabled>Obtener datos</button>
+  <div class="checkbox">
+	 <label><input type="checkbox" id="usegeom">Usar filtro espacial</label>
+	</div>
+  </div>
+    </div>
+	</div>
+	
+	<div id="sfilters">
+
+	<div class="form-group">
+	
+	<div class="form-inline">
+	<label for="reino"><span>Reino: </span><select name="reino" class="select-field" id="reino">
+	<option value="todos">Todos</option>
+	<option value="animalia">Animalia</option><option value="plantae">Plantae</option><option value="fungi">Fungi</option><option value="protoctista">Protoctista</option><option value="prokaryotae">Prokaryotae</option></select></label>
+	  <div class="form-group">
+	  <label for="phylum">Phylum/División:</label>
+      <input type="text" class="form-control" id="phylum" placeholder="Introduce un phylum">
+	  </div>
+	  <div class="form-group">
+	  <label for="clase">Clase:</label>
+      <input type="text" class="form-control" id="clase" placeholder="Introduce una clase">
+	  </div>
+
+	   <div class="form-group">
+	    <label for="orden">Orden:</label>
+      <input type="text" class="form-control" id="orden" placeholder="Introduce un orden">
+	  </div>
+	   <div class="form-group">
+	   <label for="familia">Familia:</label>
+      <input type="text" class="form-control" id="familia" placeholder="Introduce una familia">
+	  </div>
+	   <div class="form-group">
+	   <label for="genero">Género:</label>
+      <input type="text" class="form-control" id="genero" placeholder="Introduce un género">
+	  </div>
+	  </div>
+	  <div class="form-group" style="margin-bottom: 15px !important;">
+	
+	 <label for="polygon">Polígono:</label>
+	<textarea id="wkt" rows="10" cols="200" class="form-control" form="sendform" placeholder="Introduce un polígono en formato WKT o dibubja un área en el mapa"></textarea>
+	</div>
+	
+	</div>
+
+	</div>
+
+  </form>
+   
+
+</div>
+<div id="map">
+
+</div>
+<div id="hist">
+</div>
+<div id="dtable" class="container">
+
+
+<table id="tdisplay" class="display" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+				<th>Reino</th>
+				<th>Pylum/División</th>
+				<th>Clase</th>
+				<th>Orden</th>
+				<th>Familia</th>
+				<th>Género</th>
+                <th>Especie</th>
+				<th>spid</th>
+                <th>nij</th>
+                <th>nj</th>
+                <th>ni</th>
+                <th>n</th>
+                <th>epsilon</th>
+            </tr>
+        </thead>
+		<tbody id="tdisplay_tbody">
+		</tbody>
+    </table>
+</div>
+<div id="dialog" title="SIN COINCIDENCIAS">
+  <p>No existen registros de Panthera onca dentro del área introducida.</p>
+</div>
+<script>
+
+
+
+
+$("#nom_sp").autocomplete(
+{
+	source : function (request, response)
+	{
+		$.ajax(
+		{
+			url : "http://geoportal.conabio.gob.mx/snib?",
+			dataType : "json",
+			data :
+			{
+				searchStr : request.term,
+				qtype : 'getEntList',
+				limit : 30,
+				start : 0,
+				field : 'nom_sp'
+			},
+			success : function (data)
+			{
+				response($.map(data, function (item)
+					{
+
+						return
+						{
+							label : item.ent.nom_sp,
+							id : item.ent.spid,
+							abbrev : item.ent.nom_sp
+						};
+					}
+					));
+			}
+		}
+		);
+	},
+	minLength : 2,
+	change : function (event, ui)
+	{
+		if (!ui.item)
+		{
+
+			$("#nom_sp").val("");
+		}
+
+	},
+	select : function (event, ui)
+	{
+		$('#state_id').val(ui.item.id);
+		$('#abbrev').val(ui.item.abbrev);
+		$('#spid').val(ui.item.id);
+		$('#enviar').prop("disabled", false);
+
+	}
+}
+);
+
+$("#phylum").autocomplete(
+{
+	source : function (request, response)
+	{
+		$.ajax(
+		{
+			url : "http://geoportal.conabio.gob.mx/snib?",
+			dataType : "json",
+			data :
+			{
+				searchStr : request.term,
+				qtype : 'getEntList',
+				limit : 30,
+				start : 0,
+				field : 'divisonphylumconabio'
+			},
+			success : function (data)
+			{
+				response($.map(data, function (item)
+					{
+
+						return
+						{
+							label : item.ent.divisonphylumconabio,
+							id : item.ent.divisonphylumconabio,
+							abbrev : item.ent.divisonphylumconabio
+						};
+					}
+					));
+			}
+		}
+		);
+	},
+	minLength : 2,
+	change : function (event, ui)
+	{
+		if (!ui.item)
+		{
+
+			$("#phylum").val("");
+		}
+
+	},
+	select : function (event, ui)
+	{
+		$('#state_id').val(ui.item.id);
+		$('#abbrev').val(ui.item.abbrev);
+
+	}
+}
+);
+
+$("#clase").autocomplete(
+{
+	source : function (request, response)
+	{
+		$.ajax(
+		{
+			url : "http://geoportal.conabio.gob.mx/snib?",
+			dataType : "json",
+			data :
+			{
+				searchStr : request.term,
+				qtype : 'getEntList',
+				limit : 30,
+				start : 0,
+				field : 'claseconabio'
+			},
+			success : function (data)
+			{
+				response($.map(data, function (item)
+					{
+
+						return
+						{
+							label : item.ent.claseconabio,
+							id : item.ent.claseconabio,
+							abbrev : item.ent.claseconabio
+						};
+					}
+					));
+			}
+		}
+		);
+	},
+	minLength : 2,
+	change : function (event, ui)
+	{
+		if (!ui.item)
+		{
+
+			$("#clase").val("");
+		}
+
+	},
+	select : function (event, ui)
+	{
+		$('#state_id').val(ui.item.id);
+		$('#abbrev').val(ui.item.abbrev);
+
+	}
+}
+);
+
+$("#orden").autocomplete(
+{
+	source : function (request, response)
+	{
+		$.ajax(
+		{
+			url : "http://geoportal.conabio.gob.mx/snib?",
+			dataType : "json",
+			data :
+			{
+				searchStr : request.term,
+				qtype : 'getEntList',
+				limit : 30,
+				start : 0,
+				field : 'ordenconabio'
+			},
+			success : function (data)
+			{
+				response($.map(data, function (item)
+					{
+
+						return
+						{
+							label : item.ent.ordenconabio,
+							id : item.ent.ordenconabio,
+							abbrev : item.ent.ordenconabio
+						};
+					}
+					));
+			}
+		}
+		);
+	},
+	minLength : 2,
+	change : function (event, ui)
+	{
+		if (!ui.item)
+		{
+			$("#orden").val("");
+		}
+
+	},
+	select : function (event, ui)
+	{
+		$('#state_id').val(ui.item.id);
+		$('#abbrev').val(ui.item.abbrev);
+
+	}
+}
+);
+$("#familia").autocomplete(
+{
+	source : function (request, response)
+	{
+		$.ajax(
+		{
+			url : "http://geoportal.conabio.gob.mx/snib?",
+			dataType : "json",
+			data :
+			{
+				searchStr : request.term,
+				qtype : 'getEntList',
+				limit : 30,
+				start : 0,
+				field : 'familiaconabio'
+			},
+			success : function (data)
+			{
+				response($.map(data, function (item)
+					{
+
+						return
+						{
+							label : item.ent.familiaconabio,
+							id : item.ent.familiaconabio,
+							abbrev : item.ent.familiaconabio
+						};
+					}
+					));
+			}
+		}
+		);
+	},
+	minLength : 2,
+	change : function (event, ui)
+	{
+		if (!ui.item)
+		{
+			$("#familia").val("");
+		}
+
+	},
+	select : function (event, ui)
+	{
+		$('#state_id').val(ui.item.id);
+		$('#abbrev').val(ui.item.abbrev);
+
+	}
+}
+);
+
+$("#genero").autocomplete(
+{
+	source : function (request, response)
+	{
+		$.ajax(
+		{
+			url : "http://geoportal.conabio.gob.mx/snib?",
+			dataType : "json",
+			data :
+			{
+				searchStr : request.term,
+				qtype : 'getEntList',
+				limit : 30,
+				start : 0,
+				field : 'generoconabio'
+			},
+			success : function (data)
+			{
+				response($.map(data, function (item)
+					{
+
+						return
+						{
+							label : item.ent.generoconabio,
+							id : item.ent.generoconabio,
+							abbrev : item.ent.generoconabio
+						};
+					}
+					));
+			}
+		}
+		);
+	},
+	minLength : 2,
+	change : function (event, ui)
+	{
+		if (!ui.item)
+		{
+			$("#genero").val("");
+		}
+
+	},
+	select : function (event, ui)
+	{
+		$('#state_id').val(ui.item.id);
+		$('#abbrev').val(ui.item.abbrev);
+
+	}
+}
+);
+//Variables para D3
+var d3values;
+L.mapbox.accessToken = '<your access token here>';
+var map = L.mapbox.map('map')
+	.setView([22.8, -101.27334], 5);
+var OpenTopoMap = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+	{
+		maxZoom : 16,
+		attribution : 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+	}
+	).addTo(map);
+var featureGroup = L.featureGroup().addTo(map);
+
+
+var drawControl = new L.Control.Draw(
+	{
+		draw :
+		{
+			marker : false,
+			polyline : false,
+			circle : false,
+			polygon :
+			{
+				shapeOptions :
+				{
+					color : '#9932CC'
+				}
+			}
+		},
+		edit :
+		{
+			featureGroup : featureGroup
+		}
+	}
+	).addTo(map);
+
+map.on('draw:created', function (e)
+{
+	var layer = e.layer;
+	featureGroup.clearLayers();
+	featureGroup.addLayer(layer);
+
+	var lng,
+	lat,
+	coords = [];
+
+	var latlngs = layer.getLatLngs();
+	for (var i = 0; i < latlngs.length; i++)
+	{
+		latlngs[i]
+		coords.push(latlngs[i].lng + " " + latlngs[i].lat);
+		if (i === 0)
+		{
+			lng = latlngs[i].lng;
+			lat = latlngs[i].lat;
+		}
+	};
+	var wktext = "POLYGON((" + coords.join(",") + "," + lng + " " + lat + "))"
+
+		$('#wkt').val("");
+	$('#wkt').val(wktext);
+
+}
+);
+
+map.on('draw:edited', function (e)
+{
+	var layers = e.layers._layers;
+
+	var latlngs
+	var lng,
+	lat,
+	coords = [];
+
+	for (var key in layers)
+	{
+		console.log(layers[key]);
+		latlngs = layers[key].getLatLngs();
+		break;
+	}
+
+	for (var i = 0; i < latlngs.length; i++)
+	{
+		latlngs[i]
+		coords.push(latlngs[i].lng + " " + latlngs[i].lat);
+		if (i === 0)
+		{
+			lng = latlngs[i].lng;
+			lat = latlngs[i].lat;
+		}
+	};
+	var wktext = "POLYGON((" + coords.join(",") + "," + lng + " " + lat + "))"
+
+		$('#wkt').val("");
+	$('#wkt').val(wktext);
+
+}
+);
+
+//Para D3
+var margin =
+{
+	top : 20,
+	right : 20,
+	bottom : 50,
+	left : 80
+},
+width = $('#hist').width() - margin.left - margin.right,
+height = $('#hist').height() - margin.top - margin.bottom;
+
+var formatPercent = d3.format(".0%");
+
+var x = d3.scale.ordinal()
+	.rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+	.range([height, 0]);
+
+var xAxis = d3.svg.axis()
+	.scale(x)
+	.orient("bottom");
+
+var yAxis = d3.svg.axis()
+	.scale(y)
+	.orient("left")
+	.tickFormat(formatPercent);
+
+var tip = d3.tip()
+	.attr('class', 'd3-tip')
+	.offset([-10, 0])
+	.html(function (d)
+	{
+		return "<strong>Frec:</strong> <span style='color:red'>" + d.frequency + "</span>";
+	}
+	);
+var svg = false;
+var tbl = false;
+
+var fcols =
+{
+	'8' : 'nij',
+	'9' : 'nj',
+	'12' : 'epsilon'
+};
+
+var refreshData = function (fspat, spid)
+{
+
+	var reino = $('#reino')[0].value;
+	var fields = [
+		{
+			'alias' : 'phylum',
+			'name' : 'divisonphylumconabio'
+		},
+		{
+			'alias' : 'clase',
+			'name' : 'claseconabio'
+		},
+		{
+			'alias' : 'orden',
+			'name' : 'ordenconabio'
+		},
+		{
+			'alias' : 'familia',
+			'name' : 'familiaconabio'
+		},
+		{
+			'alias' : 'genero',
+			'name' : 'generoconabio'
+		}
+	];
+	var ddata =
+	{
+		'qtype' : 'getFreq'
+	};
+	var tdata =
+	{
+		'qtype' : 'getGeoRel'
+	};
+	tdata['id'] = spid;
+	ddata['id'] = spid;
+	if (reino != 'todos')
+	{
+		ddata['rd'] = reino;
+		tdata['rd'] = reino;
+	}
+	var filters = [];
+	for (var i = 0; i < fields.length; i++)
+	{
+		if ($('#' + fields[i].alias)[0].value != '')
+		{
+			filters.push(
+			{
+				'field' : fields[i].name,
+				'value' : $('#' + fields[i].alias)[0].value
+			}
+			);
+		}
+
+	}
+
+	if (filters.length != 0)
+	{
+		console.log(JSON.stringify(filters));
+		ddata['tfilters'] = filters;
+		tdata['tfilters'] = filters;
+	}
+
+	if (fspat)
+	{
+
+		ddata['wkt'] = $('#wkt')[0].value;
+		tdata['wkt'] = $('#wkt')[0].value;
+	}
+
+	var prev = 0;
+
+	if (tbl != false)
+	{
+		$('#tdisplay').dataTable().fnDestroy();
+	}
+
+	$('#tdisplay').dataTable(
+	{
+
+		"info" : false,
+		"bSort" : true,
+		"aoColumnDefs" : [
+			{
+				"bSortable" : false,
+				"aTargets" : [0, 1, 2, 3, 4, 5, 6, 7, 10, 11]
+			}
+		],
+		"bFilter" : false,
+		"bLengthChange" : false,
+		"bPaginate" : true, // Pagination True
+		"processing" : true, // Pagination True
+		"serverSide" : true,
+		"pagingType" : 'simple',
+		"iDisplayLength" : 11,
+		"ajax" : function (data, callback, settings)
+		{
+
+			tdata['limit'] = data.length;
+			tdata['start'] = data.start;
+			if (data.order[0].column)
+			{
+				tdata['sortField'] = fcols[data.order[0].column];
+				tdata['sortDir'] = data.order[0].dir;
+			}
+
+			$.ajax(
+			{
+				url : "http://geoportal.conabio.gob.mx/snib?",
+				type : 'POST',
+				data : JSON.stringify(tdata),
+				dataType : "json",
+				success : function (d)
+				{
+
+					var table = $('#tdisplay').DataTable();
+					var info = table.page.info();
+
+					console.log(info.page);
+					if (info.page > prev)
+					{
+						if (d.data.length != 0)
+						{
+							callback(d);
+							prev = info.page;
+						}
+						else
+						{
+
+							table.page(prev).draw(false);
+						}
+					}
+					else
+					{
+
+						callback(d);
+						prev = info.page;
+					}
+
+				}
+			}
+			);
+
+		}
+
+	}
+	);
+
+	tbl = true;
+
+	$.ajax(
+	{
+		type : "POST",
+		url : 'http://geoportal.conabio.gob.mx/snib?',
+		data : JSON.stringify(ddata),
+		dataType : "json",
+		success : function (data, status)
+		{
+
+			var data2 = [];
+			var totcount = 0;
+			var j;
+			for (j = 0; j < data.length; j++)
+			{
+				totcount = totcount + parseInt(data[j].freq);
+			}
+			for (j = 0; j < data.length; j++)
+			{
+				data2.push(
+				{
+					bcenter : ((data[j].max + data[j].min) / 2).toFixed(2),
+					frequency : parseInt(data[j].freq) / totcount
+				}
+				);
+
+			}
+
+			if (svg != false)
+			{
+				svg.selectAll("*").remove();
+
+			}
+			else
+			{
+				svg = d3.select("#hist").append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			}
+
+			svg.call(tip);
+			function type(d)
+			{
+				d.frequency = +d.frequency;
+				return d;
+			}
+
+			x.domain(data2.map(function (d)
+				{
+					return d.bcenter;
+				}
+				));
+			y.domain([0, d3.max(data2, function (d)
+					{
+						return d.frequency;
+					}
+					)]);
+
+			svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis)
+			.append("text")
+			.attr("x", 400)
+			.attr("dy", "3.0em")
+			.style("text-anchor", "middle")
+			.text("Epsilon");
+
+			svg.append("g")
+			.attr("class", "y axis")
+			.call(yAxis)
+			.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 6)
+			.attr("x", -200)
+			.attr("dy", "-4.3em")
+			.style("text-anchor", "middle")
+			.text("Frecuencia");
+
+			svg.selectAll(".bar")
+			.data(data2)
+			.enter().append("rect")
+			.attr("class", "bar")
+			.attr("x", function (d)
+			{
+				console.log(d.bcenter);
+				return String(x(d.bcenter));
+			}
+			)
+			.attr("width", x.rangeBand())
+			.attr("y", function (d)
+			{
+				return y(d.frequency);
+			}
+			)
+			.attr("height", function (d)
+			{
+				return height - y(d.frequency);
+			}
+			)
+			.on('mouseover', tip.show)
+			.on('mouseout', tip.hide)
+
+		}
+
+	}
+	);
+}
+
+$("#limpiar").click(function ()
+{
+	$("#reino").val("todos");
+	$("#phylum").val("");
+	$("#clase").val("");
+	$("#orden").val("");
+	$("#familia").val("");
+	$("#genero").val("");
+	$("#wkt").val("");
+
+}
+);
+$("#enviar").click(function ()
+{
+	var spid = $('#spid')[0].value;
+	if ($('#wkt')[0].value != '' && $('#usegeom').prop('checked'))
+	{
+		$.ajax(
+		{
+			url : "http://geoportal.conabio.gob.mx/snib?",
+			type : 'POST',
+			data : JSON.stringify(
+			{
+				"qtype" : "makesSense",
+				"id" : spid,
+				"wkt" : $('#wkt')[0].value
+			}
+			),
+			dataType : "json",
+			success : function (d)
+			{
+
+				console.log(d);
+				if (d.exists)
+				{
+					refreshData(true, spid);
+				}
+				else
+				{
+					$("#dialog").html("<p>No hay registros de <i>" + $('#nom_sp')[0].value + "</i> en el área</>").dialog();
+					if (tbl != false)
+					{
+
+						$('#tdisplay').dataTable().fnDestroy();
+
+						$('#tdisplay_tbody').empty();
+
+					}
+					if (svg != false)
+					{
+						svg.selectAll("*").remove();
+					}
+
+				}
+
+			}
+		}
+		);
+
+	}
+	else
+	{
+		refreshData(false, spid);
+	}
+
+}
+);
+
+
+</script>
+<script type="text/javascript">
+	// For demo to fit into DataTables site builder...
+	$('#tdisplay')
+		.removeClass( 'display' )
+		.addClass('table table-striped table-bordered');
+</script>
+</html>
+

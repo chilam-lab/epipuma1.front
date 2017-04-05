@@ -1,0 +1,2227 @@
+var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
+
+	// ************ variables publicas y privadas ( denotadas por _ ) ************
+
+	var _url_trabajo = url_trabajo;
+	var _url_zacatuche = url_zacatuche;
+
+	var _VERBOSE = verbose;
+
+	var _subgroups, _spid, _idreg, _type_time;
+
+	var _validation_module_all,
+		_map_module_nicho, _language_module_nicho, _module_toast;
+
+	var _allowedPoints = d3.map([]),
+		_discardedPoints = d3.map([]),
+		_discardedPointsFilter = d3.map([]),
+		_computed_discarded_cells = d3.map([]),
+		_computed_occ_cells = d3.map([]);
+
+	var _cell_set = d3.map([]);
+	    _discarded_cell_set = d3.map([]),
+	    // _discardedFilter_cell_set = d3.map([]),
+	    _dataChartValSet = [];
+
+	var _REQUESTS, _ITER_REQUESTS, 
+		_ITER = 0, _NUM_ITERATIONS = 5;
+
+	var _min_occ_process, _mapa_prob;
+
+	var _rangofechas, _chkfecha;
+
+	var _first_time_map = true;
+
+	 var _NUM_DECILES = 10;
+
+	var _cdata,
+	 	_sdata,
+	 	_tdata,
+	 	_ddata,
+	 	_decil_data,
+	 	_total_data_decil,
+	 	_decil_group_data;
+
+	// var _toastr = toastr;
+
+	var _fathers = [], _sons = [], _totals = [];
+
+	var _reino_campos = {
+	    "reino": "reinovalido",
+	    "kingdom": "reinovalido",
+	    "phylum": "phylumdivisionvalido", 
+	    "clase": "clasevalida", 
+	    "class": "clasevalida",
+	    "orden": "ordenvalido",
+	    "order": "ordenvalido", 
+	    "familia": "familiavalida", 
+	    "family": "familiavalida", 
+	    "genero": "generovalido", 
+	    "género": "generovalido", 
+	    "genus": "generovalido", 
+	    "especie": "especievalidabusqueda",
+	    "species": "especievalidabusqueda"
+	};
+
+	var _tbl_decil = false;
+	var _tbl_eps = false;
+	
+	var _histogram_module_nicho,
+		_table_module_eps;
+
+	var _ID_STYLE_GENERATED;
+
+	var _gridids_collection = [], _total_set_length = 0, 
+		_training_set_size = 0, _test_set_size = 0;
+
+	var _slider_value, _sp_gridids;
+
+	var _nameMap = d3.map([]);
+
+	var _iTrans;
+
+	var _hist_eps_freq, _hist_score_freq, _hist_score_celda;
+
+	var _ids_componentes_var;
+
+	
+	// ids de los labels desplegados, necesarios para cambio de idioma
+	var _id_eps = "chartdiv_epsilon";
+	var _id_charteps = {
+		id 		: 	_id_eps, 
+		legend	: 	"lb_" + _id_eps, 
+		xaxis 	: 	"xaxis_" + _id_eps,
+		yaxis 	: 	"yaxis_" + _id_eps
+	}
+
+	var _id_scr = "chartdiv_score";
+	var _id_chartscr = {
+		id 		: 	_id_scr, 
+		legend	: 	"lb_" + _id_scr, 
+		xaxis 	: 	"xaxis_" + _id_scr,
+		yaxis 	: 	"yaxis_" + _id_scr
+	}
+
+	var _id_scr_celda = "chartdiv_score_celda";
+	var _id_chartscr_celda = {
+		id 		: 	_id_scr_celda, 
+		legend	: 	"lb_" + _id_scr_celda, 
+		xaxis 	: 	"xaxis_" + _id_scr_celda,
+		yaxis 	: 	"yaxis_" + _id_scr_celda
+	}
+	
+	var _id_scr_decil = "chartdiv_score_decil";
+	var _id_chartscr_decil = {
+		id 		: 	_id_scr_decil, 
+		legend	: 	"lb_" + _id_scr_decil, 
+		xaxis 	: 	"xaxis_" + _id_scr_decil,
+		yaxis 	: 	"yaxis_" + _id_scr_decil,
+		recall 	: 	"recall_" + _id_scr_decil,
+		vp_avg 	: 	"vp_" + _id_scr_decil,
+		fn_avg 	: 	"fn_" + _id_scr_decil
+	}
+
+
+	// ************ funciones publicas y privadas ( denotadas por _ ) ************
+
+	// getters y setters necesarios hasta el momento
+
+	function get_cData(){
+		return _cdata;
+	}
+
+	function set_idReg(idreg){
+		_idreg = idreg;
+	}
+	function set_spid(spid){
+		_spid = spid;
+	}
+	function set_subGroups(subgroups){
+		_subgroups = subgroups;
+	}
+	function set_typeBioclim(type_time){
+		_type_time = type_time;
+	}
+	function set_allowedPoints(allowedPoints){
+		_allowedPoints = allowedPoints;
+	}
+	function set_discardedPoints(discardedPoints){
+		_discardedPoints = discardedPoints;
+	}
+	function set_discardedPointsFilter(discardedPointsFilter){
+		_discardedPointsFilter = discardedPointsFilter;
+	}
+
+	function set_discardedCellFilter(computed_discarded_cells){
+		_computed_discarded_cells = computed_discarded_cells;
+	}
+	function set_allowedCells(computed_occ_cells){
+		_computed_occ_cells = computed_occ_cells;
+	}
+
+	function setMapModule(map_module){
+		_map_module_nicho = map_module;
+	}
+	function setHistogramModule(histogram_module){
+		_histogram_module_nicho = histogram_module;
+	}
+	function setTableModule(tableModule){
+		_table_module_eps = tableModule;
+	}
+
+
+	// Enlaza a variables globales los módulos previamente inicializados de lenguaje, mapa, histograma, tabla y validación.
+	function _initilizeElementsForDisplay(map_module, histogram_module, table_module, language_module, ids_comp_variables){
+		
+
+		_VERBOSE ? console.log("_initilizeElementsForDisplay") : _VERBOSE;
+
+		_module_toast = toast_module();
+		_module_toast.startToast();
+
+		_ids_componentes_var = ids_comp_variables;
+
+		_language_module_nicho = language_module;
+		_iTrans = _language_module_nicho.getI18();
+
+		_map_module_nicho = map_module;
+		_histogram_module_nicho = histogram_module;		
+		_table_module_eps = table_module;
+
+		_table_module_eps.setLanguageModule(_language_module_nicho);
+		_histogram_module_nicho.setTableModule(_table_module_eps);
+		_histogram_module_nicho.setLanguageModule(_language_module_nicho);
+
+
+		// si otro proceso de validación es necesario para otro modulo este debe ser instanciado en pede_nicho
+		_validation_module_all = validation_module(_url_trabajo, _VERBOSE);
+		_validation_module_all.startValidationModule();
+		_validation_module_all.set_histogram_module(_histogram_module_nicho);
+
+
+		// _hist_eps_freq = _iTrans.prop('titulo_hist_eps');
+		// _hist_score_freq = _iTrans.prop('titulo_hist_score');
+		// _hist_score_celda = _iTrans.prop('titulo_hist_score_celda');
+
+
+		// _toastr.options = {
+		// 	"debug": false,
+		// 	"positionClass": "toast-bottom-left",
+		// 	"onclick": null,
+		// 	"fadeIn": 300,
+		// 	"fadeOut": 1000,
+		// 	"timeOut": 3000,
+		// 	"extendedTimeOut": 1000
+		// };
+
+
+		$("#send_email_csv").click(function(e){
+
+		  // _VERBOSE ? console.log($("#email_address")) : _VERBOSE;
+		  _VERBOSE ? console.log($("#email_address")[0].validity["valid"]) : _VERBOSE;
+
+		  if($("#email_address")[0].validity["valid"]){
+		    
+		    email = $("#email_address").val();
+		    _VERBOSE ? console.log(email) : _VERBOSE;
+		    
+
+		    _tdata["download"] = true;
+		    _tdata["mail"] = email;
+		    _VERBOSE ? console.log(_tdata) : _VERBOSE;
+
+
+
+		    $.ajax({
+			      url : _url_trabajo,
+			      type : 'post',
+			      data : _tdata,
+			      success : function (d){
+			        
+				        _VERBOSE ? console.log(d) : _VERBOSE;
+				        $('#modalMail').modal('hide');
+				        
+				        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_correo_enviado'), "success");
+
+				        
+
+			      },
+			      error: function( jqXHR ,  textStatus,  errorThrown ){
+			        
+				        _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+				        $('#modalMail').modal('hide');
+
+				        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_correo_error'), "error");
+
+
+			      }
+		    });
+
+
+		  }
+		  else{
+		    alert("Correo invalido")  
+		  }
+
+		});
+
+
+		$("#send_email_shp").click(function(e){
+
+		  // _VERBOSE ? console.log($("#email_address")) : _VERBOSE;
+		  _VERBOSE ? console.log($("#email_address_shp")[0].validity["valid"]) : _VERBOSE;
+
+		  if($("#email_address_shp")[0].validity["valid"]){
+		    
+		    email = $("#email_address_shp").val();
+		    _VERBOSE ? console.log(email) : _VERBOSE;
+		    
+
+		    _sdata["download"] = true;
+		    _sdata["ftype"] = "shp";
+		    _sdata["mail"] = email;
+		    _VERBOSE ? console.log(_sdata) : _VERBOSE;
+
+		    $.ajax({
+		      url : _url_trabajo,
+		      type : 'post',
+		      data : _sdata,
+		      success : function (d){
+		        
+		        _VERBOSE ? console.log(d) : _VERBOSE;
+		        $('#modalMailShape').modal('hide');
+		        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_correo_enviado'), "success");
+
+		        
+
+		      },
+		      error: function( jqXHR ,  textStatus,  errorThrown ){
+		        
+		        _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+		        $('#modalMailShape').modal('hide');
+
+		        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_correo_error'), "error");
+
+		      }
+		    });
+
+
+		  }
+		  else{
+		    alert("Correo invalido")  
+		  }
+
+		});
+		
+	}
+
+	// Método que realiza el llamado a las funciones que despliegan los elementos visuales del sistema de nicho, además ejecuta el proceso de validación si esta activado
+	function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha){
+		
+		_VERBOSE ? console.log("refreshData") : _VERBOSE;
+
+		_slider_value = slider_value;
+		
+		// _cell_set = d3.map([]);
+	 	_discarded_cell_set = d3.map([]);
+	    // _discardedFilter_cell_set = d3.map([]);
+	    
+
+	    _dataChartValSet = [];
+	    _min_occ_process = min_occ_process;
+	    _mapa_prob = mapa_prob;
+
+	    
+	    _rangofechas = rango_fechas;
+	    _chkfecha = chkFecha;
+
+	    // _nameMap = d3.map([]);
+
+	    var discardedGridids = [];
+
+	    // genera la rejilla del mapa hasta que la primera ocnsulta es hecha
+	    // if(_first_time_map){
+	    // 	_map_module_nicho.createMapGrid();
+	    // }
+	    // _first_time_map  = false;
+	    
+
+	    // _VERBOSE ? console.log(_allowedPoints.values().length) : _VERBOSE;
+	    // _allowedPoints.values().forEach(function(item,index){
+	    //   _cell_set.set(item.properties.gridid, item.properties.gridid);
+	    // });
+	    
+	    // _VERBOSE ? console.log(_cell_set.values()) : _VERBOSE;
+
+	    
+	    // _VERBOSE ? console.log(_discardedPoints.values().length) : _VERBOSE;
+	    // obteniendo solo las celdas de los puntos de las especies. NOTA: Estos se puede enviar desde el map_module
+	    _discardedPoints.values().forEach(function(item,index){
+	    	console.log(item.feature.properties.gridid);
+	      	_discarded_cell_set.set(item.feature.properties.gridid, item.feature.properties.gridid);
+	    });
+	    // _discardedPointsFilter.values().forEach(function(item,index){
+	    // 	// console.log(item.feature.properties.gridid);
+	    //   	_discardedFilter_cell_set.set(item.feature.properties.gridid, item.feature.properties.gridid);
+	    // });
+
+	    
+	    _VERBOSE ? console.log(_discarded_cell_set.values()) : _VERBOSE;
+	    _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
+
+	    _VERBOSE ? console.log(_computed_discarded_cells.values()) : _VERBOSE;
+	    _VERBOSE ? console.log(_computed_discarded_cells.values().length) : _VERBOSE;
+	    
+
+	    // _VERBOSE ? console.log(_subgroups.length) : _VERBOSE;
+	    
+	    _REQUESTS = num_items + _subgroups.length;
+	    _ITER_REQUESTS = _REQUESTS;
+
+	    _VERBOSE ? console.log("Peticiones al servidor: " + _REQUESTS) : _VERBOSE;
+
+	    
+
+	    if(val_process){
+
+	    	_module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'),"warning");
+	    	// _cleanPanel();
+
+
+	        $.ajax({
+	            // url : _url_trabajo,
+	            url : _url_zacatuche + "/niche/especie",
+	            type : 'post',
+	            data : {
+	              qtype: 'getCountGridid',
+	              spids: [_spid],
+	              nicho: true
+	            },
+	            dataType : "json",
+	            success : function (resp){
+
+	                // json = JSON.parse(json_file);
+	                json_file = resp.data;
+
+	                console.log(json_file);
+	                
+	                // gridids donde esta la especie objetivo
+	                _sp_gridids = json_file.map(function(d){ return {gridid:d.gridid, spids:d.spids} });
+	                _VERBOSE ? console.log(_sp_gridids) : _VERBOSE;
+
+	                _confDataRequest(_spid, _idreg);
+	                _iterateValidationProcess();
+
+	                
+	            },
+	            error: function( jqXHR ,  textStatus,  errorThrown ){
+	                
+	                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+	              
+	            }
+	        });
+        
+
+	    }
+	    else{
+			
+			// _cleanPanel();
+
+	    	discardedGridids = [];
+	        _confDataRequest(_spid, _idreg);
+	        _panelGeneration(discardedGridids);
+
+	        
+	        // toastr.info('Generando tabla e histogramas');
+	        /* tabla epsilon y score por especie */
+	        _createTableEpSc(_tdata);
+	        
+	        // /* Generación de grid y administración de estilos */
+	        _configureStyleMap(_sdata);
+
+	        // /* graficas epsilon y score por especie */
+	        _createHistEpScr_Especie(_ddata);
+	        
+	        // /* grafica score por celda */
+	        _createHistScore_Celda(_cdata);
+
+	        // _adjustComponents();
+
+	    }
+
+	}
+
+
+	function _cleanPanel(){
+
+		$("#"+_id_charteps.id).empty();
+		$("#"+_id_chartscr.id).empty();
+		$("#"+_id_chartscr_celda.id).empty();
+
+		if(_tbl_decil != false){
+		    $('#example').dataTable().fnClearTable();
+		    // $('#example').dataTable().fnAddData(data_list);
+		}
+
+		if (_tbl_eps != false){
+
+			_VERBOSE ? console.log("clean table") : _VERBOSE;
+			$('#tdisplay').dataTable().fnClearTable();
+			// $('#tdisplay').dataTable().fnDestroy();
+			// $('#tdisplay_tbody').empty();
+		}		  
+
+
+	}
+
+	// Inicializa los parámetros principales para realizar las peticiones al servidor de los distintos cálculos.
+	function _confDataRequest(spid, idreg){
+
+	    _VERBOSE ? console.log("_confDataRequest") : _VERBOSE;
+
+	    var milliseconds = new Date().getTime();
+	    var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
+	    var mapap = _mapa_prob ? "mapa_prob" : undefined;
+	    var min_occ = _min_occ_process ? parseInt($("#occ_number").val()) : undefined;
+	    var existeFiltro = (_discarded_cell_set.values().length > 0 || _computed_discarded_cells.values().length > 0) ? 1 : undefined;
+
+	    // console.log(_rangofechas);
+	    
+	    var lin_inf = _rangofechas ? _rangofechas[0] : undefined;
+		var lin_sup = _rangofechas ? _rangofechas[1]: undefined;
+		var sin_fecha = $("#chkFecha").is(':checked') ? true : false;
+
+		var existsDiscardedFilter = false;
+		if(lin_inf != undefined || lin_sup != undefined || !sin_fecha)
+			existsDiscardedFilter = true;
+
+		// _VERBOSE ? console.log("lin_inf: " + lin_inf) : _VERBOSE;
+		// _VERBOSE ? console.log("lin_sup: " + lin_sup) : _VERBOSE;
+		// _VERBOSE ? console.log("sin_fecha: " + lin_sup) : _VERBOSE;
+	    _VERBOSE ? console.log("apriori: " + apriori) : _VERBOSE;
+	    _VERBOSE ? console.log("min_occ: " + min_occ) : _VERBOSE;
+	    _VERBOSE ? console.log("existeFiltro: " + existeFiltro) : _VERBOSE;
+
+
+	    _ddata = {
+	      'qtype' : 'getFreq',
+	      "id"    : spid,
+	      "idreg" : idreg.toString(),
+	      "ep_th": 0.0,
+      	  "idtime": milliseconds,
+      	  "apriori": apriori,
+      	  "min_occ": min_occ,
+      	  // "filterpoints": existeFiltro,
+      	  "mapa_prob": mapap,
+      	  "lim_inf": lin_inf,
+      	  "lim_sup": lin_sup,
+      	  "sfecha": sin_fecha,
+      	  "discardedDateFilterids": existsDiscardedFilter
+	      // "discardedids": discardedGridids
+	    };
+
+	    _cdata = {
+	      'qtype' : 'getFreqScoreCelda',
+	      "id"    : spid,
+	      "idreg" : idreg.toString(),
+      	  "idtime": milliseconds,
+      	  "apriori": apriori,
+      	  "min_occ": min_occ,
+      	  // "filterpoints": existeFiltro,
+      	  "mapa_prob": mapap,
+      	  "lim_inf": lin_inf,
+      	  "lim_sup": lin_sup,
+      	  "sfecha": sin_fecha,
+      	  "discardedDateFilterids": existsDiscardedFilter
+	      // "discardedids": discardedGridids
+	    };
+
+	    _decil_data = {
+	      'qtype' : 'getScoreCeldaDecil',
+	      "id"    : spid,
+	      "idreg" : idreg.toString(),
+      	  "idtime": milliseconds,
+      	  "apriori": apriori,
+      	  "min_occ": min_occ,
+      	  // "filterpoints": existeFiltro,
+      	  "mapa_prob": mapap,
+      	  "lim_inf": lin_inf,
+      	  "lim_sup": lin_sup,
+      	  "sfecha": sin_fecha,
+      	  "discardedDateFilterids": existsDiscardedFilter
+	      // "discardedids": discardedGridids
+	    };
+
+	    _decil_group_data = {
+	      'qtype' : 'getScoreCeldaDecil',
+	      "id"    : spid,
+	      "idreg" : idreg.toString(),
+      	  "idtime": milliseconds,
+      	  "apriori": apriori,
+      	  "min_occ": min_occ,
+      	  // "filterpoints": existeFiltro,
+      	  "mapa_prob": mapap,
+      	  "lim_inf": lin_inf,
+      	  "lim_sup": lin_sup,
+      	  "sfecha": sin_fecha,
+      	  "discardedDateFilterids": existsDiscardedFilter
+	      // "discardedids": discardedGridids
+	    };
+
+	    _total_data_decil = {
+	      'qtype' : 'getScoreCeldaDecil',
+	      "id"    : spid,
+	      "idreg" : idreg.toString(),
+      	  "idtime": milliseconds,
+      	  "apriori": apriori,
+      	  "min_occ": min_occ,
+      	  // "filterpoints": existeFiltro,
+      	  "mapa_prob": mapap,
+      	  "lim_inf": lin_inf,
+      	  "lim_sup": lin_sup,
+      	  "sfecha": sin_fecha,
+      	  "discardedDateFilterids": existsDiscardedFilter
+	      // "discardedids": discardedGridids
+	    };
+
+	    _sdata = {
+	      'qtype' : 'getMapScoreCeldaDecil',
+	      "id"    : spid,
+	      "idreg" : idreg.toString(),
+      	  "idtime": milliseconds,
+      	  "apriori": apriori,
+      	  "min_occ": min_occ,
+      	  // "filterpoints": existeFiltro,
+      	  "mapa_prob": mapap,
+      	  "lim_inf": lin_inf,
+      	  "lim_sup": lin_sup,
+      	  "sfecha": sin_fecha,
+      	  "discardedDateFilterids": existsDiscardedFilter
+
+	      // "discardedids": discardedGridids
+	    };
+
+	    _tdata = {
+	      'qtype' : 'getGeoRel',
+	      "id"    : spid,
+	      "idreg" : idreg.toString(),
+      	  "idtime": milliseconds,
+      	  "apriori": apriori,
+      	  "min_occ": min_occ,
+      	  // "filterpoints": existeFiltro,
+      	  "mapa_prob": mapap,
+      	  "lim_inf": lin_inf,
+      	  "lim_sup": lin_sup,
+      	  "sfecha": sin_fecha,
+      	  "discardedDateFilterids": existsDiscardedFilter
+	      
+	    };
+
+	}
+
+	// Añade los filtros de las variables seleccionadas a los conjuntos de parámetros que son enviados al servidor. Además realiza las peticiones de forma seccionada para el cálculo de valores por decil.
+	function _panelGeneration(discardedGridids){
+
+	    _VERBOSE ? console.log("_panelGeneration") : _VERBOSE;
+
+	    
+	    // _discarded_cell_set: eliminados por selección de puntos. _discardedFilter_cell_set: eliminados por filtros
+	    // Verificar que no existan repetidos
+	    // _VERBOSE ? console.log(_computed_discarded_cells.values().length) : _VERBOSE;
+	    _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
+
+
+
+	    
+	    // $.each(_discarded_cell_set.keys(), function(index, value){
+	    	
+	    // 	if(!_computed_discarded_cells.has(value)){
+	    // 		_computed_discarded_cells.set(value, value);
+	    // 	}
+
+	    // });
+
+	    // _VERBOSE ? console.log(_computed_discarded_cells.values().length) : _VERBOSE;
+
+
+	   	// descarta repetidos de eliminados por selección o filtros con los eliminados por proceso de validación.
+	    _VERBOSE ? console.log(discardedGridids) : _VERBOSE;
+	    
+	    // $.each(_computed_discarded_cells.values(), function(index, value){
+	    // 	if($.inArray(value, discardedGridids) == -1){
+	    // 		discardedGridids.push(value);
+	    // 	}
+	    // });
+
+	    // _VERBOSE ? console.log(discardedGridids.length) : _VERBOSE;
+	    // _VERBOSE ? console.log(_computed_discarded_cells.values().length) : _VERBOSE;
+
+	    
+	    // when there is validation process, the erased elements by selection are aggregated.
+	    _tdata['discardedids'] = discardedGridids.toString();
+	    _tdata['discardedFilterids'] = _discarded_cell_set.values();
+
+	    _sdata['discardedids'] = _discarded_cell_set.values(); 
+	    _sdata['discardedFilterids'] = _discarded_cell_set.values(); 
+
+	    _ddata['discardedids'] = discardedGridids.toString();
+	    _ddata['discardedFilterids'] = _discarded_cell_set.values();
+
+	    _cdata['discardedids'] = discardedGridids.toString();
+	    _cdata['discardedFilterids'] = _discarded_cell_set.values();
+
+	    _total_data_decil['discardedids'] = discardedGridids.toString();
+	    _total_data_decil['discardedFilterids'] = _discarded_cell_set.values();
+
+	    _decil_group_data['discardedids'] = discardedGridids.toString();
+	    _decil_group_data['discardedFilterids'] = _discarded_cell_set.values();
+
+	    _decil_data['discardedids'] = discardedGridids.toString();
+	    _decil_data['discardedFilterids'] = _discarded_cell_set.values();
+
+
+	   
+	    // _VERBOSE ? console.log(tdata) : _VERBOSE;
+	    
+	    filters = [];
+	    _fathers = [];
+	    _sons = [];
+	    _totals = [];
+
+	    var hasBios = false;
+		var hasRaster = false;
+
+	    
+	    // El atributo esta en variable_module, verificar como puede hacerce de forma generica cuando existe mas de un componente que selecicoan varables
+	    var active_time = undefined;
+	    if(_type_time == 1){
+	    	_VERBOSE ? console.log("2050 activado") : _VERBOSE;
+	      	active_time = true;
+	    }
+
+	    // it shows the panel with table and barcharts
+	    document.getElementById("tbl_hist").style.display = "inline";
+	    // document.getElementById("tbl_hist").style.visibility = "visible";
+
+	    // _VERBOSE ? console.log(_subgroups) : _VERBOSE;
+
+	    var hasTotal = false;
+	    if(_subgroups.length > 1){
+	        hasTotal = true;
+	    }
+
+	    
+	    _subgroups.forEach(function(grupo){
+	        
+	        filterby_group = [];
+	        _VERBOSE ? console.log(grupo) : _VERBOSE;
+	        
+	        var hasChildren = false;
+	        if(grupo.value.length > 1){
+	            hasChildren = true;
+	        }
+
+	        
+	        grupo.value.forEach(function(item){
+
+	            // if item is tyoe 1 is a json and if 0 is a string
+	            itemGroup = item;
+	            single_filter = [];
+	            _VERBOSE ? console.log(itemGroup) : _VERBOSE;
+	            
+	            // bioticos
+	            if(grupo.type == 0){
+
+	                temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
+	                temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
+	                temp_field = "";
+
+	                // _VERBOSE ? console.log(reino_campos[temp_item_field]) : _VERBOSE;
+	                // _VERBOSE ? console.log(temp_item_field) : _VERBOSE;
+	                // _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
+
+	                filters.push({
+	                    'field' : _reino_campos[temp_item_field],
+	                    'value' : temp_item_value,
+	                    'type'  : itemGroup.type
+	                    // 'level' : parseInt(itemGroup.level)
+	                });
+
+	                filterby_group.push({
+	                    'field' : _reino_campos[temp_item_field],
+	                    'value' : temp_item_value,
+	                    'type'  : itemGroup.type,
+	                    'group_item': grupo.groupid
+	                    // 'level' : parseInt(itemGroup.level)
+	                });
+
+	                single_filter.push({
+	                    'field' : _reino_campos[temp_item_field],
+	                    'value' : temp_item_value,
+	                    'type'  : itemGroup.type,
+	                    'group_item': grupo.groupid
+	                    // 'level' : parseInt(itemGroup.level)
+	                });
+
+	            }
+	            // raster: bioclim, topo, elevacion y pendiente
+	            else{
+	                // if the type is equal to 1 the item contains the parameter level
+	                temp_item_value = itemGroup.label.split(">>")[1].trim();
+	                // _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
+
+	                filters.push({
+	                    'value' : itemGroup.value,
+	                    'type'  : itemGroup.type,
+	                    'level' : parseInt(itemGroup.level),
+	                    'label' : temp_item_value
+	                });
+
+	                filterby_group.push({
+	                    'value' : itemGroup.value,
+	                    'type'  : itemGroup.type,
+	                    'level' : parseInt(itemGroup.level),
+	                    'group_item': grupo.groupid,
+	                    'label' : temp_item_value
+	                });
+
+	                single_filter.push({
+	                    'value' : itemGroup.value,
+	                    'type'  : itemGroup.type,
+	                    'level' : parseInt(itemGroup.level),
+	                    'group_item': grupo.groupid,
+	                    'label' : temp_item_value
+	                });
+
+	            }
+
+	            /* Adición de parametros para envio a servidor zacatuche ********/
+	            hasBios = false;
+				hasRaster = false;
+
+	            for (var i = 0; i < single_filter.length; i++){
+					if(single_filter[i].type == 4){
+						hasBios = true;
+					}
+					else{
+						hasRaster = true;
+					}
+				}
+				_decil_data['hasBios'] 		= hasBios;
+  				_decil_data['hasRaster'] 	= hasRaster;
+
+	            _decil_data['tfilters'] = single_filter;
+	            _decil_data['tdelta'] = active_time;
+	            
+	            // elimina una segunda petición cuando el grupo de variables solo contiene un elemento
+	            if(hasChildren){
+	                _createScore_Decil(_decil_data, discardedGridids, false, false);
+	            }
+	                
+
+	        });
+
+	        /* Adición de parametros para envio a servidor zacatuche ********/
+	        hasBios 	= false;
+			hasRaster 	= false;
+
+	        for (var i = 0; i < filterby_group.length; i++){
+				if(filterby_group[i].type == 4){
+					hasBios = true;
+				}
+				else{
+					hasRaster = true;
+				}
+			}
+			_decil_group_data['hasBios'] 	= hasBios;
+			_decil_group_data['hasRaster'] 	= hasRaster;
+
+	        
+	        _decil_group_data['tfilters'] = filterby_group;
+	        _decil_group_data['groupid'] = grupo.groupid;
+	        _decil_group_data['tdelta'] = active_time;
+	        
+	        _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
+
+	        _createScore_Decil(_decil_group_data, discardedGridids, hasChildren, false);
+
+	    });
+
+
+	    if (filters.length != 0){
+		      _tdata['tfilters'] = filters;
+		      _sdata['tfilters'] = filters;
+		      _ddata['tfilters'] = filters;
+		      _cdata['tfilters'] = filters;
+		      _total_data_decil['tfilters'] = filters;
+	    }
+
+
+	     /* Adición de parametros para envio a servidor zacatuche ********/
+	    hasBios = false;
+		hasRaster = false;
+	    
+	  	for (var i = 0; i < filters.length; i++){
+			if(filters[i].type == 4){
+				hasBios = true;
+			}
+			else{
+				hasRaster = true;
+			}
+		}
+
+		console.log(hasBios);
+		console.log(hasRaster);
+		// console.log(_tdata.discardedids);
+		// console.log(_tdata.discardedFilterids);		  
+
+  		_tdata["hasBios"] 	= hasBios;
+  		_tdata["hasRaster"] = hasRaster;
+
+  		_sdata['hasBios'] 	= hasBios;
+  		_sdata['hasRaster'] = hasRaster;
+
+  		_cdata['hasBios'] 	= hasBios;
+  		_cdata['hasRaster'] = hasRaster;
+
+  		_ddata['hasBios'] 	= hasBios;
+  		_ddata['hasRaster'] = hasRaster;
+
+  		_total_data_decil['hasBios'] 	= hasBios;
+  		_total_data_decil['hasRaster'] 	= hasRaster;
+
+
+	    // _VERBOSE ? console.log("time_selected: " + time_selected) : _VERBOSE;
+	    _tdata['tdelta'] = active_time;
+	    _sdata['tdelta'] = active_time;
+	    _ddata['tdelta'] = active_time;
+	    _cdata['tdelta'] = active_time;
+	    _total_data_decil['tdelta'] = active_time;
+
+
+	    if(hasTotal){
+	        _createScore_Decil(_total_data_decil, discardedGridids, false, hasTotal);  
+	    }
+	    
+
+	}
+
+	// Método que realiza la petición al servidor para obtener el cálculo de score por decil y generar el histograma de score decil por medio del modulo histograma
+	function _createScore_Decil(decildata, test_set, hasChildren, isTotal){
+
+		  _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
+		  
+		  try{
+		  	$("#"+_id_chartscr_decil.id).empty();	
+		  }
+		  catch(e){
+		  	_VERBOSE ? console.log(e) : _VERBOSE;
+		  	_VERBOSE ? console.log("primera vez") : _VERBOSE;
+		  }
+		  
+		  _VERBOSE ? console.log(_tbl_decil) : _VERBOSE;
+
+		  // NOTA: Esta generando error *** cuando se genera validacion desde el inicio ej: lynx vs romerolagus
+		  // if(_tbl_decil != false){
+		    // $('#example').dataTable().fnClearTable();
+		    // $('#example').dataTable().fnDestroy();
+		    // $('#example').empty();
+		  // }
+
+		  // _ITER = 5;
+		  // _iterateValidationProcess();
+		  // return;
+
+		  console.log(decildata);
+
+
+
+		  $.ajax({
+
+		      type : "post",
+		      // url : _url_trabajo,
+		      url : _url_zacatuche + "/niche/getScoreDecil",
+		      data : decildata,
+		      dataType : "json",
+		      success : function (resp, status){
+
+
+		          console.log(resp.data);
+
+		      	  data = resp.data;
+		      	  // data = resp;
+		          
+		          _VERBOSE ? console.log(data) : _VERBOSE;
+
+
+		          _tbl_decil = true;
+
+		          _ITER_REQUESTS = _ITER_REQUESTS - 1;
+		          
+		          if(data[0].title.is_parent){
+		            // _VERBOSE ? console.log("fathers") : _VERBOSE
+
+		              if(hasChildren){
+		                  _fathers.push({item:data});  
+		              }
+		              else{
+		                  // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
+		                  _fathers.push({item:data});
+		                  _sons.push({item:data});  
+		              }
+
+		          }
+		          else{
+		              // _VERBOSE ? console.log("sons") : _VERBOSE
+		              _sons.push({item:data});
+
+		          }
+
+
+		          if(isTotal)
+		            	_totals.push({item:data});
+
+
+		          // the information is joined when all the requests are saved
+		          if (_ITER_REQUESTS == 0){
+
+
+		              _ITER_REQUESTS = _REQUESTS;
+		              
+		              // _VERBOSE ? console.log(_fathers) : _VERBOSE;
+		              // _VERBOSE ? console.log(_sons) : _VERBOSE;
+		              // _VERBOSE ? console.log(_totals) : _VERBOSE;
+		              
+		              data_chart = _createSetStructure(_fathers, _sons);
+		              
+		              // añade totales cuando es mas de un grupo sea biotico  o abiotico.
+		              if(_totals.length > 0){
+		                _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
+		                
+		                // ya no contiene valores del segundo grupo de variables...
+		                data_chart = _addDataChartTotal(data_chart, _totals[0].item);
+		              }
+		              
+		              _VERBOSE ? console.log(data_chart) : _VERBOSE;
+
+		              if($("#chkValidation").is(':checked')){
+
+		                  _VERBOSE ? console.log("data_chart added") : _VERBOSE;
+
+		                  _dataChartValSet.push({"data_chart":data_chart, "test_set": test_set});
+
+		                  _ITER++;
+
+
+		                  _module_toast.showToast_BottomCenter(_iTrans.prop('lb_iteracion',_ITER,_NUM_ITERATIONS),"info");
+		                  // _toastr.info(_iTrans.prop('lb_iteracion',_ITER,_NUM_ITERATIONS));
+
+		              	  _iterateValidationProcess(_panelGeneration, _ITER, _NUM_ITERATIONS);
+
+		              }
+		              else{
+		                // the array of recall results are empty when the checkbox is unchecked
+					  	
+		                _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
+						// _createMultipleBarChart(data_chart, [], "chartdiv_score_decil");
+
+						_module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'),"success");
+		                // _toastr.success(_iTrans.prop('lb_resultados_display'));
+
+		              }
+
+
+		              
+		          }
+
+		      },
+
+		      error: function( jqXHR ,  textStatus,  errorThrown ){
+		        _VERBOSE ? console.log("error createScore_Decil: " + textStatus) : _VERBOSE;
+		        mensaje = "";
+		        mensaje = $("#chkValidation").is(':checked') ? _iTrans.prop('lb_error_proceso_val') : _iTrans.prop('lb_error_histograma') ;
+
+		        _module_toast.showToast_BottomCenter(mensaje,"error");
+		        // _toastr.error(mensaje);
+
+		        _ITER = 0;
+		        _gridids_collection = [];
+		        _total_set_length = 0;
+		        _training_set_size = 0;
+		        _test_set_size = 0;
+		      }
+
+		    });
+
+
+	}
+
+	// Envía el conjunto de parámetros al módulo de tabla para realizar la petición al servidor que genera la tabla general de resultados de épsilon y score en el sistema de nicho.
+	function _createTableEpSc(tdata){
+
+		_VERBOSE ? console.log("_createTableEpSc") : _VERBOSE;
+
+  		$.ajax({
+		      url : _url_zacatuche + "/niche/getGeoRel",
+		      // url : _url_zacatuche + "/getGeoRel",
+		      type : 'post',
+		      dataType : "json",
+		      data : tdata,
+		   //    beforeSend: function(xhr){ 
+			  //     xhr.setRequestHeader('X-Test-Header', 'test-value');
+			  //     xhr.setRequestHeader("Accept","text/json");
+			  // },
+		      success : function (json_file){
+
+		      	console.log(json_file);
+
+		      	var data_list = [];
+		      	
+		      	json_file.data.forEach(function(d){
+				    item_list = [];
+				    // item_list.push(d.generovalido)
+				    item_list.push(d.especievalidabusqueda)
+				    item_list.push(d.nij)
+				    item_list.push(d.nj)
+				    item_list.push(d.ni)
+				    item_list.push(d.n)
+				    item_list.push(d.epsilon)
+				    item_list.push(d.score)
+				    item_list.push(d.reinovalido)
+				    item_list.push(d.phylumdivisionvalido)
+				    item_list.push(d.clasevalida)
+				    item_list.push(d.ordenvalido)
+				    item_list.push(d.familiavalida)
+
+				    data_list.push(item_list)
+				});
+
+				var json_arg = {data: data_list}
+
+		        _table_module_eps.createEspList(json_arg);
+
+		        _tbl_eps = true;
+
+		      },
+		      error: function( jqXHR,  textStatus,  errorThrown ){
+
+		      	console.log(errorThrown);
+		      	console.log(jqXHR);
+		        
+		        _VERBOSE ? console.log("error _createTableEpSc: " + textStatus) : _VERBOSE;
+		        _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
+		        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_tblsp'),"error");
+		        
+		      }
+
+		});		
+
+	
+
+	}
+
+	// Método que realiza la petición para obtener el valor de score por celda para ser desplegada la coloración de la malla a través del módulo mapa.
+	function _configureStyleMap(sdata){
+
+	  _VERBOSE ? console.log("_configureStyleMap") : _VERBOSE;
+	  
+	  
+	  _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'),"info");
+	  // _toastr.info(_iTrans.prop('lb_inica_mapa'));
+	  // document.getElementById("dShape").style.display = "none";
+
+
+	  $.ajax({
+	      // url : url_trabajo,
+	      url: _url_zacatuche + "/niche/getFreqMap",
+	      type : 'post',
+	      data : sdata,
+	      // dataType : "json",
+	      success : function (json_file){
+
+
+	      	// DESCOMENTAR PARA PROCESAR RESPUESTA CON NUEVO SERVIDOR
+	      	json = json_file.data;
+
+
+	      	// json = JSON.parse(json_file);
+	      	// console.log(json_file);
+	      	// console.log(json);
+
+	        
+	        // _VERBOSE ? console.log(json) : _VERBOSE;
+	        // _VERBOSE ? console.log(_mapa_prob) : _VERBOSE;
+
+	        grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
+
+	        // _VERBOSE ? console.log(grid_map_color.values().length) : _VERBOSE;
+
+
+	        _map_module_nicho.colorizeFeatures(grid_map_color, false);
+
+
+
+
+	        // g = d3.select("#grid_map");
+	        // // _VERBOSE ? console.log(g) : _VERBOSE;
+
+         //    feature = g.selectAll("path");
+            
+         //    feature.each(function(d,i){
+
+         //    	d3.select(this).style("stroke", "none");
+         //    	// d3.select(this).style("stroke-width", "none");
+
+         //    	if(grid_map_color.has(d.properties.gridid)){
+         //    		d3.select(this).style("fill", grid_map_color.get(d.properties.gridid));
+         //    	}
+         //    	else{
+         //    		d3.select(this).style("fill", "none");
+         //    	}
+
+         //    })
+
+            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'),"success");
+            document.getElementById("dShape").style.display = "inline";
+            
+            // NO ESTA FUNCIONANDO
+            // document.getElementById("dShape").style.visibility = "visible";
+
+            
+
+            // _toastr.success( _iTrans.prop('lb_carga_mapa') );
+
+	      },
+	      error: function( jqXHR ,  textStatus,  errorThrown ){
+	        _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
+	        
+	        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_mapa'),"error");
+	        // _toastr.error(_iTrans.prop('lb_error_mapa'));
+	        document.getElementById("dShape").style.display = "none";
+	        // document.getElementById("dShape").style.visibility = "hidden";
+
+	        _map_module_nicho.deleteStyle(_ID_STYLE_GENERATED);
+	      }
+
+
+	  });
+
+	}
+
+	// Método que realiza la petición al servidor para obtener el valor de épsilon y score por especie y desplegar los histogramas de epsion especie y score especie por medio del módulo de histograma.
+	function _createHistEpScr_Especie(ddata){
+
+		  _VERBOSE ? console.log("_createHistEpScr_Especie") : _VERBOSE;
+
+		  try{
+		  	$("#"+_id_charteps.id).empty();
+		  	$("#"+_id_chartscr.id).empty();	
+		  }
+		  catch(e){
+		  	_VERBOSE ? console.log("primera vez") : _VERBOSE;
+		  }
+
+
+
+
+		  $.ajax({
+
+		  	  // url : _url_trabajo,
+		  	  url : _url_zacatuche + "/niche/getFreq",
+		      type : "post",
+		      data : ddata,
+		      dataType : "json",
+		      success : function (res, status){
+
+		      	// DESCOMENTAR PARA PROCESAR RESPUESTA CON NUEVO SERVIDOR
+		      	// console.log(res.data);
+		      	var data = res.data;
+
+		      	// console.log(res);
+		      	// var data = res; //JSON.parse(res);
+
+
+		        var data2_epsilon = [];
+		        var data2_score = [];
+		        var totcount_epsilon = 0;
+		        var totcount_score = 0;
+
+		        item = data;
+
+		        for (j = 0; j < item.length; j++){
+		          totcount_epsilon = totcount_epsilon + parseInt(item[j].freq_epsilon);
+		          totcount_score = totcount_score + parseInt(item[j].freq_score);
+		        }
+
+		        for (j = 0; j < item.length; j++){
+
+		          elemento_epsilon = {
+		              // bcenter : ((data[j].max_epsilon + data[j].min_epsilon) / 2).toFixed(2),
+		              bcenter : parseFloat((parseFloat(item[j].min_epsilon) + parseFloat(item[j].max_epsilon)) / 2).toFixed(2), 
+		              frequency : parseFloat( parseInt(item[j].freq_epsilon) / totcount_epsilon ).toFixed(2),
+		              title : item[j].min_epsilon + " : " + item[j].max_epsilon
+		            };
+
+		          elemento_score = {
+		              // bcenter : ((data[j].max_score + data[j].min_score) / 2).toFixed(2),
+		              bcenter : parseFloat((parseFloat(item[j].min_score) + parseFloat(item[j].max_score)) / 2).toFixed(2), 
+		              frequency : parseFloat( parseInt(item[j].freq_score) / totcount_score).toFixed(2),
+		              title : item[j].min_score + " : " + item[j].max_score
+		            };
+
+		          data2_epsilon.push(elemento_epsilon);
+		          data2_score.push(elemento_score);
+
+		        }
+
+		        _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
+		        _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
+
+
+
+
+
+		      }
+
+		  });
+
+	}
+
+	// Método que actualiza los labels del sistema cuando el cambio de lenguaje es requerido.
+	function updateLabels(){
+
+		_VERBOSE ? console.log("updateLabels") : _VERBOSE;
+
+		_ids_componentes_var.forEach(function(item,index){
+
+			$("#btn_variable_" + item).text($.i18n.prop('btn_variable') + " ");
+			$("#btn_variable_" + item).append('<span class="caret"></span>');
+
+			$("#btn_variable_bioclim_" + item).text($.i18n.prop('btn_variable_bioclim') + " ");
+			$("#btn_variable_bioclim_" + item).append('<span class="caret"></span>');
+
+			$("#btn_topo_" + item).text($.i18n.prop('btn_topo') + " ");
+			$("#btn_topo_" + item).append('<span class="caret"></span>');
+
+			$("#a_taxon_" + item).text($.i18n.prop('a_taxon'));
+			$("#a_clima_" + item).text($.i18n.prop('a_clima'));
+			$("#a_topo_" + item).text($.i18n.prop('a_topo'));
+
+			$("#btn_variable_bioclim_time_" + item).text($.i18n.prop('btn_variable_bioclim_time') + " ");
+			$("#btn_variable_bioclim_time_" + item).append('<span class="caret"></span>');
+
+
+			$("#a_item_reino_" + item).text($.i18n.prop('a_item_reino'));
+			$("#a_item_phylum_" + item).text($.i18n.prop('a_item_phylum'));
+			$("#a_item_clase_" + item).text($.i18n.prop('a_item_clase'));
+			$("#a_item_orden_" + item).text($.i18n.prop('a_item_orden'));
+			$("#a_item_familia_" + item).text($.i18n.prop('a_item_familia'));
+			$("#a_item_genero_" + item).text($.i18n.prop('a_item_genero'));
+
+
+			$("#a_item_bio00_" + item).text($.i18n.prop('a_item_bio00'));
+			$("#a_item_bio01_" + item).text($.i18n.prop('a_item_bio01'));
+			$("#a_item_bio02_" + item).text($.i18n.prop('a_item_bio02'));
+			$("#a_item_bio03_" + item).text($.i18n.prop('a_item_bio03'));
+			$("#a_item_bio04_" + item).text($.i18n.prop('a_item_bio04'));
+			$("#a_item_bio05_" + item).text($.i18n.prop('a_item_bio05'));
+			$("#a_item_bio06_" + item).text($.i18n.prop('a_item_bio06'));
+			$("#a_item_bio07_" + item).text($.i18n.prop('a_item_bio07'));
+			$("#a_item_bio08_" + item).text($.i18n.prop('a_item_bio08'));
+			$("#a_item_bio09_" + item).text($.i18n.prop('a_item_bio09'));
+			$("#a_item_bio10_" + item).text($.i18n.prop('a_item_bio10'));
+			$("#a_item_bio11_" + item).text($.i18n.prop('a_item_bio11'));
+			$("#a_item_bio12_" + item).text($.i18n.prop('a_item_bio12'));
+			$("#a_item_bio13_" + item).text($.i18n.prop('a_item_bio13'));
+			$("#a_item_bio14_" + item).text($.i18n.prop('a_item_bio14'));
+			$("#a_item_bio15_" + item).text($.i18n.prop('a_item_bio15'));
+			$("#a_item_bio16_" + item).text($.i18n.prop('a_item_bio16'));
+			$("#a_item_bio17_" + item).text($.i18n.prop('a_item_bio17'));
+			$("#a_item_bio18_" + item).text($.i18n.prop('a_item_bio18'));
+			$("#a_item_bio19_" + item).text($.i18n.prop('a_item_bio19'));
+
+
+			$("#lb_des_modal_csv").text($.i18n.prop('lb_des_modal_csv'));		
+			$("#email_address").attr("placeholder", $.i18n.prop('email_address'));
+
+		});
+
+
+		// actualiza los titulos de los histogramas
+		$("#"+_id_charteps.legend).text($.i18n.prop('titulo_hist_eps')); 
+		$("#"+_id_charteps.yaxis).text($.i18n.prop('lb_frecuencia')); 
+
+		$("#"+_id_chartscr.legend).text($.i18n.prop('titulo_hist_score')); 
+		$("#"+_id_chartscr.yaxis).text($.i18n.prop('lb_frecuencia')); 
+
+		$("#"+_id_chartscr_celda.legend).text($.i18n.prop('titulo_hist_score_celda')); 
+		$("#"+_id_chartscr_celda.yaxis).text($.i18n.prop('lb_frecuencia')); 
+
+		$("#"+_id_chartscr_decil.legend).text($.i18n.prop('titulo_hist_score_decil')); 
+		$("#"+_id_chartscr_decil.xaxis).text($.i18n.prop('lb_xaxis_decil')); 
+		$("#"+_id_chartscr_decil.yaxis).text($.i18n.prop('tip_tbl_score')); 
+
+
+		// actualiza los titulos de las tablas
+		$('#example tr:eq(0) th:eq(0)').text($.i18n.prop('lb_decil'));
+		$('#example tr:eq(0) th:eq(1)').text($.i18n.prop('lb_especie_tbl'));
+		$('#example tr:eq(0) th:eq(2)').text($.i18n.prop('lb_epsilon'));
+		$('#example tr:eq(0) th:eq(3)').text($.i18n.prop('tip_tbl_score'));
+		$('#example tr:eq(0) th:eq(4)').text($.i18n.prop('lb_procentaje_occ'));
+
+
+		$('#tdisplay tr:eq(0) th:eq(0)').text($.i18n.prop('lb_genero_tbl'));
+		$('#tdisplay tr:eq(0) th:eq(1)').text($.i18n.prop('lb_especie_tbl'));
+		// $('#tdisplay tr:eq(0) th:eq(2)').text($.i18n.prop('lb_raster'));
+		// $('#tdisplay tr:eq(0) th:eq(3)').text($.i18n.prop('lb_rango'));
+		$('#tdisplay tr:eq(0) th:eq(2)').text($.i18n.prop('lb_nij'));
+		$('#tdisplay tr:eq(0) th:eq(3)').text($.i18n.prop('lb_nj'));
+		$('#tdisplay tr:eq(0) th:eq(4)').text($.i18n.prop('lb_ni'));
+		$('#tdisplay tr:eq(0) th:eq(5)').text($.i18n.prop('lb_n'));
+		$('#tdisplay tr:eq(0) th:eq(6)').text($.i18n.prop('lb_epsilon'));
+		$('#tdisplay tr:eq(0) th:eq(7)').text($.i18n.prop('tip_tbl_score'));
+		$('#tdisplay tr:eq(0) th:eq(8)').text($.i18n.prop('a_item_reino'));
+		$('#tdisplay tr:eq(0) th:eq(0)').text($.i18n.prop('a_item_phylum'));
+		$('#tdisplay tr:eq(0) th:eq(10)').text($.i18n.prop('a_item_clase'));
+		$('#tdisplay tr:eq(0) th:eq(11)').text($.i18n.prop('a_item_orden'));
+		$('#tdisplay tr:eq(0) th:eq(12)').text($.i18n.prop('a_item_familia'));
+
+		// $("#csv_request").attr("title", $.i18n.prop('lb_descarga_tbl'));
+		$("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
+
+
+		
+	}
+
+
+	// Método que realiza la petición al servidor para obtener el valor de score por celda y desplegar el hitograma de score celda por medio del módulo histograma. 
+	function _createHistScore_Celda(cdata){
+
+		  _VERBOSE ? console.log("_createHistScore_Celda") : _VERBOSE;
+
+		  try{
+		  	$("#"+_id_chartscr_celda.id).empty();
+		  }
+		  catch(e){
+		  	_VERBOSE ? console.log("primera vez") : _VERBOSE;
+		  }
+
+		  
+
+		  $.ajax({
+
+		      type : "post",
+		      // url : _url_trabajo,
+		      url : _url_zacatuche + "/niche/getFreqCelda",
+		      data : cdata,
+		      dataType : "json",
+		      success : function (resp, status){
+
+		      	// DESCOMENTAR CON LA CONEXION AL NUEVO SERVIDOR
+		      	var data = resp.data;
+
+		      	// console.log(resp);
+		      	// var data = resp;
+
+
+		        var data2_score = [];
+		        var totcount_score = 0;
+		        var Fi = [] 
+
+		        for (j = 0; j < data.length; j++){
+
+		          totcount_score = totcount_score + parseInt(data[j].freq);
+		          Fi[j] = totcount_score;
+
+		        }
+
+		        for (j = 0; j < data.length; j++){
+
+		          elemento_score = {
+		            bcenter : parseFloat((parseFloat(data[j].min) + parseFloat(data[j].max)) / 2).toFixed(2), 
+		            frequency : parseFloat( parseInt(data[j].freq) / totcount_score).toFixed(2),
+		            title : data[j].min + " : " + data[j].max
+		          };
+
+		          // elemento_score = {
+		          //     bcenter : data[j].min + " - " + data[j].max,
+		          //     frequency : parseFloat( parseInt(data[j].freq) / totcount_score ).toFixed(2)
+		          //   };
+
+		          data2_score.push(elemento_score);
+		        }
+
+		        // _VERBOSE ? console.log(data2_score) : _VERBOSE;
+
+		        _histogram_module_nicho.createBarChart(_id_chartscr_celda, data2_score, _iTrans.prop('titulo_hist_score_celda'));
+
+		      }
+
+		    });
+
+	}
+
+	// Realiza la segmentación aleatoria del conjunto de celdas para realizar el proceso de validación. Cuando todas las iteraciones han sido realizadas se envían los resultados para calcular el recall por medio del módulo de validación.	
+	function _iterateValidationProcess(){
+
+	    _VERBOSE ? console.log("_iterateValidationProcess") : _VERBOSE;
+
+	    if(_ITER < _NUM_ITERATIONS){
+
+	        // consulta para obteer los griids de la malla
+	        if(_gridids_collection.length == 0){
+
+	            _VERBOSE ? console.log("Primer petición") : _VERBOSE;
+
+	            $.ajax({
+	              url : _url_zacatuche + "/niche/especie",
+	              // url : _url_trabajo,
+	              type : 'post',
+	              data : {
+	                qtype: 'getGridids'
+	              },
+	              dataType : "json",
+	              success : function (resp){
+
+	              		d = resp.data;
+
+
+	                  	var grid_sp = [];
+	                  	var min_occids = [];
+	                  	var discardedGridids = [];
+
+	                  	_gridids_collection = d.map(function(d){return d.gridid});
+
+	                  	// descarta el numero de celdas que es establecido en el campo de occ_number
+	                  	// if(_min_occ_process){
+	                  	// 	var grid_sp = _sp_gridids.map(function(d){return d.gridid});
+	                  	// 	// console.log(grid_sp);
+		                  // 	var shuffle_gridids = d3.shuffle(grid_sp);
+		                  // 	min_occids = shuffle_gridids.slice(0,parseInt($("#occ_number").val()));
+		                  	
+		                  // 	console.log(min_occids.length);
+
+		                  // 	$.each(min_occids, function(index,spid){
+		                  // 		var index = _gridids_collection.indexOf(spid);
+		                  // 		if (index > -1) {
+		                  // 			_gridids_collection.splice(index, 1);	
+		                  // 		}
+		                  // 	});
+
+		                  // 	// se garantiza que el numero minimo de celdas de la especie ya no seran descartadas
+		                  // 	console.log(_gridids_collection.length);
+		                 
+	                  	// }
+
+
+	                  	// Para combinar el filtro de tiempo y de validacion, primero se aplica el filtro de tiempo y se obtiene conjunto de prueba y entrenamiento
+	                  	// La última iteracion es utilizada para calcular el resto de los elemntos visuales, se tiene que validar desde un inicio
+	                  	var lin_inf = _rangofechas ? _rangofechas[0] : undefined;
+						var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
+	                  	
+	                  	
+	                  	if(!_chkfecha || lin_inf != undefined){
+
+	                  		console.log("Realizar slice a partir de los puntos que no son descartados por filtro de fechas");
+	                  		
+	                  		console.log(_computed_occ_cells);
+	                  		console.log(_computed_discarded_cells);
+	                  		console.log(_gridids_collection);
+
+	                  		var grid_collection_filter = [];
+
+	                  		// de la grid total, se quitan los elementos descartados por filtro de fechas
+	                  		$.each(_gridids_collection, function(index, item){
+
+	                  			if($.inArray(item, _computed_discarded_cells == -1) ){
+	                  				grid_collection_filter.push(item);
+	                  			}
+
+	                  		});
+
+	                  		console.log(grid_collection_filter);
+
+		                  	_total_set_length = grid_collection_filter.length;
+		                  	_training_set_size = Math.floor(_total_set_length * (_slider_value / 100));
+		                  	_test_set_size = _total_set_length - _training_set_size;
+
+	                  	    
+			                var shuffle_array = d3.shuffle(grid_collection_filter);
+			                discardedGridids = shuffle_array.slice(0,_test_set_size);
+			                
+
+	                  	}
+	                  	else{
+	                  		
+		                  	
+		                  	_total_set_length = _gridids_collection.length;
+		                  	_training_set_size = Math.floor(_total_set_length * (_slider_value / 100));
+		                  	_test_set_size = _total_set_length - _training_set_size;
+
+		                  	
+			                var shuffle_array = d3.shuffle(_gridids_collection);
+			                discardedGridids = shuffle_array.slice(0,_test_set_size);
+
+	                  	}
+
+	                  	_VERBOSE ? console.log(discardedGridids) : _VERBOSE;
+
+	                  
+	                  	_panelGeneration(discardedGridids);
+
+	                  	_VERBOSE ? console.log("ITER: " + _ITER) : _VERBOSE;
+	                  	_VERBOSE ? console.log("NUM_ITERATIONS: " + _NUM_ITERATIONS) : _VERBOSE;
+
+	              },
+	              error: function( jqXHR ,  textStatus,  errorThrown ){
+	                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+	                _ITER = 0;
+	                _gridids_collection = [];
+	                _total_set_length = 0;
+	                _training_set_size = 0;
+	                _test_set_size = 0;
+	              }
+	          });
+
+	        }
+	        else{
+
+	            _VERBOSE ? console.log("Siguientes") : _VERBOSE;
+
+	            discardedGridids = [];
+	            var shuffle_array = d3.shuffle(_gridids_collection);
+
+	            discardedGridids = shuffle_array.slice(0,_test_set_size);
+	            // _VERBOSE ? console.log(discardedGridids) : _VERBOSE;
+
+	            _panelGeneration(discardedGridids);
+
+	            _VERBOSE ? console.log("ITER: " + _ITER) : _VERBOSE;
+	            _VERBOSE ? console.log("NUM_ITERATIONS: " + _NUM_ITERATIONS) : _VERBOSE;
+
+	        }
+
+
+	    }
+	    else{
+
+	        _VERBOSE ? console.log("***** Procees data collected through iterations") : _VERBOSE
+	        
+	        _ITER = 0;
+	        _gridids_collection = [];
+	        _total_set_length = 0;
+	        _training_set_size = 0;
+	        _test_set_size = 0;
+
+	        _VERBOSE ? console.log(_dataChartValSet.length) : _VERBOSE;
+	        _VERBOSE ? console.log(_sp_gridids) : _VERBOSE;
+
+	        _validation_module_all.validationProcess(_dataChartValSet, _sp_gridids, _NUM_ITERATIONS, _id_chartscr_decil);
+
+	        // if the validation process is activated the last set_configuration value is used to create the table and histograms
+	        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicia_histograma'), "info");
+	        // _toastr.info(_iTrans.prop('lb_inicia_histograma'));
+
+	        // _tdata["discardedids"] = [573324,581126,507259];
+
+	        console.log(_tdata);
+
+	        // tabla epsilon y score por especie 
+	        _createTableEpSc(_tdata);
+	        
+	        /* Generación de grid y administración de estilos */
+	        _configureStyleMap(_sdata);
+
+	        /* graficas epsilon y score por especie */
+	        _createHistEpScr_Especie(_ddata);
+
+	        /* grafica score por celda */
+	        _createHistScore_Celda(_cdata);
+
+	        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_histograma'), "success");
+	        // _toastr.success(_iTrans.prop('lb_carga_histograma'));
+
+
+	    }
+
+	}
+	
+	// Realiza el procesamiento de las peticiones hechas para calcular el score por celda de forma segmentada por grupos de variables seleccionados. Genera un estructura de la información devuelta por el servidor para enlazarla al histograma decil y tabla decil del sistema nicho a través de los módulos de histograma y tabla.
+	function _createSetStructure(fathers, sons){
+
+	    _VERBOSE ? console.log("_createSetStructure") : _VERBOSE;
+	    // _VERBOSE ? console.log(fathers) : _VERBOSE
+	    // _VERBOSE ? console.log(sons) : _VERBOSE
+
+	    // binding parents and sons
+	    fathers.forEach(function(father){
+
+	        sons.forEach(function(son){
+
+	            // _VERBOSE ? console.log("comp") : _VERBOSE
+	          
+	            if( parseInt(father.item[0].title.type) == parseInt(son.item[0].title.type) && parseInt(father.item[0].title.group_item) ==  parseInt(son.item[0].title.group_item) ){
+
+	              // _VERBOSE ? console.log("match father and son") : _VERBOSE;
+	              son_index = 0;
+	              
+	              father.item.forEach(function(decil_item){
+
+	                // _VERBOSE ? console.log(decil_item) : _VERBOSE;
+
+	                // if there's no decil data in son, coninue for the next one
+	                if(!son.item[son_index])
+	                  return;
+	                if(son.item[son_index].decil != decil_item.decil)
+	                  return;
+
+	                  if(!(decil_item.arraynames.s)){
+	                      // _VERBOSE ? console.log("padre") : _VERBOSE
+	                      newnames_p = decil_item.arraynames; //_deleteRepetedElements(decil_item.arraynames);
+	                      // _VERBOSE ? console.log("hijo") : _VERBOSE
+	                      newnames_s = son.item[son_index].arraynames; //_deleteRepetedElements(son.item[son_index].arraynames);
+	                      decil_item.arraynames = {p:newnames_p, s:[newnames_s]}
+	                  }
+	                  else{
+	                  		// _VERBOSE ? console.log("hijo2") : _VERBOSE
+	                      newnames_s = son.item[son_index].arraynames; //_deleteRepetedElements(son.item[son_index].arraynames);
+	                      temp_s = decil_item.arraynames.s;
+	                      temp_s.push(newnames_s);
+	                      decil_item.arraynames.s = temp_s;
+	                  }
+
+	                  if(!(decil_item.gridids.s)){
+	                      decil_item.gridids = {p:decil_item.gridids, s:[son.item[son_index].gridids]}
+	                  }
+	                  else{
+	                      temp_s = decil_item.gridids.s;
+	                      temp_s.push(son.item[son_index].gridids);
+	                      // TODO: find if there are spids duplicated
+	                      // Array.prototype.push.apply(temp_s, son.item[son_index].gridids);
+	                      decil_item.gridids.s = temp_s;
+	                  }
+
+	                  if(!(decil_item.avg.s)){
+	                      decil_item.avg = {p:decil_item.avg, s:[son.item[son_index].avg]}
+	                  }
+	                  else{
+	                      temp_s = decil_item.avg.s;
+	                      temp_s.push(son.item[son_index].avg);
+	                      decil_item.avg.s = temp_s;
+	                  }
+
+	                  if(!(decil_item.sum.s)){
+	                      decil_item.sum = {p:decil_item.sum, s:[son.item[son_index].sum]}
+	                  }
+	                  else{
+	                      temp_s = decil_item.sum.s;
+	                      temp_s.push(son.item[son_index].sum);
+	                      decil_item.sum.s = temp_s;
+	                  }
+
+	                  if(!(decil_item.l_sup.s)){
+	                      decil_item.l_sup = {p:decil_item.l_sup, s:[son.item[son_index].l_sup]}
+	                  }
+	                  else{
+	                      temp_s = decil_item.l_sup.s;
+	                      temp_s.push(son.item[son_index].l_sup);
+	                      decil_item.l_sup.s = temp_s;
+	                  }
+
+	                  if(!(decil_item.l_inf.s)){
+	                      decil_item.l_inf = {p:decil_item.l_inf, s:[son.item[son_index].l_inf]}
+	                  }
+	                  else{
+	                      temp_s = decil_item.l_inf.s;
+	                      temp_s.push(son.item[son_index].l_inf);
+	                      decil_item.l_inf.s = temp_s;
+	                  }
+
+
+	                  if(!(decil_item.title.title.s)){
+	                      decil_item.title.title = {p:decil_item.title.title, s:[son.item[son_index].title.title]}
+	                  }
+	                  else{
+	                      temp_s = decil_item.title.title.s;
+	                      temp_s.push(son.item[son_index].title.title);
+	                      decil_item.title.title.s = temp_s;
+	                  }
+
+	                  son_index++;
+	                  
+	              });
+
+	            }
+	            // else{
+	            //   _VERBOSE ? console.log("NO match") : _VERBOSE
+	            //   _VERBOSE ? console.log(father) : _VERBOSE;
+	            //   _VERBOSE ? console.log(son) : _VERBOSE;
+	            // }
+
+	        })
+
+	    });
+
+	    _VERBOSE ? console.log(fathers) : _VERBOSE;
+	    _VERBOSE ? console.log(fathers[0].item.length) : _VERBOSE;
+
+	    // binding parents by decil
+
+	    // NOTA: puede darse el caso que vengan menos de 10 deciles debido a que la especie objetivo y el grupo de variables tengan menos de 10 intersecciones
+	    // NOTA: Los grupos que ocmpoenn a fathers peuden variar en el numeor de deciles, por tanto el data_cahrt puede variar en tamaño segun el row de fathers
+	    data_chart = [];
+
+	    // se asignan siempre 10 deciles y depsues se valida si existe
+	    for (j = _NUM_DECILES; j > 0; j--){
+	      	data_chart.push({"decil" : String(j)});
+	    }
+
+	    fathers.forEach(function(row,index){
+
+	        // _VERBOSE ? console.log(item) : _VERBOSE;
+	        row.item.forEach(function(decil, index){
+
+
+	            for(j=0; j<_NUM_DECILES; j++){
+	            	if(decil.decil == data_chart[j].decil){
+		            	var item_chart = data_chart[j];
+		            	break;
+		            }
+	            }
+
+
+
+	            if(!(item_chart.values)){
+	                item_chart['values'] = [decil.avg];
+	            }
+	            else{
+	                temp = item_chart['values'];
+	                temp.push(decil.avg);
+	                item_chart['values'] = temp;
+	            }
+
+
+	            if(!(item_chart.gridids)){
+	                item_chart['gridids'] = [decil.gridids];
+	            }
+	            else{
+	                temp = item_chart['gridids'];
+	                temp.push(decil.gridids);
+	                item_chart['gridids'] = temp;
+	            }
+
+
+	            if(!(item_chart.names)){
+	                item_chart['names'] = [decil.title.title];
+	            }
+	            else{
+	                temp = item_chart['names'];
+	                temp.push(decil.title.title);
+	                item_chart['names'] = temp;
+	            }
+
+
+	            // _VERBOSE ? console.log(decil.arraynames) : _VERBOSE;
+
+	            if(!(item_chart.species)){
+	                item_chart['species'] = [decil.arraynames];
+	            }
+	            else{
+	                temp = item_chart['species'];
+	                temp.push(decil.arraynames);
+	                item_chart['species'] = temp;
+	            }
+
+	            if(!(item_chart.decil)){
+	                item_chart['decil'] = decil.decil;
+	            }
+	            
+	            if(!(item_chart.lsup)){
+	                item_chart['lsup'] = [decil.l_sup];
+	            }
+	            else{
+	                temp = item_chart['lsup'];
+	                temp.push(decil.l_sup);
+	                item_chart['lsup'] = temp;
+	            }
+
+	            if(!(item_chart.linf)){
+	                item_chart['linf'] = [decil.l_inf];
+	            }
+	            else{
+	                temp = item_chart['linf'];
+	                temp.push(decil.l_inf);
+	                item_chart['linf'] = temp;
+	            }
+
+
+	        });
+
+	    });
+
+	    _VERBOSE ? console.log(data_chart) : _VERBOSE;
+
+	    return data_chart;
+
+	}
+
+	// Agrega una sección extra a la estructura generada por createSetStructure cuando es requerido un total.
+	function _addDataChartTotal(data_chart, decil_total){
+
+	    _VERBOSE ? console.log("addDataChartTotal") : _VERBOSE 
+	    
+	    // _VERBOSE ? console.log(decil_total) : _VERBOSE;
+	    
+	  
+	    if(data_chart[0].names.length > 1){
+
+	        _VERBOSE ? console.log("Add totals") : _VERBOSE;
+
+	        data_chart.forEach(function(decil_item,index){
+
+	            // _VERBOSE ? console.log(decil_total[index]) : _VERBOSE;
+
+
+	            _VERBOSE ? console.log("total") : _VERBOSE
+	            decil_total[index].arraynames = decil_total[index].arraynames //_deleteRepetedElements(decil_total[index].arraynames);
+
+	            names = [];
+	            decil_item.names.forEach(function(names_item,index){
+	              names.push(names_item.p);
+	            });
+	            temp = decil_item['names'];
+	            temp.push({p:"Total", s:names});
+	            decil_item['names'] = temp;
+
+
+	            gridids = [];
+	            decil_item.gridids.forEach(function(gridids_item,index){
+	              gridids.push(gridids_item.p);
+	            });
+	            temp = decil_item['gridids'];
+	            temp.push({p:decil_total[index].gridids, s:gridids});
+	            decil_item['gridids'] = temp;
+
+
+
+	            values = [];
+	            decil_item.values.forEach(function(values_item,index){
+	              values.push(values_item.p);
+	            });
+	            temp = decil_item['values'];
+	            temp.push({p:decil_total[index].avg, s:values});
+	            decil_item['values'] = temp;
+
+	            
+
+	            lsups = [];
+	            decil_item.lsup.forEach(function(lsup_item,index){
+	              lsups.push(lsup_item.p);
+	            });
+	            temp = decil_item['lsup'];
+	            temp.push({p:decil_total[index].l_sup, s:lsups});
+	            decil_item['lsup'] = temp;
+
+	            linfs = [];
+	            decil_item.linf.forEach(function(linf_item,index){
+	              linfs.push(linf_item.p);
+	            });
+	            temp = decil_item['linf'];
+	            temp.push({p:decil_total[index].l_inf, s:linfs});
+	            decil_item['linf'] = temp;
+
+
+	            species = [];
+	            decil_item.species.forEach(function(species_item,index){
+	              species.push(species_item.p);
+	            });
+	            temp = decil_item['species'];
+	            
+	            // _VERBOSE ? console.log(decil_total[index].arraynames.sort()) : _VERBOSE;
+
+	            temp.push({p:decil_total[index].arraynames.sort(), s:species});
+	            decil_item['species'] = temp;
+
+	        });
+
+	    }
+
+	    // _VERBOSE ? console.log(data_chart) : _VERBOSE;
+	    return data_chart;
+
+	}
+
+	// Elimina las especies repetidas devueltas por el servidor en los cálculos, así como contabilizar el porcentaje de ocurrencias de una especies por decil.	
+	function _deleteRepetedElements(arraynames){
+
+		  // _VERBOSE ? console.log("_deleteRepetedElements") : _VERBOSE;
+		  // _VERBOSE ? console.log(arraynames) : _VERBOSE;
+		  // _VERBOSE ? console.log(arraynames.length) : _VERBOSE;
+
+		  uniqueValues = d3.map([]);
+		  array_values = [];
+		  newTempStr = [];
+
+		  arraynames.forEach(function(d){ 
+		    values = String(d).split(",");
+		    Array.prototype.push.apply(array_values, values);
+		  });
+
+		  array_values.forEach(function(d){ 
+		    
+		    if (uniqueValues.has(d) != true){
+		      uniqueValues.set(d, 1); 
+		    }
+		    else{
+		      cont = uniqueValues.get(d);
+		      uniqueValues.set(d, cont+1); 
+		    }
+
+		  });
+
+		  
+		  uniqueValues.forEach(function(k,v){ 
+
+		  	// PARCHE PARA NO MANEJAR PORCENTAJE SUPERIOR A 100%, ELIMINAR ESTA VALIDACION CON NUEVA BASE
+		  	arg = k.split("|");
+		  	v_temp = parseInt(arg[arg.length-1]);
+		  	// console.log(v_temp);
+		  	if(v_temp < v)
+		  		v = v_temp;
+
+		    newTempStr.push(k + "|" + v);
+
+		  });
+
+		  
+
+		  // console.log(newTempStr);
+
+		  return newTempStr.sort();
+
+	}
+
+	// Realiza la petición al servidor cuando una celda es seleccionada por el usuario y obtener los valores de score de las especies y/o variables raster que se encuentran dentro de la celda en conjunto con el módulo mapa
+	function showGetFeatureInfo(lat, long){
+
+		_VERBOSE ? console.log("showGetFeatureInfo") : _VERBOSE;
+
+
+		var singleCellData = _cdata;
+
+		var milliseconds = new Date().getTime();
+	    singleCellData['qtype'] = "getGridSpecies";
+	    singleCellData['lat'] = lat;
+	    singleCellData['long'] = long;
+	    singleCellData['idtime'] = milliseconds;
+
+	    _VERBOSE ? console.log(singleCellData) : _VERBOSE;
+
+	    $.ajax({
+	        // url : _url_trabajo,
+	        url: _url_zacatuche + "/niche/getGridSpecies",
+	        type : 'post',
+	        data : singleCellData,
+	        success : function (resp){
+
+	          var data = resp.data;
+
+	          console.log(data);
+
+	          // _VERBOSE ? console.log(data) : _VERBOSE;
+	          htmltable = _createTableFromData(data);
+	          // _VERBOSE ? console.log(htmltable) : _VERBOSE;
+	          _map_module_nicho.showPopUp(htmltable,[lat,long]);
+	          
+	        },
+	        error: function( jqXHR ,  textStatus,  errorThrown ){
+
+	          _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+	        }
+	    });
+
+
+
+
+	}
+
+	// Genera el HTML para desplegar la tabla que contiene los resultados de la petición hecha por showGetFeatureInfo.
+	function _createTableFromData(json_data){
+
+		_VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
+
+		  // json_data = JSON.parse(data);
+		  
+		  var total_score = 0.0;
+		  var sp_values = false, raster_values = false;
+
+		  _VERBOSE ? console.log(json_data) : _VERBOSE
+
+		  var htmltable = "<div class='myScrollableBlockPopup'>";
+		  var table_sp = "";
+		  var table_rt = "";
+		  var title_total;
+		  var total_celda;
+
+		  var apriori = (json_data[0].apriori) ? parseFloat(json_data[0].apriori) : undefined;
+		  var prob = (json_data[0].prob) ? parseFloat(json_data[0].prob) :  undefined;
+
+		  // _VERBOSE ? console.log("apriori: " + json_data[0].apriori) : _VERBOSE;
+		  // _VERBOSE ? console.log("apriori: " + apriori) : _VERBOSE;
+
+
+		  if(json_data.length == 1 && json_data[0].gridid == 0 ){
+
+		  	title_total = "Apriori";
+		    total_celda = parseFloat(apriori).toFixed(2);
+
+		    htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda +"</th></tr></thead><tbody>";
+
+		  }
+		  else{  
+				  
+				  for(i = 0; i<json_data.length; i++){
+				  		
+				  		if(sp_values && raster_values)
+				  			break;
+
+				  		if(json_data[i].label == ""){
+				  			sp_values = true;
+				  			continue;
+				  		}
+				  		if(json_data[i].nom_sp == ""){
+				  			raster_values = true;
+				  			continue;
+				  		}
+				  		
+				  }
+
+				  if(sp_values){
+
+				  		table_sp += "<div class='panel panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>";
+				  
+					  	for(i = 0; i<json_data.length; i++){
+						    
+						    if(json_data[i].label == "" && json_data[i].gridid != 0){
+
+						    	total_score += parseFloat(json_data[i].score);
+
+						      	table_sp += "<tr><td>" + json_data[i].nom_sp +"</td><td>" + parseFloat(json_data[i].score).toFixed(2) +"</td></tr>";
+
+						    }
+
+					  	}
+					  	
+					  	table_sp += "</tbody></table></div>";
+
+				  }
+
+				  if(raster_values){
+
+				  		// table_rt += "<div class='panel panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('lb_rango') +" </th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>"
+				  		table_rt += "<div class='panel panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>"
+
+					  	for(i = 0; i<json_data.length; i++){
+					    // _VERBOSE ? console.log(json_data[i]) : _VERBOSE;
+
+					    	if(json_data[i].nom_sp == "" && json_data[i].gridid != 0){
+
+						    	total_score += parseFloat(json_data[i].score);
+
+						      	// tag = String(json_data[i].rango).split(":")
+						      	// min = tag[0].split(".")[0]
+						      	// max = tag[1].split(".")[0]      
+						      	// table_rt += "<tr><td>" + json_data[i].label +"</td><td>" + min+":"+max +"</td><td>" + parseFloat(json_data[i].score).toFixed(2) +"</td></tr>";
+						      	table_rt += "<tr><td>" + json_data[i].label +"</td><td>" + parseFloat(json_data[i].score).toFixed(2) +"</td></tr>";
+						      
+						    }
+
+					  	}
+
+					  	table_rt += "</tbody></table></div>";
+				  }
+
+				  // _VERBOSE ? console.log(total_score) : _VERBOSE;
+				  // _VERBOSE ? console.log(total_score + apriori) : _VERBOSE;
+
+				  // se considera la suma de apriori cuando fue activada
+				  
+				  if(apriori){
+				  	
+				  	title_score = "Score parcial";
+				  	parcial_score = parseFloat(total_score).toFixed(2);
+
+				  	title_apriori = "Apriori";
+				  	total_apriori = parseFloat(apriori).toFixed(2);
+
+				  	title_total = "Score Total";
+					total_celda = parseFloat(total_score + apriori).toFixed(2);
+
+					htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda +"</th></tr><tr><th>" + title_score + "</th><th>" + parcial_score +"</th></tr><tr><th>" + title_apriori + "</th><th>" + total_apriori +"</th></tr></thead><tbody>";
+				  }
+				  else if(prob){
+				  	title_total = "Probabilidad de presencia";
+				  	prob = Math.floor(prob * 100) / 100; 
+				  	prob = parseFloat(prob) == 100.00 ? 99.99 : parseFloat(prob);
+				  	prob = parseFloat(prob) == 0.00 ? 0.01 : parseFloat(prob);
+				  	// console.log(prob);
+				  	total_celda = parseFloat(prob).toFixed(2) + "%";
+
+				  	htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda +"</th></tr></thead><tbody>";
+				  }
+				  else{
+				  	title_total = "Score Total";
+				  	total_celda = parseFloat(total_score).toFixed(2);
+
+				  	htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda +"</th></tr></thead><tbody>";
+				  }
+
+		  }
+		  
+
+		  // htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda +"</th></tr></thead><tbody>";
+		  htmltable += "</tbody></table></div>";
+
+		  htmltable += sp_values ? table_sp : "";
+		  htmltable += raster_values ? table_rt : "";
+
+		  htmltable += "</div>"; // cierra div myScrollableBlockPopup
+		  
+		  return htmltable;
+
+	}
+
+	
+	// Llama a la función que inicializa las variables necesarias para el despliegue de los componentes visuales. 
+	function startResDisplay(map_module, histogram_module, table_module, language_module, ids_comp_variables){
+		
+		_VERBOSE ? console.log("startResDisplay") : _VERBOSE;
+
+		_initilizeElementsForDisplay(map_module, histogram_module, table_module, language_module, ids_comp_variables);
+
+	}
+
+	// Añadir los miembros públicos
+	return{
+		
+		startResDisplay: startResDisplay,
+		refreshData: refreshData,
+		set_idReg: set_idReg,
+		set_spid: set_spid,
+		set_subGroups: set_subGroups,
+		set_typeBioclim: set_typeBioclim,
+		set_allowedPoints: set_allowedPoints,
+		set_discardedPoints: set_discardedPoints,
+		set_discardedPointsFilter: set_discardedPointsFilter,
+		set_discardedCellFilter: set_discardedCellFilter,
+		set_allowedCells: set_allowedCells,
+		setMapModule: setMapModule,
+		showGetFeatureInfo: showGetFeatureInfo,
+		get_cData: get_cData,
+		updateLabels: updateLabels,
+		setHistogramModule: setHistogramModule
+	}
+	
+
+});

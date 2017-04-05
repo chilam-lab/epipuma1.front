@@ -1,0 +1,29 @@
+{
+ "name": "Raíz",
+ "children": [
+   {
+    "name": "Bioclim",
+      "children":[
+        {"name": "Temperatura media anual", "size": 1000},
+        {"name": "Rango medio diurno", "size": 1000},
+        {"name": "Forma Isotérmica", "size": 1000},
+        {"name": "Temperatura estacional", "size": 1000},
+        {"name": "Temperatura máxima del mes mas caliente", "size": 1000},
+        {"name": "Temperatura mínima de mes mas frio", "size": 1000},
+        {"name": "Rango anual de temperatura", "size": 1000},
+        {"name": "Temperatura media del trimestre mas humedo", "size": 1000},
+        {"name": "Temperatura media del trimestre mas seco", "size": 1000},
+        {"name": "Temperatura media del trimestre mas caliente", "size": 1000},
+        {"name": "Temperatura media del trimestre mas frio", "size": 1000},
+        {"name": "Precipitación anual", "size": 1000},
+        {"name": "Precipitación del mes mas humedo", "size": 1000},
+        {"name": "Precipitación del mes mas seco", "size": 1000},
+        {"name": "Precipitación estacional", "size": 1000},
+        {"name": "Precipitación del trimestre mas humedo", "size": 1000},
+        {"name": "Precipitación del trimestre mas seco", "size": 1000},
+        {"name": "Precipitación del trimestre mas caliente", "size": 1000},
+        {"name": "Precipitación del trimestre mas frio", "size": 1000}
+      ]  
+   }
+ ]
+}
