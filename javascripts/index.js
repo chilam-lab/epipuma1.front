@@ -248,11 +248,13 @@ var module_net = (function (){
 
 			_VERBOSE ? console.log("** AMBIENTE LOCAL **") : _VERBOSE;
 
-		  	_url_trabajo = "http://localhost:3000/";
+		  	_url_trabajo = "http://localhost/species-front/";
+		  	_url_nicho = "http://localhost/species-front/geoportal_v0.1.html";
+		  	_url_comunidad = "http://localhost/species-front/comunidad_v0.1.html";
+
 		  	_url_geoserver = "http://localhost:8080/geoserver/conabio/wms?";
 		  	_workspace = "conabio";
-		  	_url_nicho = "http://localhost:3000/geoportal_v0.1.html";
-		  	_url_comunidad = "http://localhost:3000/comunidad_v0.1.html";
+		  	
 
 		} 
 		else{
