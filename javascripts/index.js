@@ -30,8 +30,8 @@ var module_net = ( function() {
 
 	// TEMPORAL DESARROLLO
   var _url_trabajo = "http://species.conabio.gob.mx/niche?",
-    _url_nicho = "http://species.conabio.gob.mx/c3/charlie_dev/geoportal_v0.1.html",
-    _url_comunidad = "http://species.conabio.gob.mx/c3/charlie_dev/comunidad_v0.1.html";
+      _url_nicho = "http://species.conabio.gob.mx/c3/charlie_dev/geoportal_v0.1.html",
+      _url_comunidad = "http://species.conabio.gob.mx/c3/charlie_dev/comunidad_v0.1.html";
 
 	// TEMPORAL PRODUCCION
 	// var _url_trabajo = "http://species.conabio.gob.mx/niche2?",
@@ -40,7 +40,7 @@ var module_net = ( function() {
 
 
   var _url_geoserver = "http://geoportal.conabio.gob.mx:80/geoserver/cnb/wms?",
-    _workspace = "cnb";
+      _workspace = "cnb";
 
 
 	// openPage = function(){
@@ -80,7 +80,7 @@ var module_net = ( function() {
       _VERBOSE ? console.log( "entro" ) : _VERBOSE;
       _link_val = "";
       _VERBOSE ? console.log( $( this ).attr( "link-id" ) ) : _VERBOSE;
-			    _link_val = $( this ).attr( "link-id" );
+      _link_val = $( this ).attr( "link-id" );
 
     } );
 
@@ -99,13 +99,13 @@ var module_net = ( function() {
 			  _VERBOSE ? console.log( _link_val ) : _VERBOSE;
 
 			  _VERBOSE ? console.log( $( "#email_address" )[ 0 ].validity.valid ) : _VERBOSE;
-			  _VERBOSE ? console.log( $( "#usaer_name" ).val() ) : _VERBOSE;
+			  _VERBOSE ? console.log( $( "#user_name" ).val() ) : _VERBOSE;
 
 			  var regexp = /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
 
-			  if ( !regexp.test( $( "#usaer_name" ).val() ) ) {
+			  if ( !regexp.test( $( "#user_name" ).val() ) ) {
 			  		_toastr.error( "Por favor inserte un usuario valido. Debe contener al menos un nombre y un apellido" );
-			  		$( "#usaer_name" ).val( "" );
+			  		$( "#user_name" ).val( "" );
 			  		return;
 			  }
 
@@ -113,7 +113,7 @@ var module_net = ( function() {
 
 			    var email = $( "#email_address" ).val();
 			    var fecha = getDateNow();
-			    var usuario = $( "#usaer_name" ).val();
+			    var usuario = $( "#user_name" ).val();
 
 			    _VERBOSE ? console.log( "email: " + email ) : _VERBOSE;
 			    _VERBOSE ? console.log( "fecha: " + fecha ) : _VERBOSE;
@@ -164,7 +164,7 @@ var module_net = ( function() {
 									        _VERBOSE ? console.log( "error: " + textStatus ) : _VERBOSE;
 
 									        $( "#email_address" ).val( "" );
-									        $( "#usaer_name" ).val( "" );
+									        $( "#user_name" ).val( "" );
 
 									        $( "#modalLogin" ).modal( "hide" );
 
@@ -189,7 +189,7 @@ var module_net = ( function() {
 					        _VERBOSE ? console.log( "error: " + textStatus ) : _VERBOSE;
 
 					        $( "#email_address" ).val( "" );
-					        $( "#usaer_name" ).val( "" );
+					        $( "#user_name" ).val( "" );
 
 
 					        $( "#modalLogin" ).modal( "hide" );
