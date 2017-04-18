@@ -1,8 +1,7 @@
-var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
+var res_display_module = (function(verbose, url_zacatuche){
 
 	// ************ variables publicas y privadas ( denotadas por _ ) ************
 
-	var _url_trabajo = url_trabajo;
 	var _url_zacatuche = url_zacatuche;
 
 	var _VERBOSE = verbose;
@@ -194,7 +193,7 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 
 
 		// si otro proceso de validación es necesario para otro modulo este debe ser instanciado en pede_nicho
-		_validation_module_all = validation_module(_url_trabajo, _VERBOSE);
+		_validation_module_all = validation_module(_VERBOSE);
 		_validation_module_all.startValidationModule();
 		_validation_module_all.set_histogram_module(_histogram_module_nicho);
 
@@ -233,7 +232,7 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 
 
 		    $.ajax({
-			      url : _url_trabajo,
+			      url : _url_zacatuche,
 			      type : 'post',
 			      data : _tdata,
 			      success : function (d){
@@ -283,7 +282,7 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 		    _VERBOSE ? console.log(_sdata) : _VERBOSE;
 
 		    $.ajax({
-		      url : _url_trabajo,
+		      url : _url_zacatuche,
 		      type : 'post',
 		      data : _sdata,
 		      success : function (d){
@@ -389,7 +388,6 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 
 
 	        $.ajax({
-	            // url : _url_trabajo,
 	            url : _url_zacatuche + "/niche/especie",
 	            type : 'post',
 	            data : {
@@ -939,7 +937,6 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 		  $.ajax({
 
 		      type : "post",
-		      // url : _url_trabajo,
 		      url : _url_zacatuche + "/niche/getScoreDecil",
 		      data : decildata,
 		      dataType : "json",
@@ -1132,12 +1129,13 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 
 
 	  $.ajax({
-	      // url : url_trabajo,
 	      url: _url_zacatuche + "/niche/getFreqMap",
 	      type : 'post',
 	      data : sdata,
 	      // dataType : "json",
 	      success : function (json_file){
+
+	      	console.log(json_file.data);
 
 
 	      	// DESCOMENTAR PARA PROCESAR RESPUESTA CON NUEVO SERVIDOR
@@ -1225,8 +1223,6 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 
 
 		  $.ajax({
-
-		  	  // url : _url_trabajo,
 		  	  url : _url_zacatuche + "/niche/getFreq",
 		      type : "post",
 		      data : ddata,
@@ -1234,7 +1230,7 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 		      success : function (res, status){
 
 		      	// DESCOMENTAR PARA PROCESAR RESPUESTA CON NUEVO SERVIDOR
-		      	// console.log(res.data);
+		      	console.log(res.data);
 		      	var data = res.data;
 
 		      	// console.log(res);
@@ -1411,7 +1407,6 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 		  $.ajax({
 
 		      type : "post",
-		      // url : _url_trabajo,
 		      url : _url_zacatuche + "/niche/getFreqCelda",
 		      data : cdata,
 		      dataType : "json",
@@ -1420,7 +1415,7 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 		      	// DESCOMENTAR CON LA CONEXION AL NUEVO SERVIDOR
 		      	var data = resp.data;
 
-		      	// console.log(resp);
+		      	console.log(resp.data);
 		      	// var data = resp;
 
 
@@ -1475,7 +1470,6 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 
 	            $.ajax({
 	              url : _url_zacatuche + "/niche/especie",
-	              // url : _url_trabajo,
 	              type : 'post',
 	              data : {
 	                qtype: 'getGridids'
@@ -2018,7 +2012,6 @@ var res_display_module = (function(url_trabajo, verbose, url_zacatuche){
 	    _VERBOSE ? console.log(singleCellData) : _VERBOSE;
 
 	    $.ajax({
-	        // url : _url_trabajo,
 	        url: _url_zacatuche + "/niche/getGridSpecies",
 	        type : 'post',
 	        data : singleCellData,

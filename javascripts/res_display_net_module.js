@@ -1,6 +1,4 @@
-var res_display_net_module = (function(url_trabajo, verbose, url_zacatuche){
-
-	var _url_trabajo = url_trabajo;
+var res_display_net_module = (function(verbose, url_zacatuche){
 
 	var _url_zacatuche = url_zacatuche;
 
@@ -444,7 +442,7 @@ var res_display_net_module = (function(url_trabajo, verbose, url_zacatuche){
 
 		console.log(json);
 
-		_net_module = net_module(_url_trabajo, _VERBOSE, _url_zacatuche, _map_module_net);
+		_net_module = net_module(_VERBOSE, _url_zacatuche, _map_module_net);
 		_net_module.startNet(_language_module_net, s_filters, t_filters);
 		_net_module.setLanguageModule(_language_module_net);
 		_net_module.setLegendGroup(_legend_groups);
@@ -454,7 +452,7 @@ var res_display_net_module = (function(url_trabajo, verbose, url_zacatuche){
 		// _graph_component = _net_module.createNetWebGL(json, this);
 		
 
-		_histogram_module_net = histogram_module(_url_trabajo, _url_zacatuche);
+		_histogram_module_net = histogram_module(_VERBOSE);
 		_histogram_module_net.startHistogramModule();
 		_histogram_module_net.setLanguageModule(_language_module_net);
 		_hist_component = _histogram_module_net.createBarChartNet(json, this);

@@ -1,8 +1,7 @@
-var table_module = (function(url_trabajo, verbose){
+var table_module = (function(verbose){
 
 	// ************ variables publicas y privadas ( denotadas por _ ) ************
 
-	var _url_trabajo = url_trabajo;
 	var _VERBOSE = verbose;
 	var _tbl_decil = false, 
 		_tbl = false,
