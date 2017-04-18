@@ -25,29 +25,7 @@ var module_nicho = (function (){
 
 	var _componente_fuente;
 
-	// DESARROLLO
-	// var _url_trabajo = "http://geoportal.conabio.gob.mx/niche?", 
-	// 	_url_nicho = "http://geoportal.conabio.gob.mx/charlie_dev/geoportal_v0.1.html",
-	// 	_url_comunidad = "http://geoportal.conabio.gob.mx/charlie_dev/comunidad_v0.1.html";
-
-	// PRODUCCION
-	// var _url_trabajo = "http://geoportal.conabio.gob.mx/niche2?", 
-	// 	_url_nicho = "http://geoportal.conabio.gob.mx/charlie/geoportal_v0.1.html",
-	// 	_url_comunidad = "http://geoportal.conabio.gob.mx/charlie/comunidad_v0.1.html";
-
-	// TEMPORAL DESARROLLO
-	var _url_trabajo = "http://species.conabio.gob.mx/niche?", 
-		_url_nicho = "http://species.conabio.gob.mx/c3/charlie_dev/geoportal_v0.1.html",
-		_url_comunidad = "http://species.conabio.gob.mx/c3/charlie_dev/comunidad_v0.1.html";
-
-	// var _url_zacatuche = "http://zacatuche.conabio.gob.mx:8080/snib";
-	var _url_zacatuche = "http://species.conabio.gob.mx/niche3";
-
-	// TEMPORAL PRODUCCION
-	// var _url_trabajo = "http://species.conabio.gob.mx/niche2?", 
-	// 	_url_nicho = "http://species.conabio.gob.mx/geoportal_v0.1.html",
-	// 	_url_comunidad = "http://species.conabio.gob.mx/comunidad_v0.1.html";
-
+	var _url_front, _url_api;
 
 	var _url_geoserver = "http://geoportal.conabio.gob.mx:80/geoserver/cnb/wms?",
 		_workspace = "cnb";
@@ -305,7 +283,7 @@ var module_nicho = (function (){
 
 	// enalce para redirigirse al el modulo de comunidad
 	$("#nicho_link").click(function(){
-	  window.location.replace(_url_comunidad);
+	  window.location.replace(_url_front + "/comunidad_v0.1.html");
 	});
 
 	var xhr;
@@ -313,7 +291,7 @@ var module_nicho = (function (){
 	// funcionalidad del componente de selección de especie (Especie objetivo)
 	$("#nom_sp").autocomplete({
 
-		 source : function (request, response){
+		source : function (request, response){
 
 		 	var url_ƒtrabajo_temp = "http://localhost:8080/snib";
 
@@ -321,9 +299,7 @@ var module_nicho = (function (){
 		    
 		    $.ajax({
 
-		      	// url: url_trabajo_temp+"/getSpecie/getByName", 
-		      	// url: _url_trabajo,
-		      	url: _url_zacatuche + "/niche/especie",
+		      	url: _url_api + "/niche/especie",
 		      	dataType : "json",
 		        type: "post",
 		      	data : {
@@ -582,37 +558,6 @@ var module_nicho = (function (){
 	}
 
 
-
-	// $("#link_gen").click(function(){
-
-	// 	_VERBOSE ? console.log("link_gen") : _VERBOSE;
-
-	// 	var input_gen = $("#input_gen").val();
-	// 	if(input_gen.length == 0){
-	// 		console.log("cadena vacia");
-	// 		return;
-	// 	}
-
-	// 	// console.log(input_gen);
-
-	// 	var sp_data =  JSON.parse(getQuerystring2(input_gen, "sp_data")) ;
-	// 	// console.log(sp_data);
-
-	// 	var num_filters = parseInt(getQuerystring2(input_gen, "num_filters"));
-	// 	// console.log(num_filters);
-
-	// 	var filters = [];
-	// 	for(i=0; i<num_filters; i++){
-	// 		filters.push( JSON.parse( getQuerystring2(input_gen, "tfilters[" + i + "]") ) );
-	// 	}
-	// 	// console.log(filters);
-
-	// 	_procesaValoresEnlace(sp_data, filters);
-	// 	$("#show_gen").css('visibility', 'hidden');
-
-	// });
-
-
 	function getQuerystring2(path, key, default_) { 
 
 		// _VERBOSE ? console.log("getQuerystring2") : _VERBOSE;
@@ -641,50 +586,6 @@ var module_nicho = (function (){
 
 		return default_; 
 	}
-
-
-
-
-	// $("#loadData").click(function(){
-
-	// 	_VERBOSE ? console.log("loadData"): _VERBOSE;
-	// 	_VERBOSE ? console.log("GENERACION MEDIANTE LINK"): _VERBOSE;
-
-	// 	_VERBOSE ? console.log(): _VERBOSE;
-
-	// 	$("#modalCarga").modal('hide');
-
-	// 	_generaInterfazEnlace();
-	// 	_procesaValoresEnlace();
-
-	// });
-
-	
-	// function _generaInterfazEnlace(){
-
-	// 	_VERBOSE ? console.log("_generaInterfazEnlace"): _VERBOSE;
-
-	// 	var sp_data = JSON.parse(_val_json.sp_data);
-	// 	$("#nom_sp").val(sp_data.label);
-
-	// 	var specie_target = {
- //      			"reino":sp_data.reino, 
- //      			"phylum":sp_data.phylum, 
- //      			"clase":sp_data.clase, 
- //      			"orden":sp_data.orden, 
- //      			"familia":sp_data.familia,
- //      			"genero":sp_data.genero, 
- //      			"especie":sp_data.especie, 
- //      			"spid":sp_data.spid, 
- //      			"label":sp_data.label
- //      	};
-
-	// 	_map_module_nicho.set_specieTarget(specie_target);
-	// 	_map_module_nicho.busca_especie(false);
-
-
-	// }
-
 
 
 
@@ -849,10 +750,10 @@ var module_nicho = (function (){
 		// Falta obtener estos datos del JSON incrustado
 		// var val_process = false;
 		// var slider_value = 0;
-  //   	var min_occ = false;
-  //   	var mapa_prob = false;
-  //   	var rango_fechas = undefined;
-  //   	var chkFecha = true;
+		  //   	var min_occ = false;
+		  //   	var mapa_prob = false;
+		  //   	var rango_fechas = undefined;
+		  //   	var chkFecha = true;
 
 
 
@@ -990,7 +891,7 @@ var module_nicho = (function (){
 
 
 	// Inicializa las variables de entorno del sistema así como crear una instancia del módulo lenguaje apuntando al sistema de nicho.
-	function startModule(ambiente, tipo_modulo, verbose){
+	function startModule(tipo_modulo, verbose){
 
 		_AMBIENTE = ambiente;
 		_VERBOSE = verbose;
@@ -998,29 +899,11 @@ var module_nicho = (function (){
 		console.log("_AMBIENTE: " + _AMBIENTE);
 		console.log("_VERBOSE: " + _VERBOSE);
 
+		console.log("_url_api: " + _url_api);
+
 
 		_VERBOSE ? console.log("startModule"): _VERBOSE;
 		_tipo_modulo = tipo_modulo;
-
-		
-		if (_AMBIENTE != 1){
-
-
-			_VERBOSE ? console.log("** AMBIENTE LOCAL **"): _VERBOSE;
-
-		  	_url_trabajo = "http://localhost:3000/";
-		  	_url_zacatuche = "http://localhost:8080";
-
-		  	_url_geoserver = "http://localhost:8080/geoserver/conabio/wms?";
-		  	_workspace = "conabio";
-		  	_url_nicho = "http://localhost:3000/geoportal_v0.1.html";
-		  	_url_comunidad = "http://localhost:3000/comunidad_v0.1.html";
-		} 
-		else{
-
-			_VERBOSE ? console.log("** AMBIENTE PRODUCCIÓN **"): _VERBOSE;
-		}
-
 
 		// Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
 		// _VERBOSE ? console.log(this): _VERBOSE;
@@ -1039,28 +922,31 @@ var module_nicho = (function (){
 		_module_toast = toast_module(_VERBOSE);
 		_module_toast.startToast();
 
-		_histogram_module_nicho = histogram_module(_url_trabajo, _VERBOSE, _url_zacatuche);
+		_histogram_module_nicho = histogram_module(_VERBOSE);
 		_histogram_module_nicho.startHistogramModule();
 
 		_iTrans = _language_module_nicho.getI18();
-		_map_module_nicho = map_module(_url_trabajo, _url_geoserver, _workspace, _VERBOSE, _url_zacatuche);
+
+		console.log(_url_api);
+
+		_map_module_nicho = map_module(_url_geoserver, _workspace, _VERBOSE, _url_api);
 		_map_module_nicho.startMap(_language_module_nicho, _tipo_modulo, _histogram_module_nicho);
 
 
 		
 		// un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)
-		_variable_module_nicho = variable_module(_url_trabajo, _VERBOSE, _url_zacatuche);
+		_variable_module_nicho = variable_module(_VERBOSE, _url_api);
 		_variable_module_nicho.startVar(0, _language_module_nicho, _tipo_modulo);
 
 		var ids_comp_variables = ['fuente'];
 		_componente_fuente = _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
 
 
-		_table_module = table_module(_url_trabajo, _VERBOSE);
+		_table_module = table_module(_VERBOSE);
 		_table_module.startTableModule();
 
 		
-		_res_display_module_nicho = res_display_module(_url_trabajo, _VERBOSE, _url_zacatuche);
+		_res_display_module_nicho = res_display_module(_VERBOSE, _url_api);
 		// enlazando los modulos que tienen interacción en los procesos
 		_res_display_module_nicho.startResDisplay(_map_module_nicho, _histogram_module_nicho, _table_module, _language_module_nicho, ids_comp_variables);
 
@@ -1068,7 +954,7 @@ var module_nicho = (function (){
 
 		
 		// se envia url con direccion a servidor zacatuche
-		_region_module_nicho = region_module(_url_zacatuche, _VERBOSE);
+		_region_module_nicho = region_module(_url_api, _VERBOSE);
 		_region_module_nicho.startRegion(_map_module_nicho, _language_module_nicho);
 
 		_language_module_nicho.addModuleForLanguage(_res_display_module_nicho, _histogram_module_nicho, _map_module_nicho, _variable_module_nicho);
@@ -1077,10 +963,20 @@ var module_nicho = (function (){
 
 	}
 
+	function setUrlApi(url_api){
+		_url_api = url_api
+	}
+
+	function setUrlFront(url_front){
+		_url_front = url_front
+	}
+
 	// retorna solamente un objeto con los miembros que son públicos.
 	return {
 		startModule:startModule,
-		loadModules: loadModules 
+		loadModules: loadModules,
+		setUrlApi: setUrlApi,
+		setUrlFront: setUrlFront
 	};
 
 
@@ -1097,8 +993,26 @@ $(document).ready(function(){
 	ambiente = 0;
 	// 0 nicho, 1 comunidad
 	modulo = 0;
-	module_nicho.startModule(ambiente, modulo, verbose);
-	
+
+	if($.cookie("url_front")){
+		console.log("COOKIE");
+
+		module_nicho.setUrlFront($.cookie("url_front"))
+		module_nicho.setUrlApi($.cookie("url_api"))
+
+	}
+	else{
+		if(ambiente == 0){
+			module_nicho.setUrlFront("http://localhost/species-front");
+			module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
+		}
+		else{
+			module_nicho.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");	
+			module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
+		}
+	}
+
+	module_nicho.startModule(modulo, verbose);	
 
 });
 

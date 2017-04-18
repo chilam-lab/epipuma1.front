@@ -1,8 +1,7 @@
-var histogram_module = (function(url_trabajo, verbose){
+var histogram_module = (function(verbose){
 
 	// ************ variables publicas y privadas ( denotadas por _ ) ************
 
-	var _url_trabajo = url_trabajo;
 	var _VERBOSE = verbose;
 	var _table_module_decil, _language_module_nicho;
 	var _highlight_color = "#48D7D5";

@@ -1,8 +1,6 @@
-var net_module = (function(url_trabajo, verbose, url_zacatuche, map_module_net){
+var net_module = (function(verbose, url_zacatuche, map_module_net){
 
-	var _url_trabajo = url_trabajo;
-
-    var _url_zacatuche = url_zacatuche;
+	var _url_zacatuche = url_zacatuche;
 
     var _map_module_net = map_module_net;
 
@@ -75,7 +73,8 @@ var net_module = (function(url_trabajo, verbose, url_zacatuche, map_module_net){
 			    
 			    milliseconds = new Date().getTime();
 
-			    d3.json(_url_trabajo + "t=" + milliseconds)
+			    // d3.json(_url_trabajo + "t=" + milliseconds)
+                d3.json(_url_zacatuche + "t=" + milliseconds)
 			    .header("Content-Type", "application/json")
 			    .post(
 			      	JSON.stringify({

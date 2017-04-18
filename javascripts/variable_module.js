@@ -1,6 +1,6 @@
-var variable_module = (function(url_trabajo, verbose, url_zacatuche){
+var variable_module = (function(verbose, url_zacatuche){
 
-	var _url_trabajo = url_trabajo;
+	
 	var _url_zacatuche = url_zacatuche;
 	var _VERBOSE = verbose;
 	var _selectors_created = [];

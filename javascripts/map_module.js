@@ -1,4 +1,4 @@
-		var map_module = (function (url_trabajo, url_geoserver, workspace, verbose, url_zacatuche){
+		var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche){
 
 			// ************ variables publicas y privadas ( denotadas por _ ) ************
 
@@ -12,8 +12,7 @@
 			var _DELETE_STATE_POINTS = false;
 
 			var _url_geoserver = url_geoserver,
-				_workspace = workspace,
-				_url_trabajo = url_trabajo;
+				_workspace = workspace;
 
 			var _url_zacatuche = url_zacatuche;
 
@@ -373,13 +372,13 @@
 			function _loadD3GridMX(){
 
 			  _VERBOSE ? console.log("_loadD3GridMX") : _VERBOSE;
+			  _VERBOSE ? console.log(_url_zacatuche) : _VERBOSE;
 
 			  // if(_xhr != null)
 			  // 	_xhr.abort();
 
 			  $.ajax({
 			  	url: _url_zacatuche + "/niche/especie",
-			    // url: _url_trabajo,
 			    type : 'post',
 			    dataType : "json",
 			    data : {
@@ -480,66 +479,66 @@
 			}
 
 
-			function _loadD3GridEU(){
+			// function _loadD3GridEU(){
 
-			  _VERBOSE ? console.log("_loadD3GridEU") : _VERBOSE;
+			//   _VERBOSE ? console.log("_loadD3GridEU") : _VERBOSE;
 
-			  // if(_xhr != null)
-			  // 	_xhr.abort();
+			//   // if(_xhr != null)
+			//   // 	_xhr.abort();
 
-			  $.ajax({
-			    url: _url_trabajo,
-			    type : 'post',
-			    dataType : "json",
-			    data : {
-			      "qtype" : "getGridGeoJsonEU"
-			      // "qtype" : "getSegmentedGridGeoJson",
-			      // "xmin" : southWest.lng,
-			      // "ymin" : southWest.lat,
-			      // "xmax" : northEast.lng,
-			      // "ymax" : northEast.lat,
-			      // "zoom" : _zoom_level
-			    },
-			    // success : function (jsonc){
-			    success : function (json){
+			//   $.ajax({
+			//     url: _url_zacatuche,
+			//     type : 'post',
+			//     dataType : "json",
+			//     data : {
+			//       "qtype" : "getGridGeoJsonEU"
+			//       // "qtype" : "getSegmentedGridGeoJson",
+			//       // "xmin" : southWest.lng,
+			//       // "ymin" : southWest.lat,
+			//       // "xmax" : northEast.lng,
+			//       // "ymax" : northEast.lat,
+			//       // "zoom" : _zoom_level
+			//     },
+			//     // success : function (jsonc){
+			//     success : function (json){
 
-			    	// _grid_map = json;
-			    	// console.log(_grid_map.features);
+			//     	// _grid_map = json;
+			//     	// console.log(_grid_map.features);
 
-			    	// $.each(json.features, function(idex,item){
-			    	// 	_grid_map.features.push(item);
-			    	// });
+			//     	// $.each(json.features, function(idex,item){
+			//     	// 	_grid_map.features.push(item);
+			//     	// });
 
-			    	// TODO: GENERAR LOGICA PARA NO AGREGAR CELDAS DOBLES, LA MALLNA DE MEXICO TIENE CELDAS DE ESTADOS UNIDOS
-			    	$.each(json.features, function(index, item){
-			    		_grid_map.features.push(item);
-			    	});
+			//     	// TODO: GENERAR LOGICA PARA NO AGREGAR CELDAS DOBLES, LA MALLNA DE MEXICO TIENE CELDAS DE ESTADOS UNIDOS
+			//     	$.each(json.features, function(index, item){
+			//     		_grid_map.features.push(item);
+			//     	});
 
-			    	_pad = 0;
-			    	_tileIndex = geojsonvt(_grid_map, _tileOptions); 
-		            _tileLayer.redraw();
+			//     	_pad = 0;
+			//     	_tileIndex = geojsonvt(_grid_map, _tileOptions); 
+		 //            _tileLayer.redraw();
 
 			    	                   
-					// ******************************************************************* ACTUAL - D3
+			// 		// ******************************************************************* ACTUAL - D3
 
-			    	// // Asegura que el grid este cargado antes de realizar una generacion por enlace
-			    	// $("#loadData").prop("disabled",false);
+			//     	// // Asegura que el grid este cargado antes de realizar una generacion por enlace
+			//     	// $("#loadData").prop("disabled",false);
 			    	
-			    	// // acrtivar cuando se cargue el grid al inicio!!
-			    	// if(_tipo_modulo == _MODULO_NET){
-			    	// 	createMapGrid();
-			    	// }
+			//     	// // acrtivar cuando se cargue el grid al inicio!!
+			//     	// if(_tipo_modulo == _MODULO_NET){
+			//     	// 	createMapGrid();
+			//     	// }
 			    	
 
-			    },
-			    error : function (){
-			      // alert("Existe un error en la conexión con el servidor, intente mas tarde");
-			      console.log("abort");
-			    }
+			//     },
+			//     error : function (){
+			//       // alert("Existe un error en la conexión con el servidor, intente mas tarde");
+			//       console.log("abort");
+			//     }
 
-			  });
+			//   });
 
-			}
+			// }
 
 
 
@@ -1145,7 +1144,6 @@
 
 			  	$.ajax({
 
-				    // url: _url_trabajo,
 				    url: _url_zacatuche + "/niche/especie",
 				    type : 'post',
 				    dataType : "json",
