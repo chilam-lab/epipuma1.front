@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pede_nicho.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pede_nicho.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * Éste módulo es el encargado de la gestión de los componentes de nicho ecológico.
  *
@@ -84,7 +112,7 @@ var module_nicho = (function() {
 
                     $("#labelFecha").text(_iTrans.prop('labelFecha', ui.values[0], value));
 
-                    if ($("#reload_map").hasClass("btn-primary") && _map_module_nicho.get_specieTarget()) {
+                    if ($("#reload_map").hasClass("btn-primary") &amp;&amp; _map_module_nicho.get_specieTarget()) {
 
                         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_values'), "warning");
                         $("#reload_map").addClass('btn-success').removeClass('btn-primary');
@@ -163,7 +191,7 @@ var module_nicho = (function() {
                 // $( "#sliderFecha" ).slider( "enable" );	
                 $("#lb_sfecha").text(_iTrans.prop('lb_si'));
 
-                if ($("#reload_map").hasClass("btn-primary") && _map_module_nicho.get_specieTarget()) {
+                if ($("#reload_map").hasClass("btn-primary") &amp;&amp; _map_module_nicho.get_specieTarget()) {
 
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_values'), "warning");
 
@@ -177,7 +205,7 @@ var module_nicho = (function() {
 
                 $("#lb_sfecha").text(_iTrans.prop('lb_no'));
 
-                if ($("#reload_map").hasClass("btn-primary") && _map_module_nicho.get_specieTarget()) {
+                if ($("#reload_map").hasClass("btn-primary") &amp;&amp; _map_module_nicho.get_specieTarget()) {
 
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_values'), "warning");
 
@@ -312,7 +340,7 @@ var module_nicho = (function() {
 
                 var rango_fechas = $("#sliderFecha").slider("values");
 
-                if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+                if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") &amp;&amp; rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
                     rango_fechas = undefined;
                 }
 
@@ -344,42 +372,42 @@ var module_nicho = (function() {
 
             var subgroups = _componente_fuente.getVarSelArray();
 
-            cadena_ini += "sp_data=" + sp_data + "&";
+            cadena_ini += "sp_data=" + sp_data + "&amp;";
 
             var val_process = $("#chkValidation").is(':checked');
             if (val_process) {
-                cadena_ini += "chkVal=" + $("#sliderValidation").slider("value") + "&";
+                cadena_ini += "chkVal=" + $("#sliderValidation").slider("value") + "&amp;";
             }
 
             var mapa_prob = $("#chkMapaProb").is(":checked");
             if (mapa_prob) {
-                cadena_ini += "chkPrb=" + mapa_prob + "&";
+                cadena_ini += "chkPrb=" + mapa_prob + "&amp;";
             }
 
             var apriori = $("#chkApriori").is(':checked');
             if (apriori) {
-                cadena_ini += "chkApr=" + apriori + "&";
+                cadena_ini += "chkApr=" + apriori + "&amp;";
             }
 
             var chkFecha = $("#chkFecha").is(':checked');
 
             if (chkFecha) {
-                cadena_ini += "chkFec=" + chkFecha + "&";
+                cadena_ini += "chkFec=" + chkFecha + "&amp;";
             }
 
             var rango_fechas = $("#sliderFecha").slider("values");
 
             if (rango_fechas[0] != $("#sliderFecha").slider("option", "min") || rango_fechas[1] != $("#sliderFecha").slider("option", "max")) {
-                cadena_ini += "minFec=" + rango_fechas[0] + "&maxFec=" + rango_fechas[1];
+                cadena_ini += "minFec=" + rango_fechas[0] + "&amp;maxFec=" + rango_fechas[1];
             }
 
             var min_occ = $("#chkMinOcc").is(':checked');
 
             if (min_occ) {
-                cadena_ini += "chkOcc=" + parseInt($("#occ_number").val()) + "&";
+                cadena_ini += "chkOcc=" + parseInt($("#occ_number").val()) + "&amp;";
             }
 
-            cadena_ini += "num_filters=" + subgroups.length + "&";
+            cadena_ini += "num_filters=" + subgroups.length + "&amp;";
 
             $.each(subgroups, function(index, item) {
 
@@ -389,7 +417,7 @@ var module_nicho = (function() {
                     cadena_ini += "tfilters[" + index + "]=" + str_item;
                 }
                 else {
-                    cadena_ini += "&tfilters[" + index + "]=" + str_item;
+                    cadena_ini += "&amp;tfilters[" + index + "]=" + str_item;
                 }
 
             });
@@ -454,13 +482,13 @@ var module_nicho = (function() {
 
         var maxFec = _json_config.maxFec ? parseInt(_json_config.maxFec) : undefined;
 
-        var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
+        var rango_fechas = minFec != undefined &amp;&amp; maxFec != undefined ? [minFec, maxFec] : undefined;
 
         var num_filters = parseInt(_json_config.num_filters);
 
 
         var filters = [];
-        for (i = 0; i < num_filters; i++) {
+        for (i = 0; i &lt; num_filters; i++) {
 
             item = _json_config["tfilters[" + i + "]"];
 
@@ -490,9 +518,9 @@ var module_nicho = (function() {
         }
 
         search = search.substr(1);
-        var params = search.split("&");
+        var params = search.split("&amp;");
 
-        for (var i = 0; i < params.length; i++) {
+        for (var i = 0; i &lt; params.length; i++) {
 
             var pairs = params[i].split("=");
             if (pairs[0] == key) {
@@ -742,7 +770,7 @@ var module_nicho = (function() {
 
             var rango_fechas = $("#sliderFecha").slider("values");
 
-            if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+            if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") &amp;&amp; rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
                 rango_fechas = undefined;
             }
 
@@ -926,3 +954,26 @@ $(document).ready(function() {
 
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Apr 21 2017 21:12:28 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
