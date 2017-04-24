@@ -31,9 +31,7 @@ var module_net = (function() {
     var TIPO_FUENTE = 0,
             TIPO_SUMIDERO = 1;
 
-    $("#net_link").click(function() {
-        window.location.replace(_url_front + "/geoportal_v0.1.html");
-    });
+
 
 
     /**
@@ -78,12 +76,16 @@ var module_net = (function() {
 
         });
 
+        $("#net_link").click(function() {
+            window.location.replace(_url_front + "/geoportal_v0.1.html");
+        });
+
         document.getElementById("tbl_hist_comunidad").style.display = "none";
-        
+
         document.getElementById("map_panel").style.display = "none";
-        
+
         // document.getElementById("graph_map_comunidad").style.display = "none";
-        
+
         document.getElementById("hist_map_comunidad").style.display = "none";
 
     }
@@ -94,18 +96,21 @@ var module_net = (function() {
      * @function startModule
      * @public
      * @memberof! module_net
+     * 
+     * @param {string} tipo_modulo - Identificador del módulo 0 para nicho y 1 para comunidad
+     * @param {string} verbose - Bandera para desplegar modo verbose
      */
     function startModule(tipo_modulo, verbose) {
 
         _VERBOSE ? console.log("startModule") : _VERBOSE;
-        
+
         _VERBOSE = verbose;
 
         _tipo_modulo = tipo_modulo;
 
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         _language_module_net = language_module(_VERBOSE);
-        
+
         _language_module_net.startLanguageModule(this, _tipo_modulo);
 
     }
@@ -147,13 +152,15 @@ var module_net = (function() {
     }
 
 
-    
+
     /**
      * Método setter para la variable que almacena la URL del servidor.
      *
      * @function setUrlApi
      * @public
      * @memberof! module_net
+     * 
+     * @param {string} url_api - URL del servidor
      */
     function setUrlApi(url_api) {
         _url_api = url_api
@@ -165,6 +172,8 @@ var module_net = (function() {
      * @function setUrlFront
      * @public
      * @memberof! module_net
+     * 
+     * @param {string} url_front - URL del cliente
      */
     function setUrlFront(url_front) {
         _url_front = url_front
@@ -176,6 +185,8 @@ var module_net = (function() {
      * @function setUrlComunidad
      * @public
      * @memberof! module_net
+     * 
+     * @param {string} url_comunidad - URL del cliente en comunidad ecológica
      */
     function setUrlComunidad(url_comunidad) {
         _url_comunidad = url_comunidad
@@ -206,7 +217,7 @@ $(document).ready(function() {
     var modulo = 1;
 
     if ($.cookie("url_front")) {
-        
+
         module_net.setUrlFront($.cookie("url_front"))
         module_net.setUrlApi($.cookie("url_api"))
         module_net.setUrlComunidad($.cookie("url_comunidad"));
@@ -221,7 +232,8 @@ $(document).ready(function() {
         else {
             module_net.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");
             module_net.setUrlApi("http://species.conabio.gob.mx/niche3")
-            module_net.setUrlComunidad("http://species.conabio.gob.mx/c3/charlie_dev/species-front/comunidad_v0.1.html");;
+            module_net.setUrlComunidad("http://species.conabio.gob.mx/c3/charlie_dev/species-front/comunidad_v0.1.html");
+            ;
         }
     }
 
