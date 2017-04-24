@@ -10,7 +10,7 @@ var module_index = (function() {
 
     _VERBOSE ? console.log("*** loading index... ***") : _VERBOSE;
 
-    var _language_module;
+    var _language_module_net;
     var _toastr = toastr;
     var _iTrans;
     var _tipo_modulo;
@@ -219,6 +219,9 @@ var module_index = (function() {
         _url_nicho = url_front + "/geoportal_v0.1.html";
         _url_comunidad = url_front + "/comunidad_v0.1.html";
         _url_api = url_api;
+        
+        $.cookie("url_nicho", _url_nicho);
+        $.cookie("url_comunidad", _url_comunidad);
 
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         // _VERBOSE ? console.log(this) : _VERBOSE

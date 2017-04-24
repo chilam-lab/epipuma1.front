@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: res_display_module.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: res_display_module.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * Éste módulo es el controlador de los módulos utilizados en nicho ecológico.
  *
@@ -856,7 +884,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 hasBios = false;
                 hasRaster = false;
 
-                for (var i = 0; i < single_filter.length; i++) {
+                for (var i = 0; i &lt; single_filter.length; i++) {
                     if (single_filter[i].type == 4) {
                         hasBios = true;
                     }
@@ -881,7 +909,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             hasBios = false;
             hasRaster = false;
 
-            for (var i = 0; i < filterby_group.length; i++) {
+            for (var i = 0; i &lt; filterby_group.length; i++) {
                 if (filterby_group[i].type == 4) {
                     hasBios = true;
                 }
@@ -914,7 +942,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         hasBios = false;
         hasRaster = false;
 
-        for (var i = 0; i < filters.length; i++) {
+        for (var i = 0; i &lt; filters.length; i++) {
             if (filters[i].type == 4) {
                 hasBios = true;
             }
@@ -1273,12 +1301,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 item = data;
 
-                for (j = 0; j < item.length; j++) {
+                for (j = 0; j &lt; item.length; j++) {
                     totcount_epsilon = totcount_epsilon + parseInt(item[j].freq_epsilon);
                     totcount_score = totcount_score + parseInt(item[j].freq_score);
                 }
 
-                for (j = 0; j < item.length; j++) {
+                for (j = 0; j &lt; item.length; j++) {
 
                     elemento_epsilon = {
                         // bcenter : ((data[j].max_epsilon + data[j].min_epsilon) / 2).toFixed(2),
@@ -1320,20 +1348,20 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _ids_componentes_var.forEach(function(item, index) {
 
             $("#btn_variable_" + item).text($.i18n.prop('btn_variable') + " ");
-            $("#btn_variable_" + item).append('<span class="caret"></span>');
+            $("#btn_variable_" + item).append('&lt;span class="caret">&lt;/span>');
 
             $("#btn_variable_bioclim_" + item).text($.i18n.prop('btn_variable_bioclim') + " ");
-            $("#btn_variable_bioclim_" + item).append('<span class="caret"></span>');
+            $("#btn_variable_bioclim_" + item).append('&lt;span class="caret">&lt;/span>');
 
             $("#btn_topo_" + item).text($.i18n.prop('btn_topo') + " ");
-            $("#btn_topo_" + item).append('<span class="caret"></span>');
+            $("#btn_topo_" + item).append('&lt;span class="caret">&lt;/span>');
 
             $("#a_taxon_" + item).text($.i18n.prop('a_taxon'));
             $("#a_clima_" + item).text($.i18n.prop('a_clima'));
             $("#a_topo_" + item).text($.i18n.prop('a_topo'));
 
             $("#btn_variable_bioclim_time_" + item).text($.i18n.prop('btn_variable_bioclim_time') + " ");
-            $("#btn_variable_bioclim_time_" + item).append('<span class="caret"></span>');
+            $("#btn_variable_bioclim_time_" + item).append('&lt;span class="caret">&lt;/span>');
 
 
             $("#a_item_reino_" + item).text($.i18n.prop('a_item_reino'));
@@ -1451,14 +1479,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 var totcount_score = 0;
                 var Fi = []
 
-                for (j = 0; j < data.length; j++) {
+                for (j = 0; j &lt; data.length; j++) {
 
                     totcount_score = totcount_score + parseInt(data[j].freq);
                     Fi[j] = totcount_score;
 
                 }
 
-                for (j = 0; j < data.length; j++) {
+                for (j = 0; j &lt; data.length; j++) {
 
                     elemento_score = {
                         bcenter: parseFloat((parseFloat(data[j].min) + parseFloat(data[j].max)) / 2).toFixed(2),
@@ -1489,7 +1517,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_iterateValidationProcess") : _VERBOSE;
 
-        if (_ITER < _NUM_ITERATIONS) {
+        if (_ITER &lt; _NUM_ITERATIONS) {
 
             // consulta para obteer los griids de la malla
             if (_gridids_collection.length == 0) {
@@ -1684,7 +1712,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 // _VERBOSE ? console.log("comp") : _VERBOSE
 
-                if (parseInt(father.item[0].title.type) == parseInt(son.item[0].title.type) && parseInt(father.item[0].title.group_item) == parseInt(son.item[0].title.group_item)) {
+                if (parseInt(father.item[0].title.type) == parseInt(son.item[0].title.type) &amp;&amp; parseInt(father.item[0].title.group_item) == parseInt(son.item[0].title.group_item)) {
 
                     // _VERBOSE ? console.log("match father and son") : _VERBOSE;
                     son_index = 0;
@@ -1806,7 +1834,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             row.item.forEach(function(decil, index) {
 
 
-                for (j = 0; j < _NUM_DECILES; j++) {
+                for (j = 0; j &lt; _NUM_DECILES; j++) {
                     if (decil.decil == data_chart[j].decil) {
                         var item_chart = data_chart[j];
                         break;
@@ -2010,7 +2038,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             arg = k.split("|");
             v_temp = parseInt(arg[arg.length - 1]);
             // console.log(v_temp);
-            if (v_temp < v)
+            if (v_temp &lt; v)
                 v = v_temp;
 
             newTempStr.push(k + "|" + v);
@@ -2081,7 +2109,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log(json_data) : _VERBOSE
 
-        var htmltable = "<div class='myScrollableBlockPopup'>";
+        var htmltable = "&lt;div class='myScrollableBlockPopup'>";
         var table_sp = "";
         var table_rt = "";
         var title_total;
@@ -2094,19 +2122,19 @@ var res_display_module = (function(verbose, url_zacatuche) {
         // _VERBOSE ? console.log("apriori: " + apriori) : _VERBOSE;
 
 
-        if (json_data.length == 1 && json_data[0].gridid == 0) {
+        if (json_data.length == 1 &amp;&amp; json_data[0].gridid == 0) {
 
             title_total = "Apriori";
             total_celda = parseFloat(apriori).toFixed(2);
 
-            htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr></thead><tbody>";
+            htmltable += "&lt;div class='panel panel-primary'>&lt;div class='panel-heading'>&lt;h3>Total&lt;/h3>&lt;/div>&lt;table class='table table-striped'>&lt;thead>&lt;tr>&lt;th>" + title_total + "&lt;/th>&lt;th>" + total_celda + "&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>";
 
         }
         else {
 
-            for (i = 0; i < json_data.length; i++) {
+            for (i = 0; i &lt; json_data.length; i++) {
 
-                if (sp_values && raster_values)
+                if (sp_values &amp;&amp; raster_values)
                     break;
 
                 if (json_data[i].label == "") {
@@ -2122,47 +2150,47 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             if (sp_values) {
 
-                table_sp += "<div class='panel panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>";
+                table_sp += "&lt;div class='panel panel-primary'>&lt;div class='panel-heading'>&lt;h3>" + _iTrans.prop('tip_tbl_titulo') + "&lt;/h3>&lt;/div>&lt;table class='table table-striped'>&lt;thead>&lt;tr>&lt;th>" + _iTrans.prop('tip_tbl_esp') + "&lt;/th>&lt;th>" + _iTrans.prop('tip_tbl_score') + "&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>";
 
-                for (i = 0; i < json_data.length; i++) {
+                for (i = 0; i &lt; json_data.length; i++) {
 
-                    if (json_data[i].label == "" && json_data[i].gridid != 0) {
+                    if (json_data[i].label == "" &amp;&amp; json_data[i].gridid != 0) {
 
                         total_score += parseFloat(json_data[i].score);
 
-                        table_sp += "<tr><td>" + json_data[i].nom_sp + "</td><td>" + parseFloat(json_data[i].score).toFixed(2) + "</td></tr>";
+                        table_sp += "&lt;tr>&lt;td>" + json_data[i].nom_sp + "&lt;/td>&lt;td>" + parseFloat(json_data[i].score).toFixed(2) + "&lt;/td>&lt;/tr>";
 
                     }
 
                 }
 
-                table_sp += "</tbody></table></div>";
+                table_sp += "&lt;/tbody>&lt;/table>&lt;/div>";
 
             }
 
             if (raster_values) {
 
-                // table_rt += "<div class='panel panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('lb_rango') +" </th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>"
-                table_rt += "<div class='panel panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>"
+                // table_rt += "&lt;div class='panel panel-primary'>&lt;div class='panel-heading'>&lt;h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "&lt;/h3>&lt;/div>&lt;table class='table table-striped'>&lt;thead>&lt;tr>&lt;th>" + _iTrans.prop('tip_tbl_bioclim') + "&lt;/th>&lt;th>" + _iTrans.prop('lb_rango') +" &lt;/th>&lt;th>" + _iTrans.prop('tip_tbl_score') + "&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>"
+                table_rt += "&lt;div class='panel panel-primary'>&lt;div class='panel-heading'>&lt;h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "&lt;/h3>&lt;/div>&lt;table class='table table-striped'>&lt;thead>&lt;tr>&lt;th>" + _iTrans.prop('tip_tbl_bioclim') + "&lt;/th>&lt;th>" + _iTrans.prop('tip_tbl_score') + "&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>"
 
-                for (i = 0; i < json_data.length; i++) {
+                for (i = 0; i &lt; json_data.length; i++) {
                     // _VERBOSE ? console.log(json_data[i]) : _VERBOSE;
 
-                    if (json_data[i].nom_sp == "" && json_data[i].gridid != 0) {
+                    if (json_data[i].nom_sp == "" &amp;&amp; json_data[i].gridid != 0) {
 
                         total_score += parseFloat(json_data[i].score);
 
                         // tag = String(json_data[i].rango).split(":")
                         // min = tag[0].split(".")[0]
                         // max = tag[1].split(".")[0]      
-                        // table_rt += "<tr><td>" + json_data[i].label +"</td><td>" + min+":"+max +"</td><td>" + parseFloat(json_data[i].score).toFixed(2) +"</td></tr>";
-                        table_rt += "<tr><td>" + json_data[i].label + "</td><td>" + parseFloat(json_data[i].score).toFixed(2) + "</td></tr>";
+                        // table_rt += "&lt;tr>&lt;td>" + json_data[i].label +"&lt;/td>&lt;td>" + min+":"+max +"&lt;/td>&lt;td>" + parseFloat(json_data[i].score).toFixed(2) +"&lt;/td>&lt;/tr>";
+                        table_rt += "&lt;tr>&lt;td>" + json_data[i].label + "&lt;/td>&lt;td>" + parseFloat(json_data[i].score).toFixed(2) + "&lt;/td>&lt;/tr>";
 
                     }
 
                 }
 
-                table_rt += "</tbody></table></div>";
+                table_rt += "&lt;/tbody>&lt;/table>&lt;/div>";
             }
 
             // _VERBOSE ? console.log(total_score) : _VERBOSE;
@@ -2181,7 +2209,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 title_total = "Score Total";
                 total_celda = parseFloat(total_score + apriori).toFixed(2);
 
-                htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr><tr><th>" + title_score + "</th><th>" + parcial_score + "</th></tr><tr><th>" + title_apriori + "</th><th>" + total_apriori + "</th></tr></thead><tbody>";
+                htmltable += "&lt;div class='panel panel-primary'>&lt;div class='panel-heading'>&lt;h3>Total&lt;/h3>&lt;/div>&lt;table class='table table-striped'>&lt;thead>&lt;tr>&lt;th>" + title_total + "&lt;/th>&lt;th>" + total_celda + "&lt;/th>&lt;/tr>&lt;tr>&lt;th>" + title_score + "&lt;/th>&lt;th>" + parcial_score + "&lt;/th>&lt;/tr>&lt;tr>&lt;th>" + title_apriori + "&lt;/th>&lt;th>" + total_apriori + "&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>";
             }
             else if (prob) {
                 title_total = "Probabilidad de presencia";
@@ -2191,25 +2219,25 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 // console.log(prob);
                 total_celda = parseFloat(prob).toFixed(2) + "%";
 
-                htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr></thead><tbody>";
+                htmltable += "&lt;div class='panel panel-primary'>&lt;div class='panel-heading'>&lt;h3>Total&lt;/h3>&lt;/div>&lt;table class='table table-striped'>&lt;thead>&lt;tr>&lt;th>" + title_total + "&lt;/th>&lt;th>" + total_celda + "&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>";
             }
             else {
                 title_total = "Score Total";
                 total_celda = parseFloat(total_score).toFixed(2);
 
-                htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr></thead><tbody>";
+                htmltable += "&lt;div class='panel panel-primary'>&lt;div class='panel-heading'>&lt;h3>Total&lt;/h3>&lt;/div>&lt;table class='table table-striped'>&lt;thead>&lt;tr>&lt;th>" + title_total + "&lt;/th>&lt;th>" + total_celda + "&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>";
             }
 
         }
 
 
-        // htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda +"</th></tr></thead><tbody>";
-        htmltable += "</tbody></table></div>";
+        // htmltable += "&lt;div class='panel panel-primary'>&lt;div class='panel-heading'>&lt;h3>Total&lt;/h3>&lt;/div>&lt;table class='table table-striped'>&lt;thead>&lt;tr>&lt;th>" + title_total + "&lt;/th>&lt;th>" + total_celda +"&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>";
+        htmltable += "&lt;/tbody>&lt;/table>&lt;/div>";
 
         htmltable += sp_values ? table_sp : "";
         htmltable += raster_values ? table_rt : "";
 
-        htmltable += "</div>"; // cierra div myScrollableBlockPopup
+        htmltable += "&lt;/div>"; // cierra div myScrollableBlockPopup
 
         return htmltable;
 
@@ -2246,4 +2274,26 @@ var res_display_module = (function(verbose, url_zacatuche) {
     }
 
 
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="res_display_module.html">res_display_module</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Apr 23 2017 20:41:49 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
