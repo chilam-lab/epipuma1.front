@@ -914,9 +914,9 @@ $(document).ready(function() {
             module_nicho.setUrlNicho("http://localhost/species-front/geoportal_v0.1.html");
         }
         else {
-            module_nicho.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
-            module_nicho.setUrlNicho("http://species.conabio.gob.mx/c3/charlie_dev/species-front/geoportal_v0.1.html");
+            module_nicho.setUrlFront("http://species.conabio.gob.mx/");
+            module_nicho.setUrlApi("http://species.conabio.gob.mx/api");
+            module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
         }
     }
 
