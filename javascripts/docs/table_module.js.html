@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: table_module.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: table_module.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * Módulo tabla, utilizado para crear y gestionar las tablas en nicho ecológico y comunidad ecológica.
  *
@@ -110,11 +138,11 @@ var table_module = (function(verbose) {
                 "paging": false,
                 data: data_list,
                 columns: [
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_decil')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_name') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_especie_tbl')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_epsilon')},
-                    {title: ' <button type=\'button\' class=\'btn btn-info glyphicon glyphicon-info-sign btn_column\' onclick=\' $("#div_formula").empty(); $("#lb_header_info").text("Score"); $("#lb_body_info").text("' + _iTrans.prop('lb_msg_score') + '"); table_module().addImageScore(); $("#modalInfo").modal()\' ></button> ' + _iTrans.prop('tip_tbl_score')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje por decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occ')}
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_decil') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_decil')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_name') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_especie_tbl')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_epsilon')},
+                    {title: ' &lt;button type=\'button\' class=\'btn btn-info glyphicon glyphicon-info-sign btn_column\' onclick=\' $("#div_formula").empty(); $("#lb_header_info").text("Score"); $("#lb_body_info").text("' + _iTrans.prop('lb_msg_score') + '"); table_module().addImageScore(); $("#modalInfo").modal()\' >&lt;/button> ' + _iTrans.prop('tip_tbl_score')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje por decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_decil') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_procentaje_occ')}
                 ],
                 // 'copy', 'csv', 'excel', 'pdf', 'print'
                 buttons: [
@@ -151,7 +179,7 @@ var table_module = (function(verbose) {
      */
     function addImageScore() {
 
-        $("#div_formula").append("<img src=images/score.png>");
+        $("#div_formula").append("&lt;img src=images/score.png>");
 
     }
 
@@ -165,7 +193,7 @@ var table_module = (function(verbose) {
      */
     function addImageEpsilon() {
 
-        $("#div_formula").append("<img src=images/epsilon.png>");
+        $("#div_formula").append("&lt;img src=images/epsilon.png>");
 
     }
 
@@ -217,21 +245,21 @@ var table_module = (function(verbose) {
                 "paging": false,
                 "data": data_list,
                 "columns": [
-                    // { title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Género/Raster'); $('#lb_body_info').text('Genero o raster de la variable explicatoria.'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_genero_tbl') },
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\"$('#lb_header_info').text('Especie/Rango'); $('#lb_body_info').text('Especie o rango del raster de la variable explicatoria.'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_especie_tbl_eps')},
+                    // { title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Género/Raster'); $('#lb_body_info').text('Genero o raster de la variable explicatoria.'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_genero_tbl') },
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\"$('#lb_header_info').text('Especie/Rango'); $('#lb_body_info').text('Especie o rango del raster de la variable explicatoria.'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_especie_tbl_eps')},
                     // { title: _iTrans.prop('lb_raster') },
                     // { title: _iTrans.prop('lb_rango') },
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nij'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nij') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nij')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nj'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nj') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nj')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_ni')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_n')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_epsilon')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Score'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_score') + "'); table_module().addImageScore(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('tip_tbl_score')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Reino'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_reino') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_reino')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Phylum'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_phylum') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_phylum')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Clase'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_clase') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_clase')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Orden'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_orden') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_orden')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Familia'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_familia') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_familia')}
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nij'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nij') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_nij')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nj'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nj') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_nj')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_ni')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_n')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_epsilon')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Score'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_score') + "'); table_module().addImageScore(); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('tip_tbl_score')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Reino'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_reino') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('a_item_reino')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Phylum'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_phylum') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('a_item_phylum')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Clase'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_clase') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('a_item_clase')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Orden'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_orden') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('a_item_orden')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Familia'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_familia') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('a_item_familia')}
                 ],
                 // 'copy', 'csv', 'excel', 'pdf', 'print'
                 buttons: [
@@ -415,15 +443,15 @@ var table_module = (function(verbose) {
                 "paging": false,
                 data: data_list,
                 columns: [
-                    // { sTitle: "<input type='checkbox'></input>","mDataProp": null, "sWidth": "20px", "sDefaultContent": "<input type='checkbox' ></input>", "bSortable": false}
+                    // { sTitle: "&lt;input type='checkbox'>&lt;/input>","mDataProp": null, "sWidth": "20px", "sDefaultContent": "&lt;input type='checkbox' >&lt;/input>", "bSortable": false}
 
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable fuente'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_source') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_fuente_tbl')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable destino'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_target') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_sumidero_tbl')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nij'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nij') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nij')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nj'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nj') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nj')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_ni')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_n')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + "Epsilon"}
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable fuente'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_source') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_fuente_tbl')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable destino'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_target') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_sumidero_tbl')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nij'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nij') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_nij')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nj'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nj') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_nj')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_ni')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" >&lt;/button> " + _iTrans.prop('lb_n')},
+                    {title: " &lt;button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" >&lt;/button> " + "Epsilon"}
                 ]
             });
             // data-target='#modalInfo' data-toggle='modal'
@@ -459,3 +487,26 @@ var table_module = (function(verbose) {
 
 
 });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="histogram_module.html">histogram_module</a></li><li><a href="language_module.html">language_module</a></li><li><a href="map_module.html">map_module</a></li><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="net_module.html">net_module</a></li><li><a href="res_display_module.html">res_display_module</a></li><li><a href="res_display_net_module.html">res_display_net_module</a></li><li><a href="table_module.html">table_module</a></li><li><a href="validation_module.html">validation_module</a></li><li><a href="variable_module.html">variable_module</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:54:14 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

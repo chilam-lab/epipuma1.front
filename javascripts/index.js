@@ -266,13 +266,16 @@ $(document).ready(function() {
     var url_front;
     var url_api;
 
-    if (ambiente == 0) {
+    if (ambiente === 0) {
         url_front = "http://localhost/species-front";
-        url_api = "http://species.conabio.gob.mx/niche3";
+        url_api = "http://localhost:8080";
     }
     else {
         url_front = "http://species.conabio.gob.mx/c3/charlie_dev";
-        url_api = "http://species.conabio.gob.mx/niche3";
+        url_api = "http://species.conabio.gob.mx/niche4";
+        
+//        url_front = "http://species.conabio.gob.mx";
+//        url_api = "http://species.conabio.gob.mx/niche3";
     }
 
     module_index.startModule(url_front, url_api, modulo, verbose);

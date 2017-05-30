@@ -82,11 +82,25 @@
 
     // match a url and return a route object
     function routeMatches(url) {
+
+        // console.log("routeMatches");
+
+
         var request = parseUrl(url);
+
+        // console.log(request);
+
         if (request.path in statics) {
+
+            // console.log("statics");
+
             return {route: statics[request.path], args: [request]};
         }
+
         for (var i = 0, len = dynamics.length, matches; i < len; ++i) {
+
+            // console.log("dynamics");
+
             matches = request.path.match(dynamics[i].regexp);
             if (matches) {
                 var args = matches.slice(1, matches.length);
@@ -94,11 +108,14 @@
                 return {route: dynamics[i].route, args: args};
             }
         }
+
         // late check to reduce overhead on hits
         if (!compiled) {
             compileRoutes();
             return routeMatches(url);
         }
+
+
     }
     
     // build the search structures. call this before actually using the router.

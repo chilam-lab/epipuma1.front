@@ -43,21 +43,21 @@ var module_nicho = (function() {
         $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
 
         // inicilizando slider
-        $(function() {
-            $("#sliderValidation").slider({
-                disabled: true,
-                min: 0,
-                max: 100,
-                step: 10,
-                value: 70,
-                change: function(event, ui) {
-                    // _VERBOSE ? console.log(ui.value): _VERBOSE;
-                    $("#labelValidation").text(ui.value + "%");
-                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_porcentaje_test', ui.value, (100 - ui.value)), "info");
-
-                }
-            });
-        });
+//        $(function() {
+//            $("#sliderValidation").slider({
+//                disabled: true,
+//                min: 0,
+//                max: 100,
+//                step: 10,
+//                value: 70,
+//                change: function(event, ui) {
+//                    // _VERBOSE ? console.log(ui.value): _VERBOSE;
+//                    $("#labelValidation").text(ui.value + "%");
+//                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_porcentaje_test', ui.value, (100 - ui.value)), "info");
+//
+//                }
+//            });
+//        });
 
 
         $(function() {
@@ -114,16 +114,20 @@ var module_nicho = (function() {
 
             if ($this.is(':checked')) {
 
-                $("#sliderValidation").slider("enable");
-
+//                $("#sliderValidation").slider("enable");
+                
+                $("#labelValidation").text("Si");
+                
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_act'), "info");
 
             } else {
+                
+                $("#labelValidation").text("No");
 
                 // _VERBOSE ? console.log("no checked"): _VERBOSE;
-                $("#sliderValidation").slider({
-                    disabled: true
-                });
+//                $("#sliderValidation").slider({
+//                    disabled: true
+//                });
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_des'), "info");
 
@@ -346,10 +350,10 @@ var module_nicho = (function() {
 
             cadena_ini += "sp_data=" + sp_data + "&";
 
-            var val_process = $("#chkValidation").is(':checked');
-            if (val_process) {
-                cadena_ini += "chkVal=" + $("#sliderValidation").slider("value") + "&";
-            }
+//            var val_process = $("#chkValidation").is(':checked');
+//            if (val_process) {
+//                cadena_ini += "chkVal=" + $("#sliderValidation").slider("value") + "&";
+//            }
 
             var mapa_prob = $("#chkMapaProb").is(":checked");
             if (mapa_prob) {
@@ -514,7 +518,7 @@ var module_nicho = (function() {
      * @memberof! module_nicho
      * 
      * @param {json} sp_data - JSON con la información de la especie objetivo
-     * @param {josn} subgroups - JSON  con el grupo de variables seleccionado
+     * @param {json} subgroups - JSON  con el grupo de variables seleccionado
      * @param {boleano} chkVal - Bandera si esta activado el proceso de validación
      * @param {boleano} chkPrb - Bandera si esta activado el mapa de probabilidad
      * @param {boleano} chkApr - Bandera si esta activado el cálculo con a priori
@@ -550,17 +554,17 @@ var module_nicho = (function() {
         if (chkVal != undefined) {
 
             $("#chkValidation").prop('checked', true);
-            $("#sliderValidation").slider("enable");
-            $("#sliderValidation").slider('value', chkVal);
+//            $("#sliderValidation").slider("enable");
+//            $("#sliderValidation").slider('value', chkVal);
             $("#labelValidation").text(chkVal + "%");
 
         }
         else {
 
             $("#chkValidation").prop('checked', false);
-            $("#sliderValidation").slider({
-                disabled: true
-            });
+//            $("#sliderValidation").slider({
+//                disabled: true
+//            });
 
         }
 
@@ -748,7 +752,8 @@ var module_nicho = (function() {
 
             var chkFecha = $("#chkFecha").is(':checked');
 
-            slider_value = val_process ? $("#sliderValidation").slider("value") : 0;
+//            slider_value = val_process ? $("#sliderValidation").slider("value") : 0;
+            slider_value = val_process ? true : false;
 
 
             // Falta agregar la condición makesense. 
@@ -908,16 +913,23 @@ $(document).ready(function() {
 
     }
     else {
+        
         if (ambiente === 0) {
             module_nicho.setUrlFront("http://localhost/species-front");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
+            module_nicho.setUrlApi("http://localhost:8080");
             module_nicho.setUrlNicho("http://localhost/species-front/geoportal_v0.1.html");
         }
         else {
+            
             module_nicho.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
+            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche4");
             module_nicho.setUrlNicho("http://species.conabio.gob.mx/c3/charlie_dev/species-front/geoportal_v0.1.html");
+            
+//            module_nicho.setUrlFront("http://species.conabio.gob.mx");
+//            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
+//            module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
         }
+        
     }
 
     module_nicho.startModule(modulo, verbose);

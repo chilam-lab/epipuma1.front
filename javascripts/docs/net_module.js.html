@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: net_module.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: net_module.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * Módulo red, utilizado crear y gestionar la red que es generada del resultado del analísis de comunidad ecológica.
  *
@@ -515,8 +543,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                             .style("opacity", .9);
 
                     div_tip.html(
-                            "<strong>" + _iTrans.prop('lb_variable_name') + ":</strong> <span >" + d.label + "</span><br/><br/>" +
-                            "<strong>" + _iTrans.prop('lb_occ') + ":</strong> <span >" + d.occ + "</span>"
+                            "&lt;strong>" + _iTrans.prop('lb_variable_name') + ":&lt;/strong> &lt;span >" + d.label + "&lt;/span>&lt;br/>&lt;br/>" +
+                            "&lt;strong>" + _iTrans.prop('lb_occ') + ":&lt;/strong> &lt;span >" + d.occ + "&lt;/span>"
                             )
                             .style("left", (d3.event.pageX + 20) + "px")
                             .style("top", (d3.event.pageY - 38) + "px");
@@ -583,7 +611,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
             d3.event.sourceEvent.stopPropagation();
 
-            if (!d.selected && !shiftKey) {
+            if (!d.selected &amp;&amp; !shiftKey) {
                 // if this node isn't selected, then we have to unselect every other node
                 node.classed("selected", function(p) {
                     return p.selected = p.previouslySelected = false;
@@ -860,7 +888,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                     });
                 });
 
-                for (var i = 0; i < json.nodes.length; ++i)
+                for (var i = 0; i &lt; json.nodes.length; ++i)
                     force.tick();
 
                 force.resume();
@@ -872,7 +900,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
                             _VERBOSE ? console.log("brushstart") : _VERBOSE;
                             node.each(function(d) {
-                                d.previouslySelected = shiftKey && d.selected;
+                                d.previouslySelected = shiftKey &amp;&amp; d.selected;
                             });
 
                         })
@@ -886,7 +914,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
                             node.classed("selected", function(d) {
 
-                                inside = extent[0][0] <= d.x && d.x < extent[1][0] && extent[0][1] <= d.y && d.y < extent[1][1]
+                                inside = extent[0][0] &lt;= d.x &amp;&amp; d.x &lt; extent[1][0] &amp;&amp; extent[0][1] &lt;= d.y &amp;&amp; d.y &lt; extent[1][1]
                                 indexNodes.push(d.previouslySelected ^ inside)
                                 return d.selected = d.previouslySelected ^ inside;
 
@@ -900,7 +928,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
                             indexNodes.forEach(function(d, i) {
                                 if (nodes_related.has(i.toString())) {
-                                    if (nodes_related.get(i.toString()) && d == 1) {
+                                    if (nodes_related.get(i.toString()) &amp;&amp; d == 1) {
                                         // _VERBOSE ? console.log(i) : _VERBOSE;
                                         // _VERBOSE ? console.log(d) : _VERBOSE;
                                         index_selected_visible.push(i);
@@ -1010,7 +1038,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
             search_str = $("#input_text_search").val();
 
-            if (search_str.length <= 2) {
+            if (search_str.length &lt;= 2) {
 
                 d3.selectAll("g.node").selectAll("circle")
                         .each(function(item) {
@@ -1212,7 +1240,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
     function hasConnections(a) {
         for (var property in _linkedByIndex) {
             s = property.split(",");
-            if ((s[0] == a.index || s[1] == a.index) && _linkedByIndex[property])
+            if ((s[0] == a.index || s[1] == a.index) &amp;&amp; _linkedByIndex[property])
                 return true;
         }
         return false;
@@ -1284,7 +1312,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
         d3.selectAll("g.node").selectAll("circle").attr("stroke", function(o) {
 
-            if ((_isConnected(d, o) && d.spid != o.spid) || _map_conected.has(o.spid)) {
+            if ((_isConnected(d, o) &amp;&amp; d.spid != o.spid) || _map_conected.has(o.spid)) {
                 _map_conected.set(o.spid, true);
                 return _highlight_linked_color;
             }
@@ -1296,7 +1324,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
         d3.selectAll("g.node").selectAll("circle").style("stroke-width", function(o) {
 
-            if ((_isConnected(d, o) && d.spid != o.spid) || _map_conected.has(o.spid)) {
+            if ((_isConnected(d, o) &amp;&amp; d.spid != o.spid) || _map_conected.has(o.spid)) {
 
                 console.log("4");
 
@@ -1309,7 +1337,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
         // link.style("stroke", function(o) {
-        //           return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.score) && o.score>=0)?color(o.score):default_link_color);
+        //           return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.score) &amp;&amp; o.score>=0)?color(o.score):default_link_color);
 
     }
 
@@ -1434,3 +1462,26 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 });
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="histogram_module.html">histogram_module</a></li><li><a href="language_module.html">language_module</a></li><li><a href="map_module.html">map_module</a></li><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="net_module.html">net_module</a></li><li><a href="res_display_module.html">res_display_module</a></li><li><a href="res_display_net_module.html">res_display_net_module</a></li><li><a href="table_module.html">table_module</a></li><li><a href="validation_module.html">validation_module</a></li><li><a href="variable_module.html">variable_module</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:54:14 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
