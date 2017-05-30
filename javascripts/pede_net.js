@@ -230,9 +230,9 @@ $(document).ready(function() {
             module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html");
         }
         else {
-            module_net.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");
-            module_net.setUrlApi("http://species.conabio.gob.mx/niche3")
-            module_net.setUrlComunidad("http://species.conabio.gob.mx/c3/charlie_dev/species-front/comunidad_v0.1.html");
+            module_net.setUrlFront("http://species.conabio.gob.mx/dev/");
+            module_net.setUrlApi("http://species.conabio.gob.mx/api-dev/")
+            module_net.setUrlComunidad("http://species.conabio.gob.mx/dev/comunidad_v0.1.html");
             ;
         }
     }
