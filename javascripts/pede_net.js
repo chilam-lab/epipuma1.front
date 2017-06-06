@@ -226,7 +226,7 @@ $(document).ready(function() {
     else {
         if (ambiente === 0) {
             module_net.setUrlFront("http://localhost/species-front");
-            module_net.setUrlApi("http://species.conabio.gob.mx/niche3");
+            module_net.setUrlApi("http://species.conabio.gob.mx");
             module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html");
         }
         else {

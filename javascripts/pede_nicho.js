@@ -60,7 +60,7 @@ var module_nicho = (function() {
         });
 
 
-        $(function() {
+        $(function(){
 
             var year = parseInt(new Date().getFullYear());
             // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
@@ -95,7 +95,6 @@ var module_nicho = (function() {
 
                 }
             });
-
         });
 
 
