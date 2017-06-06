@@ -403,21 +403,33 @@ $(document).ready(function() {
     }
     else {
         if (ambiente === 0) {
+
             module_net.setUrlFront("http://localhost/species-front")
-//            module_net.setUrlApi("http://species.conabio.gob.mx/niche3");
             module_net.setUrlApi("http://localhost:8080")
             module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html")
         }
         else {
-            module_net.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev")
-            module_net.setUrlApi("http://species.conabio.gob.mx/niche4")
-            module_net.setUrlComunidad("http://species.conabio.gob.mx/c3/charlie_dev/species-front/comunidad_v0.1.html")
+//            module_net.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev")
+//            module_net.setUrlApi("http://species.conabio.gob.mx/niche4")
+//            module_net.setUrlComunidad("http://species.conabio.gob.mx/c3/charlie_dev/species-front/comunidad_v0.1.html")
 
 //            module_nicho.setUrlFront("http://species.conabio.gob.mx");
 //            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
 //            module_nicho.setUrlNicho("http://species.conabio.gob.mx/comunidad_v0.1.html");
             
+//            module_net.setUrlFront("http://localhost/species-front");
+//            module_net.setUrlApi("http://species.conabio.gob.mx");
+//            module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html");
+        
+            module_net.setUrlFront("http://species.conabio.gob.mx/dev/");
+            module_net.setUrlApi("http://species.conabio.gob.mx/api-dev/")
+            module_net.setUrlComunidad("http://species.conabio.gob.mx/dev/comunidad_v0.1.html");
+            ;
+
         }
+        
+        
+        
     }
 
 

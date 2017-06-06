@@ -271,11 +271,17 @@ $(document).ready(function() {
         url_api = "http://localhost:8080";
     }
     else {
-        url_front = "http://species.conabio.gob.mx/c3/charlie_dev";
-        url_api = "http://species.conabio.gob.mx/niche4";
+
+//        url_front = "http://species.conabio.gob.mx/c3/charlie_dev";
+//        url_api = "http://species.conabio.gob.mx/niche4";
         
 //        url_front = "http://species.conabio.gob.mx";
 //        url_api = "http://species.conabio.gob.mx/niche3";
+
+        url_front = "http://species.conabio.gob.mx/dev";
+        url_api = "http://species.conabio.gob.mx/api-dev";
+
+
     }
 
     module_index.startModule(url_front, url_api, modulo, verbose);

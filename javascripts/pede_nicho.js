@@ -60,7 +60,7 @@ var module_nicho = (function() {
 //        });
 
 
-        $(function() {
+        $(function(){
 
             var year = parseInt(new Date().getFullYear());
             // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
@@ -95,7 +95,6 @@ var module_nicho = (function() {
 
                 }
             });
-
         });
 
 
@@ -920,14 +919,21 @@ $(document).ready(function() {
             module_nicho.setUrlNicho("http://localhost/species-front/geoportal_v0.1.html");
         }
         else {
+
             
-            module_nicho.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche4");
-            module_nicho.setUrlNicho("http://species.conabio.gob.mx/c3/charlie_dev/species-front/geoportal_v0.1.html");
+//            module_nicho.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");
+//            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche4");
+//            module_nicho.setUrlNicho("http://species.conabio.gob.mx/c3/charlie_dev/species-front/geoportal_v0.1.html");
             
 //            module_nicho.setUrlFront("http://species.conabio.gob.mx");
 //            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
 //            module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
+
+            module_nicho.setUrlFront("http://species.conabio.gob.mx/dev/");
+            module_nicho.setUrlApi("http://species.conabio.gob.mx/api-dev/");
+            module_nicho.setUrlNicho("http://species.conabio.gob.mx/dev/geoportal_v0.1.html");
+
+
         }
         
     }
