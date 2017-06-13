@@ -897,9 +897,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 _decil_data['tdelta'] = active_time;
 
                 // elimina una segunda petición cuando el grupo de variables solo contiene un elemento
-//                if (hasChildren) {
-//                    _createScore_Decil(_decil_data, discardedGridids, false, false);
-//                }
+                if (hasChildren) {
+                    _createScore_Decil(_decil_data, false, false);
+                }
 
 
             });
@@ -925,7 +925,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
 
-//            _createScore_Decil(_decil_group_data, discardedGridids, hasChildren, false);
+            _createScore_Decil(_decil_group_data, hasChildren, false);
 
         });
 
@@ -970,9 +970,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _cdata['tdelta'] = active_time;
         _total_data_decil['tdelta'] = active_time;
 
-//        if (hasTotal) {
-//            _createScore_Decil(_total_data_decil, discardedGridids, false, hasTotal);
-//        }
+        if (hasTotal) {
+            _createScore_Decil(_total_data_decil, false, hasTotal);
+        }
 
     }
 
@@ -986,11 +986,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @memberof! res_display_module
      * 
      * @param {josn} decildata - Json con la configuración seleccionada por el usuario
-     * @param {array} test_set - Array con los ids de celdas que deben ser descartados si existe proceso de validación
      * @param {boolean} hasChildren - Bandera que indica si la configuración enviada es un conjunto de las variables seleccionadas o es una variable del grupo
      * @param {boolean} isTotal - Bandera que indica si la configuración enviada es el total de los conjuntos de las variables seleccionadas 
      */
-    function _createScore_Decil(decildata, test_set, hasChildren, isTotal) {
+    function _createScore_Decil(decildata, hasChildren, isTotal) {
 
         _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
 
@@ -1004,104 +1003,103 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 //        _VERBOSE ? console.log(_tbl_decil) : _VERBOSE;
 
-        $.ajax({
-            type: "post",
-            url: _url_zacatuche + "/niche/getScoreDecil",
-            data: decildata,
-            dataType: "json",
-            success: function(resp, status) {
-
-
-                console.log(resp.data);
-
-                data = resp.data;
-
-                _tbl_decil = true;
-
-                _ITER_REQUESTS = _ITER_REQUESTS - 1;
-
-                if (data[0].title.is_parent) {
-
-                    if (hasChildren) {
-                        _fathers.push({item: data});
-                    }
-                    else {
-                        // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
-                        _fathers.push({item: data});
-                        _sons.push({item: data});
-                    }
-
-                }
-                else {
-                    _sons.push({item: data});
-
-                }
-
-
-                if (isTotal)
-                    _totals.push({item: data});
-
-
-                if (_ITER_REQUESTS == 0) {
-
-
-                    _ITER_REQUESTS = _REQUESTS;
-
-                    data_chart = _createSetStructure(_fathers, _sons);
-
-                    // añade totales cuando es mas de un grupo sea biotico  o abiotico.
-                    if (_totals.length > 0) {
-                        _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
-
-                        // ya no contiene valores del segundo grupo de variables...
-                        data_chart = _addDataChartTotal(data_chart, _totals[0].item);
-                    }
-
-                    _VERBOSE ? console.log(data_chart) : _VERBOSE;
-
-                    if ($("#chkValidation").is(':checked')) {
-
-                        _VERBOSE ? console.log("data_chart added") : _VERBOSE;
-
-                        _dataChartValSet.push({"data_chart": data_chart, "test_set": test_set});
-
-                        _ITER++;
-
-
-                        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_iteracion', _ITER, _NUM_ITERATIONS), "info");
-                        // _toastr.info(_iTrans.prop('lb_iteracion',_ITER,_NUM_ITERATIONS));
-
-//                        _iterateValidationProcess(_panelGeneration, _ITER, _NUM_ITERATIONS);
-
-                    }
-                    else {
-
-                        _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
-                        // _createMultipleBarChart(data_chart, [], "chartdiv_score_decil");
-
-                        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
-                        // _toastr.success(_iTrans.prop('lb_resultados_display'));
-
-                    }
-
-                }
-
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                _VERBOSE ? console.log("error createScore_Decil: " + textStatus) : _VERBOSE;
-                mensaje = "";
-                mensaje = $("#chkValidation").is(':checked') ? _iTrans.prop('lb_error_proceso_val') : _iTrans.prop('lb_error_histograma');
-
-                _module_toast.showToast_BottomCenter(mensaje, "error");
-
-                _ITER = 0;
-                _gridids_collection = [];
-                _total_set_length = 0;
-                _training_set_size = 0;
-                _test_set_size = 0;
-            }
-
-        });
+//        $.ajax({
+//            type: "post",
+//            url: _url_zacatuche + "/niche/getScoreDecil",
+//            data: decildata,
+//            dataType: "json",
+//            success: function(resp, status) {
+//                
+//                console.log(resp.data);
+//
+//                data = resp.data;
+//
+//                _tbl_decil = true;
+//
+//                _ITER_REQUESTS = _ITER_REQUESTS - 1;
+//
+//                if (data[0].title.is_parent) {
+//
+//                    if (hasChildren) {
+//                        _fathers.push({item: data});
+//                    }
+//                    else {
+//                        // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
+//                        _fathers.push({item: data});
+//                        _sons.push({item: data});
+//                    }
+//
+//                }
+//                else {
+//                    _sons.push({item: data});
+//
+//                }
+//
+//
+//                if (isTotal)
+//                    _totals.push({item: data});
+//
+//
+//                if (_ITER_REQUESTS == 0) {
+//
+//
+//                    _ITER_REQUESTS = _REQUESTS;
+//
+//                    data_chart = _createSetStructure(_fathers, _sons);
+//
+//                    // añade totales cuando es mas de un grupo sea biotico  o abiotico.
+//                    if (_totals.length > 0) {
+//                        _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
+//
+//                        // ya no contiene valores del segundo grupo de variables...
+//                        data_chart = _addDataChartTotal(data_chart, _totals[0].item);
+//                    }
+//
+//                    _VERBOSE ? console.log(data_chart) : _VERBOSE;
+//
+//                    if ($("#chkValidation").is(':checked')) {
+//
+//                        _VERBOSE ? console.log("data_chart added") : _VERBOSE;
+//
+//                        _dataChartValSet.push({"data_chart": data_chart, "test_set": test_set});
+//
+//                        _ITER++;
+//
+//
+//                        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_iteracion', _ITER, _NUM_ITERATIONS), "info");
+//                        // _toastr.info(_iTrans.prop('lb_iteracion',_ITER,_NUM_ITERATIONS));
+//
+////                        _iterateValidationProcess(_panelGeneration, _ITER, _NUM_ITERATIONS);
+//
+//                    }
+//                    else {
+//
+//                        _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
+//                        // _createMultipleBarChart(data_chart, [], "chartdiv_score_decil");
+//
+//                        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
+//                        // _toastr.success(_iTrans.prop('lb_resultados_display'));
+//
+//                    }
+//
+//                }
+//
+//            },
+//            error: function(jqXHR, textStatus, errorThrown) {
+//                _VERBOSE ? console.log("error createScore_Decil: " + textStatus) : _VERBOSE;
+//                mensaje = "";
+//                mensaje = $("#chkValidation").is(':checked') ? _iTrans.prop('lb_error_proceso_val') : _iTrans.prop('lb_error_histograma');
+//
+//                _module_toast.showToast_BottomCenter(mensaje, "error");
+//
+//                _ITER = 0;
+//                _gridids_collection = [];
+//                _total_set_length = 0;
+//                _training_set_size = 0;
+//                _test_set_size = 0;
+//            }
+//
+//        });
 
 
     }

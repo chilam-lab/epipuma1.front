@@ -390,7 +390,7 @@ $(document).ready(function() {
     var verbose = true;
 
     // 0 local, 1 producción
-    var ambiente = 0;
+    var ambiente = 1;
     // 0 nicho, 1 comunidad
     var modulo = 1;
 
@@ -421,8 +421,8 @@ $(document).ready(function() {
 //            module_net.setUrlApi("http://species.conabio.gob.mx");
 //            module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html");
         
-            module_net.setUrlFront("http://species.conabio.gob.mx/dev/");
-            module_net.setUrlApi("http://species.conabio.gob.mx/api-dev/")
+            module_net.setUrlFront("http://species.conabio.gob.mx/dev");
+            module_net.setUrlApi("http://species.conabio.gob.mx/api-dev")
             module_net.setUrlComunidad("http://species.conabio.gob.mx/dev/comunidad_v0.1.html");
             ;
 

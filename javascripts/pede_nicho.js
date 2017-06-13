@@ -65,7 +65,7 @@ var module_nicho = (function() {
             var year = parseInt(new Date().getFullYear());
             // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
             year = Math.round(year / 10) * 10;
-            console.log(year);
+//            console.log(year);
 
             $("#sliderFecha").slider({
                 range: true,
@@ -900,7 +900,7 @@ $(document).ready(function() {
     var verbose = true;
 
     // 0 local, 1 producción
-    var ambiente = 0;
+    var ambiente = 1;
     // 0 nicho, 1 comunidad
     var modulo = 0;
     
@@ -929,8 +929,8 @@ $(document).ready(function() {
 //            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
 //            module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
 
-            module_nicho.setUrlFront("http://species.conabio.gob.mx/dev/");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/api-dev/");
+            module_nicho.setUrlFront("http://species.conabio.gob.mx/dev");
+            module_nicho.setUrlApi("http://species.conabio.gob.mx/api-dev");
             module_nicho.setUrlNicho("http://species.conabio.gob.mx/dev/geoportal_v0.1.html");
 
 
