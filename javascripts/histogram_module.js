@@ -42,7 +42,7 @@ var histogram_module = (function(verbose) {
         _language_module_nicho = languageModule;
         _iTrans = _language_module_nicho.getI18();
     }
-    
+
     /**
      * Éste método inicializa variables globales y componentes visuales que son necesarios para la creación de histogramas.
      *
@@ -54,9 +54,9 @@ var histogram_module = (function(verbose) {
     function _initilizeHistogram() {
 
         _VERBOSE ? console.log("_initilizeHistogram") : _VERBOSE;
-        
-        
-        
+
+
+
 
     }
 
@@ -202,14 +202,16 @@ var histogram_module = (function(verbose) {
             // no retorna el objeto json cuando el decil no tiene valores
             if (value_decil_ready <= index) {
                 d.ages = d.names.map(function(name, i) {
-                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i], gridids: d.gridids[i]};
+//                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i], gridids: d.gridids[i]};
+                    return {name: name, value: d.values[i], decil: d.decil};
                 });
             }
             // asigna valores falsos a los deciles ausentes
             else {
                 // d.decil_nulo = true;
                 d.ages = json_decil[value_decil_ready].names.map(function(name, i) {
-                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), species: [], gridids: [], decil_nulo: true};
+//                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), species: [], gridids: [], decil_nulo: true};
+                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), decil_nulo: true};
                 });
             }
         });
@@ -426,85 +428,85 @@ var histogram_module = (function(verbose) {
                     tip.hide(d);
 
                 })
-                .on("click", function(d) {
-
-                    _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
-                    if (d.decil_nulo)
-                        return;
-
-                    // _VERBOSE ? console.log(d.gridids.p) : _VERBOSE;
-
-                    g = d3.select("#grid_map");
-                    feature = g.selectAll("path");
-
-                    feature.each(function(cell, i) {
-
-                        if ($.inArray(cell.properties.gridid, d.gridids.p) != -1) {
-                            d3.select(this).style("stroke", _highlight_color);
-                            d3.select(this).style("stroke-width", 2);
-                        } else {
-                            d3.select(this).style("stroke", "none");
-                            d3.select(this).style("stroke-width", "none");
-                        }
-
-                    });
-
-                    state.selectAll("rect.bar").each(function(bar, i) {
-                        d3.select(this).style("stroke", "none");
-                    });
-                    d3.select(this).style("stroke", "black");
-                    d3.select(this).style("stroke-width", 3);
-
-                    decil_list = [];
-                    d.species.p.forEach(function(sp, index) {
-
-                        // spid, label, epsilon, score, occ(nj), occ_decil
-                        params = sp.split("|");
-                        // _VERBOSE ? console.log(params) : _VERBOSE;
-
-                        occ = parseFloat(params[4]);
-                        occ_decil = parseFloat(params[5])
-                        per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
-
-                        // console.log(params[1]);
-                        // console.log(params[4]);
-                        // console.log(params[5]);
-
-                        decil_list.push({decil: d.decil, species: params[1], epsilons: params[2], scores: params[3], occ: per_decil});
-                    });
-
-                    // _VERBOSE ? console.log(decil_list) : _VERBOSE;
-
-                    _table_module_decil.createDecilList(decil_list);
-
-                });
+//                .on("click", function(d) {
+//
+//                    _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
+//                    if (d.decil_nulo)
+//                        return;
+//
+//                    // _VERBOSE ? console.log(d.gridids.p) : _VERBOSE;
+//
+//                    g = d3.select("#grid_map");
+//                    feature = g.selectAll("path");
+//
+//                    feature.each(function(cell, i) {
+//
+//                        if ($.inArray(cell.properties.gridid, d.gridids.p) != -1) {
+//                            d3.select(this).style("stroke", _highlight_color);
+//                            d3.select(this).style("stroke-width", 2);
+//                        } else {
+//                            d3.select(this).style("stroke", "none");
+//                            d3.select(this).style("stroke-width", "none");
+//                        }
+//
+//                    });
+//
+//                    state.selectAll("rect.bar").each(function(bar, i) {
+//                        d3.select(this).style("stroke", "none");
+//                    });
+//                    d3.select(this).style("stroke", "black");
+//                    d3.select(this).style("stroke-width", 3);
+//
+//                    decil_list = [];
+//                    d.species.p.forEach(function(sp, index) {
+//
+//                        // spid, label, epsilon, score, occ(nj), occ_decil
+//                        params = sp.split("|");
+//                        // _VERBOSE ? console.log(params) : _VERBOSE;
+//
+//                        occ = parseFloat(params[4]);
+//                        occ_decil = parseFloat(params[5])
+//                        per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
+//
+//                        // console.log(params[1]);
+//                        // console.log(params[4]);
+//                        // console.log(params[5]);
+//
+//                        decil_list.push({decil: d.decil, species: params[1], epsilons: params[2], scores: params[3], occ: per_decil});
+//                    });
+//
+//                    // _VERBOSE ? console.log(decil_list) : _VERBOSE;
+//
+//                    _table_module_decil.createDecilList(decil_list);
+//
+//                });
 
         decil_list = [];
-        $.each(json_decil, function(index, value) {
+//        $.each(json_decil, function(index, value) {
+//
+//            _VERBOSE ? console.log("decil_nulo: " + value.decil_nulo) : _VERBOSE;
+//            if (value.decil_nulo)
+//                return false;
+//
+//            value.species[0].p.forEach(function(sp, index) {
+//
+//                // spid, label, epsilon, score, occ(nj), occ_decil
+//                params = sp.split("|");
+//                // _VERBOSE ? console.log(params) : _VERBOSE;
+//
+//                // EJEMPLO Panthera leo - occ_total = 2 y occ_decil = 3 => 1.5 => 150% (ERROR)
+//                occ_total = parseFloat(params[4]);
+//                occ_decil = parseFloat(params[5]);
+//                per_decil = parseFloat(occ_decil / occ_total * 100).toFixed(2) + "%";
+//
+//                decil_list.push({decil: value.decil, species: params[1], epsilons: params[2], scores: params[3], occ: per_decil});
+//            });
+//
+//            return false;
+//        });
 
-            _VERBOSE ? console.log("decil_nulo: " + value.decil_nulo) : _VERBOSE;
-            if (value.decil_nulo)
-                return false;
 
-            value.species[0].p.forEach(function(sp, index) {
-
-                // spid, label, epsilon, score, occ(nj), occ_decil
-                params = sp.split("|");
-                // _VERBOSE ? console.log(params) : _VERBOSE;
-
-                // EJEMPLO Panthera leo - occ_total = 2 y occ_decil = 3 => 1.5 => 150% (ERROR)
-                occ_total = parseFloat(params[4]);
-                occ_decil = parseFloat(params[5]);
-                per_decil = parseFloat(occ_decil / occ_total * 100).toFixed(2) + "%";
-
-                decil_list.push({decil: value.decil, species: params[1], epsilons: params[2], scores: params[3], occ: per_decil});
-            });
-
-            return false;
-        });
-
-
-        _table_module_decil.createDecilList(decil_list);
+//        _table_module_decil.createDecilList(decil_list);
 
 
         /***************** rect legend */
@@ -656,8 +658,30 @@ var histogram_module = (function(verbose) {
                     .style("text-anchor", "end")
                     .text(_iTrans.prop('lb_recall'));
 
+            
+
+
+//          TODO: GENERAR LA ESTRUCUTURA QUE GENERABA EN EL PROCESO DE VAIDACIÓN
+//          iter_recall.push({"group_name": decil.group_name, "recall": recall, "vp": vp, "fn": fn, "decil": decil.decil, "recall_nulo": recall_nulo});
+            array_recall = [];
+            $.each(json_decil, function(index, value) {
+                console.log(value)
+                
+                var item = {
+                    "recall" : value.recall,
+                    "vp":   parseFloat(value.vp),
+                    "fn":   parseFloat(value.fn),
+                    "decil": parseInt(value.decil)
+                }
+                array_recall.push(item);
+                
+            })
+            
             // adding recall line
             _VERBOSE ? console.log(array_recall) : _VERBOSE;
+
+
+
 
             $.each(array_recall, function(i, recall_item) {
 
@@ -752,7 +776,7 @@ var histogram_module = (function(verbose) {
     function createBarChartFecha(distinctPoints) {
 
         var puntos_json = d3.map([]);
-        
+
         $.each(distinctPoints, function(index, item) {
 
             fecha_ano = item.fechacolecta == null || item.fechacolecta.split("-")[0] == "" ? 0 : parseInt(item.fechacolecta.split("-")[0]);
@@ -784,7 +808,7 @@ var histogram_module = (function(verbose) {
             }
 
         })
-        
+
         // VERIFICAR SI SE PUEDEN DESPLEGAR LOS REGISTROS SIN FECHA
         // if(colectas_zero.length == 0){
         // 	$("#lb_regfecha").text("0");
@@ -825,9 +849,9 @@ var histogram_module = (function(verbose) {
 
 
         var data = rango_fechas.values();
-       
+
         $("#hist_fecha_container").empty();
-       
+
         var margin = {top: 10, right: 10, bottom: 20, left: 30},
         width = $("#hist_fecha_container").width() - margin.left - margin.right,
                 height = $("#hist_fecha_container").height() - margin.top - margin.bottom;
@@ -1075,7 +1099,7 @@ var histogram_module = (function(verbose) {
 
     }
 
-    
+
     /**
      * Genera colores aleatorios para asignarlo al histograma de decil en el análisis de nicho ecológico.
      *
@@ -1151,10 +1175,10 @@ var histogram_module = (function(verbose) {
                 .each(function(chart) {
                     chart.on("brushend", display_obj.renderAll);
                 });
-        
+
         $("#lb_body_info").text(_iTrans.prop('lb_msg_hist_epsilon'));
         $('#lb_header_info').text(_iTrans.prop('titulo_hist_eps'));
-        
+
 
         return chart_component;
 
@@ -1211,7 +1235,7 @@ var histogram_module = (function(verbose) {
 
             height = y.range()[0];
             data = group.all();
-            
+
             // it contains an array from 1 to 20, create key missing elements and set value to 0
             display_obj.epsilon_beans.forEach(function(d) {
                 exists = false;
@@ -1236,7 +1260,7 @@ var histogram_module = (function(verbose) {
 
                 if (tvalue != 0)
                     value.value = tvalue / all.reduceCount().value();
-                
+
             });
 
 
@@ -1349,7 +1373,7 @@ var histogram_module = (function(verbose) {
                                 else {
                                     min_val = Math.min(Math.abs(left), Math.abs(right));
                                 }
-                                
+
                                 if (display_obj.ep_th < min_val) {
                                     return d3.rgb(102, 184, 243);
                                     // return "steelblue";
@@ -1449,7 +1473,7 @@ var histogram_module = (function(verbose) {
 
 
             b = brush.extent();
-            
+
             var localBrushStart = (brush.empty()) ? brushStart : y(b[0]),
                     localBrushEnd = (brush.empty()) ? brushEnd : y(b[1]);
 
@@ -1519,7 +1543,7 @@ var histogram_module = (function(verbose) {
         chart.x = function(_) {
 
             _VERBOSE ? console.log("chart.x") : _VERBOSE;
-           
+
             if (!arguments.length)
                 return x;
 

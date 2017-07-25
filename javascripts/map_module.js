@@ -754,6 +754,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     var _lin_inf = undefined;
     var _lin_sup = undefined;
     var _sin_fecha = undefined;
+    var _con_fosil = undefined;
 
 
     /**
@@ -765,16 +766,18 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * 
      * @param {array} rango - Array con el rango de fechas
      * @param {boolean} sfecha - Bandera para saber si serán considerados los registros sin fecha
+     * @param {boolean} sfosil - Bandera para saber si serán considerados los registros sin fosiles
      */
-    function busca_especie_filtros(rango, sfecha) {
+    function busca_especie_filtros(rango, sfecha, sfosil) {
 
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
 
         _lin_inf = rango ? rango[0] : undefined;
         _lin_sup = rango ? rango[1] : undefined;
         _sin_fecha = sfecha;
+        _con_fosil = sfosil;
 
-        busca_especie(true);
+        busca_especie();
 
         _toastr.info("Recalculando ocurrencias de especie");
 
@@ -787,14 +790,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @public
      * @memberof! map_module
      * 
-     * @param {boolean} cfiltros - Bandera para saber si serán considerados los filtros temporales
      */
-    function busca_especie(cfiltros) {
+    function busca_especie() {
 
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
-        
         var milliseconds = new Date().getTime();
+        
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
+        _con_fosil = $("#chkFosil").is(':checked') ? true : false;
 
         
         $.ajax({
@@ -807,7 +810,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "idtime": milliseconds,
                 "lim_inf": _lin_inf,
                 "lim_sup": _lin_sup,
-                "sfecha": _sin_fecha
+                "sfecha": _sin_fecha,
+                "sfosil": _con_fosil
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-Test-Header', 'test-value');

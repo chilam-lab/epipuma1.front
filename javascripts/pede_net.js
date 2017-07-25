@@ -88,16 +88,17 @@ var module_net = (function() {
 
             _VERBOSE ? console.log("show_gen") : _VERBOSE;
 
-            var cadena_ini = _url_comunidad + '#link/?';
+//            var cadena_ini = _url_comunidad + '#link/?';
+            var data_link = "";
 
             var subgroups_source = _componente_fuente.getVarSelArray();
             var subgroups_target = _componente_sumidero.getVarSelArray();
             
-            cadena_ini += "minOcc=" + parseInt($("#occ_number").val()) + "&";
+            data_link += "minOcc=" + parseInt($("#occ_number").val()) + "&";
 
-            cadena_ini += "num_filters_source=" + subgroups_source.length + "&";
+            data_link += "num_filters_source=" + subgroups_source.length + "&";
             
-            cadena_ini += "num_filters_target=" + subgroups_target.length + "&";
+            data_link += "num_filters_target=" + subgroups_target.length + "&";
 
 
             $.each(subgroups_source, function(index, item) {
@@ -105,32 +106,35 @@ var module_net = (function() {
                 var str_item = JSON.stringify(item);
 
                 if (index === 0) {
-                    cadena_ini += "tfilters_s[" + index + "]=" + str_item;
+                    data_link += "tfilters_s[" + index + "]=" + str_item;
                 }
                 else {
-                    cadena_ini += "&tfilters_s[" + index + "]=" + str_item;
+                    data_link += "&tfilters_s[" + index + "]=" + str_item;
                 }
 
             });
             
-            cadena_ini += "&";
+            data_link += "&";
             
             $.each(subgroups_target, function(index, item) {
 
                 var str_item = JSON.stringify(item);
 
                 if (index == 0) {
-                    cadena_ini += "tfilters_t[" + index + "]=" + str_item;
+                    data_link += "tfilters_t[" + index + "]=" + str_item;
                 }
                 else {
-                    cadena_ini += "&tfilters_t[" + index + "]=" + str_item;
+                    data_link += "&tfilters_t[" + index + "]=" + str_item;
                 }
 
             });
+            
+            _getLinkToken(data_link);
 
-            $("#modalRegenera").modal();
-
-            $("#lb_enlace").val(cadena_ini);
+//            $("#modalRegenera").modal();
+//            $("#lb_enlace").val(cadena_ini);
+            
+            
             
         });
         
@@ -145,8 +149,6 @@ var module_net = (function() {
 
         });
         
-        
-
         document.getElementById("tbl_hist_comunidad").style.display = "none";
 
         document.getElementById("map_panel").style.display = "none";
@@ -155,18 +157,87 @@ var module_net = (function() {
 
         document.getElementById("hist_map_comunidad").style.display = "none";
         
-        
         _genLinkURL();
 
     }
     
     
+    
     /**
-     * Obtiene los valores de la URL necesarios para la regeneración de resultados.
+     * Realiza el envio de los parámetros seleccionados de un análisis de nicho para generar un token de recuperación.
+     *
+     * @function _getLinkToken
+     * @private
+     * @memberof! module_net
+     * 
+     * @param {String} data_link - Cadena que contiene los parametros selecicoandos por el usuario en el análisis.
+     * 
+     */
+    function _getLinkToken(data_link) {
+
+        console.log("_getLinkToken");
+
+        $.ajax({
+            url: _url_api + "/niche/especie",
+            type: 'post',
+            data: {
+                qtype: 'getToken',
+                confparams: data_link,
+                tipo: 'comunidad'
+            },
+            dataType: "json",
+            success: function(resp) {
+
+                var cadena_ini = _url_comunidad + '#link/?';
+                var tokenlink = resp.data[0].token;
+
+                console.log("token: " + tokenlink);
+
+                $("#modalRegenera").modal();
+                $("#lb_enlace").val(cadena_ini + "token=" + tokenlink);
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+            }
+        });
+
+    }
+    
+    
+    
+    
+    /**
+     * Parsea una URL a un JSON.
+     *
+     * @function _parseURL
+     * @private
+     * @memberof! module_net
+     * 
+     * @param {string} url - URL en formato cadena para ser parseado.
+     * 
+     */
+    function _parseURL(url) {
+        console.log(url);
+        
+        var regex = /[?&]([^=#]+)=([^&#]*)/g, url = url, params = {}, match;
+        while (match = regex.exec(url)) {
+            params[match[1]] = match[2];
+        }
+        return params;
+    }
+    
+    
+    
+    
+    /**
+     * Procesa la URL insertada en el explorador para iniciar el proceso de parseo y obtención de parámetros.
      *
      * @function _genLinkURL
      * @private
      * @memberof! module_net
+     * 
      */
     function _genLinkURL() {
 
@@ -175,37 +246,85 @@ var module_net = (function() {
         if (_json_config == undefined) {
             return;
         }
-        
-        var minOcc = _json_config.minOcc ? parseInt(_json_config.minOcc) : 0;
 
-        var num_filters_source = parseInt(_json_config.num_filters_source);
-        var num_filters_target = parseInt(_json_config.num_filters_target);
-
-        var filters_source = [];
-        var filters_target = [];
-        
-        for (i = 0; i < num_filters_source; i++) {
-
-//            item = _json_config["tfilters_s[" + i + "]"];
-
-            filters_source.push(JSON.parse(_json_config["tfilters_s[" + i + "]"]));
-            
-        }
-        
-        for (i = 0; i < num_filters_target; i++) {
-
-//            item = _json_config["tfilters_t[" + i + "]"];
-
-            filters_target.push(JSON.parse(_json_config["tfilters_t[" + i + "]"]));
-            
-        }
-
-        _procesaValoresEnlace(filters_source, filters_target, minOcc);
-        
-        $("#show_gen").css('visibility', 'hidden');
+//        console.log(_json_config.token);
+        var token = _json_config.token;
+        _getValuesFromToken(token);
 
     }
     
+    
+    /**
+     * Consulta los parámetros utilizados en el análisis del token contenido en la URL y despliega la configuración en la UI.
+     *
+     * @function _getValuesFromToken
+     * @private
+     * @memberof! module_net
+     * 
+     * @param {String} token - token relacionado a un conjunto de paramétros utilizados en un análisis de nicho.
+     * 
+     */
+    function _getValuesFromToken(token) {
+
+        console.log("_getValuesFromToken");
+
+
+        $.ajax({
+            url: _url_api + "/niche/especie",
+            type: 'post',
+            data: {
+                qtype: 'getValuesFromToken',
+                token: token,
+                tipo: 'comunidad'
+            },
+            dataType: "json",
+            success: function(resp) {
+                
+                var all_data = resp.data[0].parametros;
+                _json_config = _parseURL("?"+all_data);
+                
+                console.log(_json_config);
+                
+                if (_json_config == undefined) {
+                    return;
+                }
+
+                var minOcc = _json_config.minOcc ? parseInt(_json_config.minOcc) : 0;
+
+                var num_filters_source = parseInt(_json_config.num_filters_source);
+                var num_filters_target = parseInt(_json_config.num_filters_target);
+
+                var filters_source = [];
+                var filters_target = [];
+
+                for (i = 0; i < num_filters_source; i++) {
+
+                    filters_source.push(JSON.parse(_json_config["tfilters_s[" + i + "]"]));
+
+                }
+
+                for (i = 0; i < num_filters_target; i++) {
+
+                    filters_target.push(JSON.parse(_json_config["tfilters_t[" + i + "]"]));
+
+                }
+
+                _procesaValoresEnlace(filters_source, filters_target, minOcc);
+
+                $("#show_gen").css('visibility', 'hidden');
+
+
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+            }
+        });
+
+
+    }
+
     
     
     /**
@@ -390,7 +509,7 @@ $(document).ready(function() {
     var verbose = true;
 
     // 0 local, 1 producción
-    var ambiente = 1;
+    var ambiente = 0;
     // 0 nicho, 1 comunidad
     var modulo = 1;
 

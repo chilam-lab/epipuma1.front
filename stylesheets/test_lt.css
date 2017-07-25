@@ -1531,3 +1531,29 @@ button.glyphicon-remove:before {
 
 
 
+
+.modalloading {
+    display:    none;
+    position:   relative;
+    z-index:    1000;
+    top:        40px;
+    right:       -6px;
+    height:     105%;
+    width:      99%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('../images/loading.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+#map.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+#map.loading .modalloading {
+    display: block;
+}

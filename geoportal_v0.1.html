@@ -163,9 +163,9 @@
 
                 // Setup routes
                 result
-                        .route('link/', function(request) {
-                            return $.print(request.params);
-                        });
+                .route('link/', function(request) {
+                    return $.print(request.params);
+                });
 
 
                 var hash = location.hash.replace(/^#/, '');
@@ -379,7 +379,7 @@
                                                     <div class="checkValidation">
                                                         <input id="chkValidation" class="checkbox_item" type="checkbox"/>
                                                         <!--<div class="slider_item" id="sliderValidation"></div>-->
-                                                        <label class="label_item" id="labelValidation" type="label">No</label>
+                                                        <label class="label_item" id="labelValidation" type="label"></label>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -393,6 +393,8 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            
+                                            
 
                                             <tr>
                                                 <td class="summary_lb_conf_lb1"><h5 id="lb_apriori"></h5></td>
@@ -413,11 +415,21 @@
                                                     </div>
                                                 </td>
                                             </tr>
-
+                                            
+                                            
+                                            <tr>
+                                                <td class="summary_lbfecha_izq"><h5 id="lb_fosil"></h5></td>
+                                                <td class="summary_lbfecha_der">
+                                                    <div class="checkValidation">
+                                                        <input id="chkFosil" class="checkbox_item" type="checkbox" checked/>
+                                                        <label class="label_item" id="labelFosil" type="label" ></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
                                             <tr>
-                                                <td class="summary_lbfecha_izq"><h5 id="lb_reg_fecha"></h5></td>
-                                                <td class="summary_lbfecha_der">
+                                                <td class="summary_lb_conf_lb1"><h5 id="lb_reg_fecha"></h5></td>
+                                                <td class="summary_lb_conf_lb2">
                                                     <div id="div_chkFecha" class="checkValidation">
                                                         <input id="chkFecha" class="checkbox_item" type="checkbox" checked/>
                                                         <label class="label_item" id="lb_sfecha" type="label"></label>
@@ -458,7 +470,7 @@
                                             <tr>
                                                 <td class="summary_lb_conf_lb3" colspan="2" >
                                                     <!--disabled="true"-->
-                                                    <button id="reload_map" disabled="true" class="btn btn-primary " type="button"></button>
+                                                    <button id="reload_map" class="btn btn-primary " type="button"></button>
 
                                                 </td>
 
@@ -611,7 +623,7 @@
 
                 <!-- <h3 id="lb_map" class="sidebar-header-map">Mapa</h3> -->
 
-                <div id="map">
+                <div id="map" >
 
                     <div class="link_shape">
                         <button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
@@ -903,7 +915,7 @@
 
 
 
-
+        <div class="modalloading"><!-- Place at bottom of page --></div>
 
 
 

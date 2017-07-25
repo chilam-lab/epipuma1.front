@@ -232,6 +232,8 @@ var language_module = (function(verbose) {
             
             $("#lb_apriori").text($.i18n.prop('lb_apriori') + ":");
             $("#lb_occ_min").text($.i18n.prop('lb_occ_min') + ":");
+            $("#lb_fosil").text($.i18n.prop('lb_fosil') + ":");
+            
             $("#lb_mapprob").text($.i18n.prop('lb_mapprob') + ":");
             
             $("#lb_reg_fecha").text($.i18n.prop('lb_reg_fecha') + ":");
@@ -246,7 +248,10 @@ var language_module = (function(verbose) {
             
             $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
             
+            
+            $("#labelValidation").text($.i18n.prop('lb_no'));
             $("#lb_sfecha").text($.i18n.prop('lb_si'));
+            $("#labelFosil").text($.i18n.prop('lb_si'));
             
             $("#lb_panel_region").text($.i18n.prop('lb_panel_region'));
             $("#lb_seccion_region").text($.i18n.prop('lb_seccion_region'));
