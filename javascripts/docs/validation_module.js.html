@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: validation_module.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: validation_module.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * Módulo validación, utilizado realizar la validación de los resultados obtenidos en el anísis de nicho y comunidad ecológica.
  *
@@ -69,7 +97,7 @@ var validation_module = (function(verbose) {
         // recolecta el ultimo valor de la ultima iteracion para hacer la gráfica de barras
         var item_chart = [];
 
-        for (l = 0; l < validationData.length; l++) {
+        for (l = 0; l &lt; validationData.length; l++) {
 
             var iter_recall = [];
 
@@ -199,7 +227,7 @@ var validation_module = (function(verbose) {
         // _VERBOSE ? console.log(item_chart) : _VERBOSE;
 
         // obtiene el numero de grupos creados (incluye totales)
-        for (i = 0; i < _NUM_DECIL; i++) {
+        for (i = 0; i &lt; _NUM_DECIL; i++) {
             try {
                 num_groups = item_chart[i].gridids.length;
                 num_deciles_values = i;
@@ -213,11 +241,11 @@ var validation_module = (function(verbose) {
         // _VERBOSE ? console.log(num_deciles_values) : _VERBOSE;
 
 
-        for (j = 0; j < num_groups; j++) {
+        for (j = 0; j &lt; num_groups; j++) {
 
             var decilGroupBoundaries = [];
 
-            for (i = num_deciles_values; i < item_chart.length - 1; i++) {
+            for (i = num_deciles_values; i &lt; item_chart.length - 1; i++) {
 
                 current_decil_item = item_chart[i];
                 // _VERBOSE ? console.log(current_decil_item) : _VERBOSE;	
@@ -283,7 +311,7 @@ var validation_module = (function(verbose) {
 
 
         // obtiene el numero de grupos creados (incluye totales)
-        for (i = 0; i < _NUM_DECIL; i++) {
+        for (i = 0; i &lt; _NUM_DECIL; i++) {
             try {
                 num_groups = item_chart[i].gridids.length;
                 num_deciles_values = i;
@@ -297,13 +325,13 @@ var validation_module = (function(verbose) {
         // num_groups = item_chart[0].gridids.length;
 
         // for para recorrer por grupos, (grupo bio1, grupo bio2, etc...)
-        for (j = 0; j < num_groups; j++) {
+        for (j = 0; j &lt; num_groups; j++) {
 
             var scoreSpecies = d3.map([]);
 
 
             // se recorren todos los deciles del grupo 0 al N
-            for (i = num_deciles_values; i < item_chart.length - 1; i++) {
+            for (i = num_deciles_values; i &lt; item_chart.length - 1; i++) {
 
                 current_decil_item = item_chart[i];
 
@@ -396,7 +424,7 @@ var validation_module = (function(verbose) {
      * @memberof! validation_module
      * 
      * @param {array} decilBoundaries - Array con los límites superiores e inferiores de cada decil
-     * @param {array} scoresByGroup - Array con los scores por celda de las celdas con intersección entre el conjunto de prueba y la especie objetivo
+     * @param {array} scoresByGroup - Array con los cores por celda de las celdas con intersección entre el conjunto de prueba y la especie objetivo
      */
     function _getMeasure(decilBoundaries, scoresByGroup) {
 
@@ -404,7 +432,7 @@ var validation_module = (function(verbose) {
 
         var iter_recall = [];
 
-        for (i = 0; i < decilBoundaries.length; i++) {
+        for (i = 0; i &lt; decilBoundaries.length; i++) {
 
 
             groupBoudaries = decilBoundaries[i];
@@ -425,7 +453,7 @@ var validation_module = (function(verbose) {
                     // _VERBOSE ? console.log("groupScores: " + gridid.group_name) : _VERBOSE;
                     // la comparación null >= Number.NEGATIVE_INFINITY es verdadera, XD
                     if (gridid.score == null) {
-                        // if(decil.linf == Number.NEGATIVE_INFINITY && gridid.score == null){
+                        // if(decil.linf == Number.NEGATIVE_INFINITY &amp;&amp; gridid.score == null){
                         null_values++;
                         // _VERBOSE ? console.log("valor nulo") : _VERBOSE;
                     }
@@ -438,7 +466,7 @@ var validation_module = (function(verbose) {
 
 
                 fn = groupScores.length - null_values - vp;
-                if (fn == 0 && vp == 0) {
+                if (fn == 0 &amp;&amp; vp == 0) {
                     recall = 0;
                     recall_nulo = true;
                 }
@@ -499,4 +527,26 @@ var validation_module = (function(verbose) {
     }
 
 
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="histogram_module.html">histogram_module</a></li><li><a href="language_module.html">language_module</a></li><li><a href="map_module.html">map_module</a></li><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="net_module.html">net_module</a></li><li><a href="res_display_module.html">res_display_module</a></li><li><a href="res_display_net_module.html">res_display_net_module</a></li><li><a href="table_module.html">table_module</a></li><li><a href="validation_module.html">validation_module</a></li><li><a href="variable_module.html">variable_module</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:54:14 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

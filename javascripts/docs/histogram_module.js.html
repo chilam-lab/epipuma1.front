@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: histogram_module.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: histogram_module.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 
 /**
  * Módulo histograma, utilizado para crear y gestionar los histogramas en nicho ecológico y comunidad ecológica.
@@ -42,7 +70,7 @@ var histogram_module = (function(verbose) {
         _language_module_nicho = languageModule;
         _iTrans = _language_module_nicho.getI18();
     }
-
+    
     /**
      * Éste método inicializa variables globales y componentes visuales que son necesarios para la creación de histogramas.
      *
@@ -54,9 +82,9 @@ var histogram_module = (function(verbose) {
     function _initilizeHistogram() {
 
         _VERBOSE ? console.log("_initilizeHistogram") : _VERBOSE;
-
-
-
+        
+        
+        
 
     }
 
@@ -97,7 +125,7 @@ var histogram_module = (function(verbose) {
         // variable que sirve para conocer el decil donde ya existen valores prar generar la gráfica
         var value_decil_ready = 0;
 
-        for (value_decil_ready = 0; value_decil_ready < _NUM_DECIL; value_decil_ready++) {
+        for (value_decil_ready = 0; value_decil_ready &lt; _NUM_DECIL; value_decil_ready++) {
             try {
                 length_names = json_decil[value_decil_ready].names.length;
                 break;
@@ -110,7 +138,7 @@ var histogram_module = (function(verbose) {
         _VERBOSE ? console.log("length_names: " + length_names) : _VERBOSE;
 
 
-        for (i = 0; i < length_names; i++) {
+        for (i = 0; i &lt; length_names; i++) {
             color_array.push(_randomColor());
         }
         // _VERBOSE ? console.log(color_array) : _VERBOSE;
@@ -153,14 +181,14 @@ var histogram_module = (function(verbose) {
                 .offset([-10, 0])
                 .html(function(d) {
 
-                    var_group_label = "<strong>" + d.name.p + "</strong><br/>" +
-                            "<strong>" + _iTrans.prop('lb_score_conjunto') + ":</strong> <span >" + parseFloat(d.value.p).toFixed(2) + "</span><br/><br/>" +
-                            "<strong>" + _iTrans.prop('lb_conformado') + ":</strong><br/><br/>";
+                    var_group_label = "&lt;strong>" + d.name.p + "&lt;/strong>&lt;br/>" +
+                            "&lt;strong>" + _iTrans.prop('lb_score_conjunto') + ":&lt;/strong> &lt;span >" + parseFloat(d.value.p).toFixed(2) + "&lt;/span>&lt;br/>&lt;br/>" +
+                            "&lt;strong>" + _iTrans.prop('lb_conformado') + ":&lt;/strong>&lt;br/>&lt;br/>";
 
                     d.name.s.forEach(function(item, index) {
 
-                        var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + item + "</span><br/>" +
-                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + d.value.s[index] + "</span><br/><br/>"
+                        var_group_label += "&lt;strong>" + _iTrans.prop('lb_grupo') + ":&lt;/strong> &lt;span >" + item + "&lt;/span>&lt;br/>" +
+                                "&lt;strong>" + _iTrans.prop('tip_tbl_score') + ":&lt;/strong> &lt;span >" + d.value.s[index] + "&lt;/span>&lt;br/>&lt;br/>"
                     });
 
                     return  var_group_label;
@@ -200,18 +228,16 @@ var histogram_module = (function(verbose) {
 
         json_decil.forEach(function(d, index) {
             // no retorna el objeto json cuando el decil no tiene valores
-            if (value_decil_ready <= index) {
+            if (value_decil_ready &lt;= index) {
                 d.ages = d.names.map(function(name, i) {
-//                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i], gridids: d.gridids[i]};
-                    return {name: name, value: d.values[i], decil: d.decil};
+                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i], gridids: d.gridids[i]};
                 });
             }
             // asigna valores falsos a los deciles ausentes
             else {
                 // d.decil_nulo = true;
                 d.ages = json_decil[value_decil_ready].names.map(function(name, i) {
-//                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), species: [], gridids: [], decil_nulo: true};
-                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), decil_nulo: true};
+                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), species: [], gridids: [], decil_nulo: true};
                 });
             }
         });
@@ -230,7 +256,7 @@ var histogram_module = (function(verbose) {
 
 
         totalmax_avg = d3.max(json_decil.map(function(d, index) {
-            if (value_decil_ready <= index) {
+            if (value_decil_ready &lt;= index) {
                 return d3.max(d.values, function(d) {
                     return parseFloat(d.p)
                 });
@@ -238,7 +264,7 @@ var histogram_module = (function(verbose) {
         }));
 
         totalmin_avg = d3.min(json_decil.map(function(d, index) {
-            if (value_decil_ready <= index) {
+            if (value_decil_ready &lt;= index) {
                 return d3.min(d.values, function(d) {
                     return parseFloat(d.p)
                 });
@@ -247,7 +273,7 @@ var histogram_module = (function(verbose) {
 
         // que ocurre cuando min y max son iguales, no se esta generando la gráfica... cehcar validacion
         if (totalmax_avg == totalmin_avg) {
-            if (totalmax_avg < 0) {
+            if (totalmax_avg &lt; 0) {
                 totalmax_avg = 0;
             }
             else {
@@ -262,11 +288,11 @@ var histogram_module = (function(verbose) {
 
         // TODO: analizar cuando son solo possitovos, solo negativos o combinación
         // solo negativos
-        if (totalmax_avg < 0 && totalmin_avg < 0) {
+        if (totalmax_avg &lt; 0 &amp;&amp; totalmin_avg &lt; 0) {
             NEG_DECIL = -1;
         }
         // combinado
-        else if (totalmin_avg < 0) {
+        else if (totalmin_avg &lt; 0) {
             NEG_DECIL = 0;
         }
         // solo positivos
@@ -276,9 +302,9 @@ var histogram_module = (function(verbose) {
 
         // NOTA: En d3 el max de -0.12 y -0.86 es "-0.86", obtiene el minimo de los negativos
         maxmin_avg = d3.max(json_decil.map(function(d, index) {
-            if (value_decil_ready <= index) {
+            if (value_decil_ready &lt;= index) {
                 return d3.max(d.values, function(d) {
-                    if (d.p < 0)
+                    if (d.p &lt; 0)
                         return d.p
                 });
             }
@@ -288,7 +314,7 @@ var histogram_module = (function(verbose) {
         // si existen valores combinados el axis se divide de forma equitativa
         if (NEG_DECIL == 0) {
 
-            if (Math.abs(totalmin_avg) < Math.abs(totalmax_avg)) {
+            if (Math.abs(totalmin_avg) &lt; Math.abs(totalmax_avg)) {
 
                 y.domain([-totalmax_avg, totalmax_avg])
                         .nice([totalmin_nice, totalmax_nice]);
@@ -428,85 +454,85 @@ var histogram_module = (function(verbose) {
                     tip.hide(d);
 
                 })
-//                .on("click", function(d) {
-//
-//                    _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
-//                    if (d.decil_nulo)
-//                        return;
-//
-//                    // _VERBOSE ? console.log(d.gridids.p) : _VERBOSE;
-//
-//                    g = d3.select("#grid_map");
-//                    feature = g.selectAll("path");
-//
-//                    feature.each(function(cell, i) {
-//
-//                        if ($.inArray(cell.properties.gridid, d.gridids.p) != -1) {
-//                            d3.select(this).style("stroke", _highlight_color);
-//                            d3.select(this).style("stroke-width", 2);
-//                        } else {
-//                            d3.select(this).style("stroke", "none");
-//                            d3.select(this).style("stroke-width", "none");
-//                        }
-//
-//                    });
-//
-//                    state.selectAll("rect.bar").each(function(bar, i) {
-//                        d3.select(this).style("stroke", "none");
-//                    });
-//                    d3.select(this).style("stroke", "black");
-//                    d3.select(this).style("stroke-width", 3);
-//
-//                    decil_list = [];
-//                    d.species.p.forEach(function(sp, index) {
-//
-//                        // spid, label, epsilon, score, occ(nj), occ_decil
-//                        params = sp.split("|");
-//                        // _VERBOSE ? console.log(params) : _VERBOSE;
-//
-//                        occ = parseFloat(params[4]);
-//                        occ_decil = parseFloat(params[5])
-//                        per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
-//
-//                        // console.log(params[1]);
-//                        // console.log(params[4]);
-//                        // console.log(params[5]);
-//
-//                        decil_list.push({decil: d.decil, species: params[1], epsilons: params[2], scores: params[3], occ: per_decil});
-//                    });
-//
-//                    // _VERBOSE ? console.log(decil_list) : _VERBOSE;
-//
-//                    _table_module_decil.createDecilList(decil_list);
-//
-//                });
+                .on("click", function(d) {
+
+                    _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
+                    if (d.decil_nulo)
+                        return;
+
+                    // _VERBOSE ? console.log(d.gridids.p) : _VERBOSE;
+
+                    g = d3.select("#grid_map");
+                    feature = g.selectAll("path");
+
+                    feature.each(function(cell, i) {
+
+                        if ($.inArray(cell.properties.gridid, d.gridids.p) != -1) {
+                            d3.select(this).style("stroke", _highlight_color);
+                            d3.select(this).style("stroke-width", 2);
+                        } else {
+                            d3.select(this).style("stroke", "none");
+                            d3.select(this).style("stroke-width", "none");
+                        }
+
+                    });
+
+                    state.selectAll("rect.bar").each(function(bar, i) {
+                        d3.select(this).style("stroke", "none");
+                    });
+                    d3.select(this).style("stroke", "black");
+                    d3.select(this).style("stroke-width", 3);
+
+                    decil_list = [];
+                    d.species.p.forEach(function(sp, index) {
+
+                        // spid, label, epsilon, score, occ(nj), occ_decil
+                        params = sp.split("|");
+                        // _VERBOSE ? console.log(params) : _VERBOSE;
+
+                        occ = parseFloat(params[4]);
+                        occ_decil = parseFloat(params[5])
+                        per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
+
+                        // console.log(params[1]);
+                        // console.log(params[4]);
+                        // console.log(params[5]);
+
+                        decil_list.push({decil: d.decil, species: params[1], epsilons: params[2], scores: params[3], occ: per_decil});
+                    });
+
+                    // _VERBOSE ? console.log(decil_list) : _VERBOSE;
+
+                    _table_module_decil.createDecilList(decil_list);
+
+                });
 
         decil_list = [];
-//        $.each(json_decil, function(index, value) {
-//
-//            _VERBOSE ? console.log("decil_nulo: " + value.decil_nulo) : _VERBOSE;
-//            if (value.decil_nulo)
-//                return false;
-//
-//            value.species[0].p.forEach(function(sp, index) {
-//
-//                // spid, label, epsilon, score, occ(nj), occ_decil
-//                params = sp.split("|");
-//                // _VERBOSE ? console.log(params) : _VERBOSE;
-//
-//                // EJEMPLO Panthera leo - occ_total = 2 y occ_decil = 3 => 1.5 => 150% (ERROR)
-//                occ_total = parseFloat(params[4]);
-//                occ_decil = parseFloat(params[5]);
-//                per_decil = parseFloat(occ_decil / occ_total * 100).toFixed(2) + "%";
-//
-//                decil_list.push({decil: value.decil, species: params[1], epsilons: params[2], scores: params[3], occ: per_decil});
-//            });
-//
-//            return false;
-//        });
+        $.each(json_decil, function(index, value) {
+
+            _VERBOSE ? console.log("decil_nulo: " + value.decil_nulo) : _VERBOSE;
+            if (value.decil_nulo)
+                return false;
+
+            value.species[0].p.forEach(function(sp, index) {
+
+                // spid, label, epsilon, score, occ(nj), occ_decil
+                params = sp.split("|");
+                // _VERBOSE ? console.log(params) : _VERBOSE;
+
+                // EJEMPLO Panthera leo - occ_total = 2 y occ_decil = 3 => 1.5 => 150% (ERROR)
+                occ_total = parseFloat(params[4]);
+                occ_decil = parseFloat(params[5]);
+                per_decil = parseFloat(occ_decil / occ_total * 100).toFixed(2) + "%";
+
+                decil_list.push({decil: value.decil, species: params[1], epsilons: params[2], scores: params[3], occ: per_decil});
+            });
+
+            return false;
+        });
 
 
-//        _table_module_decil.createDecilList(decil_list);
+        _table_module_decil.createDecilList(decil_list);
 
 
         /***************** rect legend */
@@ -626,10 +652,10 @@ var histogram_module = (function(verbose) {
                     .attr('class', 'd3-tip')
                     .offset([-10, 0])
                     .html(function(d) {
-                        recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
-                                "<strong>" + _iTrans.prop('lb_vp_avg') + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
-                                "<strong>" + _iTrans.prop('lb_fn_avg') + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>";
-                        // "<strong>CSS prom:</strong> <span >" + parseFloat(d.ausentes).toFixed(2) + "%</span><br/>"
+                        recall_values = "&lt;strong>" + _iTrans.prop('lb_recall_avg') + ":&lt;/strong> &lt;span >" + parseFloat(d.recall * 100).toFixed(2) + "%&lt;/span>&lt;br/>&lt;br/>" +
+                                "&lt;strong>" + _iTrans.prop('lb_vp_avg') + ":&lt;/strong> &lt;span >" + parseFloat(d.vp).toFixed(2) + "&lt;/span>&lt;br/>" +
+                                "&lt;strong>" + _iTrans.prop('lb_fn_avg') + ":&lt;/strong> &lt;span >" + parseFloat(d.fn).toFixed(2) + "&lt;/span>&lt;br/>";
+                        // "&lt;strong>CSS prom:&lt;/strong> &lt;span >" + parseFloat(d.ausentes).toFixed(2) + "%&lt;/span>&lt;br/>"
                         return  recall_values;
                     });
 
@@ -658,30 +684,8 @@ var histogram_module = (function(verbose) {
                     .style("text-anchor", "end")
                     .text(_iTrans.prop('lb_recall'));
 
-            
-
-
-//          TODO: GENERAR LA ESTRUCUTURA QUE GENERABA EN EL PROCESO DE VAIDACIÓN
-//          iter_recall.push({"group_name": decil.group_name, "recall": recall, "vp": vp, "fn": fn, "decil": decil.decil, "recall_nulo": recall_nulo});
-            array_recall = [];
-            $.each(json_decil, function(index, value) {
-                console.log(value)
-                
-                var item = {
-                    "recall" : value.recall,
-                    "vp":   parseFloat(value.vp),
-                    "fn":   parseFloat(value.fn),
-                    "decil": parseInt(value.decil)
-                }
-                array_recall.push(item);
-                
-            })
-            
             // adding recall line
             _VERBOSE ? console.log(array_recall) : _VERBOSE;
-
-
-
 
             $.each(array_recall, function(i, recall_item) {
 
@@ -776,7 +780,7 @@ var histogram_module = (function(verbose) {
     function createBarChartFecha(distinctPoints) {
 
         var puntos_json = d3.map([]);
-
+        
         $.each(distinctPoints, function(index, item) {
 
             fecha_ano = item.fechacolecta == null || item.fechacolecta.split("-")[0] == "" ? 0 : parseInt(item.fechacolecta.split("-")[0]);
@@ -808,7 +812,7 @@ var histogram_module = (function(verbose) {
             }
 
         })
-
+        
         // VERIFICAR SI SE PUEDEN DESPLEGAR LOS REGISTROS SIN FECHA
         // if(colectas_zero.length == 0){
         // 	$("#lb_regfecha").text("0");
@@ -849,9 +853,9 @@ var histogram_module = (function(verbose) {
 
 
         var data = rango_fechas.values();
-
+       
         $("#hist_fecha_container").empty();
-
+       
         var margin = {top: 10, right: 10, bottom: 20, left: 30},
         width = $("#hist_fecha_container").width() - margin.left - margin.right,
                 height = $("#hist_fecha_container").height() - margin.top - margin.bottom;
@@ -894,8 +898,8 @@ var histogram_module = (function(verbose) {
                 .attr('class', 'd3-tip')
                 .offset([-10, 10])
                 .html(function(d) {
-                    return  "<strong>Fechas:</strong> <span >" + d.fechas + "</span><br/>" +
-                            "<strong>Registros:</strong> <span >" + d.cantidad + "</span>";
+                    return  "&lt;strong>Fechas:&lt;/strong> &lt;span >" + d.fechas + "&lt;/span>&lt;br/>" +
+                            "&lt;strong>Registros:&lt;/strong> &lt;span >" + d.cantidad + "&lt;/span>";
                 });
         svg.call(tip);
 
@@ -1025,8 +1029,8 @@ var histogram_module = (function(verbose) {
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
                 .html(function(d) {
-                    return  "<strong>" + _iTrans.prop('lb_rango') + ":</strong> <span >" + d.title + "</span><br/><br/>" +
-                            "<strong>" + _iTrans.prop('lb_frecuencia') + ":</strong> <span >" + parseInt(d.frequency * 100) + " %</span>";
+                    return  "&lt;strong>" + _iTrans.prop('lb_rango') + ":&lt;/strong> &lt;span >" + d.title + "&lt;/span>&lt;br/>&lt;br/>" +
+                            "&lt;strong>" + _iTrans.prop('lb_frecuencia') + ":&lt;/strong> &lt;span >" + parseInt(d.frequency * 100) + " %&lt;/span>";
                 });
 
         svg.call(tip);
@@ -1099,7 +1103,7 @@ var histogram_module = (function(verbose) {
 
     }
 
-
+    
     /**
      * Genera colores aleatorios para asignarlo al histograma de decil en el análisis de nicho ecológico.
      *
@@ -1119,20 +1123,20 @@ var histogram_module = (function(verbose) {
                 r = g = b = l; // achromatic
             } else {
                 function hue2rgb(p, q, t) {
-                    if (t < 0)
+                    if (t &lt; 0)
                         t += 1;
                     if (t > 1)
                         t -= 1;
-                    if (t < 1 / 6)
+                    if (t &lt; 1 / 6)
                         return p + (q - p) * 6 * t;
-                    if (t < 1 / 2)
+                    if (t &lt; 1 / 2)
                         return q;
-                    if (t < 2 / 3)
+                    if (t &lt; 2 / 3)
                         return p + (q - p) * (2 / 3 - t) * 6;
                     return p;
                 }
 
-                var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                var q = l &lt; 0.5 ? l * (1 + s) : l + s - l * s;
                 var p = 2 * l - q;
                 r = hue2rgb(p, q, h + 1 / 3);
                 g = hue2rgb(p, q, h);
@@ -1175,10 +1179,10 @@ var histogram_module = (function(verbose) {
                 .each(function(chart) {
                     chart.on("brushend", display_obj.renderAll);
                 });
-
+        
         $("#lb_body_info").text(_iTrans.prop('lb_msg_hist_epsilon'));
         $('#lb_header_info').text(_iTrans.prop('titulo_hist_eps'));
-
+        
 
         return chart_component;
 
@@ -1235,7 +1239,7 @@ var histogram_module = (function(verbose) {
 
             height = y.range()[0];
             data = group.all();
-
+            
             // it contains an array from 1 to 20, create key missing elements and set value to 0
             display_obj.epsilon_beans.forEach(function(d) {
                 exists = false;
@@ -1260,7 +1264,7 @@ var histogram_module = (function(verbose) {
 
                 if (tvalue != 0)
                     value.value = tvalue / all.reduceCount().value();
-
+                
             });
 
 
@@ -1368,13 +1372,13 @@ var histogram_module = (function(verbose) {
 
                                 left = display_obj.epsRange.invertExtent(d.key)[0]
                                 right = display_obj.epsRange.invertExtent(d.key)[1]
-                                if (left <= 0 && right > 0)
+                                if (left &lt;= 0 &amp;&amp; right > 0)
                                     min_val = 0;
                                 else {
                                     min_val = Math.min(Math.abs(left), Math.abs(right));
                                 }
-
-                                if (display_obj.ep_th < min_val) {
+                                
+                                if (display_obj.ep_th &lt; min_val) {
                                     return d3.rgb(102, 184, 243);
                                     // return "steelblue";
                                 }
@@ -1450,7 +1454,7 @@ var histogram_module = (function(verbose) {
             d3.selectAll("rect.bar").style("opacity", function(d, i) {
                 // _VERBOSE ? console.log(d.key) : _VERBOSE;
 
-                if (d.key < localBrushStart || d.key >= localBrushEnd || brush.empty()) {
+                if (d.key &lt; localBrushStart || d.key >= localBrushEnd || brush.empty()) {
                     return "0.4";
                 }
                 else {
@@ -1473,7 +1477,7 @@ var histogram_module = (function(verbose) {
 
 
             b = brush.extent();
-
+            
             var localBrushStart = (brush.empty()) ? brushStart : y(b[0]),
                     localBrushEnd = (brush.empty()) ? brushEnd : y(b[1]);
 
@@ -1508,14 +1512,14 @@ var histogram_module = (function(verbose) {
                 display_obj.dim_eps_freq.filterFunction(function(d) {
                     // _VERBOSE ? console.log(d) : _VERBOSE;
 
-                    if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] + 0.1)
+                    if (d > display_obj.epsRange.invertExtent(left_extent)[0] &amp;&amp; d &lt; display_obj.epsRange.invertExtent(rigth_extent)[1] + 0.1)
                         return true;
 
                 });
 
                 // Fade all years in the histogram not within the brush
                 d3.selectAll("rect.bar").style("opacity", function(d, i) {
-                    if (d.key < localBrushStart || d.key > localBrushEnd) {
+                    if (d.key &lt; localBrushStart || d.key > localBrushEnd) {
                         return "0.4";
                     }
                     else {
@@ -1543,7 +1547,7 @@ var histogram_module = (function(verbose) {
         chart.x = function(_) {
 
             _VERBOSE ? console.log("chart.x") : _VERBOSE;
-
+           
             if (!arguments.length)
                 return x;
 
@@ -1671,4 +1675,26 @@ var histogram_module = (function(verbose) {
     }
 
 
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="histogram_module.html">histogram_module</a></li><li><a href="language_module.html">language_module</a></li><li><a href="map_module.html">map_module</a></li><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="net_module.html">net_module</a></li><li><a href="res_display_module.html">res_display_module</a></li><li><a href="res_display_net_module.html">res_display_net_module</a></li><li><a href="table_module.html">table_module</a></li><li><a href="validation_module.html">validation_module</a></li><li><a href="variable_module.html">variable_module</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:54:14 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Éste módulo es el controlador de los módulos utilizados en nicho ecológico.</div>
+            <div class="description">Controlador de los módulos utilizados en nicho ecológico.</div>
         
 
         
@@ -102,6 +102,160 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._addDataChartTotal"><span class="type-signature">(private, static) </span>._addDataChartTotal<span class="signature">(data_chart, decil_total)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método agrega una variable extra a la estructura generada por el método _createSetStructure cuando es requerido un total.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data_chart</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array resultante de los grupos de variables seleccionados por el usuario y con la estrucutra necesaria para ser desplegados en los componentes visuales.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>decil_total</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array resultante del total de los grupos de variables seleccionados por el usuario.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1885">line 1885</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
@@ -231,7 +385,400 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line563">line 563</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line566">line 566</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._configureStyleMap"><span class="type-signature">(private, static) </span>._configureStyleMap<span class="signature">(sdata)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método realiza la petición al servidor para obtener el valor de score por celda utilizado para la coloración de la malla a través del módulo mapa en el análisis de nicho ecológico.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sdata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">json</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Json con la configuración seleccionada por el usuario</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1160">line 1160</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._createHistEpScr_Especie"><span class="type-signature">(private, static) </span>._createHistEpScr_Especie<span class="signature">(ddata)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método realiza la petición al servidor para obtener el valor de épsilon y score por especie y desplegar los histogramas de epsilon especie y score especie por medio del módulo de histograma en el análisis de nicho ecológico.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ddata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">json</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Json con la configuración seleccionada por el usuario</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1258">line 1258</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._createHistScore_Celda"><span class="type-signature">(private, static) </span>._createHistScore_Celda<span class="signature">(cdata)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método realiza la petición al servidor para obtener el valor de score por celda y desplegar el hitograma de score celda por medio del módulo histograma en el análisis de nicho ecológico.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cdata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">json</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Json con la configuración seleccionada por el usuario</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1458">line 1458</a>
     </li></ul></dd>
     
 
@@ -431,7 +978,554 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line955">line 955</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line957">line 957</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._createSetStructure"><span class="type-signature">(private, static) </span>._createSetStructure<span class="signature">(fathers, sons)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método realiza la gestión de las respuestas a las peticiones hechas para calcular el score por celda de forma segmentada de los grupos de variables utilizados. Además genera una estructura de la información devuelta por el servidor para generar el histograma decil y tabla decil en el análisis de nicho ecológico.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fathers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array resultante de los grupos de variables seleccionados por el usuario.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sons</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array resultante de las variables seleccionadas por el usuario.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1676">line 1676</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._createTableEpSc"><span class="type-signature">(private, static) </span>._createTableEpSc<span class="signature">(tdata)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método envía el conjunto de parámetros al módulo table para generar la tabla de resultados de épsilon y score en el análisis de nicho ecológico.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tdata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">json</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Json con la configuración seleccionada por el usuario</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1086">line 1086</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._createTableFromData"><span class="type-signature">(private, static) </span>._createTableFromData<span class="signature">(json_data)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método genera un HTML para desplegar la tabla que contiene los resultados de la petición hecha por showGetFeatureInfo.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>json_data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">json</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Json con el valor resultante de la celda seleccionada</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line2069">line 2069</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._deleteRepetedElements"><span class="type-signature">(private, static) </span>._deleteRepetedElements<span class="signature">(arraynames)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    DEPRECATED. Éste método elimina las especies repetidas devueltas por el servidor en los cálculos, así como contabilizar el porcentaje de ocurrencias de una especies por decil.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>arraynames</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array con el nombre de las especies que componen cada decil de las variables y grupos de variables seleccionados</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1973">line 1973</a>
     </li></ul></dd>
     
 
@@ -654,7 +1748,89 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line301">line 301</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line299">line 299</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".._iterateValidationProcess"><span class="type-signature">(private, static) </span>._iterateValidationProcess<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método realiza la segmentación aleatoria del conjunto de celdas para realizar el proceso de validación. Cuando todas las iteraciones han sido realizadas los resultados son enviados al módulo de validación.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1518">line 1518</a>
     </li></ul></dd>
     
 
@@ -785,7 +1961,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line718">line 718</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line721">line 721</a>
     </li></ul></dd>
     
 
@@ -867,7 +2043,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line130">line 130</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -998,7 +2174,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line143">line 143</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line141">line 141</a>
     </li></ul></dd>
     
 
@@ -1267,7 +2443,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line434">line 434</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line432">line 432</a>
     </li></ul></dd>
     
 
@@ -1398,7 +2574,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line248">line 248</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line246">line 246</a>
     </li></ul></dd>
     
 
@@ -1529,7 +2705,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line195">line 195</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -1660,7 +2836,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line235">line 235</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line233">line 233</a>
     </li></ul></dd>
     
 
@@ -1791,7 +2967,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line208">line 208</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -1922,7 +3098,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line221">line 221</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line219">line 219</a>
     </li></ul></dd>
     
 
@@ -2053,7 +3229,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line156">line 156</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line154">line 154</a>
     </li></ul></dd>
     
 
@@ -2184,7 +3360,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line169">line 169</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line167">line 167</a>
     </li></ul></dd>
     
 
@@ -2315,7 +3491,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line182">line 182</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line180">line 180</a>
     </li></ul></dd>
     
 
@@ -2446,7 +3622,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line274">line 274</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line272">line 272</a>
     </li></ul></dd>
     
 
@@ -2577,7 +3753,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line261">line 261</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -2708,7 +3884,466 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line287">line 287</a>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line285">line 285</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="..showGetFeatureInfo"><span class="type-signature">(static) </span>.showGetFeatureInfo<span class="signature">(lat, long)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método realiza la petición al servidor cuando una celda es seleccionada por el usuario y obtiene el valor de score que se encuentran dentro de la celda en conjunto con el módulo mapa.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>lat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Latitud del punto sleccionado por el usuario</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>long</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Longitud del punto sleccionado por el usuario</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line2023">line 2023</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="..startResDisplay"><span class="type-signature">(static) </span>.startResDisplay<span class="signature">(map_module, histogram_module, table_module, language_module, ids_comp_variables)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método llama a la función que inicializa las variables necesarias para el despliegue de los componentes visuales.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>map_module</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Módulo mapa para gestionar las funciones que son requeridas en el análisis de nicho ecológico</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>histogram_module</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Módulo histograma para gestionar las funciones que son requeridas en el análisis de nicho ecológico</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>table_module</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Módulo table para gestionar las funciones que son requeridas en el análisis de nicho ecológico</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language_module</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Módulo de internacionalización para gestionar las funciones que sonr equeridas en el análisis de nicho ecológico</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ids_comp_variables</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array con los identificadores de los componentes visuales utilizados en la selección de variables</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line2217">line 2217</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="..updateLabels"><span class="type-signature">(static) </span>.updateLabels<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Éste método actualiza los labels del sistema cuando existe un cambio de lenguaje. Existen labels que no son regenerados ya que la información es obtenida por el servidor al momento de la carga.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="res_display_module.js.html">res_display_module.js</a>, <a href="res_display_module.js.html#line1344">line 1344</a>
     </li></ul></dd>
     
 
@@ -2750,13 +4385,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="res_display_module.html">res_display_module</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="histogram_module.html">histogram_module</a></li><li><a href="language_module.html">language_module</a></li><li><a href="map_module.html">map_module</a></li><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="net_module.html">net_module</a></li><li><a href="res_display_module.html">res_display_module</a></li><li><a href="res_display_net_module.html">res_display_net_module</a></li><li><a href="table_module.html">table_module</a></li><li><a href="validation_module.html">validation_module</a></li><li><a href="variable_module.html">variable_module</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Apr 23 2017 20:41:49 GMT-0500 (CDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:54:14 GMT-0500 (CDT)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: variable_module.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: variable_module.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * Módulo variable, utilizado para crear y gestionar los selectores de grupos de variables en nicho ecológico y comunidad ecológica.
  *
@@ -160,10 +188,10 @@ var variable_module = (function(verbose, url_zacatuche) {
                         var current_node = $('#jstree_topo_' + id).jstree(true).get_node($("#" + topo_selected));
                         _VERBOSE ? console.log(current_node) : _VERBOSE;
 
-                        for (i = 0; i < data.length; i++) {
+                        for (i = 0; i &lt; data.length; i++) {
 
                             var idNode = data[i].layer;
-                            var default_son = level_vartree < 2 ? [{text: "cargando..."}] : [];
+                            var default_son = level_vartree &lt; 2 ? [{text: "cargando..."}] : [];
 
                             var newNode = {
                                 id: idNode,
@@ -225,7 +253,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                     level_vartree = level_vartree + 1;
 
-                    for (i = 0; i < data.length; i++) {
+                    for (i = 0; i &lt; data.length; i++) {
 
                         var idNode = "";
 
@@ -237,7 +265,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         }
 
 
-                        var default_son = level_vartree < max_level ? [{text: "cargando..."}] : [];
+                        var default_son = level_vartree &lt; max_level ? [{text: "cargando..."}] : [];
 
                         tag = String(data[i].tag).split(":")
                         min = parseFloat(tag[0]).toFixed(2);
@@ -324,12 +352,12 @@ var variable_module = (function(verbose, url_zacatuche) {
                         
                         
 
-                        for (i = 0; i < data.length; i++) {
+                        for (i = 0; i &lt; data.length; i++) {
                             
 //                            _VERBOSE ? console.log(idNode) : _VERBOSE;
 
                             var idNode = data[i].layer;
-                            var default_son = level_vartree < 2 ? [{text: "cargando..."}] : [];
+                            var default_son = level_vartree &lt; 2 ? [{text: "cargando..."}] : [];
 
                             var newNode = {
                                 id: idNode,
@@ -392,7 +420,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                     level_vartree = level_vartree + 1;
 
-                    for (i = 0; i < data.length; i++) {
+                    for (i = 0; i &lt; data.length; i++) {
 
                         var idNode = "";
 
@@ -403,7 +431,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             idNode = data[i].bid;
                         }
 
-                        var default_son = level_vartree < max_level ? [{text: "cargando..."}] : [];
+                        var default_son = level_vartree &lt; max_level ? [{text: "cargando..."}] : [];
 
                         tag = String(data[i].tag).split(":")
                         min = tag[0].split(".")[0];
@@ -432,32 +460,32 @@ var variable_module = (function(verbose, url_zacatuche) {
         }
 
 
-        /****************************************************************************************** GENERACION DE PANEL */
+        /****************************************************************************************** GENERACIONDE DE PANEL */
 
         // $("#" + parent)
         // 	.addClass('tab_total');
 
         // titulo del selector de varibles
-        var header_panel = $('<h3/>')
+        var header_panel = $('&lt;h3/>')
                 .attr('id', title)
                 .addClass('label_componenete')
                 .text(_iTrans.prop(title))
                 .appendTo($("#" + parent));
 
 
-        var var_container = $('<div/>')
+        var var_container = $('&lt;div/>')
                 .addClass('var_container')
                 .appendTo($("#" + parent));
 
 
-        var nav_selection = $('<div/>')
+        var nav_selection = $('&lt;div/>')
                 // .attr('id', "treeAddedPanel_" + id)
                 .addClass('nav_selection')
                 .appendTo(var_container);
 
 
         // contenedor de header tabs
-        var nav_items = $('<ul/>')
+        var nav_items = $('&lt;ul/>')
                 .addClass('nav nav-tabs nav-variables')
                 .appendTo(nav_selection);
 
@@ -467,7 +495,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             if (i == 0) {
                 name_class = 'active nav-variables';
             }
-            var li = $('<li/>')
+            var li = $('&lt;li/>')
                     .addClass(name_class)
                     .appendTo(nav_items)
                     .click(function(e) {
@@ -476,7 +504,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         e.preventDefault();
                     });
 
-            var aaa = $('<a/>')
+            var aaa = $('&lt;a/>')
                     .attr('id', tags[i] + "_" + id)
                     .attr('href', '#tab' + i + "_" + id)
                     .attr('data-toggle', 'tab' + i + "_" + id)
@@ -485,13 +513,13 @@ var variable_module = (function(verbose, url_zacatuche) {
         });
 
         // div que alamcena el contenido de los tabs
-        var tab_content = $('<div/>')
+        var tab_content = $('&lt;div/>')
                 .addClass('tab-content')
                 .appendTo(nav_selection);
 
 
         // div que almacena de forma general los grupos seleccionados
-        var tree_selection = $('<div/>')
+        var tree_selection = $('&lt;div/>')
                 .attr('id', "treeAddedPanel_" + id)
                 .addClass('myBlockVariableAdded')
                 .appendTo(var_container);
@@ -506,21 +534,21 @@ var variable_module = (function(verbose, url_zacatuche) {
                 _VERBOSE ? console.log(tags[i]) : _VERBOSE;
 
                 // div del tab[i]_id
-                var tab_pane = $('<div/>')
+                var tab_pane = $('&lt;div/>')
                         .attr('id', 'tab' + i + "_" + id)
                         .addClass('tab-pane active')
                         .appendTo(tab_content);
 
                 // div que contiene el dropdown-button de tipos taxonomicos y textfiled para insertar valores
-                var drop_item = $('<div/>')
+                var drop_item = $('&lt;div/>')
                         .addClass('input-group dropdown_group')
                         .appendTo(tab_pane);
 
-                var btn_div = $('<div/>')
+                var btn_div = $('&lt;div/>')
                         .addClass('input-group-btn')
                         .appendTo(drop_item);
 
-                var btn_sp = $('<button/>')
+                var btn_sp = $('&lt;button/>')
                         .attr('id', 'btn_variable' + "_" + id)
                         .attr('type', 'button')
                         .attr('data-toggle', 'dropdown')
@@ -530,16 +558,16 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .addClass('btn btn-primary dropdown-toggle')
                         .appendTo(btn_div);
 
-                $('<span/>')
+                $('&lt;span/>')
                         .addClass('caret')
                         .appendTo(btn_sp);
 
-                var btn_items = $('<div/>')
+                var btn_items = $('&lt;div/>')
                         .addClass('dropdown-menu')
                         .appendTo(btn_div);
 
                 $.each(sp_items, function(i) {
-                    var li = $('<li/>')
+                    var li = $('&lt;li/>')
                             .click(function(e) {
                                 // evento que guarda selección taxonomica.
                                 _VERBOSE ? console.log("biotico") : _VERBOSE;
@@ -550,14 +578,14 @@ var variable_module = (function(verbose, url_zacatuche) {
                                 _VERBOSE ? console.log(self.varfilter_selected) : _VERBOSE;
 
                                 $("#btn_variable" + "_" + id).text(varfield + " ");
-                                $("#btn_variable" + "_" + id).append('<span class="caret"></span>');
+                                $("#btn_variable" + "_" + id).append('&lt;span class="caret">&lt;/span>');
                                 $("#text_variable" + "_" + id).prop("disabled", false);
                                 $("#text_variable" + "_" + id).val("");
                                 e.preventDefault();
                             })
                             .appendTo(btn_items);
 
-                    var aaa = $('<a/>')
+                    var aaa = $('&lt;a/>')
                             .attr('id', sp_items[i] + "_" + id)
                             .attr('parent-field', sp_parent_field[i])
                             .attr('data-field', sp_data_field[i])
@@ -568,7 +596,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                 });
 
-                var input_sp = $('<input/>')
+                var input_sp = $('&lt;input/>')
                         .attr('id', 'text_variable' + "_" + id)
                         .attr('type', 'text')
                         .attr('aria-label', '...')
@@ -661,33 +689,31 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .appendTo(drop_item);
 
                 // contendor de arbol y panel de seleccion
-                var tree_nav_container = $('<div/>')
+                var tree_nav_container = $('&lt;div/>')
                         .addClass('row row3')
                         .appendTo(tab_pane);
 
-                var div_tree = $('<div/>')
+                var div_tree = $('&lt;div/>')
                         .attr('id', "treeVariable_" + id)
                         .addClass('myScrollableBlockVar')
                         .appendTo(tree_nav_container);
 
-                var tree = $('<div/>')
+                var tree = $('&lt;div/>')
                         .attr('id', "jstree_variables_species_" + id)
                         .appendTo(div_tree);
 
-                // var tree_selection = $('<div/>')
+                // var tree_selection = $('&lt;div/>')
                 //   		.attr('id', "treeAddedPanel_" + id)
                 //   		.addClass('myScrollableBlockVariableAdded')
                 // 	.appendTo(tree_nav_container);
 
 
-                var btn_add = $('<button/>')
+                var btn_add = $('&lt;button/>')
                         .attr('id', 'add_group' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
                         .click(function(e) {
-                            
-                            console.log(self.arrayVarSelected);
-                            
+
                             self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
                             $('#jstree_variables_species_' + id).jstree("destroy").empty();
                             $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
@@ -699,7 +725,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         })
                         .appendTo(tab_pane);
 
-                var btn_add = $('<button/>')
+                var btn_add = $('&lt;button/>')
                         .attr('id', 'clean_var' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
@@ -727,22 +753,22 @@ var variable_module = (function(verbose, url_zacatuche) {
                 // generando tab panel para variables climaticas
                 _VERBOSE ? console.log(tags[i]) : _VERBOSE;
 
-                var tab_pane = $('<div/>')
+                var tab_pane = $('&lt;div/>')
                         .attr('id', 'tab' + i + "_" + id)
                         .addClass('tab-pane')
                         .appendTo(tab_content);
 
 
                 // div que contiene el dropdown-button de tipos taxonomicos y textfiled para insertar valores
-                var drop_item = $('<div/>')
+                var drop_item = $('&lt;div/>')
                         .addClass('input-group dropdown_group')
                         .appendTo(tab_pane);
 
-                var btn_div = $('<div/>')
+                var btn_div = $('&lt;div/>')
                         .addClass('input-group-btn')
                         .appendTo(drop_item);
 
-                var btn_sp = $('<button/>')
+                var btn_sp = $('&lt;button/>')
                         .attr('id', 'btn_bioclim_' + id)
                         .attr('type', 'button')
                         .attr('data-toggle', 'dropdown')
@@ -756,16 +782,16 @@ var variable_module = (function(verbose, url_zacatuche) {
                     $("#btn_bioclim_" + id).prop("disabled", true);
                 }
 
-                $('<span/>')
+                $('&lt;span/>')
                         .addClass('caret')
                         .appendTo(btn_sp);
 
-                var btn_items = $('<div/>')
+                var btn_items = $('&lt;div/>')
                         .addClass('dropdown-menu')
                         .appendTo(btn_div);
 
                 $.each(abio_time, function(i) {
-                    var li = $('<li/>')
+                    var li = $('&lt;li/>')
                             .click(function(e) {
                                 var varfield = e.target.text;
                                 self.type_time = e.target.getAttribute("type_time");
@@ -773,12 +799,12 @@ var variable_module = (function(verbose, url_zacatuche) {
                                 _VERBOSE ? console.log(self.type_time) : _VERBOSE;
 
                                 $("#btn_bioclim_" + id).text(varfield + " ");
-                                $("#btn_bioclim_" + id).append('<span class="caret"></span>');
+                                $("#btn_bioclim_" + id).append('&lt;span class="caret">&lt;/span>');
                                 e.preventDefault();
                             })
                             .appendTo(btn_items);
 
-                    var aaa = $('<a/>')
+                    var aaa = $('&lt;a/>')
                             .attr('id', abio_time[i] + "_" + id)
                             .attr('type_time', i)
                             .text(_iTrans.prop(abio_time[i]))
@@ -787,20 +813,20 @@ var variable_module = (function(verbose, url_zacatuche) {
                 });
 
                 // contendor de arbol y panel de seleccion
-                var tree_nav_container = $('<div/>')
+                var tree_nav_container = $('&lt;div/>')
                         .addClass('row row3')
                         .appendTo(tab_pane);
 
-                var div_tree = $('<div/>')
+                var div_tree = $('&lt;div/>')
                         .attr('id', "treeVariableBioclim_" + id)
                         .addClass('myScrollableBlockVar')
                         .appendTo(tree_nav_container);
 
-                var tree = $('<div/>')
+                var tree = $('&lt;div/>')
                         .attr('id', "jstree_variables_bioclim_" + id)
                         .appendTo(div_tree);
 
-                var btn_add = $('<button/>')
+                var btn_add = $('&lt;button/>')
                         .attr('id', 'add_group_bioclim' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
@@ -812,7 +838,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         })
                         .appendTo(tab_pane);
 
-                var btn_add = $('<button/>')
+                var btn_add = $('&lt;button/>')
                         .attr('id', 'clean_var_bioclim' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
@@ -837,31 +863,31 @@ var variable_module = (function(verbose, url_zacatuche) {
                 // generando tab panel para variables topograficas
                 _VERBOSE ? console.log(tags[i]) : _VERBOSE;
 
-                var tab_pane = $('<div/>')
+                var tab_pane = $('&lt;div/>')
                         .attr('id', 'tab' + i + "_" + id)
                         .addClass('tab-pane')
                         .appendTo(tab_content);
 
                 // contendor de arbol y panel de seleccion
-                var tree_nav_container = $('<div/>')
+                var tree_nav_container = $('&lt;div/>')
                         .addClass('row row_raster')
                         .appendTo(tab_pane);
 
-                var div_tree = $('<div/>')
+                var div_tree = $('&lt;div/>')
                         .attr('id', "treeTopo_" + id)
                         .addClass('myScrollableBlockVar')
                         .appendTo(tree_nav_container);
 
-                var tree = $('<div/>')
+                var tree = $('&lt;div/>')
                         .attr('id', "jstree_topo_" + id)
                         .appendTo(div_tree);
 
-                // var tree_selection = $('<div/>')
+                // var tree_selection = $('&lt;div/>')
                 //   		.attr('id', "treeAddedPanelTopo_" + id)
                 //   		.addClass('myScrollableBlockVariableAdded')
                 // 	.appendTo(tree_nav_container);
 
-                var btn_add = $('<button/>')
+                var btn_add = $('&lt;button/>')
                         .attr('id', 'add_group_topo' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
@@ -873,7 +899,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         })
                         .appendTo(tab_pane);
 
-                var btn_add = $('<button/>')
+                var btn_add = $('&lt;button/>')
                         .attr('id', 'clean_var_topo' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
@@ -927,10 +953,8 @@ var variable_module = (function(verbose, url_zacatuche) {
                     data = resp.data;
 
                     var current_node = $('#jstree_variables_species_' + id).jstree(true).get_node($("#root"));
-                    
-//                    console.log(current_node);
 
-                    for (i = 0; i < data.length; i++) {
+                    for (i = 0; i &lt; data.length; i++) {
 
                         var idNode = "";
 
@@ -941,8 +965,8 @@ var variable_module = (function(verbose, url_zacatuche) {
                             idNode = data[i].name;
                         }
 
-                        var default_son = self.level_vartree < 8 ? [{text: "cargando..."}] : [];
-                        var label_taxon = self.level_vartree < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
+                        var default_son = self.level_vartree &lt; 8 ? [{text: "cargando..."}] : [];
+                        var label_taxon = self.level_vartree &lt; 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
                         // label_taxon = self.level_vartree == 8 ? self.value_vartree + " " + label_taxon : label_taxon;
 
 
@@ -1043,7 +1067,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                     data = resp.data;
 
-                    for (i = 0; i < data.length; i++) {
+                    for (i = 0; i &lt; data.length; i++) {
 
                         var idNode = "";
 
@@ -1058,8 +1082,8 @@ var variable_module = (function(verbose, url_zacatuche) {
                             idNode = data[i].id;
                         }
 
-                        var default_son = next_nivel < 8 ? [{text: "cargando..."}] : [];
-                        var label_taxon = next_nivel < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
+                        var default_son = next_nivel &lt; 8 ? [{text: "cargando..."}] : [];
+                        var label_taxon = next_nivel &lt; 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
 
                         var newNode = {
                             id: idNode,
@@ -1095,7 +1119,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                 // _VERBOSE ? console.log("acceder node header del dom") : _VERBOSE;
                 var headers_selected = $('#jstree_variables_species_' + id).jstree(true).get_top_selected().length;
 
-                for (i = 0; i < headers_selected; i++) {
+                for (i = 0; i &lt; headers_selected; i++) {
 
                     var node_temp = $('#jstree_variables_species_' + id).jstree(true).get_node($('#jstree_variables_species_' + id).jstree(true).get_top_selected()[i]).original;
                     var level = "";
@@ -1119,23 +1143,18 @@ var variable_module = (function(verbose, url_zacatuche) {
                     _VERBOSE ? console.log("level: " + level) : _VERBOSE;
 
                     var parent_node = $('#jstree_variables_species_' + id).jstree(true).get_node($('#jstree_variables_species_' + id).jstree(true).get_parent($('#jstree_variables_species_' + id).jstree(true).get_top_selected()[i])).original;
-                    
                     _VERBOSE ? console.log(parent_node) : _VERBOSE;
-                    _VERBOSE ? console.log(node_temp) : _VERBOSE;
 
                     if (parent_node) {
-                        
-                        self.arrayVarSelected.push({label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text});
 
-//                        if (node_temp.attr.nivel == 8) {
-//                            
-//                            self.arrayVarSelected.push({label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text});
-//                            
-//                        }
-//                        else {
-//
-//                            self.arrayVarSelected.push({label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text});
-//                        }
+                        if (node_temp.attr.nivel == 8) {
+
+                            self.arrayVarSelected.push({label: parent_node.text + " " + node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text});
+                        }
+                        else {
+
+                            self.arrayVarSelected.push({label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text});
+                        }
 
                     }
                     else {
@@ -1163,11 +1182,9 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                 var headers_selected = $('#jstree_variables_bioclim_' + id).jstree(true).get_top_selected().length;
 
-                for (i = 0; i < headers_selected; i++) {
+                for (i = 0; i &lt; headers_selected; i++) {
                     var node_temp = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($('#jstree_variables_bioclim_' + id).jstree(true).get_top_selected()[i]).original;
-                    
-                     _VERBOSE ? console.log(node_temp) : _VERBOSE;
-                    
+                    // _VERBOSE ? console.log(node_temp.id) : _VERBOSE;
                     self.arrayBioclimSelected.push({label: node_temp.text, id: node_temp.attr.bid, parent: node_temp.attr.parent, level: node_temp.attr.level, type: node_temp.attr.type});
                 }
 
@@ -1185,10 +1202,9 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                 var headers_selected = $('#' + idtree).jstree(true).get_top_selected().length;
 
-                for (i = 0; i < headers_selected; i++) {
+                for (i = 0; i &lt; headers_selected; i++) {
                     var node_temp = $('#' + idtree).jstree(true).get_node($('#' + idtree).jstree(true).get_top_selected()[i]).original;
-                    
-                    _VERBOSE ? console.log(node_temp) : _VERBOSE;
+                    // _VERBOSE ? console.log(node_temp.id) : _VERBOSE;
 
                     arrayVar.push({label: node_temp.text, id: node_temp.attr.bid, parent: node_temp.attr.parent, level: node_temp.attr.level, type: node_temp.attr.type});
                 }
@@ -1205,7 +1221,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             arraySelected.forEach(function(item, index) {
                 _VERBOSE ? console.log("numlevel: " + item.numlevel) : _VERBOSE;
 
-                if (parseInt(item.numlevel) <= NIVEL_PHYLUM) {
+                if (parseInt(item.numlevel) &lt;= NIVEL_PHYLUM) {
 
                     _VERBOSE ? console.log("NIVEL_PHYLUM O REINO") : _VERBOSE;
                     isKingdomLevel = true
@@ -1257,13 +1273,10 @@ var variable_module = (function(verbose, url_zacatuche) {
 
         }
 
-
-
         self.addUIItem = function(groupDatasetTotal) {
 
             _VERBOSE ? console.log("self.addUIItem") : _VERBOSE;
             _VERBOSE ? console.log(self.id) : _VERBOSE;
-            console.log(groupDatasetTotal);
 
             self.groupDatasetTotal = groupDatasetTotal;
 
@@ -1373,12 +1386,6 @@ var variable_module = (function(verbose, url_zacatuche) {
         self.addOtherGroup = function(idTree, arraySelected, gpoName, idDivContainer, typeVar) {
 
             _VERBOSE ? console.log("self.addOtherGroup") : _VERBOSE;
-            
-//            console.log(idTree);
-//            console.log(arraySelected);
-//            console.log(gpoName);
-//            console.log(idDivContainer);
-//            console.log(typeVar);
 
             if (arraySelected.length == 0)
                 return;
@@ -1414,7 +1421,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             _VERBOSE ? console.log(arraySelected) : _VERBOSE;
 
-            for (i = 0; i < arraySelected.length; i++) {
+            for (i = 0; i &lt; arraySelected.length; i++) {
 
                 // se elimita el spp del label cuando es tipo BIO
                 if (typeVar == _TYPE_BIO) {
@@ -1431,6 +1438,10 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             var temp_grupo = {title: "Gpo " + gpoName + " " + groupid, elements: subgroup, groupid: groupid, close: true, type: typeVar};
             self.groupDatasetTotal.push(temp_grupo);
+
+
+
+            // 
 
 
             // these lines are because when one new elements is added, the previuos elements were duplicated. So the collection is clean and reloaded again
@@ -1552,7 +1563,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                 $.each(self.var_sel_array, function(index, gpo_var) {
 
-                    if (item[0].groupid == gpo_var.groupid && item[0].type == gpo_var.type) {
+                    if (item[0].groupid == gpo_var.groupid &amp;&amp; item[0].type == gpo_var.type) {
                         _VERBOSE ? console.log("borrado") : _VERBOSE;
                         self.var_sel_array.splice(index, 1);
                         return false;
@@ -1591,7 +1602,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             self.var_sel_array = [];
             self.groupDatasetTotal = [];
 
-            // for(i = 0; i < self.var_sel_array.length; i++){
+            // for(i = 0; i &lt; self.var_sel_array.length; i++){
             //     if (self.var_sel_array[i].type == typeVar){
             //       	self.var_sel_array.splice(i, 1);
             //       	i = i-1;
@@ -1604,7 +1615,6 @@ var variable_module = (function(verbose, url_zacatuche) {
         self.getVarSelArray = function() {
 
             _VERBOSE ? console.log("self.getVarSelArray") : _VERBOSE;
-            _VERBOSE ? console.log(self.var_sel_array) : _VERBOSE;
 
             return self.var_sel_array;
         }
@@ -1717,4 +1727,26 @@ var variable_module = (function(verbose, url_zacatuche) {
         createSelectorComponent: createSelectorComponent
     }
 
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="histogram_module.html">histogram_module</a></li><li><a href="language_module.html">language_module</a></li><li><a href="map_module.html">map_module</a></li><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="net_module.html">net_module</a></li><li><a href="res_display_module.html">res_display_module</a></li><li><a href="res_display_net_module.html">res_display_net_module</a></li><li><a href="table_module.html">table_module</a></li><li><a href="validation_module.html">validation_module</a></li><li><a href="variable_module.html">variable_module</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:54:14 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: map_module.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: map_module.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * Módulo mapa, utilizado para crear y gestionar el mapa en nicho ecológico y comunidad ecológica.
  *
@@ -331,7 +359,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         // relieve: http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png
         // cartoDB: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
         _OSM_layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
-        _OSM_layer.getAttribution = function() { return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.'; };
 
         // ******************************************************************* geojson-vt
         _tileIndex = geojsonvt([], _tileOptions);
@@ -343,10 +370,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 })
                 .drawing(_drawingOnCanvas);
 
-       var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-         var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 4 : 3;
-        // var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
-        // var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 5 : 4;
+//        var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+//          var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 4 : 3;
+        var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
+        var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 5 : 4;
 
         // ambos div tienen el id = 'map', tanto en nicho como en comunidad
         map = L.map('map', {
@@ -460,12 +487,12 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         if (first) {
             console.log("first loaded");
-            for (var i = 0; i < _grid_map.features.length; i++) {
+            for (var i = 0; i &lt; _grid_map.features.length; i++) {
                 _grid_map.features[i].properties.color = '';
             }
         }
         else {
-            for (var i = 0; i < _grid_map.features.length; i++) {
+            for (var i = 0; i &lt; _grid_map.features.length; i++) {
 
                 if (grid_map_color.has(_grid_map.features[i].properties.gridid)) {
                     _grid_map.features[i].properties.opacity = 1;
@@ -501,7 +528,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         console.log(_grid_map);
 
 
-        for (var i = 0; i < _grid_map.features.length; i++) {
+        for (var i = 0; i &lt; _grid_map.features.length; i++) {
 
 
             index_grid = arg_gridid.indexOf(_grid_map.features[i].properties.gridid);
@@ -571,7 +598,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         // ctx.strokeStyle = 'grey'; // hace malla visible
 
 
-        for (var i = 0; i < features.length; i++) {
+        for (var i = 0; i &lt; features.length; i++) {
             var feature = features[i],
                     type = feature.type;
 
@@ -579,7 +606,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(255,0,0,0)';
             ctx.beginPath();
 
-            for (var j = 0; j < feature.geometry.length; j++) {
+            for (var j = 0; j &lt; feature.geometry.length; j++) {
                 var geom = feature.geometry[j];
 
                 if (type === 1) {
@@ -587,7 +614,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     continue;
                 }
 
-                for (var k = 0; k < geom.length; k++) {
+                for (var k = 0; k &lt; geom.length; k++) {
                     var p = geom[k];
                     var extent = 4096;
 
@@ -754,7 +781,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     var _lin_inf = undefined;
     var _lin_sup = undefined;
     var _sin_fecha = undefined;
-    var _con_fosil = undefined;
 
 
     /**
@@ -766,18 +792,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * 
      * @param {array} rango - Array con el rango de fechas
      * @param {boolean} sfecha - Bandera para saber si serán considerados los registros sin fecha
-     * @param {boolean} sfosil - Bandera para saber si serán considerados los registros sin fosiles
      */
-    function busca_especie_filtros(rango, sfecha, sfosil) {
+    function busca_especie_filtros(rango, sfecha) {
 
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
 
         _lin_inf = rango ? rango[0] : undefined;
         _lin_sup = rango ? rango[1] : undefined;
         _sin_fecha = sfecha;
-        _con_fosil = sfosil;
 
-        busca_especie();
+        busca_especie(true);
 
         _toastr.info("Recalculando ocurrencias de especie");
 
@@ -790,14 +814,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @public
      * @memberof! map_module
      * 
+     * @param {boolean} cfiltros - Bandera para saber si serán considerados los filtros temporales
      */
-    function busca_especie() {
+    function busca_especie(cfiltros) {
 
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
-        var milliseconds = new Date().getTime();
         
+        var milliseconds = new Date().getTime();
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
-        _con_fosil = $("#chkFosil").is(':checked') ? true : false;
 
         
         $.ajax({
@@ -810,8 +834,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "idtime": milliseconds,
                 "lim_inf": _lin_inf,
                 "lim_sup": _lin_sup,
-                "sfecha": _sin_fecha,
-                "sfosil": _con_fosil
+                "sfecha": _sin_fecha
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-Test-Header', 'test-value');
@@ -852,7 +875,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
                 // obtiene registros unicos en coordenadas
-                for (i = 0; i < d.length; i++) {
+                for (i = 0; i &lt; d.length; i++) {
 
                     item_id = JSON.parse(d[i].json_geom).coordinates;
 
@@ -1091,7 +1114,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             url = feature.properties.url;
         }
         
-        var message = "INFORMACIÓN ESPECIE<br/>Nombre: " + feature.properties.specie + "<br/>Colecta: " + fecha + "<br/>Coordenadas: " + coordinates + "<br/><a target='_blank' class='enlace_sp' href='http://" + url + "'>" + _iTrans.prop("link_sp") + "</a>";
+        var message = "INFORMACIÓN ESPECIE&lt;br/>Nombre: " + feature.properties.specie + "&lt;br/>Colecta: " + fecha + "&lt;br/>Coordenadas: " + coordinates + "&lt;br/>&lt;a target='_blank' class='enlace_sp' href='http://" + url + "'>" + _iTrans.prop("link_sp") + "&lt;/a>";
         return message;
     }
 
@@ -1139,7 +1162,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             });
 
-            if (blue_arg.length > 0 && red_arg.length > 0) {
+            if (blue_arg.length > 0 &amp;&amp; red_arg.length > 0) {
 
                 _VERBOSE ? console.log("ambos") : _VERBOSE;
 
@@ -1191,7 +1214,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 }
 
             }
-            else if (blue_arg.length == 0 && red_arg.length > 0) {
+            else if (blue_arg.length == 0 &amp;&amp; red_arg.length > 0) {
 
                 _VERBOSE ? console.log("positivos") : _VERBOSE;
 
@@ -1202,7 +1225,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 red_chunks.reverse();
                 
             }
-            else if (blue_arg.length > 0 && red_arg.length == 0) {
+            else if (blue_arg.length > 0 &amp;&amp; red_arg.length == 0) {
 
                 _VERBOSE ? console.log("negativos") : _VERBOSE;
 
@@ -1298,20 +1321,20 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             data = colorbrewer.RdBu[11];
         }
         else {
-            if (_range_limits_red.length > 0 && _range_limits_blue.length > 0 && _resultado_grid == 0) { // ambos, primero negativos
+            if (_range_limits_red.length > 0 &amp;&amp; _range_limits_blue.length > 0 &amp;&amp; _resultado_grid == 0) { // ambos, primero negativos
 
                 _range_limits_total = _range_limits_blue.reverse().concat(_range_limits_red);
 
                 data = d3.merge([rojos.reverse(), azules]);
             }
-            else if (_range_limits_red.length > 0 && _range_limits_blue.length > 0 && _resultado_grid == 1) { // ambos, primero positivos
+            else if (_range_limits_red.length > 0 &amp;&amp; _range_limits_blue.length > 0 &amp;&amp; _resultado_grid == 1) { // ambos, primero positivos
 
                 _range_limits_total = _range_limits_blue.reverse().concat(_range_limits_red.reverse());
 
                 data = d3.merge([rojos.reverse(), azules]);
             }
 
-            else if (_range_limits_red.length > 0 && _range_limits_blue.length == 0) {// solo positivos
+            else if (_range_limits_red.length > 0 &amp;&amp; _range_limits_blue.length == 0) {// solo positivos
                 _VERBOSE ? console.log("solo positivos") : _VERBOSE;
 
                 _range_limits_total = d3.merge([[{right_limit: 0, left_limit: 0}], _range_limits_red]);
@@ -1319,7 +1342,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 // data = colorbrewer.Reds[9];
             }
 
-            else if (_range_limits_red.length == 0 && _range_limits_blue.length > 0) {// solo negativos
+            else if (_range_limits_red.length == 0 &amp;&amp; _range_limits_blue.length > 0) {// solo negativos
                 _VERBOSE ? console.log("solo negativos") : _VERBOSE;
 
                 _range_limits_total = d3.merge([_range_limits_blue.reverse(), [{right_limit: 0, left_limit: 0}]]);
@@ -1572,13 +1595,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     // when the negative values (blues scale) is sent as arg_1, the boundaries must be changed
                     if (first_pos) {
 
-                        if (score >= llimit && score < rlimit) {
+                        if (score >= llimit &amp;&amp; score &lt; rlimit) {
                             decil_item.push(item);
                         }
                     }
                     else {
 
-                        if (score >= llimit && score < rlimit) {
+                        if (score >= llimit &amp;&amp; score &lt; rlimit) {
                             decil_item.push(item);
                         }
                     }
@@ -1614,7 +1637,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         console.log("chunkify");
         console.log(a);
 
-        if (n < 2)
+        if (n &lt; 2)
             return [a];
 
         var len = a.length,
@@ -1632,7 +1655,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             console.log("size: " + size);
 
-            while (i < len) {
+            while (i &lt; len) {
                 out.push(a.slice(i, i += size));
             }
         }
@@ -1640,7 +1663,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         else if (balanced) {
             console.log("caso dos");
 
-            while (i < len) {
+            while (i &lt; len) {
                 size = Math.ceil((len - i) / n--);
                 out.push(a.slice(i, i += size));
             }
@@ -1654,7 +1677,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             size = Math.floor(len / n);
             if (len % size === 0)
                 size--;
-            while (i < size * n) {
+            while (i &lt; size * n) {
                 out.push(a.slice(i, i += size));
             }
             out.push(a.slice(size * n));
@@ -1707,4 +1730,26 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         startMap: startMap
     }
 
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="histogram_module.html">histogram_module</a></li><li><a href="language_module.html">language_module</a></li><li><a href="map_module.html">map_module</a></li><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="net_module.html">net_module</a></li><li><a href="res_display_module.html">res_display_module</a></li><li><a href="res_display_net_module.html">res_display_net_module</a></li><li><a href="table_module.html">table_module</a></li><li><a href="validation_module.html">validation_module</a></li><li><a href="variable_module.html">variable_module</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:54:14 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

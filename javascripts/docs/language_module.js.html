@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: language_module.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: language_module.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Módulo de internacionalización, utilizado para gestionar el idioma desplegado en nicho y comunidad ecológica.
  *
  * @namespace language_module
@@ -217,7 +245,7 @@ var language_module = (function(verbose) {
                 }
 
             }
-            $("#btn_idioma").append('<span class="caret"></span>');
+            $("#btn_idioma").append('&lt;span class="caret">&lt;/span>');
 
             $("#lb_especie").text($.i18n.prop('lb_especie'));
             $("#nom_sp").attr("placeholder", $.i18n.prop('esp_name'));
@@ -232,8 +260,6 @@ var language_module = (function(verbose) {
             
             $("#lb_apriori").text($.i18n.prop('lb_apriori') + ":");
             $("#lb_occ_min").text($.i18n.prop('lb_occ_min') + ":");
-            $("#lb_fosil").text($.i18n.prop('lb_fosil') + ":");
-            
             $("#lb_mapprob").text($.i18n.prop('lb_mapprob') + ":");
             
             $("#lb_reg_fecha").text($.i18n.prop('lb_reg_fecha') + ":");
@@ -248,10 +274,7 @@ var language_module = (function(verbose) {
             
             $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
             
-            
-            $("#labelValidation").text($.i18n.prop('lb_no'));
             $("#lb_sfecha").text($.i18n.prop('lb_si'));
-            $("#labelFosil").text($.i18n.prop('lb_si'));
             
             $("#lb_panel_region").text($.i18n.prop('lb_panel_region'));
             $("#lb_seccion_region").text($.i18n.prop('lb_seccion_region'));
@@ -270,10 +293,10 @@ var language_module = (function(verbose) {
 
 
             $("#btn_variable_fuente").text($.i18n.prop('btn_variable') + " ");
-            $("#btn_variable_fuente").append('<span class="caret"></span>');
+            $("#btn_variable_fuente").append('&lt;span class="caret">&lt;/span>');
             
             $("#btn_variable_sumidero").text($.i18n.prop('btn_variable') + " ");
-            $("#btn_variable_sumidero").append('<span class="caret"></span>');
+            $("#btn_variable_sumidero").append('&lt;span class="caret">&lt;/span>');
 
 
             $("#lb_occ").text($.i18n.prop('lb_occ') + ":");
@@ -304,7 +327,7 @@ var language_module = (function(verbose) {
             
 
             $("#btn_variable_bioclim").text($.i18n.prop('btn_variable_bioclim') + " ");
-            $("#btn_variable_bioclim").append('<span class="caret"></span>');
+            $("#btn_variable_bioclim").append('&lt;span class="caret">&lt;/span>');
 
             $("#a_item_bio00").text($.i18n.prop('a_item_bio00'));
             $("#a_item_bio01").text($.i18n.prop('a_item_bio01'));
@@ -328,7 +351,7 @@ var language_module = (function(verbose) {
             $("#a_item_bio19").text($.i18n.prop('a_item_bio19'));
 
             $("#btn_variable_bioclim_time").text($.i18n.prop('btn_variable_bioclim_time') + " ");
-            $("#btn_variable_bioclim_time").append('<span class="caret"></span>');
+            $("#btn_variable_bioclim_time").append('&lt;span class="caret">&lt;/span>');
 
             $("#a_actual").text($.i18n.prop('a_actual'));
             $("#a_f50").text($.i18n.prop('a_f50'));
@@ -403,7 +426,7 @@ var language_module = (function(verbose) {
                 }
 
             }
-            $("#btn_idioma").append('<span class="caret"></span>');
+            $("#btn_idioma").append('&lt;span class="caret">&lt;/span>');
 
 
             $("#generaRed").attr("title", $.i18n.prop('lb_genera_red'));
@@ -439,7 +462,7 @@ var language_module = (function(verbose) {
                 }
 
             }
-            $("#btn_idioma").append('<span class="caret"></span>');
+            $("#btn_idioma").append('&lt;span class="caret">&lt;/span>');
 
 
             $("#send_email_login").text($.i18n.prop('send_email_login'));
@@ -478,4 +501,26 @@ var language_module = (function(verbose) {
         addModuleForLanguage: addModuleForLanguage
 
     }
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="histogram_module.html">histogram_module</a></li><li><a href="language_module.html">language_module</a></li><li><a href="map_module.html">map_module</a></li><li><a href="module_index.html">module_index</a></li><li><a href="module_net.html">module_net</a></li><li><a href="module_nicho.html">module_nicho</a></li><li><a href="net_module.html">net_module</a></li><li><a href="res_display_module.html">res_display_module</a></li><li><a href="res_display_net_module.html">res_display_net_module</a></li><li><a href="table_module.html">table_module</a></li><li><a href="validation_module.html">validation_module</a></li><li><a href="variable_module.html">variable_module</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:54:14 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

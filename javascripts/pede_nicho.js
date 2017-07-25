@@ -10,13 +10,13 @@ var module_nicho = (function() {
     var _VERBOSE = true;
 
     var _map_module_nicho,
-        _variable_module_nicho,
-        _res_display_module_nicho,
-        _region_module_nicho,
-        _table_module,
-        _histogram_module_nicho,
-        _language_module_nicho,
-        _module_toast;
+            _variable_module_nicho,
+            _res_display_module_nicho,
+            _region_module_nicho,
+            _table_module,
+            _histogram_module_nicho,
+            _language_module_nicho,
+            _module_toast;
 
     var _componente_fuente;
 
@@ -43,29 +43,29 @@ var module_nicho = (function() {
         $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
 
         // inicilizando slider
+//        $(function() {
+//            $("#sliderValidation").slider({
+//                disabled: true,
+//                min: 0,
+//                max: 100,
+//                step: 10,
+//                value: 70,
+//                change: function(event, ui) {
+//                    // _VERBOSE ? console.log(ui.value): _VERBOSE;
+//                    $("#labelValidation").text(ui.value + "%");
+//                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_porcentaje_test', ui.value, (100 - ui.value)), "info");
+//
+//                }
+//            });
+//        });
+
+
         $(function() {
-            $("#sliderValidation").slider({
-                disabled: true,
-                min: 0,
-                max: 100,
-                step: 10,
-                value: 70,
-                change: function(event, ui) {
-                    // _VERBOSE ? console.log(ui.value): _VERBOSE;
-                    $("#labelValidation").text(ui.value + "%");
-                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_porcentaje_test', ui.value, (100 - ui.value)), "info");
-
-                }
-            });
-        });
-
-
-        $(function(){
 
             var year = parseInt(new Date().getFullYear());
             // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
             year = Math.round(year / 10) * 10;
-            console.log(year);
+//            console.log(year);
 
             $("#sliderFecha").slider({
                 range: true,
@@ -113,16 +113,20 @@ var module_nicho = (function() {
 
             if ($this.is(':checked')) {
 
-                $("#sliderValidation").slider("enable");
+//                $("#sliderValidation").slider("enable");
+
+                $("#labelValidation").text("Si");
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_act'), "info");
 
             } else {
 
+                $("#labelValidation").text("No");
+
                 // _VERBOSE ? console.log("no checked"): _VERBOSE;
-                $("#sliderValidation").slider({
-                    disabled: true
-                });
+//                $("#sliderValidation").slider({
+//                    disabled: true
+//                });
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_des'), "info");
 
@@ -151,6 +155,41 @@ var module_nicho = (function() {
             }
 
         });
+        
+        
+        $("#chkFosil").click(function(event) {
+
+            var $this = $(this);
+
+            if ($this.is(':checked')) {
+
+                $("#labelFosil").text("Si");
+                
+                if ($("#reload_map").hasClass("btn-primary") && _map_module_nicho.get_specieTarget()) {
+                    
+                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_values'), "warning");
+                    $("#reload_map").addClass('btn-success').removeClass('btn-primary');
+
+                }
+                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_fosil_act'), "info");
+
+            } else {
+
+                $("#labelFosil").text("No");
+                
+                if ($("#reload_map").hasClass("btn-primary") && _map_module_nicho.get_specieTarget()) {
+                    
+                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_values'), "warning");
+                    $("#reload_map").addClass('btn-success').removeClass('btn-primary');
+                    
+                }
+
+                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_fosil_des'), "info");
+                
+            }
+
+        });
+        
 
 
         // checkbox que se activa cuando se desea tomar en cuanta un minimo de ocurrencias
@@ -159,7 +198,7 @@ var module_nicho = (function() {
             var $this = $(this);
 
             if ($this.is(':checked')) {
-                // $( "#sliderFecha" ).slider( "enable" );	
+                $("#sliderFecha").slider("enable");
                 $("#lb_sfecha").text(_iTrans.prop('lb_si'));
 
                 if ($("#reload_map").hasClass("btn-primary") && _map_module_nicho.get_specieTarget()) {
@@ -226,11 +265,9 @@ var module_nicho = (function() {
 
 
         // deshabilita controles temporales
-        $("#chkFecha").prop('disabled', true);
-
-
+        $("#chkFecha").prop('disabled', false);
         $("#sliderFecha").slider({
-            disabled: true
+            disabled: false
         });
 
         $("#nicho_link").click(function() {
@@ -246,6 +283,7 @@ var module_nicho = (function() {
                     type: "post",
                     data: {
                         qtype: 'getEntList',
+                        limit: 15,
                         searchStr: request.term,
                         nivel: 'especievalidabusqueda', // parametro default para nivel taxonomico, Nota migrar a nive variable como en target
                         source: 1 // source para saber si viene de objetivo o el target
@@ -294,7 +332,7 @@ var module_nicho = (function() {
 
                 _map_module_nicho.set_specieTarget(specie_target);
 
-                _map_module_nicho.busca_especie(false);
+                _map_module_nicho.busca_especie();
 
                 _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
 
@@ -315,11 +353,17 @@ var module_nicho = (function() {
                     rango_fechas = undefined;
                 }
 
-                var chkFecha = $("#chkFecha").is(':checked');
+//                var chkFecha = $("#chkFecha").is(':checked');
+                var chkFecha = $("#chkFecha").is(':checked') ? true : false;
+//                console.log("chkFecha: " + chkFecha);
+                
+//                var chkFosil = $("#chkFosil").is(':checked');
+                var chkFosil = $("#chkFosil").is(':checked') ? true : false;
+//                console.log("chkFosil: " + chkFosil);
 
                 $('.nav-tabs a[href="#tab_resumen"]').tab('show');
 
-                _map_module_nicho.busca_especie_filtros(rango_fechas, chkFecha);
+                _map_module_nicho.busca_especie_filtros(rango_fechas, chkFecha, chkFosil);
 
                 $("#reload_map").addClass('btn-primary').removeClass('btn-success');
 
@@ -337,68 +381,69 @@ var module_nicho = (function() {
 
             _VERBOSE ? console.log("show_gen") : _VERBOSE;
 
-            var cadena_ini = _url_nicho + '#link/?';
+            var data_link = "";
 
             var sp_data = JSON.stringify(_map_module_nicho.get_specieTarget());
 
             var subgroups = _componente_fuente.getVarSelArray();
 
-            cadena_ini += "sp_data=" + sp_data + "&";
+            data_link += "sp_data=" + sp_data + "&";
 
-            var val_process = $("#chkValidation").is(':checked');
-            if (val_process) {
-                cadena_ini += "chkVal=" + $("#sliderValidation").slider("value") + "&";
-            }
+//            var val_process = $("#chkValidation").is(':checked');
+//            if (val_process) {
+//                cadena_ini += "chkVal=" + $("#sliderValidation").slider("value") + "&";
+//            }
 
             var mapa_prob = $("#chkMapaProb").is(":checked");
             if (mapa_prob) {
-                cadena_ini += "chkPrb=" + mapa_prob + "&";
+                data_link += "chkPrb=" + mapa_prob + "&";
+            }
+            
+            var fossils = $("#chkFosil").is(":checked");
+            if (fossils) {
+                data_link += "chkFosil=" + fossils + "&";
             }
 
             var apriori = $("#chkApriori").is(':checked');
             if (apriori) {
-                cadena_ini += "chkApr=" + apriori + "&";
+                data_link += "chkApr=" + apriori + "&";
             }
 
             var chkFecha = $("#chkFecha").is(':checked');
 
             if (chkFecha) {
-                cadena_ini += "chkFec=" + chkFecha + "&";
+                data_link += "chkFec=" + chkFecha + "&";
             }
 
             var rango_fechas = $("#sliderFecha").slider("values");
 
             if (rango_fechas[0] != $("#sliderFecha").slider("option", "min") || rango_fechas[1] != $("#sliderFecha").slider("option", "max")) {
-                cadena_ini += "minFec=" + rango_fechas[0] + "&maxFec=" + rango_fechas[1];
+                data_link += "minFec=" + rango_fechas[0] + "&maxFec=" + rango_fechas[1];
             }
 
             var min_occ = $("#chkMinOcc").is(':checked');
 
             if (min_occ) {
-                cadena_ini += "chkOcc=" + parseInt($("#occ_number").val()) + "&";
+                data_link += "chkOcc=" + parseInt($("#occ_number").val()) + "&";
             }
 
-            cadena_ini += "num_filters=" + subgroups.length + "&";
+            data_link += "num_filters=" + subgroups.length + "&";
 
             $.each(subgroups, function(index, item) {
 
                 var str_item = JSON.stringify(item);
 
                 if (index == 0) {
-                    cadena_ini += "tfilters[" + index + "]=" + str_item;
+                    data_link += "tfilters[" + index + "]=" + str_item;
                 }
                 else {
-                    cadena_ini += "&tfilters[" + index + "]=" + str_item;
+                    data_link += "&tfilters[" + index + "]=" + str_item;
                 }
 
             });
 
-
-            console.log(cadena_ini);
-
-            $("#modalRegenera").modal();
-
-            $("#lb_enlace").val(cadena_ini);
+//            console.log(data_link);
+            _getLinkToken(data_link);
 
         });
 
@@ -422,11 +467,154 @@ var module_nicho = (function() {
 
 
     /**
-     * Obtiene los valores de la URL necesarios para la regeneración de resultados.
+     * Realiza el envio de los parámetros seleccionados de un análisis de nicho para generar un token de recuperación.
+     *
+     * @function _getLinkToken
+     * @private
+     * @memberof! module_nicho
+     * 
+     * @param {String} data_link - Cadena que contiene los parametros selecicoandos por el usuario en el análisis.
+     * 
+     */
+    function _getLinkToken(data_link) {
+
+        console.log("_getLinkToken");
+
+        $.ajax({
+            url: _url_api + "/niche/especie",
+            type: 'post',
+            data: {
+                qtype: 'getToken',
+                confparams: data_link,
+                tipo: 'nicho'
+            },
+            dataType: "json",
+            success: function(resp) {
+
+                var cadena_ini = _url_nicho + '#link/?';
+                var tokenlink = resp.data[0].token;
+
+                console.log("token: " + tokenlink);
+
+                $("#modalRegenera").modal();
+                $("#lb_enlace").val(cadena_ini + "token=" + tokenlink);
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+            }
+        });
+
+    }
+
+
+    /**
+     * Consulta los parámetros utilizados en el análisis del token contenido en la URL y despliega la configuración en la UI.
+     *
+     * @function _getValuesFromToken
+     * @private
+     * @memberof! module_nicho
+     * 
+     * @param {String} token - token relacionado a un conjunto de paramétros utilizados en un análisis de nicho.
+     * 
+     */
+    function _getValuesFromToken(token) {
+
+        console.log("_getValuesFromToken");
+
+
+        $.ajax({
+            url: _url_api + "/niche/especie",
+            type: 'post',
+            data: {
+                qtype: 'getValuesFromToken',
+                token: token,
+                tipo: 'nicho'
+            },
+            dataType: "json",
+            success: function(resp) {
+
+//                console.log(resp.data);
+
+                var all_data = resp.data[0].parametros;
+                _json_config = _parseURL("?"+all_data);
+                
+                var sp_data = JSON.parse(_json_config.sp_data);
+
+                var chkVal = _json_config.chkVal ? parseInt(_json_config.chkVal) : undefined;
+
+                var chkPrb = _json_config.chkPrb ? _json_config.chkPrb === "true" : false;
+                
+                var chkFosil = _json_config.chkFosil ? _json_config.chkFosil === "true" : false;
+
+                var chkApr = _json_config.chkApr ? _json_config.chkApr === "true" : false;
+
+                var chkFec = _json_config.chkFec ? _json_config.chkFec === "true" : false;
+
+                var chkOcc = _json_config.chkOcc ? parseInt(_json_config.chkOcc) : undefined;
+
+                var minFec = _json_config.minFec ? parseInt(_json_config.minFec) : undefined;
+
+                var maxFec = _json_config.maxFec ? parseInt(_json_config.maxFec) : undefined;
+
+                var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
+
+                var num_filters = parseInt(_json_config.num_filters);
+
+
+                var filters = [];
+                for (i = 0; i < num_filters; i++) {
+
+                    item = _json_config["tfilters[" + i + "]"];
+
+                    filters.push(JSON.parse(_json_config["tfilters[" + i + "]"]));
+                }
+
+                _procesaValoresEnlace(sp_data, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil);
+                $("#show_gen").css('visibility', 'hidden');
+
+
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+            }
+        });
+
+
+    }
+
+
+    /**
+     * Parsea una URL a un JSON.
+     *
+     * @function _parseURL
+     * @private
+     * @memberof! module_nicho
+     * 
+     * @param {string} url - URL en formato cadena para ser parseado.
+     * 
+     */
+    function _parseURL(url) {
+        console.log(url);
+        
+        var regex = /[?&]([^=#]+)=([^&#]*)/g, url = url, params = {}, match;
+        while (match = regex.exec(url)) {
+            params[match[1]] = match[2];
+        }
+        return params;
+    }
+
+
+    /**
+     * Procesa la URL insertada en el explorador para iniciar el proceso de parseo y obtención de parámetros.
      *
      * @function _genLinkURL
      * @private
      * @memberof! module_nicho
+     * 
      */
     function _genLinkURL() {
 
@@ -436,38 +624,9 @@ var module_nicho = (function() {
             return;
         }
 
-
-        var sp_data = JSON.parse(_json_config.sp_data);
-
-        var chkVal = _json_config.chkVal ? parseInt(_json_config.chkVal) : undefined;
-
-        var chkPrb = _json_config.chkPrb ? _json_config.chkPrb === "true" : false;
-
-        var chkApr = _json_config.chkApr ? _json_config.chkApr === "true" : false;
-
-        var chkFec = _json_config.chkFec ? _json_config.chkFec === "true" : false;
-
-        var chkOcc = _json_config.chkOcc ? parseInt(_json_config.chkOcc) : undefined;
-
-        var minFec = _json_config.minFec ? parseInt(_json_config.minFec) : undefined;
-
-        var maxFec = _json_config.maxFec ? parseInt(_json_config.maxFec) : undefined;
-
-        var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
-
-        var num_filters = parseInt(_json_config.num_filters);
-
-
-        var filters = [];
-        for (i = 0; i < num_filters; i++) {
-
-            item = _json_config["tfilters[" + i + "]"];
-
-            filters.push(JSON.parse(_json_config["tfilters[" + i + "]"]));
-        }
-
-        _procesaValoresEnlace(sp_data, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas);
-        $("#show_gen").css('visibility', 'hidden');
+//        console.log(_json_config.token);
+        var token = _json_config.token;
+        _getValuesFromToken(token);
 
     }
 
@@ -513,7 +672,7 @@ var module_nicho = (function() {
      * @memberof! module_nicho
      * 
      * @param {json} sp_data - JSON con la información de la especie objetivo
-     * @param {josn} subgroups - JSON  con el grupo de variables seleccionado
+     * @param {json} subgroups - JSON  con el grupo de variables seleccionado
      * @param {boleano} chkVal - Bandera si esta activado el proceso de validación
      * @param {boleano} chkPrb - Bandera si esta activado el mapa de probabilidad
      * @param {boleano} chkApr - Bandera si esta activado el cálculo con a priori
@@ -521,7 +680,7 @@ var module_nicho = (function() {
      * @param {integer} chkOcc - Número mínimo de ocurrencias en nj para ser considerado en los cálculos
      * @param {array} rango_fechas - Rango de fecha para realizar los cálculos
      */
-    function _procesaValoresEnlace(sp_data, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas) {
+    function _procesaValoresEnlace(sp_data, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil) {
 
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
@@ -549,17 +708,17 @@ var module_nicho = (function() {
         if (chkVal != undefined) {
 
             $("#chkValidation").prop('checked', true);
-            $("#sliderValidation").slider("enable");
-            $("#sliderValidation").slider('value', chkVal);
+//            $("#sliderValidation").slider("enable");
+//            $("#sliderValidation").slider('value', chkVal);
             $("#labelValidation").text(chkVal + "%");
 
         }
         else {
 
             $("#chkValidation").prop('checked', false);
-            $("#sliderValidation").slider({
-                disabled: true
-            });
+//            $("#sliderValidation").slider({
+//                disabled: true
+//            });
 
         }
 
@@ -570,6 +729,16 @@ var module_nicho = (function() {
         else {
             $("#chkMapaProb").prop('checked', false);
             $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
+        }
+        
+        
+        if (chkFosil) {
+            $("#chkFosil").prop('checked', true);
+            $("#labelFosil").text(_iTrans.prop('lb_si'));
+        }
+        else {
+            $("#chkFosil").prop('checked', false);
+            $("#labelFosil").text(_iTrans.prop('lb_no'));
         }
 
         if (chkApr) {
@@ -605,7 +774,7 @@ var module_nicho = (function() {
             _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec);
         }
         else {
-            _map_module_nicho.busca_especie(false);
+            _map_module_nicho.busca_especie();
         }
 
         _res_display_module_nicho.set_spid(spid);
@@ -738,6 +907,7 @@ var module_nicho = (function() {
             val_process = $("#chkValidation").is(':checked');
             min_occ = $("#chkMinOcc").is(':checked');
             mapa_prob = $("#chkMapaProb").is(':checked');
+            fossil = $("#chkFosil").is(':checked');
 
             var rango_fechas = $("#sliderFecha").slider("values");
 
@@ -747,12 +917,13 @@ var module_nicho = (function() {
 
             var chkFecha = $("#chkFecha").is(':checked');
 
-            slider_value = val_process ? $("#sliderValidation").slider("value") : 0;
+//            slider_value = val_process ? $("#sliderValidation").slider("value") : 0;
+            slider_value = val_process ? true : false;
 
 
             // Falta agregar la condición makesense. 
             // Cuando se realiza una consulta por region seleccioanda se verica que la especie objetivo se encuentre dentro de esta area
-            _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha);
+            _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha, fossil);
 
         }
 
@@ -898,7 +1069,7 @@ $(document).ready(function() {
     var ambiente = 0;
     // 0 nicho, 1 comunidad
     var modulo = 0;
-    
+
     if ($.cookie("url_front")) {
 
         module_nicho.setUrlFront($.cookie("url_front"))
@@ -907,16 +1078,30 @@ $(document).ready(function() {
 
     }
     else {
+
         if (ambiente === 0) {
             module_nicho.setUrlFront("http://localhost/species-front");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
+            module_nicho.setUrlApi("http://localhost:8080");
             module_nicho.setUrlNicho("http://localhost/species-front/geoportal_v0.1.html");
         }
         else {
-            module_nicho.setUrlFront("http://species.conabio.gob.mx/dev/");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/api-dev/");
+
+
+//            module_nicho.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");
+//            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche4");
+//            module_nicho.setUrlNicho("http://species.conabio.gob.mx/c3/charlie_dev/species-front/geoportal_v0.1.html");
+
+//            module_nicho.setUrlFront("http://species.conabio.gob.mx");
+//            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
+//            module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
+
+            module_nicho.setUrlFront("http://species.conabio.gob.mx/dev");
+            module_nicho.setUrlApi("http://species.conabio.gob.mx/api-dev");
             module_nicho.setUrlNicho("http://species.conabio.gob.mx/dev/geoportal_v0.1.html");
+
+
         }
+
     }
 
     module_nicho.startModule(modulo, verbose);

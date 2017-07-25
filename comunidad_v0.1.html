@@ -31,6 +31,14 @@
 
 
         <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+        
+        
+        <script type="text/javascript" src="plugins/router/cbsplit.js"></script>
+        <script type="text/javascript" src="plugins/router/jquery.ba-hashchange.js"></script>
+        <script type="text/javascript" src="plugins/router/jquery.router.js"></script>
+        
+        
         <script src="javascripts/jquery-ui/jquery-ui.js"></script>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
@@ -63,47 +71,72 @@
         </script>
 
 
-        <script type="x-shader/x-vertex" id="vertexshader">
+        <script type="text/javascript">
 
-            attribute float size;
-            uniform float pointSize;
-            uniform vec3 color;
-            uniform float alpha;
-            varying vec4 vColor;
-            varying vec2 myPosition;
-            varying float mySize;
+            // variable sglobal para la configuración y regeneración del enlace
+            var _json_config;
 
-            void main() {
 
-            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-            gl_PointSize = size;
-            mySize = size;
-            gl_Position = projectionMatrix * mvPosition;
-            vColor = vec4(color, alpha);
+            $(function() {
+                
+//                console.log("_json_config2");
 
-            }
+                var result = $('#result');
 
-        </script>
 
-        <script type="x-shader/x-fragment" id="fragmentshader">
+                // Print a hash
+                $.print = function(dict) {
 
-            varying vec4 vColor;
-            varying vec2 myPosition;
-            varying float mySize;
+                    return JSON.stringify(dict);
 
-            void main() {
+                }
 
-            float f = 0.5;
-            float d = abs(distance(gl_PointCoord - f, vec2(0.0, 0.0)));
-            float pixelD = (d + 0.5) * mySize;
-            if(pixelD + 0.5 < mySize) {
-            gl_FragColor = vec4(vColor.xyz, 0.9);
-            } else if(pixelD < mySize) {
-            gl_FragColor = vec4(vColor.xyz, 0.1);
-            } else {
-            discard;
-            }
-            }
+                // Setup routes
+                result
+                        .route('link/', function(request) {
+                            return $.print(request.params);
+                        });
+
+
+                var hash = location.hash.replace(/^#/, '');
+                
+
+                if (hash) {
+
+//                    console.log("enlace");
+//                    console.log($.routeMatches("link/?minOcc=5"));
+
+                    var match = $.routeMatches(hash);
+                    
+                    console.log(match);
+
+                    if (match) {
+                        var template = $(match.route.template);
+                        
+                        
+
+                        if (template.length) {
+                            var text = match.route.callback.apply(match.route.callback, match.args);
+                            // template.text(text);
+                            // console.log(template);
+                            _json_config = JSON.parse(text)
+                            
+                            console.log("_json_config");
+                            console.log(_json_config);
+
+
+                        }
+
+                    }
+
+                }
+                else {
+                    console.log("inicio");
+                }
+
+            })
+
+
 
         </script>
 
@@ -148,6 +181,8 @@
 
 
             <div class="row-fluid row_panel">
+                
+                <div id="result"></div>
 
                 <div class="header_nav">
 
@@ -172,7 +207,30 @@
 
                         <br/>
 
-                        <button id="generaRed" type="button" class="btn btn-primary"></button>
+                        <div class="row">
+
+                            <div class="col-md-12 ">
+
+                                <div class="col-md-2 col-centered" >
+
+                                    <div class="col-md-6">
+                                        <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link link-comunidad" type="button" title="Guardar enlace de resultados"  style="visibility: hidden" ></button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button id="generaRed" type="button" class="btn btn-primary"></button>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <!--style="visibility: hidden"-->
+
+
                         <!-- <button id="limpiaRed" type="button" title="Limpiar" class="btn btn-primary glyphicon glyphicon-erase"></button> -->
 
 
@@ -201,9 +259,7 @@
 
                     <div id="charts" class="myScrollableBlockEpsilon">
 
-                        <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Epsilon Especie');
-                                                $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las especies por su valor de epsion. Además, permite seleccionar rangos para filtrar la red.');
-                                                $('#modalInfo').modal()" ></button>
+                        <button id="btn_hist" type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#modalInfo').modal()" ></button>
 
                         <div id="hist" class="chart"></div>
 
@@ -301,6 +357,32 @@
         </div>
 
 
+        <div class="modal fade mymodals_info" id="modalRegenera" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content" style="height: 200px;">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4  id="lb_header_carga" class="modal-title" >Regenerar resultados</h4>
+                    </div>
+
+                    <div class="modal-body">
+
+
+                        <div class="form-group">
+                            <label for="usr">Para regenerar tus resultados copia el siguiente enlace y pegalo en tu explorador:</label>
+                            <input type="text" class="form-control" id="lb_enlace" >
+                        </div>
+
+                        <button id="accept_link" class="btn btn-primary pull-right" type="button" >Aceptar</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="assets/dist/jstree.min.js"></script>
@@ -312,6 +394,8 @@
         <!-- // <script src="plugins/markercluster/dist/leaflet.markercluster-src.js"></script> -->
 
         <script type="text/javascript" src="javascripts/toastr.js"></script>
+
+        
 
         <script src="http://www.sumbera.com/gist/js/vt/geojson-vt-dev.js"></script>
         <script src="http://www.sumbera.com/gist/js/leaflet/canvas/L.CanvasTiles.js"></script>
