@@ -168,6 +168,22 @@ var table_module = (function(verbose) {
         $("#div_formula").append("<img src=images/epsilon.png>");
 
     }
+    
+    
+    
+    /**
+     * Éste método limpia la tabla de resultados generales del análisis de nicho ecológico.
+     *
+     * @function clearEspList
+     * @public
+     * @memberof! table_module
+     * 
+     */
+    function clearEspList(){
+        if (_tbl != false) {
+            $('#tdisplay').dataTable().fnClearTable();
+        }
+    }
 
 
     /**
@@ -190,7 +206,6 @@ var table_module = (function(verbose) {
         if (_tbl != false) {
 
             // _VERBOSE ? console.log("*********** second time") : _VERBOSE;
-
             $('#tdisplay').dataTable().fnClearTable();
             $('#tdisplay').dataTable().fnAddData(data_list);
         }
@@ -454,7 +469,8 @@ var table_module = (function(verbose) {
         setLanguageModule: setLanguageModule,
         createListNet: createListNet,
         addImageScore: addImageScore,
-        addImageEpsilon: addImageEpsilon
+        addImageEpsilon: addImageEpsilon,
+        clearEspList: clearEspList
     }
 
 
