@@ -124,6 +124,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
         fn_avg: "fn_" + _id_scr_decil
     }
 
+    var _requestReturned = 2;
+
 
     /**
      * Método getter de la configuración para generar el histograma de score por celda en el análisis de nicho ecológico.
@@ -483,15 +485,26 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
         document.getElementById("tbl_hist").style.display = "inline";
+        _cleanPanel();
+
+
+        // Elimina tabla de validación en caso de existir
+        if (_idtemptable !== "") {
+            _VERBOSE ? console.log("elimina tabla: " + _idtemptable) : _VERBOSE;
+            _deleteValidationTables();
+        }
 
         if (val_process) {
+
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'), "warning");
             _initializeValidationTables(val_process);
+
         }
         else {
 
             _confDataRequest(_spid, _idreg, val_process);
             _panelGeneration();
+
             _createTableEpSc(_tdata);
             _createHistEpScr_Especie(_ddata);
             _createHistScore_Celda(_cdata);
@@ -502,9 +515,25 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
     }
 
+    var _idtemptable = "";
+
+    /**
+     * Éste método ejecuta el Store Procedure que genera la tabla temporal donde se realizará el proceso de validación. 
+     *
+     * @function _initializeValidationTables
+     * @public
+     * @memberof! res_display_module
+     * 
+     * @param {String} idtemptable - Nombre de la tabla temporal que debe ser eliminada
+     *
+     */
     function _initializeValidationTables(val_process) {
 
-        console.log("_initializeValidationTables");
+        _VERBOSE ? console.log("_initializeValidationTables") : _VERBOSE;
+
+//        var idtemptable = "tbl_" + new Date().getTime();
+//        _VERBOSE ? console.log("tbl name: " + idtemptable) : _VERBOSE;
+
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie",
@@ -517,27 +546,39 @@ var res_display_module = (function(verbose, url_zacatuche) {
             dataType: "json",
             success: function(resp) {
 
-                var respuesta = resp.data[0].respuesta;
-                var idtabla = resp.data[0].id_tabla;
-                var numregistros = resp.data[0].id_tabla;
+                _idtemptable = resp.data[0].tblname;
+                _VERBOSE ? console.log("Creación tabla: " + _idtemptable) : _VERBOSE;
 
-                console.log("respuesta: " + respuesta);
-                console.log("idtabla: " + idtabla);
-                console.log("numregistros: " + numregistros);
+                _confDataRequest(_spid, _idreg, val_process, _idtemptable);
+                _panelGeneration(_idtemptable);
 
-                if (respuesta === true){
-
-                    _confDataRequest(_spid, _idreg, val_process, idtabla);
-                    _panelGeneration();
-                    
-                    _createTableEpSc(_tdata);
-                    _createHistEpScr_Especie(_ddata);
-                    _createHistScore_Celda(_cdata);
-                    _configureStyleMap(_sdata);
-
-                }
+                _createTableEpSc(_tdata, _idtemptable, val_process);
+                _createHistEpScr_Especie(_ddata);
+                _createHistScore_Celda(_cdata);
+                _configureStyleMap(_sdata);
 
 
+//              Servicio de prueba del store
+// 
+//                $.ajax({
+//                    url: _url_zacatuche + "/niche/especie",
+//                    type: 'post',
+//                    data: {
+//                        qtype: 'processValidationTables',
+//                        idtable: idtemptable
+//                    },
+//                    dataType: "json",
+//                    success: function(resp) {
+//
+//                        console.log("proceso");
+//                        console.log(resp);
+//
+//                    },
+//                    error: function(jqXHR, textStatus, errorThrown) {
+//                        _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+//
+//                    }
+//                });
 
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -549,24 +590,109 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
     }
 
-    // No es utilizada
-    function _cleanPanel() {
 
-        $("#" + _id_charteps.id).empty();
-        $("#" + _id_chartscr.id).empty();
-        $("#" + _id_chartscr_celda.id).empty();
+    /**
+     * Éste método ejecuta el Store Procedure que elimina la tabla temporal donde se realizo el proceso de validación.
+     *
+     * @function _deleteValidationTables
+     * @public
+     * @memberof! res_display_module
+     * 
+     */
+    function _deleteValidationTables() {
 
-        if (_tbl_decil != false) {
-            $('#example').dataTable().fnClearTable();
-            // $('#example').dataTable().fnAddData(data_list);
+        _VERBOSE ? console.log("_deleteValidationTables") : _VERBOSE;
+
+        $.ajax({
+            url: _url_zacatuche + "/niche/especie",
+            type: 'post',
+            data: {
+                qtype: 'deleteValidationTables',
+                idtable: _idtemptable
+            },
+            dataType: "json",
+            success: function(resp) {
+
+                console.log("delete");
+                console.log(resp);
+                _requestReturned = 1;
+                _idtemptable = "";
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("textStatus: " + textStatus) : _VERBOSE;
+                _VERBOSE ? console.log("errorThrown: " + errorThrown) : _VERBOSE;
+
+            }
+        });
+
+    }
+
+
+    /**
+     * Éste método lleva el conteo de las peticiones realizadas al servidor para eliminar la tabla temporal cuando sean ejecutadas en su totalidad.
+     *
+     * @function _countRequest
+     * @public
+     * @memberof! res_display_module
+     * 
+     * @param {String} idtemptable - Nombre de la tabla temporal que debe ser eliminada
+     *
+     */
+    function _countRequest(idtemptable) {
+
+        _VERBOSE ? console.log("_countRequest") : _VERBOSE;
+
+        _requestReturned = _requestReturned - 1;
+        if (_requestReturned === 0) {
+
+//            _deleteValidationTables(idtemptable);
+
         }
 
-        if (_tbl_eps != false) {
+    }
 
-            _VERBOSE ? console.log("clean table") : _VERBOSE;
-            $('#tdisplay').dataTable().fnClearTable();
-            // $('#tdisplay').dataTable().fnDestroy();
-            // $('#tdisplay_tbody').empty();
+
+
+    /**
+     * Éste método limpia los componentes visuales antes de realiza run análisis de nicho ecológico.
+     *
+     * @function _cleanPanel
+     * @private
+     * @memberof! res_display_module
+     * 
+     */
+    function _cleanPanel() {
+
+
+        _table_module_eps.clearEspList();
+
+        try {
+            $("#" + _id_charteps.id).empty();
+            $("#" + _id_chartscr.id).empty();
+        }
+        catch (e) {
+            _VERBOSE ? console.log("primera vez") : _VERBOSE;
+        }
+
+
+        try {
+            $("#" + _id_chartscr_celda.id).empty();
+        }
+        catch (e) {
+            _VERBOSE ? console.log("primera vez") : _VERBOSE;
+        }
+
+
+        _map_module_nicho.clearMap();
+
+
+        try {
+            $("#" + _id_chartscr_decil.id).empty();
+        }
+        catch (e) {
+            _VERBOSE ? console.log(e) : _VERBOSE;
+            _VERBOSE ? console.log("primera vez") : _VERBOSE;
         }
 
 
@@ -585,8 +711,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
     function _confDataRequest(spid, idreg, val_process, tabla) {
 
         _VERBOSE ? console.log("_confDataRequest") : _VERBOSE;
-        
-        
+
+
         var idtabla = tabla || "no_table";
         var milliseconds = new Date().getTime();
         var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
@@ -629,8 +755,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla" : idtabla
-            // "discardedids": discardedGridids
+            "idtabla": idtabla
+                    // "discardedids": discardedGridids
         };
 
         _cdata = {
@@ -648,7 +774,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla" : idtabla
+            "idtabla": idtabla
                     // "discardedids": discardedGridids
         };
 
@@ -667,7 +793,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla" : idtabla
+            "idtabla": idtabla
 
                     // "discardedids": discardedGridids
         };
@@ -687,7 +813,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla" : idtabla
+            "idtabla": idtabla
                     // "discardedids": discardedGridids
         };
 
@@ -706,7 +832,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla" : idtabla
+            "idtabla": idtabla
                     // "discardedids": discardedGridids
         };
 
@@ -725,7 +851,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla" : idtabla
+            "idtabla": idtabla
 
                     // "discardedids": discardedGridids
         };
@@ -745,7 +871,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla" : idtabla
+            "idtabla": idtabla
 
         };
 
@@ -772,9 +898,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * 
      * @param {array} discardedGridids - Array con los ids de celda que son descartados cuando existe proceso de validación
      */
-    function _panelGeneration() {
+    function _panelGeneration(idtemptable) {
 
         _VERBOSE ? console.log("_panelGeneration") : _VERBOSE;
+        idtemptable = idtemptable || "";
 
         filters = [];
         _fathers = [];
@@ -895,7 +1022,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 // elimina una segunda petición cuando el grupo de variables solo contiene un elemento
                 if (hasChildren) {
-//                    _createScore_Decil(_decil_data, false, false);
+                    _createScore_Decil(_decil_data, false, false);
                 }
 
 
@@ -922,7 +1049,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
 
-//            _createScore_Decil(_decil_group_data, hasChildren, false);
+            _createScore_Decil(_decil_group_data, hasChildren, false);
 
         });
 
@@ -967,8 +1094,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _cdata['tdelta'] = active_time;
         _total_data_decil['tdelta'] = active_time;
 
+
         if (hasTotal) {
-//            _createScore_Decil(_total_data_decil, false, hasTotal);
+            _createScore_Decil(_total_data_decil, false, hasTotal);
         }
 
     }
@@ -990,15 +1118,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
 
-        try {
-            $("#" + _id_chartscr_decil.id).empty();
-        }
-        catch (e) {
-            _VERBOSE ? console.log(e) : _VERBOSE;
-            _VERBOSE ? console.log("primera vez") : _VERBOSE;
-        }
-
-//        _VERBOSE ? console.log(_tbl_decil) : _VERBOSE;
+//        return;
 
         $.ajax({
             type: "post",
@@ -1013,48 +1133,64 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 _tbl_decil = true;
 
-//                _ITER_REQUESTS = _ITER_REQUESTS - 1;
+                _ITER_REQUESTS = _ITER_REQUESTS - 1;
 
                 if (data[0].title.is_parent) {
+                    console.log("caso 1");
 
                     if (hasChildren) {
+                        console.log("caso 1A");
                         _fathers.push({item: data});
                     }
                     else {
                         // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
+                        console.log("caso 1B");
                         _fathers.push({item: data});
                         _sons.push({item: data});
                     }
 
                 }
                 else {
+                    console.log("caso 2");
                     _sons.push({item: data});
 
                 }
 
-                if (isTotal)
+                if (isTotal){
+                    console.log("caso 3");
                     _totals.push({item: data});
+                }
+                    
 
-                console.log(_fathers);
-                console.log(_sons);
 
-                data_chart = _createSetStructure(_fathers, _sons);
+                if (_ITER_REQUESTS === 0) {
 
-                // añade totales cuando es mas de un grupo sea biotico  o abiotico.
-                if (_totals.length > 0) {
-                    _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
+                    console.log(_fathers);
+                    console.log(_sons);
 
-                    // ya no contiene valores del segundo grupo de variables...
-                    data_chart = _addDataChartTotal(data_chart, _totals[0].item);
+
+                    _ITER_REQUESTS = _REQUESTS;
+
+                    data_chart = _createSetStructure(_fathers, _sons);
+
+                    // añade totales cuando es mas de un grupo sea biotico  o abiotico.
+                    if (_totals.length > 0) {
+                        _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
+
+                        // ya no contiene valores del segundo grupo de variables...
+                        data_chart = _addDataChartTotal(data_chart, _totals[0].item);
+                    }
+
+                    _VERBOSE ? console.log(data_chart) : _VERBOSE;
+
+
+                    _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
+
+                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
+
                 }
 
-                _VERBOSE ? console.log(data_chart) : _VERBOSE;
 
-                _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
-                // _createMultipleBarChart(data_chart, [], "chartdiv_score_decil");
-
-                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
-                // _toastr.success(_iTrans.prop('lb_resultados_display'));
 
 
 
@@ -1087,11 +1223,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @memberof! res_display_module
      * 
      * @param {json} tdata - Json con la configuración seleccionada por el usuario
+     * @param {String} idtemptable - Nombre de la tabla temporal creada cuando es proceso de validación
+     * 
      */
     function _createTableEpSc(tdata) {
 
         _VERBOSE ? console.log("_createTableEpSc") : _VERBOSE;
         _VERBOSE ? console.log(tdata) : _VERBOSE;
+
 
         $.ajax({
             url: _url_zacatuche + "/niche/getGeoRel",
@@ -1136,6 +1275,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 _tbl_eps = true;
 
+
+
             },
             error: function(jqXHR, textStatus, errorThrown) {
 
@@ -1167,7 +1308,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
     function _configureStyleMap(sdata) {
 
         _VERBOSE ? console.log("_configureStyleMap") : _VERBOSE;
-
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
         // _toastr.info(_iTrans.prop('lb_inica_mapa'));
@@ -1205,7 +1345,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 // _VERBOSE ? console.log(grid_map_color.values().length) : _VERBOSE;
 
 
-                _map_module_nicho.colorizeFeatures(grid_map_color, false);
+                _map_module_nicho.colorizeFeatures(grid_map_color);
 
 
                 // g = d3.select("#grid_map");
@@ -1229,6 +1369,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
                 document.getElementById("dShape").style.display = "inline";
+
+
+
 
                 // NO ESTA FUNCIONANDO
                 // document.getElementById("dShape").style.visibility = "visible";
@@ -1267,14 +1410,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
     function _createHistEpScr_Especie(ddata) {
 
         _VERBOSE ? console.log("_createHistEpScr_Especie") : _VERBOSE;
-
-        try {
-            $("#" + _id_charteps.id).empty();
-            $("#" + _id_chartscr.id).empty();
-        }
-        catch (e) {
-            _VERBOSE ? console.log("primera vez") : _VERBOSE;
-        }
 
         $.ajax({
             url: _url_zacatuche + "/niche/getFreq",
@@ -1326,6 +1461,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
                 _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
+
+
 
 
 
@@ -1465,13 +1602,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_createHistScore_Celda") : _VERBOSE;
 
-        try {
-            $("#" + _id_chartscr_celda.id).empty();
-        }
-        catch (e) {
-            _VERBOSE ? console.log("primera vez") : _VERBOSE;
-        }
-
         $.ajax({
             type: "post",
             url: _url_zacatuche + "/niche/getFreqCelda",
@@ -1504,6 +1634,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 }
 
                 _histogram_module_nicho.createBarChart(_id_chartscr_celda, data2_score, _iTrans.prop('titulo_hist_score_celda'));
+
+
+
 
             }
 
@@ -2185,7 +2318,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var prob = (json_data[0].prob) ? parseFloat(json_data[0].prob) : undefined;
 
         if (json_data.length == 1 && json_data[0].gridid == 0) {
-            
+
             console.log("Apriori");
 
             title_total = "Apriori";
@@ -2197,7 +2330,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         else if (json_data.length == 1 && json_data[0].gridid == -1) {
 
             console.log("Probabilidad");
-            
+
             title_total = "Probabilidad";
             total_celda = parseFloat(prob).toFixed(2);
 
@@ -2316,19 +2449,19 @@ var res_display_module = (function(verbose, url_zacatuche) {
                                                 <th>" + total_celda + "</th>\
                                             </tr>\
                                             <tr>\
-                                                <th>Bióticos</th>\
+                                                <th>Num. Reg. Bióticos</th>\
                                                 <th>" + contbio + "</th>\
                                             </tr>\
                                             <tr>\
-                                                <th>Abióticos</th>\
+                                                <th>Num. Reg. Abióticos</th>\
                                                 <th>" + contabio + "</th>\
                                             </tr>\
                                             <tr>\
-                                                <th>Num. Positivos</th>\
+                                                <th>Num. Reg. Positivos</th>\
                                                 <th>" + posocc + "</th>\
                                             </tr>\
                                             <tr>\
-                                                <th>Num. Negativos</th>\
+                                                <th>Num. Reg. Negativos</th>\
                                                 <th>" + negocc + "</th>\
                                             </tr>\
                                         </thead>\

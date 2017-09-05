@@ -389,10 +389,10 @@ var module_nicho = (function() {
 
             data_link += "sp_data=" + sp_data + "&";
 
-//            var val_process = $("#chkValidation").is(':checked');
-//            if (val_process) {
-//                cadena_ini += "chkVal=" + $("#sliderValidation").slider("value") + "&";
-//            }
+            var val_process = $("#chkValidation").is(":checked");
+            if (val_process) {
+                data_link += "chkVal=" + val_process + "&";
+            }
 
             var mapa_prob = $("#chkMapaProb").is(":checked");
             if (mapa_prob) {
@@ -542,7 +542,7 @@ var module_nicho = (function() {
                 
                 var sp_data = JSON.parse(_json_config.sp_data);
 
-                var chkVal = _json_config.chkVal ? parseInt(_json_config.chkVal) : undefined;
+                var chkVal = _json_config.chkVal ? _json_config.chkVal === "true" : false;
 
                 var chkPrb = _json_config.chkPrb ? _json_config.chkPrb === "true" : false;
                 
@@ -705,20 +705,17 @@ var module_nicho = (function() {
             $("#lb_sfecha").text(_iTrans.prop('lb_no'));
         }
 
-        if (chkVal != undefined) {
+        if (chkVal) {
 
             $("#chkValidation").prop('checked', true);
-//            $("#sliderValidation").slider("enable");
-//            $("#sliderValidation").slider('value', chkVal);
-            $("#labelValidation").text(chkVal + "%");
+            $("#labelValidation").text(_iTrans.prop('lb_si'));
 
         }
         else {
 
             $("#chkValidation").prop('checked', false);
-//            $("#sliderValidation").slider({
-//                disabled: true
-//            });
+            $("#labelValidation").text(_iTrans.prop('lb_no'));
+
 
         }
 

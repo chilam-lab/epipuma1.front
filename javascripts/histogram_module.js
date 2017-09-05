@@ -55,9 +55,6 @@ var histogram_module = (function(verbose) {
 
         _VERBOSE ? console.log("_initilizeHistogram") : _VERBOSE;
 
-
-
-
     }
 
 
@@ -80,8 +77,8 @@ var histogram_module = (function(verbose) {
         $("#" + idComponent.id).empty();
 
         var margin = {top: 30, right: 40, bottom: 50, left: 40},
-        width = $(".myScrollableBlockEpsilonDecil").width() - margin.left - margin.right,
-                height = $(".myScrollableBlockEpsilonDecil").height() - margin.top - margin.bottom - 15; // 10px del icono de info
+        width = $(".myScrollableBlockEpsilonDecil").width() - margin.left - margin.right;
+        height = $(".myScrollableBlockEpsilonDecil").height() - margin.top - margin.bottom - 15; // 10px del icono de info
 
 
         var x0 = d3.scale.ordinal()
@@ -588,36 +585,36 @@ var histogram_module = (function(verbose) {
                     return d.name;
                 });
 
-        if (nameMap.values().length > 0) {
-
-            legend.append("text")
-                    .attr("x", function(d, i) {
-                        return (width - 24) - (i * 130);
-                    })
-                    .attr("y", 20)
-                    .attr("dy", ".35em")
-                    .style("text-anchor", "end")
-                    .text(function(d) {
-                        _VERBOSE ? console.log(d.recall_nulo) : _VERBOSE;
-
-                        prom = 0;
-                        $.each(d.nulos, function() {
-                            prom += this;
-                        });
-
-                        if (d.recall_nulo) {
-                            _VERBOSE ? console.log("aplica recall nulo") : _VERBOSE;
-
-                            return _iTrans.prop('recall_nulo');
-                        }
-                        else {
-                            return _iTrans.prop('lb_nulos') + ": " + parseFloat(prom / d.nulos.length).toFixed(2);
-                        }
-
-                    });
-
-
-        }
+//        if (nameMap.values().length > 0) {
+//
+//            legend.append("text")
+//                    .attr("x", function(d, i) {
+//                        return (width - 24) - (i * 130);
+//                    })
+//                    .attr("y", 20)
+//                    .attr("dy", ".35em")
+//                    .style("text-anchor", "end")
+//                    .text(function(d) {
+//                        _VERBOSE ? console.log(d.recall_nulo) : _VERBOSE;
+//
+//                        prom = 0;
+//                        $.each(d.nulos, function() {
+//                            prom += this;
+//                        });
+//
+//                        if (d.recall_nulo) {
+//                            _VERBOSE ? console.log("aplica recall nulo") : _VERBOSE;
+//
+//                            return _iTrans.prop('recall_nulo');
+//                        }
+//                        else {
+//                            return _iTrans.prop('lb_nulos') + ": " + parseFloat(prom / d.nulos.length).toFixed(2);
+//                        }
+//
+//                    });
+//
+//
+//        }
 
 
         if ($("#chkValidation").is(':checked')) {
@@ -658,60 +655,94 @@ var histogram_module = (function(verbose) {
                     .style("text-anchor", "end")
                     .text(_iTrans.prop('lb_recall'));
 
-            
 
 
-//          TODO: GENERAR LA ESTRUCUTURA QUE GENERABA EN EL PROCESO DE VAIDACIÓN
-//          iter_recall.push({"group_name": decil.group_name, "recall": recall, "vp": vp, "fn": fn, "decil": decil.decil, "recall_nulo": recall_nulo});
-            array_recall = [];
-            $.each(json_decil, function(index, value) {
-                console.log(value)
-                
-                var item = {
-                    "recall" : value.recall,
-                    "vp":   parseFloat(value.vp),
-                    "fn":   parseFloat(value.fn),
-                    "decil": parseInt(value.decil)
-                }
-                array_recall.push(item);
-                
-            })
+
             
+
+            // obtiene el numero de grupo analisados para generar la colección de elementos para desplegar el calculo de recall
+            var array_recall = [];
+            
+            var group_size = json_decil[0].names.length;
+            console.log(group_size);
+            
+            for (i = 0; i < group_size; i++) {
+                
+                var item_recall = [];
+                
+                $.each(json_decil, function(index, item) {
+
+                    var names = item.names;
+                    var recall = item.recall;
+                    var vp = item.vp;
+                    var fn = item.fn;
+
+                    var item_decil = {
+                        "group_name": names[i].p,
+                        "recall": recall[i].p,
+                        "vp": parseFloat(vp[i].p),
+                        "fn": parseFloat(fn[i].p),
+                        "decil": parseInt(item.decil),
+                        "recall_nulo": 0
+                    }
+
+                    item_recall.push(item_decil);
+
+                });
+                
+                array_recall.push(item_recall);
+
+            }
+
             // adding recall line
             _VERBOSE ? console.log(array_recall) : _VERBOSE;
 
 
-
-
             $.each(array_recall, function(i, recall_item) {
 
+                console.log(recall_item);
+
                 var line = d3.svg.line()
-                        .x(function(d, i) {
+                        .x(function(d) {
                             // _VERBOSE ? console.log("movement: " + x1.rangeBand() * (ageNames.length/2)) : _VERBOSE;
                             // _VERBOSE ? console.log("x0: " + x0(array_recall.length - i) + x1.rangeBand()) : _VERBOSE;
-                            // (x1.rangeBand() * (ageNames.length/2)) ---> Moves the line to the center of the bars
-                            return x0(recall_item.length - i) + (x1.rangeBand() * (ageNames.length / 2));
+//                             (x1.rangeBand() * (ageNames.length/2)) ---> Moves the line to the center of the bars
+//                            console.log(d);
+//                            console.log(i);
+//                            console.log(x0(d.decil));
+//                            console.log(ageNames.length);
+//                            console.log(x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2)));
+
+                            return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
                         })
                         .y(function(d) {
-                            // _VERBOSE ? console.log("y: " + y_right(d.recall)) : _VERBOSE;
+//                            _VERBOSE ? console.log("y: " + y_right(d.recall)) : _VERBOSE;
+
                             return y_right(d.recall);
                         });
+
+//                console.log(line);
 
                 svg.append("path")
                         .datum(recall_item)
                         .attr("class", "line")
                         .attr("d", line)
                         .style("stroke", function(d) {
-                            // _VERBOSE ? console.log(color(d[0].group_name)) : _VERBOSE;
 
+//                            console.log(d[0].group_name);
+//                            console.log(color(d[0].group_name));
+
+                            // _VERBOSE ? console.log(color(d[0].group_name)) : _VERBOSE;
                             // _VERBOSE ? console.log( nameMap.get(d[0].group_name.name).recall_nulo ) : _VERBOSE;
 
-                            if ($.inArray(false, nameMap.get(d[0].group_name.name).recall_nulo) != -1) {
-                                return color(d[0].group_name.name);
-                            }
-                            else {
-                                return "none";
-                            }
+//                            if ($.inArray(false, nameMap.get(d[0].group_name.name).recall_nulo) != -1) {
+//                            if ($.inArray(false, nameMap.get(d.group_name).recall_nulo) != -1) {
+//                                return color(d[0].group_name.name);
+                            return color(d[0].group_name);
+//                            }
+//                            else {
+//                                return "none";
+//                            }
 
 
 
@@ -723,7 +754,11 @@ var histogram_module = (function(verbose) {
                         .attr("class", "dot")
                         .attr("r", 3.5)
                         .attr("cx", function(d, i) {
-                            return x0(recall_item.length - i) + (x1.rangeBand() * (ageNames.length / 2));
+
+//                            return x0(recall_item.length - i) + (x1.rangeBand() * (ageNames.length / 2));
+                            return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
+
+
                         })
                         .attr("cy", function(d) {
                             return y_right(d.recall);
@@ -746,12 +781,15 @@ var histogram_module = (function(verbose) {
 
                             // _VERBOSE ? console.log( nameMap.get(d.group_name.name).recall_nulo ) : _VERBOSE;
 
-                            if ($.inArray(false, nameMap.get(d.group_name.name).recall_nulo) != -1) {
-                                return color(d.group_name.name);
-                            }
-                            else {
-                                return "none";
-                            }
+                            console.log("color: " + d.group_name);
+
+//                            if ($.inArray(false, nameMap.get(d.group_name.name).recall_nulo) != -1) {
+//                                return color(d.group_name.name);
+                            return color(d.group_name);
+//                            }
+//                            else {
+//                                return "none";
+//                            }
 
                         })
 

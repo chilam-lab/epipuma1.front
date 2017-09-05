@@ -9,6 +9,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     var map;
 
     var _VERBOSE = verbose;
+    var _first_loaded = true;
 
     var _grid_d3, _grid_map;
     var _grid_map_hash = d3.map([]);
@@ -121,8 +122,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
 
-    
-    
+
+
     /**
      * Método getter del controlador de capas.
      *
@@ -225,7 +226,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         return _computed_occ_cells;
     }
 
-    
+
     /**
      * Método getter del mapa utilizado en el análisis de nicho o comunidad ecológica.
      *
@@ -251,9 +252,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     function setDisplayModule(display_module) {
         _display_module = display_module;
     }
-   
-   
-   
+
+
+
     // ******************************************************************* geojson-vt
     var _tileIndex;
     var _tileOptions = {
@@ -331,7 +332,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         // relieve: http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png
         // cartoDB: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
         _OSM_layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
-        _OSM_layer.getAttribution = function() { return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.'; };
+        _OSM_layer.getAttribution = function() {
+            return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
+        };
 
         // ******************************************************************* geojson-vt
         _tileIndex = geojsonvt([], _tileOptions);
@@ -343,8 +346,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 })
                 .drawing(_drawingOnCanvas);
 
-       var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-         var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 4 : 3;
+        var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+        var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 4 : 3;
         // var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
         // var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 5 : 4;
 
@@ -418,7 +421,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 // // console.log(json);
 
                 // _loadD3GridEU();
-                colorizeFeatures(_grid_map, true);
+                colorizeFeatures(_grid_map);
                 _pad = 0;
                 _tileIndex = geojsonvt(_grid_map, _tileOptions);
                 _tileLayer.redraw();
@@ -442,8 +445,29 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         });
 
     }
-    
-    
+
+
+    /**
+     * Elimina el color de las celdas del mapa despues de ejecutar el analisis de nicho.
+     *
+     * @function clearMap
+     * @public
+     * @memberof! map_module
+     * 
+     */
+    function clearMap() {
+
+        if (!_first_loaded) {
+            for (var i = 0; i < _grid_map.features.length; i++) {
+                _grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+            }
+        }
+
+        _tileLayer.redraw();
+    }
+
+
+
     /**
      * Asigna color y borde a las celdas que componen la malla en nicho ecológico.
      *
@@ -454,12 +478,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {json} grid_map_color - GeoJson de la malla
      * @param {boolean} first - Bandera para conocer si es la primera carga de la malla
      */
-    function colorizeFeatures(grid_map_color, first) {
+    function colorizeFeatures(grid_map_color) {
 
         _VERBOSE ? console.log("colorizeFeatures") : _VERBOSE;
 
-        if (first) {
+        if (_first_loaded) {
             console.log("first loaded");
+            
+            _first_loaded = false;
+            
             for (var i = 0; i < _grid_map.features.length; i++) {
                 _grid_map.features[i].properties.color = '';
             }
@@ -607,10 +634,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             ctx.stroke();
         }
 
-    };
+    }
+    ;
 
 
-    
+
 
     /**
      * Agrega capas al controlador de capas.
@@ -795,11 +823,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
         var milliseconds = new Date().getTime();
-        
+
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
 
-        
+
         $.ajax({
             url: _url_zacatuche + "/niche/especie",
             type: 'post',
@@ -821,7 +849,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
                 d = resp.data;
-                
+
                 try {
                     _markersLayer.clearLayers();
                     _layer_control.removeLayer(_markersLayer);
@@ -863,7 +891,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
                 occ_cell = _computed_occ_cells.values().length;
-                
+
                 $.each(distinctPoints.values(), function(index, item) {
 
                     item_id = JSON.parse(item.json_geom).coordinates.toString();
@@ -877,7 +905,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                 });
 
-                
+
                 try {
                     map.removeLayer(_switchD3Layer);
                 }
@@ -905,7 +933,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         });
 
-    };
+    }
+    ;
 
 
     /**
@@ -1090,13 +1119,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         else {
             url = feature.properties.url;
         }
-        
+
         var message = "INFORMACIÓN ESPECIE<br/>Nombre: " + feature.properties.specie + "<br/>Colecta: " + fecha + "<br/>Coordenadas: " + coordinates + "<br/><a target='_blank' class='enlace_sp' href='http://" + url + "'>" + _iTrans.prop("link_sp") + "</a>";
         return message;
     }
 
 
-   
+
     /**
      * Éste método realiza la partición en deciles y la asignación de escala de colores de un conjunto de celdas con valores de score asignado.
      *
@@ -1110,7 +1139,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     function createDecilColor(json, mapa_prob) {
 
         _VERBOSE ? console.log("createDecilColor") : _VERBOSE;
-        
+
         var red_arg = [];
         var blue_arg = [];
         var prob_arg = [];
@@ -1156,7 +1185,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 _VERBOSE ? console.log("max_json: " + max_json) : _VERBOSE;
 
 
-               
+
 
                 if (Math.abs(min_json) > Math.abs(max_json)) {
 
@@ -1187,7 +1216,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                     // when reds go first the collection goes from max to min
                     red_chunks.reverse();
-                  
+
                 }
 
             }
@@ -1200,7 +1229,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 blue_chunks = t_chunks[1];
 
                 red_chunks.reverse();
-                
+
             }
             else if (blue_arg.length > 0 && red_arg.length == 0) {
 
@@ -1249,7 +1278,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             console.log(colorbrewer.RdBu[11]);
             var link_color = d3.scale.quantize().domain([1, 0]).range(colorbrewer.RdBu[11]);
-            
+
 
             $.each(prob_arg, function(index, value) {
 
@@ -1596,8 +1625,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         return [arg_result_1, []];
 
     }
-    
-    
+
+
     /**
      * Éste método secciona el array de celdas y score realcionado en deciles
      *
@@ -1704,6 +1733,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         getMap: getMap,
         colorizeFeatures: colorizeFeatures,
         colorizeFeaturesNet: colorizeFeaturesNet,
+        clearMap: clearMap,
         startMap: startMap
     }
 
