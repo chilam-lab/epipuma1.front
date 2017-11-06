@@ -307,7 +307,10 @@
                                     <a id="tab_resumen" data-toggle="tab" href="#tab_res"></a>
                                 </li>
                                 <li>
-                                    <a id="tab_validacion" data-toggle="tab" href="#tab_fil"></a>
+                                    <a id="tab_variables" data-toggle="tab" href="#tab_var"></a>
+                                </li>
+                                <li>
+                                    <a id="tab_filtros" data-toggle="tab" href="#tab_fil"></a>
                                 </li>
 
                             </ul>
@@ -367,12 +370,13 @@
 
 
                                 </div>
-                                <div id="tab_fil" class="tab-pane">
+                                <div id="tab_var" class="tab-pane">
 
 
                                     <div class="myScrollableBlockCheckBox">
 
                                         <table id="" class="tbl_summary_conf">
+                                            
                                             <tr>
                                                 <td class="summary_lb_conf_lb1"><h5 id="lb_validacion"></h5></td>
                                                 <td class="summary_lb_conf_lb2">
@@ -416,10 +420,37 @@
                                                 </td>
                                             </tr>
                                             
+                                            <tr>
+                                                <td class="summary_lb_conf_lb1"><h5 id="lb_mapa_res"></h5></td>
+                                                <td class="summary_lb_conf_lb2">
+                                                    <div class="checkValidation">
+                                                        <select id="grid_resolution">
+                                                            <option value="8">8 km</option>
+                                                            <option selected="" value="16">16 km</option>
+                                                            <option value="32">32 km</option>
+                                                            <option value="64">64 km</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                                
+                                <div id="tab_fil" class="tab-pane">
+
+
+                                    <div class="myScrollableBlockCheckBox">
+
+                                        <table id="" class="tbl_summary_conf">
                                             
                                             <tr>
-                                                <td class="summary_lbfecha_izq"><h5 id="lb_fosil"></h5></td>
-                                                <td class="summary_lbfecha_der">
+                                                <td class="summary_lb_conf_lb1"><h5 id="lb_fosil"></h5></td>
+                                                <td class="summary_lb_conf_lb2">
                                                     <div class="checkValidation">
                                                         <input id="chkFosil" class="checkbox_item" type="checkbox" checked/>
                                                         <label class="label_item" id="labelFosil" type="label" ></label>
@@ -482,6 +513,8 @@
                                     </div>
 
                                 </div>
+                                
+                                
                             </div>
 
                         </div>
@@ -974,7 +1007,8 @@
         </script>
         <script src="http://www.sumbera.com/gist/js/earcut/earcut-1.4.2.js"></script>
 
-        <script type="text/javascript" src="javascripts/jquery-cookie/jquery.cookie.js"></script> 
+        <!--<script type="text/javascript" src="javascripts/jquery-cookie/jquery.cookie.js"></script>--> 
+        <script type="text/javascript" src="javascripts/js-cookie/js.cookie.js"></script> 
 
 
 

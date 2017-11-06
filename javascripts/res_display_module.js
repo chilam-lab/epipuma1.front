@@ -29,7 +29,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
     var _REQUESTS, _ITER_REQUESTS,
             _ITER = 0, _NUM_ITERATIONS = 5;
 
-    var _min_occ_process, _mapa_prob, _fossil;
+    var _min_occ_process, _mapa_prob, _fossil, _grid_res;
 
     var _rangofechas, _chkfecha;
 
@@ -446,8 +446,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @param {array} rango_fechas - Array que contiene el limite inferior y superior del rango de fechas para realizar un análisis de nicho ecológico
      * @param {boolean} chkFecha - Bandera que indica si serán tomados en cuenta los registros sin fecha para realizar un análisis de nicho ecológico
      * @param {boolean} chkFosil - Bandera que indica si serán tomados en cuenta los registros fósiles para realizar un análisis de nicho ecológico
+     * @param {interger} grid_res - Valor con el cual se realizan los calculos para la resolución de la malla
      */
-    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil) {
+    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res) {
 
         _VERBOSE ? console.log("refreshData") : _VERBOSE;
 
@@ -459,6 +460,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _min_occ_process = min_occ_process;
         _mapa_prob = mapa_prob;
         _fossil = chkFosil;
+        _grid_res = grid_res;
 
 
         _rangofechas = rango_fechas;
@@ -469,19 +471,18 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         // obteniendo solo las celdas de los puntos de las especies. NOTA: Estos se puede enviar desde el map_module
         _discardedPoints.values().forEach(function(item, index) {
-            console.log(item.feature.properties.gridid);
+//            console.log(item.feature.properties.gridid);
             _discarded_cell_set.set(item.feature.properties.gridid, item.feature.properties.gridid);
         });
 
-//        _VERBOSE ? console.log(_discarded_cell_set.values()) : _VERBOSE;
-        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
-//        _VERBOSE ? console.log(_computed_discarded_cells.values()) : _VERBOSE;
-        _VERBOSE ? console.log(_computed_discarded_cells.values().length) : _VERBOSE;
+
+//        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
+//        _VERBOSE ? console.log(_computed_discarded_cells.values().length) : _VERBOSE;
 
         _REQUESTS = num_items + _subgroups.length;
         _ITER_REQUESTS = _REQUESTS;
 
-        _VERBOSE ? console.log("Peticiones al servidor: " + _REQUESTS) : _VERBOSE;
+//        _VERBOSE ? console.log("Peticiones al servidor: " + _REQUESTS) : _VERBOSE;
 
 
         document.getElementById("tbl_hist").style.display = "inline";
@@ -493,6 +494,26 @@ var res_display_module = (function(verbose, url_zacatuche) {
             _VERBOSE ? console.log("elimina tabla: " + _idtemptable) : _VERBOSE;
             _deleteValidationTables();
         }
+
+        // Se realiza la carga de la malla antes de iniciar el análisis de nicho
+        _map_module_nicho.loadD3GridMX(val_process, grid_res);
+
+
+    }
+
+
+
+    /**
+     * Éste método inicia ejecuta el proceso de un análisis de nicho ecológico.
+     *
+     * @function callDisplayProcess
+     * @public
+     * @memberof! res_display_module
+     * 
+     */
+    function callDisplayProcess(val_process) {
+
+        console.log("callDisplayProcess");
 
         if (val_process) {
 
@@ -510,10 +531,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
             _createHistScore_Celda(_cdata);
             _configureStyleMap(_sdata);
 
-
         }
-
     }
+
 
     var _idtemptable = "";
 
@@ -531,9 +551,19 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_initializeValidationTables") : _VERBOSE;
 
-//        var idtemptable = "tbl_" + new Date().getTime();
-//        _VERBOSE ? console.log("tbl name: " + idtemptable) : _VERBOSE;
-
+        var grid_res, cell_res, tbl_res;
+        if (_grid_res) {
+            grid_res = "gridid_" + _grid_res + "km";
+            cell_res = "cells_" + _grid_res + "km";
+            tbl_res = "grid_" + _grid_res + "km_aoi";
+        }
+        else {
+            grid_res = "gridid_16km";
+            cell_res = "cells_16km";
+            tbl_res = "grid_16km_aoi";
+        }
+        
+        _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie",
@@ -541,7 +571,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             data: {
                 qtype: 'getValidationTables',
                 spid: _spid,
-                iter: _NUM_ITERATIONS
+                iter: _NUM_ITERATIONS,
+                "res_celda_sp": cell_res,
+                "res_celda_snib": grid_res,
+                "res_celda_snib_tb": tbl_res
             },
             dataType: "json",
             success: function(resp) {
@@ -666,6 +699,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
         _table_module_eps.clearEspList();
+        _table_module_eps.clearDecilList();
+
+
+
 
         try {
             $("#" + _id_charteps.id).empty();
@@ -717,27 +754,41 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var milliseconds = new Date().getTime();
         var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
         var mapap = _mapa_prob ? "mapa_prob" : undefined;
+
+        var grid_res, cell_res, tbl_res;
+        if (_grid_res) {
+            grid_res = "gridid_" + _grid_res + "km";
+            cell_res = "cells_" + _grid_res + "km";
+            tbl_res = "grid_" + _grid_res + "km_aoi";
+        }
+        else {
+            grid_res = "gridid_16km";
+            cell_res = "cells_16km";
+            tbl_res = "grid_16km_aoi";
+        }
+
+
         var fossil = $("#chkFosil").is(':checked') ? true : false;
         var min_occ = _min_occ_process ? parseInt($("#occ_number").val()) : undefined;
-        var existeFiltro = (_discarded_cell_set.values().length > 0 || _computed_discarded_cells.values().length > 0) ? 1 : undefined;
+        //  var existeFiltro = (_discarded_cell_set.values().length > 0 || _computed_discarded_cells.values().length > 0) ? 1 : undefined;
 
-        // console.log(_rangofechas);
 
         var lin_inf = _rangofechas ? _rangofechas[0] : undefined;
         var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
         var sin_fecha = $("#chkFecha").is(':checked') ? true : false;
 
         var existsDiscardedFilter = false;
-        if (lin_inf != undefined || lin_sup != undefined || !sin_fecha)
+        if (lin_inf !== undefined || lin_sup !== undefined || !sin_fecha)
             existsDiscardedFilter = true;
 
         // _VERBOSE ? console.log("lin_inf: " + lin_inf) : _VERBOSE;
         // _VERBOSE ? console.log("lin_sup: " + lin_sup) : _VERBOSE;
         // _VERBOSE ? console.log("sin_fecha: " + lin_sup) : _VERBOSE;
-        _VERBOSE ? console.log("apriori: " + apriori) : _VERBOSE;
-        _VERBOSE ? console.log("min_occ: " + min_occ) : _VERBOSE;
-        _VERBOSE ? console.log("existeFiltro: " + existeFiltro) : _VERBOSE;
+        // _VERBOSE ? console.log("apriori: " + apriori) : _VERBOSE;
+        // _VERBOSE ? console.log("min_occ: " + min_occ) : _VERBOSE;
+        // _VERBOSE ? console.log("existeFiltro: " + existeFiltro) : _VERBOSE;
 
+        _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
 
         _ddata = {
             'qtype': 'getFreq',
@@ -755,8 +806,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla": idtabla
-                    // "discardedids": discardedGridids
+            "idtabla": idtabla,
+            "res_celda_sp": cell_res,
+            "res_celda_snib": grid_res,
+            "res_celda_snib_tb": tbl_res
         };
 
         _cdata = {
@@ -774,8 +827,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla": idtabla
-                    // "discardedids": discardedGridids
+            "idtabla": idtabla,
+            "res_celda_sp": cell_res,
+            "res_celda_snib": grid_res,
+            "res_celda_snib_tb": tbl_res
         };
 
         _decil_data = {
@@ -793,9 +848,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla": idtabla
+            "idtabla": idtabla,
+            "res_celda_sp": cell_res,
+            "res_celda_snib": grid_res,
+            "res_celda_snib_tb": tbl_res
 
-                    // "discardedids": discardedGridids
         };
 
         _decil_group_data = {
@@ -813,8 +870,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla": idtabla
-                    // "discardedids": discardedGridids
+            "idtabla": idtabla,
+            "res_celda_sp": cell_res,
+            "res_celda_snib": grid_res,
+            "res_celda_snib_tb": tbl_res
         };
 
         _total_data_decil = {
@@ -832,8 +891,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla": idtabla
-                    // "discardedids": discardedGridids
+            "idtabla": idtabla,
+            "res_celda_sp": cell_res,
+            "res_celda_snib": grid_res,
+            "res_celda_snib_tb": tbl_res
         };
 
         _sdata = {
@@ -851,9 +912,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla": idtabla
-
-                    // "discardedids": discardedGridids
+            "idtabla": idtabla,
+            "res_celda_sp": cell_res,
+            "res_celda_snib": grid_res,
+            "res_celda_snib_tb": tbl_res
         };
 
         _tdata = {
@@ -871,7 +933,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
-            "idtabla": idtabla
+            "idtabla": idtabla,
+            "res_celda_sp": cell_res,
+            "res_celda_snib": grid_res,
+            "res_celda_snib_tb": tbl_res
 
         };
 
@@ -1156,11 +1221,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 }
 
-                if (isTotal){
+                if (isTotal) {
                     console.log("caso 3");
                     _totals.push({item: data});
                 }
-                    
+
 
 
                 if (_ITER_REQUESTS === 0) {
@@ -1197,6 +1262,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error createScore_Decil: " + textStatus) : _VERBOSE;
+                _VERBOSE ? console.log("error createScore_Decil: " + errorThrown) : _VERBOSE;
+
                 mensaje = "";
                 mensaje = $("#chkValidation").is(':checked') ? _iTrans.prop('lb_error_proceso_val') : _iTrans.prop('lb_error_histograma');
 
@@ -1310,86 +1377,34 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _VERBOSE ? console.log("_configureStyleMap") : _VERBOSE;
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
-        // _toastr.info(_iTrans.prop('lb_inica_mapa'));
-//         document.getElementById("dShape").style.display = "none";
 
-        console.log("loading");
 //        $("#map").addClass("loading");
 
         $.ajax({
-//            url: _url_zacatuche + "/niche/getFreqMap",
             url: _url_zacatuche + "/niche/getCellScore",
             type: 'post',
             data: sdata,
-            // dataType : "json",
             success: function(json_file) {
 
-//                console.log(json_file.data);
 //                $("#map").removeClass("loading"); 
 
-
-                // DESCOMENTAR PARA PROCESAR RESPUESTA CON NUEVO SERVIDOR
-                json = json_file.data;
-
-
-                // json = JSON.parse(json_file);
-                // console.log(json_file);
-                // console.log(json);
-
-
-                // _VERBOSE ? console.log(json) : _VERBOSE;
-                // _VERBOSE ? console.log(_mapa_prob) : _VERBOSE;
-
-                grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
-
-                // _VERBOSE ? console.log(grid_map_color.values().length) : _VERBOSE;
-
+                var json = json_file.data;
+                var grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
 
                 _map_module_nicho.colorizeFeatures(grid_map_color);
 
 
-                // g = d3.select("#grid_map");
-                // // _VERBOSE ? console.log(g) : _VERBOSE;
-
-                //    feature = g.selectAll("path");
-
-                //    feature.each(function(d,i){
-
-                //    	d3.select(this).style("stroke", "none");
-                //    	// d3.select(this).style("stroke-width", "none");
-
-                //    	if(grid_map_color.has(d.properties.gridid)){
-                //    		d3.select(this).style("fill", grid_map_color.get(d.properties.gridid));
-                //    	}
-                //    	else{
-                //    		d3.select(this).style("fill", "none");
-                //    	}
-
-                //    })
-
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
                 document.getElementById("dShape").style.display = "inline";
 
-
-
-
-                // NO ESTA FUNCIONANDO
-                // document.getElementById("dShape").style.visibility = "visible";
-
-
-
-                // _toastr.success( _iTrans.prop('lb_carga_mapa') );
 
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_mapa'), "error");
-                // _toastr.error(_iTrans.prop('lb_error_mapa'));
                 document.getElementById("dShape").style.display = "none";
-                // document.getElementById("dShape").style.visibility = "hidden";
 
-                _map_module_nicho.deleteStyle(_ID_STYLE_GENERATED);
             }
 
 
@@ -1846,17 +1861,31 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         if (son.item[son_index].decil != decil_item.decil)
                             return;
 
-//                        if (!(decil_item.arraynames.s)) {
-//                            newnames_p = decil_item.arraynames;
-//                            newnames_s = son.item[son_index].arraynames;
-//                            decil_item.arraynames = {p: newnames_p, s: [newnames_s]}
-//                        }
-//                        else {
-//                            newnames_s = son.item[son_index].arraynames;
-//                            temp_s = decil_item.arraynames.s;
-//                            temp_s.push(newnames_s);
-//                            decil_item.arraynames.s = temp_s;
-//                        }
+                        if (!(decil_item.arraynames.s)) {
+
+//                            console.log(decil_item.arraynames);
+                            var json_array = decil_item.arraynames[0].replace("{", "").replace("}", "").split(",");
+                            var json_array_s = son.item[son_index].arraynames[0].replace("{", "").replace("}", "").split(",");
+
+//                            console.log(json_array);
+//                            console.log(json_array_s);
+
+                            newnames_p = json_array;
+                            newnames_s = json_array_s;
+                            decil_item.arraynames = {p: newnames_p, s: [newnames_s]}
+                        }
+                        else {
+
+
+//                            console.log(son.item[son_index].arraynames);
+                            var json_array_s = son.item[son_index].arraynames[0].replace("{", "").replace("}", "").split(",");
+//                            console.log(json_array_s);
+
+                            newnames_s = json_array_s;
+                            temp_s = decil_item.arraynames.s;
+                            temp_s.push(newnames_s);
+                            decil_item.arraynames.s = temp_s;
+                        }
 
 //                        if (!(decil_item.gridids.s)) {
 //                            decil_item.gridids = {p: decil_item.gridids, s: [son.item[son_index].gridids]}
@@ -1904,14 +1933,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             decil_item.avg.s = temp_s;
                         }
 
-                        if (!(decil_item.sum.s)) {
-                            decil_item.sum = {p: decil_item.sum, s: [son.item[son_index].sum]}
-                        }
-                        else {
-                            temp_s = decil_item.sum.s;
-                            temp_s.push(son.item[son_index].sum);
-                            decil_item.sum.s = temp_s;
-                        }
+//                        if (!(decil_item.sum.s)) {
+//                            decil_item.sum = {p: decil_item.sum, s: [son.item[son_index].sum]}
+//                        }
+//                        else {
+//                            temp_s = decil_item.sum.s;
+//                            temp_s.push(son.item[son_index].sum);
+//                            decil_item.sum.s = temp_s;
+//                        }
 
                         if (!(decil_item.l_sup.s)) {
                             decil_item.l_sup = {p: decil_item.l_sup, s: [son.item[son_index].l_sup]}
@@ -2035,14 +2064,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     item_chart['names'] = temp;
                 }
 
-//                if (!(item_chart.species)) {
-//                    item_chart['species'] = [decil.arraynames];
-//                }
-//                else {
-//                    temp = item_chart['species'];
-//                    temp.push(decil.arraynames);
-//                    item_chart['species'] = temp;
-//                }
+                if (!(item_chart.species)) {
+                    item_chart['species'] = [decil.arraynames];
+                }
+                else {
+                    temp = item_chart['species'];
+                    temp.push(decil.arraynames);
+                    item_chart['species'] = temp;
+                }
 
                 if (!(item_chart.decil)) {
                     item_chart['decil'] = decil.decil;
@@ -2331,7 +2360,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             console.log("Probabilidad");
 
-            title_total = "Probabilidad";
+            title_total = $.i18n.prop('lb_pp_prob');
             total_celda = parseFloat(prob).toFixed(2);
 
             htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "%</th></tr></thead><tbody>";
@@ -2348,12 +2377,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     negocc++;
                 }
 
-                if (json_data[i].label == "") {
+                if (json_data[i].label === "") {
                     contbio++;
                     sp_values = true;
                     continue;
                 }
-                if (json_data[i].nom_sp == "") {
+                if (json_data[i].nom_sp === "") {
                     contabio++;
                     raster_values = true;
                     continue;
@@ -2367,7 +2396,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 for (i = 0; i < json_data.length; i++) {
 
-                    if (json_data[i].label == "" && json_data[i].gridid > 0) {
+                    if (json_data[i].label === "" && json_data[i].gridid > 0) {
 
                         total_score += parseFloat(json_data[i].score);
 
@@ -2389,7 +2418,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 for (i = 0; i < json_data.length; i++) {
                     // _VERBOSE ? console.log(json_data[i]) : _VERBOSE;
 
-                    if (json_data[i].nom_sp == "" && json_data[i].gridid > 0) {
+                    if (json_data[i].nom_sp === "" && json_data[i].gridid > 0) {
 
                         total_score += parseFloat(json_data[i].score);
 
@@ -2413,29 +2442,29 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             if (apriori) {
 
-                title_score = "Score parcial";
+                title_score = $.i18n.prop('lb_pp_sp');
                 parcial_score = parseFloat(total_score).toFixed(2);
 
                 title_apriori = "Apriori";
                 total_apriori = parseFloat(apriori).toFixed(2);
 
-                title_total = "Score Total";
+                title_total = $.i18n.prop('lb_pp_st');
                 total_celda = parseFloat(total_score + apriori).toFixed(2);
 
                 htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr><tr><th>" + title_score + "</th><th>" + parcial_score + "</th></tr><tr><th>" + title_apriori + "</th><th>" + total_apriori + "</th></tr></thead><tbody>";
             }
             else if (prob) {
-                title_total = "Probabilidad de presencia";
+                title_total = $.i18n.prop('lb_pp_probpre');
                 prob = Math.floor(prob * 100) / 100;
-                prob = parseFloat(prob) == 100.00 ? 99.99 : parseFloat(prob);
-                prob = parseFloat(prob) == 0.00 ? 0.01 : parseFloat(prob);
+                prob = parseFloat(prob) === 100.00 ? 99.99 : parseFloat(prob);
+                prob = parseFloat(prob) === 0.00 ? 0.01 : parseFloat(prob);
                 // console.log(prob);
                 total_celda = parseFloat(prob).toFixed(2) + "%";
 
                 htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr></thead><tbody>";
             }
             else {
-                title_total = "Score Total";
+                title_total = $.i18n.prop('lb_pp_st');
                 total_celda = parseFloat(total_score).toFixed(2);
 
                 htmltable += "<div class='panel panel-primary'>\
@@ -2449,19 +2478,19 @@ var res_display_module = (function(verbose, url_zacatuche) {
                                                 <th>" + total_celda + "</th>\
                                             </tr>\
                                             <tr>\
-                                                <th>Num. Reg. Bióticos</th>\
+                                                <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
                                                 <th>" + contbio + "</th>\
                                             </tr>\
                                             <tr>\
-                                                <th>Num. Reg. Abióticos</th>\
+                                                <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
                                                 <th>" + contabio + "</th>\
                                             </tr>\
                                             <tr>\
-                                                <th>Num. Reg. Positivos</th>\
+                                                <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
                                                 <th>" + posocc + "</th>\
                                             </tr>\
                                             <tr>\
-                                                <th>Num. Reg. Negativos</th>\
+                                                <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
                                                 <th>" + negocc + "</th>\
                                             </tr>\
                                         </thead>\
@@ -2521,6 +2550,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         showGetFeatureInfo: showGetFeatureInfo,
         get_cData: get_cData,
         updateLabels: updateLabels,
+        callDisplayProcess: callDisplayProcess,
         setHistogramModule: setHistogramModule
     }
 

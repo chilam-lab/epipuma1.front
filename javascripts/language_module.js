@@ -38,13 +38,15 @@ var language_module = (function(verbose) {
         _first_load = true;
         
         
-        if ($.cookie("language") == undefined) {
+        if (Cookies.get("language") === undefined) {
             _language_selected = 'es_MX';
-            $.cookie("language", _language_selected);
+            Cookies.set("language", _language_selected);
         }
         else{
-            _language_selected = $.cookie("language");
+            _language_selected = Cookies.get("language");
         }
+        
+        _VERBOSE ? console.log("_language_selected: " + _language_selected) : _VERBOSE;
         
 
         $.i18n.properties({
@@ -54,27 +56,29 @@ var language_module = (function(verbose) {
             language: _language_selected,
             checkAvailableLanguages: true,
             async: true,
+            encoding: "UTF-8",
             callback: function() {
 
                 _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
 
 
-                if ($.cookie("language") == undefined) {
+                if (Cookies.get("language") === undefined) {
 
                     _VERBOSE ? console.log("undefined") : _VERBOSE;
-                    $.cookie("language", _language_selected);
+                    Cookies.set("language", _language_selected);
                     _loadLabels(_first_load);
-                    _first_load = false;
-
+                    
                 }
                 else {
 
                     _VERBOSE ? console.log("language loaded") : _VERBOSE;
-                    _language_selected = $.cookie("language");
+                    _language_selected = Cookies.get("language");
                     _VERBOSE ? console.log(_language_selected) : _VERBOSE;
                     _loadLabels(_first_load);
 
                 }
+                
+                _first_load = false;
 
 
                 // carga los modulos siguientes una vez que se han cargado los archivos de idiomas
@@ -88,7 +92,7 @@ var language_module = (function(verbose) {
             _language_selected = e.target.getAttribute("value");
             _language_label_selected = e.target.getAttribute("label");
             
-            $.cookie("language", _language_selected);
+            Cookies.set("language", _language_selected);
 
             _VERBOSE ? console.log("value: " + _language_selected) : _VERBOSE;
             _VERBOSE ? console.log("label: " + _language_label_selected) : _VERBOSE;
@@ -140,14 +144,18 @@ var language_module = (function(verbose) {
      * @param {boolean} first_load - Bandera que indica si es la primera carga del módulo de internacionalización
      */
     function _updateLanguageModules(first_load) {
+        
+        _VERBOSE ? console.log("_updateLanguageModules") : _VERBOSE;
+        _VERBOSE ? console.log("first_load: " + first_load) : _VERBOSE;
 
         if (first_load)
             return;
 
-        _VERBOSE ? console.log("_updateLanguageModules") : _VERBOSE;
-
-        if (_tipo_modulo != 2) {
+        if (_tipo_modulo !== 2) {
+            
             _res_display_module.updateLabels();
+            _map_module.updateLabels();
+            
         }
 
     }
@@ -244,7 +252,12 @@ var language_module = (function(verbose) {
             $("#reload_map").text($.i18n.prop('reload_map'));
             
             $("#tab_resumen").text($.i18n.prop('tab_resumen'));
-            $("#tab_validacion").text($.i18n.prop('tab_validacion'));
+            $("#tab_variables").text($.i18n.prop('tab_variables'));
+            $("#tab_filtros").text($.i18n.prop('tab_filtros'));
+            
+            $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res')+ ":");
+            
+            
             
             $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
             

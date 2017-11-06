@@ -908,6 +908,21 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         // $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
 
     }
+    
+    
+    /**
+     * Éste método inicia ejecuta el proceso de un análisis de nicho ecológico.
+     *
+     * @function callDisplayProcess
+     * @public
+     * @memberof! res_display_module
+     * 
+     */
+    function callDisplayProcess(val_process) {
+
+        console.log("callDisplayProcess");
+        _net_module.showSpecieOcc();
+    }
 
 
 
@@ -917,6 +932,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         createLinkNodes: createLinkNodes,
         renderAll: renderAll,
         updateLabels: updateLabels,
+        callDisplayProcess: callDisplayProcess,
         cleanLegendGroups: cleanLegendGroups
     }
 

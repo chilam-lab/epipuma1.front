@@ -22,6 +22,9 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
     var _highlight_linked_color = "#04C4FE"; //"red"; //"#48D7D5";
     var _map_conected = d3.map([]);
     var _legend_groups = [];
+    
+    var _nodes_selected;
+    var _nodes;
 
 
 
@@ -131,7 +134,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
     }
 
 
-    
+
 
     /**
      * Éste método genera una instancia de la red.
@@ -547,7 +550,9 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                     // _VERBOSE ? console.log("Manda petición especie") : _VERBOSE;
                     species_selected = {"id": d.spid, "label": d.label}
 
-                    _showSpecieOcc([d], json.nodes);
+                    _nodes_selected = [d];
+                    _nodes = json.nodes;
+                    loadGridComunidad();
 
 
 
@@ -923,7 +928,9 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                             // _VERBOSE ? console.log(spids_node_selected) : _VERBOSE;
 
                             // if(spids_node_selected.length > 0)
-                            _showSpecieOcc(spids_node_selected, json.nodes);
+                            _nodes_selected = spids_node_selected;
+                            _nodes = json.nodes;
+                            loadGridComunidad();
 
                             d3.event.target.clear();
                             d3.select(this).call(d3.event.target);
@@ -1312,6 +1319,15 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         //           return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.score) && o.score>=0)?color(o.score):default_link_color);
 
     }
+    
+    function loadGridComunidad(){
+        // Actualemnte no existe proceso de validacion en comunidad
+        var val_process = false;
+        // Actualemnte no existe cambio de resolución en comunidad
+        var grid_res = "16";
+        _map_module_net.loadD3GridMX(val_process, grid_res);
+
+    }
 
 
 
@@ -1319,20 +1335,18 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
     /**
      * Éste método muestra las ocurrencias por celda del conjunto seleccionado en el mapa resultado del análisis de comunidad.
      *
-     * @function _showSpecieOcc
-     * @private
+     * @function showSpecieOcc
+     * @public
      * @memberof! net_module
      * 
-     * @param {array} nodes_selected - Array con los nodos selecionados
-     * @param {array} nodes - Array con los nodos que componen la red total
      */
-    function _showSpecieOcc(nodes_selected, nodes) {
+    function showSpecieOcc() {
 
-        _VERBOSE ? console.log("_showSpecieOcc") : _VERBOSE;
-        
+        _VERBOSE ? console.log("showSpecieOcc") : _VERBOSE;
+
         var spids = [];
 
-        $.each(nodes_selected, function(index, value) {
+        $.each(_nodes_selected, function(index, value) {
             spids.push(value.spid);
         });
 
@@ -1341,7 +1355,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         _map_conected = d3.map([]);
         _clean_search();
 
-        $.each(nodes_selected, function(index, value_a) {
+        $.each(_nodes_selected, function(index, value_a) {
             _set_highlight(value_a);
         });
 
@@ -1360,13 +1374,15 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             // dataType : "json",
             success: function(resp) {
 
+
+
                 // json = JSON.parse(json_file);
 
-                json = resp.data;
+                var json = resp.data;
                 _VERBOSE ? console.log(json) : _VERBOSE;
 
-                arg_gridid = [];
-                arg_count = [];
+                var arg_gridid = [];
+                var arg_count = [];
 
                 $.each(json, function(index, item) {
                     arg_gridid.push(item.gridid);
@@ -1380,7 +1396,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
                 var link_color;
 
-                if (max_eps == min_eps) {
+                if (max_eps === min_eps) {
                     link_color = d3.scale.quantize().domain([0, max_eps]).range(colorbrewer.YlOrRd[9]);
                 }
                 else {
@@ -1428,7 +1444,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         startNet: startNet,
         createNet: createNet,
         setLanguageModule: setLanguageModule,
-        setLegendGroup: setLegendGroup
+        setLegendGroup: setLegendGroup,
+        showSpecieOcc: showSpecieOcc
     }
 
 });

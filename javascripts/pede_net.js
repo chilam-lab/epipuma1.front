@@ -73,7 +73,7 @@ var module_net = (function() {
             t_filters = _res_display_module_net.getFilters(_componente_sumidero.getVarSelArray(), TIPO_SUMIDERO);
 
             _res_display_module_net.createLinkNodes(s_filters, t_filters, min_occ);
-            
+
             $("#show_gen").css('visibility', 'visible');
 
         });
@@ -81,9 +81,9 @@ var module_net = (function() {
         $("#net_link").click(function() {
             window.location.replace(_url_front + "/geoportal_v0.1.html");
         });
-        
-        
-        
+
+
+
         $("#show_gen").click(function() {
 
             _VERBOSE ? console.log("show_gen") : _VERBOSE;
@@ -93,11 +93,11 @@ var module_net = (function() {
 
             var subgroups_source = _componente_fuente.getVarSelArray();
             var subgroups_target = _componente_sumidero.getVarSelArray();
-            
+
             data_link += "minOcc=" + parseInt($("#occ_number").val()) + "&";
 
             data_link += "num_filters_source=" + subgroups_source.length + "&";
-            
+
             data_link += "num_filters_target=" + subgroups_target.length + "&";
 
 
@@ -113,9 +113,9 @@ var module_net = (function() {
                 }
 
             });
-            
+
             data_link += "&";
-            
+
             $.each(subgroups_target, function(index, item) {
 
                 var str_item = JSON.stringify(item);
@@ -128,27 +128,27 @@ var module_net = (function() {
                 }
 
             });
-            
+
             _getLinkToken(data_link);
 
 //            $("#modalRegenera").modal();
 //            $("#lb_enlace").val(cadena_ini);
-            
-            
-            
+
+
+
         });
-        
-        $("#lb_enlace").click(function(){
+
+        $("#lb_enlace").click(function() {
             console.log("lb_enlace");
-             $(this).select();
+            $(this).select();
         })
-        
+
         $("#accept_link").click(function() {
 
             $("#modalRegenera").modal("hide");
 
         });
-        
+
         document.getElementById("tbl_hist_comunidad").style.display = "none";
 
         document.getElementById("map_panel").style.display = "none";
@@ -156,13 +156,13 @@ var module_net = (function() {
         // document.getElementById("graph_map_comunidad").style.display = "none";
 
         document.getElementById("hist_map_comunidad").style.display = "none";
-        
+
         _genLinkURL();
 
     }
-    
-    
-    
+
+
+
     /**
      * Realiza el envio de los parámetros seleccionados de un análisis de nicho para generar un token de recuperación.
      *
@@ -204,10 +204,10 @@ var module_net = (function() {
         });
 
     }
-    
-    
-    
-    
+
+
+
+
     /**
      * Parsea una URL a un JSON.
      *
@@ -220,17 +220,17 @@ var module_net = (function() {
      */
     function _parseURL(url) {
         console.log(url);
-        
+
         var regex = /[?&]([^=#]+)=([^&#]*)/g, url = url, params = {}, match;
         while (match = regex.exec(url)) {
             params[match[1]] = match[2];
         }
         return params;
     }
-    
-    
-    
-    
+
+
+
+
     /**
      * Procesa la URL insertada en el explorador para iniciar el proceso de parseo y obtención de parámetros.
      *
@@ -252,8 +252,8 @@ var module_net = (function() {
         _getValuesFromToken(token);
 
     }
-    
-    
+
+
     /**
      * Consulta los parámetros utilizados en el análisis del token contenido en la URL y despliega la configuración en la UI.
      *
@@ -279,12 +279,12 @@ var module_net = (function() {
             },
             dataType: "json",
             success: function(resp) {
-                
+
                 var all_data = resp.data[0].parametros;
-                _json_config = _parseURL("?"+all_data);
-                
+                _json_config = _parseURL("?" + all_data);
+
                 console.log(_json_config);
-                
+
                 if (_json_config == undefined) {
                     return;
                 }
@@ -325,8 +325,8 @@ var module_net = (function() {
 
     }
 
-    
-    
+
+
     /**
      * Asigna los valores obtenidos de la URL y configura los componentes visuales para regenerar los resultados.
      *
@@ -352,7 +352,7 @@ var module_net = (function() {
 
         var groups_s = subgroups_s.slice();
         var groups_t = subgroups_t.slice();
-        
+
         _componente_fuente.addUIItem(groups_s);
         _componente_sumidero.addUIItem(groups_t);
 
@@ -385,7 +385,7 @@ var module_net = (function() {
 //        _module_toast.showToast_BottomCenter("Generando resultados a partir de link", "info");
 
     }
-    
+
 
     /**
      * Inicializa las variables globales del modulo comunidad e inicializa el modulo de internacionalización.
@@ -425,8 +425,9 @@ var module_net = (function() {
         _VERBOSE ? console.log("loadModules") : _VERBOSE;
 
         _iTrans = _language_module_net.getI18();
-
+        
         _map_module_net = map_module(_url_geoserver, _workspace, _VERBOSE, _url_api);
+        
 
         // un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)
         _variable_module_net = variable_module(_VERBOSE, _url_api);
@@ -439,6 +440,8 @@ var module_net = (function() {
 
         _res_display_module_net = res_display_net_module(_VERBOSE, _url_api);
         _res_display_module_net.startResNetDisplay(_variable_module_net, _language_module_net, _map_module_net, ids_comp_variables, _tipo_modulo, _TEST);
+        
+        _map_module_net.setDisplayModule(_res_display_module_net);
 
 
         _language_module_net.addModuleForLanguage(_res_display_module_net, null, _map_module_net, _variable_module_net);
@@ -508,47 +511,51 @@ $(document).ready(function() {
     // verbose por default es true
     var verbose = true;
 
-    // 0 local, 1 producción
-    var ambiente = 0;
-    // 0 nicho, 1 comunidad
+    // 0 local, 1 producción, 2 desarrollo, 3 candidate
+    var ambiente = 1;
+
+    // 0 nicho, 1 comunidad, 2 index
     var modulo = 1;
 
-    if ($.cookie("url_front")) {
+    if (Cookies.get("url_front")) {
 
-        module_net.setUrlFront($.cookie("url_front"))
-        module_net.setUrlApi($.cookie("url_api"))
-        module_net.setUrlComunidad($.cookie("url_comunidad"));
+        module_net.setUrlFront(Cookies.get("url_front"))
+        module_net.setUrlApi(Cookies.get("url_api"))
+        module_net.setUrlComunidad(Cookies.get("url_comunidad"));
 
     }
     else {
+
         if (ambiente === 0) {
-
-            module_net.setUrlFront("http://localhost/species-front")
-            module_net.setUrlApi("http://localhost:8080")
-            module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html")
+            module_net.setUrlFront("http://localhost/species-front");
+            module_net.setUrlApi("http://localhost:8080");
+            module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html");
         }
-        else {
-//            module_net.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev")
-//            module_net.setUrlApi("http://species.conabio.gob.mx/niche4")
-//            module_net.setUrlComunidad("http://species.conabio.gob.mx/c3/charlie_dev/species-front/comunidad_v0.1.html")
+        else if (ambiente === 1) {
 
-//            module_nicho.setUrlFront("http://species.conabio.gob.mx");
-//            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
-//            module_nicho.setUrlNicho("http://species.conabio.gob.mx/comunidad_v0.1.html");
-            
-//            module_net.setUrlFront("http://localhost/species-front");
-//            module_net.setUrlApi("http://species.conabio.gob.mx");
-//            module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html");
-        
+            module_net.setUrlFront("http://species.conabio.gob.mx");
+            module_net.setUrlApi("http://species.conabio.gob.mx/api");
+            module_net.setUrlComunidad("http://species.conabio.gob.mx/comunidad_v0.1.html");
+
+        }
+        else if (ambiente === 2) {
+
             module_net.setUrlFront("http://species.conabio.gob.mx/dev");
-            module_net.setUrlApi("http://species.conabio.gob.mx/api-dev")
+            module_net.setUrlApi("http://species.conabio.gob.mx/api-dev");
             module_net.setUrlComunidad("http://species.conabio.gob.mx/dev/comunidad_v0.1.html");
-            ;
 
         }
-        
-        
-        
+        // la version candidate tiene el front de dev y trabaja con el middleware de produccion
+        else {
+
+            module_net.setUrlFront("http://species.conabio.gob.mx/candidate");
+            module_net.setUrlApi("http://species.conabio.gob.mx/api-rc");
+            module_net.setUrlComunidad("http://species.conabio.gob.mx/candidate/comunidad_v0.1.html");
+
+        }
+
+
+
     }
 
 

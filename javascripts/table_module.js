@@ -180,8 +180,23 @@ var table_module = (function(verbose) {
      * 
      */
     function clearEspList(){
-        if (_tbl != false) {
+        if (_tbl) {
             $('#tdisplay').dataTable().fnClearTable();
+        }
+    }
+    
+    
+    /**
+     * Éste método limpia la tabla de resultados generales del análisis de nicho ecológico.
+     *
+     * @function clearEspList
+     * @public
+     * @memberof! table_module
+     * 
+     */
+    function clearDecilList(){
+        if (_tbl_decil) {
+            $('#example').dataTable().fnClearTable();
         }
     }
 
@@ -470,7 +485,8 @@ var table_module = (function(verbose) {
         createListNet: createListNet,
         addImageScore: addImageScore,
         addImageEpsilon: addImageEpsilon,
-        clearEspList: clearEspList
+        clearEspList: clearEspList,
+        clearDecilList: clearDecilList
     }
 
 

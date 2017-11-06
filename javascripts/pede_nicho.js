@@ -40,32 +40,15 @@ var module_nicho = (function() {
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
         $("#lb_do_apriori").text(_iTrans.prop('lb_no'));
+
+
         $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
-
-        // inicilizando slider
-//        $(function() {
-//            $("#sliderValidation").slider({
-//                disabled: true,
-//                min: 0,
-//                max: 100,
-//                step: 10,
-//                value: 70,
-//                change: function(event, ui) {
-//                    // _VERBOSE ? console.log(ui.value): _VERBOSE;
-//                    $("#labelValidation").text(ui.value + "%");
-//                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_porcentaje_test', ui.value, (100 - ui.value)), "info");
-//
-//                }
-//            });
-//        });
-
 
         $(function() {
 
             var year = parseInt(new Date().getFullYear());
             // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
             year = Math.round(year / 10) * 10;
-//            console.log(year);
 
             $("#sliderFecha").slider({
                 range: true,
@@ -95,6 +78,7 @@ var module_nicho = (function() {
 
                 }
             });
+
         });
 
 
@@ -106,14 +90,13 @@ var module_nicho = (function() {
 
         $('body').on('propertychange input', 'input[type="number"]', forceNumeric);
 
+
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
         $("#chkValidation").click(function(event) {
 
             var $this = $(this);
 
             if ($this.is(':checked')) {
-
-//                $("#sliderValidation").slider("enable");
 
                 $("#labelValidation").text("Si");
 
@@ -122,17 +105,12 @@ var module_nicho = (function() {
             } else {
 
                 $("#labelValidation").text("No");
-
-                // _VERBOSE ? console.log("no checked"): _VERBOSE;
-//                $("#sliderValidation").slider({
-//                    disabled: true
-//                });
-
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_des'), "info");
 
             }
 
         });
+
 
         // checkbox que se activa cuando se desea tomar en cuanta un minimo de ocurrencias
         $("#chkMinOcc").click(function(event) {
@@ -155,8 +133,8 @@ var module_nicho = (function() {
             }
 
         });
-        
-        
+
+
         $("#chkFosil").click(function(event) {
 
             var $this = $(this);
@@ -164,9 +142,9 @@ var module_nicho = (function() {
             if ($this.is(':checked')) {
 
                 $("#labelFosil").text("Si");
-                
+
                 if ($("#reload_map").hasClass("btn-primary") && _map_module_nicho.get_specieTarget()) {
-                    
+
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_values'), "warning");
                     $("#reload_map").addClass('btn-success').removeClass('btn-primary');
 
@@ -176,20 +154,19 @@ var module_nicho = (function() {
             } else {
 
                 $("#labelFosil").text("No");
-                
+
                 if ($("#reload_map").hasClass("btn-primary") && _map_module_nicho.get_specieTarget()) {
-                    
+
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_values'), "warning");
                     $("#reload_map").addClass('btn-success').removeClass('btn-primary');
-                    
+
                 }
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_fosil_des'), "info");
-                
+
             }
 
         });
-        
 
 
         // checkbox que se activa cuando se desea tomar en cuanta un minimo de ocurrencias
@@ -266,13 +243,17 @@ var module_nicho = (function() {
 
         // deshabilita controles temporales
         $("#chkFecha").prop('disabled', false);
+
+
         $("#sliderFecha").slider({
             disabled: false
         });
 
+
         $("#nicho_link").click(function() {
             window.location.replace(_url_front + "/comunidad_v0.1.html");
         });
+
 
         $("#nom_sp").autocomplete({
             source: function(request, response) {
@@ -353,13 +334,10 @@ var module_nicho = (function() {
                     rango_fechas = undefined;
                 }
 
-//                var chkFecha = $("#chkFecha").is(':checked');
+
                 var chkFecha = $("#chkFecha").is(':checked') ? true : false;
-//                console.log("chkFecha: " + chkFecha);
-                
-//                var chkFosil = $("#chkFosil").is(':checked');
+
                 var chkFosil = $("#chkFosil").is(':checked') ? true : false;
-//                console.log("chkFosil: " + chkFosil);
 
                 $('.nav-tabs a[href="#tab_resumen"]').tab('show');
 
@@ -398,7 +376,7 @@ var module_nicho = (function() {
             if (mapa_prob) {
                 data_link += "chkPrb=" + mapa_prob + "&";
             }
-            
+
             var fossils = $("#chkFosil").is(":checked");
             if (fossils) {
                 data_link += "chkFosil=" + fossils + "&";
@@ -442,7 +420,6 @@ var module_nicho = (function() {
 
             });
 
-//            console.log(data_link);
             _getLinkToken(data_link);
 
         });
@@ -460,6 +437,7 @@ var module_nicho = (function() {
             $('#modalRegenera input[type="text"]')[0].select();
 
         });
+
 
         _genLinkURL();
 
@@ -535,17 +513,15 @@ var module_nicho = (function() {
             dataType: "json",
             success: function(resp) {
 
-//                console.log(resp.data);
-
                 var all_data = resp.data[0].parametros;
-                _json_config = _parseURL("?"+all_data);
-                
+                _json_config = _parseURL("?" + all_data);
+
                 var sp_data = JSON.parse(_json_config.sp_data);
 
                 var chkVal = _json_config.chkVal ? _json_config.chkVal === "true" : false;
 
                 var chkPrb = _json_config.chkPrb ? _json_config.chkPrb === "true" : false;
-                
+
                 var chkFosil = _json_config.chkFosil ? _json_config.chkFosil === "true" : false;
 
                 var chkApr = _json_config.chkApr ? _json_config.chkApr === "true" : false;
@@ -599,7 +575,7 @@ var module_nicho = (function() {
      */
     function _parseURL(url) {
         console.log(url);
-        
+
         var regex = /[?&]([^=#]+)=([^&#]*)/g, url = url, params = {}, match;
         while (match = regex.exec(url)) {
             params[match[1]] = match[2];
@@ -624,7 +600,6 @@ var module_nicho = (function() {
             return;
         }
 
-//        console.log(_json_config.token);
         var token = _json_config.token;
         _getValuesFromToken(token);
 
@@ -727,8 +702,8 @@ var module_nicho = (function() {
             $("#chkMapaProb").prop('checked', false);
             $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
         }
-        
-        
+
+
         if (chkFosil) {
             $("#chkFosil").prop('checked', true);
             $("#labelFosil").text(_iTrans.prop('lb_si'));
@@ -809,7 +784,7 @@ var module_nicho = (function() {
         _res_display_module_nicho.set_discardedCellFilter(computed_discarded_cells);
         _res_display_module_nicho.set_allowedCells(allowedPoints);
 
-        _module_toast.showToast_BottomCenter("Generando resultados a partir de link", "info");
+        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_link'), "info");
 
     }
 
@@ -892,20 +867,19 @@ var module_nicho = (function() {
 
         if (idreg[0] == "Estados" || idreg[0] == "Ecoregiones") {
 
-            // obtieniendo las ocurrencias de la especie y los elementos eliminados
-            // _res_display_module_nicho.set_allowedPoints(_map_module_nicho.get_allowedPoints());
             _res_display_module_nicho.set_discardedPoints(_map_module_nicho.get_discardedPoints());
-            // _res_display_module_nicho.set_discardedPointsFilter(_map_module_nicho.get_discardedPointsFilter());
-
             _res_display_module_nicho.set_discardedCellFilter(_map_module_nicho.get_discardedCellFilter());
             _res_display_module_nicho.set_allowedCells(_map_module_nicho.get_allowedCells());
 
 
-            val_process = $("#chkValidation").is(':checked');
-            min_occ = $("#chkMinOcc").is(':checked');
-            mapa_prob = $("#chkMapaProb").is(':checked');
-            fossil = $("#chkFosil").is(':checked');
+            var val_process = $("#chkValidation").is(':checked');
+            var min_occ = $("#chkMinOcc").is(':checked');
+            var mapa_prob = $("#chkMapaProb").is(':checked');
+            var grid_res = $("#grid_resolution").val();
 
+            console.log("grid_res: " + grid_res);
+
+            var fossil = $("#chkFosil").is(':checked');
             var rango_fechas = $("#sliderFecha").slider("values");
 
             if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
@@ -915,12 +889,12 @@ var module_nicho = (function() {
             var chkFecha = $("#chkFecha").is(':checked');
 
 //            slider_value = val_process ? $("#sliderValidation").slider("value") : 0;
-            slider_value = val_process ? true : false;
+            var slider_value = val_process ? true : false;
 
 
             // Falta agregar la condición makesense. 
             // Cuando se realiza una consulta por region seleccioanda se verica que la especie objetivo se encuentre dentro de esta area
-            _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha, fossil);
+            _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha, fossil, grid_res);
 
         }
 
@@ -1062,16 +1036,17 @@ $(document).ready(function() {
     // verbose por default es true
     var verbose = true;
 
-    // 0 local, 1 producción
-    var ambiente = 0;
-    // 0 nicho, 1 comunidad
+    // 0 local, 1 producción, 2 desarrollo, 3 candidate
+    var ambiente = 1;
+
+    // 0 nicho, 1 comunidad, 2 index
     var modulo = 0;
 
-    if ($.cookie("url_front")) {
+    if (Cookies.get("url_front")) {
 
-        module_nicho.setUrlFront($.cookie("url_front"))
-        module_nicho.setUrlApi($.cookie("url_api"))
-        module_nicho.setUrlNicho($.cookie("url_nicho"));
+        module_nicho.setUrlFront(Cookies.get("url_front"));
+        module_nicho.setUrlApi(Cookies.get("url_api"));
+        module_nicho.setUrlNicho(Cookies.get("url_nicho"));
 
     }
     else {
@@ -1081,21 +1056,26 @@ $(document).ready(function() {
             module_nicho.setUrlApi("http://localhost:8080");
             module_nicho.setUrlNicho("http://localhost/species-front/geoportal_v0.1.html");
         }
-        else {
+        else if (ambiente === 1) {
 
+            module_nicho.setUrlFront("http://species.conabio.gob.mx");
+            module_nicho.setUrlApi("http://species.conabio.gob.mx/api");
+            module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
 
-//            module_nicho.setUrlFront("http://species.conabio.gob.mx/c3/charlie_dev");
-//            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche4");
-//            module_nicho.setUrlNicho("http://species.conabio.gob.mx/c3/charlie_dev/species-front/geoportal_v0.1.html");
-
-//            module_nicho.setUrlFront("http://species.conabio.gob.mx");
-//            module_nicho.setUrlApi("http://species.conabio.gob.mx/niche3");
-//            module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
+        }
+        else if (ambiente === 2) {
 
             module_nicho.setUrlFront("http://species.conabio.gob.mx/dev");
             module_nicho.setUrlApi("http://species.conabio.gob.mx/api-dev");
             module_nicho.setUrlNicho("http://species.conabio.gob.mx/dev/geoportal_v0.1.html");
 
+        }
+        // la version candidate tiene el front de dev y trabaja con el middleware de produccion
+        else {
+
+            module_nicho.setUrlFront("http://species.conabio.gob.mx/candidate");
+            module_nicho.setUrlApi("http://species.conabio.gob.mx/api-rc");
+            module_nicho.setUrlNicho("http://species.conabio.gob.mx/candidate/geoportal_v0.1.html");
 
         }
 

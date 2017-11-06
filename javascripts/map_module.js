@@ -11,7 +11,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     var _VERBOSE = verbose;
     var _first_loaded = true;
 
-    var _grid_d3, _grid_map;
+    var _grid_d3;
+    var _grid_map = undefined;
+    var _grid_res = undefined;
+    
     var _grid_map_hash = d3.map([]);
 
     var _DELETE_STATE_POINTS = false;
@@ -323,19 +326,22 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         };
 
 
-        var milliseconds = new Date().getTime();
-        var url = _url_geoserver + "t=" + milliseconds;
-        var espacio_capa = _workspace + ":sp_grid_terrestre";
+//        var milliseconds = new Date().getTime();
+//        var url = _url_geoserver + "t=" + milliseconds;
+//        var espacio_capa = _workspace + ":sp_grid_terrestre";
+
 
         // normal osm map: http://{s}.tile.osm.org/{z}/{x}/{y}.png
         // black and white map: http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png
         // relieve: http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png
         // cartoDB: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+        
         _OSM_layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
         _OSM_layer.getAttribution = function() {
             return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
         };
 
+        
         // ******************************************************************* geojson-vt
         _tileIndex = geojsonvt([], _tileOptions);
         _tileLayer = L.canvasTiles()
@@ -345,11 +351,18 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     onEachFeature: onEachFeature
                 })
                 .drawing(_drawingOnCanvas);
-
-        var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-        var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 4 : 3;
-        // var centro_mapa = (_tipo_modulo == _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
-        // var zoom_module = (_tipo_modulo == _MODULO_NICHO) ? 5 : 4;
+        
+        var centro_mapa, zoom_module;
+        
+//        if(_url_zacatuche.indexOf("api-dev") !== -1 || _url_zacatuche.indexOf("localhost") !== -1){
+        if(_url_zacatuche.indexOf("api-dev") !== -1 ){
+            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+        }
+        else{
+            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
+            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
+        }
 
         // ambos div tienen el id = 'map', tanto en nicho como en comunidad
         map = L.map('map', {
@@ -364,21 +377,23 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         _baseMaps = {
             "Open Street Maps": _OSM_layer
         };
+        
         _overlayMaps = {
-            "Malla": _tileLayer
-//            ,"País": _tileBoudary
+            "Grid": _tileLayer
         };
+        
         _layer_control = L.control.layers(_baseMaps, _overlayMaps).addTo(map);
 
         map.scrollWheelZoom.disable();
+        
 
-        if (_tipo_modulo == _MODULO_NICHO) {
+        if (_tipo_modulo === _MODULO_NICHO) {
             // document.getElementById("tbl_hist").style.display = "none";
             // document.getElementById("dShape").style.display = "none";
             _addControls();
         }
 
-        _loadD3GridMX();
+//        _loadD3GridMX();
 
 
     }
@@ -395,34 +410,65 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      */
-    // TODO: sincronizar meotodo para que sea realizado antes de que se busque una especie y de un error.
-    function _loadD3GridMX() {
+    function loadD3GridMX(val_process, grid_res) {
 
         _VERBOSE ? console.log("_loadD3GridMX") : _VERBOSE;
+        
+        // Deja la malla cuando ya existe previemente y no se cambia la resolución
+        if(_grid_map !== undefined && _grid_res === grid_res){
+            _VERBOSE ? console.log("Se mantiene resolución") : _VERBOSE;
+            _display_module.callDisplayProcess(val_process);
+            return;
+        }else{
+            // Se elimina evento cuando la malla es reemplazada. Evita la acumulación de eventos
+            map.off('click');
+        }
+        
+        
+        var tipo_api;
+        
+        if(_url_zacatuche.indexOf("api-rc")!==-1){
+            tipo_api = "rc";
+        }
+        else if(_url_zacatuche.indexOf("api-dev")!==-1){
+            tipo_api = "dev";
+        }
+        else if(_url_zacatuche.indexOf("localhost")!==-1){
+            tipo_api = "local";
+        }
+        else{
+            tipo_api = "pro";
+        }
+        
+        _VERBOSE ? console.log("tipo_api: " + tipo_api) : _VERBOSE;
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie",
             type: 'post',
             dataType: "json",
             data: {
-                "qtype": "getGridGeoJsonMX"
+                "qtype": "getGridGeoJsonMX",
+                "grid_res": grid_res,
+                "api": tipo_api
             },
-            // success : function (jsonc){
             success: function(json) {
-
+                
                 // Asegura que el grid este cargado antes de realizar una generacion por enlace
                 $("#loadData").prop("disabled", false);
 
+//                _grid_map = null;
                 _grid_map = json;
+                _grid_res = grid_res;
+                _first_loaded = true;
 
                 // importacion con otras APIs
                 // // Se comprime json del lado del servidor, se descomprime en el cliente
                 // json = JSONC.decompress(jsonc);
                 // // console.log(json);
-
-                // _loadD3GridEU();
+                
                 colorizeFeatures(_grid_map);
                 _pad = 0;
+//                _tileIndex = null;
                 _tileIndex = geojsonvt(_grid_map, _tileOptions);
                 _tileLayer.redraw();
 
@@ -430,11 +476,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 map.on('click', function(e) {
                     console.log(e.latlng.lat + ", " + e.latlng.lng);
 
-                    if (_tipo_modulo == _MODULO_NICHO) {
+                    if (_tipo_modulo === _MODULO_NICHO) {
                         _display_module.showGetFeatureInfo(e.latlng.lat, e.latlng.lng);
                     }
 
                 });
+                
+                _display_module.callDisplayProcess(val_process);
 
             },
             error: function() {
@@ -445,6 +493,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         });
 
     }
+    
+    
 
 
     /**
@@ -476,7 +526,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      * @param {json} grid_map_color - GeoJson de la malla
-     * @param {boolean} first - Bandera para conocer si es la primera carga de la malla
      */
     function colorizeFeatures(grid_map_color) {
 
@@ -807,7 +856,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         busca_especie();
 
-        _toastr.info("Recalculando ocurrencias de especie");
+        _toastr.info($.i18n.prop('lb_cal_occ'));
 
     }
 
@@ -964,6 +1013,50 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         $("#num_occ_celda").text(occ_cell);
 
     }
+    
+    function updateLabels(){
+        
+        _VERBOSE ? console.log("updateLabels map_module") : _VERBOSE;
+        
+        reloadPointLayer();
+ 
+    }
+    
+    function reloadPointLayer(){
+        
+        _VERBOSE ? console.log("reloadPointLayer") : _VERBOSE;
+        
+        _geojsonFeature = {"type": "FeatureCollection",
+            "features": _allowedPoints.values()};
+        
+        if(_markersLayer !== undefined){
+            map.removeLayer(_markersLayer);
+            _markersLayer.clearLayers();
+            _layer_control.removeLayer(_markersLayer);
+        }
+
+        _markersLayer = L.markerClusterGroup({maxClusterRadius: 30, chunkedLoading: true});
+        
+        _species_layer = L.geoJson(_geojsonFeature, {
+            pointToLayer: function(feature, latlng) {
+
+                return L.circleMarker(latlng, _geojsonMarkerOptions);
+            },
+            onEachFeature: function(feature, layer) {
+                var message = _getMessagePopup(feature);
+                layer.bindPopup(message, _customOptions);
+            }
+
+        });
+        
+        _markersLayer.addLayer(_species_layer);
+        map.addLayer(_markersLayer);
+        _layer_control.addOverlay(_markersLayer, _specie_target.label);
+        
+        
+        
+        
+    }
 
     /**
      * Éste método realiza la carga de una capa en el mapa con las ocurrencias de la especie objetivo seleccionada en el análisis de nicho ecológico.
@@ -977,27 +1070,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_addPointLayer") : _VERBOSE;
 
-        _geojsonFeature = {"type": "FeatureCollection",
-            "features": _allowedPoints.values()};
-
-        _markersLayer = L.markerClusterGroup({maxClusterRadius: 30, chunkedLoading: true});
-
-        _species_layer = L.geoJson(_geojsonFeature, {
-            pointToLayer: function(feature, latlng) {
-
-                return L.circleMarker(latlng, _geojsonMarkerOptions);
-            },
-            onEachFeature: function(feature, layer) {
-                var message = _getMessagePopup(feature);
-                layer.bindPopup(message, _customOptions);
-            }
-
-        });
-
-        _markersLayer.addLayer(_species_layer);
-        map.addLayer(_markersLayer);
-
-        _layer_control.addOverlay(_markersLayer, _specie_target.label);
+        reloadPointLayer();
+        
+        
+        
     }
 
     /**
@@ -1103,6 +1179,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {object} feature - Objeto tipo punto de la ocucurrencia seleccionada para el análisis de nicho ecológico
      */
     function _getMessagePopup(feature) {
+        
+        _VERBOSE ? console.log("_getMessagePopup") : _VERBOSE;
 
         coordinates = parseFloat(feature.geometry.coordinates[1]).toFixed(2) + ", " + parseFloat(feature.geometry.coordinates[0]).toFixed(2)
 
@@ -1119,8 +1197,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         else {
             url = feature.properties.url;
         }
+        
+//        _VERBOSE ? console.log("prueba: " + _iTrans.prop("lb_occ_title_sp")) : _VERBOSE;
 
-        var message = "INFORMACIÓN ESPECIE<br/>Nombre: " + feature.properties.specie + "<br/>Colecta: " + fecha + "<br/>Coordenadas: " + coordinates + "<br/><a target='_blank' class='enlace_sp' href='http://" + url + "'>" + _iTrans.prop("link_sp") + "</a>";
+        var message = _iTrans.prop("lb_occ_title_sp") + "<br/>" + _iTrans.prop("lb_occ_nombre") + ": " + feature.properties.specie + "<br/>" + _iTrans.prop("lb_occ_colecta") + ": " + fecha + "<br/>" + _iTrans.prop("lb_occ_coord") + ": " + coordinates + "<br/><a target='_blank' class='enlace_sp' href='http://" + url + "'>" + _iTrans.prop("link_sp") + "</a>";
         return message;
     }
 
@@ -1423,7 +1503,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 .scale(y)
                 .orient("left");
 
-        var text_legend = mapa_prob ? "Porcentaje probabilidad" : "Score";
+        var text_legend = mapa_prob ? $.i18n.prop('lb_per_prob') : "Score";
 
         key.append("g")
                 .attr("class", "y axis")
@@ -1733,6 +1813,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         getMap: getMap,
         colorizeFeatures: colorizeFeatures,
         colorizeFeaturesNet: colorizeFeaturesNet,
+        loadD3GridMX: loadD3GridMX,
+        updateLabels: updateLabels,
         clearMap: clearMap,
         startMap: startMap
     }

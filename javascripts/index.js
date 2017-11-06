@@ -32,8 +32,8 @@ var module_index = (function() {
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
 
-        if ($.cookie("register") == undefined) {
-            $.cookie("register", true, {expires: 7});
+        if (Cookies.get("register") === undefined) {
+            Cookies.set("register", true, {expires: 7});
             $("#link_modelo_nicho").append("<a href=\"#\"  id=\"a_modelo_nicho\" link-id=\"" + _url_nicho + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" >" + _iTrans.prop("a_modelo_nicho") + "</a>");
             $("#link_modelo_comunidad").append("<a href=\"#\" id=\"a_modelo_comunidad\" link-id=\"" + _url_comunidad + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
         }
@@ -97,10 +97,10 @@ var module_index = (function() {
                 // TODO: Registro de correo y redireccionamiento a pagina.
                 $.ajax({
                     // url : "http://localhost:8080/snib/getUserReg",
-                    url: _url_api,
+                    url: _url_api + "/niche/especie",
                     type: "post",
                     data: {
-                        // qtype: "getUserReg",
+                        qtype: "getUserReg",
                         email: email
                     },
                     success: function(d) {
@@ -212,16 +212,16 @@ var module_index = (function() {
         _tipo_modulo = tipo_modulo;
 
         // se guardan cookies para enviarlas a comunidad y nicho
-        $.cookie("url_front", url_front);
-        $.cookie("url_api", url_api);
+        Cookies.set("url_front", url_front);
+        Cookies.set("url_api", url_api);
 
         // var _url_trabajo = "http://species.conabio.gob.mx/niche?", 
         _url_nicho = url_front + "/geoportal_v0.1.html";
         _url_comunidad = url_front + "/comunidad_v0.1.html";
         _url_api = url_api;
-        
-        $.cookie("url_nicho", _url_nicho);
-        $.cookie("url_comunidad", _url_comunidad);
+
+        Cookies.set("url_nicho", _url_nicho);
+        Cookies.set("url_comunidad", _url_comunidad);
 
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         // _VERBOSE ? console.log(this) : _VERBOSE
@@ -258,8 +258,9 @@ $(document).ready(function() {
     // verbose por default es true
     var verbose = true;
 
-    // 0 local, 1 producción
-    var ambiente = 0;
+    // 0 local, 1 producción, 2 desarrollo, 3 candidate
+    var ambiente = 1;
+    
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 2;
 
@@ -272,14 +273,31 @@ $(document).ready(function() {
     }
     else {
 
-//        url_front = "http://species.conabio.gob.mx/c3/charlie_dev";
-//        url_api = "http://species.conabio.gob.mx/niche4";
-        
-//        url_front = "http://species.conabio.gob.mx";
-//        url_api = "http://species.conabio.gob.mx/niche3";
+        if (ambiente === 0) {
+            
+            url_front = "http://localhost/species-front";
+            url_api = "http://localhost:8080";
+            
+        }
+        else if (ambiente === 1 ) {
 
-        url_front = "http://species.conabio.gob.mx/dev";
-        url_api = "http://species.conabio.gob.mx/api-dev";
+            url_front = "http://species.conabio.gob.mx";
+            url_api = "http://species.conabio.gob.mx/api";
+
+        }
+        else if (ambiente === 2){
+            
+            url_front = "http://species.conabio.gob.mx/dev";
+            url_api = "http://species.conabio.gob.mx/api-dev";
+
+        }
+        // la version candidate tiene el front de dev y trabaja con el middleware de produccion
+        else{
+            
+            url_front = "http://species.conabio.gob.mx/candidate";
+            url_api = "http://species.conabio.gob.mx/api-rc";
+            
+        }
 
 
     }
