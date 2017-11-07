@@ -51,7 +51,7 @@ var language_module = (function(verbose) {
 
         $.i18n.properties({
             name: 'nicho',
-            path: 'javascripts/in/bundle/',
+            path: 'plugins/i18n/in/bundle/',
             mode: 'both',
             language: _language_selected,
             checkAvailableLanguages: true,
@@ -101,7 +101,7 @@ var language_module = (function(verbose) {
 
             $.i18n.properties({
                 name: 'nicho',
-                path: 'javascripts/in/bundle/',
+                path: 'plugins/i18n/in/bundle/',
                 mode: 'both',
                 language: _language_selected,
                 checkAvailableLanguages: true,

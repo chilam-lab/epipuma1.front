@@ -17,9 +17,8 @@
         <link rel="stylesheet" type="text/css" href="stylesheets/comunidad.css">
 
 
-        <link rel="stylesheet" href="assets/dist/themes/proton/style.css" />
-
-        <!-- <link rel="stylesheet" href="plugins/easybutton/src/easy-button.css"> -->
+        <link rel="stylesheet" href="plugins/jstree/dist/themes/proton/style.css" />
+        
 
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
@@ -32,14 +31,14 @@
 
         <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
-        
-        
+
+
         <script type="text/javascript" src="plugins/router/cbsplit.js"></script>
         <script type="text/javascript" src="plugins/router/jquery.ba-hashchange.js"></script>
         <script type="text/javascript" src="plugins/router/jquery.router.js"></script>
-        
-        
-        <script src="javascripts/jquery-ui/jquery-ui.js"></script>
+
+
+        <script src="plugins/jquery-ui/jquery-ui.js"></script>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
@@ -78,7 +77,7 @@
 
 
             $(function() {
-                
+
 //                console.log("_json_config2");
 
                 var result = $('#result');
@@ -99,7 +98,7 @@
 
 
                 var hash = location.hash.replace(/^#/, '');
-                
+
 
                 if (hash) {
 
@@ -107,20 +106,20 @@
 //                    console.log($.routeMatches("link/?minOcc=5"));
 
                     var match = $.routeMatches(hash);
-                    
+
                     console.log(match);
 
                     if (match) {
                         var template = $(match.route.template);
-                        
-                        
+
+
 
                         if (template.length) {
                             var text = match.route.callback.apply(match.route.callback, match.args);
                             // template.text(text);
                             // console.log(template);
                             _json_config = JSON.parse(text)
-                            
+
                             console.log("_json_config");
                             console.log(_json_config);
 
@@ -151,37 +150,64 @@
 
             <header id="main-header">
 
-                <span id="lb_titulo_net" class="site-name"></span>
-                <span id="lb_sub_titulo" class="site-desc"></span>
 
-                <div class="link_nicho">
-                    <button id="net_link" type="button" class="btn btn-info"></button>
-                </div>	
+                <div class="row">
 
-                <div class="language_drop">
+                    <!--Agregar biblioteca de boostrap de pagina modelo-->
+                    <div class="col-md-6">
+                        <span id="lb_titulo_net" class="site-name"></span>
+                        <span id="lb_sub_titulo" class="site-desc"></span>
 
-                    <div class="input-group dropdown_group ">
+                    </div>
 
-                        <div class="input-group-btn pull-right">
+                    <div class="col-md-6">
 
-                            <button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+                        <div class="col-md-4 margin-top-15">
+                        </div>
 
-                            <ul class="dropdown-menu dropdown_idioma">
-                                <li><a id="a_espanol" class="idioma " value="es_MX" label="Español ">Español </a></li>
-                                <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
-                            </ul>
+                        <div class="col-md-5  margin-top-15 ">
+                            <button id="net_link" type="button" class="btn btn-info pull-right"></button>
+                        </div>
 
+                        <div class="col-md-2 margin-top-15 ">
+
+                            <div class="language_drop pull-right">
+
+                                <div class=" dropdown_group ">
+
+                                    <div class="input-group-btn ">
+
+                                        <button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+
+                                        <ul class="dropdown-menu dropdown_idioma">
+                                            <li><a id="a_espanol" class="idioma " value="es_MX" label="Español ">Español </a></li>
+                                            <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
+                                        </ul>
+
+                                        
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-1 margin-top-15">
+                            <button id="btn_tutorial" type="button" title="Ver Tutorial" class="btn btn-primary glyphicon glyphicon-book glyphicon-head pull-right"></button>
                         </div>
 
                     </div>
 
                 </div>
 
+
             </header>
 
 
             <div class="row-fluid row_panel">
-                
+
                 <div id="result"></div>
 
                 <div class="header_nav">
@@ -385,17 +411,17 @@
 
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script src="assets/dist/jstree.min.js"></script>
-        <script type="text/javascript" src="javascripts/crossfilter.min.js"></script>
+        <script src="plugins/jstree/dist/jstree.min.js"></script>
+        <script type="text/javascript" src="plugins/crossfilter/crossfilter.min.js"></script>
 
         <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
         <!-- // <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script> -->
-        <script type="text/javascript" src="javascripts/in/jquery.i18n.properties.min.js"></script>
+        <script type="text/javascript" src="plugins/i18n/in/jquery.i18n.properties.min.js"></script>
         <!-- // <script src="plugins/markercluster/dist/leaflet.markercluster-src.js"></script> -->
 
-        <script type="text/javascript" src="javascripts/toastr.js"></script>
+        <script type="text/javascript" src="plugins/toastr/toastr.js"></script>
 
-        
+
 
         <script src="http://www.sumbera.com/gist/js/vt/geojson-vt-dev.js"></script>
         <script src="http://www.sumbera.com/gist/js/leaflet/canvas/L.CanvasTiles.js"></script>
@@ -408,12 +434,7 @@
         <script type="text/javascript" src="javascripts/net_module.js"></script> 
         <script type="text/javascript" src="javascripts/histogram_module.js"></script> 
         <script type="text/javascript" src="javascripts/table_module.js"></script> 
-
-<!--        <script type="text/javascript" src="javascripts/jquery-cookie/jquery.cookie.js"></script> -->
-        <script type="text/javascript" src="javascripts/js-cookie/js.cookie.js"></script> 
-
-        <!-- // <script src="plugins/easybutton/src/easy-button.js"></script> -->
-
+        <script type="text/javascript" src="plugins/js-cookie/js.cookie.js"></script> 
 
     </body>
 </html>

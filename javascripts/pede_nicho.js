@@ -253,6 +253,10 @@ var module_nicho = (function() {
         $("#nicho_link").click(function() {
             window.location.replace(_url_front + "/comunidad_v0.1.html");
         });
+        
+        $("#btn_tutorial").click(function() {
+             window.open(_url_front + "/docs/tutorial.pdf");
+        });
 
 
         $("#nom_sp").autocomplete({
@@ -1037,7 +1041,7 @@ $(document).ready(function() {
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 1;
+    var ambiente = 0;
 
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 0;

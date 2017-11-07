@@ -131,7 +131,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             "id": topo_selected,
                             attr: {"bid": topo_selected, "parent": text_topo, "level": level_root, "type": _TYPE_TOPO_RASTER},
                             'state': {'opened': true},
-                            "icon": "assets/dist/themes/default/throbber.gif"
+                            "icon": "plugins/jstree/dist/themes/default/throbber.gif"
                         }];
 
                     $("#jstree_topo_" + id).jstree({
@@ -168,7 +168,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             var newNode = {
                                 id: idNode,
                                 text: data[i].label,
-                                icon: "assets/images/dna.png",
+                                icon: "plugins/jstree/images/dna.png",
                                 attr: {"bid": data[i].layer, "parent": text_topo, "level": level_vartree, "type": data[i].type},
                                 state: {'opened': false},
                                 "children": default_son
@@ -177,7 +177,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             $('#jstree_topo_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
                         }
 
-                        $("#jstree_topo_" + id).jstree(true).set_icon(current_node.id, "./assets/images/dna.png");
+                        $("#jstree_topo_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
 
                     });
 
@@ -204,7 +204,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             var parent_name = d.node.original.text;
             var max_level = 2;
 
-            $("#jstree_topo_" + id).jstree(true).set_icon(d.node.id, "./assets/dist/themes/default/throbber.gif");
+            $("#jstree_topo_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
 
 
             $.ajax({
@@ -246,7 +246,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         var newNode = {
                             id: idNode,
                             text: min + " : " + max,
-                            icon: "assets/images/dna.png",
+                            icon: "plugins/jstree/images/dna.png",
                             attr: {"bid": data[i].bid, "parent": parent_name, "level": level_vartree, "type": data[i].type},
                             state: {'opened': false},
                             "children": default_son
@@ -256,7 +256,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     }
 
                     $("#jstree_topo_" + id).jstree(true).delete_node(d.node.children[0]);
-                    $("#jstree_topo_" + id).jstree(true).set_icon(current_node.id, "./assets/images/dna.png");
+                    $("#jstree_topo_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
 
                 }
 
@@ -297,7 +297,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             "id": topo_selected,
                             attr: {"bid": topo_selected, "parent": text_topo, "level": level_root, "type": _TYPE_CLIMA},
                             'state': {'opened': true},
-                            "icon": "assets/dist/themes/default/throbber.gif"
+                            "icon": "plugins/jstree/dist/themes/default/throbber.gif"
                         }];
 
                     $("#jstree_variables_bioclim_" + id).jstree({
@@ -335,7 +335,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                                 id: idNode,
 //                                text: data[i].label,
                                 text: _iTrans.prop('a_item_' + idNode),
-                                icon: "assets/images/dna.png",
+                                icon: "plugins/jstree/images/dna.png",
                                 attr: {"bid": data[i].layer, "parent": text_topo, "level": level_vartree, "type": data[i].type},
                                 state: {'opened': false},
                                 "children": default_son
@@ -344,7 +344,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             $('#jstree_variables_bioclim_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
                         }
 
-                        $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(current_node.id, "./assets/images/dna.png");
+                        $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
 
                     });
 
@@ -369,7 +369,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             var parent_name = d.node.original.text;
             var max_level = 2;
 
-            $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(d.node.id, "./assets/dist/themes/default/throbber.gif");
+            $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
 
 
             $.ajax({
@@ -412,7 +412,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         var newNode = {
                             id: idNode,
                             text: min + " : " + max,
-                            icon: "assets/images/dna.png",
+                            icon: "plugins/jstree/images/dna.png",
                             attr: {"bid": data[i].bid, "parent": parent_name, "level": level_vartree, "type": data[i].type},
                             state: {'opened': false},
                             "children": default_son
@@ -422,7 +422,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     }
 
                     $("#jstree_variables_bioclim_" + id).jstree(true).delete_node(d.node.children[0]);
-                    $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(current_node.id, "./assets/images/dna.png");
+                    $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
 
                 }
 
@@ -640,7 +640,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                                         "id": "root",
                                         "attr": {"nivel": self.level_vartree, "type": _TYPE_TAXON},
                                         'state': {'opened': true},
-                                        "icon": "assets/dist/themes/default/throbber.gif"
+                                        "icon": "plugins/jstree/dist/themes/default/throbber.gif"
                                     }];
 
                                 $('#jstree_variables_species_' + id).jstree({
@@ -952,7 +952,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         var newNode = {
                             id: idNode,
                             text: label_taxon, //data[i].name + " (spp: " + data[i].spp + ")", 
-                            icon: "assets/images/dna.png",
+                            icon: "plugins/jstree/images/dna.png",
                             attr: {"nivel": self.level_vartree, "type": _TYPE_TAXON},
                             state: {'opened': false},
                             "children": default_son
@@ -962,7 +962,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                     }
 
-                    $("#jstree_variables_species_" + id).jstree(true).set_icon(current_node.id, "./assets/images/dna.png");
+                    $("#jstree_variables_species_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
 
                 }
 
@@ -986,7 +986,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             var next_nivel = 0;
             var parent_field = "";
 
-            $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./assets/dist/themes/default/throbber.gif");
+            $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
 
 
             if (d.node.original.attr.nivel == 2) {
@@ -1021,7 +1021,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             }
             else {
                 $("#jstree_variables_species_" + id).jstree(true).delete_node(d.node.children[0]);
-                $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./assets/images/dna.png");
+                $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/images/dna.png");
                 return;
             }
 
@@ -1064,7 +1064,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         var newNode = {
                             id: idNode,
                             text: label_taxon,
-                            icon: "assets/images/dna.png",
+                            icon: "plugins/jstree/images/dna.png",
                             attr: {"nivel": next_nivel, "type": _TYPE_TAXON},
                             state: {'opened': false},
                             "children": default_son
@@ -1075,7 +1075,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     }
 
                     $("#jstree_variables_species_" + id).jstree(true).delete_node(d.node.children[0]);
-                    $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./assets/images/dna.png");
+                    $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/images/dna.png");
 
                 }
             });
