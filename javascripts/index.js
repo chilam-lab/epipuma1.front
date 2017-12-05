@@ -16,6 +16,11 @@ var module_index = (function() {
     var _tipo_modulo;
     var _link_val;
 
+    var url_front;
+    var url_api;
+
+
+
     // TEMPORAL DESARROLLO
     var _url_api, _url_nicho, _url_comunidad;
 
@@ -31,13 +36,18 @@ var module_index = (function() {
 
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
+        Cookies.remove('register');
 
         if (Cookies.get("register") === undefined) {
             Cookies.set("register", true, {expires: 7});
+            $("#div_rel_nicho").attr('href',_url_nicho);
+            $("#div_rel_com").attr('href',_url_comunidad);
             $("#link_modelo_nicho").append("<a href=\"#\"  id=\"a_modelo_nicho\" link-id=\"" + _url_nicho + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" >" + _iTrans.prop("a_modelo_nicho") + "</a>");
             $("#link_modelo_comunidad").append("<a href=\"#\" id=\"a_modelo_comunidad\" link-id=\"" + _url_comunidad + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
         }
         else {
+            $("#div_rel_nicho").attr('href',_url_nicho);
+            $("#div_rel_com").attr('href',_url_comunidad);
             $("#link_modelo_nicho").append("<a href=\"" + _url_nicho + "\"  id=\"a_modelo_nicho\"  >" + _iTrans.prop("a_modelo_nicho") + "</a>");
             $("#link_modelo_comunidad").append("<a href=\"" + _url_comunidad + "\" id=\"a_modelo_comunidad\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
         }
@@ -159,6 +169,53 @@ var module_index = (function() {
                 _toastr.error("Correo invalido, intentelo nuevamente");
             }
         });
+
+
+        $("#btn_tutorial").click(function() {
+            window.open(url_front + "/docs/tutorial.pdf");
+        });
+
+        var timer = 5000;
+        
+        
+        var names_nicho = ["lb_index_hist_decil", "lb_index_hist_score", "lb_index_map_pres"];
+        var names_net = [ "lb_index_map_riq", "lb_index_tbl_rel", "lb_index_net"];
+        
+        var index_nicho = 0;
+        var index_net = 0;
+        $("#lb_ini_nicho").text(_iTrans.prop(names_nicho[names_nicho.length-1]));
+        
+        setInterval(function() {
+            $("#lb_ini_nicho").text(_iTrans.prop(names_nicho[index_nicho]));
+            index_nicho = index_nicho === 2 ? 0 : ++index_nicho;
+        }, timer);
+        
+        $("#lb_ini_net").text(_iTrans.prop(names_net[names_net.length-1]));
+        setInterval(function() {
+            $("#lb_ini_net").text(_iTrans.prop(names_net[index_net]));
+            index_net = index_net === 2 ? 0 : ++index_net;
+        }, timer);
+
+
+
+        $(".box_nicho").bgswitcher({
+            images: [
+                url_front + "/images/mapa.png",
+                url_front + "/images/decil.png",
+                url_front + "/images/score_celda.png"],
+            effect: "fade",
+            interval: timer
+        });
+
+        $(".box_net").bgswitcher({
+            images: [
+                url_front + "/images/red.png",
+                url_front + "/images/mapa_riqueza.png",
+                url_front + "/images/tabla_red.png"],
+            effect: "fade",
+            interval: timer
+        });
+
     }
 
 
@@ -202,9 +259,14 @@ var module_index = (function() {
      *                                1-comunidad, 2-index)
      * @param {boolean} verbose - Se activa mesnajes de debug
      */
-    function startModule(url_front, url_api, tipo_modulo, verbose) {
+    function startModule(front, api, tipo_modulo, verbose) {
+
+        url_front = front;
+        url_api = api;
+
         // _AMBIENTE = ambiente
         _VERBOSE = verbose;
+
         console.log("_VERBOSE: " + _VERBOSE);
         _VERBOSE ? console.log("URL front: " + url_front) : _VERBOSE;
         _VERBOSE ? console.log("URL api: " + url_api) : _VERBOSE;
@@ -253,19 +315,19 @@ var module_index = (function() {
 
 })();
 
-
 $(document).ready(function() {
     // verbose por default es true
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 0;
-    
+    var ambiente = 3;
+
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 2;
 
     var url_front;
     var url_api;
+
 
     if (ambiente === 0) {
         url_front = "http://localhost/species-front";
@@ -274,29 +336,29 @@ $(document).ready(function() {
     else {
 
         if (ambiente === 0) {
-            
+
             url_front = "http://localhost/species-front";
             url_api = "http://localhost:8080";
-            
+
         }
-        else if (ambiente === 1 ) {
+        else if (ambiente === 1) {
 
             url_front = "http://species.conabio.gob.mx";
             url_api = "http://species.conabio.gob.mx/api";
 
         }
-        else if (ambiente === 2){
-            
+        else if (ambiente === 2) {
+
             url_front = "http://species.conabio.gob.mx/dev";
             url_api = "http://species.conabio.gob.mx/api-dev";
 
         }
         // la version candidate tiene el front de dev y trabaja con el middleware de produccion
-        else{
-            
+        else {
+
             url_front = "http://species.conabio.gob.mx/candidate";
             url_api = "http://species.conabio.gob.mx/api-rc";
-            
+
         }
 
 

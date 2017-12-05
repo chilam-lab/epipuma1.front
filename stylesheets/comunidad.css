@@ -665,48 +665,51 @@ text {
 }
 
 .var_container{
+    /*width: 100%;*/
+    height: 80%;
 
-    width: 100%;
-    height: 100%;
-    /*border-style: solid;*/
-
+    /*border-style: solid;
+    border-color: green;*/
 }
+
+
 
 .myBlockVariableAdded{
 
-    overflow: auto; 
+    /*overflow: auto;*/ 
 
     border-style: solid;
     border-color: #3B6A93;
     border-radius: 10px;
-    float: left;
-    clear: none;
-
-    width: 28%;
-    height: 78% !important;
-    margin-left: 3px;
-    margin-top: 40px;
-    transition: width 2s ease;
-
+    height: 100%;
+    padding: 0px;
+    
+/*    float: left;
+    clear: none;*/
+    /*width: 28%;*/
+    /*height: 100% !important;*/
+    /*margin-left: 3px;*/
+    /*margin-top: 5px;*/
+    /*transition: width 2s ease;*/
 
 }
 
 .nav_selection{
 
-    width: 70%;
+    padding: 0px;
+/*    width: 65%;
     height: 100%;
-    float: left;
+    float: left;*/
+
     /*border-style: solid;*/
 
 }
 
 .nav-variables{
-
-    /*width: 100%; */
-    /*float: left;*/
-    /*border-style: solid;*/
-
+    font-size: 10px;
+    height: 10%;
 }
+
 
 .tab-content{
 

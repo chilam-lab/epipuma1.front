@@ -440,27 +440,30 @@ var variable_module = (function(verbose, url_zacatuche) {
         // titulo del selector de varibles
         var header_panel = $('<h3/>')
                 .attr('id', title)
-                .addClass('label_componenete')
+                .addClass('label_componenete sidebar-header')
                 .text(_iTrans.prop(title))
                 .appendTo($("#" + parent));
 
 
         var var_container = $('<div/>')
-                .addClass('var_container')
+//                .addClass('var_container')
+                .addClass('col-md-12 col-sm-12 col-xs-12 var_container')
                 .appendTo($("#" + parent));
 
 
         var nav_selection = $('<div/>')
                 // .attr('id', "treeAddedPanel_" + id)
-                .addClass('nav_selection')
+//                .addClass('nav_selection')
+                .addClass('col-md-8 col-sm-12 col-xs-12 nav_selection')
                 .appendTo(var_container);
 
-
+//                console.log("id: " + id);
         // contenedor de header tabs
         var nav_items = $('<ul/>')
+                .attr("id", "tuto_nav_tabs_" + id)
                 .addClass('nav nav-tabs nav-variables')
                 .appendTo(nav_selection);
-
+        
         $.each(tags, function(i) {
             var name_class = 'nav-variables';
 
@@ -490,10 +493,13 @@ var variable_module = (function(verbose, url_zacatuche) {
                 .appendTo(nav_selection);
 
 
+
+
         // div que almacena de forma general los grupos seleccionados
         var tree_selection = $('<div/>')
                 .attr('id', "treeAddedPanel_" + id)
-                .addClass('myBlockVariableAdded')
+//                .addClass('myBlockVariableAdded')
+                .addClass('col-md-4 col-sm-12 col-xs-12 myBlockVariableAdded')
                 .appendTo(var_container);
 
 
@@ -513,6 +519,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                 // div que contiene el dropdown-button de tipos taxonomicos y textfiled para insertar valores
                 var drop_item = $('<div/>')
+                        .attr('id', 'tuto_taxon_sp_' + id)
                         .addClass('input-group dropdown_group')
                         .appendTo(tab_pane);
 
@@ -897,6 +904,8 @@ var variable_module = (function(verbose, url_zacatuche) {
             // else {}
 
         });
+
+
 
         // Es un evento generado cuando se realiza la carga del árbol de selección (jstree: https://www.jstree.com/) que contiene el selector de variables. 
         self.loadNodes = function() {

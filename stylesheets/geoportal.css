@@ -1,5 +1,6 @@
 body{
     background: #FFFFFF;
+    min-width: 440px;
 }
 
 .container-fluid{
@@ -54,18 +55,25 @@ body{
     margin-left: 20;
 }
 
-.row_panel{
+.padding-sides-zero{
+    padding-left: 0px;
+    padding-right: 0px;
+}
 
-    width: 100%;
-    height: 100%;
-    margin-right: 5;
-    margin-left: 5;
-    padding-top: 30;
-    margin-bottom: 10;
-    /*vertical-align: middle;*/
-    /*border-style: double;
-    border-color: #00ff00;*/
+.padding-left-zero{
+    padding-left: 0px;
+}
 
+.margin-top-10{
+    margin-top: 20px;
+}
+
+.margin-top-30{
+    margin-top: 30px;
+}
+
+.margin-top-35{    
+    margin-top: 35px;
 }
 
 section{
@@ -98,21 +106,35 @@ section{
 
 #map{
 
-    position: absolute;
-
-    width: 99%;
-    height: 80%;
+    /*position: absolute;*/
+    /*width: 100%;*/
+    height: 100%;
     border-style: solid;
-    border-width: 4px;
+    border-width: 1px;
     /*border-radius: 5px;*/
     border-color: #3B6A93;
-    margin-bottom: 5;
-    margin: auto;
+    /*margin-bottom: 5;*/
+    /*margin: auto;*/
     /*margin-right: -15;*/
 
     /*display: table;
     margin: 0 auto;*/
 
+}
+
+
+#map2{
+
+    height: 95%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3B6A93;
+
+}
+
+.sidebar-header{
+    font-size: 25px;
+    font-weight: bold;
 }
 
 .sidebar-header-map{
@@ -122,10 +144,10 @@ section{
 
 
 
-#tbl_hist{
-    margin-top: 250px;
+/*#tbl_hist{*/
+    /*margin-top: 250px;*/
     /* border-style: solid;*/
-}
+/*}*/
 
 
 .link_content{
@@ -352,7 +374,7 @@ section{
 
 .checkValidation{
     width: 100%; 
-    margin-top: -5px;
+    /*margin-top: -5px;*/
 
 }
 
@@ -521,13 +543,18 @@ section{
 }
 
 .myScrollableBlockPopup{
-    padding: 5px 5px; 
+    /*padding: 5px 5px;*/ 
     overflow: auto; 
     height:300px;
     /*width: 300px;*/
     border-style: solid;
     border-color: #3B6A93;
-    border-radius: 10px;
+    border-radius: 5px;
+}
+
+.leaflet-popup-content{
+    margin: 3px 3px;
+    line-height: 1.4;
 }
 
 
@@ -616,37 +643,45 @@ section{
 */
 
 .histcontainer{
-    width: 100%;
+    /*width: 100%;*/
     /*border-style: solid;
     border-color: red;*/
 }
 
 .histcontainer_row{
+    margin-top: 20px;
+    height: 300px;
+    /*height: 45% !important;*/
+    
     /*border-style: solid;
     border-color: red;*/
-    width: 95%;
+    
+/*    width: 95%;
     float: left;
     clear: none;
     padding-top: 40px;
-    height: 45% !important;
+    height: 45% !important;*/
 }
 
 
 .myScrollableBlockEpsilonSmallHist{
     /*overflow: auto; */
     border-style: solid;
-    float: left;
+    border-width: 1px;
+    /*float: left;*/
 
     border-color: #3B6A93;
-    border-radius: 5px;
+    height: 100%;
+    
+    /*border-radius: 5px;*/
     /*text-align: left;*/
 
     /*margin-top: -30px;
     float: left;
     clear: none;*/
 
-    width: 33%;
-    margin-left: 3px;
+    /*width: 33%;*/
+    /*margin-left: 3px;*/
     /*height: 45% !important;*/
 
     /*padding-top: 20px;*/
@@ -657,15 +692,17 @@ section{
     /*overflow: auto; */
     border-style: solid;
     border-color: #3B6A93;
-    border-radius: 5px;
-    margin-top: -10px;
-    margin-bottom: 20px;
-    text-align: left;
-    float: left;
-    clear: none;
-    width: 95%;
-    height: 45% !important;
-    padding: 5px;
+    border-width: 1px;
+    /*border-radius: 5px;*/
+    /*margin-top: -10px;*/
+    /*margin-bottom: 20px;*/
+    /*text-align: left;*/
+    /*float: left;*/
+    /*clear: none;*/
+    /*width: 100%;*/
+    /*height: 45% !important;*/
+    height: 300px;
+    /*padding: 5px;*/
     /*margin: auto;*/
 }
 
@@ -682,47 +719,50 @@ table{
     /*border-style: solid;*/
     /*border-color: #3B6A93;
     border-radius: 10px;*/
-    text-align: left;
-    float: left;
-    clear: none;
-    width: 95%;
-    margin-top: 40px;
+    /*text-align: left;*/
+    /*float: left;*/
+    /*clear: none;*/
+    /*width: 95%;*/
+    /*margin-top: 20px;*/
     /*height: 90% !important;*/
 }
 
 .myScrollableBlockDecilList{
     /*overflow: auto; */
-    /*border-style: solid;*/
-    /*border-color: #3B6A93;
-    border-radius: 10px;*/
-    text-align: left;
-    float: left;
-    clear: none;
-    width: 95%;
+    border-style: solid;
+    border-color: #3B6A93;
+    border-width: 1px;
+    /*height: 45%;*/
+    /*border-radius: 10px;*/
+    /*text-align: left;*/
+    /*float: left;*/
+    /*clear: none;*/
+    /*width: 95%;*/
     margin-top: 20px;
+    height: 400px;
     /*height: 65% !important;*/
 }
 
 #chartdiv_epsilon {
-    height    : 100%;
+    /*height    : 100%;*/
     font-size : 11px;
 }  
 
 #chartdiv_score {
-    width     : 100% !important;
-    height    : 100%;
+    /*width     : 100% !important;*/
+    /*height    : 100%;*/
     font-size : 11px;
     margin-left: 20px;
 } 
 
 #chartdiv_score_celda {
-    height    : 100%;
+    /*height    : 100%;*/
     font-size : 11px;
 } 
 
 #chartdiv_score_decil{
-    width     : 100% !important;
-    height    : 100%;
+    /*width     : 100% !important;*/
+    /*height    : 100%;*/
     font-size : 11px;
 }
 
@@ -809,7 +849,7 @@ table{
 
 
 .input-group{
-    margin-top: 1em;
+    /*margin-top: 1em;*/
     width: 100% !important;
     /*border-style: double;
     border-color: #42732C;*/
@@ -843,9 +883,9 @@ h3{
 
 /*h1, h2, h3, h4, h5, h6 {
     font-family: 'Poiret One', cursive;
-}
+}*/
 
-p, div {
+/*p, div {
     font-family: 'Poiret One', cursive;
 }*/
 
@@ -943,19 +983,21 @@ p, div {
 
 .myBlockVariableAdded{
 
-    overflow: auto; 
+    /*overflow: auto;*/ 
 
     border-style: solid;
     border-color: #3B6A93;
     border-radius: 10px;
-    float: left;
-    clear: none;
-
-    width: 28%;
-    height: 100% !important;
-    margin-left: 3px;
+    height: 100%;
+    padding: 0px;
+    
+/*    float: left;
+    clear: none;*/
+    /*width: 28%;*/
+    /*height: 100% !important;*/
+    /*margin-left: 3px;*/
     /*margin-top: 5px;*/
-    transition: width 2s ease;
+    /*transition: width 2s ease;*/
 
 }
 
@@ -981,8 +1023,8 @@ p, div {
 }
 
 .var-pane{
-    width: 100%;
-    height: 87%;
+    /*width: 100%;*/
+    /*height: 87%;*/
 
 }
 
@@ -1010,12 +1052,12 @@ p, div {
 
 
 .label_componenete{
-    padding-left: 5px;
+    padding-left: 15px;
 }
 
 .var_container{
-    width: 100%;
-    height: 90%;
+    /*width: 100%;*/
+    height: 80%;
 
     /*border-style: solid;
     border-color: green;*/
@@ -1024,9 +1066,10 @@ p, div {
 
 .nav_selection{
 
-    width: 65%;
+    padding: 0px;
+/*    width: 65%;
     height: 100%;
-    float: left;
+    float: left;*/
 
     /*border-style: solid;*/
 
@@ -1044,15 +1087,14 @@ p, div {
     /*border-style: solid;
     border-color: red;
     */
-    height: 90%;
-    width: 100%;
+/*    height: 90%;
+    width: 100%;*/
 
 }
 
 
 .tab-pane{
-    height: 100%;
-
+    /*height: 100%;*/
     /*border-style: solid;
     border-color: blue;*/
 
@@ -1471,6 +1513,30 @@ button.glyphicon-remove:before {
 .occ_number{
     width: 50px;
     margin-left: 10px;
+    border: 1px;
+    border-style: solid;
+    
+/*    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;*/
+/*    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left-style: none;*/
+    border-top-color: currentcolor;
+    border-right-color: currentcolor;
+    border-bottom-color: currentcolor;
+    border-left-color: currentcolor;
+    -moz-border-top-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    border-image-source: none;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-width: 1 1 1 1;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
 }
 
 .div_formula{
@@ -1488,8 +1554,8 @@ button.glyphicon-remove:before {
 #hist_fecha_container{
     /*width: 80%;*/
     margin: 0 auto;
-    width: 450px;
-    height: 80px;
+    /*width: 450px;*/
+    height: 100px;
 
     border-style: solid;
     border-radius: 5px;
@@ -1602,3 +1668,31 @@ button.glyphicon-remove:before {
 .margin-top-five{    
     margin-top: 5px;
 }
+
+.box_shadow{
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3B6A93;
+    height: 95%;
+     /*box-shadow: 5px 5px 5px #888888;*/
+}
+
+
+
+/*.page {
+  float: left;
+  width: 100vw;
+  height: 100vh;
+}
+
+.docScroller {
+  overflow-x: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  scroll-snap-points-y: repeat(100%);
+  scroll-snap-type: mandatory;
+  scroll-snap-destination: 100% 0%;
+}*/
