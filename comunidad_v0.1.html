@@ -17,29 +17,34 @@
         <link rel="stylesheet" type="text/css" href="stylesheets/comunidad.css">
 
 
-        <link rel="stylesheet" href="assets/dist/themes/proton/style.css" />
-
-        <!-- <link rel="stylesheet" href="plugins/easybutton/src/easy-button.css"> -->
+        <link rel="stylesheet" href="plugins/jstree/dist/themes/proton/style.css" />
+        
 
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
         <!-- <link rel="stylesheet" href="plugins/markercluster/dist/MarkerCluster.css" />
         <link rel="stylesheet" href="plugins/markercluster/dist/MarkerCluster.Default.css" /> -->
+        
+        <link href="plugins/ptjs/css/ptjs.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="plugins/ptjs/themes/classic.min.css">
+
+        <link rel="stylesheet" type="text/css" href="plugins/fullpage/jquery.fullPage.css" />
+
 
 
 
 
         <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
-        
-        
+
+
         <script type="text/javascript" src="plugins/router/cbsplit.js"></script>
         <script type="text/javascript" src="plugins/router/jquery.ba-hashchange.js"></script>
         <script type="text/javascript" src="plugins/router/jquery.router.js"></script>
-        
-        
-        <script src="javascripts/jquery-ui/jquery-ui.js"></script>
+
+
+        <script src="plugins/jquery-ui/jquery-ui.js"></script>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
@@ -78,7 +83,7 @@
 
 
             $(function() {
-                
+
 //                console.log("_json_config2");
 
                 var result = $('#result');
@@ -99,7 +104,7 @@
 
 
                 var hash = location.hash.replace(/^#/, '');
-                
+
 
                 if (hash) {
 
@@ -107,20 +112,20 @@
 //                    console.log($.routeMatches("link/?minOcc=5"));
 
                     var match = $.routeMatches(hash);
-                    
+
                     console.log(match);
 
                     if (match) {
                         var template = $(match.route.template);
-                        
-                        
+
+
 
                         if (template.length) {
                             var text = match.route.callback.apply(match.route.callback, match.args);
                             // template.text(text);
                             // console.log(template);
                             _json_config = JSON.parse(text)
-                            
+
                             console.log("_json_config");
                             console.log(_json_config);
 
@@ -151,37 +156,70 @@
 
             <header id="main-header">
 
-                <span id="lb_titulo_net" class="site-name"></span>
-                <span id="lb_sub_titulo" class="site-desc"></span>
 
-                <div class="link_nicho">
-                    <button id="net_link" type="button" class="btn btn-info"></button>
-                </div>	
+                <div class="row">
 
-                <div class="language_drop">
+                    <!--Agregar biblioteca de boostrap de pagina modelo-->
+                    <div class="col-md-6">
+                        <span id="lb_titulo_net" class="site-name"></span>
+                        <span id="lb_sub_titulo" class="site-desc"></span>
 
-                    <div class="input-group dropdown_group ">
+                    </div>
 
-                        <div class="input-group-btn pull-right">
+                    <div class="col-md-6">
 
-                            <button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+                        <div class="col-md-1 margin-top-15">
+                        </div>
 
-                            <ul class="dropdown-menu dropdown_idioma">
-                                <li><a id="a_espanol" class="idioma " value="es_MX" label="Español ">Español </a></li>
-                                <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
-                            </ul>
+                        <div class="col-md-5  margin-top-15 ">
+                            <button id="net_link" type="button" class="btn btn-info pull-right"></button>
+                        </div>
 
+                        <div class="col-md-2 margin-top-15 ">
+
+                            <div class="language_drop pull-right">
+
+                                <div class=" dropdown_group ">
+
+                                    <div class="input-group-btn ">
+
+                                        <button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+
+                                        <ul class="dropdown-menu dropdown_idioma">
+                                            <li><a id="a_espanol" class="idioma " value="es_MX" label="Español ">Español </a></li>
+                                            <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
+                                        </ul>
+
+                                        
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-1 margin-top-15">
+                            <button id="btn_tutorial" type="button" title="Ver Tutorial" class="btn btn-primary glyphicon glyphicon-book glyphicon-head pull-right"></button>
+                        </div>
+                        
+                        <div class="col-md-3 margin-top-15">
+                            <!--<button id="btn_steps" type="button" title="Ver Pasos" class="btn btn-primary glyphicon glyphicon-info-sign glyphicon-head pull-right"></button>-->
+                            <!--glyphicon glyphicon-info-sign glyphicon-head-->
+                            <button id="btn_tuto_steps" type="button" title="Iniciar tutorial" class="btn btn-warning pull-right display-marker">Live Tutorial</button>
                         </div>
 
                     </div>
 
                 </div>
 
+
             </header>
 
 
             <div class="row-fluid row_panel">
-                
+
                 <div id="result"></div>
 
                 <div class="header_nav">
@@ -385,17 +423,17 @@
 
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script src="assets/dist/jstree.min.js"></script>
-        <script type="text/javascript" src="javascripts/crossfilter.min.js"></script>
+        <script src="plugins/jstree/dist/jstree.min.js"></script>
+        <script type="text/javascript" src="plugins/crossfilter/crossfilter.min.js"></script>
 
         <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
         <!-- // <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script> -->
-        <script type="text/javascript" src="javascripts/in/jquery.i18n.properties.min.js"></script>
+        <script type="text/javascript" src="plugins/i18n/in/jquery.i18n.properties.min.js"></script>
         <!-- // <script src="plugins/markercluster/dist/leaflet.markercluster-src.js"></script> -->
 
-        <script type="text/javascript" src="javascripts/toastr.js"></script>
+        <script type="text/javascript" src="plugins/toastr/toastr.js"></script>
 
-        
+
 
         <script src="http://www.sumbera.com/gist/js/vt/geojson-vt-dev.js"></script>
         <script src="http://www.sumbera.com/gist/js/leaflet/canvas/L.CanvasTiles.js"></script>
@@ -408,11 +446,169 @@
         <script type="text/javascript" src="javascripts/net_module.js"></script> 
         <script type="text/javascript" src="javascripts/histogram_module.js"></script> 
         <script type="text/javascript" src="javascripts/table_module.js"></script> 
+        <script type="text/javascript" src="plugins/js-cookie/js.cookie.js"></script> 
+        
+        
+         <script src="plugins/ptjs/js/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+        <script type="text/javascript" src="plugins/ptjs/js/ptjs.min.js"></script>
 
-<!--        <script type="text/javascript" src="javascripts/jquery-cookie/jquery.cookie.js"></script> -->
-        <script type="text/javascript" src="javascripts/js-cookie/js.cookie.js"></script> 
+        <script type="text/javascript" src="plugins/fullpage/jquery.fullPage.js"></script>
+        
+        
+        <script type="text/javaScript">
+         
+            
+            $(function(){
+                
+              $('#btn_tuto_steps.display-marker').on('click', function() {
+                  console.log("activa tutorial");
 
-        <!-- // <script src="plugins/easybutton/src/easy-button.js"></script> -->
+                $.ptJs({
+                  autoStart: true,
+                  continueEnable: true,
+                  templateData: {
+                    content: '',
+                    title: 'Comunidad Ecológica'
+                  },
+                  steps: [
+                    {
+                        el: document,
+                        modal: true,
+                        templateData: {
+                          content: 'Bienvenido a SPECIES la Plataforma de exploración de datos ecológicos del C3 y la CONABIO. <br/><br/>Puedes cerrar el tutorial en cualquier momento y comenzar donde te quedaste.',
+                          title: 'Comunidad Ecológica'
+                        }
+                    },
+                    {
+                      el: '#div_seleccion_variables_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: 'Grupo de Variables Fuente',
+                        content: 'Es este panel puedes seleccionar el grupo de variables fuente.'
+                      }
+                    },
+                    {
+                      el: '#div_seleccion_variables_sumidero',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Grupo de Variables Destino',
+                        content: 'Es este panel puedes seleccionar el grupo de variables destino.'
+                      }
+                    },
+                    {
+                      el: '#tuto_nav_tabs_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Tipo de Variables',
+                        content: 'Puedes escoger entre variables bióticas y abióticas para seleccionar el nicho.'
+                      }
+                    },
+                    {
+                      el: '#tuto_taxon_sp_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Orden Taxonómico',
+                        content: 'Para variables bióticas, primeramente debes elegir el nivel taxonómico y escribir el taxón.'
+                      }
+                    },
+                    {
+                      el: '#treeVariable_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Árbol taxonómico',
+                        content: 'Puedes navegar en el árbol desplegado aquí y seleccionar los grupos deseados.'
+                      }
+                    },
+                    {
+                      el: '#add_group_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: 'Agregar Grupos de Variables seleccionados',
+                        content: 'Una vez que seleccionas los grupos, puedes agregarlos dando clic en este botón.'
+                      }
+                    },
+                    {
+                      el: '#clean_var_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: 'Elimina Grupos de Variables seleccionados',
+                        content: 'Elimina los grupos seleccionados.'
+                      }
+                    },
+                    {
+                      el: '#treeAddedPanel_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: 'Grupos de Variables seleccionados',
+                        content: 'Aqui puedes ver los grupos de variables que has seleccionado.'
+                      }
+                    },
+                    {
+                      el: '#div_seleccion_variables_sumidero',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Configura Variables Destino',
+                        content: 'Realiza ahora la selección para el grupo de variables destino.'
+                      }
+                    },
+                    {
+                      el: '#occ_number',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Mínimo de ocurrencias (nj)',
+                        content: 'Establece el mínimo de ocurrencias que necesitan tener las especies de los grupos de variables seleccionados.'
+                      }
+                    },
+                    {
+                      el: '#generaRed',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Análisis de Cominidad',
+                        content: 'Ejecuta el análisis de comunidad con los parámetros seleccionados.'
+                      }
+                    },
+                    {
+                      el: '#show_gen',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Regenera Resultados',
+                        content: 'Es visible una vez ejecutado el análisis. Genera un enlace para regenerar los resultados del análisis ejecutado.\
+                                    <br><img style="width:100%" alt="Responsive image" src="images/img_gen_link.png">'
+                      }
+                    }
+                    
+                  ]
+                });
+              });
+            });
+            
+
+
+        </script>
 
 
     </body>

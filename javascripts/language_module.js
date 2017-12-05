@@ -51,7 +51,7 @@ var language_module = (function(verbose) {
 
         $.i18n.properties({
             name: 'nicho',
-            path: 'javascripts/in/bundle/',
+            path: 'plugins/i18n/in/bundle/',
             mode: 'both',
             language: _language_selected,
             checkAvailableLanguages: true,
@@ -101,7 +101,7 @@ var language_module = (function(verbose) {
 
             $.i18n.properties({
                 name: 'nicho',
-                path: 'javascripts/in/bundle/',
+                path: 'plugins/i18n/in/bundle/',
                 mode: 'both',
                 language: _language_selected,
                 checkAvailableLanguages: true,
@@ -228,7 +228,9 @@ var language_module = (function(verbose) {
             $("#btn_idioma").append('<span class="caret"></span>');
 
             $("#lb_especie").text($.i18n.prop('lb_especie'));
-            $("#nom_sp").attr("placeholder", $.i18n.prop('esp_name'));
+            
+//            $("#nom_sp").attr("placeholder", $.i18n.prop('esp_name'));
+            
             $("#lb_example").text($.i18n.prop('lb_example'));
 
             // $("#lb_restricciones").text($.i18n.prop('lb_restricciones'));
@@ -256,6 +258,7 @@ var language_module = (function(verbose) {
             $("#tab_filtros").text($.i18n.prop('tab_filtros'));
             
             $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res')+ ":");
+            $("#lb_sp_list").text($.i18n.prop('lb_sp_list')+ ":");
             
             
             

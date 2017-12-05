@@ -254,9 +254,54 @@ var module_nicho = (function() {
             window.location.replace(_url_front + "/comunidad_v0.1.html");
         });
 
+        $("#btn_tutorial").click(function() {
+            window.open(_url_front + "/docs/tutorial.pdf");
+        });
+
+        $("#btn_steps").click(function() {
+            $('.sliderPop').show();
+            $('.ct-sliderPop-container').addClass('open');
+            $('.sliderPop').addClass('flexslider');
+            $('.sliderPop .ct-sliderPop-container').addClass('slides');
+
+            $('.sliderPop').flexslider({
+                selector: '.ct-sliderPop-container > .ct-sliderPop',
+                slideshow: false,
+                controlNav: false,
+                controlsContainer: '.ct-sliderPop-container'
+            });
+        });
+
+
+        $('.ct-sliderPop-close').on('click', function() {
+            $('.sliderPop').hide();
+            $('.ct-sliderPop-container').removeClass('open');
+            $('.sliderPop').removeClass('flexslider');
+            $('.sliderPop .ct-sliderPop-container').removeClass('slides');
+        });
+
+
+
+
 
         $("#nom_sp").autocomplete({
             source: function(request, response) {
+
+                var grid_res_val = $("#grid_resolution").val();
+                console.log("grid_resolution: " + grid_res_val);
+
+                var grid_res, cell_res, tbl_res;
+                if (grid_res_val) {
+                    grid_res = "gridid_" + grid_res_val + "km";
+                    cell_res = "cells_" + grid_res_val + "km";
+                    tbl_res = "grid_" + grid_res_val + "km_aoi";
+                }
+                else {
+                    grid_res = "gridid_16km";
+                    cell_res = "cells_16km";
+                    tbl_res = "grid_16km_aoi";
+                }
+                
 
                 $.ajax({
                     url: _url_api + "/niche/especie",
@@ -267,14 +312,17 @@ var module_nicho = (function() {
                         limit: 15,
                         searchStr: request.term,
                         nivel: 'especievalidabusqueda', // parametro default para nivel taxonomico, Nota migrar a nive variable como en target
-                        source: 1 // source para saber si viene de objetivo o el target
+                        source: 1, // source para saber si viene de objetivo o el target
+                        res_celda_sp: cell_res,
+                        res_celda_snib: grid_res,
+                        res_celda_snib_tb: tbl_res
                     },
                     success: function(resp) {
 
                         response($.map(resp.data, function(item) {
 
                             return{
-                                label: item.especievalidabusqueda,
+                                label: item.especievalidabusqueda + " (occ: " + item.occ + ")",
                                 id: item.spid,
                                 reino: item.reinovalido,
                                 phylum: item.phylumdivisionvalido,
@@ -282,7 +330,8 @@ var module_nicho = (function() {
                                 orden: item.ordenvalido,
                                 familia: item.familiavalida,
                                 genero: item.generovalido,
-                                especie: item.especievalidabusqueda
+                                especie: item.especievalidabusqueda,
+                                occ: item.occ
                             };
                         })
                                 );
@@ -306,7 +355,7 @@ var module_nicho = (function() {
                     "genero": ui.item.genero,
                     "especie": ui.item.especie,
                     "spid": ui.item.id,
-                    "label": ui.item.label
+                    "label": ui.item.especie 
                 };
 
                 _VERBOSE ? console.log(specie_target) : _VERBOSE;
@@ -1037,7 +1086,7 @@ $(document).ready(function() {
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 1;
+    var ambiente = 3;
 
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 0;

@@ -278,7 +278,7 @@ var table_module = (function(verbose) {
 
             });
 
-            _adjustComponents();
+//            _adjustComponents();
 
 
         }
@@ -319,17 +319,17 @@ var table_module = (function(verbose) {
 
         _VERBOSE ? console.log("_adjustComponents") : _VERBOSE;
 
-        var window_width = $(window).width();
-        var left_margin = window_width * 0.05;
-        left_margin = left_margin / 2;
+//        var window_width = $(window).width();
+//        var left_margin = window_width * 0.05;
+//        left_margin = left_margin / 2;
 
-        _VERBOSE ? console.log("left_margin: " + left_margin) : _VERBOSE;
+//        _VERBOSE ? console.log("left_margin: " + left_margin) : _VERBOSE;
         // $( "myScrollableBlockEpsilonTable" ).css( "margin-left", left_margin );
-        $("#treeAddedPanel").css({marginLeft: left_margin + "px"});
-        $("#div_example").css({marginLeft: left_margin + "px"});
-        $("#histcontainer_row").css({marginLeft: left_margin + "px"});
-        $("#myScrollableBlockEpsilonDecil").css({marginLeft: left_margin + "px"});
-        $('.title_element').css({'margin-left': left_margin + 'px'});
+//        $("#treeAddedPanel").css({marginLeft: left_margin + "px"});
+//        $("#div_example").css({marginLeft: left_margin + "px"});
+//        $("#histcontainer_row").css({marginLeft: left_margin + "px"});
+//        $("#myScrollableBlockEpsilonDecil").css({marginLeft: left_margin + "px"});
+//        $('.title_element').css({'margin-left': left_margin + 'px'});
 
     }
 

@@ -20,22 +20,10 @@
         <link rel="stylesheet" type="text/css" href="stylesheets/toastr.css">
         <!-- <link rel="stylesheet" href="plugins/sidebar/css/leaflet-sidebar.css" /> -->
         <!-- En servidor -->
-        <link rel="stylesheet" type="text/css" href="stylesheets/test_lt.css">
+        <link rel="stylesheet" type="text/css" href="stylesheets/geoportal.css">
 
-        <!-- desde archivo -->
-        <!-- <link rel="stylesheet" type="text/css" href="public/stylesheets/test_lt.css"> -->
         <!-- En servidor -->
-        <link rel="stylesheet" href="assets/dist/themes/proton/style.css" />
-        <!-- <link rel="stylesheet" href="assets/docs.css" /> -->
-        <!-- <link rel="icon" href="assets/favicon.ico" type="image/x-icon" /> -->
-        <!-- <link rel="apple-touch-icon-precomposed" href="assets/apple-touch-icon-precomposed.png" /> -->
-
-
-        <!-- Desde archivo -->
-        <!-- <link rel="stylesheet" href="public/assets/dist/themes/proton/style.css" />
-        <link rel="stylesheet" href="public/assets/docs.css" />
-        <link rel="icon" href="public/assets/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon-precomposed" href="public/assets/apple-touch-icon-precomposed.png" /> -->
+        <link rel="stylesheet" href="plugins/jstree/dist/themes/proton/style.css" />
 
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
@@ -47,6 +35,21 @@
         <link rel="stylesheet" href="plugins/markercluster/dist/MarkerCluster.css" />
         <link rel="stylesheet" href="plugins/markercluster/dist/MarkerCluster.Default.css" />
         <!-- <link rel="stylesheet" href="plugins/markercluster/dist/screen.css" /> -->
+
+
+        <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/flexslider.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="plugins/popupSlider/popup-slider.css">
+
+
+        <link href="plugins/searchbox/searchbox.min.css" rel="stylesheet" />
+
+        <link href="plugins/ptjs/css/ptjs.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="plugins/ptjs/themes/classic.min.css">
+
+        <link rel="stylesheet" type="text/css" href="plugins/fullpage/jquery.fullPage.css" />
+
+
 
 
 
@@ -100,7 +103,7 @@
         <!--<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>-->
         <!-- // <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 
-        <script src="javascripts/jquery-ui/jquery-ui.js"></script>
+        <script src="plugins/jquery-ui/jquery-ui.js"></script>
 
         <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
@@ -111,7 +114,7 @@
         <script src="plugins/d3-tip/index.js"></script>
         <!-- // <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
 
-        
+
         <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
 
@@ -124,7 +127,12 @@
         <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
 
 
-        
+        <!--<script type="text/javascript" src="examples.js"></script>-->
+
+
+
+
+
         <script>
             (function(i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
@@ -163,9 +171,9 @@
 
                 // Setup routes
                 result
-                .route('link/', function(request) {
-                    return $.print(request.params);
-                });
+                        .route('link/', function(request) {
+                            return $.print(request.params);
+                        });
 
 
                 var hash = location.hash.replace(/^#/, '');
@@ -176,7 +184,7 @@
                     console.log("enlace");
 
                     var match = $.routeMatches(hash);
-                    
+
                     console.log(match);
 
                     if (match) {
@@ -218,419 +226,178 @@
         <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:600' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'> -->
         <!-- <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'> -->
-
-
+        
     </head>
     <body>
 
 
-        <div id="main_container" class="container-fluid">
+        <div id="main_container" class="container-fluid docScroller">
 
             <header id="main-header">
 
-                <span id="lb_titulo" class="site-name"></span>
-                <span id="lb_sub_titulo" class="site-desc"></span>
+                <div class="row">
 
-                <div class="link_nicho">
-                    <button id="nicho_link" type="button" class="btn btn-info"></button>
-                </div>
+                    <!--Agregar biblioteca de boostrap de pagina modelo-->
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <span id="lb_titulo" class="site-name"></span>
+                        <span id="lb_sub_titulo" class="site-desc"></span>
+                    </div>
 
-                <div class="language_drop">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
 
-                    <div class="input-group dropdown_group ">
+                        <div class="col-md-1 col-sm-12 col-xs-12 margin-top-15">
+                        </div>
 
-                        <div class="input-group-btn pull-right">
+                        <div class="col-md-5 col-sm-12 col-xs-12  margin-top-15 ">
+                            <button id="nicho_link" type="button" class="btn btn-info pull-right"></button>
+                        </div>
 
-                            <button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+                        <div class="col-md-2 col-sm-12 col-xs-12 margin-top-15 ">
 
-                            <ul class="dropdown-menu dropdown_idioma">
-                                <li><a id="a_espanol" class="idioma " value="es_MX" label="Español ">Español </a></li>
-                                <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
-                            </ul>
+                            <div class="language_drop pull-right">
 
+                                <div class=" dropdown_group ">
 
+                                    <div class="input-group-btn ">
 
+                                        <button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+
+                                        <ul class="dropdown-menu dropdown_idioma">
+                                            <li><a id="a_espanol" class="idioma " value="es_MX" label="Español ">Español </a></li>
+                                            <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-1 col-sm-12 col-xs-12 margin-top-15">
+                            <button id="btn_tutorial" type="button" title="Ver tutorial en PDF" class="btn btn-primary glyphicon glyphicon-book glyphicon-head pull-right"></button>
+                        </div>
+
+                        <div class="col-md-3 margin-top-15">
+                            <!--<button id="btn_steps" type="button" title="Ver Pasos" class="btn btn-primary glyphicon glyphicon-info-sign glyphicon-head pull-right"></button>-->
+                            <!--glyphicon glyphicon-info-sign glyphicon-head-->
+                            <button id="btn_tuto_steps" type="button" title="Iniciar tutorial" class="btn btn-warning pull-right display-marker">Live Tutorial</button>
                         </div>
 
                     </div>
 
                 </div>
 
-                <!-- <div class="link_content">
 
-                        <div class="link_gen_input">
 
-                                <div class="input-group">
-                                        <span id="" class="input-group-addon" id="basic-addon1">Link:</span>
 
-                                        <input id="input_gen" type="text" class="form-control" placeholder="Regenerar resultados" value="" />
-                                </div>
 
-                        </div>
 
-                        <button id="link_gen" class="btn btn-warning glyphicon glyphicon-refresh" type="button" title="Generar configuración a partir de enalce" ></button>
-
-                </div> -->
+                <!--                <div class="">
+                                    <button id="tutorial" type="button" class="btn btn-info"></button>
+                                </div>-->
 
             </header>
 
 
             <!-- <section> -->
 
-            <div class="row-fluid row_panel">
+            <div id="section0" class="row-fluid row_panel margin-top-10 section page">
+
+                <div class="col-md-5 margin-top-30 padding-sides-zero">
+
+                    <div id="sp_section" class="col-md-12 margin-top-15 box_shadow display-marker">
+
+                        <h2 id="lb_especie" class="sidebar-header "></h2>
 
 
-                <div class="sidebar-pane" id="especie">
+                        <div class="row margin-top-ten">
 
-                    <h3 id="lb_especie" class="sidebar-header"></h3>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
 
-                    <!-- <a href="#link/?sp_data=">Test</a><br /> -->
-                    <div id="result"></div>
+                                <label id="lb_sp_list" for="grid_resolution"></label>
+                                <div id="tuto_autocomplete" class="input-group text-input">
 
-                    <div class="input-group text-input">
-
-                        <input id="nom_sp" type="text" class="form-control" />
-                        <span id="lb_example" class="input-group-addon" id="basic-addon1"></span>
-
-                    </div>
-
-                    <div class="myScrollableBlockConstrian">
-
-                        <!-- <h4 id="lb_restricciones"></h4> -->
-                        <!-- <h4 id="lb_resumen"></h4> -->
-
-                        <div class="nav_container_especie">
-
-                            <ul class="nav nav-tabs">
-
-                                <li class="active">
-                                    <a id="tab_resumen" data-toggle="tab" href="#tab_res"></a>
-                                </li>
-                                <li>
-                                    <a id="tab_variables" data-toggle="tab" href="#tab_var"></a>
-                                </li>
-                                <li>
-                                    <a id="tab_filtros" data-toggle="tab" href="#tab_fil"></a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content">
-
-                                <div id="tab_res" class="tab-pane active">
-
-                                    <div class="myScrollableBlockConstrianParams">
-
-                                        <table id="tbl_summary" class="tbl_summary_species">
-
-                                            <tr>
-                                                <td><h5 id="lb_sum_especie" class="summary_lb"></h5></td>
-                                                <td><h5 id="lb_sum_especie_res" class="summary_lb"></h5></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h5 id="lb_occ" class="summary_lb"></h5></td>
-                                                <td><h5 id="num_occ" class="summary_lb"></h5></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h5 id="lb_occ_celda" class="summary_lb"></h5></td>
-                                                <td><h5 id="num_occ_celda" class="summary_lb"></h5></td>
-                                            </tr>
-
-
-
-                                            <tr>
-                                                <td><h5 id="lb_sum_reino" class="summary_lb"></h5></td>
-                                                <td><h5 id="lb_sum_reino_res" class="summary_lb"></h5></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h5 id="lb_sum_phylum" class="summary_lb"></h5></td>
-                                                <td><h5 id="lb_sum_phylum_res" class="summary_lb"></h5></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h5 id="lb_sum_clase" class="summary_lb"></h5></td>
-                                                <td><h5 id="lb_sum_clase_res" class="summary_lb"></h5></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h5 id="lb_sum_orden" class="summary_lb"></h5></td>
-                                                <td><h5 id="lb_sum_orden_res" class="summary_lb"></h5></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h5 id="lb_sum_familia" class="summary_lb"></h5></td>
-                                                <td><h5 id="lb_sum_familia_res" class="summary_lb"></h5></td>
-                                            </tr>
-                                            <tr>
-                                                <td><h5 id="lb_sum_genero" class="summary_lb"></h5></td>
-                                                <td><h5 id="lb_sum_genero_res" class="summary_lb"></h5></td>
-                                            </tr>
-
-                                        </table>
-
-                                    </div>
-
-
+                                    <input id="nom_sp" type="text" class="form-control" />
+                                    <span id="lb_example" class="input-group-addon" id="basic-addon1"></span>
 
                                 </div>
-                                <div id="tab_var" class="tab-pane">
-
-
-                                    <div class="myScrollableBlockCheckBox">
-
-                                        <table id="" class="tbl_summary_conf">
-                                            
-                                            <tr>
-                                                <td class="summary_lb_conf_lb1"><h5 id="lb_validacion"></h5></td>
-                                                <td class="summary_lb_conf_lb2">
-                                                    <div class="checkValidation">
-                                                        <input id="chkValidation" class="checkbox_item" type="checkbox"/>
-                                                        <!--<div class="slider_item" id="sliderValidation"></div>-->
-                                                        <label class="label_item" id="labelValidation" type="label"></label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="summary_lb_conf_lb1"><h5 id="lb_occ_min"></h5></td>
-                                                <td class="summary_lb_conf_lb2">
-                                                    <div class="checkValidation">
-                                                        <input id="chkMinOcc" class="checkbox_item" type="checkbox"/>
-                                                        <input id="occ_number" class="occ_number" type="number" min="1" disabled="true" value="1">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            
-                                            
-
-                                            <tr>
-                                                <td class="summary_lb_conf_lb1"><h5 id="lb_apriori"></h5></td>
-                                                <td class="summary_lb_conf_lb2">
-                                                    <div class="checkValidation">
-                                                        <input id="chkApriori" class="checkbox_item" type="checkbox" />
-                                                        <label class="label_item" id="lb_do_apriori" type="label"></label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="summary_lb_conf_lb1"><h5 id="lb_mapprob"></h5></td>
-                                                <td class="summary_lb_conf_lb2">
-                                                    <div class="checkValidation">
-                                                        <input id="chkMapaProb" class="checkbox_item" type="checkbox" />
-                                                        <label class="label_item" id="lb_mapa_prob" type="label"></label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <td class="summary_lb_conf_lb1"><h5 id="lb_mapa_res"></h5></td>
-                                                <td class="summary_lb_conf_lb2">
-                                                    <div class="checkValidation">
-                                                        <select id="grid_resolution">
-                                                            <option value="8">8 km</option>
-                                                            <option selected="" value="16">16 km</option>
-                                                            <option value="32">32 km</option>
-                                                            <option value="64">64 km</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-
-                                        </table>
-
-                                    </div>
-
-                                </div>
-                                
-                                <div id="tab_fil" class="tab-pane">
-
-
-                                    <div class="myScrollableBlockCheckBox">
-
-                                        <table id="" class="tbl_summary_conf">
-                                            
-                                            <tr>
-                                                <td class="summary_lb_conf_lb1"><h5 id="lb_fosil"></h5></td>
-                                                <td class="summary_lb_conf_lb2">
-                                                    <div class="checkValidation">
-                                                        <input id="chkFosil" class="checkbox_item" type="checkbox" checked/>
-                                                        <label class="label_item" id="labelFosil" type="label" ></label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="summary_lb_conf_lb1"><h5 id="lb_reg_fecha"></h5></td>
-                                                <td class="summary_lb_conf_lb2">
-                                                    <div id="div_chkFecha" class="checkValidation">
-                                                        <input id="chkFecha" class="checkbox_item" type="checkbox" checked/>
-                                                        <label class="label_item" id="lb_sfecha" type="label"></label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-
-                                            <tr>
-                                                <td class="summary_lb_conf_lb1"><h5 id="lb_range_fecha"></h5></td>
-                                                <td class="summary_lb_conf_lb2">
-                                                    <div id="div_sliderFecha" class="checkValidation">
-                                                        <div class="slider_item_fecha" id="sliderFecha"></div>
-                                                        <label class="label_item" id="labelFecha" type="label"></label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td colspan="2" class="row_fechacolecta">
-                                                    <div id="hist_fecha_container" class="fecha_container">
-
-                                                    </div>
-
-                                                </td>
-                                            </tr>
-
-                                            <!-- <tr>
-                                                    <td class="summary_lb_conf_lb1"><h5 id="">Registros sin fecha:</h5></td>
-                                                    <td class="summary_lb_conf_lb2">
-                                                            <div class="checkValidation">
-                                                                  <label class="label_item" id="lb_regfecha" type="label"></label>
-                                                        </div>
-                                                    </td>
-                                            </tr> -->
-
-
-                                            <tr>
-                                                <td class="summary_lb_conf_lb3" colspan="2" >
-                                                    <!--disabled="true"-->
-                                                    <button id="reload_map" class="btn btn-primary " type="button"></button>
-
-                                                </td>
-
-                                            </tr>
-
-
-                                        </table>
-
-                                    </div>
-
-                                </div>
-                                
-                                
                             </div>
 
                         </div>
 
+                        <div class="row margin-top-ten">
 
-                    </div>
-
-
-                </div>
+                            <div id="tuto_resolution"  class="col-md-6 col-sm-12 col-xs-12">
 
 
-                <!-- <div class="sidebar-pane" id="region" >
+                                <div class="form-group">
+                                    <label id="lb_mapa_res" for="grid_resolution"></label>
+                                    <select class="form-control" id="grid_resolution">
+                                        <option value="8">8 km</option>
+                                        <option selected="selected" value="16">16 km</option>
+                                        <option value="32">32 km</option>
+                                        <option value="64">64 km</option>
+                                    </select>
+                                </div> 
 
-                    <h3 id="lb_panel_region" class="sidebar-header"></h3>
+                            </div>
 
-                                            <div class="bs-example ">
+                            <div id="tuto_fil_fecha" class="col-md-6 col-sm-12 col-xs-12">
 
-                                                <div class="panel-group " id="accordion">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <label id="lb_range_fecha" for="sliderFecha"></label>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="slider_item_fecha" id="sliderFecha"></div>
+                                    <label class="label_item" id="labelFecha" type="label"></label>
+                                </div>
 
-                                                            <div id="panel-region" class="panel panel-default ">
+                            </div>
 
-                                                                    <div class="panel-heading ">
+                        </div>
 
-                                                                <h4 id="lb_seccion_region" class="panel-title">
+                        <div class="row margin-top-ten">
 
-                                                                                    <input type="radio" name="group1" value="1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" >
-                                                                        
-                                                                </h4>
-                                                        </div>
+                            <div id="tuto_reg_fecha" class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <label id="lb_reg_fecha" for="chkFecha"></label>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <input id="chkFecha" class="checkbox_item" type="checkbox" checked/>
+                                    <label class="label_item" id="lb_sfecha" type="label"></label>
+                                </div>
 
-                                                        <div id="collapseOne" class="panel-collapse collapse item_panel_region in">
+                            </div>
 
-                                                            <div class="panel-body">
-
-                                                                    <div class="region_div">
-                                                                            <table>
-                                                                                    <tr>
-                                                                                            <td width="90%"	>
-                                                                                                    <h5 id="lb_estados"></h5>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                    <button id="obtiene_estados" class="btn btn-primary glyphicon glyphicon-download pull-right " type="button" > </button>
-                                                                                            </td>
-                                                                                    </tr>
-
-                                                                                    <tr>
-                                                                                            <td>
-                                                                                                    <h5 id="lb_ecos" ></h5>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                    <button id="obtiene_ecoregiones" class="btn btn-primary glyphicon glyphicon-download pull-right " type="button" disabled="true"> </button>
-                                                                                            </td>
-                                                                                    </tr>
-
-
-                                                                            </table>
-                                                                                            
-                                                                                    </div>
-
-                                                                                    <br/>
-
-                                                                                    <div class="myScrollableBlock">
-                                                                                            <div id="jstree-estados"></div>
-                                                                                            <div id="jstree-ecoregiones"></div>
-                                                                                    </div>
+                            <div id="tuto_reg_fosil" class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <label id="lb_fosil" for="chkFosil"></label>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <input id="chkFosil" class="checkbox_item" type="checkbox" checked/>
+                                    <label class="label_item" id="labelFosil" type="label" ></label>
+                                </div>
+                            </div>
 
 
-                                                                                     <div class="progress progress-bar-item">
-                                                                                      <div id="progress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" >
-                                                                                      </div>
-                                                                                    </div> 
-
-                                                                                     <button class="btn btn-primary glyphicon glyphicon-info-sign pull-right" type="button" data-toggle="modal" data-target="#modalStates"></button> 
-
-                                                                                    
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div id="panel-tools" class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            <h4 id="lb_seccion_tools" class="panel-title">
-                                                                                    <input type="radio" name="group1" value="2" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                                                                    
-                                                            </h4>
-                                                        </div>
-                                                        <div id="collapseTwo" class="panel-collapse collapse item_panel_region">
-                                                            <div class="panel-body">
-                                                                                    <div class="input-group text-input col-sm-12 ">
-                                                                                            <p id="lb_tools_ayuda"></p>
-                                                                                            <br/>
-                                                                                        <button class="btn btn-primary glyphicon glyphicon-info-sign pull-right" type="button" data-toggle="modal" data-target="#modalTools"></button>
-
-                                                                                    </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    
-                                                </div>
-                                            </div>
-                                                            
-                </div> -->
+                        </div>
 
 
-                <div class="sidebar-pane" >
 
-                    <div class="variable_refresh_container">
+                        <div class="row margin-top-ten">
 
-                        <div class="var-pane" id="variables"></div>
-                        <div class="btn-pane">
+                            <div id="tuto_histo_reg" class="col-md-12">
+                                <div id="hist_fecha_container" class="fecha_container">
 
-                            <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link" type="button" title="Guardar enlace de resultados" style="visibility: hidden"  ></button>
+                                </div>
+                            </div>
 
-                            <button id="get_esc_ep" class="btn btn-primary" type="button" ></button>
+                            <div class="col-md-12  margin-top-five">
+                                <button id="reload_map" class="btn btn-primary pull-right" type="button"></button>
+                            </div>
+
 
                         </div>
 
@@ -638,80 +405,221 @@
 
                     </div>
 
+
+
+
+
+
+
+                    <!--   <div id="tab_res" class="tab-pane active">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_especie" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_especie_res" class="summary_lb">-</h5>
+                                </div>
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_occ" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="num_occ" class="summary_lb">-</h5>
+                                </div>
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_occ_celda" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="num_occ_celda" class="summary_lb">-</h5>
+                                </div>
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_reino" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_reino_res" class="summary_lb">-</h5>
+                                </div>
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_phylum" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_phylum_res" class="summary_lb">-</h5>
+                                </div>
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_clase" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_clase_res" class="summary_lb">-</h5>
+                                </div>
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_orden" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_orden_res" class="summary_lb">-</h5>
+                                </div>
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_familia" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_familia_res" class="summary_lb">-</h5>
+                                </div>
+
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_genero" class="summary_lb"></h5>
+                                </div>
+                                <div class="col-md-6 margin-top-five">
+                                    <h5 id="lb_sum_genero_res" class="summary_lb">-</h5>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>-->
+
+
                 </div>
 
+                <div class="col-md-7 margin-top-15">
 
-
-
-
-
-            </div>
-
-
-            <!-- </section> -->
-
-            <!-- <section> -->
-
-            <div class="row_panel_map">
-
-                <!-- <h3 id="lb_map" class="sidebar-header-map">Mapa</h3> -->
-
-                <div id="map" >
-
-                    <div class="link_shape">
-                        <button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
+                    <div id="tuto_mapa_occ" class="col-md-12 margin-top-15 padding-sides-zero">
+                        <div id="map2" class="margin-top-15" >
+                        </div>
                     </div>
 
-                    <div id="escala_color" class="link_shape pull-right">					
-                    </div>				
-
                 </div>
 
             </div>
-            
-            <div class="row" style=" margin-top: 100px;">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 "></div>
+
+
+            <div id="section1" class="row-fluid margin-top-15 section page">
+
+                <div id="tuto_variables" class="col-md-9 margin-top-15 padding-left-zero">
+
+                    <div class="col-md-12 box_shadow padding-sides-zero" id="variables"></div>
+
+                </div>
+
+
+                <div id="tuto_params" class="col-md-3 margin-top-15 box_shadow padding-sides-zero">
+
+                    <div class="col-md-12 ">
+
+                        <h2 id="lb_params_variables" class="sidebar-header">Parámetros</h2>
+
+                        <div id="tuto_val" class="row">
+
+                            <div class="col-md-6 margin-top-five">
+                                <h5 id="lb_validacion"></h5>
+                            </div>
+                            <div class="col-md-6 margin-top-five ">
+                                <input id="chkValidation" class="checkbox_item pull-right" type="checkbox"/>
+                                <label class="label_item pull-right" id="labelValidation" type="label"></label>
+                            </div>
+                        </div>
+
+                        <div id="tuto_min_occ" class="row">
+                            <div class="col-md-6 margin-top-five">
+                                <h5 id="lb_occ_min"></h5>
+                            </div>
+                            <div class="col-md-6 margin-top-five">
+                                <input id="chkMinOcc" class="checkbox_item pull-right" type="checkbox"/>
+                                <input id="occ_number" class="occ_number pull-right " type="number" min="1" disabled="true" value="1">
+                            </div>
+                        </div>
+
+                        <div id="tuto_apriori" class="row">
+                            <div class="col-md-6 margin-top-five">
+                                <h5 id="lb_apriori"></h5>
+                            </div>
+                            <div class="col-md-6 margin-top-five">
+                                <input id="chkApriori" class="checkbox_item pull-right" type="checkbox" />
+                                <label class="label_item pull-right" id="lb_do_apriori" type="label"></label>
+                            </div>
+                        </div>
+
+                        <div id="tuto_map_prob" class="row">
+                            <div class="col-md-6 margin-top-five">
+                                <h5 id="lb_mapprob"></h5>
+                            </div>
+                            <div class="col-md-6 margin-top-five">
+                                <input id="chkMapaProb" class="checkbox_item pull-right" type="checkbox" />
+                                <label class="label_item pull-right" id="lb_mapa_prob" type="label"></label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12 margin-top-15">
+                        <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link " type="button" title="Guardar enlace de resultados" style="visibility: hidden"  ></button>
+                        <button id="get_esc_ep" class="btn btn-primary pull-right" type="button" ></button>
+                    </div>
+
+                </div>
+
+
             </div>
 
-            <!-- </section> -->
-
-            <!-- <section> -->
-
-             <div class="row-fluid row_panel" id="tbl_hist" style="display:  none;"> 
-            <!--<div class="row-fluid row_panel" id="tbl_hist" >-->
-
-                <div class="rowTableHistContainer" >
-
-                    <h3 id="lb_resultados" class="sidebar-header-map"></h3>
-
-                    <!-- <h1 class="title_element">Tablas e histogramas</h1> -->
 
 
-                    <!-- <div class="histcontainer"> -->
-                    <!-- <h3 class="title_element">Score-decil</h3> -->
-                    <div id="myScrollableBlockEpsilonDecil" class="myScrollableBlockEpsilonDecil">
+
+
+
+            <div id="section2" class="row-fluid margin-top-35 section page">
+
+                <div class="col-md-12 margin-top-15">
+
+                    <h3 id="lb_resultados" class="sidebar-header"></h3>
+
+                    <div id="map" class="margin-top-15" >
+
+                        <div class="link_shape">
+                            <button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
+                        </div>
+
+                        <div id="escala_color" class="link_shape pull-right">					
+                        </div>				
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!--style="display:  none;"-->
+
+
+            <div class="row-fluid row_panel margin-top-35 section page" id="tbl_hist" > 
+
+                <div class="col-md-12 margin-top-15">
+
+                    <div id="myScrollableBlockEpsilonDecil" class="row-fluid myScrollableBlockEpsilonDecil margin-top-15">
                         <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Decil');
                                         $('#lb_body_info').text('Muestra el valor promedio del score por grupo de variable en cada decil.');
                                         $('#modalInfo').modal()" ></button>
 
                         <div id="chartdiv_score_decil"></div>	
                     </div>
-                    <!-- </div> -->
 
-                    <div id="div_example" class="myScrollableBlockDecilList">
+                    <div id="div_example" class="row-fluid myScrollableBlockDecilList">
 
                         <table id="example" class="display compact cell-border" cellspacing="0"></table>
 
                     </div>
 
 
+                    <div id="histcontainer_row" class="row-fluid histcontainer_row">
 
-                    <!-- <div class="histcontainer"> -->
-                    <!-- <h3 class="title_element">Epsilon-especie</h3> -->
-
-                    <div id="histcontainer_row" class="histcontainer_row">
-
-                        <div class="myScrollableBlockEpsilonSmallHist">
+                        <div class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Epsilon Especie');
                                     $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las especies por su valor de epsilon.');
                                     $('#modalInfo').modal()" ></button>
@@ -719,14 +627,14 @@
                             <div id="chartdiv_epsilon"></div>	
                         </div>
 
-                        <div class="myScrollableBlockEpsilonSmallHist">
+                        <div class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Especie');
                                     $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las especies por su valor de score.');
                                     $('#modalInfo').modal()" ></button>
 
                             <div id="chartdiv_score"></div>	
                         </div>	
-                        <div class="myScrollableBlockEpsilonSmallHist">
+                        <div class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Celda');
                                     $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las celdas por su valor de score.');
                                     $('#modalInfo').modal()" ></button>
@@ -737,39 +645,9 @@
                     </div>
 
 
-                    <!-- </div> -->
-
-                    <!-- <div class="histcontainer"> -->
-                    <!-- <h3 class="title_element">Score-especie</h3> -->
-
-                    <!-- </div> -->
-
-                    <!-- <div class="histcontainer"> -->
-                    <!-- <h3 class="title_element">Score-celda</h3> -->
-
-                    <!-- </div> -->
-
-
-                    <!-- <h3 class="title_element">Lista-decil</h3> -->
-
-
-
-
-                    <div class="histcontainer">
-
-                        <div id="treeAddedPanel"  class="myScrollableBlockEpsilonTable">
-                            <table id="tdisplay" class="display compact cell-border" ></table>
-                        </div>
-
-                        <!-- <div class="myScrollableBlockButton">
-                <button id="csv_request" class="btn btn-primary glyphicon glyphicon-download-alt pull-right" type="button" data-toggle="modal" data-target="#modalMail"></button>	
-                        </div> -->
-
+                    <div id="treeAddedPanel"  class="row-fluid myScrollableBlockDecilList ">
+                        <table id="tdisplay" class="display compact cell-border" ></table>
                     </div>
-
-
-
-                    <br/>					
 
 
                 </div>	
@@ -777,20 +655,8 @@
 
             </div>
 
-            <!-- </section> -->
-
-
-
-
-
 
         </div>
-
-
-
-
-
-
 
         <!-- Modals -->
         <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -888,27 +754,6 @@
             </div>
         </div>
 
-
-
-        <!-- <div class="modal fade mymodals_info" id="modalCarga" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-sm" role="document">
-                        <div class="modal-content">
-                                
-                                <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4  id="lb_header_carga" class="modal-title" >Carga de análisis</h4>
-                                </div>
-                                
-                                <div class="modal-body">
-                                        <p id="lb_body_info">¿Desea cargar la configuración guardada en el enlace?</p>
-                                        <button id="loadData" class="btn btn-primary" type="button" disabled="true">Cargar</button>
-                                </div>
-
-                        </div>
-                </div>
-        </div> -->
-
-
         <div class="modal fade mymodals_info" id="modalRegenera" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content" style="height: 200px;">
@@ -948,6 +793,73 @@
 
 
 
+
+        <div class="sliderPop" style="display:none;">
+            <div class="ct-sliderPop-container">
+                <div class="ct-sliderPop ct-sliderPop-slide1 open">
+                    <div class="inner">
+                        <i class="fa fa-code" aria-hidden="true"></i>
+                        <h1>Code</h1>
+                        <div class="map-white-border"></div>
+                        <h2>Programming Not Required</h2>
+                        <p>WebCorpCo enables marketers to manage their entire stack in one place without needing the ability to program as all code is automatically written by webcorpco.</p>
+                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
+                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
+                    </div>
+                </div>
+                <div class="ct-sliderPop ct-sliderPop-slide2">
+                    <div class="inner">
+                        <i class="fa fa-paint-brush" aria-hidden="true"></i>
+                        <h1>Design</h1>
+                        <div class="map-white-border"></div>
+                        <h2>A Touch of Detail</h2>
+                        <p>With a team of award-winning designers behind every possible design and layout, you are sure to find success in our automated design process.</p>
+                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
+                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
+                    </div>
+                </div>
+                <div class="ct-sliderPop ct-sliderPop-slide3">
+                    <div class="inner">
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        <h1>Marketing</h1>
+                        <div class="map-white-border"></div>
+                        <h2>Marketing in Alignment</h2>
+                        <p>There is no 'one size fits all' approach to marketing. Every business is unique, customers are unique, and your marketing should be as well.</p>
+                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
+                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
+                    </div>
+                </div>
+                <div class="ct-sliderPop ct-sliderPop-slide1">
+                    <div class="inner">
+                        <i class="fa fa-life-ring" aria-hidden="true"></i>
+                        <h1>Support</h1>
+                        <div class="map-white-border"></div>
+                        <h2>Available 24/7</h2>
+                        <p>WebCorpCo offers state of the art support and training to enable users to make the most out of the platform and learn all of the functionality under the hood.</p>
+                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
+                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
+                    </div>
+                </div>
+                <div class="ct-sliderPop ct-sliderPop-slide2">
+                    <div class="inner">
+                        <i class="fa fa-university" aria-hidden="true"></i>
+                        <h1>Training</h1>
+                        <div class="map-white-border"></div>
+                        <h2>Take Control Yourself</h2>
+                        <p>Training can be "as requested" although there are regular webinars, code tutorials, and training courses offered for free on our website.</p>
+                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
+                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
         <div class="modalloading"><!-- Place at bottom of page --></div>
 
 
@@ -964,16 +876,16 @@
         <!-- <script src="dist/libs/jquery.js"></script> -->
 
         <!-- En servidor -->
-        <script src="assets/dist/jstree.min.js"></script>
-        <script type="text/javascript" src="javascripts/crossfilter.min.js"></script>
-
-        <script src="javascripts/L.TileLayer.BetterWMS.js"></script>
-        <script type="text/javascript" src="javascripts/toastr.js"></script>
-        <script type="text/javascript" src="javascripts/in/jquery.i18n.properties.min.js"></script>
+        <script src="plugins/jstree/dist/jstree.min.js"></script>
 
 
+        <script type="text/javascript" src="plugins/crossfilter/crossfilter.min.js"></script>
 
-        <!-- // <script type="text/javascript" src="javascripts/test_lt.js"></script>  -->
+        <script src="plugins/BetterWMS/L.TileLayer.BetterWMS.js"></script>
+        <script type="text/javascript" src="plugins/toastr/toastr.js"></script>
+        <script type="text/javascript" src="plugins/i18n/in/jquery.i18n.properties.min.js"></script>
+
+
         <script type="text/javascript" src="javascripts/pede_nicho.js"></script>
         <script type="text/javascript" src="javascripts/map_module.js"></script>
         <script type="text/javascript" src="javascripts/variable_module.js"></script>
@@ -1007,9 +919,20 @@
         </script>
         <script src="http://www.sumbera.com/gist/js/earcut/earcut-1.4.2.js"></script>
 
-        <!--<script type="text/javascript" src="javascripts/jquery-cookie/jquery.cookie.js"></script>--> 
-        <script type="text/javascript" src="javascripts/js-cookie/js.cookie.js"></script> 
+        <script type="text/javascript" src="plugins/js-cookie/js.cookie.js"></script> 
 
+
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/jquery.flexslider-min.js"></script>
+        <script type="text/javascript" src="plugins/popupSlider/popup-slider.js"></script> 
+
+        <script src="plugins/searchbox/leaflet.customsearchbox.min.js"></script>
+
+        <script src="plugins/ptjs/js/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+        <script type="text/javascript" src="plugins/ptjs/js/ptjs.min.js"></script>
+
+        <script type="text/javascript" src="plugins/fullpage/jquery.fullPage.js"></script>
 
 
         <!-- <script src="plugins/markercluster/src/MarkerCluster.js"></script>
@@ -1018,9 +941,6 @@
 
         <!-- <a href="https://github.com/Turbo87/sidebar-v2/"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Hecho en Conabio"></a> -->
 
-        <!-- desde archivo -->
-        <!-- <script src="public/assets/dist/jstree.min.js"></script>
-        <script type="text/javascript" src="public/javascripts/test_lt.js"></script> -->
 
 
 
@@ -1043,6 +963,279 @@
     <script type="text/javascript" src="bs_js/classie.js"></script>
     <script type="text/javascript" src="bs_js/hamburger-menu.js"></script>
     <script type="text/javascript" src="bs_js/main.js"></script> -->
+
+
+        <script type="text/javaScript">
+         
+            
+            $(function(){
+              $('#btn_tuto_steps.display-marker').on('click', function() {
+                  console.log("activa tutorial");
+
+                $.ptJs({
+                  autoStart: true,
+                  continueEnable: true,
+                  templateData: {
+                    content: '',
+                    title: 'Nicho Ecológico'
+                  },
+                  steps: [
+                    {
+                        el: document,
+                        modal: true,
+                        templateData: {
+                          content: 'Bienvenido a SPECIES la Plataforma de exploración de datos ecológicos del C3 y la CONABIO. <br/><br/>Puedes cerrar el tutorial en cualquier momento y comenzar donde te quedaste.',
+                          title: 'Nicho Ecológico'
+                        }
+                    },
+                    {
+                      el: '#tuto_autocomplete',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Escoge tu Especie',
+                        content: 'Puedes escoger la especie objetivo que deseas analizar por "nombre científico".'
+                      }
+                    },
+                    {
+                      el: '#tuto_resolution',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Resolución de la Malla',
+                        content: 'Escoge la resolución de la malla, tus resultados seran mostrados en un mapa de acuerdo a la resolución que escojas.'
+                      }
+                    },
+                    {
+                      el: '#tuto_fil_fecha',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Filtrar Fecha',
+                        content: 'Puedes filtrar los registros por fecha para hacer más específico tu análisis.'
+                      }
+                    },
+                    {
+                      el: '#tuto_reg_fecha',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Registros sin Fecha',
+                        content: 'Incluye los registros de especies que no tienen fecha. Por default este campo esta activado.'
+                      }
+                    },
+                    {
+                      el: '#tuto_reg_fosil',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Registros Fósiles',
+                        content: 'Incluye los registros de especies fósiles. Por default este campo esta activado.'
+                      }
+                    },
+                    {
+                      el: '#tuto_histo_reg',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Histograma de Registros',
+                        content: 'Despliega un histograma con los registros de la especie.'
+                      }
+                    },
+                    {
+                      el: '#reload_map',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Regenera Resultados',
+                        content: 'Puedes regenerar los resultados una vez que has modificado los campos anteriores. Puedes verlos en el mapa.'
+                      }
+                    },
+                    {
+                      el: '#tuto_mapa_occ',
+                      position:{
+                        location:'lt'
+                      },
+                      templateData: {
+                        title: 'Mapa de Ocurrencias',
+                        content: 'Una vez seleccionada la especie, en este mapa puedes observar las ocurrencias registradas. Al dar clic en las ocurrencias puedes observar su detalle.\n\
+                                    <br><img style="width:100%" alt="Responsive image" src="images/img_reg.png">'
+                      }
+                    },
+                    {
+                      el: '#tuto_variables',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: 'Grupo de Variables',
+                        content: 'Es este panel puedes seleccionar el grupo de variables para establecer el nicho de la especie objetivo.'
+                      }
+                    },
+                    {
+                      el: '#tuto_nav_tabs_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Tipo de Variables',
+                        content: 'Puedes escoger entre variables bióticas y abióticas para seleccionar el nicho.'
+                      }
+                    },
+                    {
+                      el: '#tuto_taxon_sp_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Orden Taxonómico',
+                        content: 'Para variables bióticas, primeramente debes elegir el nivel taxonómico y escribir el taxón.'
+                      }
+                    },
+                    {
+                      el: '#treeVariable_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: 'Árbol taxonómico',
+                        content: 'Puedes navegar en el árbol desplegado aquí y seleccionar los grupos deseados.'
+                      }
+                    },
+                    {
+                      el: '#add_group_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: 'Agregar Grupos de Variables seleccionados',
+                        content: 'Una vez que seleccionas los grupos, puedes agregarlos dando clic en este botón.'
+                      }
+                    },
+                    {
+                      el: '#clean_var_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: 'Elimina Grupos de Variables seleccionados',
+                        content: 'Elimina los grupos seleccionados.'
+                      }
+                    },
+                    {
+                      el: '#treeAddedPanel_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: 'Grupos de Variables seleccionados',
+                        content: 'Aqui puedes ver los grupos de variables que has seleccionado.'
+                      }
+                    },
+                    {
+                      el: '#tuto_params',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Parámetros del Análisis de Nicho',
+                        content: 'Puedes ajustar algunos parámetros en el proceso del análisis de nicho.'
+                      }
+                    },
+                    {
+                      el: '#tuto_val',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Proceso de Validación',
+                        content: 'Activa el proceso de validación del análisi de nicho.'
+                      }
+                    },
+                    {
+                      el: '#tuto_min_occ',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Mínimo de ocurrencias (nj)',
+                        content: 'Establece el mínimo de ocurrencias que necesitan tener las especies del grupo de variables seleccionado.'
+                      }
+                    },
+                    {
+                      el: '#tuto_apriori',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Cálculo a priori',
+                        content: 'Realiza el análisis de nicho considerando a priori.'
+                      }
+                    },
+                    {
+                      el: '#tuto_map_prob',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Cálculo Mapa de Probabilidad',
+                        content: 'Realiza el análisis de nicho con probabilidad.'
+                      }
+                    },
+                    {
+                      el: '#get_esc_ep',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Análisis de Nicho',
+                        content: 'Ejecuta el análisis de nicho con los parámetros seleccionados.'
+                      }
+                    },
+                    {
+                      el: '#show_gen',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: 'Regenera Resultados',
+                        content: 'Es visible una vez ejecutado el análisis. Genera un enlace para regenerar los resultados del análisis ejecutado.\
+                                    <br><img style="width:100%" alt="Responsive image" src="images/img_gen_link.png">'
+                      }
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                  ]
+                });
+              });
+            });
+            
+            
+//            $(document).ready(function() {
+//                $('#main_container').fullpage({
+//                    'verticalCentered': false,
+//                    'css3': true,
+//                    'navigation': true,
+//                    'navigationPosition': 'right'
+//                });
+//            });
+        
+
+
+
+        </script>
 
     </body>
 </html>

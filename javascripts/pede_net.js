@@ -81,6 +81,10 @@ var module_net = (function() {
         $("#net_link").click(function() {
             window.location.replace(_url_front + "/geoportal_v0.1.html");
         });
+        
+        $("#btn_tutorial").click(function() {
+             window.open(_url_front + "/docs/tutorial.pdf");
+        });
 
 
 
@@ -512,7 +516,7 @@ $(document).ready(function() {
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 1;
+    var ambiente = 3;
 
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 1;
