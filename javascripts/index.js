@@ -36,7 +36,7 @@ var module_index = (function() {
 
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
-        Cookies.remove('register');
+//        Cookies.remove('register');
 
         if (Cookies.get("register") === undefined) {
             Cookies.set("register", true, {expires: 7});

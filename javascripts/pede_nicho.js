@@ -40,9 +40,9 @@ var module_nicho = (function() {
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
         $("#lb_do_apriori").text(_iTrans.prop('lb_no'));
-
-
         $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
+
+
 
         $(function() {
 
@@ -301,7 +301,7 @@ var module_nicho = (function() {
                     cell_res = "cells_16km";
                     tbl_res = "grid_16km_aoi";
                 }
-                
+
 
                 $.ajax({
                     url: _url_api + "/niche/especie",
@@ -355,7 +355,7 @@ var module_nicho = (function() {
                     "genero": ui.item.genero,
                     "especie": ui.item.especie,
                     "spid": ui.item.id,
-                    "label": ui.item.especie 
+                    "label": ui.item.especie
                 };
 
                 _VERBOSE ? console.log(specie_target) : _VERBOSE;
@@ -487,10 +487,14 @@ var module_nicho = (function() {
 
         });
 
-
+//        _confLiveTutorial();
         _genLinkURL();
 
     }
+
+    
+
+
 
 
     /**

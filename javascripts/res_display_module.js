@@ -485,7 +485,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 //        _VERBOSE ? console.log("Peticiones al servidor: " + _REQUESTS) : _VERBOSE;
 
 
-        document.getElementById("tbl_hist").style.display = "inline";
+//        document.getElementById("tbl_hist").style.display = "inline";
         _cleanPanel();
 
 
@@ -562,7 +562,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             cell_res = "cells_16km";
             tbl_res = "grid_16km_aoi";
         }
-        
+
         _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
 
         $.ajax({
@@ -1183,7 +1183,15 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
 
-//        return;
+        $('#chartdiv_score_decil').loading({
+            stoppable: true
+        });
+
+        $('#div_example').loading({
+            stoppable: true
+        });
+
+
 
         $.ajax({
             type: "post",
@@ -1249,6 +1257,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     _VERBOSE ? console.log(data_chart) : _VERBOSE;
 
 
+                    $('#chartdiv_score_decil').loading('stop');
+                    $('#div_example').loading('stop');
+
+
+
                     _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
 
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
@@ -1263,6 +1276,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error createScore_Decil: " + textStatus) : _VERBOSE;
                 _VERBOSE ? console.log("error createScore_Decil: " + errorThrown) : _VERBOSE;
+
+                $('#chartdiv_score_decil').loading('stop');
+                $('#div_example').loading('stop');
+
 
                 mensaje = "";
                 mensaje = $("#chkValidation").is(':checked') ? _iTrans.prop('lb_error_proceso_val') : _iTrans.prop('lb_error_histograma');
@@ -1299,6 +1316,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _VERBOSE ? console.log(tdata) : _VERBOSE;
 
 
+        $('#treeAddedPanel').loading({
+            stoppable: true
+        });
+
+
         $.ajax({
             url: _url_zacatuche + "/niche/getGeoRel",
             // url : _url_zacatuche + "/getGeoRel",
@@ -1311,7 +1333,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             // },
             success: function(json_file) {
 
-                console.log(json_file);
+//                console.log(json_file);
+                $('#treeAddedPanel').loading('stop');
 
                 var data_list = [];
 
@@ -1350,6 +1373,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 console.log(errorThrown);
                 console.log(jqXHR);
 
+                $('#treeAddedPanel').loading('stop');
+
                 _VERBOSE ? console.log("error _createTableEpSc: " + textStatus) : _VERBOSE;
                 _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_tblsp'), "error");
@@ -1378,7 +1403,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
 
-//        $("#map").addClass("loading");
+        $('#map').loading({
+            stoppable: true
+        });
+
 
         $.ajax({
             url: _url_zacatuche + "/niche/getCellScore",
@@ -1386,7 +1414,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             data: sdata,
             success: function(json_file) {
 
-//                $("#map").removeClass("loading"); 
+                $('#map').loading('stop');
 
                 var json = json_file.data;
                 var grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
@@ -1401,6 +1429,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
+
+                $('#map').loading('stop');
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_mapa'), "error");
                 document.getElementById("dShape").style.display = "none";
@@ -1426,6 +1456,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_createHistEpScr_Especie") : _VERBOSE;
 
+        $('#hst_esp_eps').loading({
+            stoppable: true
+        });
+        $('#hst_esp_scr').loading({
+            stoppable: true
+        });
+
         $.ajax({
             url: _url_zacatuche + "/niche/getFreq",
             type: "post",
@@ -1433,13 +1470,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
             dataType: "json",
             success: function(res, status) {
 
-                // DESCOMENTAR PARA PROCESAR RESPUESTA CON NUEVO SERVIDOR
-                console.log(res.data);
                 var data = res.data;
-
-                // console.log(res);
-                // var data = res; //JSON.parse(res);
-
+                $('#hst_esp_eps').loading('stop');
+                $('#hst_esp_scr').loading('stop');
 
                 var data2_epsilon = [];
                 var data2_score = [];
@@ -1477,13 +1510,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
                 _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
 
-
-
-
-
-
-
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                $('#hst_esp_eps').loading('stop');
+                $('#hst_esp_scr').loading('stop');
             }
+
 
         });
 
@@ -1617,6 +1650,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_createHistScore_Celda") : _VERBOSE;
 
+        $('#hst_cld_scr').loading({
+            stoppable: true
+        });
+
         $.ajax({
             type: "post",
             url: _url_zacatuche + "/niche/getFreqCelda",
@@ -1625,6 +1662,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             success: function(resp, status) {
 
                 var data = resp.data;
+                $('#hst_cld_scr').loading('stop');
 
                 var data2_score = [];
                 var totcount_score = 0;
@@ -2299,9 +2337,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
             success: function(resp) {
 
                 var data = resp.data;
-                
+
                 _VERBOSE ? console.log(data) : _VERBOSE;
-                
+
                 var htmltable = _createTableFromData(data);
                 _map_module_nicho.showPopUp(htmltable, [lat, long]);
 
@@ -2348,6 +2386,33 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var apriori = (json_data[0].apriori) ? parseFloat(json_data[0].apriori) : undefined;
         var prob = (json_data[0].prob) ? parseFloat(json_data[0].prob) : undefined;
 
+
+        console.log(json_data.length);
+        console.log(json_data);
+
+
+        for (i = 0; i < json_data.length; i++) {
+
+            if (parseFloat(json_data[i].score) >= 0) {
+                posocc++;
+            }
+            else {
+                negocc++;
+            }
+
+            if (json_data[i].label === "") {
+                contbio++;
+                sp_values = true;
+                continue;
+            }
+            if (json_data[i].nom_sp === "") {
+                contabio++;
+                raster_values = true;
+                continue;
+            }
+
+        }
+
         if (json_data.length == 1 && json_data[0].gridid == 0) {
 
             console.log("Apriori");
@@ -2370,27 +2435,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         }
         else {
 
-            for (i = 0; i < json_data.length; i++) {
 
-                if (parseFloat(json_data[i].score) >= 0) {
-                    posocc++;
-                }
-                else {
-                    negocc++;
-                }
-
-                if (json_data[i].label === "") {
-                    contbio++;
-                    sp_values = true;
-                    continue;
-                }
-                if (json_data[i].nom_sp === "") {
-                    contabio++;
-                    raster_values = true;
-                    continue;
-                }
-
-            }
 
             if (sp_values) {
 
@@ -2449,11 +2494,51 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 title_apriori = "Apriori";
                 total_apriori = parseFloat(apriori).toFixed(2);
+                
+                // el valor apriori esta incluido en
+                if(total_apriori===0){}
+                else if(total_apriori>0){posocc--;}
+                else{negocc--;}
 
                 title_total = $.i18n.prop('lb_pp_st');
                 total_celda = parseFloat(total_score + apriori).toFixed(2);
 
-                htmltable += "<div class='panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr><tr><th>" + title_score + "</th><th>" + parcial_score + "</th></tr><tr><th>" + title_apriori + "</th><th>" + total_apriori + "</th></tr></thead><tbody>";
+                htmltable += "<div class='panel-primary'>\n\
+                                <div class='panel-heading'>\n\
+                                    <h3>Total</h3>\n\
+                                </div>\n\
+                                <table class='table table-striped'>\n\
+                                <thead>\n\
+                                    <tr>\n\
+                                        <th>" + title_total + "</th>\n\
+                                        <th>" + total_celda + "</th>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <th>" + title_score + "</th>\n\
+                                        <th>" + parcial_score + "</th>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <th>" + title_apriori + "</th>\n\
+                                        <th>" + total_apriori + "</th>\n\
+                                    </tr>\n\
+                                    <tr>\
+                                        <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
+                                        <th>" + contbio + "</th>\
+                                    </tr>\
+                                    <tr>\
+                                        <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
+                                        <th>" + contabio + "</th>\
+                                    </tr>\
+                                    <tr>\
+                                        <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
+                                        <th>" + posocc + "</th>\
+                                    </tr>\
+                                    <tr>\
+                                        <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
+                                        <th>" + negocc + "</th>\
+                                    </tr>\
+                                </thead>\n\
+                                <tbody>";
             }
             else if (prob) {
                 title_total = $.i18n.prop('lb_pp_probpre');
@@ -2463,7 +2548,34 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 // console.log(prob);
                 total_celda = parseFloat(prob).toFixed(2) + "%";
 
-                htmltable += "<div class='panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr></thead><tbody>";
+                htmltable += "<div class='panel-primary'>\n\
+                                <div class='panel-heading'>\n\
+                                <h3>Total</h3>\n\
+                                </div>\n\
+                                <table class='table table-striped'>\n\
+                                <thead>\n\
+                                <tr>\n\
+                                <th>" + title_total + "</th>\n\
+                                <th>" + total_celda + "</th>\n\
+                                </tr>\n\
+                                <tr>\
+                                    <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
+                                    <th>" + contbio + "</th>\
+                                </tr>\
+                                <tr>\
+                                    <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
+                                    <th>" + contabio + "</th>\
+                                </tr>\
+                                <tr>\
+                                    <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
+                                    <th>" + posocc + "</th>\
+                                </tr>\
+                                <tr>\
+                                    <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
+                                    <th>" + negocc + "</th>\
+                                </tr>\
+                                </thead>\n\
+                                <tbody>";
             }
             else {
                 title_total = $.i18n.prop('lb_pp_st');

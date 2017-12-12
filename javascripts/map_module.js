@@ -499,6 +499,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         }
 
         _VERBOSE ? console.log("tipo_api: " + tipo_api) : _VERBOSE;
+        
+        $('#map').loading({
+            stoppable: true
+        });
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie",
@@ -513,6 +517,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                 // Asegura que el grid este cargado antes de realizar una generacion por enlace
                 $("#loadData").prop("disabled", false);
+                $('#map').loading('stop');
 
 //                _grid_map = null;
                 _grid_map = json;
@@ -546,6 +551,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             error: function() {
                 // alert("Existe un error en la conexión con el servidor, intente mas tarde");
                 console.log("abort");
+                $('#map').loading('stop');
             }
 
         });
@@ -865,9 +871,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 Items: _items_sp
             }
         });
-        
+
         map_sp.addControl(_search_control);
-        
+
 //        refreshPanelSP();
 
 
@@ -915,7 +921,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     }
 
     function refreshPanelSP() {
-        
+
 //        $("#tab_res").empty();
 //        $("#tab_res")
 //            .append('<div class="row">\
@@ -1051,6 +1057,12 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
 
 
+        
+        $('#tuto_mapa_occ').loading({
+            stoppable: true
+        });
+
+
         $.ajax({
             url: _url_zacatuche + "/niche/especie",
             type: 'post',
@@ -1069,6 +1081,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 xhr.setRequestHeader("Accept", "text/json");
             },
             success: function(resp) {
+                
+                $('#tuto_mapa_occ').loading('stop');
 
 
                 var data_sp = resp.data;
@@ -1159,6 +1173,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
                 _VERBOSE ? console.log(errorThrown) : _VERBOSE;
                 _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+                
+                $('#tuto_mapa_occ').loading('stop');
             }
 
         });
@@ -1200,7 +1216,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {integer} occ_cell - Número de celdas ocupadas por la especie
      */
     function _fillSpeciesData(occ, occ_cell) {
-        
+
         refreshPanelSP();
 
         _VERBOSE ? console.log("_specie_target") : _VERBOSE;
@@ -1233,18 +1249,18 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         _geojsonFeature = {"type": "FeatureCollection",
             "features": _allowedPoints.values()};
-        
+
         _geojsonFeatureSP = {"type": "FeatureCollection",
             "features": _allowedPoints.values()};
 
 
         if (_markersSP_Layer !== undefined) {
-            
+
             console.log("clear layers");
 
             map_sp.removeLayer(_markersSP_Layer);
             map.removeLayer(_markersLayer);
-            
+
 
             _markersSP_Layer.clearLayers();
             _layer_SP_control.removeLayer(_markersSP_Layer);
@@ -2020,10 +2036,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     function startMap(language_module, tipo_modulo, histogram_module) {
         _VERBOSE ? console.log("startMap") : _VERBOSE;
         _mapConfigure(language_module, tipo_modulo, histogram_module);
-        if(tipo_modulo === _MODULO_NICHO){
+        if (tipo_modulo === _MODULO_NICHO) {
             _mapSPConfigure();
         }
-        
+
     }
 
     return{

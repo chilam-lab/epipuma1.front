@@ -33,9 +33,9 @@ var variable_module = (function(verbose, url_zacatuche) {
     var _tipo_modulo;
     var _MODULO_COMUNIDAD = 1;
 
-    
-    
-    
+
+
+
     /**
      * Método getter de los grupos de variables seleccionados
      *
@@ -321,11 +321,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                         var current_node = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($("#" + topo_selected));
 //                        _VERBOSE ? console.log(current_node) : _VERBOSE;
-                        
-                        
+
+
 
                         for (i = 0; i < data.length; i++) {
-                            
+
 //                            _VERBOSE ? console.log(idNode) : _VERBOSE;
 
                             var idNode = data[i].layer;
@@ -405,9 +405,20 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                         var default_son = level_vartree < max_level ? [{text: "cargando..."}] : [];
 
-                        tag = String(data[i].tag).split(":")
-                        min = tag[0].split(".")[0];
-                        max = tag[1].split(".")[0];
+                        console.log(data[i].label);
+
+                        if (data[i].label.indexOf("Precipita") === -1) {
+                            tag = String(data[i].tag).split(":")
+                            min = parseInt(tag[0].split(".")[0]) / 10 + " ºC";
+                            max = parseInt(tag[1].split(".")[0]) / 10 + " ºC";
+                        }
+                        else{
+                            tag = String(data[i].tag).split(":")
+                            min = parseInt(tag[0].split(".")[0]) + " mm";
+                            max = parseInt(tag[1].split(".")[0]) + " mm";
+                        }
+
+
 
                         var newNode = {
                             id: idNode,
@@ -463,7 +474,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                 .attr("id", "tuto_nav_tabs_" + id)
                 .addClass('nav nav-tabs nav-variables')
                 .appendTo(nav_selection);
-        
+
         $.each(tags, function(i) {
             var name_class = 'nav-variables';
 
@@ -692,9 +703,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
                         .click(function(e) {
-                            
+
                             console.log(self.arrayVarSelected);
-                            
+
                             self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
                             $('#jstree_variables_species_' + id).jstree("destroy").empty();
                             $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
@@ -936,7 +947,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     data = resp.data;
 
                     var current_node = $('#jstree_variables_species_' + id).jstree(true).get_node($("#root"));
-                    
+
 //                    console.log(current_node);
 
                     for (i = 0; i < data.length; i++) {
@@ -1128,12 +1139,12 @@ var variable_module = (function(verbose, url_zacatuche) {
                     _VERBOSE ? console.log("level: " + level) : _VERBOSE;
 
                     var parent_node = $('#jstree_variables_species_' + id).jstree(true).get_node($('#jstree_variables_species_' + id).jstree(true).get_parent($('#jstree_variables_species_' + id).jstree(true).get_top_selected()[i])).original;
-                    
+
                     _VERBOSE ? console.log(parent_node) : _VERBOSE;
                     _VERBOSE ? console.log(node_temp) : _VERBOSE;
 
                     if (parent_node) {
-                        
+
                         self.arrayVarSelected.push({label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text});
 
 //                        if (node_temp.attr.nivel == 8) {
@@ -1174,9 +1185,9 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                 for (i = 0; i < headers_selected; i++) {
                     var node_temp = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($('#jstree_variables_bioclim_' + id).jstree(true).get_top_selected()[i]).original;
-                    
-                     _VERBOSE ? console.log(node_temp) : _VERBOSE;
-                    
+
+                    _VERBOSE ? console.log(node_temp) : _VERBOSE;
+
                     self.arrayBioclimSelected.push({label: node_temp.text, id: node_temp.attr.bid, parent: node_temp.attr.parent, level: node_temp.attr.level, type: node_temp.attr.type});
                 }
 
@@ -1196,7 +1207,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                 for (i = 0; i < headers_selected; i++) {
                     var node_temp = $('#' + idtree).jstree(true).get_node($('#' + idtree).jstree(true).get_top_selected()[i]).original;
-                    
+
                     _VERBOSE ? console.log(node_temp) : _VERBOSE;
 
                     arrayVar.push({label: node_temp.text, id: node_temp.attr.bid, parent: node_temp.attr.parent, level: node_temp.attr.level, type: node_temp.attr.type});
@@ -1382,7 +1393,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         self.addOtherGroup = function(idTree, arraySelected, gpoName, idDivContainer, typeVar) {
 
             _VERBOSE ? console.log("self.addOtherGroup") : _VERBOSE;
-            
+
 //            console.log(idTree);
 //            console.log(arraySelected);
 //            console.log(gpoName);

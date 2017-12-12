@@ -48,6 +48,7 @@
         <link rel="stylesheet" type="text/css" href="plugins/ptjs/themes/classic.min.css">
 
         <link rel="stylesheet" type="text/css" href="plugins/fullpage/jquery.fullPage.css" />
+        <link rel="stylesheet" type="text/css" href="plugins/loading/jquery.loading.min.css" />
 
 
 
@@ -619,7 +620,7 @@
 
                     <div id="histcontainer_row" class="row-fluid histcontainer_row">
 
-                        <div class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div id="hst_esp_eps" class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Epsilon Especie');
                                     $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las especies por su valor de epsilon.');
                                     $('#modalInfo').modal()" ></button>
@@ -627,14 +628,14 @@
                             <div id="chartdiv_epsilon"></div>	
                         </div>
 
-                        <div class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div id="hst_esp_scr" class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Especie');
                                     $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las especies por su valor de score.');
                                     $('#modalInfo').modal()" ></button>
 
                             <div id="chartdiv_score"></div>	
                         </div>	
-                        <div class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div id="hst_cld_scr" class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Celda');
                                     $('#lb_body_info').text('Muestra la frecuencia por rango donde estan las celdas por su valor de score.');
                                     $('#modalInfo').modal()" ></button>
@@ -933,7 +934,8 @@
         <script type="text/javascript" src="plugins/ptjs/js/ptjs.min.js"></script>
 
         <script type="text/javascript" src="plugins/fullpage/jquery.fullPage.js"></script>
-
+        
+        <script type="text/javascript" src="plugins/loading/jquery.loading.min.js"></script>
 
         <!-- <script src="plugins/markercluster/src/MarkerCluster.js"></script>
         // <script src="plugins/markercluster/src/MarkerClusterGroup.js"></script> -->
@@ -964,278 +966,6 @@
     <script type="text/javascript" src="bs_js/hamburger-menu.js"></script>
     <script type="text/javascript" src="bs_js/main.js"></script> -->
 
-
-        <script type="text/javaScript">
-         
-            
-            $(function(){
-              $('#btn_tuto_steps.display-marker').on('click', function() {
-                  console.log("activa tutorial");
-
-                $.ptJs({
-                  autoStart: true,
-                  continueEnable: true,
-                  templateData: {
-                    content: '',
-                    title: 'Nicho Ecológico'
-                  },
-                  steps: [
-                    {
-                        el: document,
-                        modal: true,
-                        templateData: {
-                          content: 'Bienvenido a SPECIES la Plataforma de exploración de datos ecológicos del C3 y la CONABIO. <br/><br/>Puedes cerrar el tutorial en cualquier momento y comenzar donde te quedaste.',
-                          title: 'Nicho Ecológico'
-                        }
-                    },
-                    {
-                      el: '#tuto_autocomplete',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Escoge tu Especie',
-                        content: 'Puedes escoger la especie objetivo que deseas analizar por "nombre científico".'
-                      }
-                    },
-                    {
-                      el: '#tuto_resolution',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Resolución de la Malla',
-                        content: 'Escoge la resolución de la malla, tus resultados seran mostrados en un mapa de acuerdo a la resolución que escojas.'
-                      }
-                    },
-                    {
-                      el: '#tuto_fil_fecha',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Filtrar Fecha',
-                        content: 'Puedes filtrar los registros por fecha para hacer más específico tu análisis.'
-                      }
-                    },
-                    {
-                      el: '#tuto_reg_fecha',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Registros sin Fecha',
-                        content: 'Incluye los registros de especies que no tienen fecha. Por default este campo esta activado.'
-                      }
-                    },
-                    {
-                      el: '#tuto_reg_fosil',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Registros Fósiles',
-                        content: 'Incluye los registros de especies fósiles. Por default este campo esta activado.'
-                      }
-                    },
-                    {
-                      el: '#tuto_histo_reg',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Histograma de Registros',
-                        content: 'Despliega un histograma con los registros de la especie.'
-                      }
-                    },
-                    {
-                      el: '#reload_map',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Regenera Resultados',
-                        content: 'Puedes regenerar los resultados una vez que has modificado los campos anteriores. Puedes verlos en el mapa.'
-                      }
-                    },
-                    {
-                      el: '#tuto_mapa_occ',
-                      position:{
-                        location:'lt'
-                      },
-                      templateData: {
-                        title: 'Mapa de Ocurrencias',
-                        content: 'Una vez seleccionada la especie, en este mapa puedes observar las ocurrencias registradas. Al dar clic en las ocurrencias puedes observar su detalle.\n\
-                                    <br><img style="width:100%" alt="Responsive image" src="images/img_reg.png">'
-                      }
-                    },
-                    {
-                      el: '#tuto_variables',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: 'Grupo de Variables',
-                        content: 'Es este panel puedes seleccionar el grupo de variables para establecer el nicho de la especie objetivo.'
-                      }
-                    },
-                    {
-                      el: '#tuto_nav_tabs_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Tipo de Variables',
-                        content: 'Puedes escoger entre variables bióticas y abióticas para seleccionar el nicho.'
-                      }
-                    },
-                    {
-                      el: '#tuto_taxon_sp_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Orden Taxonómico',
-                        content: 'Para variables bióticas, primeramente debes elegir el nivel taxonómico y escribir el taxón.'
-                      }
-                    },
-                    {
-                      el: '#treeVariable_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Árbol taxonómico',
-                        content: 'Puedes navegar en el árbol desplegado aquí y seleccionar los grupos deseados.'
-                      }
-                    },
-                    {
-                      el: '#add_group_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: 'Agregar Grupos de Variables seleccionados',
-                        content: 'Una vez que seleccionas los grupos, puedes agregarlos dando clic en este botón.'
-                      }
-                    },
-                    {
-                      el: '#clean_var_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: 'Elimina Grupos de Variables seleccionados',
-                        content: 'Elimina los grupos seleccionados.'
-                      }
-                    },
-                    {
-                      el: '#treeAddedPanel_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: 'Grupos de Variables seleccionados',
-                        content: 'Aqui puedes ver los grupos de variables que has seleccionado.'
-                      }
-                    },
-                    {
-                      el: '#tuto_params',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Parámetros del Análisis de Nicho',
-                        content: 'Puedes ajustar algunos parámetros en el proceso del análisis de nicho.'
-                      }
-                    },
-                    {
-                      el: '#tuto_val',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Proceso de Validación',
-                        content: 'Activa el proceso de validación del análisi de nicho.'
-                      }
-                    },
-                    {
-                      el: '#tuto_min_occ',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Mínimo de ocurrencias (nj)',
-                        content: 'Establece el mínimo de ocurrencias que necesitan tener las especies del grupo de variables seleccionado.'
-                      }
-                    },
-                    {
-                      el: '#tuto_apriori',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Cálculo a priori',
-                        content: 'Realiza el análisis de nicho considerando a priori.'
-                      }
-                    },
-                    {
-                      el: '#tuto_map_prob',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Cálculo Mapa de Probabilidad',
-                        content: 'Realiza el análisis de nicho con probabilidad.'
-                      }
-                    },
-                    {
-                      el: '#get_esc_ep',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Análisis de Nicho',
-                        content: 'Ejecuta el análisis de nicho con los parámetros seleccionados.'
-                      }
-                    },
-                    {
-                      el: '#show_gen',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Regenera Resultados',
-                        content: 'Es visible una vez ejecutado el análisis. Genera un enlace para regenerar los resultados del análisis ejecutado.\
-                                    <br><img style="width:100%" alt="Responsive image" src="images/img_gen_link.png">'
-                      }
-                    }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                  ]
-                });
-              });
-            });
-            
-            
-//            $(document).ready(function() {
-//                $('#main_container').fullpage({
-//                    'verticalCentered': false,
-//                    'css3': true,
-//                    'navigation': true,
-//                    'navigationPosition': 'right'
-//                });
-//            });
-        
-
-
-
-        </script>
 
     </body>
 </html>

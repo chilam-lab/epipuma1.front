@@ -61,7 +61,6 @@ var language_module = (function(verbose) {
 
                 _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
 
-
                 if (Cookies.get("language") === undefined) {
 
                     _VERBOSE ? console.log("undefined") : _VERBOSE;
@@ -202,6 +201,7 @@ var language_module = (function(verbose) {
 
         _VERBOSE ? console.log("_loadLabels") : _VERBOSE;
         _VERBOSE ? console.log("tipo_modulo: " + _tipo_modulo) : _VERBOSE;
+        
 
         // labels para nicho
         if (_tipo_modulo == 0) {
@@ -389,6 +389,8 @@ var language_module = (function(verbose) {
             $('#tdisplay tr:eq(0) th:eq(10)').text($.i18n.prop('a_item_clase'));
             $('#tdisplay tr:eq(0) th:eq(11)').text($.i18n.prop('a_item_orden'));
             $('#tdisplay tr:eq(0) th:eq(12)').text($.i18n.prop('a_item_familia'));
+            
+            _confLiveTutorialNiche();
 
 
         }
@@ -429,6 +431,8 @@ var language_module = (function(verbose) {
             $("#lb_occ_min").text($.i18n.prop('lb_occ_min') + ":");
             
             $("#generaRed").text($.i18n.prop('generaRed'));
+            
+            _confLiveTutorialNet();
 
         }
         // index
@@ -466,6 +470,265 @@ var language_module = (function(verbose) {
 
 
         }
+
+    }
+    
+    function _confLiveTutorialNet(){
+        
+        $('#btn_tuto_steps.display-marker').on('click', function() {
+            
+        });
+        
+    }
+    
+    
+    
+    function _confLiveTutorialNiche() {
+
+        $('#btn_tuto_steps.display-marker').on('click', function() {
+            
+            $.ptJs({
+                autoStart: true,
+                continueEnable: true,
+                templateData: {
+                    content: '',
+                    title: $.i18n.prop('label_esp_p1')
+                },
+                steps: [
+                    {
+                        el: document,
+                        modal: true,
+                        templateData: {
+                            content: $.i18n.prop('label_esp_p2'),
+                            title: $.i18n.prop('label_esp_p1')
+                        }
+                    },
+                    {
+                        el: '#tuto_autocomplete',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p3'),
+                            content: $.i18n.prop('label_esp_p4')
+                        }
+                    },
+                    {
+                        el: '#tuto_resolution',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p5'),
+                            content: $.i18n.prop('label_esp_p6')
+                        }
+                    },
+                    {
+                        el: '#tuto_fil_fecha',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p7'),
+                            content: $.i18n.prop('label_esp_p8') 
+                        }
+                    },
+                    {
+                        el: '#tuto_reg_fecha',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p9') ,
+                            content: $.i18n.prop('label_esp_p10')
+                        }
+                    },
+                    {
+                        el: '#tuto_reg_fosil',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p11'),
+                            content: $.i18n.prop('label_esp_p12')
+                        }
+                    },
+                    {
+                        el: '#tuto_histo_reg',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p13') ,
+                            content: $.i18n.prop('label_esp_p46') 
+                        }
+                    },
+                    {
+                        el: '#reload_map',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p14'),
+                            content: $.i18n.prop('label_esp_p15') 
+                        }
+                    },
+                    {
+                        el: '#tuto_mapa_occ',
+                        position: {
+                            location: 'lt'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p16') ,
+                            content: $.i18n.prop('label_esp_p17')+'<br><img style="width:100%" alt="Responsive image" src="images/img_reg.png">'
+                        }
+                    },
+                    {
+                        el: '#tuto_variables',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p18'),
+                            content: $.i18n.prop('label_esp_p19')
+                        }
+                    },
+                    {
+                        el: '#tuto_nav_tabs_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p20') ,
+                            content: $.i18n.prop('label_esp_p21')
+                        }
+                    },
+                    {
+                        el: '#tuto_taxon_sp_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p22') ,
+                            content: $.i18n.prop('label_esp_p23')
+                        }
+                    },
+                    {
+                        el: '#treeVariable_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p24') ,
+                            content: $.i18n.prop('label_esp_p25') 
+                        }
+                    },
+                    {
+                        el: '#add_group_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p26') ,
+                            content: $.i18n.prop('label_esp_p27') 
+                        }
+                    },
+                    {
+                        el: '#clean_var_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p28'),
+                            content: $.i18n.prop('label_esp_p29')
+                        }
+                    },
+                    {
+                        el: '#treeAddedPanel_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p30') ,
+                            content: $.i18n.prop('label_esp_p31')
+                        }
+                    },
+                    {
+                        el: '#tuto_params',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p32') ,
+                            content: $.i18n.prop('label_esp_p33')
+                        }
+                    },
+                    {
+                        el: '#tuto_val',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p34') ,
+                            content: $.i18n.prop('label_esp_p35')
+                        }
+                    },
+                    {
+                        el: '#tuto_min_occ',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p36') ,
+                            content: $.i18n.prop('label_esp_p37')
+                        }
+                    },
+                    {
+                        el: '#tuto_apriori',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p38') ,
+                            content: $.i18n.prop('label_esp_p39') 
+                        }
+                    },
+                    {
+                        el: '#tuto_map_prob',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p40') ,
+                            content: $.i18n.prop('label_esp_p41')
+                        }
+                    },
+                    {
+                        el: '#get_esc_ep',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p42') ,
+                            content: $.i18n.prop('label_esp_p43') 
+                        }
+                    },
+                    {
+                        el: '#show_gen',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p44') ,
+                            content: $.i18n.prop('label_esp_p45') + '<br><img style="width:100%" alt="Responsive image" src="images/img_gen_link.png">'
+                        }
+                    }
+
+                ]
+            });
+        });
+
+
 
     }
 
