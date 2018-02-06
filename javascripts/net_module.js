@@ -1350,8 +1350,6 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             spids.push(value.spid);
         });
 
-
-
         _map_conected = d3.map([]);
         _clean_search();
 
@@ -1359,12 +1357,14 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             _set_highlight(value_a);
         });
 
-
-
         var sdata = {
             'qtype': 'getCountGridid',
             "spids": spids
         };
+        
+        $('#map').loading({
+            stoppable: true
+        });
 
         $.ajax({
             // url : _url_trabajo,
@@ -1374,8 +1374,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             // dataType : "json",
             success: function(resp) {
 
-
-
+                $('#map').loading('stop');
                 // json = JSON.parse(json_file);
 
                 var json = resp.data;
@@ -1413,7 +1412,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
                 // deleteStyle();
-
+                $('#map').loading('stop');
             }
 
         });

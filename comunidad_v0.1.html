@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Geoportal</title>
+        <title>COMUNIDAD - SPECIES</title>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -18,18 +18,23 @@
 
 
         <link rel="stylesheet" href="plugins/jstree/dist/themes/proton/style.css" />
-        
+
 
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+
         <!-- <link rel="stylesheet" href="plugins/markercluster/dist/MarkerCluster.css" />
         <link rel="stylesheet" href="plugins/markercluster/dist/MarkerCluster.Default.css" /> -->
-        
+
         <link href="plugins/ptjs/css/ptjs.min.css" rel="stylesheet" />
         <link rel="stylesheet" type="text/css" href="plugins/ptjs/themes/classic.min.css">
 
         <link rel="stylesheet" type="text/css" href="plugins/fullpage/jquery.fullPage.css" />
+        <link rel="stylesheet" type="text/css" href="plugins/loading/jquery.loading.min.css" />
+
+        <link href="https://fonts.googleapis.com/css?family=Poppins|Raleway:500" rel="stylesheet"> 
 
 
 
@@ -56,11 +61,22 @@
         <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 
+        <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
+
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+        <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+
 
         <script>
-            (function(i, s, o, g, r, a, m) {
+            (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function() {
+                i[r] = i[r] || function () {
                     (i[r].q = i[r].q || []).push(arguments)
                 }, i[r].l = 1 * new Date();
                 a = s.createElement(o),
@@ -82,7 +98,7 @@
             var _json_config;
 
 
-            $(function() {
+            $(function () {
 
 //                console.log("_json_config2");
 
@@ -90,7 +106,7 @@
 
 
                 // Print a hash
-                $.print = function(dict) {
+                $.print = function (dict) {
 
                     return JSON.stringify(dict);
 
@@ -98,7 +114,7 @@
 
                 // Setup routes
                 result
-                        .route('link/', function(request) {
+                        .route('link/', function (request) {
                             return $.print(request.params);
                         });
 
@@ -134,8 +150,7 @@
 
                     }
 
-                }
-                else {
+                } else {
                     console.log("inicio");
                 }
 
@@ -190,7 +205,7 @@
                                             <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
                                         </ul>
 
-                                        
+
 
                                     </div>
 
@@ -203,7 +218,7 @@
                         <div class="col-md-1 margin-top-15">
                             <button id="btn_tutorial" type="button" title="Ver Tutorial" class="btn btn-primary glyphicon glyphicon-book glyphicon-head pull-right"></button>
                         </div>
-                        
+
                         <div class="col-md-3 margin-top-15">
                             <!--<button id="btn_steps" type="button" title="Ver Pasos" class="btn btn-primary glyphicon glyphicon-info-sign glyphicon-head pull-right"></button>-->
                             <!--glyphicon glyphicon-info-sign glyphicon-head-->
@@ -233,47 +248,59 @@
                     </div>
 
 
+                    <div class="row">
 
-                    <div class="componente_header">
+                        <div class="col-lg-offset-2 col-md-offset-2 col-lg-8 col-md-8 col-sm-12 col-xs-12 componente_header">
 
 
-                        <div class="checkValidation">
-                            <h5 id="lb_occ_min" class="checkbox_label"></h5>
-                            <!-- <input id="chkMinOcc" class="checkbox_item" type="checkbox"/> -->
-                            <input id="occ_number" class="occ_number" type="number" min="0" value="0">
-                        </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label id="lb_occ_min" class="checkbox_label"></label>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <input id="occ_number" class="occ_number" type="number" min="0" value="0">
+                                </div> 
+                            </div> 
 
-                        <br/>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label id="lb_mapa_res" for="grid_resolution"></label>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <select class="form-control" id="grid_resolution">
+                                    <option value="8">8 km</option>
+                                    <option selected="selected" value="16">16 km</option>
+                                    <option value="32">32 km</option>
+                                    <option value="64">64 km</option>
+                                </select>
+                                </div>
+                                
+                            </div> 
 
-                        <div class="row">
+                            <div class="row">
 
-                            <div class="col-md-12 ">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
 
-                                <div class="col-md-2 col-centered" >
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-centered" >
 
-                                    <div class="col-md-6">
-                                        <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link link-comunidad" type="button" title="Guardar enlace de resultados"  style="visibility: hidden" ></button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <button id="generaRed" type="button" class="btn btn-primary"></button>
+                                        
+                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                            <button id="generaRed" type="button" class="btn btn-primary"></button>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                            <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link link-comunidad" type="button" title="Guardar enlace de resultados"  style="visibility: hidden" ></button>
+                                        </div>
+
                                     </div>
 
                                 </div>
-
-
 
                             </div>
 
                         </div>
 
-                        <!--style="visibility: hidden"-->
-
-
-                        <!-- <button id="limpiaRed" type="button" title="Limpiar" class="btn btn-primary glyphicon glyphicon-erase"></button> -->
-
-
-
                     </div>
+
 
 
 
@@ -331,7 +358,7 @@
 
             <div class="row-fluid row_panel table_panel" id="map_panel">			
 
-                <div id="lists" class="myScrollableEpsList">
+                <div id="lists" class="myScrollableEpsList margin-top-30">
                     <!-- <div id="relation-list" class="list"></div> -->
                     <table id="relation-list" class="display compact cell-border list" cellspacing="0"></table>
                 </div>
@@ -447,168 +474,14 @@
         <script type="text/javascript" src="javascripts/histogram_module.js"></script> 
         <script type="text/javascript" src="javascripts/table_module.js"></script> 
         <script type="text/javascript" src="plugins/js-cookie/js.cookie.js"></script> 
-        
-        
-         <script src="plugins/ptjs/js/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+
+        <script src="plugins/ptjs/js/modernizr-2.8.3-respond-1.4.2.min.js"></script>
         <script type="text/javascript" src="plugins/ptjs/js/ptjs.min.js"></script>
 
         <script type="text/javascript" src="plugins/fullpage/jquery.fullPage.js"></script>
-        
-        
-        <script type="text/javaScript">
-         
-            
-            $(function(){
-                
-              $('#btn_tuto_steps.display-marker').on('click', function() {
-                  console.log("activa tutorial");
+        <script type="text/javascript" src="plugins/loading/jquery.loading.min.js"></script>
 
-                $.ptJs({
-                  autoStart: true,
-                  continueEnable: true,
-                  templateData: {
-                    content: '',
-                    title: 'Comunidad Ecológica'
-                  },
-                  steps: [
-                    {
-                        el: document,
-                        modal: true,
-                        templateData: {
-                          content: 'Bienvenido a SPECIES la Plataforma de exploración de datos ecológicos del C3 y la CONABIO. <br/><br/>Puedes cerrar el tutorial en cualquier momento y comenzar donde te quedaste.',
-                          title: 'Comunidad Ecológica'
-                        }
-                    },
-                    {
-                      el: '#div_seleccion_variables_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: 'Grupo de Variables Fuente',
-                        content: 'Es este panel puedes seleccionar el grupo de variables fuente.'
-                      }
-                    },
-                    {
-                      el: '#div_seleccion_variables_sumidero',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Grupo de Variables Destino',
-                        content: 'Es este panel puedes seleccionar el grupo de variables destino.'
-                      }
-                    },
-                    {
-                      el: '#tuto_nav_tabs_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Tipo de Variables',
-                        content: 'Puedes escoger entre variables bióticas y abióticas para seleccionar el nicho.'
-                      }
-                    },
-                    {
-                      el: '#tuto_taxon_sp_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Orden Taxonómico',
-                        content: 'Para variables bióticas, primeramente debes elegir el nivel taxonómico y escribir el taxón.'
-                      }
-                    },
-                    {
-                      el: '#treeVariable_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: 'Árbol taxonómico',
-                        content: 'Puedes navegar en el árbol desplegado aquí y seleccionar los grupos deseados.'
-                      }
-                    },
-                    {
-                      el: '#add_group_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: 'Agregar Grupos de Variables seleccionados',
-                        content: 'Una vez que seleccionas los grupos, puedes agregarlos dando clic en este botón.'
-                      }
-                    },
-                    {
-                      el: '#clean_var_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: 'Elimina Grupos de Variables seleccionados',
-                        content: 'Elimina los grupos seleccionados.'
-                      }
-                    },
-                    {
-                      el: '#treeAddedPanel_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: 'Grupos de Variables seleccionados',
-                        content: 'Aqui puedes ver los grupos de variables que has seleccionado.'
-                      }
-                    },
-                    {
-                      el: '#div_seleccion_variables_sumidero',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Configura Variables Destino',
-                        content: 'Realiza ahora la selección para el grupo de variables destino.'
-                      }
-                    },
-                    {
-                      el: '#occ_number',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Mínimo de ocurrencias (nj)',
-                        content: 'Establece el mínimo de ocurrencias que necesitan tener las especies de los grupos de variables seleccionados.'
-                      }
-                    },
-                    {
-                      el: '#generaRed',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Análisis de Cominidad',
-                        content: 'Ejecuta el análisis de comunidad con los parámetros seleccionados.'
-                      }
-                    },
-                    {
-                      el: '#show_gen',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: 'Regenera Resultados',
-                        content: 'Es visible una vez ejecutado el análisis. Genera un enlace para regenerar los resultados del análisis ejecutado.\
-                                    <br><img style="width:100%" alt="Responsive image" src="images/img_gen_link.png">'
-                      }
-                    }
-                    
-                  ]
-                });
-              });
-            });
-            
-
-
-        </script>
 
 
     </body>

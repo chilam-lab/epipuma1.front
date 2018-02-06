@@ -426,10 +426,11 @@ var table_module = (function(verbose) {
                 $('#relation-list').dataTable().fnDestroy();
             }
             _tbl_net = true;
-
-
+            
+            
             $('#relation-list').DataTable({
-                "info": false,
+                "dom": 'Bfrtip',
+                "info": true,
                 "bSort": true,
                 "aoColumnDefs": [{
                         "bSortable": false,
@@ -454,7 +455,18 @@ var table_module = (function(verbose) {
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_ni')},
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_n')},
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + "Epsilon"}
-                ]
+                ],
+                buttons: [
+                    'copy', 'csv', 'excel', 'print'
+                ],
+                language: {
+                    "sEmptyTable": "Sin regsitros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                    "search": "Buscar: ",
+                    "zeroRecords": "Sin relaciones encontradas",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+                    "infoFiltered": "(Filtrados de _MAX_ entradas totales)"
+                }
             });
             // data-target='#modalInfo' data-toggle='modal'
             // header_param='Variable fuente' body_param='Variable fuente'

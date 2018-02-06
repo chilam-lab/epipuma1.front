@@ -4,7 +4,7 @@
  *
  * @namespace res_display_net_module
  */
-var res_display_net_module = (function(verbose, url_zacatuche) {
+var res_display_net_module = (function (verbose, url_zacatuche) {
 
     var _url_zacatuche = url_zacatuche;
 
@@ -20,6 +20,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
 
     var _idFilterGroup;
     var _min_occ;
+    var _grid_res;
 
     var _toastr = toastr;
 
@@ -53,9 +54,9 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         "especie": "especievalidabusqueda",
         "species": "especievalidabusqueda"
     };
-    
-    
-    
+
+
+
     /**
      * Éste método enlaza las variables globales de los módulos inicializados de variable, lenguaje y mapa.
      *
@@ -158,7 +159,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         var filters = [];
         var side = grp_type;
 
-        _subgroups.forEach(function(grupo) {
+        _subgroups.forEach(function (grupo) {
 
             _VERBOSE ? console.log(grupo) : _VERBOSE;
             _idFilterGroup++;
@@ -173,7 +174,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
             }
 
 
-            grupo.value.forEach(function(item) {
+            grupo.value.forEach(function (item) {
 
                 itemGroup = item;
                 _VERBOSE ? console.log(itemGroup) : _VERBOSE;
@@ -241,12 +242,24 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
      * @param {array} t_filters - Array con los grupos de variables seleccionados en target
      * @param {integer} min_occ - Número mínimo de ocurrencias de una variable en nj necesarias para ser considerada en el análisis de comunidad ecológica
      */
-    function createLinkNodes(s_filters, t_filters, min_occ) {
+    function createLinkNodes(s_filters, t_filters, min_occ, grid_res_val) {
 
         _VERBOSE ? console.log("createLinkNodes") : _VERBOSE;
 
         // obtinene e numero minimo de interaciones entre las especies
         _min_occ = min_occ;
+        _grid_res = grid_res_val;
+
+        var grid_res, cell_res, tbl_res;
+        if (_grid_res) {
+            grid_res = "gridid_" + _grid_res + "km";
+            cell_res = "cells_" + _grid_res + "km";
+            tbl_res = "grid_" + _grid_res + "km_aoi";
+        } else {
+            grid_res = "gridid_16km";
+            cell_res = "cells_16km";
+            tbl_res = "grid_16km_aoi";
+        }
 
         var hasBiosSource = false;
         var hasRasterSource = false;
@@ -258,12 +271,12 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
 
             _VERBOSE ? console.log("Testing...") : _VERBOSE;
 
-            d3.json("/javascripts/nodes_test.json", function(error, json_file) {
+            d3.json("/javascripts/nodes_test.json", function (error, json_file) {
                 // d3.json("/javascripts/nodes_mammalia.json", function(error, json_file) {
                 // d3.json("/javascripts/nodes_mammalia_amphibia.json", function(error, json_file) {
                 _json_nodes = json_file;
 
-                d3.json("/javascripts/links_test.json", function(error, json_temp) {
+                d3.json("/javascripts/links_test.json", function (error, json_temp) {
                     // d3.json("javascripts/links_mammalia.json", function(error, json_temp) {
                     // d3.json("javascripts/links_mammalia_amphibia.json", function(error, json_temp) {
 
@@ -274,8 +287,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
 
             });
 
-        }
-        else {
+        } else {
 
             if (s_filters.length == 0 || t_filters.length == 0) {
 
@@ -288,8 +300,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
             for (var i = 0; i < s_filters.length; i++) {
                 if (s_filters[i].type == 4) {
                     hasBiosSource = true;
-                }
-                else {
+                } else {
                     hasRasterSource = true;
                 }
             }
@@ -297,8 +308,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
             for (var i = 0; i < t_filters.length; i++) {
                 if (t_filters[i].type == 4) {
                     hasBiosTarget = true;
-                }
-                else {
+                } else {
                     hasRasterTarget = true;
                 }
             }
@@ -317,9 +327,12 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 hasrastersource: hasRasterSource,
                                 hasbiotarget: hasBiosTarget,
                                 hasrastertarget: hasRasterTarget,
-                                min_occ: _min_occ
+                                min_occ: _min_occ,
+                                res_celda_sp: cell_res,
+                                res_celda_snib: grid_res,
+                                res_celda_snib_tb: tbl_res
                             }),
-                            function(error, resp) {
+                            function (error, resp) {
 
                                 if (error)
                                     throw error;
@@ -344,9 +357,12 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                                     hasbiotarget: hasBiosTarget,
                                                     hasrastertarget: hasRasterTarget,
                                                     ep_th: 0.0,
-                                                    min_occ: _min_occ
+                                                    min_occ: _min_occ,
+                                                    res_celda_sp: cell_res,
+                                                    res_celda_snib: grid_res,
+                                                    res_celda_snib_tb: tbl_res
                                                 }),
-                                                function(error, resp) {
+                                                function (error, resp) {
 
                                                     if (error)
                                                         throw error;
@@ -365,10 +381,10 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                                     //   return;
                                                     // }
 
-                                                    max_eps = d3.max(_arrayLinks.map(function(d) {
+                                                    max_eps = d3.max(_arrayLinks.map(function (d) {
                                                         return d.value;
                                                     }));
-                                                    min_eps = d3.min(_arrayLinks.map(function(d) {
+                                                    min_eps = d3.min(_arrayLinks.map(function (d) {
                                                         return d.value;
                                                     }));
 
@@ -403,13 +419,13 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
 
         map_node = d3.map([]);
 
-        $.each(json, function(i, item) {
+        $.each(json, function (i, item) {
 
             map_node.set(item.spid, item);
         });
 
         // each node id has an index, 87456 -> 1, 87457 -> 2, ...
-        $.each(map_node.values(), function(i, item) {
+        $.each(map_node.values(), function (i, item) {
             item["index"] = i;
             _associativeArray[item.spid] = item;
         });
@@ -441,7 +457,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         _arrayLinks = [];
 
         // replacing node id with the index of the node array
-        $.each(json_file, function(i, item) {
+        $.each(json_file, function (i, item) {
 
             associativeLinkArray = {}
             associativeLinkArray[ "source" ] = _associativeArray[ json_file[i].source ].index;
@@ -527,7 +543,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         _list_component = _table_module_net.createListNet(json, this);
 
         _tbl_net = true;
-        
+
         self.renderAll();
 
         adjust = $(window).height() + 60;
@@ -554,15 +570,15 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_configFilters") : _VERBOSE;
 
-        self.nestByR = d3.nest().key(function(d) {
+        self.nestByR = d3.nest().key(function (d) {
             return d.value
         });
         self.epsilon_beans = d3.range(1, self.NUM_BEANS, 1);
 
-        var min_eps = d3.min(json.links.map(function(d) {
+        var min_eps = d3.min(json.links.map(function (d) {
             return parseFloat(d.value);
         }));
-        var max_eps = d3.max(json.links.map(function(d) {
+        var max_eps = d3.max(json.links.map(function (d) {
             return parseFloat(d.value);
         }));
 
@@ -574,19 +590,19 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         self.links_sp = crossfilter(json.links);
         self.all = links_sp.groupAll();
 
-        self.dim_eps_freq = self.links_sp.dimension(function(d) {
+        self.dim_eps_freq = self.links_sp.dimension(function (d) {
             return parseFloat(d.value);
         });
-        self.group_eps_freq = dim_eps_freq.group(function(d) {
+        self.group_eps_freq = dim_eps_freq.group(function (d) {
             return self.epsRange(d);
         });
 
-        self.dim_src = self.links_sp.dimension(function(d) {
+        self.dim_src = self.links_sp.dimension(function (d) {
             return d;
         });
         self.group_eps_spname = dim_src.group();
 
-        self.dim_node_state = self.links_sp.dimension(function(d) {
+        self.dim_node_state = self.links_sp.dimension(function (d) {
             return d;
         });
 
@@ -610,7 +626,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
      * @memberof! res_display_net_module
      * 
      */
-    self.renderAll = function() {
+    self.renderAll = function () {
 
         _VERBOSE ? console.log("renderAll") : _VERBOSE;
 
@@ -660,11 +676,11 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         _VERBOSE ? console.log(t_filters) : _VERBOSE;
 
 
-        $.each(filters, function(i, item) {
+        $.each(filters, function (i, item) {
 
             if (filters[i].type == 4) {
 
-                $.each(json, function(j, item) {
+                $.each(json, function (j, item) {
 
                     // _VERBOSE ? console.log(filters[i].field) : _VERBOSE;
 
@@ -675,8 +691,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 6;
-                                }
-                                else if (json[j].stage > 6) {
+                                } else if (json[j].stage > 6) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 6;
                                 }
@@ -687,8 +702,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 5;
-                                }
-                                else if (json[j].stage > 5) {
+                                } else if (json[j].stage > 5) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 5;
                                 }
@@ -699,8 +713,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 4;
-                                }
-                                else if (json[j].stage > 4) {
+                                } else if (json[j].stage > 4) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 4;
                                 }
@@ -711,8 +724,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 3;
-                                }
-                                else if (json[j].stage > 3) {
+                                } else if (json[j].stage > 3) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 3;
                                 }
@@ -723,8 +735,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 2;
-                                }
-                                else if (json[j].stage > 2) {
+                                } else if (json[j].stage > 2) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 2;
                                 }
@@ -736,8 +747,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 1;
-                                }
-                                else if (json[j].stage > 1) {
+                                } else if (json[j].stage > 1) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 1;
                                 }
@@ -750,8 +760,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 0;
-                                }
-                                else if (json[j].stage > 0) {
+                                } else if (json[j].stage > 0) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 0;
                                 }
@@ -762,13 +771,12 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
 
                 });
 
-            }
-            else {
+            } else {
 
                 _VERBOSE ? console.log(filters[i].value) : _VERBOSE;
                 _VERBOSE ? console.log(filters[i].type) : _VERBOSE;
 
-                $.each(json, function(j, item) {
+                $.each(json, function (j, item) {
 
                     if (json[j].reinovalido == "Animalia" || json[j].reinovalido == "Plantae" || json[j].reinovalido == "Fungi"
                             || json[j].reinovalido == "Prokaryotae" || json[j].reinovalido == "Protoctista")
@@ -789,8 +797,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 1;
-                                }
-                                else if (json[j].stage > 1) {
+                                } else if (json[j].stage > 1) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 1;
                                 }
@@ -805,8 +812,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 0;
-                                }
-                                else if (json[j].stage > 0) {
+                                } else if (json[j].stage > 0) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 0;
                                 }
@@ -838,7 +844,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("updateLabels display net") : _VERBOSE;
 
-        _ids_componentes_var.forEach(function(item, index) {
+        _ids_componentes_var.forEach(function (item, index) {
 
             $("#btn_variable_" + item).text($.i18n.prop('btn_variable') + " ");
             $("#btn_variable_" + item).append('<span class="caret"></span>');
@@ -908,8 +914,8 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
         // $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
 
     }
-    
-    
+
+
     /**
      * Éste método inicia ejecuta el proceso de un análisis de nicho ecológico.
      *
@@ -920,7 +926,7 @@ var res_display_net_module = (function(verbose, url_zacatuche) {
      */
     function callDisplayProcess(val_process) {
 
-        console.log("callDisplayProcess");
+        console.log("callDisplayProcess COMUNIDAD");
         _net_module.showSpecieOcc();
     }
 

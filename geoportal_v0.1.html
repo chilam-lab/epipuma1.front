@@ -4,13 +4,15 @@
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Cache-control" content="no-store">
 
-        <title>Geoportal Leaflet</title>
+        <title>NICHO - SPECIES</title>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
-        <!-- <link rel="stylesheet" href="javascripts/leaflet/leaflet.css" /> -->
+        <!--<link rel="stylesheet" href="javascripts/leaflet/leaflet.css" />--> 
+        <!--<link rel="stylesheet" href="plugins/sidebar/css/leaflet-sidebar.css" />-->
+
 
         <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
 
@@ -19,6 +21,7 @@
         <link rel="stylesheet" href="stylesheets/smoothness/jquery-ui.css">
         <link rel="stylesheet" type="text/css" href="stylesheets/toastr.css">
         <!-- <link rel="stylesheet" href="plugins/sidebar/css/leaflet-sidebar.css" /> -->
+
         <!-- En servidor -->
         <link rel="stylesheet" type="text/css" href="stylesheets/geoportal.css">
 
@@ -42,13 +45,17 @@
         <link rel="stylesheet" type="text/css" href="plugins/popupSlider/popup-slider.css">
 
 
-        <link href="plugins/searchbox/searchbox.min.css" rel="stylesheet" />
+        <!--<link href="plugins/searchbox/searchbox.min.css" rel="stylesheet" />-->
 
         <link href="plugins/ptjs/css/ptjs.min.css" rel="stylesheet" />
         <link rel="stylesheet" type="text/css" href="plugins/ptjs/themes/classic.min.css">
 
         <link rel="stylesheet" type="text/css" href="plugins/fullpage/jquery.fullPage.css" />
         <link rel="stylesheet" type="text/css" href="plugins/loading/jquery.loading.min.css" />
+
+        <link href="https://fonts.googleapis.com/css?family=Poppins|Raleway:500" rel="stylesheet"> 
+
+
 
 
 
@@ -118,7 +125,6 @@
 
         <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
-
         <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
         <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
         <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
@@ -135,9 +141,9 @@
 
 
         <script>
-            (function(i, s, o, g, r, a, m) {
+            (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function() {
+                i[r] = i[r] || function () {
                     (i[r].q = i[r].q || []).push(arguments)
                 }, i[r].l = 1 * new Date();
                 a = s.createElement(o),
@@ -159,34 +165,31 @@
             var _json_config;
 
 
-            $(function() {
+            $(function () {
 
                 var result = $('#result');
 
                 // Print a hash
-                $.print = function(dict) {
+                $.print = function (dict) {
 
                     return JSON.stringify(dict);
 
                 }
 
                 // Setup routes
-                result
-                        .route('link/', function(request) {
-                            return $.print(request.params);
-                        });
-
+                result.route('link/', function (request) {
+                    return $.print(request.params);
+                });
 
                 var hash = location.hash.replace(/^#/, '');
-                console.log(hash);
+//                console.log(hash);
 
                 if (hash) {
 
-                    console.log("enlace");
-
+//                    console.log("enlace");
                     var match = $.routeMatches(hash);
 
-                    console.log(match);
+//                    console.log(match);
 
                     if (match) {
                         var template = $(match.route.template);
@@ -204,9 +207,8 @@
 
 
 
-                }
-                else {
-                    console.log("inicio");
+                } else {
+//                    console.log("inicio");
                 }
 
             })
@@ -227,7 +229,7 @@
         <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:600' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'> -->
         <!-- <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'> -->
-        
+
     </head>
     <body>
 
@@ -308,10 +310,12 @@
 
                 <div class="col-md-5 margin-top-30 padding-sides-zero">
 
-                    <div id="sp_section" class="col-md-12 margin-top-15 box_shadow display-marker">
+                    <div id="sp_section" class="col-md-12 margin-top-15 box_shadow height95 display-marker">
 
-                        <h2 id="lb_especie" class="sidebar-header "></h2>
+                        <h2 id="lb_especie" class="sidebar-header-species"></h2>
 
+                        <!-- No eliminar, utilizado para enlace de regeneración! -->
+                        <div id="result"></div>
 
                         <div class="row margin-top-ten">
 
@@ -407,93 +411,141 @@
                     </div>
 
 
-
-
-
-
-
-                    <!--   <div id="tab_res" class="tab-pane active">
-
-                        <div class="row">
-
-                            <div class="col-md-12">
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_especie" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_especie_res" class="summary_lb">-</h5>
-                                </div>
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_occ" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="num_occ" class="summary_lb">-</h5>
-                                </div>
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_occ_celda" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="num_occ_celda" class="summary_lb">-</h5>
-                                </div>
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_reino" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_reino_res" class="summary_lb">-</h5>
-                                </div>
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_phylum" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_phylum_res" class="summary_lb">-</h5>
-                                </div>
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_clase" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_clase_res" class="summary_lb">-</h5>
-                                </div>
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_orden" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_orden_res" class="summary_lb">-</h5>
-                                </div>
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_familia" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_familia_res" class="summary_lb">-</h5>
-                                </div>
-
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_genero" class="summary_lb"></h5>
-                                </div>
-                                <div class="col-md-6 margin-top-five">
-                                    <h5 id="lb_sum_genero_res" class="summary_lb">-</h5>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>-->
-
-
                 </div>
 
-                <div class="col-md-7 margin-top-15">
 
-                    <div id="tuto_mapa_occ" class="col-md-12 margin-top-15 padding-sides-zero">
-                        <div id="map2" class="margin-top-15" >
+                <div class="col-md-7 margin-top-15 ">
+
+                    <div id="tuto_mapa_occ" class="col-md-12 margin-top-15 padding-sides-zero ">
+
+                        <div id="mapwrap" class="margin-top-15">
+
+                            <div id="toolbar">
+                                <div class="hamburger">
+                                    <span id="tlt_resumen">Resumen</span>
+                                </div>
+                                <div id="tourstops">
+                                    <h2 id="hd_resumen">Resumen</h2>
+
+                                    <div id="tab_res" class="tab-pane active">
+
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_especie" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_especie_res" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_occ" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="num_occ" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_occ_celda" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="num_occ_celda" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_reino" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_reino_res" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_phylum" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_phylum_res" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_clase" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_clase_res" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_orden" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_orden_res" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_familia" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_familia_res" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_genero" class="summary_lb"></h5>
+                                                    </div>
+                                                    <div class="col-md-6 margin-top-five">
+                                                        <h5 id="lb_sum_genero_res" class="summary_lb">-</h5>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div id="map2" class="  box_shadow "></div>
+
                         </div>
                     </div>
 
@@ -504,18 +556,12 @@
 
             <div id="section1" class="row-fluid margin-top-15 section page">
 
-                <div id="tuto_variables" class="col-md-9 margin-top-15 padding-left-zero">
 
-                    <div class="col-md-12 box_shadow padding-sides-zero" id="variables"></div>
-
-                </div>
-
-
-                <div id="tuto_params" class="col-md-3 margin-top-15 box_shadow padding-sides-zero">
+                <div id="tuto_params" class="col-md-5 margin-top-15 box_shadow height80 padding-sides-zero">
 
                     <div class="col-md-12 ">
 
-                        <h2 id="lb_params_variables" class="sidebar-header">Parámetros</h2>
+                        <h2 id="lb_params_variables" class="sidebar-header-species">Parámetros</h2>
 
                         <div id="tuto_val" class="row">
 
@@ -560,9 +606,28 @@
 
                     </div>
 
-                    <div class="col-md-12 margin-top-15">
-                        <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link " type="button" title="Guardar enlace de resultados" style="visibility: hidden"  ></button>
-                        <button id="get_esc_ep" class="btn btn-primary pull-right" type="button" ></button>
+
+
+                </div>
+
+                <div id="tuto_variables" class="col-md-7 margin-top-15 ">
+
+                    <div class="col-md-12 box_shadow padding-sides-zero height80" id="variables"></div>
+
+                </div>
+
+                <div id="tuto_correr_analisis" class="col-md-12 margin-top-15 ">
+
+                    <div class="col-md-offset-5 col-md-3 padding-sides-zero " >
+
+                        <!--<div class="col-md-12 margin-top-15">-->
+                        <button id="get_esc_ep" class="btn btn-primary pull-left" type="button" ></button>
+                        <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link " 
+                                type="button" title="Guardar enlace de resultados" 
+                                style="visibility: hidden" ></button>                        
+                        <button id="tuto_res" class="btn btn-warning display-marker" type="button" style="visibility: hidden"></button>
+                        <!--</div>-->
+
                     </div>
 
                 </div>
@@ -572,16 +637,13 @@
 
 
 
-
-
-
             <div id="section2" class="row-fluid margin-top-35 section page">
 
                 <div class="col-md-12 margin-top-15">
 
-                    <h3 id="lb_resultados" class="sidebar-header"></h3>
+                    <h3 id="lb_resultados" class="sidebar-header-species"></h3>
 
-                    <div id="map" class="margin-top-15" >
+                    <div id="map" class="margin-top-15 box_shadow" >
 
                         <div class="link_shape">
                             <button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
@@ -603,7 +665,7 @@
 
                 <div class="col-md-12 margin-top-15">
 
-                    <div id="myScrollableBlockEpsilonDecil" class="row-fluid myScrollableBlockEpsilonDecil margin-top-15">
+                    <div id="myScrollableBlockEpsilonDecil" class="row-fluid myScrollableBlockEpsilonDecil margin-top-15 box_shadow">
                         <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Decil');
                                         $('#lb_body_info').text('Muestra el valor promedio del score por grupo de variable en cada decil.');
                                         $('#modalInfo').modal()" ></button>
@@ -611,14 +673,14 @@
                         <div id="chartdiv_score_decil"></div>	
                     </div>
 
-                    <div id="div_example" class="row-fluid myScrollableBlockDecilList">
+                    <div id="div_example" class="row-fluid myScrollableBlockDecilList box_shadow">
 
                         <table id="example" class="display compact cell-border" cellspacing="0"></table>
 
                     </div>
 
 
-                    <div id="histcontainer_row" class="row-fluid histcontainer_row">
+                    <div id="histcontainer_row" class="row-fluid histcontainer_row box_shadow">
 
                         <div id="hst_esp_eps" class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Epsilon Especie');
@@ -646,7 +708,7 @@
                     </div>
 
 
-                    <div id="treeAddedPanel"  class="row-fluid myScrollableBlockDecilList ">
+                    <div id="treeAddedPanel"  class="row-fluid myScrollableBlockDecilList box_shadow">
                         <table id="tdisplay" class="display compact cell-border" ></table>
                     </div>
 
@@ -715,16 +777,10 @@
                     <div class="modal-body">
 
                         <h5 id="lb_des_modal_shp"></h5>
-
                         <br/>
-
-                        <div class="input-group emial_component">
-                            <input id="email_address_shp" type="email" class="custom_form_control" placeholder=" Correo" required>
-                            <span class="input-group-btn">
-                                <button id="send_email_shp" class="btn btn-primary" type="button"></button>
-                            </span>
-                        </div>
-
+                        <a id="map_download" href="#" download="map.geojson"></a>
+                        <br/>
+                        <a id="sp_download" href="#" download="specie.geojson">Descarga</a>
 
                     </div>
                     <div class="modal-footer">
@@ -794,69 +850,18 @@
 
 
 
+<!--        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-6 alwaysvisible">
 
-        <div class="sliderPop" style="display:none;">
-            <div class="ct-sliderPop-container">
-                <div class="ct-sliderPop ct-sliderPop-slide1 open">
-                    <div class="inner">
-                        <i class="fa fa-code" aria-hidden="true"></i>
-                        <h1>Code</h1>
-                        <div class="map-white-border"></div>
-                        <h2>Programming Not Required</h2>
-                        <p>WebCorpCo enables marketers to manage their entire stack in one place without needing the ability to program as all code is automatically written by webcorpco.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  pull-left">
+                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem anterior">
+                    <a id="ant_a" href="#" class="a_estatus">Anterior</a>
                 </div>
-                <div class="ct-sliderPop ct-sliderPop-slide2">
-                    <div class="inner">
-                        <i class="fa fa-paint-brush" aria-hidden="true"></i>
-                        <h1>Design</h1>
-                        <div class="map-white-border"></div>
-                        <h2>A Touch of Detail</h2>
-                        <p>With a team of award-winning designers behind every possible design and layout, you are sure to find success in our automated design process.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
-                </div>
-                <div class="ct-sliderPop ct-sliderPop-slide3">
-                    <div class="inner">
-                        <i class="fa fa-users" aria-hidden="true"></i>
-                        <h1>Marketing</h1>
-                        <div class="map-white-border"></div>
-                        <h2>Marketing in Alignment</h2>
-                        <p>There is no 'one size fits all' approach to marketing. Every business is unique, customers are unique, and your marketing should be as well.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
-                </div>
-                <div class="ct-sliderPop ct-sliderPop-slide1">
-                    <div class="inner">
-                        <i class="fa fa-life-ring" aria-hidden="true"></i>
-                        <h1>Support</h1>
-                        <div class="map-white-border"></div>
-                        <h2>Available 24/7</h2>
-                        <p>WebCorpCo offers state of the art support and training to enable users to make the most out of the platform and learn all of the functionality under the hood.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
-                </div>
-                <div class="ct-sliderPop ct-sliderPop-slide2">
-                    <div class="inner">
-                        <i class="fa fa-university" aria-hidden="true"></i>
-                        <h1>Training</h1>
-                        <div class="map-white-border"></div>
-                        <h2>Take Control Yourself</h2>
-                        <p>Training can be "as requested" although there are regular webinars, code tutorials, and training courses offered for free on our website.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
+                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem siguiente">
+                    
+                    <a id="sig_a" href="#" class="a_estatus">Siguiente</a>
                 </div>
             </div>
-        </div>
-
-
-
+        </div>-->
 
 
 
@@ -871,6 +876,9 @@
 
         <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
         <!-- // <script src="plugins/sidebar/js/leaflet-sidebar.js"></script> -->
+        <!--<script src="plugins/sidebar/js/jquery-sidebar.js"></script>-->
+        <!--<script src="plugins/sidebar/js/leaflet-sidebar.js"></script>-->
+
 
         <!-- <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.js'></script> -->
         <!-- <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script> -->
@@ -928,14 +936,16 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/jquery.flexslider-min.js"></script>
         <script type="text/javascript" src="plugins/popupSlider/popup-slider.js"></script> 
 
-        <script src="plugins/searchbox/leaflet.customsearchbox.min.js"></script>
+        <!--<script src="plugins/searchbox/leaflet.customsearchbox.min.js"></script>-->
 
         <script src="plugins/ptjs/js/modernizr-2.8.3-respond-1.4.2.min.js"></script>
         <script type="text/javascript" src="plugins/ptjs/js/ptjs.min.js"></script>
 
         <script type="text/javascript" src="plugins/fullpage/jquery.fullPage.js"></script>
-        
+
         <script type="text/javascript" src="plugins/loading/jquery.loading.min.js"></script>
+
+
 
         <!-- <script src="plugins/markercluster/src/MarkerCluster.js"></script>
         // <script src="plugins/markercluster/src/MarkerClusterGroup.js"></script> -->
@@ -944,7 +954,69 @@
         <!-- <a href="https://github.com/Turbo87/sidebar-v2/"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Hecho en Conabio"></a> -->
 
 
+        <script>
+            $(document).ready(function () {
 
+                var estado_page = 0;
+
+                // Add smooth scrolling to all links
+                $("#sig_a").on('click', function (event) {
+
+                    if (estado_page === 2) {
+                        return;
+                    }
+
+                    estado_page = estado_page + 1;
+                    $("#sig_a").attr("href", "#section" + estado_page);
+
+                    // Make sure this.hash has a value before overriding default behavior
+                    if (this.hash !== "") {
+                        event.preventDefault();
+                        var hash = this.hash;
+
+//                            console.log($(hash).offset().top);
+                        var value = $(hash).offset().top - 40;
+//                            console.log(value);
+
+                        $('html, body').animate({
+                            scrollTop: value
+                        }, 800, function () {
+//                                window.location.hash = hash;
+                        });
+                    }
+
+                });
+
+                $("#ant_a").on('click', function (event) {
+
+                    if (estado_page === 0) {
+                        return;
+                    }
+
+                    estado_page = estado_page - 1;
+                    $("#ant_a").attr("href", "#section" + estado_page);
+
+                    // Make sure this.hash has a value before overriding default behavior
+                    if (this.hash !== "") {
+                        event.preventDefault();
+                        var hash = this.hash;
+
+//                            console.log($(hash).offset().top);
+                        var value = $(hash).offset().top - 40;
+//                            console.log(value);
+
+                        $('html, body').animate({
+                            scrollTop: value
+                        }, 800, function () {
+//                                window.location.hash = hash;
+                        });
+                    }
+
+                });
+
+
+            });
+        </script>
 
         <!-- <script type="text/javascript" src="bs_js/jquery.appear.js"></script>
     <script type="text/javascript" src="bs_js/wow.min.js"></script>

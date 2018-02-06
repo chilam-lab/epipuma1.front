@@ -83,23 +83,25 @@
     // match a url and return a route object
     function routeMatches(url) {
 
-        // console.log("routeMatches");
+//         console.log("routeMatches");
+//         console.log("url: " + url);
 
 
         var request = parseUrl(url);
 
-        // console.log(request);
+//        console.log(request); 
+//        console.log(request.path);
 
         if (request.path in statics) {
 
-            // console.log("statics");
+//             console.log("statics");
 
             return {route: statics[request.path], args: [request]};
         }
 
         for (var i = 0, len = dynamics.length, matches; i < len; ++i) {
 
-            // console.log("dynamics");
+//             console.log("dynamics");
 
             matches = request.path.match(dynamics[i].regexp);
             if (matches) {
@@ -108,7 +110,9 @@
                 return {route: dynamics[i].route, args: args};
             }
         }
-
+        
+//        console.log("compiled: " + compiled);
+        
         // late check to reduce overhead on hits
         if (!compiled) {
             compileRoutes();
@@ -120,6 +124,8 @@
     
     // build the search structures. call this before actually using the router.
     function compileRoutes() {
+//        console.log("compileRoutes");
+        
         resetRoutes();
         for (var i = 0, len = routes.length, route, regexp; i < len; ++i) {
             route = routes[i];
@@ -128,14 +134,18 @@
                 continue;
             }
             regexp = new RegExp('^' + group(route) + '$', 'i');
+//            console.log({regexp: regexp, route: route});
             dynamics.push({regexp: regexp, route: route});
         }
+        
         dynamics.reverse();
         compiled = true;
     }
 
     // clean route caches and set compiled flag to false
     function resetRoutes() {
+//        console.log("resetRoutes");
+        
         compiled = false;
         statics = {};
         dynamics = [];

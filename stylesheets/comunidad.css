@@ -2,11 +2,12 @@ body {
     padding: 0;
     margin: 0;
     background: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
 }
 
 html, body {
     /*height: 100%;*/
-    font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+    /*font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;*/
 }
 
 #main-header {
@@ -465,7 +466,7 @@ hr {
 
 
 .componente_header{
-    width: 100%;
+    /*width: 100%;*/
     /*display: inline-block;*/
     /*vertical-align: text-top;*/
     text-align: center;
@@ -485,7 +486,7 @@ hr {
 
 .checkbox_label{
     float: left;
-    width: 50%;
+    /*width: 50%;*/
     text-align: right;
     /*border-style: solid;*/
 }
@@ -1155,6 +1156,10 @@ button.link-comunidad {
 
 .margin-left-two{
     margin-left: 2px;
+}
+
+.margin-top-30{    
+    margin-top: 30px;
 }
 
 .margin-top-15{    

@@ -4,7 +4,7 @@
  *
  * @namespace module_net
  */
-var module_net = (function() {
+var module_net = (function () {
 
 
     var _AMBIENTE = 1,
@@ -57,7 +57,7 @@ var module_net = (function() {
             "progressBar": true
         };
 
-        $("#generaRed").click(function(e) {
+        $("#generaRed").click(function (e) {
 
             _VERBOSE ? console.log("generaRed") : _VERBOSE;
             _VERBOSE ? console.log(_componente_fuente.getVarSelArray()) : _VERBOSE;
@@ -69,26 +69,29 @@ var module_net = (function() {
 
             _res_display_module_net.cleanLegendGroups();
 
-            s_filters = _res_display_module_net.getFilters(_componente_fuente.getVarSelArray(), TIPO_FUENTE);
-            t_filters = _res_display_module_net.getFilters(_componente_sumidero.getVarSelArray(), TIPO_SUMIDERO);
+            var s_filters = _res_display_module_net.getFilters(_componente_fuente.getVarSelArray(), TIPO_FUENTE);
+            var t_filters = _res_display_module_net.getFilters(_componente_sumidero.getVarSelArray(), TIPO_SUMIDERO);
 
-            _res_display_module_net.createLinkNodes(s_filters, t_filters, min_occ);
+            var grid_res_val = $("#grid_resolution").val();
+            console.log("grid_resolution: " + grid_res_val);
+
+            _res_display_module_net.createLinkNodes(s_filters, t_filters, min_occ, grid_res_val);
 
             $("#show_gen").css('visibility', 'visible');
 
         });
 
-        $("#net_link").click(function() {
+        $("#net_link").click(function () {
             window.location.replace(_url_front + "/geoportal_v0.1.html");
         });
-        
-        $("#btn_tutorial").click(function() {
-             window.open(_url_front + "/docs/tutorial.pdf");
+
+        $("#btn_tutorial").click(function () {
+            window.open(_url_front + "/docs/tutorial.pdf");
         });
 
 
 
-        $("#show_gen").click(function() {
+        $("#show_gen").click(function () {
 
             _VERBOSE ? console.log("show_gen") : _VERBOSE;
 
@@ -105,14 +108,13 @@ var module_net = (function() {
             data_link += "num_filters_target=" + subgroups_target.length + "&";
 
 
-            $.each(subgroups_source, function(index, item) {
+            $.each(subgroups_source, function (index, item) {
 
                 var str_item = JSON.stringify(item);
 
                 if (index === 0) {
                     data_link += "tfilters_s[" + index + "]=" + str_item;
-                }
-                else {
+                } else {
                     data_link += "&tfilters_s[" + index + "]=" + str_item;
                 }
 
@@ -120,14 +122,13 @@ var module_net = (function() {
 
             data_link += "&";
 
-            $.each(subgroups_target, function(index, item) {
+            $.each(subgroups_target, function (index, item) {
 
                 var str_item = JSON.stringify(item);
 
                 if (index == 0) {
                     data_link += "tfilters_t[" + index + "]=" + str_item;
-                }
-                else {
+                } else {
                     data_link += "&tfilters_t[" + index + "]=" + str_item;
                 }
 
@@ -142,12 +143,12 @@ var module_net = (function() {
 
         });
 
-        $("#lb_enlace").click(function() {
+        $("#lb_enlace").click(function () {
             console.log("lb_enlace");
             $(this).select();
         })
 
-        $("#accept_link").click(function() {
+        $("#accept_link").click(function () {
 
             $("#modalRegenera").modal("hide");
 
@@ -190,7 +191,7 @@ var module_net = (function() {
                 tipo: 'comunidad'
             },
             dataType: "json",
-            success: function(resp) {
+            success: function (resp) {
 
                 var cadena_ini = _url_comunidad + '#link/?';
                 var tokenlink = resp.data[0].token;
@@ -201,7 +202,7 @@ var module_net = (function() {
                 $("#lb_enlace").val(cadena_ini + "token=" + tokenlink);
 
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
             }
@@ -282,7 +283,7 @@ var module_net = (function() {
                 tipo: 'comunidad'
             },
             dataType: "json",
-            success: function(resp) {
+            success: function (resp) {
 
                 var all_data = resp.data[0].parametros;
                 _json_config = _parseURL("?" + all_data);
@@ -320,7 +321,7 @@ var module_net = (function() {
 
 
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
             }
@@ -429,9 +430,9 @@ var module_net = (function() {
         _VERBOSE ? console.log("loadModules") : _VERBOSE;
 
         _iTrans = _language_module_net.getI18();
-        
+
         _map_module_net = map_module(_url_geoserver, _workspace, _VERBOSE, _url_api);
-        
+
 
         // un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)
         _variable_module_net = variable_module(_VERBOSE, _url_api);
@@ -444,7 +445,7 @@ var module_net = (function() {
 
         _res_display_module_net = res_display_net_module(_VERBOSE, _url_api);
         _res_display_module_net.startResNetDisplay(_variable_module_net, _language_module_net, _map_module_net, ids_comp_variables, _tipo_modulo, _TEST);
-        
+
         _map_module_net.setDisplayModule(_res_display_module_net);
 
 
@@ -510,13 +511,13 @@ var module_net = (function() {
 })();
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     // verbose por default es true
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 3;
+    var ambiente = 0;
 
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 1;
@@ -527,22 +528,19 @@ $(document).ready(function() {
         module_net.setUrlApi(Cookies.get("url_api"))
         module_net.setUrlComunidad(Cookies.get("url_comunidad"));
 
-    }
-    else {
+    } else {
 
         if (ambiente === 0) {
             module_net.setUrlFront("http://localhost/species-front");
             module_net.setUrlApi("http://localhost:8080");
             module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html");
-        }
-        else if (ambiente === 1) {
+        } else if (ambiente === 1) {
 
             module_net.setUrlFront("http://species.conabio.gob.mx");
             module_net.setUrlApi("http://species.conabio.gob.mx/api");
             module_net.setUrlComunidad("http://species.conabio.gob.mx/comunidad_v0.1.html");
 
-        }
-        else if (ambiente === 2) {
+        } else if (ambiente === 2) {
 
             module_net.setUrlFront("http://species.conabio.gob.mx/dev");
             module_net.setUrlApi("http://species.conabio.gob.mx/api-dev");

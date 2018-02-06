@@ -75,6 +75,17 @@ var module_nicho = (function() {
                     }
 
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_rango_fecha', ui.values[0], value), "info");
+                    
+                    if(ui.values[0]!==1500 || ui.values[1]!==year){
+                        $("#chkFecha").prop('checked', false);
+                        $("#lb_sfecha").text(_iTrans.prop('lb_no'));
+                    }
+                    else{
+                        $("#chkFecha").prop('checked', true);
+                        $("#lb_sfecha").text(_iTrans.prop('lb_si'));
+                    }
+                    
+                    
 
                 }
             });
@@ -453,6 +464,12 @@ var module_nicho = (function() {
             if (min_occ) {
                 data_link += "chkOcc=" + parseInt($("#occ_number").val()) + "&";
             }
+            
+//            console.log($("#grid_resolution").val());
+            data_link += "gridRes=" + parseInt($("#grid_resolution").val()) + "&";
+            
+            
+            
 
             data_link += "num_filters=" + subgroups.length + "&";
 
@@ -553,6 +570,7 @@ var module_nicho = (function() {
     function _getValuesFromToken(token) {
 
         console.log("_getValuesFromToken");
+        console.log("token: " + token);
 
 
         $.ajax({
@@ -565,6 +583,8 @@ var module_nicho = (function() {
             },
             dataType: "json",
             success: function(resp) {
+                
+                console.log(resp);
 
                 var all_data = resp.data[0].parametros;
                 _json_config = _parseURL("?" + all_data);
@@ -586,6 +606,9 @@ var module_nicho = (function() {
                 var minFec = _json_config.minFec ? parseInt(_json_config.minFec) : undefined;
 
                 var maxFec = _json_config.maxFec ? parseInt(_json_config.maxFec) : undefined;
+                
+                var gridRes = _json_config.gridRes ? parseInt(_json_config.gridRes) : 16;
+//                console.log("gridRes: " + gridRes);
 
                 var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
 
@@ -600,7 +623,7 @@ var module_nicho = (function() {
                     filters.push(JSON.parse(_json_config["tfilters[" + i + "]"]));
                 }
 
-                _procesaValoresEnlace(sp_data, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil);
+                _procesaValoresEnlace(sp_data, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes);
                 $("#show_gen").css('visibility', 'hidden');
 
 
@@ -707,8 +730,9 @@ var module_nicho = (function() {
      * @param {boleano} chkFec - Bandera si esta activado el cálculo con registros sin fecha
      * @param {integer} chkOcc - Número mínimo de ocurrencias en nj para ser considerado en los cálculos
      * @param {array} rango_fechas - Rango de fecha para realizar los cálculos
+     * @param {integer} gridRes - Resolución de la malla para ser considerado en los cálculos
      */
-    function _procesaValoresEnlace(sp_data, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil) {
+    function _procesaValoresEnlace(sp_data, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes) {
 
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
@@ -793,6 +817,8 @@ var module_nicho = (function() {
             $("#sliderFecha").slider('values', 1, rango_fechas[1]);
 
         }
+        
+        $('#grid_resolution option[value='+gridRes+']').attr('selected','selected');
 
         if (chkFec != undefined || rango_fechas != undefined) {
 
@@ -801,6 +827,9 @@ var module_nicho = (function() {
         else {
             _map_module_nicho.busca_especie();
         }
+        
+        
+        
 
         _res_display_module_nicho.set_spid(spid);
         _res_display_module_nicho.set_idReg(idreg);
@@ -849,6 +878,7 @@ var module_nicho = (function() {
         var num_items = 0, spid, idreg, subgroups;
 
         $("#show_gen").css('visibility', 'visible');
+        $("#tuto_res").css('visibility', 'visible');
 
         // Configuración de TEST no actualizada. No se puede utilizat hasta el momento. 23-05-2016
         if (_TEST) {
@@ -1090,7 +1120,7 @@ $(document).ready(function() {
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 3;
+    var ambiente = 0;
 
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 0;

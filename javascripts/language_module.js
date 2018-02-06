@@ -235,7 +235,10 @@ var language_module = (function(verbose) {
 
             // $("#lb_restricciones").text($.i18n.prop('lb_restricciones'));
             $("#lb_resumen").text($.i18n.prop('lb_resumen'));
-
+            
+            $("#hd_resumen").text($.i18n.prop('hd_resumen'));
+            $("#tlt_resumen").text($.i18n.prop('tlt_resumen'));
+            
             $("#lb_construccion").text($.i18n.prop('lb_construccion'));
             $("#lb_validacion").text($.i18n.prop('lb_validacion') + ":");
             
@@ -349,6 +352,8 @@ var language_module = (function(verbose) {
             $("#a_actual").text($.i18n.prop('a_actual'));
             $("#a_f50").text($.i18n.prop('a_f50'));
             $("#get_esc_ep").text($.i18n.prop('get_esc_ep'));
+            $("#tuto_res").text($.i18n.prop('tuto_res'));
+            
             $("#lb_resultados").text($.i18n.prop('lb_resultados'));
 
             $("#send_email_csv").text($.i18n.prop('send_email_csv'));
@@ -356,6 +361,8 @@ var language_module = (function(verbose) {
             $("#lb_modal_shp").text($.i18n.prop('lb_modal_shp'));
             $("#lb_des_modal_shp").text($.i18n.prop('lb_des_modal_shp'));
             $("#send_email_shp").text($.i18n.prop('send_email_shp'));
+            $("#map_download").text($.i18n.prop('map_download'));
+            $("#sp_download").text($.i18n.prop('sp_download'));
             $("#cancel_email_shp").text($.i18n.prop('cancel_email_shp'));
             $("#lb_modal_csv").text($.i18n.prop('lb_modal_csv'));
             $("#csv_request").attr("title", $.i18n.prop('lb_descarga_tbl'));
@@ -402,7 +409,7 @@ var language_module = (function(verbose) {
             $("#lb_sumidero").text($.i18n.prop('lb_sumidero'));
             $("#btn_topo").text($.i18n.prop('btn_topo'));
 
-
+            $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res')+ ":");
 
             // **** rep
             $("#lb_sub_titulo").text($.i18n.prop('lb_sub_titulo'));
@@ -476,6 +483,146 @@ var language_module = (function(verbose) {
     function _confLiveTutorialNet(){
         
         $('#btn_tuto_steps.display-marker').on('click', function() {
+            
+            $.ptJs({
+                autoStart: true,
+                continueEnable: true,
+                templateData: {
+                    content: '',
+                    title: $.i18n.prop('label_com_p1')
+                },
+                steps: [
+                    {
+                        el: document,
+                        modal: true,
+                        templateData: {
+                            content: $.i18n.prop('label_com_p2'),
+                            title: $.i18n.prop('label_com_p1')
+                        }
+                    },
+                    {
+                      el: '#div_seleccion_variables_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p3'),
+                        content: $.i18n.prop('label_com_p4')
+                      }
+                    },
+                    {
+                      el: '#div_seleccion_variables_sumidero',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p5'),
+                        content: $.i18n.prop('label_com_p6')
+                      }
+                    },
+                    {
+                      el: '#tuto_nav_tabs_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p7'),
+                        content: $.i18n.prop('label_com_p8')
+                      }
+                    },
+                    {
+                      el: '#tuto_taxon_sp_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p9'),
+                        content: $.i18n.prop('label_com_p10')
+                      }
+                    },
+                    {
+                      el: '#treeVariable_fuente',
+                      position:{
+                        location:'rm-b'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p11'),
+                        content: $.i18n.prop('label_com_p12')
+                      }
+                    },
+                    {
+                      el: '#add_group_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p13'),
+                        content: $.i18n.prop('label_com_p14')
+                      }
+                    },
+                    {
+                      el: '#clean_var_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p15'),
+                        content: $.i18n.prop('label_com_p16')
+                      }
+                    },
+                    {
+                      el: '#treeAddedPanel_fuente',
+                      position:{
+                        location:'rm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p17'),
+                        content: $.i18n.prop('label_com_p18')
+                      }
+                    },
+                    {
+                      el: '#div_seleccion_variables_sumidero',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p19'),
+                        content: $.i18n.prop('label_com_p20')
+                      }
+                    },
+                    {
+                      el: '#occ_number',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p21'),
+                        content: $.i18n.prop('label_com_p22')
+                      }
+                    },
+                    {
+                      el: '#generaRed',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p21'),
+                        content: $.i18n.prop('label_com_p23')
+                      }
+                    },
+                    {
+                      el: '#show_gen',
+                      position:{
+                        location:'lm-t'
+                      },
+                      templateData: {
+                        title: $.i18n.prop('label_com_p24'),
+                        content: $.i18n.prop('label_com_p25')
+                      }
+                    }
+                    
+                ]
+            });
             
         });
         
@@ -586,7 +733,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#tuto_variables',
                         position: {
-                            location: 'rm-t'
+                            location: 'lm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p18'),
@@ -596,7 +743,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#tuto_nav_tabs_fuente',
                         position: {
-                            location: 'rm-b'
+                            location: 'lm-b'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p20') ,
@@ -606,7 +753,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#tuto_taxon_sp_fuente',
                         position: {
-                            location: 'rm-b'
+                            location: 'lm-b'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p22') ,
@@ -616,7 +763,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#treeVariable_fuente',
                         position: {
-                            location: 'rm-b'
+                            location: 'lm-b'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p24') ,
@@ -626,7 +773,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#add_group_fuente',
                         position: {
-                            location: 'rm-t'
+                            location: 'lm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p26') ,
@@ -636,7 +783,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#clean_var_fuente',
                         position: {
-                            location: 'rm-t'
+                            location: 'lm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p28'),
@@ -646,7 +793,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#treeAddedPanel_fuente',
                         position: {
-                            location: 'rm-t'
+                            location: 'lm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p30') ,
@@ -656,7 +803,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#tuto_params',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p32') ,
@@ -666,7 +813,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#tuto_val',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p34') ,
@@ -676,7 +823,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#tuto_min_occ',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p36') ,
@@ -686,7 +833,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#tuto_apriori',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p38') ,
@@ -696,7 +843,7 @@ var language_module = (function(verbose) {
                     {
                         el: '#tuto_map_prob',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p40') ,
@@ -728,7 +875,100 @@ var language_module = (function(verbose) {
             });
         });
 
+        
+        $("#tuto_res.display-marker").on('click', function(){
+            $.ptJs({
+                autoStart: true,
+                continueEnable: true,
+                templateData: {
+                    content: '',
+                    title: $.i18n.prop('label_esp_res_p1')
+                },
+                steps: [
+                    {
+                        el: document,
+                        modal: true,
+                        templateData: {
+                            content: $.i18n.prop('label_esp_res_p2'),
+                            title: $.i18n.prop('label_esp_res_p1')
+                        }
+                    },
+                    {
+                        el: '#map',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_res_p3'),
+                            content: $.i18n.prop('label_esp_res_p4')
+                        }
+                    },
+                    {
+                        el: '#myScrollableBlockEpsilonDecil',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_res_p5'),
+                            content: $.i18n.prop('label_esp_res_p6')
+                        }
+                    },
+                    {
+                        el: '#div_example',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_res_p7'),
+                            content: $.i18n.prop('label_esp_res_p8')
+                        }
+                    },
+                    {
+                        el: '#hst_esp_eps',
+                        position: {
+                            location: 'rm-c'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_res_p9'),
+                            content: $.i18n.prop('label_esp_res_p10')
+                        }
+                    },
+                    {
+                        el: '#hst_esp_scr',
+                        position: {
+                            location: 'rm-c'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_res_p11'),
+                            content: $.i18n.prop('label_esp_res_p12')
+                        }
+                    },
+                    {
+                        el: '#hst_cld_scr',
+                        position: {
+                            location: 'lm-c'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_res_p13'),
+                            content: $.i18n.prop('label_esp_res_p14')
+                        }
+                    },
+                    {
+                        el: '#treeAddedPanel',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_res_p15'),
+                            content: $.i18n.prop('label_esp_res_p16')
+                        }
+                    }
+                    
+                    
 
+                ]
+            });
+        });
 
     }
 
