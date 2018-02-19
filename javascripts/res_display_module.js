@@ -530,7 +530,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_initializeValidationTables") : _VERBOSE;
 
-        _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
+        _VERBOSE ? console.log("grid_res: " + _grid_res) : _VERBOSE;
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie",
