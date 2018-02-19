@@ -530,18 +530,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_initializeValidationTables") : _VERBOSE;
 
-        var grid_res, cell_res, tbl_res;
-        if (_grid_res) {
-            grid_res = "gridid_" + _grid_res + "km";
-            cell_res = "cells_" + _grid_res + "km";
-            tbl_res = "grid_" + _grid_res + "km_aoi";
-        }
-        else {
-            grid_res = "gridid_16km";
-            cell_res = "cells_16km";
-            tbl_res = "grid_16km_aoi";
-        }
-
         _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
 
         $.ajax({
@@ -551,9 +539,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 qtype: 'getValidationTables',
                 spid: _spid,
                 iter: _NUM_ITERATIONS,
-                "res_celda_sp": cell_res,
-                "res_celda_snib": grid_res,
-                "res_celda_snib_tb": tbl_res
+                grid_res: _grid_res
             },
             dataType: "json",
             success: function(resp) {
@@ -782,7 +768,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res
+            "grid_res": _grid_res,
+            "mapa_prob": mapap // necesario para verbo: getGridSpecies
         };
 
         // verbo: getScoreDecil
