@@ -299,20 +299,7 @@ var module_nicho = (function() {
             source: function(request, response) {
 
                 var grid_res_val = $("#grid_resolution").val();
-                console.log("grid_resolution: " + grid_res_val);
-
-                var grid_res, cell_res, tbl_res;
-                if (grid_res_val) {
-                    grid_res = "gridid_" + grid_res_val + "km";
-                    cell_res = "cells_" + grid_res_val + "km";
-                    tbl_res = "grid_" + grid_res_val + "km_aoi";
-                }
-                else {
-                    grid_res = "gridid_16km";
-                    cell_res = "cells_16km";
-                    tbl_res = "grid_16km_aoi";
-                }
-
+//                console.log("grid_resolution: " + grid_res_val);
 
                 $.ajax({
                     url: _url_api + "/niche/especie",
@@ -320,13 +307,10 @@ var module_nicho = (function() {
                     type: "post",
                     data: {
                         qtype: 'getEntList',
-                        limit: 15,
+                        limit: true,
                         searchStr: request.term,
-                        nivel: 'especievalidabusqueda', // parametro default para nivel taxonomico, Nota migrar a nive variable como en target
                         source: 1, // source para saber si viene de objetivo o el target
-                        res_celda_sp: cell_res,
-                        res_celda_snib: grid_res,
-                        res_celda_snib_tb: tbl_res
+                        grid_res: grid_res_val
                     },
                     success: function(resp) {
 
@@ -1120,7 +1104,7 @@ $(document).ready(function() {
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 1;
+    var ambiente = 3;
 
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 0;

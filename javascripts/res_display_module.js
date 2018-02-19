@@ -734,19 +734,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
         var mapap = _mapa_prob ? "mapa_prob" : undefined;
 
-        var grid_res, cell_res, tbl_res;
-        if (_grid_res) {
-            grid_res = "gridid_" + _grid_res + "km";
-            cell_res = "cells_" + _grid_res + "km";
-            tbl_res = "grid_" + _grid_res + "km_aoi";
-        }
-        else {
-            grid_res = "gridid_16km";
-            cell_res = "cells_16km";
-            tbl_res = "grid_16km_aoi";
-        }
-
-
         var fossil = $("#chkFosil").is(':checked') ? true : false;
         var min_occ = _min_occ_process ? parseInt($("#occ_number").val()) : 1;
         //  var existeFiltro = (_discarded_cell_set.values().length > 0 || _computed_discarded_cells.values().length > 0) ? 1 : undefined;
@@ -766,157 +753,114 @@ var res_display_module = (function(verbose, url_zacatuche) {
         // _VERBOSE ? console.log("apriori: " + apriori) : _VERBOSE;
         // _VERBOSE ? console.log("min_occ: " + min_occ) : _VERBOSE;
         // _VERBOSE ? console.log("existeFiltro: " + existeFiltro) : _VERBOSE;
+//        _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
 
-        _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
-
+        // verbo: getFreq
         _ddata = {
-            'qtype': 'getFreq',
             "id": spid,
-            "idreg": idreg.toString(),
-            "ep_th": 0.0,
             "idtime": milliseconds,
             "apriori": apriori,
             "min_occ": min_occ,
             "fossil": fossil,
-            // "filterpoints": existeFiltro,
-            "mapa_prob": mapap,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "sfecha": sin_fecha,
-            "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
             "idtabla": idtabla,
-            "res_celda_sp": cell_res,
-            "res_celda_snib": grid_res,
-            "res_celda_snib_tb": tbl_res
+            "grid_res": _grid_res
         };
 
+        // verbo: getFreqCelda
         _cdata = {
-            'qtype': 'getFreqScoreCelda',
             "id": spid,
-            "idreg": idreg.toString(),
             "idtime": milliseconds,
             "apriori": apriori,
             "min_occ": min_occ,
             "fossil": fossil,
-            // "filterpoints": existeFiltro,
-            "mapa_prob": mapap,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "sfecha": sin_fecha,
-            "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
             "idtabla": idtabla,
-            "res_celda_sp": cell_res,
-            "res_celda_snib": grid_res,
-            "res_celda_snib_tb": tbl_res
+            "grid_res": _grid_res
         };
 
+        // verbo: getScoreDecil
         _decil_data = {
-            'qtype': 'getScoreCeldaDecil',
             "id": spid,
-            "idreg": idreg.toString(),
             "idtime": milliseconds,
             "apriori": apriori,
             "min_occ": min_occ,
             "fossil": fossil,
-            // "filterpoints": existeFiltro,
-            "mapa_prob": mapap,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "sfecha": sin_fecha,
-            "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
             "idtabla": idtabla,
-            "res_celda_sp": cell_res,
-            "res_celda_snib": grid_res,
-            "res_celda_snib_tb": tbl_res
+            "grid_res": _grid_res
+            
 
         };
 
+        // verbo: getScoreDecil
         _decil_group_data = {
-            'qtype': 'getScoreCeldaDecil',
             "id": spid,
-            "idreg": idreg.toString(),
             "idtime": milliseconds,
             "apriori": apriori,
             "min_occ": min_occ,
             "fossil": fossil,
-            // "filterpoints": existeFiltro,
-            "mapa_prob": mapap,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "sfecha": sin_fecha,
-            "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
             "idtabla": idtabla,
-            "res_celda_sp": cell_res,
-            "res_celda_snib": grid_res,
-            "res_celda_snib_tb": tbl_res
+            "grid_res": _grid_res
         };
 
+        // verbo: getScoreDecil
         _total_data_decil = {
-            'qtype': 'getScoreCeldaDecil',
             "id": spid,
-            "idreg": idreg.toString(),
             "idtime": milliseconds,
             "apriori": apriori,
             "min_occ": min_occ,
             "fossil": fossil,
-            // "filterpoints": existeFiltro,
-            "mapa_prob": mapap,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "sfecha": sin_fecha,
-            "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
             "idtabla": idtabla,
-            "res_celda_sp": cell_res,
-            "res_celda_snib": grid_res,
-            "res_celda_snib_tb": tbl_res
+            "grid_res": _grid_res
         };
 
+        // verbo: getCellScore
         _sdata = {
-            'qtype': 'getMapScoreCeldaDecil',
             "id": spid,
-            "idreg": idreg.toString(),
             "idtime": milliseconds,
             "apriori": apriori,
             "min_occ": min_occ,
             "fossil": fossil,
-            // "filterpoints": existeFiltro,
             "mapa_prob": mapap,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "sfecha": sin_fecha,
-            "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
             "idtabla": idtabla,
-            "res_celda_sp": cell_res,
-            "res_celda_snib": grid_res,
-            "res_celda_snib_tb": tbl_res
+            "grid_res": _grid_res
         };
 
+        // verbo: getGeoRel
         _tdata = {
-            'qtype': 'getGeoRel',
             "id": spid,
-            "idreg": idreg.toString(),
             "idtime": milliseconds,
             "apriori": apriori,
             "min_occ": min_occ,
             "fossil": fossil,
-            // "filterpoints": existeFiltro,
-            "mapa_prob": mapap,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "sfecha": sin_fecha,
-            "discardedDateFilterids": existsDiscardedFilter,
             "val_process": val_process,
             "idtabla": idtabla,
-            "res_celda_sp": cell_res,
-            "res_celda_snib": grid_res,
-            "res_celda_snib_tb": tbl_res
-
+            "grid_res": _grid_res
         };
 
 
@@ -1302,14 +1246,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         $.ajax({
             url: _url_zacatuche + "/niche/getGeoRel",
-            // url : _url_zacatuche + "/getGeoRel",
             type: 'post',
             dataType: "json",
             data: tdata,
-            //    beforeSend: function(xhr){ 
-            //     xhr.setRequestHeader('X-Test-Header', 'test-value');
-            //     xhr.setRequestHeader("Accept","text/json");
-            // },
             success: function(json_file) {
 
 //                console.log(json_file);

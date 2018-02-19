@@ -598,7 +598,6 @@ var variable_module = (function(verbose, url_zacatuche) {
                                 _VERBOSE ? console.log(self) : _VERBOSE;
 
                                 $.ajax({
-                                    // url: _url_trabajo,
                                     url: _url_zacatuche + "/niche/especie",
                                     dataType: "json",
                                     type: "post",
@@ -607,13 +606,6 @@ var variable_module = (function(verbose, url_zacatuche) {
                                         searchStr: request.term,
                                         nivel: self.varfilter_selected[1],
                                         source: 0 // source para saber si viene de objetivo o el target
-
-
-                                                // limit : 15,
-                                                // start : 0,
-                                                // field : self.varfilter_selected[1],
-                                                // superfield : '',
-                                                // superfieldvalue : '',
                                     },
                                     success: function(resp) {
 
