@@ -862,7 +862,7 @@ var module_nicho = (function() {
         var num_items = 0, spid, idreg, subgroups;
 
         $("#show_gen").css('visibility', 'visible');
-        $("#tuto_res").css('visibility', 'visible');
+//        $("#tuto_res").css('visibility', 'visible');
 
         // Configuración de TEST no actualizada. No se puede utilizat hasta el momento. 23-05-2016
         if (_TEST) {
