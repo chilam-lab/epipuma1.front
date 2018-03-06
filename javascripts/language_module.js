@@ -3,7 +3,7 @@
  *
  * @namespace language_module
  */
-var language_module = (function(verbose) {
+var language_module = (function (verbose) {
 
     var _language_selected;
     var _language_label_selected;
@@ -36,18 +36,17 @@ var language_module = (function(verbose) {
 
         _tipo_modulo = tipo_modulo;
         _first_load = true;
-        
-        
+
+
         if (Cookies.get("language") === undefined) {
             _language_selected = 'es_MX';
             Cookies.set("language", _language_selected);
-        }
-        else{
+        } else {
             _language_selected = Cookies.get("language");
         }
-        
+
         _VERBOSE ? console.log("_language_selected: " + _language_selected) : _VERBOSE;
-        
+
 
         $.i18n.properties({
             name: 'nicho',
@@ -57,7 +56,7 @@ var language_module = (function(verbose) {
             checkAvailableLanguages: true,
             async: true,
             encoding: "UTF-8",
-            callback: function() {
+            callback: function () {
 
                 _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
 
@@ -66,9 +65,8 @@ var language_module = (function(verbose) {
                     _VERBOSE ? console.log("undefined") : _VERBOSE;
                     Cookies.set("language", _language_selected);
                     _loadLabels(_first_load);
-                    
-                }
-                else {
+
+                } else {
 
                     _VERBOSE ? console.log("language loaded") : _VERBOSE;
                     _language_selected = Cookies.get("language");
@@ -76,7 +74,7 @@ var language_module = (function(verbose) {
                     _loadLabels(_first_load);
 
                 }
-                
+
                 _first_load = false;
 
 
@@ -86,11 +84,11 @@ var language_module = (function(verbose) {
             }
         });
 
-        $('ul.dropdown-menu li a.idioma').click(function(e) {
+        $('ul.dropdown-menu li a.idioma').click(function (e) {
 
             _language_selected = e.target.getAttribute("value");
             _language_label_selected = e.target.getAttribute("label");
-            
+
             Cookies.set("language", _language_selected);
 
             _VERBOSE ? console.log("value: " + _language_selected) : _VERBOSE;
@@ -105,7 +103,7 @@ var language_module = (function(verbose) {
                 language: _language_selected,
                 checkAvailableLanguages: true,
                 async: true,
-                callback: function() {
+                callback: function () {
 
                     _loadLabels(_first_load);
                     _updateLanguageModules(_first_load);
@@ -143,7 +141,7 @@ var language_module = (function(verbose) {
      * @param {boolean} first_load - Bandera que indica si es la primera carga del módulo de internacionalización
      */
     function _updateLanguageModules(first_load) {
-        
+
         _VERBOSE ? console.log("_updateLanguageModules") : _VERBOSE;
         _VERBOSE ? console.log("first_load: " + first_load) : _VERBOSE;
 
@@ -151,10 +149,10 @@ var language_module = (function(verbose) {
             return;
 
         if (_tipo_modulo !== 2) {
-            
+
             _res_display_module.updateLabels();
             _map_module.updateLabels();
-            
+
         }
 
     }
@@ -201,7 +199,7 @@ var language_module = (function(verbose) {
 
         _VERBOSE ? console.log("_loadLabels") : _VERBOSE;
         _VERBOSE ? console.log("tipo_modulo: " + _tipo_modulo) : _VERBOSE;
-        
+
 
         // labels para nicho
         if (_tipo_modulo == 0) {
@@ -214,13 +212,11 @@ var language_module = (function(verbose) {
 
             if (firstLoad) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
-            }
-            else {
+            } else {
                 // agregar casos si se agregan mas idiomas
                 if (_language_selected == "es_MX") {
                     $("#btn_idioma").text($.i18n.prop('a_espanol') + " ");
-                }
-                else {
+                } else {
                     $("#btn_idioma").text($.i18n.prop('a_ingles') + " ");
                 }
 
@@ -228,50 +224,50 @@ var language_module = (function(verbose) {
             $("#btn_idioma").append('<span class="caret"></span>');
 
             $("#lb_especie").text($.i18n.prop('lb_especie'));
-            
+
 //            $("#nom_sp").attr("placeholder", $.i18n.prop('esp_name'));
-            
+
             $("#lb_example").text($.i18n.prop('lb_example'));
 
             // $("#lb_restricciones").text($.i18n.prop('lb_restricciones'));
             $("#lb_resumen").text($.i18n.prop('lb_resumen'));
-            
+
             $("#hd_resumen").text($.i18n.prop('hd_resumen'));
             $("#tlt_resumen").text($.i18n.prop('tlt_resumen'));
-            
+
             $("#lb_construccion").text($.i18n.prop('lb_construccion'));
             $("#lb_validacion").text($.i18n.prop('lb_validacion') + ":");
-            
-            
+
+
             $("#lb_apriori").text($.i18n.prop('lb_apriori') + ":");
             $("#lb_occ_min").text($.i18n.prop('lb_occ_min') + ":");
             $("#lb_fosil").text($.i18n.prop('lb_fosil') + ":");
-            
+
             $("#lb_mapprob").text($.i18n.prop('lb_mapprob') + ":");
-            
+
             $("#lb_reg_fecha").text($.i18n.prop('lb_reg_fecha') + ":");
             $("#lb_mapprob").text($.i18n.prop('lb_mapprob') + ":");
-            
+
             $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha') + ":");
-            
+
             $("#reload_map").text($.i18n.prop('reload_map'));
-            
+
             $("#tab_resumen").text($.i18n.prop('tab_resumen'));
             $("#tab_variables").text($.i18n.prop('tab_variables'));
             $("#tab_filtros").text($.i18n.prop('tab_filtros'));
-            
-            $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res')+ ":");
-            $("#lb_sp_list").text($.i18n.prop('lb_sp_list')+ ":");
-            
-            
-            
+
+            $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res') + ":");
+            $("#lb_sp_list").text($.i18n.prop('lb_sp_list') + ":");
+
+
+
             $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
-            
-            
+
+
             $("#labelValidation").text($.i18n.prop('lb_no'));
             $("#lb_sfecha").text($.i18n.prop('lb_si'));
             $("#labelFosil").text($.i18n.prop('lb_si'));
-            
+
             $("#lb_panel_region").text($.i18n.prop('lb_panel_region'));
             $("#lb_seccion_region").text($.i18n.prop('lb_seccion_region'));
             $("#lb_estados").text($.i18n.prop('lb_estados'));
@@ -282,7 +278,7 @@ var language_module = (function(verbose) {
             $("#a_taxon_fuente").text($.i18n.prop('a_taxon'));
             $("#a_clima_fuente").text($.i18n.prop('a_clima'));
             $("#a_topo_fuente").text($.i18n.prop('a_topo'));
-            
+
             $("#a_taxon_sumidero").text($.i18n.prop('a_taxon'));
             $("#a_clima_sumidero").text($.i18n.prop('a_clima'));
             $("#a_topo_sumidero").text($.i18n.prop('a_topo'));
@@ -290,7 +286,7 @@ var language_module = (function(verbose) {
 
             $("#btn_variable_fuente").text($.i18n.prop('btn_variable') + " ");
             $("#btn_variable_fuente").append('<span class="caret"></span>');
-            
+
             $("#btn_variable_sumidero").text($.i18n.prop('btn_variable') + " ");
             $("#btn_variable_sumidero").append('<span class="caret"></span>');
 
@@ -313,14 +309,14 @@ var language_module = (function(verbose) {
             $("#a_item_orden_fuente").text($.i18n.prop('a_item_orden'));
             $("#a_item_familia_fuente").text($.i18n.prop('a_item_familia'));
             $("#a_item_genero_fuente").text($.i18n.prop('a_item_genero'));
-            
+
             $("#a_item_reino_sumidero").text($.i18n.prop('a_item_reino'));
             $("#a_item_phylum_sumidero").text($.i18n.prop('a_item_phylum'));
             $("#a_item_clase_sumidero").text($.i18n.prop('a_item_clase'));
             $("#a_item_orden_sumidero").text($.i18n.prop('a_item_orden'));
             $("#a_item_familia_sumidero").text($.i18n.prop('a_item_familia'));
             $("#a_item_genero_sumidero").text($.i18n.prop('a_item_genero'));
-            
+
 
             $("#btn_variable_bioclim").text($.i18n.prop('btn_variable_bioclim') + " ");
             $("#btn_variable_bioclim").append('<span class="caret"></span>');
@@ -353,7 +349,7 @@ var language_module = (function(verbose) {
             $("#a_f50").text($.i18n.prop('a_f50'));
             $("#get_esc_ep").text($.i18n.prop('get_esc_ep'));
             $("#tuto_res").text($.i18n.prop('tuto_res'));
-            
+
             $("#lb_resultados").text($.i18n.prop('lb_resultados'));
 
             $("#send_email_csv").text($.i18n.prop('send_email_csv'));
@@ -396,12 +392,11 @@ var language_module = (function(verbose) {
             $('#tdisplay tr:eq(0) th:eq(10)').text($.i18n.prop('a_item_clase'));
             $('#tdisplay tr:eq(0) th:eq(11)').text($.i18n.prop('a_item_orden'));
             $('#tdisplay tr:eq(0) th:eq(12)').text($.i18n.prop('a_item_familia'));
-            
+
             _confLiveTutorialNiche();
 
 
-        }
-        else if (_tipo_modulo === 1) {
+        } else if (_tipo_modulo === 1) {
 
             $("#lb_titulo_net").text($.i18n.prop('lb_titulo_net'));
             $("#net_link").text($.i18n.prop('net_link'));
@@ -409,7 +404,7 @@ var language_module = (function(verbose) {
             $("#lb_sumidero").text($.i18n.prop('lb_sumidero'));
             $("#btn_topo").text($.i18n.prop('btn_topo'));
 
-            $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res')+ ":");
+            $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res') + ":");
 
             // **** rep
             $("#lb_sub_titulo").text($.i18n.prop('lb_sub_titulo'));
@@ -417,13 +412,11 @@ var language_module = (function(verbose) {
             $("#a_ingles").text($.i18n.prop('a_ingles'));
             if (firstLoad) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
-            }
-            else {
+            } else {
                 // agregar casos si se agregan mas idiomas
                 if (_language_selected == "es_MX") {
                     $("#btn_idioma").text($.i18n.prop('a_espanol') + " ");
-                }
-                else {
+                } else {
                     $("#btn_idioma").text($.i18n.prop('a_ingles') + " ");
                 }
 
@@ -436,14 +429,14 @@ var language_module = (function(verbose) {
 
             $("#title_barnet").text($.i18n.prop('titulo_hist_eps'));
             $("#lb_occ_min").text($.i18n.prop('lb_occ_min') + ":");
-            
+
             $("#generaRed").text($.i18n.prop('generaRed'));
-            
+
             $("#lb_modal_red").text($.i18n.prop('lb_modal_red'));
             $("#lb_des_modal_red").text($.i18n.prop('lb_des_modal_red'));
             $("#red_download").text($.i18n.prop('red_download'));
             $("#cancel_red_csv").text($.i18n.prop('cancel_red_csv'));
-            
+
             _confLiveTutorialNet();
 
         }
@@ -460,13 +453,11 @@ var language_module = (function(verbose) {
 
             if (firstLoad) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
-            }
-            else {
+            } else {
                 // agregar casos si se agregan mas idiomas
                 if (_language_selected == "es_MX") {
                     $("#btn_idioma").text($.i18n.prop('a_espanol') + " ");
-                }
-                else {
+                } else {
                     $("#btn_idioma").text($.i18n.prop('a_ingles') + " ");
                 }
 
@@ -484,11 +475,11 @@ var language_module = (function(verbose) {
         }
 
     }
-    
-    function _confLiveTutorialNet(){
-        
-        $('#btn_tuto_steps.display-marker').on('click', function() {
-            
+
+    function _confLiveTutorialNet() {
+
+        $('#btn_tuto_steps.display-marker').on('click', function () {
+
             $.ptJs({
                 autoStart: true,
                 continueEnable: true,
@@ -506,139 +497,241 @@ var language_module = (function(verbose) {
                         }
                     },
                     {
-                      el: '#div_seleccion_variables_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p3'),
-                        content: $.i18n.prop('label_com_p4')
-                      }
+                        el: '#div_seleccion_variables_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p3'),
+                            content: $.i18n.prop('label_com_p4')
+                        }
                     },
                     {
-                      el: '#div_seleccion_variables_sumidero',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p5'),
-                        content: $.i18n.prop('label_com_p6')
-                      }
+                        el: '#div_seleccion_variables_sumidero',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p5'),
+                            content: $.i18n.prop('label_com_p6')
+                        }
                     },
                     {
-                      el: '#tuto_nav_tabs_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p7'),
-                        content: $.i18n.prop('label_com_p8')
-                      }
+                        el: '#tuto_nav_tabs_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p7'),
+                            content: $.i18n.prop('label_com_p8')
+                        }
                     },
                     {
-                      el: '#tuto_taxon_sp_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p9'),
-                        content: $.i18n.prop('label_com_p10')
-                      }
+                        el: '#tuto_taxon_sp_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p9'),
+                            content: $.i18n.prop('label_com_p10')
+                        }
                     },
                     {
-                      el: '#treeVariable_fuente',
-                      position:{
-                        location:'rm-b'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p11'),
-                        content: $.i18n.prop('label_com_p12')
-                      }
+                        el: '#treeVariable_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p11'),
+                            content: $.i18n.prop('label_com_p12')
+                        }
                     },
                     {
-                      el: '#add_group_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p13'),
-                        content: $.i18n.prop('label_com_p14')
-                      }
+                        el: '#add_group_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p13'),
+                            content: $.i18n.prop('label_com_p14')
+                        }
                     },
                     {
-                      el: '#clean_var_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p15'),
-                        content: $.i18n.prop('label_com_p16')
-                      }
+                        el: '#clean_var_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p15'),
+                            content: $.i18n.prop('label_com_p16')
+                        }
                     },
                     {
-                      el: '#treeAddedPanel_fuente',
-                      position:{
-                        location:'rm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p17'),
-                        content: $.i18n.prop('label_com_p18')
-                      }
+                        el: '#treeAddedPanel_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p17'),
+                            content: $.i18n.prop('label_com_p18')
+                        }
                     },
                     {
-                      el: '#div_seleccion_variables_sumidero',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p19'),
-                        content: $.i18n.prop('label_com_p20')
-                      }
+                        el: '#div_seleccion_variables_sumidero',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p19'),
+                            content: $.i18n.prop('label_com_p20')
+                        }
                     },
                     {
-                      el: '#occ_number',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p21'),
-                        content: $.i18n.prop('label_com_p22')
-                      }
+                        el: '#occ_number',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p21'),
+                            content: $.i18n.prop('label_com_p22')
+                        }
                     },
                     {
-                      el: '#generaRed',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p21'),
-                        content: $.i18n.prop('label_com_p23')
-                      }
+                        el: '#generaRed',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p21'),
+                            content: $.i18n.prop('label_com_p23')
+                        }
                     },
                     {
-                      el: '#show_gen',
-                      position:{
-                        location:'lm-t'
-                      },
-                      templateData: {
-                        title: $.i18n.prop('label_com_p24'),
-                        content: $.i18n.prop('label_com_p25')
-                      }
+                        el: '#show_gen',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_com_p24'),
+                            content: $.i18n.prop('label_com_p25')
+                        }
                     }
-                    
+
                 ]
             });
-            
+
         });
-        
+
     }
-    
-    
-    
+
+
+
     function _confLiveTutorialNiche() {
 
-        $('#btn_tuto_steps.display-marker').on('click', function() {
-            
+        _VERBOSE ? console.log("_confLiveTutorialNiche") : _VERBOSE;
+
+        $('#btn_tuto_steps.display-marker').on('click', function () {
+
+            _VERBOSE ? console.log("btn_tuto_steps") : _VERBOSE;
+
+
+            console.log($("#a_taxon_fuente").parent().hasClass("active"));
+            console.log($("#a_clima_fuente").parent().hasClass("active"));
+
+            var item_tab_btn, item_tree, group_btn, clean_btn;
+            if ($("#a_taxon_fuente").parent().hasClass("active")) {
+                item_tab = {
+                    el: '#tuto_taxon_sp_fuente',
+                    position: {
+                        location: 'lm-b'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p22'),
+                        content: $.i18n.prop('label_esp_p23')
+                    }
+                }
+                item_tree = {
+                    el: '#treeVariable_fuente',
+                    position: {
+                        location: 'lm-b'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p24'),
+                        content: $.i18n.prop('label_esp_p25')
+                    }
+                }
+                group_btn = {
+                    el: '#add_group_fuente',
+                    position: {
+                        location: 'lm-t'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p26'),
+                        content: $.i18n.prop('label_esp_p27')
+                    }
+                }
+                clean_btn = {
+                    el: '#clean_var_fuente',
+                    position: {
+                        location: 'lm-t'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p28'),
+                        content: $.i18n.prop('label_esp_p29')
+                    }
+                }
+
+            }
+
+            if ($("#a_clima_fuente").parent().hasClass("active")) {
+                item_tab = {
+                    el: '#btn_bioclim_fuente',
+                    position: {
+                        location: 'lm-b'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p50'),
+                        content: $.i18n.prop('label_esp_p51')
+                    }
+
+                }
+                item_tree = {
+                    el: '#treeVariableBioclim_fuente',
+                    position: {
+                        location: 'lm-b'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p52'),
+                        content: $.i18n.prop('label_esp_p53')
+                    }
+                }
+                group_btn = {
+                    el: '#add_group_bioclim_fuente',
+                    position: {
+                        location: 'lm-t'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p26'),
+                        content: $.i18n.prop('label_esp_p27')
+                    }
+                }
+                clean_btn = {
+                    el: '#clean_var_bioclim_fuente',
+                    position: {
+                        location: 'lm-t'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p28'),
+                        content: $.i18n.prop('label_esp_p29')
+                    }
+                }
+
+            }
+
+
+//            if($("a_taxon_fuente")){
+//            }a_clima_fuente
+
             $.ptJs({
                 autoStart: true,
                 continueEnable: true,
@@ -682,7 +775,7 @@ var language_module = (function(verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p7'),
-                            content: $.i18n.prop('label_esp_p8') 
+                            content: $.i18n.prop('label_esp_p8')
                         }
                     },
                     {
@@ -691,7 +784,7 @@ var language_module = (function(verbose) {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p9') ,
+                            title: $.i18n.prop('label_esp_p9'),
                             content: $.i18n.prop('label_esp_p10')
                         }
                     },
@@ -711,8 +804,8 @@ var language_module = (function(verbose) {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p13') ,
-                            content: $.i18n.prop('label_esp_p46') 
+                            title: $.i18n.prop('label_esp_p13'),
+                            content: $.i18n.prop('label_esp_p46')
                         }
                     },
                     {
@@ -722,7 +815,7 @@ var language_module = (function(verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p14'),
-                            content: $.i18n.prop('label_esp_p15') 
+                            content: $.i18n.prop('label_esp_p15')
                         }
                     },
                     {
@@ -731,8 +824,8 @@ var language_module = (function(verbose) {
                             location: 'lt'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p16') ,
-                            content: $.i18n.prop('label_esp_p17')+'<br><img style="width:100%" alt="Responsive image" src="images/img_reg.png">'
+                            title: $.i18n.prop('label_esp_p16'),
+                            content: $.i18n.prop('label_esp_p17') + '<br><img style="width:100%" alt="Responsive image" src="images/img_reg.png">'
                         }
                     },
                     {
@@ -751,57 +844,21 @@ var language_module = (function(verbose) {
                             location: 'lm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p20') ,
+                            title: $.i18n.prop('label_esp_p20'),
                             content: $.i18n.prop('label_esp_p21')
                         }
                     },
-                    {
-                        el: '#tuto_taxon_sp_fuente',
-                        position: {
-                            location: 'lm-b'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p22') ,
-                            content: $.i18n.prop('label_esp_p23')
-                        }
-                    },
-                    {
-                        el: '#treeVariable_fuente',
-                        position: {
-                            location: 'lm-b'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p24') ,
-                            content: $.i18n.prop('label_esp_p25') 
-                        }
-                    },
-                    {
-                        el: '#add_group_fuente',
-                        position: {
-                            location: 'lm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p26') ,
-                            content: $.i18n.prop('label_esp_p27') 
-                        }
-                    },
-                    {
-                        el: '#clean_var_fuente',
-                        position: {
-                            location: 'lm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p28'),
-                            content: $.i18n.prop('label_esp_p29')
-                        }
-                    },
+                    item_tab,
+                    item_tree,
+                    group_btn,
+                    clean_btn,
                     {
                         el: '#treeAddedPanel_fuente',
                         position: {
                             location: 'lm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p30') ,
+                            title: $.i18n.prop('label_esp_p30'),
                             content: $.i18n.prop('label_esp_p31')
                         }
                     },
@@ -811,7 +868,7 @@ var language_module = (function(verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p32') ,
+                            title: $.i18n.prop('label_esp_p32'),
                             content: $.i18n.prop('label_esp_p33')
                         }
                     },
@@ -821,7 +878,7 @@ var language_module = (function(verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p34') ,
+                            title: $.i18n.prop('label_esp_p34'),
                             content: $.i18n.prop('label_esp_p35')
                         }
                     },
@@ -831,7 +888,7 @@ var language_module = (function(verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p36') ,
+                            title: $.i18n.prop('label_esp_p36'),
                             content: $.i18n.prop('label_esp_p37')
                         }
                     },
@@ -841,8 +898,8 @@ var language_module = (function(verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p38') ,
-                            content: $.i18n.prop('label_esp_p39') 
+                            title: $.i18n.prop('label_esp_p38'),
+                            content: $.i18n.prop('label_esp_p39')
                         }
                     },
                     {
@@ -851,7 +908,7 @@ var language_module = (function(verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p40') ,
+                            title: $.i18n.prop('label_esp_p40'),
                             content: $.i18n.prop('label_esp_p41')
                         }
                     },
@@ -861,8 +918,8 @@ var language_module = (function(verbose) {
                             location: 'lm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p42') ,
-                            content: $.i18n.prop('label_esp_p43') 
+                            title: $.i18n.prop('label_esp_p42'),
+                            content: $.i18n.prop('label_esp_p43')
                         }
                     },
                     {
@@ -871,7 +928,7 @@ var language_module = (function(verbose) {
                             location: 'lm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p44') ,
+                            title: $.i18n.prop('label_esp_p44'),
                             content: $.i18n.prop('label_esp_p45') + '<br><img style="width:100%" alt="Responsive image" src="images/img_gen_link.png">'
                         }
                     }
@@ -880,8 +937,8 @@ var language_module = (function(verbose) {
             });
         });
 
-        
-        $("#tuto_res.display-marker").on('click', function(){
+
+        $("#tuto_res.display-marker").on('click', function () {
             $.ptJs({
                 autoStart: true,
                 continueEnable: true,
@@ -968,8 +1025,8 @@ var language_module = (function(verbose) {
                             content: $.i18n.prop('label_esp_res_p16')
                         }
                     }
-                    
-                    
+
+
 
                 ]
             });
