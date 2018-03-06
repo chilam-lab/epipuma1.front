@@ -106,6 +106,25 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         var self = this;
         self.NUM_BEANS = 21;
+        
+        
+        $("#red_download").click(function(e) {
+
+            _VERBOSE ? console.log("red_download") : _VERBOSE;
+            
+            if(_json_nodes.length === 0){
+                $("#modalMail").modal("hide");
+                return;
+            }
+            
+            var net_info = _net_module.getGridNet2Export(_json_nodes, _arrayLinks);
+            var encodedUri = encodeURI(net_info);
+            this.href = "data:text/csv;charset=UTF-8," + encodedUri;
+            
+//            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(net_info)], {type: 'text/csv;charset=utf-8;'}));
+            $("#modalMail").modal("hide");
+
+        });
 
     }
 

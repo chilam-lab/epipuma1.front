@@ -314,5 +314,3 @@ var module_index = (function() {
     };
 
 })();
-
-

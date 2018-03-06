@@ -363,8 +363,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 //        if(_url_zacatuche.indexOf("api-dev") !== -1 || _url_zacatuche.indexOf("localhost") !== -1){
         if (_url_zacatuche.indexOf("api-dev") !== -1) {
-            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
+            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
+//            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+//            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         } else {
             centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
             zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
@@ -421,8 +423,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 //        if(_url_zacatuche.indexOf("api-dev") !== -1 || _url_zacatuche.indexOf("localhost") !== -1){
         if (_url_zacatuche.indexOf("api-dev") !== -1) {
-            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -103] : [23.5, -102];
+            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
+//            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+//            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         } else {
             centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -103] : [23.5, -102];
             zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
@@ -1923,6 +1927,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         
         var date = new Date();
         var sufijo = "_Exp_"+date.getFullYear()+"_"+date.getMonth()+"_"+date.getDay()+"_"+date.getHours()+":"+date.getMinutes();
+//        $("#sp_download").attr("download", _specie_target.label.replace(/\s/g, '')  + sufijo + ".geojson");
         $("#sp_download").attr("download", _specie_target.label.replace(/\s/g, '')  + sufijo + ".geojson");
 
         var sp_target_2export = {"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[]}

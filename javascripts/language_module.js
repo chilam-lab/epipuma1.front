@@ -401,7 +401,7 @@ var language_module = (function(verbose) {
 
 
         }
-        else if (_tipo_modulo == 1) {
+        else if (_tipo_modulo === 1) {
 
             $("#lb_titulo_net").text($.i18n.prop('lb_titulo_net'));
             $("#net_link").text($.i18n.prop('net_link'));
@@ -438,6 +438,11 @@ var language_module = (function(verbose) {
             $("#lb_occ_min").text($.i18n.prop('lb_occ_min') + ":");
             
             $("#generaRed").text($.i18n.prop('generaRed'));
+            
+            $("#lb_modal_red").text($.i18n.prop('lb_modal_red'));
+            $("#lb_des_modal_red").text($.i18n.prop('lb_des_modal_red'));
+            $("#red_download").text($.i18n.prop('red_download'));
+            $("#cancel_red_csv").text($.i18n.prop('cancel_red_csv'));
             
             _confLiveTutorialNet();
 
