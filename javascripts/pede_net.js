@@ -517,7 +517,7 @@ $(document).ready(function () {
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 2;
+    var ambiente = 0;
 
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 1;

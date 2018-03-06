@@ -388,9 +388,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             var grid = _map_module_nicho.getGridMap2Export();
             
-//            console.log(JSON.stringify(grid));
-
-            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(grid));
+            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
+//            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(grid));
             
             $("#modalMailShape").modal("hide");
 
@@ -402,7 +401,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             var sp_occ = _map_module_nicho.getSP2Export();
             
-            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(sp_occ));
+            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(sp_occ)], {type: 'application/json'}));
+//            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(sp_occ));
             
             $("#modalMailShape").modal("hide");
 

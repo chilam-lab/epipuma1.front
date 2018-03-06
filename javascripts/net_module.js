@@ -11,6 +11,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
     var _map_module_net = map_module_net;
 
     var _VERBOSE = verbose;
+    var _UMBRAL = 0.2;
 
     var _toastr = toastr;
     var iTrans;
@@ -1090,6 +1091,13 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         function _export_graph() {
 
             _VERBOSE ? console.log("export_graph") : _VERBOSE;
+            
+            //TODO: Verficar por que en chrome no detecta el cambio
+            $("#lb_modal_red").text(_iTrans.prop('lb_modal_red'));
+            $("#lb_des_modal_red").text(_iTrans.prop('lb_des_modal_red'));
+            $("#red_download").text(_iTrans.prop('red_download'));
+            $("#cancel_red_csv").text(_iTrans.prop('cancel_red_csv'));
+            
             $('#modalMail').modal('show');
 
         }
@@ -1418,6 +1426,43 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
     }
+    
+    function getGridNet2Export(nodes, links){
+        
+        _VERBOSE ? console.log("getGridNet2Export") : _VERBOSE;
+        
+        var date = new Date();
+        var sufijo = "_Exp_"+date.getFullYear()+"_"+date.getMonth()+"_"+date.getDay()+"_"+date.getHours()+":"+date.getMinutes();
+        $("#red_download").attr("download","net" + sufijo + ".csv");
+        
+//        nodes tienen index
+//        enlaces tienen source & target & epsilon
+        
+        console.log(nodes);
+        console.log(links);
+
+        var grid_net_2export = "";
+        
+        for (var i = 0; i < links.length; i++) {
+            
+            var item = links[i];
+            if(parseFloat(item.value)>=_UMBRAL || parseFloat(item.value)<=-_UMBRAL){
+                
+                grid_net_2export += nodes[item.source].label + ","
+                grid_net_2export += nodes[item.target].label + ","
+                grid_net_2export += parseFloat(item.value) 
+                grid_net_2export += "\r\n"
+                
+            }
+
+        }
+        
+//        console.log(grid_net_2export);
+        return grid_net_2export;
+        
+        
+        
+    }
 
 
 
@@ -1444,7 +1489,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         createNet: createNet,
         setLanguageModule: setLanguageModule,
         setLegendGroup: setLegendGroup,
-        showSpecieOcc: showSpecieOcc
+        showSpecieOcc: showSpecieOcc,
+        getGridNet2Export: getGridNet2Export
     }
 
 });

@@ -373,7 +373,7 @@
 
 
         <!-- Modals -->
-        <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!--        <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -399,7 +399,32 @@
                     </div>
                 </div>
             </div>
+        </div>-->
+        
+        
+        
+        <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4  id="lb_modal_red" class="modal-title" ></h4>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <h5 id="lb_des_modal_red"></h5>
+                        <br/>
+                        <a id="red_download" href="#" download="net.geojson"></a>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="cancel_red_csv" type="button" class="btn btn-primary" data-dismiss="modal"></button>
+                    </div>
+                </div>
+            </div>
         </div>
+        
 
 
         <div class="modal fade mymodals_info" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
