@@ -744,6 +744,22 @@ table{
     /*height: 65% !important;*/
 }
 
+.myButtonNextContainer{
+    /*overflow: auto; */
+    /*border-style: solid;*/
+    /*border-color: #3B6A93;*/
+    /*border-width: 1px;*/
+    /*height: 45%;*/
+    /*border-radius: 10px;*/
+    /*text-align: left;*/
+    /*float: left;*/
+    /*clear: none;*/
+    /*width: 95%;*/
+    margin-top: 20px;
+    height: 50px;
+    /*height: 65% !important;*/
+}
+
 #chartdiv_epsilon {
     /*height    : 100%;*/
     font-size : 11px;
@@ -1674,6 +1690,10 @@ button.glyphicon-remove:before {
     padding-top: 15px;
 }
 
+.padding-bottom-15{
+    padding-bottom: 15px;
+}
+
 .box_shadow{
     border-style: solid;
     border-width: 1px;
@@ -1856,7 +1876,7 @@ button.glyphicon-remove:before {
 }
 
 
-#show_gen #get_esc_ep{
+#show_gen #get_esc_ep #params_next{
     
     height: 25px !important;
     

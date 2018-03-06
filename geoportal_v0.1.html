@@ -403,6 +403,10 @@
                                 <button id="reload_map" class="btn btn-primary pull-right" type="button"></button>
                             </div>
 
+                            <div class="col-md-12  margin-top-five">
+                                <button id="specie_next" class="btn btn-success pull-right" type="button" style="visibility: hidden">Siguiente</button>
+                            </div>
+
 
                         </div>
 
@@ -618,7 +622,7 @@
 
                 <div id="tuto_correr_analisis" class="col-md-12 margin-top-15 ">
 
-                    <div class="col-md-offset-5 col-md-3 padding-sides-zero " >
+                    <div class="col-md-offset-4 col-md-4 padding-sides-zero " >
 
                         <!--<div class="col-md-12 margin-top-15">-->
                         <button id="get_esc_ep" class="btn btn-primary pull-left" type="button" ></button>
@@ -626,12 +630,18 @@
                                 type="button" title="Guardar enlace de resultados" 
                                 style="visibility: hidden" ></button>                        
                         <button id="tuto_res" class="btn btn-warning display-marker" type="button" style="visibility: hidden"></button>
+                        <!--<div class="">-->
+                        <!--                                <button id="_next" class="btn btn-success pull-right" type="button">Siguiente</button>-->
                         <!--</div>-->
 
                     </div>
 
+
                 </div>
 
+                <div class="col-md-2 col-md-offset-4 margin-top-15">
+                    <button id="params_next" class="btn btn-success pull-right" type="button" style="visibility: hidden">Siguiente</button>
+                </div>
 
             </div>
 
@@ -654,6 +664,11 @@
 
                     </div>
                 </div>
+
+                <div class="col-md-12 margin-top-15">
+                    <button id="map_next" class="btn btn-success pull-right" type="button" style="visibility: hidden">Siguiente</button>
+                </div>
+
 
             </div>
 
@@ -679,8 +694,15 @@
 
                     </div>
 
+                    <div class="row-fluid myButtonNextContainer">
+                        <div class=" col-md-12 ">
+                            <button id="hist_next" class="btn btn-success pull-right" type="button" style="visibility: hidden">Siguiente</button>
+                        </div>
 
-                    <div id="histcontainer_row" class="row-fluid histcontainer_row box_shadow">
+                    </div>
+
+
+                    <div id="histcontainer_row" class="row-fluid histcontainer_row box_shadow ">
 
                         <div id="hst_esp_eps" class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Epsilon Especie');
@@ -857,7 +879,7 @@
                     <a id="ant_a" href="#" class="a_estatus">Anterior</a>
                 </div>
                 <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem siguiente">
-                    
+
                     <a id="sig_a" href="#" class="a_estatus">Siguiente</a>
                 </div>
             </div>
@@ -953,70 +975,6 @@
 
         <!-- <a href="https://github.com/Turbo87/sidebar-v2/"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Hecho en Conabio"></a> -->
 
-
-        <script>
-            $(document).ready(function () {
-
-                var estado_page = 0;
-
-                // Add smooth scrolling to all links
-                $("#sig_a").on('click', function (event) {
-
-                    if (estado_page === 2) {
-                        return;
-                    }
-
-                    estado_page = estado_page + 1;
-                    $("#sig_a").attr("href", "#section" + estado_page);
-
-                    // Make sure this.hash has a value before overriding default behavior
-                    if (this.hash !== "") {
-                        event.preventDefault();
-                        var hash = this.hash;
-
-//                            console.log($(hash).offset().top);
-                        var value = $(hash).offset().top - 40;
-//                            console.log(value);
-
-                        $('html, body').animate({
-                            scrollTop: value
-                        }, 800, function () {
-//                                window.location.hash = hash;
-                        });
-                    }
-
-                });
-
-                $("#ant_a").on('click', function (event) {
-
-                    if (estado_page === 0) {
-                        return;
-                    }
-
-                    estado_page = estado_page - 1;
-                    $("#ant_a").attr("href", "#section" + estado_page);
-
-                    // Make sure this.hash has a value before overriding default behavior
-                    if (this.hash !== "") {
-                        event.preventDefault();
-                        var hash = this.hash;
-
-//                            console.log($(hash).offset().top);
-                        var value = $(hash).offset().top - 40;
-//                            console.log(value);
-
-                        $('html, body').animate({
-                            scrollTop: value
-                        }, 800, function () {
-//                                window.location.hash = hash;
-                        });
-                    }
-
-                });
-
-
-            });
-        </script>
 
         <!-- <script type="text/javascript" src="bs_js/jquery.appear.js"></script>
     <script type="text/javascript" src="bs_js/wow.min.js"></script>

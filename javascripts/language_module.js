@@ -392,6 +392,11 @@ var language_module = (function (verbose) {
             $('#tdisplay tr:eq(0) th:eq(10)').text($.i18n.prop('a_item_clase'));
             $('#tdisplay tr:eq(0) th:eq(11)').text($.i18n.prop('a_item_orden'));
             $('#tdisplay tr:eq(0) th:eq(12)').text($.i18n.prop('a_item_familia'));
+            
+            $("#specie_next").text($.i18n.prop('label_next'));
+            $("#params_next").text($.i18n.prop('label_next'));
+            $("#map_next").text($.i18n.prop('label_next'));
+            $("#hist_next").text($.i18n.prop('label_next'));
 
             _confLiveTutorialNiche();
 
