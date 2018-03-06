@@ -11,7 +11,6 @@ $(document).ready(function() {
     var url_front;
     var url_api;
 
-
     if (ambiente === 0) {
         url_front = "http://localhost/species-front";
         url_api = "http://localhost:8080";
