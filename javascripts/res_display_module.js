@@ -1169,6 +1169,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                     $('#chartdiv_score_decil').loading('stop');
                     $('#div_example').loading('stop');
+                    $("#hist_next").css('visibility', 'visible');
 
 
 
@@ -1189,6 +1190,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 $('#chartdiv_score_decil').loading('stop');
                 $('#div_example').loading('stop');
+                $("#hist_next").css('visibility', 'hidden');
 
 
                 mensaje = "";
@@ -1320,6 +1322,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             success: function(json_file) {
 
                 $('#map').loading('stop');
+                $("#map_next").css('visibility', 'visible');
 
                 var json = json_file.data;
                 
@@ -1340,6 +1343,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
+                $("#map_next").css('visibility', 'hidden');
 
                 $('#map').loading('stop');
 

@@ -4,7 +4,7 @@
  *
  * @namespace module_nicho
  */
-var module_nicho = (function() {
+var module_nicho = (function () {
 
     var _TEST = false, _tipo_modulo;
     var _VERBOSE = true;
@@ -44,7 +44,7 @@ var module_nicho = (function() {
 
 
 
-        $(function() {
+        $(function () {
 
             var year = parseInt(new Date().getFullYear());
             // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
@@ -56,7 +56,7 @@ var module_nicho = (function() {
                 max: year,
                 step: 10,
                 values: [1500, year],
-                change: function(event, ui) {
+                change: function (event, ui) {
 
                     _VERBOSE ? console.log(ui.values) : _VERBOSE;
 
@@ -75,17 +75,16 @@ var module_nicho = (function() {
                     }
 
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_rango_fecha', ui.values[0], value), "info");
-                    
-                    if(ui.values[0]!==1500 || ui.values[1]!==year){
+
+                    if (ui.values[0] !== 1500 || ui.values[1] !== year) {
                         $("#chkFecha").prop('checked', false);
                         $("#lb_sfecha").text(_iTrans.prop('lb_no'));
-                    }
-                    else{
+                    } else {
                         $("#chkFecha").prop('checked', true);
                         $("#lb_sfecha").text(_iTrans.prop('lb_si'));
                     }
-                    
-                    
+
+
 
                 }
             });
@@ -103,7 +102,7 @@ var module_nicho = (function() {
 
 
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
-        $("#chkValidation").click(function(event) {
+        $("#chkValidation").click(function (event) {
 
             var $this = $(this);
 
@@ -124,7 +123,7 @@ var module_nicho = (function() {
 
 
         // checkbox que se activa cuando se desea tomar en cuanta un minimo de ocurrencias
-        $("#chkMinOcc").click(function(event) {
+        $("#chkMinOcc").click(function (event) {
 
             var $this = $(this);
 
@@ -134,8 +133,7 @@ var module_nicho = (function() {
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_minocc_act'), "info");
 
-            }
-            else {
+            } else {
 
                 $("#occ_number").prop("disabled", true);
 
@@ -146,7 +144,7 @@ var module_nicho = (function() {
         });
 
 
-        $("#chkFosil").click(function(event) {
+        $("#chkFosil").click(function (event) {
 
             var $this = $(this);
 
@@ -181,7 +179,7 @@ var module_nicho = (function() {
 
 
         // checkbox que se activa cuando se desea tomar en cuanta un minimo de ocurrencias
-        $("#chkFecha").click(function(event) {
+        $("#chkFecha").click(function (event) {
 
             var $this = $(this);
 
@@ -219,7 +217,7 @@ var module_nicho = (function() {
 
 
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
-        $("#chkApriori").click(function(event) {
+        $("#chkApriori").click(function (event) {
 
             var $this = $(this);
 
@@ -236,7 +234,7 @@ var module_nicho = (function() {
 
 
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
-        $("#chkMapaProb").click(function(event) {
+        $("#chkMapaProb").click(function (event) {
 
             var $this = $(this);
 
@@ -261,15 +259,15 @@ var module_nicho = (function() {
         });
 
 
-        $("#nicho_link").click(function() {
+        $("#nicho_link").click(function () {
             window.location.replace(_url_front + "/comunidad_v0.1.html");
         });
 
-        $("#btn_tutorial").click(function() {
+        $("#btn_tutorial").click(function () {
             window.open(_url_front + "/docs/tutorial.pdf");
         });
 
-        $("#btn_steps").click(function() {
+        $("#btn_steps").click(function () {
             $('.sliderPop').show();
             $('.ct-sliderPop-container').addClass('open');
             $('.sliderPop').addClass('flexslider');
@@ -283,8 +281,34 @@ var module_nicho = (function() {
             });
         });
 
+        $("#specie_next").click(function () {
+            $('html, body').animate({
+                scrollTop: $("#section1").offset().top - 40
+            }, 2000);
+        });
+        
+        $("#params_next").click(function () {
+            $('html, body').animate({
+                scrollTop: $("#map").offset().top - 40
+            }, 2000);
+        });
+        
+        $("#map_next").click(function () {
+            $('html, body').animate({
+                scrollTop: $("#myScrollableBlockEpsilonDecil").offset().top - 40
+            }, 2000);
+        });
+        
+        $("#hist_next").click(function () {
+            $('html, body').animate({
+                scrollTop: $("#histcontainer_row").offset().top - 40
+            }, 2000);
+        });
+        
+        
 
-        $('.ct-sliderPop-close').on('click', function() {
+
+        $('.ct-sliderPop-close').on('click', function () {
             $('.sliderPop').hide();
             $('.ct-sliderPop-container').removeClass('open');
             $('.sliderPop').removeClass('flexslider');
@@ -296,11 +320,12 @@ var module_nicho = (function() {
 
 
         $("#nom_sp").autocomplete({
-            source: function(request, response) {
+            source: function (request, response) {
 
                 var grid_res_val = $("#grid_resolution").val();
 //                console.log("grid_resolution: " + grid_res_val);
-
+                $("#specie_next").css('visibility', 'hidden');
+                
                 $.ajax({
                     url: _url_api + "/niche/especie",
                     dataType: "json",
@@ -312,9 +337,9 @@ var module_nicho = (function() {
                         source: 1, // source para saber si viene de objetivo o el target
                         grid_res: grid_res_val
                     },
-                    success: function(resp) {
+                    success: function (resp) {
 
-                        response($.map(resp.data, function(item) {
+                        response($.map(resp.data, function (item) {
 
                             return{
                                 label: item.especievalidabusqueda + " (occ: " + item.occ + ")",
@@ -335,12 +360,12 @@ var module_nicho = (function() {
 
             },
             minLength: 2,
-            change: function(event, ui) {
+            change: function (event, ui) {
                 if (!ui.item) {
                     $("#nom_sp").val("");
                 }
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 var specie_target = {
                     "reino": ui.item.reino,
                     "phylum": ui.item.phylum,
@@ -366,7 +391,7 @@ var module_nicho = (function() {
         });
 
 
-        $("#reload_map").click(function() {
+        $("#reload_map").click(function () {
 
             _VERBOSE ? console.log("reload_map") : _VERBOSE;
 
@@ -389,8 +414,7 @@ var module_nicho = (function() {
 
                 $("#reload_map").addClass('btn-primary').removeClass('btn-success');
 
-            }
-            else {
+            } else {
 
                 _module_toast.showToast_CenterCenter(_iTrans.prop('lb_sin_especie'), "warning");
 
@@ -399,7 +423,7 @@ var module_nicho = (function() {
         });
 
 
-        $("#show_gen").click(function(e) {
+        $("#show_gen").click(function (e) {
 
             _VERBOSE ? console.log("show_gen") : _VERBOSE;
 
@@ -448,23 +472,22 @@ var module_nicho = (function() {
             if (min_occ) {
                 data_link += "chkOcc=" + parseInt($("#occ_number").val()) + "&";
             }
-            
+
 //            console.log($("#grid_resolution").val());
             data_link += "gridRes=" + parseInt($("#grid_resolution").val()) + "&";
-            
-            
-            
+
+
+
 
             data_link += "num_filters=" + subgroups.length + "&";
 
-            $.each(subgroups, function(index, item) {
+            $.each(subgroups, function (index, item) {
 
                 var str_item = JSON.stringify(item);
 
                 if (index == 0) {
                     data_link += "tfilters[" + index + "]=" + str_item;
-                }
-                else {
+                } else {
                     data_link += "&tfilters[" + index + "]=" + str_item;
                 }
 
@@ -475,14 +498,14 @@ var module_nicho = (function() {
         });
 
 
-        $("#accept_link").click(function() {
+        $("#accept_link").click(function () {
 
             $("#modalRegenera").modal("hide");
 
         });
 
 
-        $('#modalRegenera').on('shown.bs.modal', function(e) {
+        $('#modalRegenera').on('shown.bs.modal', function (e) {
 
             $('#modalRegenera input[type="text"]')[0].select();
 
@@ -493,7 +516,7 @@ var module_nicho = (function() {
 
     }
 
-    
+
 
 
 
@@ -521,7 +544,7 @@ var module_nicho = (function() {
                 tipo: 'nicho'
             },
             dataType: "json",
-            success: function(resp) {
+            success: function (resp) {
 
                 var cadena_ini = _url_nicho + '#link/?';
                 var tokenlink = resp.data[0].token;
@@ -532,7 +555,7 @@ var module_nicho = (function() {
                 $("#lb_enlace").val(cadena_ini + "token=" + tokenlink);
 
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
             }
@@ -566,8 +589,8 @@ var module_nicho = (function() {
                 tipo: 'nicho'
             },
             dataType: "json",
-            success: function(resp) {
-                
+            success: function (resp) {
+
                 console.log(resp);
 
                 var all_data = resp.data[0].parametros;
@@ -590,7 +613,7 @@ var module_nicho = (function() {
                 var minFec = _json_config.minFec ? parseInt(_json_config.minFec) : undefined;
 
                 var maxFec = _json_config.maxFec ? parseInt(_json_config.maxFec) : undefined;
-                
+
                 var gridRes = _json_config.gridRes ? parseInt(_json_config.gridRes) : 16;
 //                console.log("gridRes: " + gridRes);
 
@@ -613,7 +636,7 @@ var module_nicho = (function() {
 
 
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
             }
@@ -735,8 +758,7 @@ var module_nicho = (function() {
         if (chkFec) {
             $("#chkFecha").prop('checked', true);
             $("#lb_sfecha").text(_iTrans.prop('lb_si'));
-        }
-        else {
+        } else {
             $("#chkFecha").prop('checked', false);
             $("#lb_sfecha").text(_iTrans.prop('lb_no'));
         }
@@ -746,8 +768,7 @@ var module_nicho = (function() {
             $("#chkValidation").prop('checked', true);
             $("#labelValidation").text(_iTrans.prop('lb_si'));
 
-        }
-        else {
+        } else {
 
             $("#chkValidation").prop('checked', false);
             $("#labelValidation").text(_iTrans.prop('lb_no'));
@@ -758,8 +779,7 @@ var module_nicho = (function() {
         if (chkPrb) {
             $("#chkMapaProb").prop('checked', true);
             $("#lb_mapa_prob").text(_iTrans.prop('lb_si'));
-        }
-        else {
+        } else {
             $("#chkMapaProb").prop('checked', false);
             $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
         }
@@ -768,8 +788,7 @@ var module_nicho = (function() {
         if (chkFosil) {
             $("#chkFosil").prop('checked', true);
             $("#labelFosil").text(_iTrans.prop('lb_si'));
-        }
-        else {
+        } else {
             $("#chkFosil").prop('checked', false);
             $("#labelFosil").text(_iTrans.prop('lb_no'));
         }
@@ -777,8 +796,7 @@ var module_nicho = (function() {
         if (chkApr) {
             $("#chkApriori").prop('checked', true);
             $("#lb_do_apriori").text(_iTrans.prop('lb_si'));
-        }
-        else {
+        } else {
             $("#chkApriori").prop('checked', false);
             $("#lb_do_apriori").text(_iTrans.prop('lb_no'));
         }
@@ -788,8 +806,7 @@ var module_nicho = (function() {
             $("#occ_number").prop("disabled", false);
             $("#occ_number").val(chkOcc);
 
-        }
-        else {
+        } else {
             $("#chkMinOcc").prop('checked', false);
             $("#occ_number").prop("disabled", true);
             $("#occ_number").val(chkOcc);
@@ -801,19 +818,18 @@ var module_nicho = (function() {
             $("#sliderFecha").slider('values', 1, rango_fechas[1]);
 
         }
-        
-        $('#grid_resolution option[value='+gridRes+']').attr('selected','selected');
+
+        $('#grid_resolution option[value=' + gridRes + ']').attr('selected', 'selected');
 
         if (chkFec != undefined || rango_fechas != undefined) {
 
             _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec);
-        }
-        else {
+        } else {
             _map_module_nicho.busca_especie();
         }
-        
-        
-        
+
+
+
 
         _res_display_module_nicho.set_spid(spid);
         _res_display_module_nicho.set_idReg(idreg);
@@ -829,9 +845,9 @@ var module_nicho = (function() {
 
         if (subgroups.length > 0) {
             // asegura que si el grupo de variables seleccionado tiene mas de un grupo taxonomico agregue el total
-            subgroups.forEach(function(grupo) {
+            subgroups.forEach(function (grupo) {
                 if (grupo.value.length > 1) {
-                    grupo.value.forEach(function(item) {
+                    grupo.value.forEach(function (item) {
                         num_items++;
                     });
                 }
@@ -840,8 +856,7 @@ var module_nicho = (function() {
             if (subgroups.length > 1) {
                 num_items++;
             }
-        }
-        else {
+        } else {
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
             return;
         }
@@ -856,13 +871,14 @@ var module_nicho = (function() {
 
 
     // se ejecutan los modulos necesarios para iniciar el proceso de obteción de epsilon y score y visualización de tablas, histogramas y mapa
-    $("#get_esc_ep").click(function() {
+    $("#get_esc_ep").click(function () {
 
         _VERBOSE ? console.log("get_esc_ep") : _VERBOSE;
         var num_items = 0, spid, idreg, subgroups;
 
         $("#show_gen").css('visibility', 'visible');
-//        $("#tuto_res").css('visibility', 'visible');
+        $("#tuto_res").css('visibility', 'visible');
+        $("#params_next").css('visibility', 'visible');
 
         // Configuración de TEST no actualizada. No se puede utilizat hasta el momento. 23-05-2016
         if (_TEST) {
@@ -876,15 +892,13 @@ var module_nicho = (function() {
             ];
             num_items = 5;
 
-        }
-        else {
+        } else {
 
             if (_map_module_nicho.get_specieTarget()) {
                 spid = _map_module_nicho.get_specieTarget().spid;
                 _res_display_module_nicho.set_spid(spid);
                 _VERBOSE ? console.log(spid) : _VERBOSE;
-            }
-            else {
+            } else {
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_especie'), "error");
 
@@ -908,10 +922,10 @@ var module_nicho = (function() {
             if (subgroups.length > 0) {
 
                 // asegura que si el grupo de variables seleccionado tiene mas de un grupo taxonomico agregue el total
-                subgroups.forEach(function(grupo) {
+                subgroups.forEach(function (grupo) {
 
                     if (grupo.value.length > 1) {
-                        grupo.value.forEach(function(item) {
+                        grupo.value.forEach(function (item) {
                             num_items++;
                         });
                     }
@@ -923,10 +937,12 @@ var module_nicho = (function() {
                     num_items++;
                 }
 
-            }
-            else {
+            } else {
+                
+                $("#show_gen").css('visibility', 'hidden');
+                $("#tuto_res").css('visibility', 'hidden');
+                $("#params_next").css('visibility', 'hidden');
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
-
                 return;
             }
 
@@ -1098,13 +1114,13 @@ var module_nicho = (function() {
 })();
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     // verbose por default es true
     var verbose = true;
 
     // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 2;
+    var ambiente = 0;
 
     // 0 nicho, 1 comunidad, 2 index
     var modulo = 0;
@@ -1115,22 +1131,19 @@ $(document).ready(function() {
         module_nicho.setUrlApi(Cookies.get("url_api"));
         module_nicho.setUrlNicho(Cookies.get("url_nicho"));
 
-    }
-    else {
+    } else {
 
         if (ambiente === 0) {
             module_nicho.setUrlFront("http://localhost/species-front");
             module_nicho.setUrlApi("http://localhost:8080");
             module_nicho.setUrlNicho("http://localhost/species-front/geoportal_v0.1.html");
-        }
-        else if (ambiente === 1) {
+        } else if (ambiente === 1) {
 
             module_nicho.setUrlFront("http://species.conabio.gob.mx");
             module_nicho.setUrlApi("http://species.conabio.gob.mx/api");
             module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
 
-        }
-        else if (ambiente === 2) {
+        } else if (ambiente === 2) {
 
             module_nicho.setUrlFront("http://species.conabio.gob.mx/dev");
             module_nicho.setUrlApi("http://species.conabio.gob.mx/api-dev");

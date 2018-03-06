@@ -992,7 +992,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             success: function (resp) {
 
                 $('#tuto_mapa_occ').loading('stop');
-
+                $("#specie_next").css('visibility', 'visible');
 
                 var data_sp = resp.data;
 
@@ -1021,7 +1021,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 if (data_sp.length === 0) {
                     _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
-
+                    $("#specie_next").css('visibility', 'hidden');
 //                    TODO: HAcer internacionalización del label
                     _toastr.info("La especie no tiene registros");
                     _clearFieldsSP();
@@ -1083,6 +1083,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
 
                 $('#tuto_mapa_occ').loading('stop');
+                $("#specie_next").css('visibility', 'hidden');
             }
 
         });
