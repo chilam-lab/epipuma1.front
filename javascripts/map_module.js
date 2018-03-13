@@ -518,6 +518,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 "api": tipo_api
             },
             success: function (json) {
+                
+                console.log(json);
 
                 // Asegura que el grid este cargado antes de realizar una generacion por enlace
                 $("#loadData").prop("disabled", false);
@@ -554,7 +556,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 _display_module.callDisplayProcess(val_process);
 
             },
-            error: function () {
+            error: function (requestObject, error, errorThrown) {
+                
+                console.log(requestObject);
+                console.log(error);
+                console.log(errorThrown);
                 // alert("Existe un error en la conexión con el servidor, intente mas tarde");
                 console.log("abort");
                 $('#map').loading('stop');
@@ -961,10 +967,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
         var milliseconds = new Date().getTime();
+        var grid_res_val = $("#grid_resolution").val();
 
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
-
+        
 
 
         $('#tuto_mapa_occ').loading({
@@ -983,7 +990,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 "lim_inf": _lin_inf,
                 "lim_sup": _lin_sup,
                 "sfecha": _sin_fecha,
-                "sfosil": _con_fosil
+                "sfosil": _con_fosil,
+                "grid_res": grid_res_val
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('X-Test-Header', 'test-value');
@@ -1034,14 +1042,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 for (i = 0; i < data_sp.length; i++) {
 
                     var item_id = JSON.parse(data_sp[i].json_geom).coordinates;
-
                     // console.log(d[i].gridid);
                     distinctPoints.set(item_id, data_sp[i]);
                     _computed_occ_cells.set(parseInt(data_sp[i].gridid), data_sp[i]);
                 }
 
 
-                var occ_cell = _computed_occ_cells.values().length;
+//                var occ_cell = _computed_occ_cells.values().length;
+                var occ_cell = data_sp[0].occ;
 
                 $.each(distinctPoints.values(), function (index, item) {
 

@@ -388,7 +388,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             var grid = _map_module_nicho.getGridMap2Export();
             
-            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
+//            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
+            this.href = (window.URL ? URL : webkitURL).createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
+            
 //            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(grid));
             
             $("#modalMailShape").modal("hide");

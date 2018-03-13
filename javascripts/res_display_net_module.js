@@ -106,21 +106,21 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         var self = this;
         self.NUM_BEANS = 21;
-        
-        
-        $("#red_download").click(function(e) {
+
+
+        $("#red_download").click(function (e) {
 
             _VERBOSE ? console.log("red_download") : _VERBOSE;
-            
-            if(_json_nodes.length === 0){
+
+            if (_json_nodes.length === 0) {
                 $("#modalMail").modal("hide");
                 return;
             }
-            
+
             var net_info = _net_module.getGridNet2Export(_json_nodes, _arrayLinks);
             var encodedUri = encodeURI(net_info);
             this.href = "data:text/csv;charset=UTF-8," + encodedUri;
-            
+
 //            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(net_info)], {type: 'text/csv;charset=utf-8;'}));
             $("#modalMail").modal("hide");
 
@@ -195,21 +195,21 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
             grupo.value.forEach(function (item) {
 
-                itemGroup = item;
+                var itemGroup = item;
                 _VERBOSE ? console.log(itemGroup) : _VERBOSE;
 
 
                 // bioticos
                 if (grupo.type == 0) {
 
-                    temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
-                    temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
-                    temp_item_parent = itemGroup.parent ? itemGroup.parent : "";
+                    var temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
+                    var temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
+                    var temp_item_parent = itemGroup.parent ? itemGroup.parent : "";
 
-                    _VERBOSE ? console.log(_reino_campos[temp_item_field]) : _VERBOSE;
+//                    _VERBOSE ? console.log(_reino_campos[temp_item_field]) : _VERBOSE;
 
-                    _VERBOSE ? console.log(temp_item_field) : _VERBOSE;
-                    _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
+//                    _VERBOSE ? console.log(temp_item_field) : _VERBOSE;
+//                    _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
 
                     filters.push({
                         'field': _reino_campos[temp_item_field],
@@ -269,17 +269,6 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         _min_occ = min_occ;
         _grid_res = grid_res_val;
 
-        var grid_res, cell_res, tbl_res;
-        if (_grid_res) {
-            grid_res = "gridid_" + _grid_res + "km";
-            cell_res = "cells_" + _grid_res + "km";
-            tbl_res = "grid_" + _grid_res + "km_aoi";
-        } else {
-            grid_res = "gridid_16km";
-            cell_res = "cells_16km";
-            tbl_res = "grid_16km_aoi";
-        }
-
         var hasBiosSource = false;
         var hasRasterSource = false;
 
@@ -290,21 +279,16 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
             _VERBOSE ? console.log("Testing...") : _VERBOSE;
 
-            d3.json("/javascripts/nodes_test.json", function (error, json_file) {
-                // d3.json("/javascripts/nodes_mammalia.json", function(error, json_file) {
-                // d3.json("/javascripts/nodes_mammalia_amphibia.json", function(error, json_file) {
-                _json_nodes = json_file;
-
-                d3.json("/javascripts/links_test.json", function (error, json_temp) {
-                    // d3.json("javascripts/links_mammalia.json", function(error, json_temp) {
-                    // d3.json("javascripts/links_mammalia_amphibia.json", function(error, json_temp) {
-
-                    _arrayLinks = json_temp;
-                    _createGraph(_arrayLinks, s_filters, t_filters);
-
-                });
-
-            });
+//            d3.json("/javascripts/nodes_test.json", function (error, json_file) {
+//                _json_nodes = json_file;
+//
+//                d3.json("/javascripts/links_test.json", function (error, json_temp) {
+//                    _arrayLinks = json_temp;
+//                    _createGraph(_arrayLinks, s_filters, t_filters);
+//
+//                });
+//
+//            });
 
         } else {
 
@@ -333,7 +317,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             }
 
 
-            milliseconds = new Date().getTime();
+//            var milliseconds = new Date().getTime();
 
             d3.json(_url_zacatuche + "/niche/getNodes")
                     .header("Content-Type", "application/json")
@@ -347,20 +331,21 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                                 hasbiotarget: hasBiosTarget,
                                 hasrastertarget: hasRasterTarget,
                                 min_occ: _min_occ,
-                                res_celda_sp: cell_res,
-                                res_celda_snib: grid_res,
-                                res_celda_snib_tb: tbl_res
+                                grid_res: _grid_res
+
                             }),
                             function (error, resp) {
 
-                                if (error)
+                                if (error) {
+                                    console.log(error);
                                     throw error;
+                                }
 
                                 var json = resp.data;
 
                                 _createNodeDictionary(json, s_filters, t_filters);
 
-                                console.log(json);
+//                                console.log(json);
 
 
                                 // it ensures that the dictionary of nodes is created before the link list is recived.
@@ -377,9 +362,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                                                     hasrastertarget: hasRasterTarget,
                                                     ep_th: 0.0,
                                                     min_occ: _min_occ,
-                                                    res_celda_sp: cell_res,
-                                                    res_celda_snib: grid_res,
-                                                    res_celda_snib_tb: tbl_res
+                                                    grid_res: _grid_res
+
                                                 }),
                                                 function (error, resp) {
 
@@ -391,9 +375,9 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                                                     _createLinkDictionary(json);
 
 
-                                                    console.log(json);
+//                                                    console.log(json);
 
-                                                    console.log(_arrayLinks);
+//                                                    console.log(_arrayLinks);
 
                                                     // if(_arrayLinks.length > 10000){
                                                     //   _toastr.warning("Numero de aristas exceden memoria del explorador, intente un relación mas pequeña");
@@ -436,7 +420,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         _associativeArray = {};
 
-        map_node = d3.map([]);
+        var map_node = d3.map([]);
 
         $.each(json, function (i, item) {
 
@@ -688,11 +672,11 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log("_getColorFilterGroups") : _VERBOSE;
 
         var filters = s_filters.concat(t_filters);
-        console.log(filters);
+        _VERBOSE ? console.log(filters) : _VERBOSE;
 
-        // _VERBOSE ? console.log(json) : _VERBOSE;
-        _VERBOSE ? console.log(s_filters) : _VERBOSE;
-        _VERBOSE ? console.log(t_filters) : _VERBOSE;
+        _VERBOSE ? console.log(json) : _VERBOSE;
+//        _VERBOSE ? console.log(s_filters) : _VERBOSE;
+//        _VERBOSE ? console.log(t_filters) : _VERBOSE;
 
 
         $.each(filters, function (i, item) {
@@ -775,7 +759,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
                         case "especievalidabusqueda":
 
-                            if (json[j].label.split(" ")[1] == filters[i].value) {
+//                            if (json[j].label.split(" ")[1] == filters[i].value) {
+                            if (json[j].label == filters[i].value) {
                                 if (!json[j].group) {
                                     json[j].group = filters[i].fGroupId;
                                     json[j].stage = 0;
