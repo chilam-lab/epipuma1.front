@@ -248,16 +248,17 @@
 
                     <div class="col-md-6 col-sm-12 col-xs-12">
 
-                        <div class="col-md-1 col-sm-12 col-xs-12 margin-top-15">
+                        <div class="col-md-9 col-sm-12 col-xs-12 margin-top-15 ">
+                            <button id="btn_tuto_steps" type="button" title="" class="btn btn-warning  display-marker "></button>
+                            <button id="btn_tutorial" type="button" title="" class="btn btn-warning "></button>
+                            <button id="nicho_link" type="button" class="btn btn-primary "></button>
+                            <button id="tuto_res" class="btn btn-warning display-marker" type="button" 
+                                    style="visibility: hidden"
+                                    ></button>
                         </div>
 
-                        <div class="col-md-5 col-sm-12 col-xs-12  margin-top-15 ">
-                            <button id="nicho_link" type="button" class="btn btn-info pull-right"></button>
-                        </div>
-
-                        <div class="col-md-2 col-sm-12 col-xs-12 margin-top-15 ">
-
-                            <div class="language_drop pull-right">
+                        <div class="col-md-3 col-sm-12 col-xs-12 margin-top-15 ">
+                            <div class="language_drop ">
 
                                 <div class=" dropdown_group ">
 
@@ -275,17 +276,6 @@
                                 </div>
 
                             </div>
-
-                        </div>
-
-                        <div class="col-md-1 col-sm-12 col-xs-12 margin-top-15">
-                            <button id="btn_tutorial" type="button" title="Ver tutorial en PDF" class="btn btn-primary glyphicon glyphicon-book glyphicon-head pull-right"></button>
-                        </div>
-
-                        <div class="col-md-3 margin-top-15">
-                            <!--<button id="btn_steps" type="button" title="Ver Pasos" class="btn btn-primary glyphicon glyphicon-info-sign glyphicon-head pull-right"></button>-->
-                            <!--glyphicon glyphicon-info-sign glyphicon-head-->
-                            <button id="btn_tuto_steps" type="button" title="" class="btn btn-warning pull-right display-marker">Live Tutorial</button>
                         </div>
 
                     </div>
@@ -403,10 +393,10 @@
                                 <button id="reload_map" class="btn btn-primary pull-right" type="button"></button>
                             </div>
 
-                            <div class="col-md-12  margin-top-five">
-                                <button id="specie_next" class="btn btn-success pull-right" type="button" style="visibility: hidden">Siguiente</button>
-                            </div>
 
+                            <button id="specie_next" class="btn btn-success btn-sig " type="button" 
+                                    style="visibility: hidden"
+                                    >Siguiente</button>
 
                         </div>
 
@@ -561,7 +551,7 @@
             <div id="section1" class="row-fluid margin-top-15 section page">
 
 
-                <div id="tuto_params" class="col-md-5 margin-top-15 box_shadow height80 padding-sides-zero">
+                <div id="tuto_params" class="col-md-5 margin-top-15 box_shadow height85 padding-sides-zero">
 
                     <div class="col-md-12 ">
 
@@ -616,32 +606,31 @@
 
                 <div id="tuto_variables" class="col-md-7 margin-top-15 ">
 
-                    <div class="col-md-12 box_shadow padding-sides-zero height80" id="variables"></div>
+                    <div class="col-md-12 box_shadow padding-sides-zero height85" id="variables"></div>
 
                 </div>
 
                 <div id="tuto_correr_analisis" class="col-md-12 margin-top-15 ">
 
-                    <div class="col-md-offset-4 col-md-4 padding-sides-zero " >
+                    <div class=" col-md-4 col-centered " >
 
                         <!--<div class="col-md-12 margin-top-15">-->
-                        <button id="get_esc_ep" class="btn btn-primary pull-left" type="button" ></button>
-                        <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link " 
-                                type="button" title="Guardar enlace de resultados" 
-                                style="visibility: hidden" ></button>                        
-                        <button id="tuto_res" class="btn btn-warning display-marker" type="button" style="visibility: hidden"></button>
-                        <!--<div class="">-->
-                        <!--                                <button id="_next" class="btn btn-success pull-right" type="button">Siguiente</button>-->
-                        <!--</div>-->
+                        <button id="get_esc_ep" class="btn btn-primary " type="button" ></button>
+                        <button id="show_gen" class="btn btn-primary margin-left-two" 
+                                type="button" title="" 
+                                style="visibility: hidden" 
+                                ></button>                        
 
                     </div>
 
 
                 </div>
 
-                <div class="col-md-2 col-md-offset-4 margin-top-15">
-                    <button id="params_next" class="btn btn-success pull-right" type="button" style="visibility: hidden">Siguiente</button>
-                </div>
+
+                <button id="params_next" class="btn btn-success btn-sig-left" type="button" 
+                        style="visibility: hidden"
+                        >Siguiente</button>
+                <!---->
 
             </div>
 
@@ -665,15 +654,17 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 margin-top-15">
-                    <button id="map_next" class="btn btn-success pull-right" type="button" style="visibility: hidden">Siguiente</button>
-                </div>
+                <!--<div class="col-md-12 margin-top-15">-->
+
+                <!--</div>-->
 
 
             </div>
 
-
-            <!--style="display:  none;"-->
+            <button id="map_next" class="btn btn-success btn-sig" type="button" 
+                    style="visibility: hidden"
+                    >Siguiente</button>
+            <!---->
 
 
             <div class="row-fluid row_panel margin-top-35 section page" id="tbl_hist" > 
@@ -694,12 +685,11 @@
 
                     </div>
 
-                    <div class="row-fluid myButtonNextContainer">
-                        <div class=" col-md-12 ">
-                            <button id="hist_next" class="btn btn-success pull-right" type="button" style="visibility: hidden">Siguiente</button>
-                        </div>
 
-                    </div>
+                    <button id="hist_next" class="btn btn-success btn-sig-rigth" type="button" 
+                            style="visibility: hidden"
+                            >Siguiente</button>
+                    <!--style="visibility: hidden"-->
 
 
                     <div id="histcontainer_row" class="row-fluid histcontainer_row box_shadow ">
@@ -872,18 +862,18 @@
 
 
 
-<!--        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-6 alwaysvisible">
-
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  pull-left">
-                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem anterior">
-                    <a id="ant_a" href="#" class="a_estatus">Anterior</a>
-                </div>
-                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem siguiente">
-
-                    <a id="sig_a" href="#" class="a_estatus">Siguiente</a>
-                </div>
-            </div>
-        </div>-->
+        <!--        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-6 alwaysvisible">
+        
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  pull-left">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem anterior">
+                            <a id="ant_a" href="#" class="a_estatus">Anterior</a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem siguiente">
+        
+                            <a id="sig_a" href="#" class="a_estatus">Siguiente</a>
+                        </div>
+                    </div>
+                </div>-->
 
 
 

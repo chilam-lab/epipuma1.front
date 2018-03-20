@@ -394,9 +394,20 @@ var language_module = (function (verbose) {
             $('#tdisplay tr:eq(0) th:eq(12)').text($.i18n.prop('a_item_familia'));
             
             $("#specie_next").text($.i18n.prop('label_next'));
-            $("#params_next").text($.i18n.prop('label_next'));
-            $("#map_next").text($.i18n.prop('label_next'));
-            $("#hist_next").text($.i18n.prop('label_next'));
+            
+            $("#params_next").text($.i18n.prop('params_next'));
+            $("#map_next").text($.i18n.prop('map_next'));
+            $("#hist_next").text($.i18n.prop('hist_next'));
+            
+            $("#btn_tutorial").text($.i18n.prop('btn_tutorial'));
+            $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
+            $("#show_gen").text($.i18n.prop('show_gen'));
+            
+            
+            
+            
+            
+            
 
             _confLiveTutorialNiche();
 
@@ -441,6 +452,10 @@ var language_module = (function (verbose) {
             $("#lb_des_modal_red").text($.i18n.prop('lb_des_modal_red'));
             $("#red_download").text($.i18n.prop('red_download'));
             $("#cancel_red_csv").text($.i18n.prop('cancel_red_csv'));
+            
+            $("#btn_tutorial").text($.i18n.prop('btn_tutorial'));
+            $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
+            $("#show_gen").text($.i18n.prop('show_gen'));
 
             _confLiveTutorialNet();
 

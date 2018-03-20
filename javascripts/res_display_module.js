@@ -1172,6 +1172,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     $('#chartdiv_score_decil').loading('stop');
                     $('#div_example').loading('stop');
                     $("#hist_next").css('visibility', 'visible');
+                    $("#hist_next").show("slow");
 
 
 
@@ -1193,6 +1194,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 $('#chartdiv_score_decil').loading('stop');
                 $('#div_example').loading('stop');
                 $("#hist_next").css('visibility', 'hidden');
+                $("#hist_next").hide("slow");
 
 
                 mensaje = "";
@@ -1325,6 +1327,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 $('#map').loading('stop');
                 $("#map_next").css('visibility', 'visible');
+                $("#map_next").show("slow");
 
                 var json = json_file.data;
                 
@@ -1346,6 +1349,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
                 $("#map_next").css('visibility', 'hidden');
+                $("#map_next").hide("slow");
 
                 $('#map').loading('stop');
 

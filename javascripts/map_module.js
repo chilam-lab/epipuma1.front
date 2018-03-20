@@ -1001,6 +1001,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 $('#tuto_mapa_occ').loading('stop');
                 $("#specie_next").css('visibility', 'visible');
+                $("#specie_next").show("slow");
 
                 var data_sp = resp.data;
 
