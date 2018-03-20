@@ -1162,7 +1162,7 @@ h3{
 .dropdown_group{
     /*margin-left: 5px;*/
     /*border-style: solid;*/
-    width: 100% !important;
+    /*width: 100% !important;*/
 }
 
 .dropdown_bioclim{
@@ -1714,6 +1714,14 @@ button.glyphicon-remove:before {
     height: 80%; 
 }
 
+.height90{
+    height: 90%; 
+}
+
+.height85{
+    height: 85%; 
+}
+
 .height20{
     height: 20%; 
 }
@@ -1849,7 +1857,7 @@ button.glyphicon-remove:before {
 }
 
 .visibleItem{
-    
+
 }
 
 .anterior{
@@ -1861,8 +1869,8 @@ button.glyphicon-remove:before {
 }
 
 #section0, #section1, #section2 {
-  overflow-y: scroll;
-  scroll-behavior: smooth;   
+    overflow-y: scroll;
+    scroll-behavior: smooth;   
 }
 
 .a_estatus{
@@ -1877,7 +1885,56 @@ button.glyphicon-remove:before {
 
 
 #show_gen #get_esc_ep #params_next{
-    
+
     height: 25px !important;
-    
+
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.btn-sig{
+
+    position: fixed;
+    left: 45%;
+    top: 95%;
+    z-index: 100;
+    /*border-radius: 50%;*/
+}
+
+.btn-sig-left{
+    position: fixed;
+    left: 25%;
+    top: 95%;
+    z-index: 100;
+    /*border-radius: 50%;*/
+}
+
+.btn-sig-rigth{
+    position: fixed;
+    left: 65%;
+    top: 95%;
+    z-index: 100;
+    /*border-radius: 50%;*/
+}
+
+.pulse {
+	animation-name: pulse_animation;
+	animation-duration: 2000ms;
+	transform-origin:70% 70%;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+@keyframes pulse_animation {
+    0% { transform: scale(1); }
+    30% { transform: scale(1); }
+    40% { transform: scale(1.08); }
+    50% { transform: scale(1); }
+    60% { transform: scale(1); }
+    70% { transform: scale(1.05); }
+    80% { transform: scale(1); }
+    100% { transform: scale(1); }
 }

@@ -285,27 +285,35 @@ var module_nicho = (function () {
             $('html, body').animate({
                 scrollTop: $("#section1").offset().top - 40
             }, 2000);
+
+            $("#specie_next").hide("slow");
         });
-        
+
         $("#params_next").click(function () {
             $('html, body').animate({
                 scrollTop: $("#map").offset().top - 40
             }, 2000);
+
+            $("#params_next").hide("slow");
         });
-        
+
         $("#map_next").click(function () {
             $('html, body').animate({
                 scrollTop: $("#myScrollableBlockEpsilonDecil").offset().top - 40
             }, 2000);
+
+            $("#map_next").hide("slow");
         });
-        
+
         $("#hist_next").click(function () {
             $('html, body').animate({
                 scrollTop: $("#histcontainer_row").offset().top - 40
             }, 2000);
+
+            $("#hist_next").hide("slow");
         });
-        
-        
+
+
 
 
         $('.ct-sliderPop-close').on('click', function () {
@@ -325,7 +333,12 @@ var module_nicho = (function () {
                 var grid_res_val = $("#grid_resolution").val();
 //                console.log("grid_resolution: " + grid_res_val);
                 $("#specie_next").css('visibility', 'hidden');
-                
+                $("#specie_next").hide("slow");
+
+                $("#params_next").hide("slow");
+                $("#map_next").hide("slow");
+                $("#hist_next").hide("slow");
+
                 $.ajax({
                     url: _url_api + "/niche/especie",
                     dataType: "json",
@@ -878,7 +891,14 @@ var module_nicho = (function () {
 
         $("#show_gen").css('visibility', 'visible');
         $("#tuto_res").css('visibility', 'visible');
+
         $("#params_next").css('visibility', 'visible');
+        $("#params_next").show("slow");
+        
+        $("#specie_next").hide("slow");
+        $("#map_next").hide("slow");
+        $("#hist_next").hide("slow");
+
 
         // Configuración de TEST no actualizada. No se puede utilizat hasta el momento. 23-05-2016
         if (_TEST) {
@@ -938,10 +958,16 @@ var module_nicho = (function () {
                 }
 
             } else {
-                
+
                 $("#show_gen").css('visibility', 'hidden');
                 $("#tuto_res").css('visibility', 'hidden');
                 $("#params_next").css('visibility', 'hidden');
+                
+                $("#specie_next").hide("slow");
+                $("#params_next").hide("slow");
+                $("#map_next").hide("slow");
+                $("#hist_next").hide("slow");
+
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
                 return;
             }
