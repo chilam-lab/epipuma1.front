@@ -490,35 +490,35 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         }
 
 
-        var tipo_api;
+//        var tipo_api;
+//
+//        if (_url_zacatuche.indexOf("api-rc") !== -1) {
+//            tipo_api = "rc";
+//        } else if (_url_zacatuche.indexOf("api-dev") !== -1) {
+//            tipo_api = "dev";
+//        } else if (_url_zacatuche.indexOf("localhost") !== -1) {
+//            tipo_api = "local";
+//        } else {
+//            tipo_api = "pro";
+//        }
 
-        if (_url_zacatuche.indexOf("api-rc") !== -1) {
-            tipo_api = "rc";
-        } else if (_url_zacatuche.indexOf("api-dev") !== -1) {
-            tipo_api = "dev";
-        } else if (_url_zacatuche.indexOf("localhost") !== -1) {
-            tipo_api = "local";
-        } else {
-            tipo_api = "pro";
-        }
-
-        _VERBOSE ? console.log("tipo_api: " + tipo_api) : _VERBOSE;
+//        _VERBOSE ? console.log("tipo_api: " + tipo_api) : _VERBOSE;
 
         $('#map').loading({
             stoppable: true
         });
 
         $.ajax({
-            url: _url_zacatuche + "/niche/especie",
+            url: _url_zacatuche + "/niche/especie/getGridGeoJson",
             type: 'post',
             dataType: "json",
             data: {
-                "qtype": "getGridGeoJsonMX",
-                "grid_res": grid_res,
-                "api": tipo_api
+//                "qtype": "getGridGeoJsonMX",
+                "grid_res": grid_res
+//                "api": tipo_api
             },
             success: function (json) {
-                
+
                 console.log(json);
 
                 // Asegura que el grid este cargado antes de realizar una generacion por enlace
@@ -557,7 +557,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             },
             error: function (requestObject, error, errorThrown) {
-                
+
                 console.log(requestObject);
                 console.log(error);
                 console.log(errorThrown);
@@ -940,16 +940,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {boolean} sfecha - Bandera para saber si serán considerados los registros sin fecha
      * @param {boolean} sfosil - Bandera para saber si serán considerados los registros sin fosiles
      */
-    function busca_especie_filtros(rango, sfecha, sfosil) {
+    function busca_especie_filtros(rango, sfecha, sfosil, dPoints) {
 
-        _VERBOSE ? console.log("busca_especie") : _VERBOSE;
+        _VERBOSE ? console.log("busca_especie_filtros") : _VERBOSE;
 
         _lin_inf = rango ? rango[0] : undefined;
         _lin_sup = rango ? rango[1] : undefined;
         _sin_fecha = sfecha;
         _con_fosil = sfosil;
 
-        busca_especie();
+        busca_especie(dPoints);
 
         _toastr.info($.i18n.prop('lb_cal_occ'));
 
@@ -963,7 +963,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      */
-    function busca_especie() {
+    function busca_especie(dPoints) {
 
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
         var milliseconds = new Date().getTime();
@@ -971,8 +971,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
-        
 
+        console.log(dPoints);
 
         $('#tuto_mapa_occ').loading({
             stoppable: true
@@ -1018,11 +1018,20 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
 
-                _discardedPoints = d3.map([]);		// puntos descartados por eliminacion
+                _discardedPoints = dPoints;		// puntos descartados por eliminacion
                 _allowedPoints = d3.map([]);		// puntos para analisis
                 _discardedPointsFilter = d3.map([]); 	// puntos descartados por filtros
                 _computed_occ_cells = d3.map([]);	// celdas para analisis
                 // _computed_discarded_cells = d3.map([]);	// celdas descartadas por filtros
+                
+                var gridItems = [];
+                if (dPoints.values().length > 0) {
+                    $.each(dPoints.values(), function (index, item) {
+                        gridItems.push(item.feature.properties.gridid);
+                    });
+                    
+                    console.log(gridItems);
+                }
 
                 // var computed_occ_cells_totals = d3.map([]);
                 var distinctPoints = d3.map([]);
@@ -1057,11 +1066,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     var item_id = JSON.parse(item.json_geom).coordinates.toString();
 
                     // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
-                    _allowedPoints.set(item_id, {
-                        "type": "Feature",
-                        "properties": {"url": item.urlejemplar, "fecha": item.fechacolecta, "specie": _specie_target.label, "gridid": item.gridid},
-                        "geometry": JSON.parse(item.json_geom)
-                    });
+                    
+                    if ($.inArray(item.gridid, gridItems) === -1) {
+                        _allowedPoints.set(item_id, {
+                            "type": "Feature",
+                            "properties": {"url": item.urlejemplar, "fecha": item.fechacolecta, "specie": _specie_target.label, "gridid": item.gridid},
+                            "geometry": JSON.parse(item.json_geom)
+                        });
+                    }
 
                 });
 
@@ -1912,42 +1924,42 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("getGridMap") : _VERBOSE;
         var date = new Date();
-        var sufijo = "_Exp_"+date.getFullYear()+"_"+date.getMonth()+"_"+date.getDay()+"_"+date.getHours()+":"+date.getMinutes();
-        $("#map_download").attr("download","map" + sufijo + ".geojson");
+        var sufijo = "_Exp_" + date.getFullYear() + "_" + date.getMonth() + "_" + date.getDay() + "_" + date.getHours() + ":" + date.getMinutes();
+        $("#map_download").attr("download", "map" + sufijo + ".geojson");
 
-        var grid_map_2export = {"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[]}
+        var grid_map_2export = {"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}, "features": []}
         var features = [];
-        
+
         for (var i = 0; i < _grid_map.features.length; i++) {
-            
-            if(_grid_map.features[i].properties.score !== null){        
+
+            if (_grid_map.features[i].properties.score !== null) {
                 features.push(_grid_map.features[i]);
             }
 
         }
-        
+
         grid_map_2export.features = features;
         return grid_map_2export;
 
     }
-    
+
     function getSP2Export() {
 
         _VERBOSE ? console.log("getSP2Export") : _VERBOSE;
-        
-        var date = new Date();
-        var sufijo = "_Exp_"+date.getFullYear()+"_"+date.getMonth()+"_"+date.getDay()+"_"+date.getHours()+":"+date.getMinutes();
-//        $("#sp_download").attr("download", _specie_target.label.replace(/\s/g, '')  + sufijo + ".geojson");
-        $("#sp_download").attr("download", _specie_target.label.replace(/\s/g, '')  + sufijo + ".geojson");
 
-        var sp_target_2export = {"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[]}
+        var date = new Date();
+        var sufijo = "_Exp_" + date.getFullYear() + "_" + date.getMonth() + "_" + date.getDay() + "_" + date.getHours() + ":" + date.getMinutes();
+//        $("#sp_download").attr("download", _specie_target.label.replace(/\s/g, '')  + sufijo + ".geojson");
+        $("#sp_download").attr("download", _specie_target.label.replace(/\s/g, '') + sufijo + ".geojson");
+
+        var sp_target_2export = {"type": "FeatureCollection", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}, "features": []}
         var features = [];
         var temp_features = _allowedPoints.values();
-        
+
         for (var i = 0; i < temp_features.length; i++) {
             features.push(temp_features[i]);
         }
-        
+
         sp_target_2export.features = features;
         return sp_target_2export;
 

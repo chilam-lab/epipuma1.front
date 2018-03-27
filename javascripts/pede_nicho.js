@@ -340,11 +340,11 @@ var module_nicho = (function () {
                 $("#hist_next").hide("slow");
 
                 $.ajax({
-                    url: _url_api + "/niche/especie",
+                    url: _url_api + "/niche/especie/getEntList",
                     dataType: "json",
                     type: "post",
                     data: {
-                        qtype: 'getEntList',
+//                        qtype: 'getEntList',
                         limit: true,
                         searchStr: request.term,
                         source: 1, // source para saber si viene de objetivo o el target
@@ -395,7 +395,7 @@ var module_nicho = (function () {
 
                 _map_module_nicho.set_specieTarget(specie_target);
 
-                _map_module_nicho.busca_especie();
+                _map_module_nicho.busca_especie(d3.map([]));
 
                 _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
 
@@ -423,7 +423,7 @@ var module_nicho = (function () {
 
                 $('.nav-tabs a[href="#tab_resumen"]').tab('show');
 
-                _map_module_nicho.busca_especie_filtros(rango_fechas, chkFecha, chkFosil);
+                _map_module_nicho.busca_especie_filtros(rango_fechas, chkFecha, chkFosil, d3.map([]));
 
                 $("#reload_map").addClass('btn-primary').removeClass('btn-success');
 
@@ -490,7 +490,35 @@ var module_nicho = (function () {
             data_link += "gridRes=" + parseInt($("#grid_resolution").val()) + "&";
 
 
+            //add deleted occ
+            var dPoints = _map_module_nicho.get_discardedPoints();
+            if (dPoints.values().length > 0) {
+                data_link += "num_dpoints=" + dPoints.values().length + "&";
+                dPoints.values().forEach(function (item, index) {
+//                console.log(item);
+//                console.log(item.feature.properties.gridid);
 
+                    var str_item = JSON.stringify(
+                            {feature: {
+                                    properties: {
+                                        gridid: item.feature.properties.gridid
+                                    }
+                                }
+                            });
+//                console.log(str_item);
+
+                    if (index === 0) {
+                        data_link += "deleteditem[" + index + "]=" + str_item;
+                    } else {
+                        data_link += "&deleteditem[" + index + "]=" + str_item;
+                    }
+
+                });
+                data_link += "&";
+            }
+            else{
+                data_link += "num_dpoints=0&";
+            }
 
             data_link += "num_filters=" + subgroups.length + "&";
 
@@ -549,10 +577,10 @@ var module_nicho = (function () {
         console.log("_getLinkToken");
 
         $.ajax({
-            url: _url_api + "/niche/especie",
+            url: _url_api + "/niche/especie/getToken",
             type: 'post',
             data: {
-                qtype: 'getToken',
+//                qtype: 'getToken',
                 confparams: data_link,
                 tipo: 'nicho'
             },
@@ -594,10 +622,10 @@ var module_nicho = (function () {
 
 
         $.ajax({
-            url: _url_api + "/niche/especie",
+            url: _url_api + "/niche/especie/getValuesFromToken",
             type: 'post',
             data: {
-                qtype: 'getValuesFromToken',
+//                qtype: 'getValuesFromToken',
                 token: token,
                 tipo: 'nicho'
             },
@@ -632,18 +660,24 @@ var module_nicho = (function () {
 
                 var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
 
+                // recover deleted items
+                var num_dpoints = parseInt(_json_config.num_dpoints);
+                var map_dPoints = d3.map([]);
+                for (i = 0; i < num_dpoints; i++) {
+                    var item = JSON.parse(_json_config["deleteditem[" + i + "]"]);
+                    map_dPoints.set(item.feature.properties.gridid, item);
+                }
+                console.log(map_dPoints.values());
+
+
                 var num_filters = parseInt(_json_config.num_filters);
-
-
                 var filters = [];
                 for (i = 0; i < num_filters; i++) {
-
-                    item = _json_config["tfilters[" + i + "]"];
-
+                    var item = _json_config["tfilters[" + i + "]"];
                     filters.push(JSON.parse(_json_config["tfilters[" + i + "]"]));
                 }
 
-                _procesaValoresEnlace(sp_data, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes);
+                _procesaValoresEnlace(sp_data, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, map_dPoints);
                 $("#show_gen").css('visibility', 'hidden');
 
 
@@ -752,18 +786,19 @@ var module_nicho = (function () {
      * @param {array} rango_fechas - Rango de fecha para realizar los cálculos
      * @param {integer} gridRes - Resolución de la malla para ser considerado en los cálculos
      */
-    function _procesaValoresEnlace(sp_data, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes) {
+    function _procesaValoresEnlace(sp_data, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, map_dPoints) {
 
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
         var spid = sp_data.spid;
-        var discardedPoints = d3.map([]); // considerar arregle de puntos descartadas
-        var computed_discarded_cells = d3.map([]); // considerar arregle de celdas descartadas
-        var allowedPoints = d3.map([]); // considerar arregle de puntos permitidos
+//        var discardedPoints = map_dPoints;
+//        var computed_discarded_cells = d3.map([]); // considerar arregle de celdas descartadas
+//        var allowedPoints = d3.map([]); // considerar arregle de puntos permitidos
         var idreg = ["Estados"]; // Módulo por desarrollar
         var type_time = 0;
         var num_items = 0;
-
+        
+        
         $("#nom_sp").val(sp_data.label);
 
         _map_module_nicho.set_specieTarget(sp_data);
@@ -825,7 +860,7 @@ var module_nicho = (function () {
             $("#occ_number").val(chkOcc);
         }
 
-        if (rango_fechas != undefined) {
+        if (rango_fechas !== undefined) {
 
             $("#sliderFecha").slider('values', 0, rango_fechas[0]);
             $("#sliderFecha").slider('values', 1, rango_fechas[1]);
@@ -834,11 +869,20 @@ var module_nicho = (function () {
 
         $('#grid_resolution option[value=' + gridRes + ']').attr('selected', 'selected');
 
-        if (chkFec != undefined || rango_fechas != undefined) {
+        console.log(map_dPoints.values());
+        
+        if (chkFec !== undefined || rango_fechas !== undefined) {
+            
+            console.log("filtros");
+            console.log(map_dPoints.values());
 
-            _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec);
-        } else {
-            _map_module_nicho.busca_especie();
+            _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec, chkFosil, map_dPoints);
+        } 
+        else {
+            console.log("busca");
+            console.log(map_dPoints.values());
+
+            _map_module_nicho.busca_especie(map_dPoints);
         }
 
 
@@ -874,9 +918,9 @@ var module_nicho = (function () {
             return;
         }
 
-        _res_display_module_nicho.set_discardedPoints(discardedPoints);
-        _res_display_module_nicho.set_discardedCellFilter(computed_discarded_cells);
-        _res_display_module_nicho.set_allowedCells(allowedPoints);
+//        _res_display_module_nicho.set_discardedPoints(discardedPoints);
+//        _res_display_module_nicho.set_discardedCellFilter(computed_discarded_cells);
+//        _res_display_module_nicho.set_allowedCells(allowedPoints);
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_link'), "info");
 
@@ -894,7 +938,7 @@ var module_nicho = (function () {
 
         $("#params_next").css('visibility', 'visible');
         $("#params_next").show("slow");
-        
+
         $("#specie_next").hide("slow");
         $("#map_next").hide("slow");
         $("#hist_next").hide("slow");
@@ -962,7 +1006,7 @@ var module_nicho = (function () {
                 $("#show_gen").css('visibility', 'hidden');
                 $("#tuto_res").css('visibility', 'hidden');
                 $("#params_next").css('visibility', 'hidden');
-                
+
                 $("#specie_next").hide("slow");
                 $("#params_next").hide("slow");
                 $("#map_next").hide("slow");
@@ -974,7 +1018,10 @@ var module_nicho = (function () {
 
         }
 
-        if (idreg[0] == "Estados" || idreg[0] == "Ecoregiones") {
+        if (idreg[0] === "Estados" || idreg[0] === "Ecoregiones") {
+            
+            
+            console.log(_map_module_nicho.get_discardedPoints());
 
             _res_display_module_nicho.set_discardedPoints(_map_module_nicho.get_discardedPoints());
             _res_display_module_nicho.set_discardedCellFilter(_map_module_nicho.get_discardedCellFilter());
