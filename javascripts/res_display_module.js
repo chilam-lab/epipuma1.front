@@ -456,15 +456,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
             _discarded_cell_set.set(item.feature.properties.gridid, item.feature.properties.gridid);
         });
 
-
 //        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
 //        _VERBOSE ? console.log(_computed_discarded_cells.values().length) : _VERBOSE;
 
         _REQUESTS = num_items + _subgroups.length;
         _ITER_REQUESTS = _REQUESTS;
-
 //        _VERBOSE ? console.log("Peticiones al servidor: " + _REQUESTS) : _VERBOSE;
-
 
 //        document.getElementById("tbl_hist").style.display = "inline";
         _cleanPanel();

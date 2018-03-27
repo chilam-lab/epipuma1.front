@@ -82,52 +82,45 @@ var module_index = (function() {
 
         $("#send_email_login").click(function() {
             _VERBOSE ? console.log("send_email_login") : _VERBOSE;
-            _VERBOSE ? console.log(_link_val) : _VERBOSE;
-
-            _VERBOSE ? console.log($("#email_address")[0].validity["valid"]) : _VERBOSE;
-            _VERBOSE ? console.log($("#usaer_name").val()) : _VERBOSE;
+//            _VERBOSE ? console.log(_link_val) : _VERBOSE;
+            _VERBOSE ? console.log("valido: " + $("#email_address")[0].validity["valid"]) : _VERBOSE;
 
             var regexp = /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
 
-            if (!regexp.test($("#usaer_name").val())) {
-                _toastr.error("Por favor inserte un usuario valido. Debe contener al menos un nombre y un apellido");
-                $("#usaer_name").val("");
+            if (!regexp.test($("#user_name").val())) {
+                _toastr.error(_iTrans.prop("invalid_user"));
+                $("#user_name").val("");
+                $("#email_address").val("");
                 return;
             }
 
             if ($("#email_address")[0].validity["valid"]) {
                 var email = $("#email_address").val();
-                var fecha = getDateNow();
-                var usuario = $("#usaer_name").val();
+                var usuario = $("#user_name").val();
 
                 _VERBOSE ? console.log("email: " + email) : _VERBOSE;
-                _VERBOSE ? console.log("fecha: " + fecha) : _VERBOSE;
                 _VERBOSE ? console.log("usuario: " + usuario) : _VERBOSE;
 
-                // TODO: Registro de correo y redireccionamiento a pagina.
                 $.ajax({
-                    // url : "http://localhost:8080/snib/getUserReg",
-                    url: _url_api + "/niche/especie",
+                    url: _url_api + "/niche/especie/getUserReg",
                     type: "post",
                     data: {
-                        qtype: "getUserReg",
+//                        qtype: "getUserReg",
                         email: email
                     },
                     success: function(d) {
                         var res = d.data;
-                        // var res = JSON.parse(d)
+                        
+                        var count = parseInt(res[0].count);
+                        _VERBOSE ? console.log("count: " + count) : _VERBOSE;
 
-                        var count = res[0].registro;
-                        _VERBOSE ? console.log(count) : _VERBOSE;
-
-                        if (count == 0) {
+                        if (count === 0) {
                             $.ajax({
-                                url: _url_api,
+                                url: _url_api + "/niche/especie/setUserReg",
                                 type: "post",
                                 data: {
-                                    qtype: "setUserReg",
+//                                    qtype: "setUserReg",
                                     email: email,
-                                    fecha: fecha,
                                     usuario: usuario
                                 },
                                 success: function(d) {
@@ -137,13 +130,15 @@ var module_index = (function() {
                                     window.location.replace(_link_val);
                                 },
                                 error: function(jqXHR, textStatus, errorThrown) {
+                                    _VERBOSE ? console.log("error: " + jqXHR) : _VERBOSE;
                                     _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                                    _VERBOSE ? console.log("error: " + errorThrown) : _VERBOSE;
 
                                     $("#email_address").val("");
-                                    $("#usaer_name").val("");
+                                    $("#user_name").val("");
 
                                     $("#modalLogin").modal("hide");
-                                    _toastr.error("Existio un error de registro, intentelo nuevamente");
+                                    _toastr.error(_iTrans.prop("general_error"));
                                     // _module_toast.showToast_BottomCenter(_iTrans.prop('lb_correo_error'), "error")
                                 }
                             });
@@ -157,16 +152,17 @@ var module_index = (function() {
                         _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
                         $("#email_address").val("");
-                        $("#usaer_name").val("");
+                        $("#user_name").val("");
                         $("#modalLogin").modal("hide");
 
-                        _toastr.error("Existio un error de registro, intentelo nuevamente");
+                        _toastr.error(_iTrans.prop("general_error"));
                     }
                 });
 
             } else {
+                $("#user_name").val("");
                 $("#email_address").val("");
-                _toastr.error("Correo invalido, intentelo nuevamente");
+                _toastr.error(_iTrans.prop("invalid_user"));
             }
         });
 

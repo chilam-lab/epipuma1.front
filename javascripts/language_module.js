@@ -490,6 +490,11 @@ var language_module = (function (verbose) {
 
             $("#lb_modal_login").text($.i18n.prop('lb_modal_login'));
             $("#lb_des_modal_login").text($.i18n.prop('lb_des_modal_login'));
+            
+            $("#btn_redirect").text($.i18n.prop('btn_redirect'));
+            
+            
+            
 
 
         }

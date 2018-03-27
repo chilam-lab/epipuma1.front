@@ -598,11 +598,11 @@ var variable_module = (function(verbose, url_zacatuche) {
                                 _VERBOSE ? console.log(self) : _VERBOSE;
 
                                 $.ajax({
-                                    url: _url_zacatuche + "/niche/especie",
+                                    url: _url_zacatuche + "/niche/especie/getEntList",
                                     dataType: "json",
                                     type: "post",
                                     data: {
-                                        qtype: 'getEntList',
+//                                        qtype: 'getEntList',
                                         searchStr: request.term,
                                         nivel: self.varfilter_selected[1],
                                         source: 0 // source para saber si viene de objetivo o el target
