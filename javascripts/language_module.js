@@ -403,16 +403,11 @@ var language_module = (function (verbose) {
             $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
             $("#show_gen").text($.i18n.prop('show_gen'));
             
-            
-            
-            
-            
-            
-
             _confLiveTutorialNiche();
 
 
-        } else if (_tipo_modulo === 1) {
+        } 
+        else if (_tipo_modulo === 1) {
 
             $("#lb_titulo_net").text($.i18n.prop('lb_titulo_net'));
             $("#net_link").text($.i18n.prop('net_link'));

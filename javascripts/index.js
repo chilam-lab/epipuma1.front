@@ -10,19 +10,20 @@ var module_index = (function() {
 
     _VERBOSE ? console.log("*** loading index... ***") : _VERBOSE;
 
-    var _language_module_net;
+    var _language_module_index;
     var _toastr = toastr;
     var _iTrans;
     var _tipo_modulo;
     var _link_val;
 
-    var url_front;
-    var url_api;
-
-
-
+    var _url_front;
+    var _url_api;
+    var _url_nicho;
+    var _url_comunidad;
+    
+            
     // TEMPORAL DESARROLLO
-    var _url_api, _url_nicho, _url_comunidad;
+//    var _url_api, _url_nicho, _url_comunidad;
 
     /**
      * Método de inicialización de componentes necesarios en la primera pantalla
@@ -36,14 +37,15 @@ var module_index = (function() {
 
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
-//        Cookies.remove('register');
-
-        if (Cookies.get("register") === undefined) {
-            Cookies.set("register", true, {expires: 7});
+        if (localStorage.getItem("register") === undefined) {
+            
+            localStorage.register = true;
+            
             $("#div_rel_nicho").attr('href',_url_nicho);
             $("#div_rel_com").attr('href',_url_comunidad);
             $("#link_modelo_nicho").append("<a href=\"#\"  id=\"a_modelo_nicho\" link-id=\"" + _url_nicho + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" >" + _iTrans.prop("a_modelo_nicho") + "</a>");
             $("#link_modelo_comunidad").append("<a href=\"#\" id=\"a_modelo_comunidad\" link-id=\"" + _url_comunidad + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
+            
         }
         else {
             $("#div_rel_nicho").attr('href',_url_nicho);
@@ -168,7 +170,7 @@ var module_index = (function() {
 
 
         $("#btn_tutorial").click(function() {
-            window.open(url_front + "/docs/tutorial.pdf");
+            window.open(_url_front + "/docs/tutorial.pdf");
         });
 
         var timer = 5000;
@@ -196,18 +198,18 @@ var module_index = (function() {
 
         $(".box_nicho").bgswitcher({
             images: [
-                url_front + "/images/mapa.png",
-                url_front + "/images/decil.png",
-                url_front + "/images/score_celda.png"],
+                _url_front + "/images/mapa.png",
+                _url_front + "/images/decil.png",
+                _url_front + "/images/score_celda.png"],
             effect: "fade",
             interval: timer
         });
 
         $(".box_net").bgswitcher({
             images: [
-                url_front + "/images/red.png",
-                url_front + "/images/mapa_riqueza.png",
-                url_front + "/images/tabla_red.png"],
+                _url_front + "/images/red.png",
+                _url_front + "/images/mapa_riqueza.png",
+                _url_front + "/images/tabla_red.png"],
             effect: "fade",
             interval: timer
         });
@@ -218,12 +220,12 @@ var module_index = (function() {
     /**
      * Regresa la fecha actual con formato YYYY-MM-DD
      *
-     * @function getDateNow 
+     * @function _getDateNow 
      * @private
      * @memberof! module_index
      */
-    function getDateNow() {
-        _VERBOSE ? console.log("getDateNow") : _VERBOSE;
+    function _getDateNow() {
+        _VERBOSE ? console.log("_getDateNow") : _VERBOSE;
 
         var today = new Date();
         var dd = today.getDate();
@@ -255,36 +257,22 @@ var module_index = (function() {
      *                                1-comunidad, 2-index)
      * @param {boolean} verbose - Se activa mesnajes de debug
      */
-    function startModule(front, api, tipo_modulo, verbose) {
+    function startModule(tipo_modulo) {
 
-        url_front = front;
-        url_api = api;
-
-        // _AMBIENTE = ambiente
-        _VERBOSE = verbose;
-
-        console.log("_VERBOSE: " + _VERBOSE);
-        _VERBOSE ? console.log("URL front: " + url_front) : _VERBOSE;
-        _VERBOSE ? console.log("URL api: " + url_api) : _VERBOSE;
-        _VERBOSE ? console.log("startModule Index") : _VERBOSE;
+        _url_front = localStorage.getItem("url_front");
+        _url_api = localStorage.getItem("url_api");
+        _url_nicho = localStorage.getItem("url_nicho");
+        _url_comunidad = localStorage.getItem("url_comunidad");
+        _VERBOSE = localStorage.getItem("verbose");
         _tipo_modulo = tipo_modulo;
-
-        // se guardan cookies para enviarlas a comunidad y nicho
-        Cookies.set("url_front", url_front);
-        Cookies.set("url_api", url_api);
-
-        // var _url_trabajo = "http://species.conabio.gob.mx/niche?", 
-        _url_nicho = url_front + "/geoportal_v0.1.html";
-        _url_comunidad = url_front + "/comunidad_v0.1.html";
-        _url_api = url_api;
-
-        Cookies.set("url_nicho", _url_nicho);
-        Cookies.set("url_comunidad", _url_comunidad);
+        
+        _VERBOSE ? console.log("startModule Index") : _VERBOSE;
+        
 
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         // _VERBOSE ? console.log(this) : _VERBOSE
-        _language_module_net = language_module();
-        _language_module_net.startLanguageModule(this, _tipo_modulo);
+        _language_module_index = language_module();
+        _language_module_index.startLanguageModule(this, _tipo_modulo);
 
     }
 
@@ -297,9 +285,11 @@ var module_index = (function() {
      * @memberof! module_index
      */
     function loadModules() {
+        
         _VERBOSE ? console.log("loadModules") : _VERBOSE;
-        _iTrans = _language_module_net.getI18();
+        _iTrans = _language_module_index.getI18();
         _initializeComponents();
+        
     }
 
 

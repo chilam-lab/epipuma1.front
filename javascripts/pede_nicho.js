@@ -6,9 +6,12 @@
  */
 var module_nicho = (function () {
 
-    var _TEST = false, _tipo_modulo;
+    var _TEST = false;
+    var MOD_NICHO = 0;
     var _VERBOSE = true;
-
+    
+    var _tipo_modulo = MOD_NICHO;
+    
     var _map_module_nicho,
             _variable_module_nicho,
             _res_display_module_nicho,
@@ -515,8 +518,7 @@ var module_nicho = (function () {
 
                 });
                 data_link += "&";
-            }
-            else{
+            } else {
                 data_link += "num_dpoints=0&";
             }
 
@@ -797,8 +799,8 @@ var module_nicho = (function () {
         var idreg = ["Estados"]; // Módulo por desarrollar
         var type_time = 0;
         var num_items = 0;
-        
-        
+
+
         $("#nom_sp").val(sp_data.label);
 
         _map_module_nicho.set_specieTarget(sp_data);
@@ -870,15 +872,14 @@ var module_nicho = (function () {
         $('#grid_resolution option[value=' + gridRes + ']').attr('selected', 'selected');
 
         console.log(map_dPoints.values());
-        
+
         if (chkFec !== undefined || rango_fechas !== undefined) {
-            
+
             console.log("filtros");
             console.log(map_dPoints.values());
 
             _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec, chkFosil, map_dPoints);
-        } 
-        else {
+        } else {
             console.log("busca");
             console.log(map_dPoints.values());
 
@@ -934,7 +935,7 @@ var module_nicho = (function () {
         var num_items = 0, spid, idreg, subgroups;
 
         $("#show_gen").css('visibility', 'visible');
-        $("#tuto_res").css('visibility', 'visible');
+//        $("#tuto_res").css('visibility', 'visible');
 
         $("#params_next").css('visibility', 'visible');
         $("#params_next").show("slow");
@@ -1019,8 +1020,8 @@ var module_nicho = (function () {
         }
 
         if (idreg[0] === "Estados" || idreg[0] === "Ecoregiones") {
-            
-            
+
+
             console.log(_map_module_nicho.get_discardedPoints());
 
             _res_display_module_nicho.set_discardedPoints(_map_module_nicho.get_discardedPoints());
@@ -1068,13 +1069,11 @@ var module_nicho = (function () {
      * @param {string} tipo_modulo - Identificador del módulo 0 para nicho y 1 para comunidad
      * @param {string} verbose - Bandera para desplegar modo verbose
      */
-    function startModule(tipo_modulo, verbose) {
+    function startModule(verbose) {
 
         _VERBOSE = verbose;
-
         _VERBOSE ? console.log("startModule") : _VERBOSE;
-        _tipo_modulo = tipo_modulo;
-
+        
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         _language_module_nicho = language_module(_VERBOSE);
         _language_module_nicho.startLanguageModule(this, _tipo_modulo);
@@ -1171,7 +1170,7 @@ var module_nicho = (function () {
      * @param {string} url_nicho - URL del cliente en nicho ecológico
      */
     function setUrlNicho(url_nicho) {
-        _url_nicho = url_nicho
+        _url_nicho = url_nicho;
     }
 
     // retorna solamente un objeto con los miembros que son públicos.
@@ -1189,52 +1188,30 @@ var module_nicho = (function () {
 
 $(document).ready(function () {
 
-    // verbose por default es true
-    var verbose = true;
-
-    // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 2;
-
-    // 0 nicho, 1 comunidad, 2 index
-    var modulo = 0;
-
-    if (Cookies.get("url_front")) {
-
-        module_nicho.setUrlFront(Cookies.get("url_front"));
-        module_nicho.setUrlApi(Cookies.get("url_api"));
-        module_nicho.setUrlNicho(Cookies.get("url_nicho"));
+    if (localStorage.getItem("url_front")) {
+        
+        var verbose = localStorage.getItem("verbose");
+        module_nicho.setUrlFront(localStorage.getItem("url_front"));
+        module_nicho.setUrlApi(localStorage.getItem("url_api"));
+        module_nicho.setUrlNicho(localStorage.getItem("url_nicho"));
+        module_nicho.startModule(verbose);
 
     } else {
-
-        if (ambiente === 0) {
-            module_nicho.setUrlFront("http://localhost/species-front");
-            module_nicho.setUrlApi("http://localhost:8080");
-            module_nicho.setUrlNicho("http://localhost/species-front/geoportal_v0.1.html");
-        } else if (ambiente === 1) {
-
-            module_nicho.setUrlFront("http://species.conabio.gob.mx");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/api");
-            module_nicho.setUrlNicho("http://species.conabio.gob.mx/geoportal_v0.1.html");
-
-        } else if (ambiente === 2) {
-
-            module_nicho.setUrlFront("http://species.conabio.gob.mx/dev");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/api-dev");
-            module_nicho.setUrlNicho("http://species.conabio.gob.mx/dev/geoportal_v0.1.html");
-
+        
+        // en caso de no tener los datos necesarios en el local storage se redirecciona a index
+        var url = window.location.href;        
+        var url_array = url.split("/");
+        var new_url = "";
+        
+        for (var i=0; i<url_array.length-1; i++) {
+            new_url += url_array[i] + "/";
         }
-        // la version candidate tiene el front de dev y trabaja con el middleware de produccion
-        else {
-
-            module_nicho.setUrlFront("http://species.conabio.gob.mx/candidate");
-            module_nicho.setUrlApi("http://species.conabio.gob.mx/api-rc");
-            module_nicho.setUrlNicho("http://species.conabio.gob.mx/candidate/geoportal_v0.1.html");
-
-        }
+        new_url += "index.html";
+        window.location.replace(new_url);
 
     }
-
-    module_nicho.startModule(modulo, verbose);
+    
+    
 
 });
 

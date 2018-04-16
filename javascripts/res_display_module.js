@@ -532,10 +532,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _VERBOSE ? console.log("grid_res: " + _grid_res) : _VERBOSE;
 
         $.ajax({
-            url: _url_zacatuche + "/niche/especie",
+            url: _url_zacatuche + "/niche/especie/getValidationTables",
             type: 'post',
             data: {
-                qtype: 'getValidationTables',
+//                qtype: 'getValidationTables',
                 spid: _spid,
                 iter: _NUM_ITERATIONS,
                 grid_res: _grid_res
@@ -601,10 +601,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _VERBOSE ? console.log("_deleteValidationTables") : _VERBOSE;
 
         $.ajax({
-            url: _url_zacatuche + "/niche/especie",
+            url: _url_zacatuche + "/niche/especie/deleteValidationTables",
             type: 'post',
             data: {
-                qtype: 'deleteValidationTables',
+//                qtype: 'deleteValidationTables',
                 idtable: _idtemptable
             },
             dataType: "json",
@@ -1149,6 +1149,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                     console.log(_fathers);
                     console.log(_sons);
+                    console.log(_totals);
 
 
                     _ITER_REQUESTS = _REQUESTS;
@@ -1615,176 +1616,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
     }
 
-
-    /**
-     * Éste método realiza la segmentación aleatoria del conjunto de celdas para realizar el proceso de validación. Cuando todas las iteraciones han sido realizadas los resultados son enviados al módulo de validación.	
-     *
-     * @function _iterateValidationProcess
-     * @private
-     * @memberof! res_display_module
-     * 
-     */
-//    function _iterateValidationProcess() {
-//
-//        _VERBOSE ? console.log("_iterateValidationProcess") : _VERBOSE;
-//
-//        if (_ITER < _NUM_ITERATIONS) {
-//
-//            // consulta para obteer los griids de la malla
-//            if (_gridids_collection.length == 0) {
-//
-//                _VERBOSE ? console.log("Primer petición") : _VERBOSE;
-//
-//
-//
-//                $.ajax({
-//                    url: _url_zacatuche + "/niche/especie",
-//                    type: 'post',
-//                    data: {
-//                        qtype: 'getGridids'
-//                    },
-//                    dataType: "json",
-//                    success: function(resp) {
-//
-//                        d = resp.data;
-//
-//
-//                        var grid_sp = [];
-//                        var min_occids = [];
-//                        var discardedGridids = [];
-//
-//                        _gridids_collection = d.map(function(d) {
-//                            return d.gridid
-//                        });
-//
-//                        // Para combinar el filtro de tiempo y de validacion, primero se aplica el filtro de tiempo y se obtiene conjunto de prueba y entrenamiento
-//                        // La última iteracion es utilizada para calcular el resto de los elemntos visuales, se tiene que validar desde un inicio
-//                        var lin_inf = _rangofechas ? _rangofechas[0] : undefined;
-//                        var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
-//
-//                        // TODO: REESTRUCTURACIÓN DE LÓGICA DE VALIDACIÓN
-//                        // PROCESO ACTUAL:
-//                        // 1. SE OBTIENEN LOS GRIDS DE LA MALLA
-//                        // 2. SE SACAN PORCENTAJES SELCCIONADOS PARA ENTRENAMEINTO Y PRUEBAS
-//                        // 3. SE OBITNEN LAS CELDAS DESCARTADAS BASADO EN EL PORCENTAJE DE PRUEBAS
-//                        // 4. SE ENVIA EL ARRAY AL SERVIDOR DE LAS CELDAS QUE SERAN DESCARTADAS
-//
-//
-//
-//                        if (!_chkfecha || lin_inf != undefined) {
-//
-//                            var grid_collection_filter = [];
-//
-//                            // de la grid total, se quitan los elementos descartados por filtro de fechas
-//                            $.each(_gridids_collection, function(index, item) {
-//
-//                                if ($.inArray(item, _computed_discarded_cells == -1)) {
-//                                    grid_collection_filter.push(item);
-//                                }
-//
-//                            });
-//
-//                            console.log(grid_collection_filter);
-//
-//                            _total_set_length = grid_collection_filter.length;
-//                            _training_set_size = Math.floor(_total_set_length * (_slider_value / 100));
-//                            _test_set_size = _total_set_length - _training_set_size;
-//
-//
-//                            var shuffle_array = d3.shuffle(grid_collection_filter);
-//                            discardedGridids = shuffle_array.slice(0, _test_set_size);
-//
-//
-//                        }
-//                        else {
-//
-//
-//                            _total_set_length = _gridids_collection.length;
-//                            _training_set_size = Math.floor(_total_set_length * (_slider_value / 100));
-//                            _test_set_size = _total_set_length - _training_set_size;
-//
-//
-//                            var shuffle_array = d3.shuffle(_gridids_collection);
-//                            discardedGridids = shuffle_array.slice(0, _test_set_size);
-//
-//                        }
-//
-//                        _panelGeneration(discardedGridids);
-//
-//                        _VERBOSE ? console.log("ITER: " + _ITER) : _VERBOSE;
-//                        _VERBOSE ? console.log("NUM_ITERATIONS: " + _NUM_ITERATIONS) : _VERBOSE;
-//
-//                    },
-//                    error: function(jqXHR, textStatus, errorThrown) {
-//                        _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-//                        _ITER = 0;
-//                        _gridids_collection = [];
-//                        _total_set_length = 0;
-//                        _training_set_size = 0;
-//                        _test_set_size = 0;
-//                    }
-//                });
-//
-//            }
-//            else {
-//
-//                discardedGridids = [];
-//                var shuffle_array = d3.shuffle(_gridids_collection);
-//
-//                discardedGridids = shuffle_array.slice(0, _test_set_size);
-//
-//                _panelGeneration(discardedGridids);
-//
-//                _VERBOSE ? console.log("ITER: " + _ITER) : _VERBOSE;
-//                _VERBOSE ? console.log("NUM_ITERATIONS: " + _NUM_ITERATIONS) : _VERBOSE;
-//
-//            }
-//
-//
-//        }
-//        else {
-//
-//            _ITER = 0;
-//            _gridids_collection = [];
-//            _total_set_length = 0;
-//            _training_set_size = 0;
-//            _test_set_size = 0;
-//
-//            _VERBOSE ? console.log(_dataChartValSet.length) : _VERBOSE;
-//            _VERBOSE ? console.log(_sp_gridids) : _VERBOSE;
-//
-//            _validation_module_all.validationProcess(_dataChartValSet, _sp_gridids, _NUM_ITERATIONS, _id_chartscr_decil);
-//
-//            // if the validation process is activated the last set_configuration value is used to create the table and histograms
-//            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicia_histograma'), "info");
-//            // _toastr.info(_iTrans.prop('lb_inicia_histograma'));
-//
-//            // _tdata["discardedids"] = [573324,581126,507259];
-//
-//            console.log(_tdata);
-//
-//            // tabla epsilon y score por especie 
-//            _createTableEpSc(_tdata);
-//
-//            /* Generación de grid y administración de estilos */
-//            // Sin implementar
-//            _configureStyleMap(_sdata);
-//
-//            /* graficas epsilon y score por especie */
-//            _createHistEpScr_Especie(_ddata);
-//
-//            /* grafica score por celda */
-////            _createHistScore_Celda(_cdata);
-//
-//            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_histograma'), "success");
-//            // _toastr.success(_iTrans.prop('lb_carga_histograma'));
-//
-//
-//        }
-//
-//    }
-
-
     /**
      * Éste método realiza la gestión de las respuestas a las peticiones hechas para calcular el score por celda de forma segmentada de los grupos de variables utilizados. Además genera una estructura de la información devuelta por el servidor para generar el histograma decil y tabla decil en el análisis de nicho ecológico.
      *
@@ -1804,7 +1635,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             sons.forEach(function(son) {
 
-                if (parseInt(father.item[0].title.type) == parseInt(son.item[0].title.type) && parseInt(father.item[0].title.group_item) == parseInt(son.item[0].title.group_item)) {
+                if (parseInt(father.item[0].title.type) === parseInt(son.item[0].title.type) && parseInt(father.item[0].title.group_item) === parseInt(son.item[0].title.group_item)) {
 
                     son_index = 0;
 
@@ -1936,8 +1767,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         });
 
-        _VERBOSE ? console.log(fathers) : _VERBOSE;
-        _VERBOSE ? console.log(fathers[0].item.length) : _VERBOSE;
+//        _VERBOSE ? console.log(fathers) : _VERBOSE;
+//        _VERBOSE ? console.log(fathers[0].item.length) : _VERBOSE;
 
         // binding parents by decil
 
@@ -2056,7 +1887,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         });
 
-        _VERBOSE ? console.log(data_chart) : _VERBOSE;
+//        _VERBOSE ? console.log(data_chart) : _VERBOSE;
 
         return data_chart;
 
@@ -2156,20 +1987,25 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 decil_item['linf'] = temp;
 
 
-//                species = [];
-//                decil_item.species.forEach(function(species_item, index) {
-//                    species.push(species_item.p);
-//                });
-//                temp = decil_item['species'];
-
-//                temp.push({p: decil_total[index].arraynames.sort(), s: species});
-//                decil_item['species'] = temp;
+                species = [];
+                decil_item.species.forEach(function(species_item, index) {
+//                    console.log(species_item);
+                    species.push(species_item.p);
+                });
+                temp = decil_item['species'];
+                var json_arraynames = decil_total[index].arraynames[0].replace("{", "").replace("}", "").split(",");
+//                console.log(json_arraynames);
+                var p_item = json_arraynames.sort();
+//                console.log(p_item);
+                
+                temp.push({p: p_item, s: species});
+                decil_item['species'] = temp;
 
             });
 
         }
 
-        // _VERBOSE ? console.log(data_chart) : _VERBOSE;
+         _VERBOSE ? console.log(data_chart) : _VERBOSE;
         return data_chart;
 
     }

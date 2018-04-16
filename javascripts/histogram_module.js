@@ -5,7 +5,7 @@
  *
  * @namespace histogram_module
  */
-var histogram_module = (function(verbose) {
+var histogram_module = (function (verbose) {
 
     var _VERBOSE = verbose;
     var _table_module_decil, _language_module_nicho;
@@ -77,7 +77,7 @@ var histogram_module = (function(verbose) {
         $("#" + idComponent.id).empty();
 
         var margin = {top: 30, right: 40, bottom: 50, left: 40},
-        width = $(".myScrollableBlockEpsilonDecil").width() - margin.left - margin.right;
+                width = $(".myScrollableBlockEpsilonDecil").width() - margin.left - margin.right;
         height = $(".myScrollableBlockEpsilonDecil").height() - margin.top - margin.bottom - 15; // 10px del icono de info
 
 
@@ -148,13 +148,13 @@ var histogram_module = (function(verbose) {
         var tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
-                .html(function(d) {
+                .html(function (d) {
 
                     var_group_label = "<strong>" + d.name.p + "</strong><br/>" +
                             "<strong>" + _iTrans.prop('lb_score_conjunto') + ":</strong> <span >" + parseFloat(d.value.p).toFixed(2) + "</span><br/><br/>" +
                             "<strong>" + _iTrans.prop('lb_conformado') + ":</strong><br/><br/>";
 
-                    d.name.s.forEach(function(item, index) {
+                    d.name.s.forEach(function (item, index) {
 
                         var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + item + "</span><br/>" +
                                 "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + d.value.s[index] + "</span><br/><br/>"
@@ -171,7 +171,7 @@ var histogram_module = (function(verbose) {
 
         _VERBOSE ? console.log(nameMap) : _VERBOSE;
 
-        json_decil[value_decil_ready].names.forEach(function(name, index) {
+        json_decil[value_decil_ready].names.forEach(function (name, index) {
 
             var obj;
 
@@ -183,8 +183,7 @@ var histogram_module = (function(verbose) {
                 _VERBOSE ? console.log("name: " + name.p + " fin_recall: " + fin_recall) : _VERBOSE;
 
                 obj = {name: name.p, nulos: nameMap.get(name.p).nulos, recall_nulo: fin_recall};
-            }
-            else {
+            } else {
                 obj = {name: name.p};
             }
 
@@ -195,10 +194,10 @@ var histogram_module = (function(verbose) {
         _VERBOSE ? console.log(ageNames) : _VERBOSE;
 
 
-        json_decil.forEach(function(d, index) {
+        json_decil.forEach(function (d, index) {
             // no retorna el objeto json cuando el decil no tiene valores
             if (value_decil_ready <= index) {
-                d.ages = d.names.map(function(name, i) {
+                d.ages = d.names.map(function (name, i) {
 //                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i], gridids: d.gridids[i]};
                     return {name: name, value: d.values[i], decil: d.decil, species: d.species[i]};
 //                    return {name: name, value: d.values[i], decil: d.decil};
@@ -207,7 +206,7 @@ var histogram_module = (function(verbose) {
             // asigna valores falsos a los deciles ausentes
             else {
                 // d.decil_nulo = true;
-                d.ages = json_decil[value_decil_ready].names.map(function(name, i) {
+                d.ages = json_decil[value_decil_ready].names.map(function (name, i) {
 //                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), species: [], gridids: [], decil_nulo: true};
                     return {name: name, value: [], decil: "" + (_NUM_DECIL - index), decil_nulo: true, species: []};
                 });
@@ -217,27 +216,27 @@ var histogram_module = (function(verbose) {
         _VERBOSE ? console.log(json_decil) : _VERBOSE;
 
 
-        x0.domain(json_decil.map(function(d) {
+        x0.domain(json_decil.map(function (d) {
             return d.decil;
         }));
         // _VERBOSE ? console.log("x0: " + x0.rangeBand()) : _VERBOSE;
-        x1.domain(ageNames.map(function(item, i) {
+        x1.domain(ageNames.map(function (item, i) {
             return item.name;
         })).rangeRoundBands([0, x0.rangeBand()]);
 
 
 
-        totalmax_avg = d3.max(json_decil.map(function(d, index) {
+        totalmax_avg = d3.max(json_decil.map(function (d, index) {
             if (value_decil_ready <= index) {
-                return d3.max(d.values, function(d) {
+                return d3.max(d.values, function (d) {
                     return parseFloat(d.p)
                 });
             }
         }));
 
-        totalmin_avg = d3.min(json_decil.map(function(d, index) {
+        totalmin_avg = d3.min(json_decil.map(function (d, index) {
             if (value_decil_ready <= index) {
-                return d3.min(d.values, function(d) {
+                return d3.min(d.values, function (d) {
                     return parseFloat(d.p)
                 });
             }
@@ -247,8 +246,7 @@ var histogram_module = (function(verbose) {
         if (totalmax_avg == totalmin_avg) {
             if (totalmax_avg < 0) {
                 totalmax_avg = 0;
-            }
-            else {
+            } else {
                 totalmin_avg = 0;
             }
         }
@@ -273,9 +271,9 @@ var histogram_module = (function(verbose) {
         }
 
         // NOTA: En d3 el max de -0.12 y -0.86 es "-0.86", obtiene el minimo de los negativos
-        maxmin_avg = d3.max(json_decil.map(function(d, index) {
+        maxmin_avg = d3.max(json_decil.map(function (d, index) {
             if (value_decil_ready <= index) {
-                return d3.max(d.values, function(d) {
+                return d3.max(d.values, function (d) {
                     if (d.p < 0)
                         return d.p
                 });
@@ -291,16 +289,14 @@ var histogram_module = (function(verbose) {
                 y.domain([-totalmax_avg, totalmax_avg])
                         .nice([totalmin_nice, totalmax_nice]);
 
-            }
-            else {
+            } else {
 
                 y.domain([totalmin_avg, -totalmin_avg])
                         .nice([totalmin_nice, totalmax_nice]);
 
             }
 
-        }
-        else {
+        } else {
 
             y.domain([totalmin_avg, totalmax_avg])
                     .nice([totalmin_nice, totalmax_nice]);
@@ -354,24 +350,24 @@ var histogram_module = (function(verbose) {
                 .data(json_decil)
                 .enter().append("g")
                 .attr("class", "state")
-                .attr("transform", function(d) {
+                .attr("transform", function (d) {
                     return "translate(" + x0(d.decil) + ",0)";
                 });
 
         state.selectAll(".rect")
-                .data(function(d) {
+                .data(function (d) {
                     return d.ages;
                 })
                 .enter().append("rect")
                 .attr("class", "bar")
                 .attr("width", x1.rangeBand())
-                .attr("x", function(d) {
+                .attr("x", function (d) {
 
                     // _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
                     // _VERBOSE ? console.log(x1(d.name.p)) : _VERBOSE;
                     return x1(d.name.p);
                 })
-                .attr("y", function(d) {
+                .attr("y", function (d) {
 
 
                     _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
@@ -382,15 +378,13 @@ var histogram_module = (function(verbose) {
                     // locate the bars in the chart correctly when there are negative values.
                     if (NEG_DECIL == -1) {
                         return y(totalmax_avg);
-                    }
-                    else if (NEG_DECIL == 0) {
+                    } else if (NEG_DECIL == 0) {
                         return y(Math.max(0, d.value.p));
-                    }
-                    else {
+                    } else {
                         return y(d.value.p);
                     }
                 })
-                .attr("height", function(d) {
+                .attr("height", function (d) {
 
                     _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
                     var val_h = d.decil_nulo ? 0 : d.value.p;
@@ -399,34 +393,32 @@ var histogram_module = (function(verbose) {
                     if (NEG_DECIL == -1) {
 
                         return Math.abs(y(val_h) - y(totalmax_avg))
-                    }
-                    else if (NEG_DECIL == 0) {
+                    } else if (NEG_DECIL == 0) {
 
                         return Math.abs(y(val_h) - y(0))
-                    }
-                    else {
+                    } else {
 
                         return height - y(val_h);
                     }
                 })
-                .style("fill", function(d) {
+                .style("fill", function (d) {
 
                     // _VERBOSE ? console.log(d.name.p) : _VERBOSE;
 
                     return color(d.name.p);
                 })
                 .style("opacity", 0.7)
-                .on('mouseover', function(d) {
+                .on('mouseover', function (d) {
 
                     tip.show(d);
 
                 })
-                .on('mouseout', function(d) {
+                .on('mouseout', function (d) {
 
                     tip.hide(d);
 
                 })
-                .on("click", function(d) {
+                .on("click", function (d) {
 
 //                    _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
 //                    if (d.decil_nulo)
@@ -449,17 +441,17 @@ var histogram_module = (function(verbose) {
 //
 //                    });
 
-                    state.selectAll("rect.bar").each(function(bar, i) {
+                    state.selectAll("rect.bar").each(function (bar, i) {
                         d3.select(this).style("stroke", "none");
                     });
                     d3.select(this).style("stroke", "black");
                     d3.select(this).style("stroke-width", 3);
 
                     var decil_list = [];
-//                    _VERBOSE ? console.log(d) : _VERBOSE;
-                    
-                    
-                    d.species.p.forEach(function(sp, index) {
+                    _VERBOSE ? console.log(d) : _VERBOSE;
+
+
+                    d.species.p.forEach(function (sp, index) {
 
                         // spid, label, epsilon, score, occ(nj), occ_decil
                         params = sp.split("|");
@@ -473,7 +465,7 @@ var histogram_module = (function(verbose) {
                         // console.log(params[4]);
                         // console.log(params[5]);
 
-                        decil_list.push({decil: d.decil, species: params[0].replace("\"",""), epsilons: params[1], scores: params[2], occ: per_decil});
+                        decil_list.push({decil: d.decil, species: params[0].replace("\"", ""), epsilons: params[1], scores: params[2], occ: per_decil});
                     });
 
                     // _VERBOSE ? console.log(decil_list) : _VERBOSE;
@@ -487,28 +479,28 @@ var histogram_module = (function(verbose) {
 
 
         var decil_list = [];
-        $.each(json_decil, function(index, value) {
+        $.each(json_decil, function (index, value) {
 
-//            _VERBOSE ? console.log("decil: " + value.decil) : _VERBOSE;
-//            _VERBOSE ? console.log("species: " + value.species) : _VERBOSE;
+            _VERBOSE ? console.log("decil: " + value.decil) : _VERBOSE;
+            _VERBOSE ? console.log(value.species) : _VERBOSE;
 //            
 //            _VERBOSE ? console.log("decil_nulo: " + value.decil_nulo) : _VERBOSE;
 //            if (value.decil_nulo)
 //                return false;
 
-            value.species[0].p.forEach(function(sp, index) {
-                
+            value.species[0].p.forEach(function (sp, index) {
+
 //                _VERBOSE ? console.log(sp) : _VERBOSE;
 
                 // spid, epsilon, score, occ(nj), occ_decil
                 var params = sp.split("|");
-//                 _VERBOSE ? console.log(params) : _VERBOSE;
+                 _VERBOSE ? console.log(params) : _VERBOSE;
 
                 // EJEMPLO Panthera leo - occ_total = 2 y occ_decil = 3 => 1.5 => 150% (ERROR)
                 occ_total = parseFloat(params[3]);
                 occ_decil = parseFloat(params[4]);
                 per_decil = parseFloat(occ_decil / occ_total * 100).toFixed(2) + "%";
-                decil_list.push({decil: value.decil, species: params[0].replace("\"",""), epsilons: params[1], scores: params[2], occ: per_decil});
+                decil_list.push({decil: value.decil, species: params[0].replace("\"", ""), epsilons: params[1], scores: params[2], occ: per_decil});
 
             });
 
@@ -523,7 +515,7 @@ var histogram_module = (function(verbose) {
         var yTextPadding = -5;
 
         state.selectAll(".rect")
-                .data(function(d) {
+                .data(function (d) {
                     return d.ages;
                 })
                 .enter()
@@ -531,26 +523,24 @@ var histogram_module = (function(verbose) {
                 .style("font-size", "8px")
                 .attr("text-anchor", "middle")
                 .attr("fill", "black")
-                .attr("x", function(d, i) {
+                .attr("x", function (d, i) {
                     return x1(d.name.p) + 10;
                 })
-                .attr("y", function(d, i) {
+                .attr("y", function (d, i) {
 
                     if (d.decil_nulo)
                         return y(0) + yTextPadding;
                     // locate the bars in the chart correctly when there are negative values.
                     if (NEG_DECIL == -1) {
                         return y(totalmax_avg) + yTextPadding;
-                    }
-                    else if (NEG_DECIL == 0) {
+                    } else if (NEG_DECIL == 0) {
                         return y(Math.max(0, d.value.p)) + yTextPadding;
-                    }
-                    else {
+                    } else {
                         return y(d.value.p) + yTextPadding;
                     }
 
                 })
-                .text(function(d) {
+                .text(function (d) {
                     // // console.log(d);
                     // if( parseFloat(d.value.p) == 0.0)
                     // 	return "";
@@ -564,23 +554,22 @@ var histogram_module = (function(verbose) {
                 .data(ageNames.slice().reverse())
                 .enter().append("g")
                 .attr("class", "legend")
-                .attr("transform", function(d, i) {
+                .attr("transform", function (d, i) {
                     return "translate(0," + (height + 20) + ")";
                 });
 
         legend.append("rect")
-                .attr("x", function(d, i) {
+                .attr("x", function (d, i) {
                     return (width - 18) - (i * 130);
                 })
                 .attr("y", 3)
                 .attr("width", 20)
                 .attr("height", 20)
-                .style("fill", function(d, i) {
+                .style("fill", function (d, i) {
 
                     if (d.recall_nulo) {
                         return "black";
-                    }
-                    else {
+                    } else {
                         return color(d.name);
                     }
 
@@ -588,13 +577,13 @@ var histogram_module = (function(verbose) {
                 .style("opacity", 0.7);
 
         legend.append("text")
-                .attr("x", function(d, i) {
+                .attr("x", function (d, i) {
                     return (width - 24) - (i * 130);
                 })
                 .attr("y", 9)
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
-                .text(function(d) {
+                .text(function (d) {
                     return d.name;
                 });
 
@@ -635,7 +624,7 @@ var histogram_module = (function(verbose) {
             var tip_recall = d3.tip()
                     .attr('class', 'd3-tip')
                     .offset([-10, 0])
-                    .html(function(d) {
+                    .html(function (d) {
                         recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
                                 "<strong>" + _iTrans.prop('lb_vp_avg') + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
                                 "<strong>" + _iTrans.prop('lb_fn_avg') + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>";
@@ -669,21 +658,17 @@ var histogram_module = (function(verbose) {
                     .text(_iTrans.prop('lb_recall'));
 
 
-
-
-            
-
             // obtiene el numero de grupo analisados para generar la colección de elementos para desplegar el calculo de recall
             var array_recall = [];
-            
+
             var group_size = json_decil[0].names.length;
             console.log(group_size);
-            
+
             for (i = 0; i < group_size; i++) {
-                
+
                 var item_recall = [];
-                
-                $.each(json_decil, function(index, item) {
+
+                $.each(json_decil, function (index, item) {
 
                     var names = item.names;
                     var recall = item.recall;
@@ -702,7 +687,7 @@ var histogram_module = (function(verbose) {
                     item_recall.push(item_decil);
 
                 });
-                
+
                 array_recall.push(item_recall);
 
             }
@@ -711,12 +696,12 @@ var histogram_module = (function(verbose) {
             _VERBOSE ? console.log(array_recall) : _VERBOSE;
 
 
-            $.each(array_recall, function(i, recall_item) {
+            $.each(array_recall, function (i, recall_item) {
 
                 console.log(recall_item);
 
                 var line = d3.svg.line()
-                        .x(function(d) {
+                        .x(function (d) {
                             // _VERBOSE ? console.log("movement: " + x1.rangeBand() * (ageNames.length/2)) : _VERBOSE;
                             // _VERBOSE ? console.log("x0: " + x0(array_recall.length - i) + x1.rangeBand()) : _VERBOSE;
 //                             (x1.rangeBand() * (ageNames.length/2)) ---> Moves the line to the center of the bars
@@ -728,7 +713,7 @@ var histogram_module = (function(verbose) {
 
                             return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
                         })
-                        .y(function(d) {
+                        .y(function (d) {
 //                            _VERBOSE ? console.log("y: " + y_right(d.recall)) : _VERBOSE;
 
                             return y_right(d.recall);
@@ -740,7 +725,7 @@ var histogram_module = (function(verbose) {
                         .datum(recall_item)
                         .attr("class", "line")
                         .attr("d", line)
-                        .style("stroke", function(d) {
+                        .style("stroke", function (d) {
 
 //                            console.log(d[0].group_name);
 //                            console.log(color(d[0].group_name));
@@ -766,31 +751,31 @@ var histogram_module = (function(verbose) {
                         .enter().append("circle")
                         .attr("class", "dot")
                         .attr("r", 3.5)
-                        .attr("cx", function(d, i) {
+                        .attr("cx", function (d, i) {
 
 //                            return x0(recall_item.length - i) + (x1.rangeBand() * (ageNames.length / 2));
                             return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
 
 
                         })
-                        .attr("cy", function(d) {
+                        .attr("cy", function (d) {
                             return y_right(d.recall);
                         })
-                        .on('mouseover', function(d) {
+                        .on('mouseover', function (d) {
 
-                            d3.select(this).attr("r", function(d) {
+                            d3.select(this).attr("r", function (d) {
                                 return 8 + Math.pow(d.recall / Math.PI, 0.5);
                             });
                             tip_recall.show(d)
                         })
-                        .on('mouseout', function(d) {
+                        .on('mouseout', function (d) {
 
-                            d3.select(this).attr("r", function(d) {
+                            d3.select(this).attr("r", function (d) {
                                 return 3.5;
                             });
                             tip_recall.hide(d)
                         })
-                        .style("stroke", function(d) {
+                        .style("stroke", function (d) {
 
                             // _VERBOSE ? console.log( nameMap.get(d.group_name.name).recall_nulo ) : _VERBOSE;
 
@@ -828,7 +813,7 @@ var histogram_module = (function(verbose) {
 
         var puntos_json = d3.map([]);
 
-        $.each(distinctPoints, function(index, item) {
+        $.each(distinctPoints, function (index, item) {
 
             fecha_ano = item.fechacolecta == null || item.fechacolecta.split("-")[0] == "" ? 0 : parseInt(item.fechacolecta.split("-")[0]);
 
@@ -837,8 +822,7 @@ var histogram_module = (function(verbose) {
                 var item_colecta = puntos_json.get(fecha_ano);
                 puntos_json.set(fecha_ano, {"fechacolecta": fecha_ano, "cantidad": (item_colecta.cantidad + 1)});
 
-            }
-            else {
+            } else {
 
                 puntos_json.set(fecha_ano, {"fechacolecta": fecha_ano, "cantidad": 1});
 
@@ -849,12 +833,11 @@ var histogram_module = (function(verbose) {
         var colectas = puntos_json.values();
         var colectas_zero = [];
         var colectas_dif = [];
-        $.each(colectas, function(index, item) {
+        $.each(colectas, function (index, item) {
 
             if (item.fechacolecta > 0) {
                 colectas_dif.push(item);
-            }
-            else {
+            } else {
                 colectas_zero.push(item);
             }
 
@@ -868,10 +851,10 @@ var histogram_module = (function(verbose) {
         // 	$("#lb_regfecha").text(colectas_zero[0].cantidad);
         // }
 
-        var max_fecha = d3.max(colectas_dif.map(function(d) {
+        var max_fecha = d3.max(colectas_dif.map(function (d) {
             return d.fechacolecta;
         }));
-        var min_fecha = d3.min(colectas_dif.map(function(d) {
+        var min_fecha = d3.min(colectas_dif.map(function (d) {
             return d.fechacolecta;
         }));
 
@@ -880,14 +863,14 @@ var histogram_module = (function(verbose) {
         var rangofechas = d3.scale.quantize().domain([min_fecha, max_fecha]).range(NUM_BARS);
 
         var rango_fechas = d3.map([]);
-        $.each(NUM_BARS, function(index, item) {
+        $.each(NUM_BARS, function (index, item) {
 
             var rango = parseInt(rangofechas.invertExtent(item)[0]) + " - " + parseInt(rangofechas.invertExtent(item)[1]);
             rango_fechas.set(item, {"fechas": rango, "cantidad": 0});
 
         })
 
-        $.each(colectas_dif, function(index, item) {
+        $.each(colectas_dif, function (index, item) {
 
             if (rango_fechas.has(rangofechas(item.fechacolecta))) {
 
@@ -904,7 +887,7 @@ var histogram_module = (function(verbose) {
         $("#hist_fecha_container").empty();
 
         var margin = {top: 10, right: 10, bottom: 20, left: 30},
-        width = $("#hist_fecha_container").width() - margin.left - margin.right,
+                width = $("#hist_fecha_container").width() - margin.left - margin.right,
                 height = $("#hist_fecha_container").height() - margin.top - margin.bottom;
 
 
@@ -915,10 +898,10 @@ var histogram_module = (function(verbose) {
                 .range([height, 0]);
 
 
-        x.domain(data.map(function(d) {
+        x.domain(data.map(function (d) {
             return d.fechas;
         }));
-        y.domain([0, d3.max(data, function(d) {
+        y.domain([0, d3.max(data, function (d) {
                 return d.cantidad;
             })]);
 
@@ -944,7 +927,7 @@ var histogram_module = (function(verbose) {
         var tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 10])
-                .html(function(d) {
+                .html(function (d) {
                     return  "<strong>Fechas:</strong> <span >" + d.fechas + "</span><br/>" +
                             "<strong>Registros:</strong> <span >" + d.cantidad + "</span>";
                 });
@@ -974,20 +957,20 @@ var histogram_module = (function(verbose) {
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) {
+                .attr("x", function (d) {
                     return x(d.fechas);
                 })
-                .attr("y", function(d) {
+                .attr("y", function (d) {
                     return y(d.cantidad);
                 })
-                .attr("height", function(d) {
+                .attr("height", function (d) {
                     return height - y(d.cantidad);
                 })
                 .attr("width", x.rangeBand())
-                .on("mouseover", function(d) {
+                .on("mouseover", function (d) {
                     tip.show(d);
                 })
-                .on("mouseout", function(d) {
+                .on("mouseout", function (d) {
                     tip.hide(d);
                 });
 
@@ -1015,7 +998,7 @@ var histogram_module = (function(verbose) {
         // _VERBOSE ? console.log($(".myScrollableBlockEpsilon").height()) : _VERBOSE;
 
         var margin = {top: 30, right: 40, bottom: 60, left: 40},
-        width = $(".myScrollableBlockEpsilonSmallHist").width() - margin.left - margin.right,
+                width = $(".myScrollableBlockEpsilonSmallHist").width() - margin.left - margin.right,
                 height = $(".myScrollableBlockEpsilonSmallHist").height() - margin.top - margin.bottom;
 
         // _VERBOSE ? console.log(width) : _VERBOSE;
@@ -1075,7 +1058,7 @@ var histogram_module = (function(verbose) {
         var tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
-                .html(function(d) {
+                .html(function (d) {
                     return  "<strong>" + _iTrans.prop('lb_rango') + ":</strong> <span >" + d.title + "</span><br/><br/>" +
                             "<strong>" + _iTrans.prop('lb_frecuencia') + ":</strong> <span >" + parseInt(d.frequency * 100) + " %</span>";
                 });
@@ -1083,11 +1066,11 @@ var histogram_module = (function(verbose) {
         svg.call(tip);
 
 
-        x.domain(data.map(function(d) {
+        x.domain(data.map(function (d) {
             return d.bcenter;
         }));
 
-        max_freq = d3.max(data.map(function(d) {
+        max_freq = d3.max(data.map(function (d) {
             return parseFloat(d.frequency);
         }));
         // _VERBOSE ? console.log(max_freq) : _VERBOSE;
@@ -1104,7 +1087,7 @@ var histogram_module = (function(verbose) {
                 .style("font-size", "10px")
                 .attr("dx", "-.8em")
                 .attr("dy", "-.55em")
-                .attr("transform", function(d) {
+                .attr("transform", function (d) {
                     return "rotate(-90)"
                 });
         // .append("text")
@@ -1129,21 +1112,21 @@ var histogram_module = (function(verbose) {
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) {
+                .attr("x", function (d) {
                     return x(d.bcenter);
                 })
                 .attr("width", x.rangeBand())
-                .attr("y", function(d) {
+                .attr("y", function (d) {
                     return y(parseFloat(d.frequency));
                 })
-                .attr("height", function(d) {
+                .attr("height", function (d) {
                     return height - y(parseFloat(d.frequency));
                 })
 
-                .on('mouseover', function(d) {
+                .on('mouseover', function (d) {
                     tip.show(d)
                 })
-                .on('mouseout', function(d) {
+                .on('mouseout', function (d) {
                     tip.hide(d)
                 })
 
@@ -1159,11 +1142,11 @@ var histogram_module = (function(verbose) {
      * @memberof! histogram_module
      * 
      */
-    var _randomColor = (function() {
+    var _randomColor = (function () {
         var golden_ratio_conjugate = 0.618033988749895;
         var h = Math.random();
 
-        var hslToRgb = function(h, s, l) {
+        var hslToRgb = function (h, s, l) {
             var r, g, b;
 
             if (s == 0) {
@@ -1193,7 +1176,7 @@ var histogram_module = (function(verbose) {
             return '#' + Math.round(r * 255).toString(16) + Math.round(g * 255).toString(16) + Math.round(b * 255).toString(16);
         };
 
-        return function() {
+        return function () {
             h += golden_ratio_conjugate;
             h %= 1;
             return hslToRgb(h, 0.5, 0.60);
@@ -1223,7 +1206,7 @@ var histogram_module = (function(verbose) {
 
         var chart_component = d3.selectAll(".chart")
                 .data(chart_array)
-                .each(function(chart) {
+                .each(function (chart) {
                     chart.on("brushend", display_obj.renderAll);
                 });
 
@@ -1288,9 +1271,9 @@ var histogram_module = (function(verbose) {
             data = group.all();
 
             // it contains an array from 1 to 20, create key missing elements and set value to 0
-            display_obj.epsilon_beans.forEach(function(d) {
+            display_obj.epsilon_beans.forEach(function (d) {
                 exists = false;
-                $.each(data, function(index, value) {
+                $.each(data, function (index, value) {
                     if (d == value.key) {
                         exists = true;
                         return false;
@@ -1305,7 +1288,7 @@ var histogram_module = (function(verbose) {
             data.sort(_sort_by('key', false, parseInt));
             _VERBOSE ? console.log(data) : _VERBOSE;
 
-            $.each(data, function(index, value) {
+            $.each(data, function (index, value) {
 
                 tvalue = value.value;
 
@@ -1319,7 +1302,7 @@ var histogram_module = (function(verbose) {
             _VERBOSE ? console.log(epsRange) : _VERBOSE;
 
 
-            x.domain(data.map(function(d) {
+            x.domain(data.map(function (d) {
                 avg = parseFloat((display_obj.epsRange.invertExtent(d.key)[0] + display_obj.epsRange.invertExtent(d.key)[1]) / 2).toFixed(2);
                 return avg;
             }));
@@ -1329,7 +1312,7 @@ var histogram_module = (function(verbose) {
             y.domain([0, group.top(1)[0].value]);
 
 
-            div.each(function() {
+            div.each(function () {
 
                 _VERBOSE ? console.log("div.each chart") : _VERBOSE;
 
@@ -1381,7 +1364,7 @@ var histogram_module = (function(verbose) {
                             .style("font-size", "10px")
                             .attr("dx", "-.8em")
                             .attr("dy", "-.55em")
-                            .attr("transform", function(d) {
+                            .attr("transform", function (d) {
                                 return "rotate(-90)"
                             });
 
@@ -1404,18 +1387,18 @@ var histogram_module = (function(verbose) {
                             .data(data)
                             .enter().append("rect")
                             .attr("class", "bar")
-                            .attr("x", function(d) {
+                            .attr("x", function (d) {
                                 // _VERBOSE ? console.log(d) : _VERBOSE;
                                 return x(parseFloat((display_obj.epsRange.invertExtent(d.key)[0] + display_obj.epsRange.invertExtent(d.key)[1]) / 2).toFixed(2));
                             })
                             .attr("width", x.rangeBand())
-                            .attr("y", function(d) {
+                            .attr("y", function (d) {
                                 return y(parseFloat(d.value));
                             })
-                            .attr("height", function(d) {
+                            .attr("height", function (d) {
                                 return height - y(parseFloat(d.value));
                             })
-                            .attr("fill", function(d) {
+                            .attr("fill", function (d) {
 
                                 left = display_obj.epsRange.invertExtent(d.key)[0]
                                 right = display_obj.epsRange.invertExtent(d.key)[1]
@@ -1428,8 +1411,7 @@ var histogram_module = (function(verbose) {
                                 if (display_obj.ep_th < min_val) {
                                     return d3.rgb(102, 184, 243);
                                     // return "steelblue";
-                                }
-                                else {
+                                } else {
                                     return d3.rgb(213, 215, 223);
                                 }
                             });
@@ -1477,7 +1459,7 @@ var histogram_module = (function(verbose) {
         } // function chart(div) closed
 
 
-        brush.on("brush.chart", function(e) {
+        brush.on("brush.chart", function (e) {
 
             _VERBOSE ? console.log("brush.chart") : _VERBOSE;
 
@@ -1498,13 +1480,12 @@ var histogram_module = (function(verbose) {
 
 
             // Fade all years in the histogram not within the brush
-            d3.selectAll("rect.bar").style("opacity", function(d, i) {
+            d3.selectAll("rect.bar").style("opacity", function (d, i) {
                 // _VERBOSE ? console.log(d.key) : _VERBOSE;
 
                 if (d.key < localBrushStart || d.key >= localBrushEnd || brush.empty()) {
                     return "0.4";
-                }
-                else {
+                } else {
                     return "1";
                 }
             });
@@ -1514,7 +1495,7 @@ var histogram_module = (function(verbose) {
         });
 
 
-        brush.on("brushend.chart", function() {
+        brush.on("brushend.chart", function () {
 
             _VERBOSE ? console.log("brushend.chart") : _VERBOSE;
 
@@ -1536,12 +1517,11 @@ var histogram_module = (function(verbose) {
 
                 dim_eps_freq.filterAll();
 
-                d3.selectAll("rect.bar").style("opacity", function(d, i) {
+                d3.selectAll("rect.bar").style("opacity", function (d, i) {
                     return "1";
                 });
 
-            }
-            else {
+            } else {
 
                 if (d3.round(localBrushStart, 0) == 0)
                     left_extent = 1
@@ -1556,7 +1536,7 @@ var histogram_module = (function(verbose) {
                 _VERBOSE ? console.log(display_obj.epsRange.invertExtent(left_extent)) : _VERBOSE;
                 _VERBOSE ? console.log(display_obj.epsRange.invertExtent(rigth_extent)) : _VERBOSE;
 
-                display_obj.dim_eps_freq.filterFunction(function(d) {
+                display_obj.dim_eps_freq.filterFunction(function (d) {
                     // _VERBOSE ? console.log(d) : _VERBOSE;
 
                     if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] + 0.1)
@@ -1565,11 +1545,10 @@ var histogram_module = (function(verbose) {
                 });
 
                 // Fade all years in the histogram not within the brush
-                d3.selectAll("rect.bar").style("opacity", function(d, i) {
+                d3.selectAll("rect.bar").style("opacity", function (d, i) {
                     if (d.key < localBrushStart || d.key > localBrushEnd) {
                         return "0.4";
-                    }
-                    else {
+                    } else {
                         return "1";
                     }
                 });
@@ -1581,7 +1560,7 @@ var histogram_module = (function(verbose) {
         });
 
 
-        chart.margin = function(_) {
+        chart.margin = function (_) {
 
             _VERBOSE ? console.log("chart.margin") : _VERBOSE;
 
@@ -1591,7 +1570,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.x = function(_) {
+        chart.x = function (_) {
 
             _VERBOSE ? console.log("chart.x") : _VERBOSE;
 
@@ -1605,7 +1584,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.y = function(_) {
+        chart.y = function (_) {
 
             _VERBOSE ? console.log("chart.y") : _VERBOSE;
 
@@ -1615,7 +1594,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.dimension = function(_) {
+        chart.dimension = function (_) {
 
             _VERBOSE ? console.log("chart.dimension") : _VERBOSE;
             // _VERBOSE ? console.log(_) : _VERBOSE;
@@ -1626,7 +1605,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.filter = function(_) {
+        chart.filter = function (_) {
 
             _VERBOSE ? console.log("chart.filter") : _VERBOSE;
 
@@ -1641,7 +1620,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.group = function(_) {
+        chart.group = function (_) {
 
             _VERBOSE ? console.log("chart.group") : _VERBOSE;
             // _VERBOSE ? console.log(_) : _VERBOSE;
@@ -1652,7 +1631,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.round = function(_) {
+        chart.round = function (_) {
 
             _VERBOSE ? console.log("chart.round") : _VERBOSE;
 
@@ -1681,16 +1660,16 @@ var histogram_module = (function(verbose) {
     function _sort_by(field, reverse, primer) {
 
         var key = primer ?
-                function(x) {
+                function (x) {
                     return primer(x[field])
                 } :
-                function(x) {
+                function (x) {
                     return x[field]
                 };
 
         reverse = !reverse ? 1 : -1;
 
-        return function(a, b) {
+        return function (a, b) {
             return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
         }
     }
