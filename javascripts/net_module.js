@@ -1366,7 +1366,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
         var sdata = {
-            'qtype': 'getCountGridid',
+//            'qtype': 'getCountGridid',
             "spids": spids
         };
         
@@ -1376,7 +1376,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
         $.ajax({
             // url : _url_trabajo,
-            url: _url_zacatuche + "/niche/especie",
+            url: _url_zacatuche + "/niche/especie/getCountGridid",
             type: 'post',
             data: sdata,
             // dataType : "json",

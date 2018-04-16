@@ -7,9 +7,14 @@
 var module_net = (function () {
 
 
-    var _AMBIENTE = 1,
-            _TEST = false;
+    var _AMBIENTE = 1;
+    var _TEST = false;
     var _VERBOSE = true;
+    var MOD_COMUNIDAD = 1;
+    
+    var _tipo_modulo = MOD_COMUNIDAD;
+    
+    
 
     var _map_module_net,
             _variable_module_net,
@@ -23,7 +28,6 @@ var module_net = (function () {
 
     var _toastr = toastr;
     var _iTrans;
-    var _tipo_modulo;
 
     var _componente_fuente;
     var _componente_sumidero;
@@ -400,13 +404,10 @@ var module_net = (function () {
      * @param {string} tipo_modulo - Identificador del módulo 0 para nicho y 1 para comunidad
      * @param {string} verbose - Bandera para desplegar modo verbose
      */
-    function startModule(tipo_modulo, verbose) {
+    function startModule(verbose) {
 
         _VERBOSE ? console.log("startModule") : _VERBOSE;
-
         _VERBOSE = verbose;
-
-        _tipo_modulo = tipo_modulo;
 
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         _language_module_net = language_module(_VERBOSE);
@@ -510,55 +511,30 @@ var module_net = (function () {
 
 
 $(document).ready(function () {
-
-    // verbose por default es true
-    var verbose = true;
-
-    // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 2;
-
-    // 0 nicho, 1 comunidad, 2 index
-    var modulo = 1;
-
-    if (Cookies.get("url_front")) {
-
-        module_net.setUrlFront(Cookies.get("url_front"))
-        module_net.setUrlApi(Cookies.get("url_api"))
-        module_net.setUrlComunidad(Cookies.get("url_comunidad"));
+    
+    if (localStorage.getItem("url_front")) {
+        
+        var verbose = localStorage.getItem("verbose");
+        module_net.setUrlFront(localStorage.getItem("url_front"));
+        module_net.setUrlApi(localStorage.getItem("url_api"));
+        module_net.setUrlComunidad(localStorage.getItem("url_comunidad"));
+        module_net.startModule(verbose);
 
     } else {
-
-        if (ambiente === 0) {
-            module_net.setUrlFront("http://localhost/species-front");
-            module_net.setUrlApi("http://localhost:8080");
-            module_net.setUrlComunidad("http://localhost/species-front/comunidad_v0.1.html");
-        } else if (ambiente === 1) {
-
-            module_net.setUrlFront("http://species.conabio.gob.mx");
-            module_net.setUrlApi("http://species.conabio.gob.mx/api");
-            module_net.setUrlComunidad("http://species.conabio.gob.mx/comunidad_v0.1.html");
-
-        } else if (ambiente === 2) {
-
-            module_net.setUrlFront("http://species.conabio.gob.mx/dev");
-            module_net.setUrlApi("http://species.conabio.gob.mx/api-dev");
-            module_net.setUrlComunidad("http://species.conabio.gob.mx/dev/comunidad_v0.1.html");
-
+        
+        // en caso de no tener los datos necesarios en el local storage se redirecciona a index
+        var url = window.location.href;        
+        var url_array = url.split("/");
+        var new_url = "";
+        
+        for (var i=0; i<url_array.length-1; i++) {
+            new_url += url_array[i] + "/";
         }
-        // la version candidate tiene el front de dev y trabaja con el middleware de produccion
-        else {
-
-            module_net.setUrlFront("http://species.conabio.gob.mx/candidate");
-            module_net.setUrlApi("http://species.conabio.gob.mx/api-rc");
-            module_net.setUrlComunidad("http://species.conabio.gob.mx/candidate/comunidad_v0.1.html");
-
-        }
-
-
+        new_url += "index.html";
+        window.location.replace(new_url);
 
     }
 
-
-    module_net.startModule(modulo, verbose);
+    
 
 });

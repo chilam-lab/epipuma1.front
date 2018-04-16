@@ -114,11 +114,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             $.ajax({
                 // url: _url_trabajo,
-                url: _url_zacatuche + "/niche/especie",
+                url: _url_zacatuche + "/niche/especie/getRasterVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-                    "qtype": "getRasterVariables",
+//                    "qtype": "getRasterVariables",
                     "type": _TYPE_TERRESTRE,
                     "level": level_root
                 },
@@ -209,11 +209,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             $.ajax({
                 // url: _url_trabajo,
-                url: _url_zacatuche + "/niche/especie",
+                url: _url_zacatuche + "/niche/especie/getRasterVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-                    "qtype": "getRasterVariables",
+//                    "qtype": "getRasterVariables",
                     "level": level_vartree,
                     "field": parent_id,
                     "type": ter_type,
@@ -276,11 +276,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             $.ajax({
                 // url: _url_trabajo,
-                url: _url_zacatuche + "/niche/especie",
+                url: _url_zacatuche + "/niche/especie/getRasterVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-                    "qtype": "getRasterVariables",
+//                    "qtype": "getRasterVariables",
                     "type": _TYPE_ABIO,
                     "level": level_root
                 },
@@ -374,11 +374,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             $.ajax({
                 // url: _url_trabajo,
-                url: _url_zacatuche + "/niche/especie",
+                url: _url_zacatuche + "/niche/especie/getRasterVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-                    "qtype": "getRasterVariables",
+//                    "qtype": "getRasterVariables",
                     "level": level_vartree,
                     "field": parent_id,
                     "type": ter_type,
@@ -925,11 +925,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             $.ajax({
                 // url: _url_trabajo,
-                url: _url_zacatuche + "/niche/especie",
+                url: _url_zacatuche + "/niche/especie/getVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-                    "qtype": "getVariables",
+//                    "qtype": "getVariables",
                     "field": self.field_vartree,
                     "parentfield": self.parent_field_vartree,
                     "parentitem": self.value_vartree
@@ -1042,11 +1042,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             $.ajax({
                 // url: _url_trabajo,
-                url: _url_zacatuche + "/niche/especie",
+                url: _url_zacatuche + "/niche/especie/getVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-                    "qtype": "getVariables",
+//                    "qtype": "getVariables",
                     "field": next_field,
                     "parentfield": parent_field,
                     "parentitem": d.node.text.split(" ")[0]

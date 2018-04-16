@@ -980,11 +980,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         $.ajax({
-            url: _url_zacatuche + "/niche/especie",
+            url: _url_zacatuche + "/niche/especie/getSpecies",
             type: 'post',
             dataType: "json",
             data: {
-                "qtype": "getSpecies",
+//                "qtype": "getSpecies",
                 "id": _specie_target.spid,
                 "idtime": milliseconds,
                 "lim_inf": _lin_inf,
