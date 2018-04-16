@@ -38,11 +38,11 @@ var language_module = (function (verbose) {
         _first_load = true;
 
 
-        if (Cookies.get("language") === undefined) {
+        if (localStorage.getItem("language") === undefined) {
             _language_selected = 'es_MX';
-            Cookies.set("language", _language_selected);
+            localStorage.language = _language_selected;
         } else {
-            _language_selected = Cookies.get("language");
+            _language_selected = localStorage.getItem("language");
         }
 
         _VERBOSE ? console.log("_language_selected: " + _language_selected) : _VERBOSE;
@@ -60,16 +60,16 @@ var language_module = (function (verbose) {
 
                 _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
 
-                if (Cookies.get("language") === undefined) {
+                if (localStorage.getItem("language") === undefined) {
 
                     _VERBOSE ? console.log("undefined") : _VERBOSE;
-                    Cookies.set("language", _language_selected);
+                    localStorage.language = _language_selected;
                     _loadLabels(_first_load);
 
                 } else {
 
                     _VERBOSE ? console.log("language loaded") : _VERBOSE;
-                    _language_selected = Cookies.get("language");
+                    _language_selected = localStorage.getItem("language");
                     _VERBOSE ? console.log(_language_selected) : _VERBOSE;
                     _loadLabels(_first_load);
 
@@ -89,7 +89,7 @@ var language_module = (function (verbose) {
             _language_selected = e.target.getAttribute("value");
             _language_label_selected = e.target.getAttribute("label");
 
-            Cookies.set("language", _language_selected);
+            localStorage.language = _language_selected;
 
             _VERBOSE ? console.log("value: " + _language_selected) : _VERBOSE;
             _VERBOSE ? console.log("label: " + _language_label_selected) : _VERBOSE;
