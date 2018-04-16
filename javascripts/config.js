@@ -10,7 +10,7 @@ $(document).ready(function () {
     //
     //********************************
     
-    var ambiente = 2;
+    var ambiente = 4;
     var _VERBOSE = true;
     
     var modulo = 2; // modulo index
