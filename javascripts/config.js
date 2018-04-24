@@ -73,6 +73,7 @@ $(document).ready(function () {
         localStorage.url_api = url_api;
         localStorage.url_nicho = url_nicho;
         localStorage.url_comunidad = url_comunidad;
+        localStorage.ambiente = ambiente;
         localStorage.verbose = _VERBOSE;
         
     }

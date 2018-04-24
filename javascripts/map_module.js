@@ -362,11 +362,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         var centro_mapa, zoom_module;
 
 //        if(_url_zacatuche.indexOf("api-dev") !== -1 || _url_zacatuche.indexOf("localhost") !== -1){
-        if (_url_zacatuche.indexOf("api-dev") !== -1) {
+        if (parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3) {
+//        if (_url_zacatuche.indexOf("api-dev") !== -1) {
             centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
             zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
-//            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-//            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+
+        } else if (parseInt(localStorage.getItem("ambiente")) === 0 || parseInt(localStorage.getItem("ambiente")) === 4) {
+            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         } else {
             centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
             zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
@@ -421,14 +424,18 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         var centro_mapa, zoom_module;
 
-//        if(_url_zacatuche.indexOf("api-dev") !== -1 || _url_zacatuche.indexOf("localhost") !== -1){
-        if (_url_zacatuche.indexOf("api-dev") !== -1) {
-            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -103] : [23.5, -102];
+        if (parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3) {
+//        if (_url_zacatuche.indexOf("api-dev") !== -1) {
+            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
             zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
-//            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-//            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+
+        } else if (
+                parseInt(localStorage.getItem("ambiente")) === 0 || 
+                parseInt(localStorage.getItem("ambiente")) === 4) {
+            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         } else {
-            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -103] : [23.5, -102];
+            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
             zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
         }
 
@@ -1023,13 +1030,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 _discardedPointsFilter = d3.map([]); 	// puntos descartados por filtros
                 _computed_occ_cells = d3.map([]);	// celdas para analisis
                 // _computed_discarded_cells = d3.map([]);	// celdas descartadas por filtros
-                
+
                 var gridItems = [];
                 if (dPoints.values().length > 0) {
                     $.each(dPoints.values(), function (index, item) {
                         gridItems.push(item.feature.properties.gridid);
                     });
-                    
+
                     console.log(gridItems);
                 }
 
@@ -1066,7 +1073,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     var item_id = JSON.parse(item.json_geom).coordinates.toString();
 
                     // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
-                    
+
                     if ($.inArray(item.gridid, gridItems) === -1) {
                         _allowedPoints.set(item_id, {
                             "type": "Feature",

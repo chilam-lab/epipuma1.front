@@ -322,15 +322,15 @@ var language_module = (function (verbose) {
             $("#btn_variable_bioclim").append('<span class="caret"></span>');
 
             $("#a_item_bio00").text($.i18n.prop('a_item_bio00'));
-            $("#a_item_bio01").text($.i18n.prop('a_item_bio01'));
-            $("#a_item_bio02").text($.i18n.prop('a_item_bio02'));
-            $("#a_item_bio03").text($.i18n.prop('a_item_bio03'));
-            $("#a_item_bio04").text($.i18n.prop('a_item_bio04'));
-            $("#a_item_bio05").text($.i18n.prop('a_item_bio05'));
-            $("#a_item_bio06").text($.i18n.prop('a_item_bio06'));
-            $("#a_item_bio07").text($.i18n.prop('a_item_bio07'));
-            $("#a_item_bio08").text($.i18n.prop('a_item_bio08'));
-            $("#a_item_bio09").text($.i18n.prop('a_item_bio09'));
+            $("#a_item_bio1").text($.i18n.prop('a_item_bio1'));
+            $("#a_item_bio2").text($.i18n.prop('a_item_bio2'));
+            $("#a_item_bio3").text($.i18n.prop('a_item_bio3'));
+            $("#a_item_bio4").text($.i18n.prop('a_item_bio4'));
+            $("#a_item_bio5").text($.i18n.prop('a_item_bio5'));
+            $("#a_item_bio6").text($.i18n.prop('a_item_bio6'));
+            $("#a_item_bio7").text($.i18n.prop('a_item_bio7'));
+            $("#a_item_bio8").text($.i18n.prop('a_item_bio8'));
+            $("#a_item_bio9").text($.i18n.prop('a_item_bio9'));
             $("#a_item_bio10").text($.i18n.prop('a_item_bio10'));
             $("#a_item_bio11").text($.i18n.prop('a_item_bio11'));
             $("#a_item_bio12").text($.i18n.prop('a_item_bio12'));

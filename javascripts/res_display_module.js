@@ -4,7 +4,7 @@
  *
  * @namespace res_display_module
  */
-var res_display_module = (function(verbose, url_zacatuche) {
+var res_display_module = (function (verbose, url_zacatuche) {
 
     var _url_zacatuche = url_zacatuche;
 
@@ -37,7 +37,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
     var _NUM_DECILES = 10;
 
-    var _cdata,
+    var _countsdata,
+            _cdata,
             _sdata,
             _tdata,
             _ddata,
@@ -339,7 +340,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _validation_module_all.set_histogram_module(_histogram_module_nicho);
 
 
-        $("#send_email_csv").click(function(e) {
+        $("#send_email_csv").click(function (e) {
 
             // _VERBOSE ? console.log($("#email_address")) : _VERBOSE;
             _VERBOSE ? console.log($("#email_address")[0].validity["valid"]) : _VERBOSE;
@@ -355,7 +356,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     url: _url_zacatuche,
                     type: 'post',
                     data: _tdata,
-                    success: function(d) {
+                    success: function (d) {
 
                         _VERBOSE ? console.log(d) : _VERBOSE;
                         $('#modalMail').modal('hide');
@@ -363,7 +364,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_correo_enviado'), "success");
 
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function (jqXHR, textStatus, errorThrown) {
 
                         _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
                         $('#modalMail').modal('hide');
@@ -374,38 +375,37 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 });
 
 
-            }
-            else {
+            } else {
                 alert("Correo invalido")
             }
 
         });
 
-        
-        $("#map_download").click(function(e) {
+
+        $("#map_download").click(function (e) {
 
             _VERBOSE ? console.log("map_download") : _VERBOSE;
 
             var grid = _map_module_nicho.getGridMap2Export();
-            
+
 //            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
             this.href = (window.URL ? URL : webkitURL).createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
-            
+
 //            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(grid));
-            
+
             $("#modalMailShape").modal("hide");
 
         });
-        
-        $("#sp_download").click(function(e) {
+
+        $("#sp_download").click(function (e) {
 
             _VERBOSE ? console.log("sp_download") : _VERBOSE;
 
             var sp_occ = _map_module_nicho.getSP2Export();
-            
+
             this.href = window.URL.createObjectURL(new Blob([JSON.stringify(sp_occ)], {type: 'application/json'}));
 //            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(sp_occ));
-            
+
             $("#modalMailShape").modal("hide");
 
         });
@@ -451,7 +451,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
         // obteniendo solo las celdas de los puntos de las especies. NOTA: Estos se puede enviar desde el map_module
-        _discardedPoints.values().forEach(function(item, index) {
+        _discardedPoints.values().forEach(function (item, index) {
 //            console.log(item.feature.properties.gridid);
             _discarded_cell_set.set(item.feature.properties.gridid, item.feature.properties.gridid);
         });
@@ -498,16 +498,17 @@ var res_display_module = (function(verbose, url_zacatuche) {
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'), "warning");
             _initializeValidationTables(val_process);
 
-        }
-        else {
+        } else {
 
             _confDataRequest(_spid, _idreg, val_process);
             _panelGeneration();
 
-            _createTableEpSc(_tdata);
-            _createHistEpScr_Especie(_ddata);
-            _createHistScore_Celda(_cdata);
-            _configureStyleMap(_sdata);
+            _generateCounts(_countsdata);
+
+
+//            _createHistEpScr_Especie(_ddata);
+//            _createHistScore_Celda(_cdata);
+//            _configureStyleMap(_sdata);
 
         }
     }
@@ -541,7 +542,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 grid_res: _grid_res
             },
             dataType: "json",
-            success: function(resp) {
+            success: function (resp) {
 
                 _idtemptable = resp.data[0].tblname;
                 _VERBOSE ? console.log("Creación tabla: " + _idtemptable) : _VERBOSE;
@@ -550,9 +551,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 _panelGeneration(_idtemptable);
 
                 _createTableEpSc(_tdata, _idtemptable, val_process);
-                _createHistEpScr_Especie(_ddata);
-                _createHistScore_Celda(_cdata);
-                _configureStyleMap(_sdata);
+
+//                _createHistEpScr_Especie(_ddata);
+//                _createHistScore_Celda(_cdata);
+//                _configureStyleMap(_sdata);
 
 
 //              Servicio de prueba del store
@@ -578,7 +580,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 //                });
 
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
             }
@@ -608,7 +610,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 idtable: _idtemptable
             },
             dataType: "json",
-            success: function(resp) {
+            success: function (resp) {
 
                 console.log("delete");
                 console.log(resp);
@@ -616,7 +618,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 _idtemptable = "";
 
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("textStatus: " + textStatus) : _VERBOSE;
                 _VERBOSE ? console.log("errorThrown: " + errorThrown) : _VERBOSE;
 
@@ -671,16 +673,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
         try {
             $("#" + _id_charteps.id).empty();
             $("#" + _id_chartscr.id).empty();
-        }
-        catch (e) {
+        } catch (e) {
             _VERBOSE ? console.log("primera vez") : _VERBOSE;
         }
 
 
         try {
             $("#" + _id_chartscr_celda.id).empty();
-        }
-        catch (e) {
+        } catch (e) {
             _VERBOSE ? console.log("primera vez") : _VERBOSE;
         }
 
@@ -690,8 +690,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         try {
             $("#" + _id_chartscr_decil.id).empty();
-        }
-        catch (e) {
+        } catch (e) {
             _VERBOSE ? console.log(e) : _VERBOSE;
             _VERBOSE ? console.log("primera vez") : _VERBOSE;
         }
@@ -784,7 +783,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             "val_process": val_process,
             "idtabla": idtabla,
             "grid_res": _grid_res
-            
+
 
         };
 
@@ -850,7 +849,25 @@ var res_display_module = (function(verbose, url_zacatuche) {
         };
 
 
+        // verbo: getCounts
+        _countsdata = {
+            "id": spid,
+            "idtime": milliseconds,
+            "apriori": apriori,
+            "min_occ": min_occ,
+            "fossil": fossil,
+            "lim_inf": lin_inf,
+            "lim_sup": lin_sup,
+            "sfecha": sin_fecha,
+            "val_process": val_process,
+            "idtabla": idtabla,
+            "grid_res": _grid_res
+        }
+
+
         _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
+        _countsdata['discardedFilterids'] = _discarded_cell_set.values();
+
         _tdata['discardedFilterids'] = _discarded_cell_set.values();
         _sdata['discardedFilterids'] = _discarded_cell_set.values();
         _ddata['discardedFilterids'] = _discarded_cell_set.values();
@@ -877,7 +894,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _VERBOSE ? console.log("_panelGeneration") : _VERBOSE;
         idtemptable = idtemptable || "";
 
-        filters = [];
+        var filters = [];
         _fathers = [];
         _sons = [];
         _totals = [];
@@ -897,7 +914,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             hasTotal = true;
         }
 
-        _subgroups.forEach(function(grupo) {
+        _subgroups.forEach(function (grupo) {
 
             filterby_group = [];
             _VERBOSE ? console.log(grupo) : _VERBOSE;
@@ -908,7 +925,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             }
 
 
-            grupo.value.forEach(function(item) {
+            grupo.value.forEach(function (item) {
 
                 // if item is type 1 is a json and if 0 is a string
                 itemGroup = item;
@@ -983,8 +1000,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 for (var i = 0; i < single_filter.length; i++) {
                     if (single_filter[i].type == 4) {
                         hasBios = true;
-                    }
-                    else {
+                    } else {
                         hasRaster = true;
                     }
                 }
@@ -996,7 +1012,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 // elimina una segunda petición cuando el grupo de variables solo contiene un elemento
                 if (hasChildren) {
-                    _createScore_Decil(_decil_data, false, false);
+//                    _createScore_Decil(_decil_data, false, false);
                 }
 
 
@@ -1008,8 +1024,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             for (var i = 0; i < filterby_group.length; i++) {
                 if (filterby_group[i].type == 4) {
                     hasBios = true;
-                }
-                else {
+                } else {
                     hasRaster = true;
                 }
             }
@@ -1023,11 +1038,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
 
-            _createScore_Decil(_decil_group_data, hasChildren, false);
+//            _createScore_Decil(_decil_group_data, hasChildren, false);
 
         });
 
         if (filters.length != 0) {
+            _countsdata['tfilters'] = filters;
+
             _tdata['tfilters'] = filters;
             _sdata['tfilters'] = filters;
             _ddata['tfilters'] = filters;
@@ -1041,11 +1058,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
         for (var i = 0; i < filters.length; i++) {
             if (filters[i].type == 4) {
                 hasBios = true;
-            }
-            else {
+            } else {
                 hasRaster = true;
             }
         }
+
+        _countsdata['hasBios'] = hasBios;
+        _countsdata['hasRaster'] = hasRaster;
 
         _tdata["hasBios"] = hasBios;
         _tdata["hasRaster"] = hasRaster;
@@ -1062,6 +1081,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _total_data_decil['hasBios'] = hasBios;
         _total_data_decil['hasRaster'] = hasRaster;
 
+
+        _countsdata['tdelta'] = active_time;
+
         _tdata['tdelta'] = active_time;
         _sdata['tdelta'] = active_time;
         _ddata['tdelta'] = active_time;
@@ -1070,7 +1092,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
         if (hasTotal) {
-            _createScore_Decil(_total_data_decil, false, hasTotal);
+//            _createScore_Decil(_total_data_decil, false, hasTotal);
         }
 
     }
@@ -1107,7 +1129,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             url: _url_zacatuche + "/niche/getScoreDecil",
             data: decildata,
             dataType: "json",
-            success: function(resp, status) {
+            success: function (resp, status) {
 
                 console.log(resp.data);
 
@@ -1123,16 +1145,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     if (hasChildren) {
                         console.log("caso 1A");
                         _fathers.push({item: data});
-                    }
-                    else {
+                    } else {
                         // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
                         console.log("caso 1B");
                         _fathers.push({item: data});
                         _sons.push({item: data});
                     }
 
-                }
-                else {
+                } else {
                     console.log("caso 2");
                     _sons.push({item: data});
 
@@ -1185,7 +1205,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error createScore_Decil: " + textStatus) : _VERBOSE;
                 _VERBOSE ? console.log("error createScore_Decil: " + errorThrown) : _VERBOSE;
 
@@ -1212,6 +1232,86 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
     }
 
+    function despliegaLoadings() {
+
+        $('#treeAddedPanel').loading({
+            stoppable: true
+        });
+
+        $('#hst_esp_eps').loading({
+            stoppable: true
+        });
+
+        $('#hst_esp_scr').loading({
+            stoppable: true
+        });
+        
+        $('#hst_cld_scr').loading({
+            stoppable: true
+        });
+        
+        $('#map').loading({
+            stoppable: true
+        });
+
+
+    }
+
+    function _groupCountByFreqSpecie() {
+
+    }
+
+    function _generateCounts(counts_data) {
+
+        _VERBOSE ? console.log("_generateCounts") : _VERBOSE;
+        _VERBOSE ? console.log(counts_data) : _VERBOSE;
+
+        despliegaLoadings();
+
+        $.ajax({
+            url: _url_zacatuche + "/niche/counts",
+            type: 'post',
+            dataType: "json",
+            data: counts_data,
+            success: function (respuesta) {
+//                console.log(respuesta);
+                if (respuesta.ok) {
+                    var counts = respuesta.data;
+                    _createTableEpSc(counts);
+                    
+                    var freq_data = respuesta.data_freq;
+                    _createHistEpScr_Especie(freq_data);
+                    
+                    var freq_celda_data = respuesta.data_freq_cell;
+                    _createHistScore_Celda(freq_celda_data);
+                    
+                    var score_celda_data = respuesta.data_score_cell;
+                    _configureStyleMap(score_celda_data);
+                    
+                } else {
+                    // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
+                }
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+                console.log(errorThrown);
+                console.log(jqXHR);
+
+                _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
+                _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
+//                TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
+
+
+
+//                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_tblsp'), "error");
+
+            }
+
+        });
+
+    }
+
 
     /**
      * Éste método envía el conjunto de parámetros al módulo table para generar la tabla de resultados de épsilon y score en el análisis de nicho ecológico.
@@ -1224,74 +1324,38 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @param {String} idtemptable - Nombre de la tabla temporal creada cuando es proceso de validación
      * 
      */
-    function _createTableEpSc(tdata) {
+    function _createTableEpSc(data) {
 
         _VERBOSE ? console.log("_createTableEpSc") : _VERBOSE;
-        _VERBOSE ? console.log(tdata) : _VERBOSE;
+        _VERBOSE ? console.log(data) : _VERBOSE;
 
+        var data_list = [];
 
-        $('#treeAddedPanel').loading({
-            stoppable: true
+        data.forEach(function (d) {
+            var item_list = [];
+            // item_list.push(d.generovalido)
+            item_list.push(d.especievalidabusqueda)
+            item_list.push(d.nij)
+            item_list.push(d.nj)
+            item_list.push(d.ni)
+            item_list.push(d.n)
+            item_list.push(d.epsilon)
+            item_list.push(d.score)
+            item_list.push(d.reinovalido)
+            item_list.push(d.phylumdivisionvalido)
+            item_list.push(d.clasevalida)
+            item_list.push(d.ordenvalido)
+            item_list.push(d.familiavalida)
+
+            data_list.push(item_list)
         });
 
+        var json_arg = {data: data_list}
 
-        $.ajax({
-            url: _url_zacatuche + "/niche/getGeoRel",
-            type: 'post',
-            dataType: "json",
-            data: tdata,
-            success: function(json_file) {
+        _table_module_eps.createEspList(json_arg);
+        _tbl_eps = true;
 
-//                console.log(json_file);
-                $('#treeAddedPanel').loading('stop');
-
-                var data_list = [];
-
-                json_file.data.forEach(function(d) {
-                    item_list = [];
-                    // item_list.push(d.generovalido)
-                    item_list.push(d.especievalidabusqueda)
-                    item_list.push(d.nij)
-                    item_list.push(d.nj)
-                    item_list.push(d.ni)
-                    item_list.push(d.n)
-                    item_list.push(d.epsilon)
-                    item_list.push(d.score)
-                    item_list.push(d.reinovalido)
-                    item_list.push(d.phylumdivisionvalido)
-                    item_list.push(d.clasevalida)
-                    item_list.push(d.ordenvalido)
-                    item_list.push(d.familiavalida)
-
-                    data_list.push(item_list)
-                });
-
-                var json_arg = {data: data_list}
-
-                console.log(json_arg);
-
-                _table_module_eps.createEspList(json_arg);
-
-                _tbl_eps = true;
-
-
-
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-
-                console.log(errorThrown);
-                console.log(jqXHR);
-
-                $('#treeAddedPanel').loading('stop');
-
-                _VERBOSE ? console.log("error _createTableEpSc: " + textStatus) : _VERBOSE;
-                _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
-                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_tblsp'), "error");
-
-            }
-
-        });
-
+        $('#treeAddedPanel').loading('stop');
 
 
     }
@@ -1306,34 +1370,31 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * 
      * @param {json} sdata - Json con la configuración seleccionada por el usuario
      */
-    function _configureStyleMap(sdata) {
+    function _configureStyleMap(data) {
 
         _VERBOSE ? console.log("_configureStyleMap") : _VERBOSE;
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
 
-        $('#map').loading({
-            stoppable: true
-        });
+        
 
-
-        $.ajax({
-            url: _url_zacatuche + "/niche/getCellScore",
-            type: 'post',
-            data: sdata,
-            success: function(json_file) {
+//        $.ajax({
+//            url: _url_zacatuche + "/niche/getCellScore",
+//            type: 'post',
+//            data: sdata,
+//            success: function (json_file) {
 
                 $('#map').loading('stop');
                 $("#map_next").css('visibility', 'visible');
                 $("#map_next").show("slow");
 
-                var json = json_file.data;
-                
+                var json = data;
+
 //                console.log(json);
-                
+
                 // grid_map_color contiene colores y scores
                 var grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
-                
+
 //                console.log(grid_map_color);
 
                 _map_module_nicho.colorizeFeatures(grid_map_color);
@@ -1343,21 +1404,21 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 document.getElementById("dShape").style.display = "inline";
 
 
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
-                $("#map_next").css('visibility', 'hidden');
-                $("#map_next").hide("slow");
+//            },
+//            error: function (jqXHR, textStatus, errorThrown) {
+//                _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
+//                $("#map_next").css('visibility', 'hidden');
+//                $("#map_next").hide("slow");
+//
+//                $('#map').loading('stop');
+//
+//                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_mapa'), "error");
+//                document.getElementById("dShape").style.display = "none";
+//
+//            }
 
-                $('#map').loading('stop');
 
-                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_mapa'), "error");
-                document.getElementById("dShape").style.display = "none";
-
-            }
-
-
-        });
+//        });
 
     }
 
@@ -1371,73 +1432,107 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * 
      * @param {json} ddata - Json con la configuración seleccionada por el usuario
      */
-    function _createHistEpScr_Especie(ddata) {
+    function _createHistEpScr_Especie(data) {
 
         _VERBOSE ? console.log("_createHistEpScr_Especie") : _VERBOSE;
 
-        $('#hst_esp_eps').loading({
-            stoppable: true
-        });
-        $('#hst_esp_scr').loading({
-            stoppable: true
-        });
+        $('#hst_esp_eps').loading('stop');
+        $('#hst_esp_scr').loading('stop');
 
-        $.ajax({
-            url: _url_zacatuche + "/niche/getFreq",
-            type: "post",
-            data: ddata,
-            dataType: "json",
-            success: function(res, status) {
+        var data2_epsilon = [];
+        var data2_score = [];
+        var totcount_epsilon = 0;
+        var totcount_score = 0;
 
-                var data = res.data;
-                $('#hst_esp_eps').loading('stop');
-                $('#hst_esp_scr').loading('stop');
+        var item = data;
 
-                var data2_epsilon = [];
-                var data2_score = [];
-                var totcount_epsilon = 0;
-                var totcount_score = 0;
+        for (j = 0; j < item.length; j++) {
+            totcount_epsilon = totcount_epsilon + parseInt(item[j].freq_epsilon);
+            totcount_score = totcount_score + parseInt(item[j].freq_score);
+        }
 
-                item = data;
+        for (j = 0; j < item.length; j++) {
 
-                for (j = 0; j < item.length; j++) {
-                    totcount_epsilon = totcount_epsilon + parseInt(item[j].freq_epsilon);
-                    totcount_score = totcount_score + parseInt(item[j].freq_score);
-                }
+            elemento_epsilon = {
+                // bcenter : ((data[j].max_epsilon + data[j].min_epsilon) / 2).toFixed(2),
+                bcenter: parseFloat((parseFloat(item[j].min_epsilon) + parseFloat(item[j].max_epsilon)) / 2).toFixed(2),
+                frequency: parseFloat(parseInt(item[j].freq_epsilon) / totcount_epsilon).toFixed(2),
+                title: item[j].min_epsilon + " : " + item[j].max_epsilon
+            };
 
-                for (j = 0; j < item.length; j++) {
+            elemento_score = {
+                // bcenter : ((data[j].max_score + data[j].min_score) / 2).toFixed(2),
+                bcenter: parseFloat((parseFloat(item[j].min_score) + parseFloat(item[j].max_score)) / 2).toFixed(2),
+                frequency: parseFloat(parseInt(item[j].freq_score) / totcount_score).toFixed(2),
+                title: item[j].min_score + " : " + item[j].max_score
+            };
 
-                    elemento_epsilon = {
-                        // bcenter : ((data[j].max_epsilon + data[j].min_epsilon) / 2).toFixed(2),
-                        bcenter: parseFloat((parseFloat(item[j].min_epsilon) + parseFloat(item[j].max_epsilon)) / 2).toFixed(2),
-                        frequency: parseFloat(parseInt(item[j].freq_epsilon) / totcount_epsilon).toFixed(2),
-                        title: item[j].min_epsilon + " : " + item[j].max_epsilon
-                    };
+            data2_epsilon.push(elemento_epsilon);
+            data2_score.push(elemento_score);
 
-                    elemento_score = {
-                        // bcenter : ((data[j].max_score + data[j].min_score) / 2).toFixed(2),
-                        bcenter: parseFloat((parseFloat(item[j].min_score) + parseFloat(item[j].max_score)) / 2).toFixed(2),
-                        frequency: parseFloat(parseInt(item[j].freq_score) / totcount_score).toFixed(2),
-                        title: item[j].min_score + " : " + item[j].max_score
-                    };
+        }
 
-                    data2_epsilon.push(elemento_epsilon);
-                    data2_score.push(elemento_score);
-
-                }
-
-                _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
-                _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
-
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-                $('#hst_esp_eps').loading('stop');
-                $('#hst_esp_scr').loading('stop');
-            }
+        _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
+        _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
 
 
-        });
+
+//        $.ajax({
+//            url: _url_zacatuche + "/niche/getFreq",
+//            type: "post",
+//            data: ddata,
+//            dataType: "json",
+//            success: function (res, status) {
+//
+//                var data = res.data;
+//                $('#hst_esp_eps').loading('stop');
+//                $('#hst_esp_scr').loading('stop');
+//
+//                var data2_epsilon = [];
+//                var data2_score = [];
+//                var totcount_epsilon = 0;
+//                var totcount_score = 0;
+//
+//                item = data;
+//
+//                for (j = 0; j < item.length; j++) {
+//                    totcount_epsilon = totcount_epsilon + parseInt(item[j].freq_epsilon);
+//                    totcount_score = totcount_score + parseInt(item[j].freq_score);
+//                }
+//
+//                for (j = 0; j < item.length; j++) {
+//
+//                    elemento_epsilon = {
+//                        // bcenter : ((data[j].max_epsilon + data[j].min_epsilon) / 2).toFixed(2),
+//                        bcenter: parseFloat((parseFloat(item[j].min_epsilon) + parseFloat(item[j].max_epsilon)) / 2).toFixed(2),
+//                        frequency: parseFloat(parseInt(item[j].freq_epsilon) / totcount_epsilon).toFixed(2),
+//                        title: item[j].min_epsilon + " : " + item[j].max_epsilon
+//                    };
+//
+//                    elemento_score = {
+//                        // bcenter : ((data[j].max_score + data[j].min_score) / 2).toFixed(2),
+//                        bcenter: parseFloat((parseFloat(item[j].min_score) + parseFloat(item[j].max_score)) / 2).toFixed(2),
+//                        frequency: parseFloat(parseInt(item[j].freq_score) / totcount_score).toFixed(2),
+//                        title: item[j].min_score + " : " + item[j].max_score
+//                    };
+//
+//                    data2_epsilon.push(elemento_epsilon);
+//                    data2_score.push(elemento_score);
+//
+//                }
+//
+//                _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
+//                _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
+//
+//            },
+//            error: function (jqXHR, textStatus, errorThrown) {
+//                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+//                $('#hst_esp_eps').loading('stop');
+//                $('#hst_esp_scr').loading('stop');
+//            }
+//
+//
+//        });
 
     }
 
@@ -1454,7 +1549,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("updateLabels") : _VERBOSE;
 
-        _ids_componentes_var.forEach(function(item, index) {
+        _ids_componentes_var.forEach(function (item, index) {
 
             $("#btn_variable_" + item).text($.i18n.prop('btn_variable') + " ");
             $("#btn_variable_" + item).append('<span class="caret"></span>');
@@ -1565,22 +1660,20 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * 
      * @param {json} cdata - Json con la configuración seleccionada por el usuario
      */
-    function _createHistScore_Celda(cdata) {
+    function _createHistScore_Celda(data) {
 
         _VERBOSE ? console.log("_createHistScore_Celda") : _VERBOSE;
 
-        $('#hst_cld_scr').loading({
-            stoppable: true
-        });
+        
 
-        $.ajax({
-            type: "post",
-            url: _url_zacatuche + "/niche/getFreqCelda",
-            data: cdata,
-            dataType: "json",
-            success: function(resp, status) {
+//        $.ajax({
+//            type: "post",
+//            url: _url_zacatuche + "/niche/getFreqCelda",
+//            data: cdata,
+//            dataType: "json",
+//            success: function (resp, status) {
 
-                var data = resp.data;
+//                var data = resp.data;
                 $('#hst_cld_scr').loading('stop');
 
                 var data2_score = [];
@@ -1596,7 +1689,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 for (j = 0; j < data.length; j++) {
 
-                    elemento_score = {
+                    var elemento_score = {
                         bcenter: parseFloat((parseFloat(data[j].min) + parseFloat(data[j].max)) / 2).toFixed(2),
                         frequency: parseFloat(parseInt(data[j].freq) / totcount_score).toFixed(2),
                         title: data[j].min + " : " + data[j].max
@@ -1610,9 +1703,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
 
-            }
+//            }
 
-        });
+//        });
 
     }
 
@@ -1631,15 +1724,15 @@ var res_display_module = (function(verbose, url_zacatuche) {
         _VERBOSE ? console.log("_createSetStructure") : _VERBOSE;
 
         // binding parents and sons
-        fathers.forEach(function(father) {
+        fathers.forEach(function (father) {
 
-            sons.forEach(function(son) {
+            sons.forEach(function (son) {
 
                 if (parseInt(father.item[0].title.type) === parseInt(son.item[0].title.type) && parseInt(father.item[0].title.group_item) === parseInt(son.item[0].title.group_item)) {
 
                     son_index = 0;
 
-                    father.item.forEach(function(decil_item) {
+                    father.item.forEach(function (decil_item) {
 
 
                         // if there's no decil data in son, coninue for the next one
@@ -1660,8 +1753,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             newnames_p = json_array;
                             newnames_s = json_array_s;
                             decil_item.arraynames = {p: newnames_p, s: [newnames_s]}
-                        }
-                        else {
+                        } else {
 
 
 //                            console.log(son.item[son_index].arraynames);
@@ -1687,24 +1779,21 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                         if (!(decil_item.vp.s)) {
                             decil_item.vp = {p: decil_item.vp, s: [son.item[son_index].vp]}
-                        }
-                        else {
+                        } else {
                             temp_s = decil_item.vp.s;
                             temp_s.push(son.item[son_index].vp);
                             decil_item.vp.s = temp_s;
                         }
                         if (!(decil_item.fn.s)) {
                             decil_item.fn = {p: decil_item.fn, s: [son.item[son_index].fn]}
-                        }
-                        else {
+                        } else {
                             temp_s = decil_item.fn.s;
                             temp_s.push(son.item[son_index].fn);
                             decil_item.fn.s = temp_s;
                         }
                         if (!(decil_item.recall.s)) {
                             decil_item.recall = {p: decil_item.recall, s: [son.item[son_index].recall]}
-                        }
-                        else {
+                        } else {
                             temp_s = decil_item.recall.s;
                             temp_s.push(son.item[son_index].recall);
                             decil_item.recall.s = temp_s;
@@ -1713,8 +1802,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                         if (!(decil_item.avg.s)) {
                             decil_item.avg = {p: decil_item.avg, s: [son.item[son_index].avg]}
-                        }
-                        else {
+                        } else {
                             temp_s = decil_item.avg.s;
                             temp_s.push(son.item[son_index].avg);
                             decil_item.avg.s = temp_s;
@@ -1731,8 +1819,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                         if (!(decil_item.l_sup.s)) {
                             decil_item.l_sup = {p: decil_item.l_sup, s: [son.item[son_index].l_sup]}
-                        }
-                        else {
+                        } else {
                             temp_s = decil_item.l_sup.s;
                             temp_s.push(son.item[son_index].l_sup);
                             decil_item.l_sup.s = temp_s;
@@ -1740,8 +1827,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                         if (!(decil_item.l_inf.s)) {
                             decil_item.l_inf = {p: decil_item.l_inf, s: [son.item[son_index].l_inf]}
-                        }
-                        else {
+                        } else {
                             temp_s = decil_item.l_inf.s;
                             temp_s.push(son.item[son_index].l_inf);
                             decil_item.l_inf.s = temp_s;
@@ -1750,8 +1836,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                         if (!(decil_item.title.title.s)) {
                             decil_item.title.title = {p: decil_item.title.title, s: [son.item[son_index].title.title]}
-                        }
-                        else {
+                        } else {
                             temp_s = decil_item.title.title.s;
                             temp_s.push(son.item[son_index].title.title);
                             decil_item.title.title.s = temp_s;
@@ -1781,10 +1866,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
             data_chart.push({"decil": String(j)});
         }
 
-        fathers.forEach(function(row, index) {
+        fathers.forEach(function (row, index) {
 
             // _VERBOSE ? console.log(item) : _VERBOSE;
-            row.item.forEach(function(decil, index) {
+            row.item.forEach(function (decil, index) {
 
 
                 for (j = 0; j < _NUM_DECILES; j++) {
@@ -1797,24 +1882,21 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 if (!(item_chart.vp)) {
                     item_chart['vp'] = [decil.vp];
-                }
-                else {
+                } else {
                     temp = item_chart['vp'];
                     temp.push(decil.vp);
                     item_chart['vp'] = temp;
                 }
                 if (!(item_chart.fn)) {
                     item_chart['fn'] = [decil.fn];
-                }
-                else {
+                } else {
                     temp = item_chart['fn'];
                     temp.push(decil.fn);
                     item_chart['fn'] = temp;
                 }
                 if (!(item_chart.recall)) {
                     item_chart['recall'] = [decil.recall];
-                }
-                else {
+                } else {
                     temp = item_chart['recall'];
                     temp.push(decil.recall);
                     item_chart['recall'] = temp;
@@ -1824,8 +1906,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 if (!(item_chart.values)) {
                     item_chart['values'] = [decil.avg];
-                }
-                else {
+                } else {
                     temp = item_chart['values'];
                     temp.push(decil.avg);
                     item_chart['values'] = temp;
@@ -1844,8 +1925,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 if (!(item_chart.names)) {
                     item_chart['names'] = [decil.title.title];
-                }
-                else {
+                } else {
                     temp = item_chart['names'];
                     temp.push(decil.title.title);
                     item_chart['names'] = temp;
@@ -1853,8 +1933,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 if (!(item_chart.species)) {
                     item_chart['species'] = [decil.arraynames];
-                }
-                else {
+                } else {
                     temp = item_chart['species'];
                     temp.push(decil.arraynames);
                     item_chart['species'] = temp;
@@ -1866,8 +1945,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 if (!(item_chart.lsup)) {
                     item_chart['lsup'] = [decil.l_sup];
-                }
-                else {
+                } else {
                     temp = item_chart['lsup'];
                     temp.push(decil.l_sup);
                     item_chart['lsup'] = temp;
@@ -1875,8 +1953,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 if (!(item_chart.linf)) {
                     item_chart['linf'] = [decil.l_inf];
-                }
-                else {
+                } else {
                     temp = item_chart['linf'];
                     temp.push(decil.l_inf);
                     item_chart['linf'] = temp;
@@ -1912,13 +1989,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             _VERBOSE ? console.log("Add totals") : _VERBOSE;
 
-            data_chart.forEach(function(decil_item, index) {
+            data_chart.forEach(function (decil_item, index) {
 
                 _VERBOSE ? console.log("total") : _VERBOSE
 //                decil_total[index].arraynames = decil_total[index].arraynames //_deleteRepetedElements(decil_total[index].arraynames);
 
                 names = [];
-                decil_item.names.forEach(function(names_item, index) {
+                decil_item.names.forEach(function (names_item, index) {
                     names.push(names_item.p);
                 });
                 temp = decil_item['names'];
@@ -1935,7 +2012,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 //                decil_item['gridids'] = temp;
 
                 vp = [];
-                decil_item.vp.forEach(function(values_item, index) {
+                decil_item.vp.forEach(function (values_item, index) {
                     vp.push(values_item.p);
                 });
                 temp = decil_item['vp'];
@@ -1943,7 +2020,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 decil_item['vp'] = temp;
 
                 fn = [];
-                decil_item.fn.forEach(function(values_item, index) {
+                decil_item.fn.forEach(function (values_item, index) {
                     fn.push(values_item.p);
                 });
                 temp = decil_item['fn'];
@@ -1951,7 +2028,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 decil_item['fn'] = temp;
 
                 recall = [];
-                decil_item.recall.forEach(function(values_item, index) {
+                decil_item.recall.forEach(function (values_item, index) {
                     recall.push(values_item.p);
                 });
                 temp = decil_item['recall'];
@@ -1961,7 +2038,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
                 values = [];
-                decil_item.values.forEach(function(values_item, index) {
+                decil_item.values.forEach(function (values_item, index) {
                     values.push(values_item.p);
                 });
                 temp = decil_item['values'];
@@ -1971,7 +2048,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
                 lsups = [];
-                decil_item.lsup.forEach(function(lsup_item, index) {
+                decil_item.lsup.forEach(function (lsup_item, index) {
                     lsups.push(lsup_item.p);
                 });
                 temp = decil_item['lsup'];
@@ -1979,7 +2056,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 decil_item['lsup'] = temp;
 
                 linfs = [];
-                decil_item.linf.forEach(function(linf_item, index) {
+                decil_item.linf.forEach(function (linf_item, index) {
                     linfs.push(linf_item.p);
                 });
                 temp = decil_item['linf'];
@@ -1988,7 +2065,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
                 species = [];
-                decil_item.species.forEach(function(species_item, index) {
+                decil_item.species.forEach(function (species_item, index) {
 //                    console.log(species_item);
                     species.push(species_item.p);
                 });
@@ -1997,7 +2074,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 //                console.log(json_arraynames);
                 var p_item = json_arraynames.sort();
 //                console.log(p_item);
-                
+
                 temp.push({p: p_item, s: species});
                 decil_item['species'] = temp;
 
@@ -2005,7 +2082,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         }
 
-         _VERBOSE ? console.log(data_chart) : _VERBOSE;
+        _VERBOSE ? console.log(data_chart) : _VERBOSE;
         return data_chart;
 
     }
@@ -2026,17 +2103,16 @@ var res_display_module = (function(verbose, url_zacatuche) {
         array_values = [];
         newTempStr = [];
 
-        arraynames.forEach(function(d) {
+        arraynames.forEach(function (d) {
             values = String(d).split(",");
             Array.prototype.push.apply(array_values, values);
         });
 
-        array_values.forEach(function(d) {
+        array_values.forEach(function (d) {
 
             if (uniqueValues.has(d) != true) {
                 uniqueValues.set(d, 1);
-            }
-            else {
+            } else {
                 cont = uniqueValues.get(d);
                 uniqueValues.set(d, cont + 1);
             }
@@ -2044,7 +2120,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         });
 
 
-        uniqueValues.forEach(function(k, v) {
+        uniqueValues.forEach(function (k, v) {
 
             arg = k.split("|");
             v_temp = parseInt(arg[arg.length - 1]);
@@ -2088,7 +2164,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             url: _url_zacatuche + "/niche/getGridSpecies",
             type: 'post',
             data: singleCellData,
-            success: function(resp) {
+            success: function (resp) {
 
                 var data = resp.data;
 
@@ -2098,7 +2174,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 _map_module_nicho.showPopUp(htmltable, [lat, long]);
 
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
 
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
@@ -2149,8 +2225,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             if (parseFloat(json_data[i].score) >= 0) {
                 posocc++;
-            }
-            else {
+            } else {
                 negocc++;
             }
 
@@ -2176,8 +2251,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             htmltable += "<div class='panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr></thead><tbody>";
 
-        }
-        else if (json_data.length == 1 && json_data[0].gridid == -1) {
+        } else if (json_data.length == 1 && json_data[0].gridid == -1) {
 
             console.log("Probabilidad");
 
@@ -2186,8 +2260,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             htmltable += "<div class='panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "%</th></tr></thead><tbody>";
 
-        }
-        else {
+        } else {
 
 
 
@@ -2248,11 +2321,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 title_apriori = "Apriori";
                 total_apriori = parseFloat(apriori).toFixed(2);
-                
+
                 // el valor apriori esta incluido en
-                if(total_apriori===0){}
-                else if(total_apriori>0){posocc--;}
-                else{negocc--;}
+                if (total_apriori === 0) {
+                } else if (total_apriori > 0) {
+                    posocc--;
+                } else {
+                    negocc--;
+                }
 
                 title_total = $.i18n.prop('lb_pp_st');
                 total_celda = parseFloat(total_score + apriori).toFixed(2);
@@ -2293,8 +2369,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                                     </tr>\
                                 </thead>\n\
                                 <tbody>";
-            }
-            else if (prob) {
+            } else if (prob) {
                 title_total = $.i18n.prop('lb_pp_probpre');
                 prob = Math.floor(prob * 100) / 100;
                 prob = parseFloat(prob) === 100.00 ? 99.99 : parseFloat(prob);
@@ -2330,8 +2405,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                                 </tr>\
                                 </thead>\n\
                                 <tbody>";
-            }
-            else {
+            } else {
                 title_total = $.i18n.prop('lb_pp_st');
                 total_celda = parseFloat(total_score).toFixed(2);
 
