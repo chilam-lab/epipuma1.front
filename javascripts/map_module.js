@@ -626,8 +626,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             }
         } else {
 
-//            console.log(grid_map_color);
-//            console.log(_grid_map);
+//            console.log(grid_map_color.values());
+            console.log(_grid_map);
 
             for (var i = 0; i < _grid_map.features.length; i++) {
 
@@ -1361,7 +1361,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function _getMessagePopup(feature) {
 
-        _VERBOSE ? console.log("_getMessagePopup") : _VERBOSE;
+//        _VERBOSE ? console.log("_getMessagePopup") : _VERBOSE;
 
         var coordinates = parseFloat(feature.geometry.coordinates[1]).toFixed(2) + ", " + parseFloat(feature.geometry.coordinates[0]).toFixed(2)
 
@@ -1429,8 +1429,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             if (blue_arg.length > 0 && red_arg.length > 0) {
 
                 _VERBOSE ? console.log("ambos") : _VERBOSE;
-
-
 
                 var min_json = d3.min(blue_arg.map(function (d) {
                     return parseFloat(d.tscore)
@@ -1504,7 +1502,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 value.forEach(function (d) {
 
-                    grid_color.set(d.gridid, {color: color_scale[index], score: d.tscore});
+                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
 
                 });
 
@@ -1515,7 +1513,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 value.forEach(function (d) {
 
-                    grid_color.set(d.gridid, {color: color_scale[index], score: d.tscore});
+                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
 
                 });
 
@@ -1540,7 +1538,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         }
 
-        _VERBOSE ? console.log(grid_color.values()) : _VERBOSE;
+//        _VERBOSE ? console.log(grid_color.values()) : _VERBOSE;
 
         _cargaPaletaColor(mapa_prob);
 

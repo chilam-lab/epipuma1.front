@@ -501,14 +501,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         } else {
 
             _confDataRequest(_spid, _idreg, val_process);
-            _panelGeneration();
-
+            _panelGeneration()
             _generateCounts(_countsdata);
-
-
-//            _createHistEpScr_Especie(_ddata);
-//            _createHistScore_Celda(_cdata);
-//            _configureStyleMap(_sdata);
 
         }
     }
@@ -1012,7 +1006,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 // elimina una segunda petición cuando el grupo de variables solo contiene un elemento
                 if (hasChildren) {
-//                    _createScore_Decil(_decil_data, false, false);
+                    _createScore_Decil(_decil_data, false, false);
                 }
 
 
@@ -1038,7 +1032,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
 
-//            _createScore_Decil(_decil_group_data, hasChildren, false);
+            _createScore_Decil(_decil_group_data, hasChildren, false);
 
         });
 
@@ -1092,7 +1086,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
         if (hasTotal) {
-//            _createScore_Decil(_total_data_decil, false, hasTotal);
+            _createScore_Decil(_total_data_decil, false, hasTotal);
         }
 
     }
@@ -1133,13 +1127,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 console.log(resp.data);
 
-                data = resp.data;
+                var data = resp.data;
 
                 _tbl_decil = true;
 
                 _ITER_REQUESTS = _ITER_REQUESTS - 1;
+                
 
-                if (data[0].title.is_parent) {
+
+                if (data.length > 0 && data[0].title.is_parent) {
                     console.log("caso 1");
 
                     if (hasChildren) {
@@ -1153,9 +1149,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     }
 
                 } else {
-                    console.log("caso 2");
-                    _sons.push({item: data});
-
+                    
+                    if(data.length > 0){
+                        console.log("caso 2");
+                        _sons.push({item: data});
+                    }
+                    else{
+                        console.log("caso 4 Sin datos");
+                    }
                 }
 
                 if (isTotal) {
@@ -1257,10 +1258,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function _groupCountByFreqSpecie() {
-
-    }
-
+    
     function _generateCounts(counts_data) {
 
         _VERBOSE ? console.log("_generateCounts") : _VERBOSE;
@@ -1395,7 +1393,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 // grid_map_color contiene colores y scores
                 var grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
 
-//                console.log(grid_map_color);
+//                console.log(grid_map_color.values());
+//                console.log(grid_map_color.keys());
 
                 _map_module_nicho.colorizeFeatures(grid_map_color);
 
@@ -1416,8 +1415,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //                document.getElementById("dShape").style.display = "none";
 //
 //            }
-
-
 //        });
 
     }
@@ -1741,30 +1738,30 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         if (son.item[son_index].decil != decil_item.decil)
                             return;
 
-                        if (!(decil_item.arraynames.s)) {
-
-//                            console.log(decil_item.arraynames);
-                            var json_array = decil_item.arraynames[0].replace("{", "").replace("}", "").split(",");
-                            var json_array_s = son.item[son_index].arraynames[0].replace("{", "").replace("}", "").split(",");
-
-//                            console.log(json_array);
-//                            console.log(json_array_s);
-
-                            newnames_p = json_array;
-                            newnames_s = json_array_s;
-                            decil_item.arraynames = {p: newnames_p, s: [newnames_s]}
-                        } else {
-
-
-//                            console.log(son.item[son_index].arraynames);
-                            var json_array_s = son.item[son_index].arraynames[0].replace("{", "").replace("}", "").split(",");
-//                            console.log(json_array_s);
-
-                            newnames_s = json_array_s;
-                            temp_s = decil_item.arraynames.s;
-                            temp_s.push(newnames_s);
-                            decil_item.arraynames.s = temp_s;
-                        }
+//                        if (!(decil_item.arraynames.s)) {
+//
+////                            console.log(decil_item.arraynames);
+//                            var json_array = decil_item.arraynames[0].replace("{", "").replace("}", "").split(",");
+//                            var json_array_s = son.item[son_index].arraynames[0].replace("{", "").replace("}", "").split(",");
+//
+////                            console.log(json_array);
+////                            console.log(json_array_s);
+//
+//                            newnames_p = json_array;
+//                            newnames_s = json_array_s;
+//                            decil_item.arraynames = {p: newnames_p, s: [newnames_s]}
+//                        } else {
+//
+//
+////                            console.log(son.item[son_index].arraynames);
+//                            var json_array_s = son.item[son_index].arraynames[0].replace("{", "").replace("}", "").split(",");
+////                            console.log(json_array_s);
+//
+//                            newnames_s = json_array_s;
+//                            temp_s = decil_item.arraynames.s;
+//                            temp_s.push(newnames_s);
+//                            decil_item.arraynames.s = temp_s;
+//                        }
 
 //                        if (!(decil_item.gridids.s)) {
 //                            decil_item.gridids = {p: decil_item.gridids, s: [son.item[son_index].gridids]}
@@ -1931,13 +1928,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     item_chart['names'] = temp;
                 }
 
-                if (!(item_chart.species)) {
-                    item_chart['species'] = [decil.arraynames];
-                } else {
-                    temp = item_chart['species'];
-                    temp.push(decil.arraynames);
-                    item_chart['species'] = temp;
-                }
+//                if (!(item_chart.species)) {
+//                    item_chart['species'] = [decil.arraynames];
+//                } else {
+//                    temp = item_chart['species'];
+//                    temp.push(decil.arraynames);
+//                    item_chart['species'] = temp;
+//                }
 
                 if (!(item_chart.decil)) {
                     item_chart['decil'] = decil.decil;
@@ -2064,19 +2061,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 decil_item['linf'] = temp;
 
 
-                species = [];
-                decil_item.species.forEach(function (species_item, index) {
-//                    console.log(species_item);
-                    species.push(species_item.p);
-                });
-                temp = decil_item['species'];
-                var json_arraynames = decil_total[index].arraynames[0].replace("{", "").replace("}", "").split(",");
-//                console.log(json_arraynames);
-                var p_item = json_arraynames.sort();
-//                console.log(p_item);
-
-                temp.push({p: p_item, s: species});
-                decil_item['species'] = temp;
+//                species = [];
+//                decil_item.species.forEach(function (species_item, index) {
+////                    console.log(species_item);
+//                    species.push(species_item.p);
+//                });
+//                temp = decil_item['species'];
+//                var json_arraynames = decil_total[index].arraynames[0].replace("{", "").replace("}", "").split(",");
+////                console.log(json_arraynames);
+//                var p_item = json_arraynames.sort();
+////                console.log(p_item);
+//
+//                temp.push({p: p_item, s: species});
+//                decil_item['species'] = temp;
 
             });
 

@@ -199,8 +199,8 @@ var histogram_module = (function (verbose) {
             if (value_decil_ready <= index) {
                 d.ages = d.names.map(function (name, i) {
 //                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i], gridids: d.gridids[i]};
-                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i]};
-//                    return {name: name, value: d.values[i], decil: d.decil};
+//                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i]};
+                    return {name: name, value: d.values[i], decil: d.decil};
                 });
             }
             // asigna valores falsos a los deciles ausentes
@@ -451,26 +451,26 @@ var histogram_module = (function (verbose) {
                     _VERBOSE ? console.log(d) : _VERBOSE;
 
 
-                    d.species.p.forEach(function (sp, index) {
-
-                        // spid, label, epsilon, score, occ(nj), occ_decil
-                        params = sp.split("|");
-//                         _VERBOSE ? console.log(params) : _VERBOSE;
-
-                        occ = parseFloat(params[3]);
-                        occ_decil = parseFloat(params[4])
-                        per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
-
-                        // console.log(params[1]);
-                        // console.log(params[4]);
-                        // console.log(params[5]);
-
-                        decil_list.push({decil: d.decil, species: params[0].replace("\"", ""), epsilons: params[1], scores: params[2], occ: per_decil});
-                    });
+//                    d.species.p.forEach(function (sp, index) {
+//
+//                        // spid, label, epsilon, score, occ(nj), occ_decil
+//                        params = sp.split("|");
+////                         _VERBOSE ? console.log(params) : _VERBOSE;
+//
+//                        occ = parseFloat(params[3]);
+//                        occ_decil = parseFloat(params[4])
+//                        per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
+//
+//                        // console.log(params[1]);
+//                        // console.log(params[4]);
+//                        // console.log(params[5]);
+//
+//                        decil_list.push({decil: d.decil, species: params[0].replace("\"", ""), epsilons: params[1], scores: params[2], occ: per_decil});
+//                    });
 
                     // _VERBOSE ? console.log(decil_list) : _VERBOSE;
 
-                    _table_module_decil.createDecilList(decil_list);
+//                    _table_module_decil.createDecilList(decil_list);
 
                 });
 
@@ -478,37 +478,37 @@ var histogram_module = (function (verbose) {
 
 
 
-        var decil_list = [];
-        $.each(json_decil, function (index, value) {
+//        var decil_list = [];
+//        $.each(json_decil, function (index, value) {
+//
+//            _VERBOSE ? console.log("decil: " + value.decil) : _VERBOSE;
+//            _VERBOSE ? console.log(value.species) : _VERBOSE;
+////            
+////            _VERBOSE ? console.log("decil_nulo: " + value.decil_nulo) : _VERBOSE;
+////            if (value.decil_nulo)
+////                return false;
+//
+//            value.species[0].p.forEach(function (sp, index) {
+//
+////                _VERBOSE ? console.log(sp) : _VERBOSE;
+//
+//                // spid, epsilon, score, occ(nj), occ_decil
+//                var params = sp.split("|");
+//                 _VERBOSE ? console.log(params) : _VERBOSE;
+//
+//                // EJEMPLO Panthera leo - occ_total = 2 y occ_decil = 3 => 1.5 => 150% (ERROR)
+//                occ_total = parseFloat(params[3]);
+//                occ_decil = parseFloat(params[4]);
+//                per_decil = parseFloat(occ_decil / occ_total * 100).toFixed(2) + "%";
+//                decil_list.push({decil: value.decil, species: params[0].replace("\"", ""), epsilons: params[1], scores: params[2], occ: per_decil});
+//
+//            });
+//
+//            return false;
+//        });
 
-            _VERBOSE ? console.log("decil: " + value.decil) : _VERBOSE;
-            _VERBOSE ? console.log(value.species) : _VERBOSE;
-//            
-//            _VERBOSE ? console.log("decil_nulo: " + value.decil_nulo) : _VERBOSE;
-//            if (value.decil_nulo)
-//                return false;
 
-            value.species[0].p.forEach(function (sp, index) {
-
-//                _VERBOSE ? console.log(sp) : _VERBOSE;
-
-                // spid, epsilon, score, occ(nj), occ_decil
-                var params = sp.split("|");
-                 _VERBOSE ? console.log(params) : _VERBOSE;
-
-                // EJEMPLO Panthera leo - occ_total = 2 y occ_decil = 3 => 1.5 => 150% (ERROR)
-                occ_total = parseFloat(params[3]);
-                occ_decil = parseFloat(params[4]);
-                per_decil = parseFloat(occ_decil / occ_total * 100).toFixed(2) + "%";
-                decil_list.push({decil: value.decil, species: params[0].replace("\"", ""), epsilons: params[1], scores: params[2], occ: per_decil});
-
-            });
-
-            return false;
-        });
-
-
-        _table_module_decil.createDecilList(decil_list);
+//        _table_module_decil.createDecilList(decil_list);
 
 
         /***************** rect legend */
