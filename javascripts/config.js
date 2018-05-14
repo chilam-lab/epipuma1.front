@@ -7,6 +7,7 @@ $(document).ready(function () {
     // 2: DESARROLLO
     // 3: CANDIDATE
     // 4: INTEGRACIÓN
+    // 5: DB-DEV
     //
     //********************************
     
@@ -18,9 +19,13 @@ $(document).ready(function () {
     var url_api;
     var url_nicho;
     var url_comunidad;
+    
+    _VERBOSE ? console.log("url_front" in localStorage) : _VERBOSE;
 
     // se guardan cookies para enviarlas a comunidad y nicho
-    if (localStorage.getItem("url_front")) {
+    if (localStorage.getItem("url_front") === null) {
+        
+        _VERBOSE ? console.log("entra if url_front") : _VERBOSE;
                 
         url_front = localStorage.getItem("url_front");
         url_api = localStorage.getItem("url_api");
@@ -28,7 +33,9 @@ $(document).ready(function () {
         url_comunidad = localStorage.getItem("url_comunidad");
 
     } else {
-
+        
+        _VERBOSE ? console.log("NO entra if url_front") : _VERBOSE;
+        
         if (ambiente === 0) {
 
             url_front = "http://localhost/species-front";
@@ -58,7 +65,14 @@ $(document).ready(function () {
             url_front = "http://species.conabio.gob.mx/integracion";
             url_api = "http://species.conabio.gob.mx/api-db-integracion";
 
-        } else {
+        }
+        else if (ambiente === 5) {
+            
+            url_front = "http://species.conabio.gob.mx/dbdev";
+            url_api = "http://species.conabio.gob.mx/api-db-dev";
+            
+        } 
+        else {
 
             url_front = "http://localhost/species-front";
             url_api = "http://localhost:8080";

@@ -1116,7 +1116,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             stoppable: true
         });
 
-
+        console.log("_REQUESTS: " + _REQUESTS);
 
         $.ajax({
             type: "post",
@@ -1125,15 +1125,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
             dataType: "json",
             success: function (resp, status) {
 
-                console.log(resp.data);
-
-                var data = resp.data;
-
-                _tbl_decil = true;
-
                 _ITER_REQUESTS = _ITER_REQUESTS - 1;
-                
+                console.log("_ITER_REQUESTS: " + _ITER_REQUESTS);
 
+
+//                console.log(resp.data);
+                var data = resp.data;
+                _tbl_decil = true;
 
                 if (data.length > 0 && data[0].title.is_parent) {
                     console.log("caso 1");
@@ -1141,6 +1139,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     if (hasChildren) {
                         console.log("caso 1A");
                         _fathers.push({item: data});
+
                     } else {
                         // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
                         console.log("caso 1B");
@@ -1148,60 +1147,54 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         _sons.push({item: data});
                     }
 
+                    _decil_data_requests.push({"request": decildata, "name": data[0].title.title})
                 } else {
-                    
-                    if(data.length > 0){
+
+                    if (data.length > 0) {
                         console.log("caso 2");
                         _sons.push({item: data});
-                    }
-                    else{
+                    } else {
                         console.log("caso 4 Sin datos");
                     }
                 }
-
                 if (isTotal) {
                     console.log("caso 3");
                     _totals.push({item: data});
+
+                    _decil_data_requests.push({"request": decildata, "name": "Total"})
                 }
 
 
 
                 if (_ITER_REQUESTS === 0) {
 
-                    console.log(_fathers);
-                    console.log(_sons);
-                    console.log(_totals);
-
+//                    console.log(_fathers);
+//                    console.log(_sons);
+//                    console.log(_totals);
 
                     _ITER_REQUESTS = _REQUESTS;
 
-                    data_chart = _createSetStructure(_fathers, _sons);
+                    loadDecilDataTable();
+                    var data_chart = _createSetStructure(_fathers, _sons);
 
                     // añade totales cuando es mas de un grupo sea biotico  o abiotico.
                     if (_totals.length > 0) {
                         _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
-
                         // ya no contiene valores del segundo grupo de variables...
                         data_chart = _addDataChartTotal(data_chart, _totals[0].item);
                     }
 
-                    _VERBOSE ? console.log(data_chart) : _VERBOSE;
-
+//                    _VERBOSE ? console.log(data_chart) : _VERBOSE;
 
                     $('#chartdiv_score_decil').loading('stop');
                     $('#div_example').loading('stop');
                     $("#hist_next").css('visibility', 'visible');
                     $("#hist_next").show("slow");
 
-
-
-                    _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
-
+                    _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]), this);
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
 
                 }
-
-
 
 
 
@@ -1233,6 +1226,67 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
+    var _decil_values_tbl = [];
+    var _decil_data_requests = [];
+
+    function loadDecilDataTable(decil = 10, name = "Total") {
+
+        var tbl_request = _decil_data_requests.length;
+        _decil_values_tbl = [];
+
+        $.each(_decil_data_requests, function (index, value) {
+
+            value.request.decil = decil;
+            
+            $.ajax({
+                type: "post",
+                url: _url_zacatuche + "/niche/getScoreDecilTable",
+                data: value.request,
+                dataType: "json",
+                success: function (resp, status) {
+
+                    tbl_request = tbl_request - 1;
+                    _decil_values_tbl.push({"id": value.name, "values": resp.data_freq_decil_tbl});
+
+                    if (tbl_request === 0) {
+                        console.log("inicia carga de tabla");
+                        console.log(_decil_values_tbl);
+                        createDecilTable(name);
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    _VERBOSE ? console.log("error getScoreDecilTable: " + textStatus) : _VERBOSE;
+                    $('#div_example').loading('stop');
+                }
+
+            });
+
+        })
+
+    }
+
+    function createDecilTable(name) {
+
+        var decil_list = [];
+        
+        _decil_values_tbl.forEach(function (item, index) {
+            if (_decil_values_tbl.length === 1 || item.id === name) {
+//                console.log("inicia carga totales");
+                item.values.forEach(function (specie, index) {
+                    var occ = specie.nj;
+                    var occ_decil = specie.njd;
+                    var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
+                    decil_list.push({decil: specie.decile, species: specie.name, epsilons: specie.epsilon, scores: specie.score, occ: per_decil});
+                });
+            }
+        });
+
+        _VERBOSE ? console.log(decil_list) : _VERBOSE;
+        _table_module_eps.createDecilList(decil_list);
+
+    }
+
     function despliegaLoadings() {
 
         $('#treeAddedPanel').loading({
@@ -1246,11 +1300,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
         $('#hst_esp_scr').loading({
             stoppable: true
         });
-        
+
         $('#hst_cld_scr').loading({
             stoppable: true
         });
-        
+
         $('#map').loading({
             stoppable: true
         });
@@ -1258,7 +1312,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    
+
     function _generateCounts(counts_data) {
 
         _VERBOSE ? console.log("_generateCounts") : _VERBOSE;
@@ -1276,16 +1330,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 if (respuesta.ok) {
                     var counts = respuesta.data;
                     _createTableEpSc(counts);
-                    
+
                     var freq_data = respuesta.data_freq;
                     _createHistEpScr_Especie(freq_data);
-                    
+
                     var freq_celda_data = respuesta.data_freq_cell;
                     _createHistScore_Celda(freq_celda_data);
-                    
+
                     var score_celda_data = respuesta.data_score_cell;
                     _configureStyleMap(score_celda_data);
-                    
+
                 } else {
                     // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
                 }
@@ -1374,7 +1428,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
 
-        
+
 
 //        $.ajax({
 //            url: _url_zacatuche + "/niche/getCellScore",
@@ -1382,25 +1436,25 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //            data: sdata,
 //            success: function (json_file) {
 
-                $('#map').loading('stop');
-                $("#map_next").css('visibility', 'visible');
-                $("#map_next").show("slow");
+        $('#map').loading('stop');
+        $("#map_next").css('visibility', 'visible');
+        $("#map_next").show("slow");
 
-                var json = data;
+        var json = data;
 
 //                console.log(json);
 
-                // grid_map_color contiene colores y scores
-                var grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
+        // grid_map_color contiene colores y scores
+        var grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
 
 //                console.log(grid_map_color.values());
 //                console.log(grid_map_color.keys());
 
-                _map_module_nicho.colorizeFeatures(grid_map_color);
+        _map_module_nicho.colorizeFeatures(grid_map_color);
 
 
-                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
-                document.getElementById("dShape").style.display = "inline";
+        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
+        document.getElementById("dShape").style.display = "inline";
 
 
 //            },
@@ -1661,7 +1715,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_createHistScore_Celda") : _VERBOSE;
 
-        
+
 
 //        $.ajax({
 //            type: "post",
@@ -1671,31 +1725,31 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //            success: function (resp, status) {
 
 //                var data = resp.data;
-                $('#hst_cld_scr').loading('stop');
+        $('#hst_cld_scr').loading('stop');
 
-                var data2_score = [];
-                var totcount_score = 0;
-                var Fi = []
+        var data2_score = [];
+        var totcount_score = 0;
+        var Fi = []
 
-                for (j = 0; j < data.length; j++) {
+        for (j = 0; j < data.length; j++) {
 
-                    totcount_score = totcount_score + parseInt(data[j].freq);
-                    Fi[j] = totcount_score;
+            totcount_score = totcount_score + parseInt(data[j].freq);
+            Fi[j] = totcount_score;
 
-                }
+        }
 
-                for (j = 0; j < data.length; j++) {
+        for (j = 0; j < data.length; j++) {
 
-                    var elemento_score = {
-                        bcenter: parseFloat((parseFloat(data[j].min) + parseFloat(data[j].max)) / 2).toFixed(2),
-                        frequency: parseFloat(parseInt(data[j].freq) / totcount_score).toFixed(2),
-                        title: data[j].min + " : " + data[j].max
-                    };
+            var elemento_score = {
+                bcenter: parseFloat((parseFloat(data[j].min) + parseFloat(data[j].max)) / 2).toFixed(2),
+                frequency: parseFloat(parseInt(data[j].freq) / totcount_score).toFixed(2),
+                title: data[j].min + " : " + data[j].max
+            };
 
-                    data2_score.push(elemento_score);
-                }
+            data2_score.push(elemento_score);
+        }
 
-                _histogram_module_nicho.createBarChart(_id_chartscr_celda, data2_score, _iTrans.prop('titulo_hist_score_celda'));
+        _histogram_module_nicho.createBarChart(_id_chartscr_celda, data2_score, _iTrans.prop('titulo_hist_score_celda'));
 
 
 
@@ -2490,7 +2544,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         get_cData: get_cData,
         updateLabels: updateLabels,
         callDisplayProcess: callDisplayProcess,
-        setHistogramModule: setHistogramModule
+        setHistogramModule: setHistogramModule,
+        loadDecilDataTable: loadDecilDataTable
     }
 
 

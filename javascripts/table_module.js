@@ -70,10 +70,10 @@ var table_module = (function(verbose) {
 
         _VERBOSE ? console.log("createDecilList") : _VERBOSE;
 
-        data_list = [];
+        var data_list = [];
 
         list_elements.forEach(function(d) {
-            item_list = [];
+            var item_list = [];
             item_list.push(d.decil)
             item_list.push(d.species)
             item_list.push(d.epsilons)
