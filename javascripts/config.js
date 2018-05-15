@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     //****** AMBIENTES DE DESARROLLO */
     //
     // 0: LOCAL, 
@@ -10,32 +10,32 @@ $(document).ready(function () {
     // 5: DB-DEV
     //
     //********************************
-    
+
     var ambiente = 4;
     var _VERBOSE = true;
-    
+
     var modulo = 2; // modulo index
     var url_front;
     var url_api;
     var url_nicho;
     var url_comunidad;
-    
-    _VERBOSE ? console.log("url_front" in localStorage) : _VERBOSE;
+
+//    _VERBOSE ? console.log(localStorage.getItem("url_front") !== null) : _VERBOSE;
 
     // se guardan cookies para enviarlas a comunidad y nicho
-    if (localStorage.getItem("url_front") === null) {
-        
-        _VERBOSE ? console.log("entra if url_front") : _VERBOSE;
-                
-        url_front = localStorage.getItem("url_front");
-        url_api = localStorage.getItem("url_api");
-        url_nicho = localStorage.getItem("url_nicho");
-        url_comunidad = localStorage.getItem("url_comunidad");
+//    if (localStorage.getItem("url_front") !== null) {
+//
+//        _VERBOSE ? console.log("entra if url_front") : _VERBOSE;
+//
+//        url_front = localStorage.getItem("url_front");
+//        url_api = localStorage.getItem("url_api");
+//        url_nicho = localStorage.getItem("url_nicho");
+//        url_comunidad = localStorage.getItem("url_comunidad");
+//
+//    } else {
 
-    } else {
-        
-        _VERBOSE ? console.log("NO entra if url_front") : _VERBOSE;
-        
+//        _VERBOSE ? console.log("NO entra if url_front") : _VERBOSE;
+
         if (ambiente === 0) {
 
             url_front = "http://localhost/species-front";
@@ -65,14 +65,12 @@ $(document).ready(function () {
             url_front = "http://species.conabio.gob.mx/integracion";
             url_api = "http://species.conabio.gob.mx/api-db-integracion";
 
-        }
-        else if (ambiente === 5) {
-            
+        } else if (ambiente === 5) {
+
             url_front = "http://species.conabio.gob.mx/dbdev";
             url_api = "http://species.conabio.gob.mx/api-db-dev";
-            
-        } 
-        else {
+
+        } else {
 
             url_front = "http://localhost/species-front";
             url_api = "http://localhost:8080";
@@ -81,23 +79,26 @@ $(document).ready(function () {
 
         url_nicho = url_front + "/geoportal_v0.1.html";
         url_comunidad = url_front + "/comunidad_v0.1.html";
+
+
+        _VERBOSE ? console.log("url_front: " + url_front) : _VERBOSE;
+        _VERBOSE ? console.log("url_api: " + url_api) : _VERBOSE;
+        _VERBOSE ? console.log("url_nicho: " + url_nicho) : _VERBOSE;
+        _VERBOSE ? console.log("url_comunidad: " + url_comunidad) : _VERBOSE;
+        _VERBOSE ? console.log("modulo: " + modulo) : _VERBOSE;
+        _VERBOSE ? console.log("verbose: " + _VERBOSE) : _VERBOSE;
+
+//        localStorage.clear();
+        localStorage.setItem("url_front",url_front);
+        localStorage.setItem("url_api",url_api);
+        localStorage.setItem("url_nicho",url_nicho);
+        localStorage.setItem("url_comunidad",url_comunidad);
+        localStorage.setItem("ambiente",ambiente);
+        localStorage.setItem("verbose",_VERBOSE);
         
-        localStorage.clear();
-        localStorage.url_front = url_front;
-        localStorage.url_api = url_api;
-        localStorage.url_nicho = url_nicho;
-        localStorage.url_comunidad = url_comunidad;
-        localStorage.ambiente = ambiente;
-        localStorage.verbose = _VERBOSE;
-        
-    }
-    
-    _VERBOSE ? console.log("url_front: " + url_front) : _VERBOSE;
-    _VERBOSE ? console.log("url_api: " + url_api) : _VERBOSE;
-    _VERBOSE ? console.log("url_nicho: " + url_nicho) : _VERBOSE;
-    _VERBOSE ? console.log("url_comunidad: " + url_comunidad) : _VERBOSE;
-    _VERBOSE ? console.log("modulo: " + modulo) : _VERBOSE;
-    _VERBOSE ? console.log("verbose: " + _VERBOSE) : _VERBOSE;
+//    }
+
+
 
     module_index.startModule(modulo);
 
