@@ -1482,25 +1482,25 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
             $("#a_item_bio00_" + item).text($.i18n.prop('a_item_bio00'));
-            $("#a_item_bio01_" + item).text($.i18n.prop('a_item_bio01'));
-            $("#a_item_bio02_" + item).text($.i18n.prop('a_item_bio02'));
-            $("#a_item_bio03_" + item).text($.i18n.prop('a_item_bio03'));
-            $("#a_item_bio04_" + item).text($.i18n.prop('a_item_bio04'));
-            $("#a_item_bio05_" + item).text($.i18n.prop('a_item_bio05'));
-            $("#a_item_bio06_" + item).text($.i18n.prop('a_item_bio06'));
-            $("#a_item_bio07_" + item).text($.i18n.prop('a_item_bio07'));
-            $("#a_item_bio08_" + item).text($.i18n.prop('a_item_bio08'));
-            $("#a_item_bio09_" + item).text($.i18n.prop('a_item_bio09'));
-            $("#a_item_bio10_" + item).text($.i18n.prop('a_item_bio10'));
-            $("#a_item_bio11_" + item).text($.i18n.prop('a_item_bio11'));
-            $("#a_item_bio12_" + item).text($.i18n.prop('a_item_bio12'));
-            $("#a_item_bio13_" + item).text($.i18n.prop('a_item_bio13'));
-            $("#a_item_bio14_" + item).text($.i18n.prop('a_item_bio14'));
-            $("#a_item_bio15_" + item).text($.i18n.prop('a_item_bio15'));
-            $("#a_item_bio16_" + item).text($.i18n.prop('a_item_bio16'));
-            $("#a_item_bio17_" + item).text($.i18n.prop('a_item_bio17'));
-            $("#a_item_bio18_" + item).text($.i18n.prop('a_item_bio18'));
-            $("#a_item_bio19_" + item).text($.i18n.prop('a_item_bio19'));
+            $("#a_item_bio001_" + item).text($.i18n.prop('a_item_bio001'));
+            $("#a_item_bio002_" + item).text($.i18n.prop('a_item_bio002'));
+            $("#a_item_bio003_" + item).text($.i18n.prop('a_item_bio003'));
+            $("#a_item_bio004_" + item).text($.i18n.prop('a_item_bio004'));
+            $("#a_item_bio005_" + item).text($.i18n.prop('a_item_bio005'));
+            $("#a_item_bio006_" + item).text($.i18n.prop('a_item_bio006'));
+            $("#a_item_bio007_" + item).text($.i18n.prop('a_item_bio007'));
+            $("#a_item_bio008_" + item).text($.i18n.prop('a_item_bio008'));
+            $("#a_item_bio009_" + item).text($.i18n.prop('a_item_bio009'));
+            $("#a_item_bio010_" + item).text($.i18n.prop('a_item_bio010'));
+            $("#a_item_bio011_" + item).text($.i18n.prop('a_item_bio011'));
+            $("#a_item_bio012_" + item).text($.i18n.prop('a_item_bio012'));
+            $("#a_item_bio013_" + item).text($.i18n.prop('a_item_bio013'));
+            $("#a_item_bio014_" + item).text($.i18n.prop('a_item_bio014'));
+            $("#a_item_bio015_" + item).text($.i18n.prop('a_item_bio015'));
+            $("#a_item_bio016_" + item).text($.i18n.prop('a_item_bio016'));
+            $("#a_item_bio017_" + item).text($.i18n.prop('a_item_bio017'));
+            $("#a_item_bio018_" + item).text($.i18n.prop('a_item_bio018'));
+            $("#a_item_bio019_" + item).text($.i18n.prop('a_item_bio019'));
 
 
             $("#lb_des_modal_csv").text($.i18n.prop('lb_des_modal_csv'));
