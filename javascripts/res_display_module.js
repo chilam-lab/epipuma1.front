@@ -126,6 +126,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
     }
 
     var _requestReturned = 2;
+    
+    
+    var _decil_values_tbl = [];
+    var _decil_data_requests = [];
+    var _currentNameView = "";
+    var _currentDecil = 0;
+
 
 
     /**
@@ -910,7 +917,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _subgroups.forEach(function (grupo) {
 
-            filterby_group = [];
+            var filterby_group = [];
             _VERBOSE ? console.log(grupo) : _VERBOSE;
 
             var hasChildren = false;
@@ -922,22 +929,22 @@ var res_display_module = (function (verbose, url_zacatuche) {
             grupo.value.forEach(function (item) {
 
                 // if item is type 1 is a json and if 0 is a string
-                itemGroup = item;
-                single_filter = [];
+                var itemGroup = item;
+                var single_filter = [];
                 _VERBOSE ? console.log(itemGroup) : _VERBOSE;
 
                 // bioticos
-                if (grupo.type == 0) {
+                if (grupo.type === 0) {
+                    
+                    console.log("bioticos");
 
-                    temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
-                    temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
-                    temp_field = "";
-
+                    var temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
+                    var temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
+                    
                     filters.push({
                         'field': _reino_campos[temp_item_field],
                         'value': temp_item_value,
                         'type': itemGroup.type
-                                // 'level' : parseInt(itemGroup.level)
                     });
 
                     filterby_group.push({
@@ -945,7 +952,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         'value': temp_item_value,
                         'type': itemGroup.type,
                         'group_item': grupo.groupid
-                                // 'level' : parseInt(itemGroup.level)
                     });
 
                     single_filter.push({
@@ -953,15 +959,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         'value': temp_item_value,
                         'type': itemGroup.type,
                         'group_item': grupo.groupid
-                                // 'level' : parseInt(itemGroup.level)
                     });
 
                 }
                 // raster: bioclim, topo, elevacion y pendiente
                 else {
+                    
+                    console.log("Abioticos");
+                    
                     // if the type is equal to 1 the item contains the parameter level
                     temp_item_value = itemGroup.label.split(">>")[1].trim();
-                    // _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
 
                     filters.push({
                         'value': itemGroup.value,
@@ -992,7 +999,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 hasRaster = false;
 
                 for (var i = 0; i < single_filter.length; i++) {
-                    if (single_filter[i].type == 4) {
+                    if (single_filter[i].type === 4) {
                         hasBios = true;
                     } else {
                         hasRaster = true;
@@ -1006,6 +1013,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 // elimina una segunda petición cuando el grupo de variables solo contiene un elemento
                 if (hasChildren) {
+//                    console.log("hasChildren");
+                    _VERBOSE ? console.log(_decil_data) : _VERBOSE;
                     _createScore_Decil(_decil_data, false, false);
                 }
 
@@ -1016,7 +1025,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             hasRaster = false;
 
             for (var i = 0; i < filterby_group.length; i++) {
-                if (filterby_group[i].type == 4) {
+                if (filterby_group[i].type === 4) {
                     hasBios = true;
                 } else {
                     hasRaster = true;
@@ -1031,12 +1040,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _decil_group_data['tdelta'] = active_time;
 
             _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
-
             _createScore_Decil(_decil_group_data, hasChildren, false);
 
         });
 
-        if (filters.length != 0) {
+        if (filters.length !== 0) {
             _countsdata['tfilters'] = filters;
 
             _tdata['tfilters'] = filters;
@@ -1050,7 +1058,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         hasRaster = false;
 
         for (var i = 0; i < filters.length; i++) {
-            if (filters[i].type == 4) {
+            if (filters[i].type === 4) {
                 hasBios = true;
             } else {
                 hasRaster = true;
@@ -1086,6 +1094,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
         if (hasTotal) {
+            _VERBOSE ? console.log(_total_data_decil) : _VERBOSE;
             _createScore_Decil(_total_data_decil, false, hasTotal);
         }
 
@@ -1111,12 +1120,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         $('#chartdiv_score_decil').loading({
             stoppable: true
         });
-
-        $('#div_example').loading({
-            stoppable: true
-        });
-
-        console.log("_REQUESTS: " + _REQUESTS);
+        
+        var data_request = jQuery.extend(true, {}, decildata);
+        
+//        console.log(data_request.hasBios);
+//        console.log(data_request.tfilters[0].field);
+        console.log(data_request);
 
         $.ajax({
             type: "post",
@@ -1147,7 +1156,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         _sons.push({item: data});
                     }
 
-                    _decil_data_requests.push({"request": decildata, "name": data[0].title.title})
+                    _decil_data_requests.push({"request": data_request, "name": data[0].title.title});
                 } else {
 
                     if (data.length > 0) {
@@ -1161,7 +1170,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     console.log("caso 3");
                     _totals.push({item: data});
 
-                    _decil_data_requests.push({"request": decildata, "name": "Total"})
+                    _decil_data_requests.push({"request": data_request, "name": "Total"});
                 }
 
 
@@ -1187,11 +1196,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //                    _VERBOSE ? console.log(data_chart) : _VERBOSE;
 
                     $('#chartdiv_score_decil').loading('stop');
-                    $('#div_example').loading('stop');
+//                    $('#div_example').loading('stop');
                     $("#hist_next").css('visibility', 'visible');
                     $("#hist_next").show("slow");
 
-                    _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]), this);
+
+                    _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
 
                 }
@@ -1204,7 +1214,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _VERBOSE ? console.log("error createScore_Decil: " + errorThrown) : _VERBOSE;
 
                 $('#chartdiv_score_decil').loading('stop');
-                $('#div_example').loading('stop');
+//                $('#div_example').loading('stop');
                 $("#hist_next").css('visibility', 'hidden');
                 $("#hist_next").hide("slow");
 
@@ -1226,64 +1236,87 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    var _decil_values_tbl = [];
-    var _decil_data_requests = [];
+    function loadDecilDataTable(decil = 10, name = "Total", first_loaded = true) {
 
-    function loadDecilDataTable(decil = 10, name = "Total") {
+        _VERBOSE ? console.log("loadDecilDataTable") : _VERBOSE;
 
         var tbl_request = _decil_data_requests.length;
         _decil_values_tbl = [];
 
+//        console.log(_decil_data_requests);
+//        console.log(name);
+//        console.log(decil);
+
+        //TODO: optimizar metodo:
+        // ejcutar solo la petición de la barra seleccionada
+        // ehecutar solo el decil seleccionado
+        // esta mandando varias peticiones cada que se seleccioan una barra
         $.each(_decil_data_requests, function (index, value) {
 
-            value.request.decil = decil;
-            
-            $.ajax({
-                type: "post",
-                url: _url_zacatuche + "/niche/getScoreDecilTable",
-                data: value.request,
-                dataType: "json",
-                success: function (resp, status) {
+//            console.log("nuevo loop!!");
+//            console.log(first_loaded);
+//            console.log("click name" + name);
+//            console.log("iter name: " + value.name);
+//            console.log("current name: " + _currentNameView);
+//            console.log("current decil: " + _currentDecil);
+//            console.log(value.name === name);
+//            console.log(_currentNameView !== name || _currentDecil !== decil);
+//            console.log(value.name === name && (_currentNameView !== name || _currentDecil !== decil));
 
-                    tbl_request = tbl_request - 1;
-                    _decil_values_tbl.push({"id": value.name, "values": resp.data_freq_decil_tbl});
 
-                    if (tbl_request === 0) {
-                        console.log("inicia carga de tabla");
-                        console.log(_decil_values_tbl);
-                        createDecilTable(name);
+            //TODO: Checar condición, no esta haciendo el cambio de decil en la grafica cuando son mas de dos grupos de variables!!!
+            if ((first_loaded && value.name === "Total") ||
+                    (value.name === name && (_currentNameView !== name || _currentDecil !== decil))
+               ) {
+
+//                console.log("paso!!");
+
+                _currentNameView = name;
+                _currentDecil = decil;
+
+                value.request.decil = decil;
+                console.log(value);
+
+                $('#div_example').loading({
+                    stoppable: true
+                });
+
+                $.ajax({
+                    type: "post",
+                    url: _url_zacatuche + "/niche/getScoreDecilTable",
+                    data: value.request,
+                    dataType: "json",
+                    success: function (resp, status) {
+
+                        $('#div_example').loading('stop');
+
+                        var decil_list = [];
+                        
+//                        console.log("inicia carga de tabla");
+
+                        resp.data_freq_decil_tbl.forEach(function (specie, index) {
+                            var occ = specie.nj;
+                            var occ_decil = specie.njd;
+                            var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
+                            decil_list.push({decil: specie.decile, species: specie.name, epsilons: specie.epsilon, scores: specie.score, occ: per_decil});
+                        });
+
+                        _VERBOSE ? console.log(decil_list) : _VERBOSE;
+                        _table_module_eps.createDecilList(decil_list);
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        _VERBOSE ? console.log("error getScoreDecilTable: " + textStatus) : _VERBOSE;
+                        $('#div_example').loading('stop');
                     }
 
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    _VERBOSE ? console.log("error getScoreDecilTable: " + textStatus) : _VERBOSE;
-                    $('#div_example').loading('stop');
-                }
-
-            });
-
-        })
-
-    }
-
-    function createDecilTable(name) {
-
-        var decil_list = [];
-        
-        _decil_values_tbl.forEach(function (item, index) {
-            if (_decil_values_tbl.length === 1 || item.id === name) {
-//                console.log("inicia carga totales");
-                item.values.forEach(function (specie, index) {
-                    var occ = specie.nj;
-                    var occ_decil = specie.njd;
-                    var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
-                    decil_list.push({decil: specie.decile, species: specie.name, epsilons: specie.epsilon, scores: specie.score, occ: per_decil});
                 });
-            }
-        });
 
-        _VERBOSE ? console.log(decil_list) : _VERBOSE;
-        _table_module_eps.createDecilList(decil_list);
+                return false;
+
+            }
+
+        });
 
     }
 

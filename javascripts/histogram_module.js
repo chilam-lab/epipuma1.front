@@ -8,10 +8,14 @@
 var histogram_module = (function (verbose) {
 
     var _VERBOSE = verbose;
-    var _table_module_decil, _language_module_nicho;
+    var _table_module_decil, _language_module_nicho, _display_module_nicho;
     var _highlight_color = "#48D7D5";
     var _iTrans;
     var _NUM_DECIL = 10;
+    
+    function setDisplayModule(displayModule) {
+        _display_module_nicho = displayModule;
+    }
 
 
 
@@ -70,10 +74,10 @@ var histogram_module = (function (verbose) {
      * @param {String} idComponent - Id del contenedor del histograma
      * @param {map} nameMap - Mapa de los grupos de variables seleccionados en el análisis de nicho ecológico
      */
-    function createMultipleBarChart(json_decil, array_recall, idComponent, nameMap, display_obj) {
+    function createMultipleBarChart(json_decil, array_recall, idComponent, nameMap) {
 
         _VERBOSE ? console.log("createMultipleBarChart") : _VERBOSE;
-
+        
         $("#" + idComponent.id).empty();
 
         var margin = {top: 30, right: 40, bottom: 50, left: 40},
@@ -428,7 +432,7 @@ var histogram_module = (function (verbose) {
                     d3.select(this).style("stroke", "black");
                     d3.select(this).style("stroke-width", 3);
                     
-                    display_obj.loadDecilDataTable(d.decil, d.name.p);
+                    _display_module_nicho.loadDecilDataTable(d.decil, d.name.p, false);
 
                 });
 
@@ -1591,7 +1595,8 @@ var histogram_module = (function (verbose) {
         // updateLabels: updateLabels,
         createBarChart: createBarChart,
         createBarChartNet: createBarChartNet,
-        createBarChartFecha: createBarChartFecha
+        createBarChartFecha: createBarChartFecha,
+        setDisplayModule: setDisplayModule
     }
 
 

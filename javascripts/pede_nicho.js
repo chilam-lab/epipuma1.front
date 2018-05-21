@@ -1121,6 +1121,9 @@ var module_nicho = (function () {
         _res_display_module_nicho.startResDisplay(_map_module_nicho, _histogram_module_nicho, _table_module, _language_module_nicho, ids_comp_variables);
 
         _map_module_nicho.setDisplayModule(_res_display_module_nicho);
+        
+        
+        _histogram_module_nicho.setDisplayModule(_res_display_module_nicho);
 
 
         // se envia url con direccion a servidor zacatuche
