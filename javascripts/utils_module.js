@@ -4,6 +4,179 @@ var utils_module = (function (verbose) {
     var buckets = 20;
     var deciles = 10;
 
+
+    function processDataForFreqSpecie(data) {
+
+        var min_eps = d3.min(data.map(function (d) {
+            return parseFloat(d.epsilon);
+        }));
+        // debug("min_eps: " + min_eps)
+        var max_eps = d3.max(data.map(function (d) {
+            return parseFloat(d.epsilon);
+        }));
+        // debug("max_eps: " + max_eps)
+
+        var min_scr = d3.min(data.map(function (d) {
+            return parseFloat(d.score);
+        }));
+        // debug("min_scr: " + min_scr)  
+        var max_scr = d3.max(data.map(function (d) {
+            return parseFloat(d.score);
+        }));
+        // debug("max_scr: " + max_scr)
+
+
+        var beans = d3.range(1, buckets + 1, 1);
+        
+//        var epsRange = d3.scaleQuantile().domain([min_eps, max_eps]).range(beans);
+//        var scrRange = d3.scaleQuantile().domain([min_scr, max_scr]).range(beans);
+        var epsRange = d3.scale.quantile().domain([min_eps, max_eps]).range(beans);
+        var scrRange = d3.scale.quantile().domain([min_scr, max_scr]).range(beans);
+
+        // debug("epsRange: " + epsRange.invertExtent(1))
+
+        var cross_species = crossfilter(data)
+        cross_species.groupAll();
+
+        var eps_dimension = cross_species.dimension(function (d) {
+            return parseFloat(d.epsilon);
+        });
+        var scr_dimension = cross_species.dimension(function (d) {
+            return parseFloat(d.score);
+        });
+
+        var groupByEpsilon = eps_dimension.group(function (d) {
+            // debug("epsRange: " + epsRange(d))
+            return epsRange(d)
+        });
+
+        var groupByScore = scr_dimension.group(function (d) {
+            return scrRange(d)
+        });
+
+        var data_eps = groupByEpsilon.top(Infinity);
+        data_eps.sort(_compare);
+        // debug(data_eps);
+
+        var data_scr = groupByScore.top(Infinity);
+        data_scr.sort(_compare);
+        // debug(data_scr);
+
+        var data_freq = [];
+
+        data_freq = generateFrequencyBeans(data_eps, epsRange, "_epsilon", data_freq, buckets);
+        data_freq = generateFrequencyBeans(data_scr, scrRange, "_score", data_freq, buckets);
+
+        // debug(data_freq);
+
+        return data_freq;
+    }
+
+
+    function processDataForFreqCell(data) {
+
+        var min_scr = d3.min(data.map(function (d) {
+            return parseFloat(d.tscore);
+        }));
+        // debug("min_score: " + min_scr)
+        var max_scr = d3.max(data.map(function (d) {
+            return parseFloat(d.tscore);
+        }));
+        // debug("min_score: " + max_scr)
+
+        var beans = d3.range(1, buckets + 1, 1);
+        
+//        var scrRange = d3.scaleQuantile().domain([min_scr, max_scr]).range(beans);
+        var scrRange = d3.scale.quantile().domain([min_scr, max_scr]).range(beans);
+
+        var cross_score = crossfilter(data)
+        cross_score.groupAll();
+
+        var scr_dimension = cross_score.dimension(function (d) {
+            return parseFloat(d.tscore);
+        });
+
+        var groupByScoreCell = scr_dimension.group(function (d) {
+            return scrRange(d)
+        });
+
+        var score_cell_data = groupByScoreCell.top(Infinity);
+        score_cell_data.sort(_compare);
+
+        var data_freq = [];
+
+        data_freq = generateFrequencyBeans(score_cell_data, scrRange, "", data_freq, buckets);
+        // debug(data_freq)
+
+        return data_freq;
+
+
+    }
+
+
+    function generateFrequencyBeans(data_bucket, funcRange, paramType, data_freq, buckets) {
+
+        var index = 0;
+        var index_bucket = 0;
+
+        while (index_bucket < buckets) {
+
+            const entry = data_bucket[index];
+
+            var bucket = entry["key"];
+            var freq = entry["value"];
+            var range = funcRange.invertExtent((index_bucket + 1));
+
+            // debug("freq" + paramType+ ": " + freq);
+            // debug("bucket" + paramType+ ": " + bucket);
+            // debug("index+1" + paramType+ ": " + (index_bucket+1));
+
+            if ((index_bucket + 1) === bucket) {
+
+                if (data_freq[index_bucket] === undefined) {
+
+                    var item = {};
+
+                    item["bucket"] = bucket;
+                    item["freq" + paramType] = freq;
+                    item["min" + paramType] = parseFloat((range[0]).toFixed(3));
+                    item["max" + paramType] = parseFloat((range[1]).toFixed(3));
+                    data_freq.push(item);
+
+                } else {
+                    data_freq[index_bucket]["freq" + paramType] = freq;
+                    data_freq[index_bucket]["min" + paramType] = parseFloat(range[0].toFixed(3));
+                    data_freq[index_bucket]["max" + paramType] = parseFloat(range[1].toFixed(3));
+                }
+
+                index++;
+            } else {
+
+                if (data_freq[index_bucket] === undefined) {
+
+                    var item = {};
+
+                    item["bucket"] = index_bucket + 1;
+                    item["freq" + paramType] = 0;
+                    item["min" + paramType] = parseFloat((range[0]).toFixed(3));
+                    item["max" + paramType] = parseFloat((range[1]).toFixed(3));
+                    data_freq.push(item);
+
+                } else {
+                    data_freq[index_bucket]["freq" + paramType] = 0;
+                    data_freq[index_bucket]["min" + paramType] = parseFloat(range[0].toFixed(3));
+                    data_freq[index_bucket]["max" + paramType] = parseFloat(range[1].toFixed(3));
+                }
+
+            }
+
+            index_bucket++;
+        }
+
+        return data_freq;
+    }
+
+
     function processDataForScoreCell(data) {
 
         _VERBOSE ? console.log("processDataForScoreCell") : _VERBOSE;
@@ -122,21 +295,11 @@ var utils_module = (function (verbose) {
 
     }
 
-    function _compare_desc(a, b) {
-
-        _VERBOSE ? console.log("_compare_desc") : _VERBOSE;
-
-        if (a.key > b.key)
-            return -1;
-        if (a.key < b.key)
-            return 1;
-        return 0;
-    }
 
     function processTitleGroup(groupid, tfilters) {
 
         _VERBOSE ? console.log("processTitleGroup") : _VERBOSE;
-        
+
         _VERBOSE ? console.log(groupid) : _VERBOSE;
         _VERBOSE ? console.log(tfilters) : _VERBOSE;
 
@@ -190,7 +353,7 @@ var utils_module = (function (verbose) {
 
 
     function processDataForScoreDecilTable(data_cell, decil_selected) {
-        
+
         _VERBOSE ? console.log("processDataForScoreDecilTable") : _VERBOSE;
 
         var decile = deciles
@@ -247,7 +410,7 @@ var utils_module = (function (verbose) {
 
 
     function processDataForScoreCellTable(data) {
-        
+
         _VERBOSE ? console.log("processDataForScoreCellTable") : _VERBOSE;
 
         var cells_array = data.map(function (d) {
@@ -376,6 +539,29 @@ var utils_module = (function (verbose) {
 
     }
 
+
+    function _compare(a, b) {
+        if (a.key < b.key)
+            return -1;
+        if (a.key > b.key)
+            return 1;
+        return 0;
+    }
+
+    function _compare_desc(a, b) {
+
+        _VERBOSE ? console.log("_compare_desc") : _VERBOSE;
+
+        if (a.key > b.key)
+            return -1;
+        if (a.key < b.key)
+            return 1;
+        return 0;
+    }
+
+
+
+
     /**
      * Función que inicializa las variables necesarias para la creación de histogramas.
      *
@@ -396,7 +582,9 @@ var utils_module = (function (verbose) {
         processDataForScoreDecil: processDataForScoreDecil,
         processTitleGroup: processTitleGroup,
         processDataForScoreDecilTable: processDataForScoreDecilTable,
-        processDataForScoreCellTable: processDataForScoreCellTable
+        processDataForScoreCellTable: processDataForScoreCellTable,
+        processDataForFreqSpecie: processDataForFreqSpecie,
+        processDataForFreqCell: processDataForFreqCell
     }
 
 

@@ -506,15 +506,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * 
      */
     function callDisplayProcess(val_process) {
-
-        console.log("callDisplayProcess NICHO");
+        
+        _VERBOSE ? console.log("callDisplayProcess NICHO") : _VERBOSE;
 
         if (val_process) {
-
+            
+            _VERBOSE ? console.log("VALIDACIÓN: ON") : _VERBOSE;
+            
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'), "warning");
             _initializeValidationTables(val_process);
 
         } else {
+            
+            _VERBOSE ? console.log("VALIDACIÓN: OFF") : _VERBOSE;
 
             _confDataRequest(_spid, _idreg, val_process);
             _panelGeneration()
@@ -546,7 +550,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             url: _url_zacatuche + "/niche/especie/getValidationTables",
             type: 'post',
             data: {
-//                qtype: 'getValidationTables',
                 spid: _spid,
                 iter: _NUM_ITERATIONS,
                 grid_res: _grid_res
@@ -560,8 +563,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _confDataRequest(_spid, _idreg, val_process, _idtemptable);
                 _panelGeneration(_idtemptable);
 
-                _createTableEpSc(_tdata, _idtemptable, val_process);
-
+//                _createTableEpSc(_tdata, _idtemptable, val_process);
 //                _createHistEpScr_Especie(_ddata);
 //                _createHistScore_Celda(_cdata);
 //                _configureStyleMap(_sdata);
@@ -1340,13 +1342,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         }
 
-
-
-
-
-
-
-
     }
 
     function loadDecilDataTable(decil = 10, name = "Total", first_loaded = true) {
@@ -1443,9 +1438,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             var decil_list = [];
 
                             if (resp.ok) {
-                                
+
                                 _VERBOSE ? console.log("loadDecilDataTable resp.ok") : _VERBOSE;
-                                
+
                                 var counts = resp.data;
                                 var data_score_cell = _utils_module.processDataForScoreCellTable(counts);
                                 var data_freq_decil_tbl = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
@@ -1513,6 +1508,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         despliegaLoadings();
 
+        if (!_RUN_ON_SERVER) {
+            counts_data["with_data_freq"] = false;
+            counts_data["with_data_score_cell"] = false;
+            counts_data["with_data_freq_cell"] = false;
+        }
+
         $.ajax({
             url: _url_zacatuche + "/niche/counts",
             type: 'post',
@@ -1524,14 +1525,30 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var counts = respuesta.data;
                     _createTableEpSc(counts);
 
-                    var freq_data = respuesta.data_freq;
-                    _createHistEpScr_Especie(freq_data);
+                    if (_RUN_ON_SERVER) {
+                        var freq_data = respuesta.data_freq;
+                        _createHistEpScr_Especie(freq_data);
 
-                    var freq_celda_data = respuesta.data_freq_cell;
-                    _createHistScore_Celda(freq_celda_data);
+                        var freq_celda_data = respuesta.data_freq_cell;
+                        _createHistScore_Celda(freq_celda_data);
 
-                    var score_celda_data = respuesta.data_score_cell;
-                    _configureStyleMap(score_celda_data);
+                        var score_celda_data = respuesta.data_score_cell;
+                        _configureStyleMap(score_celda_data);
+
+                    } else {
+                        
+                        var data_freq = _utils_module.processDataForFreqSpecie(counts);
+                        _createHistEpScr_Especie(data_freq);
+                        
+                        var data_score_cell = _utils_module.processDataForScoreCell(counts);
+                        _configureStyleMap(data_score_cell);
+                        
+                        var data_freq_cell = _utils_module.processDataForFreqCell(data_score_cell);
+                        _createHistScore_Celda(data_freq_cell);
+                        
+                    }
+
+
 
                 } else {
                     // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
