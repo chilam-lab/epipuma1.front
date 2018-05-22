@@ -706,7 +706,7 @@ var module_nicho = (function () {
      * 
      */
     function _parseURL(url) {
-        console.log(url);
+//        console.log(url);
 
         var regex = /[?&]([^=#]+)=([^&#]*)/g, url = url, params = {}, match;
         while (match = regex.exec(url)) {

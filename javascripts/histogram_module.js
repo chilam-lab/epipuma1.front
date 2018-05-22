@@ -153,15 +153,29 @@ var histogram_module = (function (verbose) {
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
                 .html(function (d) {
+                    
+//                    console.log(d);
 
-                    var_group_label = "<strong>" + d.name.p + "</strong><br/>" +
+                    var var_group_label = "<strong>" + d.name.p + "</strong><br/>" +
                             "<strong>" + _iTrans.prop('lb_score_conjunto') + ":</strong> <span >" + parseFloat(d.value.p).toFixed(2) + "</span><br/><br/>" +
                             "<strong>" + _iTrans.prop('lb_conformado') + ":</strong><br/><br/>";
 
-                    d.name.s.forEach(function (item, index) {
-
-                        var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + item + "</span><br/>" +
-                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + d.value.s[index] + "</span><br/><br/>"
+//                    d.name.s.forEach(function (item, index) {
+                    d.value.s.forEach(function (item, index) {
+                        
+//                        var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + item + "</span><br/>" +
+//                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + d.value.s[index] + "</span><br/><br/>"
+                        if(d.name.p === "Total"){
+                            var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + d.name.s[index] + "</span><br/>" +
+                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + item + "</span><br/><br/>";
+                        }
+                        else{
+                            var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + d.name.s[index*10] + "</span><br/>" +
+                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + item + "</span><br/><br/>";
+                        }
+                        
+                        
+                        
                     });
 
                     return  var_group_label;
