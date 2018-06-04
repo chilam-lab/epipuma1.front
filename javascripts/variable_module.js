@@ -4,7 +4,7 @@
  *
  * @namespace variable_module
  */
-var variable_module = (function(verbose, url_zacatuche) {
+var variable_module = (function (verbose, url_zacatuche) {
 
     var _url_zacatuche = url_zacatuche;
     var _VERBOSE = verbose;
@@ -16,8 +16,8 @@ var variable_module = (function(verbose, url_zacatuche) {
             _TYPE_ABIO = 1,
             _TYPE_TERRESTRE = 2;
 
-    var _TYPE_TAXON = 4
-    _TYPE_CLIMA = 0,
+    var _TYPE_TAXON = 4,
+            _TYPE_CLIMA = 0,
             _TYPE_TOPO = 1,
             _TYPE_ELEVACION = 2,
             _TYPE_PENDIENTE = 3,
@@ -35,7 +35,6 @@ var variable_module = (function(verbose, url_zacatuche) {
 
 
 
-
     /**
      * Método getter de los grupos de variables seleccionados
      *
@@ -47,6 +46,21 @@ var variable_module = (function(verbose, url_zacatuche) {
     function getVarSelArray() {
         return _var_sel_array;
     }
+    
+    
+    /**
+     * Método getter de los grupos de variables seleccionados
+     *
+     * @function getSelectorVaribles
+     * @public
+     * @memberof! table_module
+     * 
+     */
+    function getSelectorVaribles(){
+        return _selectors_created;
+    }
+    
+    
 
     /**
      * Éste método realiza la creación del selector de variables. Actualmente genera un selector de grupos taxonómicos, variables climáticas y variables topográficas.
@@ -61,11 +75,9 @@ var variable_module = (function(verbose, url_zacatuche) {
      */
     function VariableSelector(parent, id, title) {
 
-        // var tags = [_iTrans.prop('a_taxon'), _iTrans.prop('a_clima'), _iTrans.prop('a_topo')];
-
         // se comentan variables topograficas por expansión de terreno
-        // var tags = ['a_taxon','a_clima', 'a_topo'];
-        var tags = ['a_taxon', 'a_clima'];
+//        var tags = ['a_taxon', 'a_clima'];
+        var tags = ['a_taxon', 'a_raster'];
 
 
         var sp_items = ['a_item_reino', 'a_item_phylum', 'a_item_clase', 'a_item_orden', 'a_item_familia', 'a_item_genero'];
@@ -103,7 +115,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
 
         // Evento generado cuando se selecciona un grupo de variables topográficas, realiza la carga del árbol de selección del grupo seleccionado.
-        self.loadTreeTopo = function() {
+        self.loadTreeTopo = function () {
 
             _VERBOSE ? console.log("self.loadTreeTopo") : _VERBOSE;
 
@@ -122,7 +134,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     "type": _TYPE_TERRESTRE,
                     "level": level_root
                 },
-                success: function(data) {
+                success: function (data) {
 
                     $('#jstree_topo_' + id).jstree("destroy").empty();
 
@@ -146,7 +158,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         }
                     });
 
-                    $("#jstree_topo_" + id).on('changed.jstree', function(e, data) {
+                    $("#jstree_topo_" + id).on('changed.jstree', function (e, data) {
                         self.arrayOtherSelected = [];
                         self.getChangeTreeOther(e, data, "jstree_topo_" + id, self.arrayOtherSelected);
                         _VERBOSE ? console.log(self.arrayOtherSelected) : _VERBOSE;
@@ -155,7 +167,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     $('#jstree_topo_' + id).on('open_node.jstree', self.getTreeVarTopo);
 
 
-                    $("#jstree_topo_" + id).on('loaded.jstree', function() {
+                    $("#jstree_topo_" + id).on('loaded.jstree', function () {
 
                         var current_node = $('#jstree_topo_' + id).jstree(true).get_node($("#" + topo_selected));
                         _VERBOSE ? console.log(current_node) : _VERBOSE;
@@ -189,7 +201,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         }
 
 
-        self.getTreeVarTopo = function(e, d) {
+        self.getTreeVarTopo = function (e, d) {
 
 
             _VERBOSE ? console.log("self.getTreeVarTopo") : _VERBOSE;
@@ -218,7 +230,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     "field": parent_id,
                     "type": ter_type,
                 },
-                success: function(data) {
+                success: function (data) {
 
                     var current_node = $('#jstree_topo_' + id).jstree(true).get_node($("#" + parent_id));
                     _VERBOSE ? console.log(current_node) : _VERBOSE;
@@ -231,8 +243,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                         if ($("#" + data[i].bid).length > 0) {
                             idNode = data[i].bid + "_" + Math.floor((Math.random() * 1000) + 1)
-                        }
-                        else {
+                        } else {
                             idNode = data[i].bid;
                         }
 
@@ -265,8 +276,10 @@ var variable_module = (function(verbose, url_zacatuche) {
 
         }
 
+
+
         // Evento generado cuando se selecciona un grupo de variables climáticas, realiza la carga del árbol de selección del grupo seleccionado.
-        self.loadTreeAbio = function() {
+        self.loadTreeAbio = function () {
 
             _VERBOSE ? console.log("self.loadTreeAbio") : _VERBOSE;
             var text_topo = _iTrans.prop('lb_bioclim');
@@ -275,20 +288,16 @@ var variable_module = (function(verbose, url_zacatuche) {
             var level_vartree = 1;
 
             $.ajax({
-                // url: _url_trabajo,
                 url: _url_zacatuche + "/niche/especie/getRasterVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-//                    "qtype": "getRasterVariables",
                     "type": _TYPE_ABIO,
                     "level": level_root
                 },
-                success: function(resp) {
+                success: function (resp) {
 
-//                     _VERBOSE ? console.log(resp.data) : _VERBOSE;
-
-                    data = resp.data;
+                    var data = resp.data;
 
                     $('#jstree_variables_bioclim_' + id).jstree("destroy").empty();
 
@@ -315,18 +324,12 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                     $("#jstree_variables_bioclim_" + id).on('changed.jstree', self.getChangeTreeVarBioclim);
                     $('#jstree_variables_bioclim_' + id).on('open_node.jstree', self.getTreeVarAbio);
-
-
-                    $("#jstree_variables_bioclim_" + id).on('loaded.jstree', function() {
+                    $("#jstree_variables_bioclim_" + id).on('loaded.jstree', function () {
 
                         var current_node = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($("#" + topo_selected));
 //                        _VERBOSE ? console.log(current_node) : _VERBOSE;
 
-
-
                         for (i = 0; i < data.length; i++) {
-
-//                            _VERBOSE ? console.log(idNode) : _VERBOSE;
 
                             var idNode = data[i].layer;
                             var default_son = level_vartree < 2 ? [{text: "cargando..."}] : [];
@@ -355,7 +358,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         }
 
 
-        self.getTreeVarAbio = function(e, d) {
+        self.getTreeVarAbio = function (e, d) {
 
             _VERBOSE ? console.log("self.getTreeVarAbio") : _VERBOSE;
             _VERBOSE ? console.log(d) : _VERBOSE;
@@ -383,7 +386,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     "field": parent_id,
                     "type": ter_type,
                 },
-                success: function(resp) {
+                success: function (resp) {
 
                     data = resp.data;
 
@@ -398,8 +401,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                         if ($("#" + data[i].bid).length > 0) {
                             idNode = data[i].bid + "_" + Math.floor((Math.random() * 1000) + 1)
-                        }
-                        else {
+                        } else {
                             idNode = data[i].bid;
                         }
 
@@ -411,8 +413,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             tag = String(data[i].tag).split(":")
                             min = parseInt(tag[0].split(".")[0]) / 10 + " ºC";
                             max = parseInt(tag[1].split(".")[0]) / 10 + " ºC";
-                        }
-                        else{
+                        } else {
                             tag = String(data[i].tag).split(":")
                             min = parseInt(tag[0].split(".")[0]) + " mm";
                             max = parseInt(tag[1].split(".")[0]) + " mm";
@@ -455,27 +456,31 @@ var variable_module = (function(verbose, url_zacatuche) {
                 .text(_iTrans.prop(title))
                 .appendTo($("#" + parent));
 
-
+        // div contenedor del cuerpo de la sección grupo de variables
         var var_container = $('<div/>')
-//                .addClass('var_container')
                 .addClass('col-md-12 col-sm-12 col-xs-12 var_container')
                 .appendTo($("#" + parent));
 
-
+        // div contenedor de los selectores bioticos y abioticos
         var nav_selection = $('<div/>')
-                // .attr('id', "treeAddedPanel_" + id)
-//                .addClass('nav_selection')
                 .addClass('col-md-8 col-sm-12 col-xs-12 nav_selection')
                 .appendTo(var_container);
 
-//                console.log("id: " + id);
+        // div lateral izquierdo que almacena los grupos seleccionados de cada tab
+        var tree_selection = $('<div/>')
+                .attr('id', "treeAddedPanel_" + id)
+                .addClass('col-md-4 col-sm-12 col-xs-12 myBlockVariableAdded')
+                .appendTo(var_container);
+
+
         // contenedor de header tabs
         var nav_items = $('<ul/>')
                 .attr("id", "tuto_nav_tabs_" + id)
                 .addClass('nav nav-tabs nav-variables')
                 .appendTo(nav_selection);
 
-        $.each(tags, function(i) {
+        // sea gregan los tabs disponibles
+        $.each(tags, function (i) {
             var name_class = 'nav-variables';
 
             if (i == 0) {
@@ -484,8 +489,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             var li = $('<li/>')
                     .addClass(name_class)
                     .appendTo(nav_items)
-                    .click(function(e) {
-                        // _VERBOSE ? console.log(e.target.getAttribute('href')) : _VERBOSE;
+                    .click(function (e) {
                         $('.nav-tabs a[href="' + e.target.getAttribute('href') + '"]').tab('show');
                         e.preventDefault();
                     });
@@ -498,7 +502,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .appendTo(li);
         });
 
-        // div que alamcena el contenido de los tabs
+
+
+        // div que alamcena el cuerpo de los tabs
         var tab_content = $('<div/>')
                 .addClass('tab-content')
                 .appendTo(nav_selection);
@@ -506,19 +512,12 @@ var variable_module = (function(verbose, url_zacatuche) {
 
 
 
-        // div que almacena de forma general los grupos seleccionados
-        var tree_selection = $('<div/>')
-                .attr('id', "treeAddedPanel_" + id)
-//                .addClass('myBlockVariableAdded')
-                .addClass('col-md-4 col-sm-12 col-xs-12 myBlockVariableAdded')
-                .appendTo(var_container);
 
 
+        // agregando contenido de cada tab
+        $.each(tags, function (i) {
 
-        // agregando contenido de cada tab (taxon, clima, topo)
-        $.each(tags, function(i) {
-
-            if (i == 0) {
+            if (i === 0) {
                 // generando tab panel para variables taxonomicas
                 _VERBOSE ? console.log(tags[i]) : _VERBOSE;
 
@@ -556,9 +555,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .addClass('dropdown-menu')
                         .appendTo(btn_div);
 
-                $.each(sp_items, function(i) {
+                $.each(sp_items, function (i) {
                     var li = $('<li/>')
-                            .click(function(e) {
+                            .click(function (e) {
                                 // evento que guarda selección taxonomica.
                                 _VERBOSE ? console.log("biotico") : _VERBOSE;
                                 self.varfilter_selected = [e.target.getAttribute("data-field"), e.target.getAttribute("parent-field"), e.target.getAttribute("level-field")];
@@ -593,7 +592,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .prop("disabled", true)
                         .addClass('form-control')
                         .autocomplete({
-                            source: function(request, response) {
+                            source: function (request, response) {
 
                                 _VERBOSE ? console.log(self) : _VERBOSE;
 
@@ -607,9 +606,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                                         nivel: self.varfilter_selected[1],
                                         source: 0 // source para saber si viene de objetivo o el target
                                     },
-                                    success: function(resp) {
+                                    success: function (resp) {
 
-                                        response($.map(resp.data, function(item) {
+                                        response($.map(resp.data, function (item) {
 
                                             _VERBOSE ? console.log(item) : _VERBOSE;
 
@@ -625,12 +624,12 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                             },
                             minLength: 2,
-                            change: function(event, ui) {
+                            change: function (event, ui) {
                                 if (!ui.item) {
                                     $("#text_variable" + "_" + id).val("");
                                 }
                             },
-                            select: function(event, ui) {
+                            select: function (event, ui) {
 
                                 $('#jstree_variables_species_' + id).jstree("destroy").empty();
                                 $('#jstree_variables_species_' + id).on('open_node.jstree', self.getTreeVar);
@@ -694,7 +693,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .attr('id', 'add_group' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
-                        .click(function(e) {
+                        .click(function (e) {
 
                             console.log(self.arrayVarSelected);
 
@@ -713,7 +712,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .attr('id', 'clean_var' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
-                        .click(function(e) {
+                        .click(function (e) {
 
                             $("#text_variable" + "_" + id).val("");
                             $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
@@ -732,7 +731,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             }
             // tab de variables climaticas
-            else if (i == 1) {
+            else if (i === 1) {
 
                 // generando tab panel para variables climaticas
                 _VERBOSE ? console.log(tags[i]) : _VERBOSE;
@@ -743,58 +742,6 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .appendTo(tab_content);
 
 
-                // div que contiene el dropdown-button de tipos taxonomicos y textfiled para insertar valores
-                var drop_item = $('<div/>')
-                        .addClass('input-group dropdown_group')
-                        .appendTo(tab_pane);
-
-                var btn_div = $('<div/>')
-                        .addClass('input-group-btn')
-                        .appendTo(drop_item);
-
-                var btn_sp = $('<button/>')
-                        .attr('id', 'btn_bioclim_' + id)
-                        .attr('type', 'button')
-                        .attr('data-toggle', 'dropdown')
-                        .attr('aria-haspopup', 'true')
-                        .attr('aria-expanded', 'false')
-                        .text(_iTrans.prop('btn_variable_bioclim_time') + " ")
-                        .addClass('btn btn-primary dropdown-toggle btn_time')
-                        .appendTo(btn_div);
-
-                if (_tipo_modulo == _MODULO_COMUNIDAD) {
-                    $("#btn_bioclim_" + id).prop("disabled", true);
-                }
-
-                $('<span/>')
-                        .addClass('caret')
-                        .appendTo(btn_sp);
-
-                var btn_items = $('<div/>')
-                        .addClass('dropdown-menu')
-                        .appendTo(btn_div);
-
-                $.each(abio_time, function(i) {
-                    var li = $('<li/>')
-                            .click(function(e) {
-                                var varfield = e.target.text;
-                                self.type_time = e.target.getAttribute("type_time");
-                                _VERBOSE ? console.log(varfield) : _VERBOSE;
-                                _VERBOSE ? console.log(self.type_time) : _VERBOSE;
-
-                                $("#btn_bioclim_" + id).text(varfield + " ");
-                                $("#btn_bioclim_" + id).append('<span class="caret"></span>');
-                                e.preventDefault();
-                            })
-                            .appendTo(btn_items);
-
-                    var aaa = $('<a/>')
-                            .attr('id', abio_time[i] + "_" + id)
-                            .attr('type_time', i)
-                            .text(_iTrans.prop(abio_time[i]))
-                            .appendTo(li);
-
-                });
 
                 // contendor de arbol y panel de seleccion
                 var tree_nav_container = $('<div/>')
@@ -810,11 +757,14 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .attr('id', "jstree_variables_bioclim_" + id)
                         .appendTo(div_tree);
 
+
+
+
                 var btn_add = $('<button/>')
                         .attr('id', 'add_group_bioclim' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
-                        .click(function(e) {
+                        .click(function (e) {
 
                             self.addOtherGroup('jstree_variables_bioclim_' + id, self.arrayBioclimSelected, 'Abio', 'treeAddedPanel_' + id, _TYPE_ABIO);
                             e.preventDefault();
@@ -826,7 +776,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .attr('id', 'clean_var_bioclim' + "_" + id)
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
-                        .click(function(e) {
+                        .click(function (e) {
 
                             self.arrayBioclimSelected = [];
                             // self.groupbioclimvar_dataset = [];
@@ -837,81 +787,81 @@ var variable_module = (function(verbose, url_zacatuche) {
                         .appendTo(tab_pane);
 
 
-                // carga árbol de variables topográficas
+                // carga árbol de variables raster
                 self.loadTreeAbio();
 
 
             }
-            else if (i == 2) {
 
-                // generando tab panel para variables topograficas
-                _VERBOSE ? console.log(tags[i]) : _VERBOSE;
+//            else if (i == 2) {
+//
+//                // generando tab panel para variables topograficas
+//                _VERBOSE ? console.log(tags[i]) : _VERBOSE;
+//
+//                var tab_pane = $('<div/>')
+//                        .attr('id', 'tab' + i + "_" + id)
+//                        .addClass('tab-pane')
+//                        .appendTo(tab_content);
+//
+//                // contendor de arbol y panel de seleccion
+//                var tree_nav_container = $('<div/>')
+//                        .addClass('row row_raster')
+//                        .appendTo(tab_pane);
+//
+//                var div_tree = $('<div/>')
+//                        .attr('id', "treeTopo_" + id)
+//                        .addClass('myScrollableBlockVar')
+//                        .appendTo(tree_nav_container);
+//
+//                var tree = $('<div/>')
+//                        .attr('id', "jstree_topo_" + id)
+//                        .appendTo(div_tree);
+//
+//                // var tree_selection = $('<div/>')
+//                //   		.attr('id', "treeAddedPanelTopo_" + id)
+//                //   		.addClass('myScrollableBlockVariableAdded')
+//                // 	.appendTo(tree_nav_container);
+//
+//                var btn_add = $('<button/>')
+//                        .attr('id', 'add_group_topo' + "_" + id)
+//                        .attr('type', 'button')
+//                        .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
+//                        .click(function(e) {
+//
+//                            self.addOtherGroup('jstree_topo_' + id, self.arrayOtherSelected, 'Topo', 'treeAddedPanel_' + id, _TYPE_TERRESTRE);
+//                            e.preventDefault();
+//
+//                        })
+//                        .appendTo(tab_pane);
+//
+//                var btn_add = $('<button/>')
+//                        .attr('id', 'clean_var_topo' + "_" + id)
+//                        .attr('type', 'button')
+//                        .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
+//                        .click(function(e) {
+//
+//                            self.arrayOtherSelected = [];
+//                            // self.groupothervar_dataset = [];
+//                            self.cleanVariables('jstree_topo_' + id, 'treeAddedPanel_' + id, _TYPE_TERRESTRE);
+//
+//                            e.preventDefault();
+//
+//                        })
+//                        .appendTo(tab_pane);
+//
+//                // carga árbol de variables topográficas
+//                // self.loadTreeTopo();
+//
+//
+//            }
 
-                var tab_pane = $('<div/>')
-                        .attr('id', 'tab' + i + "_" + id)
-                        .addClass('tab-pane')
-                        .appendTo(tab_content);
-
-                // contendor de arbol y panel de seleccion
-                var tree_nav_container = $('<div/>')
-                        .addClass('row row_raster')
-                        .appendTo(tab_pane);
-
-                var div_tree = $('<div/>')
-                        .attr('id', "treeTopo_" + id)
-                        .addClass('myScrollableBlockVar')
-                        .appendTo(tree_nav_container);
-
-                var tree = $('<div/>')
-                        .attr('id', "jstree_topo_" + id)
-                        .appendTo(div_tree);
-
-                // var tree_selection = $('<div/>')
-                //   		.attr('id', "treeAddedPanelTopo_" + id)
-                //   		.addClass('myScrollableBlockVariableAdded')
-                // 	.appendTo(tree_nav_container);
-
-                var btn_add = $('<button/>')
-                        .attr('id', 'add_group_topo' + "_" + id)
-                        .attr('type', 'button')
-                        .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
-                        .click(function(e) {
-
-                            self.addOtherGroup('jstree_topo_' + id, self.arrayOtherSelected, 'Topo', 'treeAddedPanel_' + id, _TYPE_TERRESTRE);
-                            e.preventDefault();
-
-                        })
-                        .appendTo(tab_pane);
-
-                var btn_add = $('<button/>')
-                        .attr('id', 'clean_var_topo' + "_" + id)
-                        .attr('type', 'button')
-                        .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
-                        .click(function(e) {
-
-                            self.arrayOtherSelected = [];
-                            // self.groupothervar_dataset = [];
-                            self.cleanVariables('jstree_topo_' + id, 'treeAddedPanel_' + id, _TYPE_TERRESTRE);
-
-                            e.preventDefault();
-
-                        })
-                        .appendTo(tab_pane);
-
-                // carga árbol de variables topográficas
-                // self.loadTreeTopo();
-
-
-            }
-            // para mas tabs
-            // else {}
 
         });
 
 
 
         // Es un evento generado cuando se realiza la carga del árbol de selección (jstree: https://www.jstree.com/) que contiene el selector de variables. 
-        self.loadNodes = function() {
+        self.loadNodes = function () {
 
             _VERBOSE ? console.log("self.loadNodes") : _VERBOSE;
 
@@ -934,7 +884,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     "parentfield": self.parent_field_vartree,
                     "parentitem": self.value_vartree
                 },
-                success: function(resp) {
+                success: function (resp) {
 
                     data = resp.data;
 
@@ -948,8 +898,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                         if ($("#" + data[i].name).length > 0) {
                             idNode = data[i].name + "_" + Math.floor((Math.random() * 1000) + 1)
-                        }
-                        else {
+                        } else {
                             idNode = data[i].name;
                         }
 
@@ -984,7 +933,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
 
         // Evento generado cuando se realiza la acción de abrir una rama del árbol de selección, realiza la carga de los elementos que componen la rama a la cual se desea tener acceso.
-        self.getTreeVar = function(e, d) {
+        self.getTreeVar = function (e, d) {
 
             _VERBOSE ? console.log("self.getTreeVar") : _VERBOSE;
 
@@ -1005,33 +954,27 @@ var variable_module = (function(verbose, url_zacatuche) {
                 parent_field = "reinovalido"
                 next_field = "phylumdivisionvalido";
                 next_nivel = 3;
-            }
-            else if (d.node.original.attr.nivel == 3) {
+            } else if (d.node.original.attr.nivel == 3) {
                 parent_field = "phylumdivisionvalido"
                 next_field = "clasevalida";
                 next_nivel = 4;
-            }
-            else if (d.node.original.attr.nivel == 4) {
+            } else if (d.node.original.attr.nivel == 4) {
                 parent_field = "clasevalida"
                 next_field = "ordenvalido";
                 next_nivel = 5;
-            }
-            else if (d.node.original.attr.nivel == 5) {
+            } else if (d.node.original.attr.nivel == 5) {
                 parent_field = "ordenvalido"
                 next_field = "familiavalida";
                 next_nivel = 6;
-            }
-            else if (d.node.original.attr.nivel == 6) {
+            } else if (d.node.original.attr.nivel == 6) {
                 parent_field = "familiavalida"
                 next_field = "generovalido";
                 next_nivel = 7;
-            }
-            else if (d.node.original.attr.nivel == 7) {
+            } else if (d.node.original.attr.nivel == 7) {
                 parent_field = "generovalido"
                 next_field = "especievalidabusqueda";
                 next_nivel = 8;
-            }
-            else {
+            } else {
                 $("#jstree_variables_species_" + id).jstree(true).delete_node(d.node.children[0]);
                 $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/images/dna.png");
                 return;
@@ -1051,7 +994,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     "parentfield": parent_field,
                     "parentitem": d.node.text.split(" ")[0]
                 },
-                success: function(resp) {
+                success: function (resp) {
 
                     data = resp.data;
 
@@ -1063,8 +1006,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             // _VERBOSE ? console.log("id_existente") : _VERBOSE;
 
                             idNode = data[i].id + "_" + Math.floor((Math.random() * 1000) + 1)
-                        }
-                        else {
+                        } else {
                             // ._VERBOSE ? console.log("nuevo_id") : _VERBOSE;
 
                             idNode = data[i].id;
@@ -1096,7 +1038,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
 
         // Evento generado cuando cambia el estado de selección del árbol, almacena los elementos que fueron seleccionados del grupo de variables taxonómicas.
-        self.getChangeTreeVar = function(e, data) {
+        self.getChangeTreeVar = function (e, data) {
 
             _VERBOSE ? console.log("self.getChangeTreeVar") : _VERBOSE;
 
@@ -1149,8 +1091,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 //                            self.arrayVarSelected.push({label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text});
 //                        }
 
-                    }
-                    else {
+                    } else {
 
                         self.arrayVarSelected.push({label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type});
 
@@ -1165,7 +1106,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         };
 
         // Evento generado cuando cambia el estado de selección del árbol, almacena los elementos que fueron seleccionados del grupo de variables climáticas.
-        self.getChangeTreeVarBioclim = function(e, data) {
+        self.getChangeTreeVarBioclim = function (e, data) {
 
             _VERBOSE ? console.log("self.getChangeTreeVarBioclim") : _VERBOSE;
 
@@ -1189,7 +1130,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
         // Evento generado cuando cambia el estado de selección del árbol, almacena los elementos que fueron seleccionados del grupo de variables topográficas. 
         // TODO: Integrar con _getChangeTreeVarBioclim (Existe un problema al llamar funciones anonimas anidas... resolver)
-        self.getChangeTreeOther = function(e, data, idtree, arrayVar) {
+        self.getChangeTreeOther = function (e, data, idtree, arrayVar) {
 
             _VERBOSE ? console.log("self.getChangeTreeOther") : _VERBOSE;
 
@@ -1209,12 +1150,12 @@ var variable_module = (function(verbose, url_zacatuche) {
 
         };
 
-        self.isKingdomLevel = function(arraySelected) {
+        self.isKingdomLevel = function (arraySelected) {
 
             _VERBOSE ? console.log("self.isKingdomLevel") : _VERBOSE;
             var isKingdomLevel = false;
 
-            arraySelected.forEach(function(item, index) {
+            arraySelected.forEach(function (item, index) {
                 _VERBOSE ? console.log("numlevel: " + item.numlevel) : _VERBOSE;
 
                 if (parseInt(item.numlevel) <= NIVEL_PHYLUM) {
@@ -1233,11 +1174,11 @@ var variable_module = (function(verbose, url_zacatuche) {
         // Realiza la verificación si un grupo ya ha sido añadido previamente para eliminar duplicidad.
         // El cambio de idioma no es identificado para las variables que nos son bioticas.
         // TODO: Hacer reemplazo de label por value cuando son abioticas (type != 4)
-        self.existsGroup = function(arraySelected) {
+        self.existsGroup = function (arraySelected) {
 
             _VERBOSE ? console.log("self.existsGroup") : _VERBOSE;
 
-            var arg_labels = arraySelected.map(function(d) {
+            var arg_labels = arraySelected.map(function (d) {
                 _VERBOSE ? console.log(d) : _VERBOSE;
                 return d.label.split(" ")[0];
             });
@@ -1245,11 +1186,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             var new_element = true;
 
-            $.each(self.var_sel_array, function(index, item_sel) {
+            $.each(self.var_sel_array, function (index, item_sel) {
 
                 if (item_sel.value.length == arg_labels.length) {
 
-                    var value_labels = item_sel.value.map(function(val) {
+                    var value_labels = item_sel.value.map(function (val) {
                         return val.label.split(" >> ")[1];
                     });
                     // _VERBOSE ? console.log(value_labels) : _VERBOSE;
@@ -1271,7 +1212,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
 
 
-        self.addUIItem = function(groupDatasetTotal) {
+        self.addUIItem = function (groupDatasetTotal) {
 
             _VERBOSE ? console.log("self.addUIItem") : _VERBOSE;
             _VERBOSE ? console.log(self.id) : _VERBOSE;
@@ -1281,7 +1222,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             // these lines are because when one new elements is added, the previuos elements were duplicated. So the collection is clean and reloaded again
             $("#treeAddedPanel_" + self.id).empty();
-            $.each(self.groupDatasetTotal, function(i, item) {
+            $.each(self.groupDatasetTotal, function (i, item) {
                 item.close = true;
                 item.elements = item.value;
             });
@@ -1296,15 +1237,15 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .enter()
                     .append("div")
                     .attr("class", "row_var_item")
-                    .attr("items", function(d) {
+                    .attr("items", function (d) {
                         // _VERBOSE ? console.log(d) : _VERBOSE
                         return d.elements;
 
                     })
-                    .text(function(d) {
+                    .text(function (d) {
                         return d.title
                     })
-                    .on('click', function(d) {
+                    .on('click', function (d) {
 
                         if (d.close) {
 
@@ -1314,14 +1255,13 @@ var variable_module = (function(verbose, url_zacatuche) {
                                     .enter()
                                     .append("div")
                                     .attr("class", "cell_item")
-                                    .text(function(t) {
+                                    .text(function (t) {
                                         return t.label;
                                     })
                                     .style("text-align", "left");
 
 
-                        }
-                        else {
+                        } else {
 
                             d.close = true;
                             d3.selectAll(this).remove();
@@ -1332,12 +1272,12 @@ var variable_module = (function(verbose, url_zacatuche) {
                                     .attr("width", "10px")
                                     .attr("height", "10px")
                                     .attr("class", "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var")
-                                    .on("click", function() {
+                                    .on("click", function () {
                                         // _VERBOSE ? console.log("remove item") : _VERBOSE;
                                         d3.select(this.parentNode).remove();
                                         var gpo_deleted;
 
-                                        $.each(self.groupDatasetTotal, function(index, obj) {
+                                        $.each(self.groupDatasetTotal, function (index, obj) {
                                             if (obj.groupid == d.groupid) {
                                                 // _VERBOSE ? console.log(d) : _VERBOSE;
                                                 gpo_deleted = self.groupDatasetTotal.splice(index, 1);
@@ -1356,12 +1296,12 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr("width", "10px")
                     .attr("height", "10px")
                     .attr("class", "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var")
-                    .on("click", function(d) {
+                    .on("click", function (d) {
                         // _VERBOSE ? console.log("remove item") : _VERBOSE;
                         d3.select(this.parentNode).remove();
                         var gpo_deleted;
 
-                        $.each(self.groupDatasetTotal, function(index, obj) {
+                        $.each(self.groupDatasetTotal, function (index, obj) {
                             if (obj.groupid == d.groupid) {
                                 // _VERBOSE ? console.log(d) : _VERBOSE;
                                 gpo_deleted = self.groupDatasetTotal.splice(index, 1);
@@ -1382,7 +1322,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         }
 
         // Evento que es generado cuando se desea agregar un grupo seleccionado previamente, realiza la adición del grupo seleccionado al conjunto de variables con las cuales se realizan los cálculos de épsilon y score en ambos sistemas
-        self.addOtherGroup = function(idTree, arraySelected, gpoName, idDivContainer, typeVar) {
+        self.addOtherGroup = function (idTree, arraySelected, gpoName, idDivContainer, typeVar) {
 
             _VERBOSE ? console.log("self.addOtherGroup") : _VERBOSE;
 
@@ -1417,7 +1357,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             var maxGroup = 0;
 
             if (self.groupDatasetTotal.length > 0)
-                maxGroup = d3.max(self.groupDatasetTotal.map(function(d) {
+                maxGroup = d3.max(self.groupDatasetTotal.map(function (d) {
                     return d.groupid;
                 }));
 
@@ -1432,8 +1372,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                 if (typeVar == _TYPE_BIO) {
                     var label_taxon = arraySelected[i].numlevel == 8 ? arraySelected[i].label : arraySelected[i].label.split(" ")[0]
                     subgroup.push({label: arraySelected[i].level + " >> " + label_taxon, level: arraySelected[i].numlevel, type: arraySelected[i].type});
-                }
-                else {
+                } else {
                     subgroup.push({value: arraySelected[i].id, label: arraySelected[i].parent + " >> " + arraySelected[i].label, level: arraySelected[i].level, type: arraySelected[i].type});
                 }
 
@@ -1447,7 +1386,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             // these lines are because when one new elements is added, the previuos elements were duplicated. So the collection is clean and reloaded again
             $("#" + idDivContainer).empty();
-            $.each(self.groupDatasetTotal, function(i, item) {
+            $.each(self.groupDatasetTotal, function (i, item) {
                 item.close = true;
             });
 
@@ -1458,14 +1397,14 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .enter()
                     .append("div")
                     .attr("class", "row_var_item")
-                    .attr("items", function(d) {
+                    .attr("items", function (d) {
                         // _VERBOSE ? console.log(d) : _VERBOSE
                         return d.elements;
                     })
-                    .text(function(d) {
+                    .text(function (d) {
                         return d.title
                     })
-                    .on('click', function(d) {
+                    .on('click', function (d) {
 
                         if (d.close) {
 
@@ -1475,14 +1414,13 @@ var variable_module = (function(verbose, url_zacatuche) {
                                     .enter()
                                     .append("div")
                                     .attr("class", "cell_item")
-                                    .text(function(t) {
+                                    .text(function (t) {
                                         return t.label;
                                     })
                                     .style("text-align", "left");
 
 
-                        }
-                        else {
+                        } else {
 
                             d.close = true;
                             d3.selectAll(this).remove();
@@ -1493,12 +1431,12 @@ var variable_module = (function(verbose, url_zacatuche) {
                                     .attr("width", "10px")
                                     .attr("height", "10px")
                                     .attr("class", "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var")
-                                    .on("click", function() {
+                                    .on("click", function () {
                                         // _VERBOSE ? console.log("remove item") : _VERBOSE;
                                         d3.select(this.parentNode).remove();
                                         var gpo_deleted;
 
-                                        $.each(self.groupDatasetTotal, function(index, obj) {
+                                        $.each(self.groupDatasetTotal, function (index, obj) {
                                             if (obj.groupid == d.groupid) {
                                                 // _VERBOSE ? console.log(d) : _VERBOSE;
                                                 gpo_deleted = self.groupDatasetTotal.splice(index, 1);
@@ -1517,12 +1455,12 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr("width", "10px")
                     .attr("height", "10px")
                     .attr("class", "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var")
-                    .on("click", function(d) {
+                    .on("click", function (d) {
                         // _VERBOSE ? console.log("remove item") : _VERBOSE;
                         d3.select(this.parentNode).remove();
                         var gpo_deleted;
 
-                        $.each(self.groupDatasetTotal, function(index, obj) {
+                        $.each(self.groupDatasetTotal, function (index, obj) {
                             if (obj.groupid == d.groupid) {
                                 // _VERBOSE ? console.log(d) : _VERBOSE;
                                 gpo_deleted = self.groupDatasetTotal.splice(index, 1);
@@ -1538,8 +1476,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             if (typeVar == _TYPE_TERRESTRE || typeVar == _TYPE_ABIO) {
                 $('#' + idTree + _id).jstree(true).deselect_all();
-            }
-            else {
+            } else {
                 $('#' + idTree + _id).jstree("destroy").empty();
             }
 
@@ -1549,20 +1486,20 @@ var variable_module = (function(verbose, url_zacatuche) {
         }
 
         // Verifica que un grupo previamente seleccionado no sea subgrupo de otro grupo por añadir y viceversa.
-        self.isSubset = function(set1, set2) {
-            return set1.every(function(val) {
+        self.isSubset = function (set1, set2) {
+            return set1.every(function (val) {
                 return set2.indexOf(val) >= 0;
             });
         }
 
         // Realiza la actualización del grupo final con el cual se realizan los cálculos de épsilon y score.
-        self.updateVarSelArray = function(item, operacion) {
+        self.updateVarSelArray = function (item, operacion) {
             // item - llega en forma de array, por tanto para obtener su valor se accede al primer valor
             if (operacion == _BORRADO) {
 
                 _VERBOSE ? console.log("elemento borrado") : _VERBOSE;
 
-                $.each(self.var_sel_array, function(index, gpo_var) {
+                $.each(self.var_sel_array, function (index, gpo_var) {
 
                     if (item[0].groupid == gpo_var.groupid && item[0].type == gpo_var.type) {
                         _VERBOSE ? console.log("borrado") : _VERBOSE;
@@ -1572,8 +1509,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                 });
 
-            }
-            else if (operacion == _AGREGADO) {
+            } else if (operacion == _AGREGADO) {
 
                 _VERBOSE ? console.log("elemento añadido") : _VERBOSE;
                 self.var_sel_array.push({"value": item.elements, "type": item.type, "groupid": item.groupid, "title": item.title});
@@ -1587,7 +1523,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         }
 
         // Elimina las variables previamente agregadas al grupo final con el cual se realizan los cálculos de épsilon y score.
-        self.cleanVariables = function(idTree, idDivContainer, typeVar) {
+        self.cleanVariables = function (idTree, idDivContainer, typeVar) {
 
             _VERBOSE ? console.log("self.cleanVariables") : _VERBOSE;
 
@@ -1595,8 +1531,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             if (typeVar == _TYPE_TERRESTRE || typeVar == _TYPE_ABIO) {
                 $('#' + idTree + _id).jstree(true).deselect_all();
-            }
-            else {
+            } else {
                 $('#' + idTree + _id).jstree("destroy").empty();
             }
 
@@ -1613,7 +1548,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         }
 
         //  Retorna el grupo final con el cual se realizan los cálculos de épsilon y score.
-        self.getVarSelArray = function() {
+        self.getVarSelArray = function () {
 
             _VERBOSE ? console.log("self.getVarSelArray") : _VERBOSE;
             _VERBOSE ? console.log(self.var_sel_array) : _VERBOSE;
@@ -1622,20 +1557,45 @@ var variable_module = (function(verbose, url_zacatuche) {
         }
 
         //  Asigna el grupo final con el cual se realizan los cálculos de épsilon y score.
-        self.setVarSelArray = function(var_sel_array) {
+        self.setVarSelArray = function (var_sel_array) {
 
             _VERBOSE ? console.log("self.setVarSelArray") : _VERBOSE;
 
             self.var_sel_array = var_sel_array;
         }
 
-        self.getTimeBioclim = function() {
+        self.getTimeBioclim = function () {
 
             _VERBOSE ? console.log("self.getTimeBioclim") : _VERBOSE;
             return self.type_time;
         }
 
+    }
 
+    function loadAvailableLayers(parent, id, title) {
+
+        _VERBOSE ? console.log("loadAvailableLayers") : _VERBOSE;
+
+        $.ajax({
+            url: _url_zacatuche + "/niche/especie/getAvailableVariables",
+            dataType: "json",
+            type: "post",
+            data: {},
+            success: function (resp) {
+
+                if (resp.ok === true) {
+                    
+                    var data = resp.data;
+                    console.log(data);
+                    _selectors_created.push(new VariableSelector(parent, id, title));
+
+                } else {
+
+                }
+
+            }
+
+        });
 
 
     }
@@ -1655,12 +1615,7 @@ var variable_module = (function(verbose, url_zacatuche) {
     function createSelectorComponent(parent, id, title) {
 
         _VERBOSE ? console.log("createSelectorComponent") : _VERBOSE;
-
-        selector = new VariableSelector(parent, id, title);
-
-        _selectors_created.push(selector);
-
-        return selector;
+        loadAvailableLayers(parent, id, title);
 
     }
 
@@ -1697,6 +1652,8 @@ var variable_module = (function(verbose, url_zacatuche) {
         _iTrans = _language_module.getI18();
         _tipo_modulo = tipo_modulo;
 
+        loadAvailableLayers();
+
     }
 
 
@@ -1715,7 +1672,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         _VERBOSE ? console.log("startVar") : _VERBOSE;
 
         _id = "" + id;
-        if (id == 0)
+        if (id === 0)
             _id = "";
         _VERBOSE ? console.log("_id: " + _id) : _VERBOSE;
 
@@ -1725,8 +1682,8 @@ var variable_module = (function(verbose, url_zacatuche) {
     return{
         startVar: startVar,
         getVarSelArray: getVarSelArray,
-        // updateTreeLabels: updateTreeLabels,
         createSelectorComponent: createSelectorComponent
+//        loadAvailableLayers: loadAvailableLayers
     }
 
 });

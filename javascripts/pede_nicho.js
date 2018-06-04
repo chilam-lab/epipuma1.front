@@ -1047,6 +1047,8 @@ var module_nicho = (function () {
 
 //            slider_value = val_process ? $("#sliderValidation").slider("value") : 0;
             var slider_value = val_process ? true : false;
+            
+            
 
 
             // Falta agregar la condición makesense. 
@@ -1104,12 +1106,17 @@ var module_nicho = (function () {
         _map_module_nicho = map_module(_url_geoserver, _workspace, _VERBOSE, _url_api);
         _map_module_nicho.startMap(_language_module_nicho, _tipo_modulo, _histogram_module_nicho);
 
+
+
         // un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)
         _variable_module_nicho = variable_module(_VERBOSE, _url_api);
         _variable_module_nicho.startVar(0, _language_module_nicho, _tipo_modulo);
+        
 
         var ids_comp_variables = ['fuente'];
-        _componente_fuente = _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
+        _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
+        
+        
 
 
         _table_module = table_module(_VERBOSE);
