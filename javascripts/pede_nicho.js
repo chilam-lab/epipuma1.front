@@ -446,7 +446,8 @@ var module_nicho = (function () {
             var data_link = "";
 
             var sp_data = JSON.stringify(_map_module_nicho.get_specieTarget());
-
+            
+            
             var subgroups = _componente_fuente.getVarSelArray();
 
             data_link += "sp_data=" + sp_data + "&";
@@ -706,7 +707,7 @@ var module_nicho = (function () {
      * 
      */
     function _parseURL(url) {
-        console.log(url);
+//        console.log(url);
 
         var regex = /[?&]([^=#]+)=([^&#]*)/g, url = url, params = {}, match;
         while (match = regex.exec(url)) {
@@ -891,7 +892,8 @@ var module_nicho = (function () {
 
         _res_display_module_nicho.set_spid(spid);
         _res_display_module_nicho.set_idReg(idreg);
-
+        
+        
         _componente_fuente.setVarSelArray(subgroups);
 
         var groups = subgroups.slice();
@@ -974,6 +976,8 @@ var module_nicho = (function () {
             idreg = _region_module_nicho.getRegionSelected();
 
             _res_display_module_nicho.set_idReg(idreg);
+            
+
 
             subgroups = _componente_fuente.getVarSelArray();
 
@@ -1106,18 +1110,14 @@ var module_nicho = (function () {
         _map_module_nicho = map_module(_url_geoserver, _workspace, _VERBOSE, _url_api);
         _map_module_nicho.startMap(_language_module_nicho, _tipo_modulo, _histogram_module_nicho);
 
-
-
         // un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)
         _variable_module_nicho = variable_module(_VERBOSE, _url_api);
         _variable_module_nicho.startVar(0, _language_module_nicho, _tipo_modulo);
         
 
         var ids_comp_variables = ['fuente'];
-        _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
+        _componente_fuente = _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
         
-        
-
 
         _table_module = table_module(_VERBOSE);
         _table_module.startTableModule();
@@ -1128,6 +1128,9 @@ var module_nicho = (function () {
         _res_display_module_nicho.startResDisplay(_map_module_nicho, _histogram_module_nicho, _table_module, _language_module_nicho, ids_comp_variables);
 
         _map_module_nicho.setDisplayModule(_res_display_module_nicho);
+        
+        
+        _histogram_module_nicho.setDisplayModule(_res_display_module_nicho);
 
 
         // se envia url con direccion a servidor zacatuche

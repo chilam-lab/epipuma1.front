@@ -130,6 +130,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     var _range_limits_total = [];
     var _resultado_grid;
 
+    var _centro_mapa, _zoom_module;
 
 
 
@@ -359,23 +360,23 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 })
                 .drawing(_drawingOnCanvas);
 
-        var centro_mapa, zoom_module;
+        
+        if (parseInt(localStorage.getItem("ambiente")) === 0 || parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3 ) {
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
 
-//        if(_url_zacatuche.indexOf("api-dev") !== -1 || _url_zacatuche.indexOf("localhost") !== -1){
-        if (_url_zacatuche.indexOf("api-dev") !== -1) {
-            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
-            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
-//            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-//            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+        } else if (parseInt(localStorage.getItem("ambiente")) === 4 || parseInt(localStorage.getItem("ambiente")) === 5) {
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         } else {
-            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -99] : [23.5, -102];
-            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
         }
 
         // ambos div tienen el id = 'map', tanto en nicho como en comunidad
         map = L.map('map', {
-            center: centro_mapa,
-            zoom: zoom_module,
+            center: _centro_mapa,
+            zoom: _zoom_module,
             layers: [
                 _OSM_layer,
                 _tileLayer
@@ -417,24 +418,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
         };
 
-
-
-        var centro_mapa, zoom_module;
-
-//        if(_url_zacatuche.indexOf("api-dev") !== -1 || _url_zacatuche.indexOf("localhost") !== -1){
-        if (_url_zacatuche.indexOf("api-dev") !== -1) {
-            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -103] : [23.5, -102];
-            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
-//            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-//            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
-        } else {
-            centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -103] : [23.5, -102];
-            zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
-        }
-
         map_sp = L.map('map2', {
-            center: centro_mapa,
-            zoom: zoom_module,
+            center: _centro_mapa,
+            zoom: _zoom_module,
             layers: [
                 _OSMSP_layer
             ],
@@ -489,21 +475,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             map.off('click');
         }
 
-
-//        var tipo_api;
-//
-//        if (_url_zacatuche.indexOf("api-rc") !== -1) {
-//            tipo_api = "rc";
-//        } else if (_url_zacatuche.indexOf("api-dev") !== -1) {
-//            tipo_api = "dev";
-//        } else if (_url_zacatuche.indexOf("localhost") !== -1) {
-//            tipo_api = "local";
-//        } else {
-//            tipo_api = "pro";
-//        }
-
-//        _VERBOSE ? console.log("tipo_api: " + tipo_api) : _VERBOSE;
-
         $('#map').loading({
             stoppable: true
         });
@@ -513,9 +484,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             type: 'post',
             dataType: "json",
             data: {
-//                "qtype": "getGridGeoJsonMX",
-                "grid_res": grid_res
-//                "api": tipo_api
+                "grid_res": grid_res,
+                "footprint_region": 1 // Checar la selección del footprint_region en el cliente
             },
             success: function (json) {
 
@@ -619,8 +589,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             }
         } else {
 
-//            console.log(grid_map_color);
-//            console.log(_grid_map);
+//            console.log(grid_map_color.values());
+            console.log(_grid_map);
 
             for (var i = 0; i < _grid_map.features.length; i++) {
 
@@ -1023,13 +993,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 _discardedPointsFilter = d3.map([]); 	// puntos descartados por filtros
                 _computed_occ_cells = d3.map([]);	// celdas para analisis
                 // _computed_discarded_cells = d3.map([]);	// celdas descartadas por filtros
-                
+
                 var gridItems = [];
                 if (dPoints.values().length > 0) {
                     $.each(dPoints.values(), function (index, item) {
                         gridItems.push(item.feature.properties.gridid);
                     });
-                    
+
                     console.log(gridItems);
                 }
 
@@ -1066,7 +1036,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     var item_id = JSON.parse(item.json_geom).coordinates.toString();
 
                     // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
-                    
+
                     if ($.inArray(item.gridid, gridItems) === -1) {
                         _allowedPoints.set(item_id, {
                             "type": "Feature",
@@ -1354,7 +1324,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function _getMessagePopup(feature) {
 
-        _VERBOSE ? console.log("_getMessagePopup") : _VERBOSE;
+//        _VERBOSE ? console.log("_getMessagePopup") : _VERBOSE;
 
         var coordinates = parseFloat(feature.geometry.coordinates[1]).toFixed(2) + ", " + parseFloat(feature.geometry.coordinates[0]).toFixed(2)
 
@@ -1422,8 +1392,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             if (blue_arg.length > 0 && red_arg.length > 0) {
 
                 _VERBOSE ? console.log("ambos") : _VERBOSE;
-
-
 
                 var min_json = d3.min(blue_arg.map(function (d) {
                     return parseFloat(d.tscore)
@@ -1497,7 +1465,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 value.forEach(function (d) {
 
-                    grid_color.set(d.gridid, {color: color_scale[index], score: d.tscore});
+                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
 
                 });
 
@@ -1508,7 +1476,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 value.forEach(function (d) {
 
-                    grid_color.set(d.gridid, {color: color_scale[index], score: d.tscore});
+                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
 
                 });
 
@@ -1533,7 +1501,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         }
 
-        _VERBOSE ? console.log(grid_color.values()) : _VERBOSE;
+//        _VERBOSE ? console.log(grid_color.values()) : _VERBOSE;
 
         _cargaPaletaColor(mapa_prob);
 

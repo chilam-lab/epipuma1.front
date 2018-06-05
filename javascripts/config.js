@@ -11,6 +11,7 @@ $(document).ready(function () {
     //
     //********************************
 
+
     var ambiente = 5;
     var _VERBOSE = true;
 

@@ -16,6 +16,10 @@ var variable_module = (function (verbose, url_zacatuche) {
             _TYPE_ABIO = 1,
             _TYPE_TERRESTRE = 2;
 
+
+    var _FOOTPRINT_REGION = 1;
+
+
     var _TYPE_TAXON = 4,
             _TYPE_CLIMA = 0,
             _TYPE_TOPO = 1,
@@ -32,6 +36,8 @@ var variable_module = (function (verbose, url_zacatuche) {
     var _toastr = toastr;
     var _tipo_modulo;
     var _MODULO_COMUNIDAD = 1;
+    
+    var _available_variables = [];
 
 
 
@@ -46,8 +52,8 @@ var variable_module = (function (verbose, url_zacatuche) {
     function getVarSelArray() {
         return _var_sel_array;
     }
-    
-    
+
+
     /**
      * Método getter de los grupos de variables seleccionados
      *
@@ -56,11 +62,11 @@ var variable_module = (function (verbose, url_zacatuche) {
      * @memberof! table_module
      * 
      */
-    function getSelectorVaribles(){
+    function getSelectorVaribles() {
         return _selectors_created;
     }
-    
-    
+
+
 
     /**
      * Éste método realiza la creación del selector de variables. Actualmente genera un selector de grupos taxonómicos, variables climáticas y variables topográficas.
@@ -113,177 +119,12 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.groupothervar_dataset = [];
 
 
-
-        // Evento generado cuando se selecciona un grupo de variables topográficas, realiza la carga del árbol de selección del grupo seleccionado.
-        self.loadTreeTopo = function () {
-
-            _VERBOSE ? console.log("self.loadTreeTopo") : _VERBOSE;
-
-            var text_topo = _iTrans.prop('root_topo');
-            var topo_selected = "root_topo";
-            var level_root = 0;
-            var level_vartree = 1;
-
-            $.ajax({
-                // url: _url_trabajo,
-                url: _url_zacatuche + "/niche/especie/getRasterVariables",
-                dataType: "json",
-                type: "post",
-                data: {
-//                    "qtype": "getRasterVariables",
-                    "type": _TYPE_TERRESTRE,
-                    "level": level_root
-                },
-                success: function (data) {
-
-                    $('#jstree_topo_' + id).jstree("destroy").empty();
-
-                    var tree_reinos = [{
-                            "text": text_topo,
-                            "id": topo_selected,
-                            attr: {"bid": topo_selected, "parent": text_topo, "level": level_root, "type": _TYPE_TOPO_RASTER},
-                            'state': {'opened': true},
-                            "icon": "plugins/jstree/dist/themes/default/throbber.gif"
-                        }];
-
-                    $("#jstree_topo_" + id).jstree({
-                        'plugins': ["wholerow", "checkbox"],
-                        'core': {
-                            'data': tree_reinos,
-                            'themes': {
-                                'name': 'proton',
-                                'responsive': true
-                            },
-                            'check_callback': true
-                        }
-                    });
-
-                    $("#jstree_topo_" + id).on('changed.jstree', function (e, data) {
-                        self.arrayOtherSelected = [];
-                        self.getChangeTreeOther(e, data, "jstree_topo_" + id, self.arrayOtherSelected);
-                        _VERBOSE ? console.log(self.arrayOtherSelected) : _VERBOSE;
-                    });
-
-                    $('#jstree_topo_' + id).on('open_node.jstree', self.getTreeVarTopo);
-
-
-                    $("#jstree_topo_" + id).on('loaded.jstree', function () {
-
-                        var current_node = $('#jstree_topo_' + id).jstree(true).get_node($("#" + topo_selected));
-                        _VERBOSE ? console.log(current_node) : _VERBOSE;
-
-                        for (i = 0; i < data.length; i++) {
-
-                            var idNode = data[i].layer;
-                            var default_son = level_vartree < 2 ? [{text: "cargando..."}] : [];
-
-                            var newNode = {
-                                id: idNode,
-                                text: data[i].label,
-                                icon: "plugins/jstree/images/dna.png",
-                                attr: {"bid": data[i].layer, "parent": text_topo, "level": level_vartree, "type": data[i].type},
-                                state: {'opened': false},
-                                "children": default_son
-                            };
-
-                            $('#jstree_topo_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
-                        }
-
-                        $("#jstree_topo_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
-
-                    });
-
-                }
-
-            });
-
-
-        }
-
-
-        self.getTreeVarTopo = function (e, d) {
-
-
-            _VERBOSE ? console.log("self.getTreeVarTopo") : _VERBOSE;
-            _VERBOSE ? console.log(d) : _VERBOSE;
-
-            if (d.node.children.length > 1)
-                return;
-
-            var level_vartree = d.node.original.attr.level;
-            var ter_type = d.node.original.attr.type;
-            var parent_id = d.node.original.attr.bid;
-            var parent_name = d.node.original.text;
-            var max_level = 2;
-
-            $("#jstree_topo_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
-
-
-            $.ajax({
-                // url: _url_trabajo,
-                url: _url_zacatuche + "/niche/especie/getRasterVariables",
-                dataType: "json",
-                type: "post",
-                data: {
-//                    "qtype": "getRasterVariables",
-                    "level": level_vartree,
-                    "field": parent_id,
-                    "type": ter_type,
-                },
-                success: function (data) {
-
-                    var current_node = $('#jstree_topo_' + id).jstree(true).get_node($("#" + parent_id));
-                    _VERBOSE ? console.log(current_node) : _VERBOSE;
-
-                    level_vartree = level_vartree + 1;
-
-                    for (i = 0; i < data.length; i++) {
-
-                        var idNode = "";
-
-                        if ($("#" + data[i].bid).length > 0) {
-                            idNode = data[i].bid + "_" + Math.floor((Math.random() * 1000) + 1)
-                        } else {
-                            idNode = data[i].bid;
-                        }
-
-
-                        var default_son = level_vartree < max_level ? [{text: "cargando..."}] : [];
-
-                        tag = String(data[i].tag).split(":")
-                        min = parseFloat(tag[0]).toFixed(2);
-                        max = parseFloat(tag[1]).toFixed(2);
-
-                        var newNode = {
-                            id: idNode,
-                            text: min + " : " + max,
-                            icon: "plugins/jstree/images/dna.png",
-                            attr: {"bid": data[i].bid, "parent": parent_name, "level": level_vartree, "type": data[i].type},
-                            state: {'opened': false},
-                            "children": default_son
-                        };
-
-                        $('#jstree_topo_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
-                    }
-
-                    $("#jstree_topo_" + id).jstree(true).delete_node(d.node.children[0]);
-                    $("#jstree_topo_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
-
-                }
-
-            });
-
-
-        }
-
-
-
         // Evento generado cuando se selecciona un grupo de variables climáticas, realiza la carga del árbol de selección del grupo seleccionado.
-        self.loadTreeAbio = function () {
+        self.loadTreeVarRaster = function () {
 
-            _VERBOSE ? console.log("self.loadTreeAbio") : _VERBOSE;
-            var text_topo = _iTrans.prop('lb_bioclim');
-            var topo_selected = "root_bioclim";
+            _VERBOSE ? console.log("self.loadTreeVarRaster") : _VERBOSE;
+            var text_raster = _iTrans.prop('lb_raster');
+            var var_selected = "root_bioclim";
             var level_root = 0;
             var level_vartree = 1;
 
@@ -292,7 +133,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                 dataType: "json",
                 type: "post",
                 data: {
-                    "type": _TYPE_ABIO,
+                    "footprint_region": _FOOTPRINT_REGION,
                     "level": level_root
                 },
                 success: function (resp) {
@@ -302,9 +143,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                     $('#jstree_variables_bioclim_' + id).jstree("destroy").empty();
 
                     var tree_reinos = [{
-                            "text": text_topo,
-                            "id": topo_selected,
-                            attr: {"bid": topo_selected, "parent": text_topo, "level": level_root, "type": _TYPE_CLIMA},
+                            "text": text_raster,
+                            "id": var_selected,
+                            attr: {"bid": var_selected, "parent": text_raster, "level": level_root, "type": _TYPE_CLIMA},
                             'state': {'opened': true},
                             "icon": "plugins/jstree/dist/themes/default/throbber.gif"
                         }];
@@ -322,28 +163,29 @@ var variable_module = (function (verbose, url_zacatuche) {
                     });
 
 
-                    $("#jstree_variables_bioclim_" + id).on('changed.jstree', self.getChangeTreeVarBioclim);
-                    $('#jstree_variables_bioclim_' + id).on('open_node.jstree', self.getTreeVarAbio);
+                    $("#jstree_variables_bioclim_" + id).on('changed.jstree', self.getChangeTreeVarRaster);
+                    $('#jstree_variables_bioclim_' + id).on('open_node.jstree', self.getTreeVarRaster);
+
                     $("#jstree_variables_bioclim_" + id).on('loaded.jstree', function () {
 
-                        var current_node = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($("#" + topo_selected));
-//                        _VERBOSE ? console.log(current_node) : _VERBOSE;
+                        var current_node = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($("#" + var_selected));
 
-                        for (i = 0; i < data.length; i++) {
+                        for (var i = 0; i < data.length; i++) {
 
-                            var idNode = data[i].layer;
+//                            console.log(data[i]);
+                            var idNode = (data[i].fuente).replace(/ /g, '');
                             var default_son = level_vartree < 2 ? [{text: "cargando..."}] : [];
 
                             var newNode = {
                                 id: idNode,
-//                                text: data[i].label,
-                                text: _iTrans.prop('a_item_' + idNode),
+                                text: data[i].fuente,
                                 icon: "plugins/jstree/images/dna.png",
-                                attr: {"bid": data[i].layer, "parent": text_topo, "level": level_vartree, "type": data[i].type},
+                                attr: {"bid": idNode, "parent": text_raster, "level": level_vartree, "type": data[i].type},
                                 state: {'opened': false},
                                 "children": default_son
                             };
 
+//                            console.log(newNode);
                             $('#jstree_variables_bioclim_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
                         }
 
@@ -358,77 +200,112 @@ var variable_module = (function (verbose, url_zacatuche) {
         }
 
 
-        self.getTreeVarAbio = function (e, d) {
+        self.getTreeVarRaster = function (e, d) {
 
-            _VERBOSE ? console.log("self.getTreeVarAbio") : _VERBOSE;
+            _VERBOSE ? console.log("self.getTreeVarRaster") : _VERBOSE;
             _VERBOSE ? console.log(d) : _VERBOSE;
 
             if (d.node.children.length > 1)
                 return;
 
             var level_vartree = d.node.original.attr.level;
-            var ter_type = d.node.original.attr.type;
-            var parent_id = d.node.original.attr.bid;
-            var parent_name = d.node.original.text;
-            var max_level = 2;
+            var raster_type = d.node.original.attr.type;
+            var current_id = d.node.original.attr.bid;
+            var parent_name = d.node.original.attr.parent;
+
+            var max_level = 3;
 
             $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
 
+//            console.log(current_id);
+//            console.log(level_vartree);
+//            console.log(raster_type);
+//            console.log(parent_name);
 
             $.ajax({
-                // url: _url_trabajo,
                 url: _url_zacatuche + "/niche/especie/getRasterVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-//                    "qtype": "getRasterVariables",
                     "level": level_vartree,
-                    "field": parent_id,
-                    "type": ter_type,
+                    "field": current_id,
+                    "type": raster_type
                 },
                 success: function (resp) {
 
-                    data = resp.data;
+                    var data = resp.data;
 
-                    var current_node = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($("#" + parent_id));
+                    var current_node = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($("#" + current_id));
                     _VERBOSE ? console.log(current_node) : _VERBOSE;
 
                     level_vartree = level_vartree + 1;
 
-                    for (i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data.length; i++) {
 
-                        var idNode = "";
-
-                        if ($("#" + data[i].bid).length > 0) {
-                            idNode = data[i].bid + "_" + Math.floor((Math.random() * 1000) + 1)
-                        } else {
-                            idNode = data[i].bid;
-                        }
+//                        console.log(data[i]);
 
                         var default_son = level_vartree < max_level ? [{text: "cargando..."}] : [];
 
-                        console.log(data[i].label);
+                        var tag = "", min = "", max = "";
 
-                        if (data[i].label.indexOf("Precipita") === -1) {
-                            tag = String(data[i].tag).split(":")
-                            min = parseInt(tag[0].split(".")[0]) / 10 + " ºC";
-                            max = parseInt(tag[1].split(".")[0]) / 10 + " ºC";
+                        var newNode = {};
+
+                        if (level_vartree > 2) {
+
+//                            console.log("last node level");
+
+                            if (raster_type === 1) {
+
+//                                console.log("Is worldclim");
+
+                                if (data[i].label.indexOf("Precipita") === -1) {
+                                    tag = String(data[i].tag).split(":")
+                                    min = parseInt(tag[0].split(".")[0]) / 10 + " ºC";
+                                    max = parseInt(tag[1].split(".")[0]) / 10 + " ºC";
+                                } else {
+                                    tag = String(data[i].tag).split(":")
+                                    min = parseInt(tag[0].split(".")[0]) + " mm";
+                                    max = parseInt(tag[1].split(".")[0]) + " mm";
+                                }
+
+//                                console.log(min + " : " + max);
+
+                            } else {
+                                tag = String(data[i].tag).split(":")
+                                min = parseFloat(tag[0].split(".")[0]).toFixed(3);
+                                max = parseFloat(tag[1].split(".")[0]).toFixed(3);
+                            }
+
+                            var idNode = "";
+                            if ($("#" + data[i].bid).length > 0) {
+                                idNode = data[i].bid + "_" + Math.floor((Math.random() * 1000) + 1)
+                            } else {
+                                idNode = data[i].bid;
+                            }
+
+                            newNode = {
+                                id: idNode,
+                                text: min + " : " + max,
+                                icon: "plugins/jstree/images/dna.png",
+                                attr: {"bid": data[i].bid, "parent": data[i].layer, "level": level_vartree, "type": data[i].type},
+                                state: {'opened': false},
+                                "children": default_son
+                            };
+
                         } else {
-                            tag = String(data[i].tag).split(":")
-                            min = parseInt(tag[0].split(".")[0]) + " mm";
-                            max = parseInt(tag[1].split(".")[0]) + " mm";
+
+                            newNode = {
+                                id: (data[i].layer).replace(" ", ""),
+                                text: raster_type === 1 ? _iTrans.prop("a_item_" + data[i].layer) : data[i].label,
+                                icon: "plugins/jstree/images/dna.png",
+                                attr: {"bid": data[i].layer, "parent": data[i].fuente, "level": level_vartree, "type": data[i].type},
+                                state: {'opened': false},
+                                "children": default_son
+                            };
+
                         }
 
-
-
-                        var newNode = {
-                            id: idNode,
-                            text: min + " : " + max,
-                            icon: "plugins/jstree/images/dna.png",
-                            attr: {"bid": data[i].bid, "parent": parent_name, "level": level_vartree, "type": data[i].type},
-                            state: {'opened': false},
-                            "children": default_son
-                        };
+//                        console.log(newNode);
 
                         $('#jstree_variables_bioclim_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
                     }
@@ -730,7 +607,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
 
             }
-            // tab de variables climaticas
+            // tab de variables raster
             else if (i === 1) {
 
                 // generando tab panel para variables climaticas
@@ -788,73 +665,9 @@ var variable_module = (function (verbose, url_zacatuche) {
 
 
                 // carga árbol de variables raster
-                self.loadTreeAbio();
-
+                self.loadTreeVarRaster();
 
             }
-
-//            else if (i == 2) {
-//
-//                // generando tab panel para variables topograficas
-//                _VERBOSE ? console.log(tags[i]) : _VERBOSE;
-//
-//                var tab_pane = $('<div/>')
-//                        .attr('id', 'tab' + i + "_" + id)
-//                        .addClass('tab-pane')
-//                        .appendTo(tab_content);
-//
-//                // contendor de arbol y panel de seleccion
-//                var tree_nav_container = $('<div/>')
-//                        .addClass('row row_raster')
-//                        .appendTo(tab_pane);
-//
-//                var div_tree = $('<div/>')
-//                        .attr('id', "treeTopo_" + id)
-//                        .addClass('myScrollableBlockVar')
-//                        .appendTo(tree_nav_container);
-//
-//                var tree = $('<div/>')
-//                        .attr('id', "jstree_topo_" + id)
-//                        .appendTo(div_tree);
-//
-//                // var tree_selection = $('<div/>')
-//                //   		.attr('id', "treeAddedPanelTopo_" + id)
-//                //   		.addClass('myScrollableBlockVariableAdded')
-//                // 	.appendTo(tree_nav_container);
-//
-//                var btn_add = $('<button/>')
-//                        .attr('id', 'add_group_topo' + "_" + id)
-//                        .attr('type', 'button')
-//                        .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
-//                        .click(function(e) {
-//
-//                            self.addOtherGroup('jstree_topo_' + id, self.arrayOtherSelected, 'Topo', 'treeAddedPanel_' + id, _TYPE_TERRESTRE);
-//                            e.preventDefault();
-//
-//                        })
-//                        .appendTo(tab_pane);
-//
-//                var btn_add = $('<button/>')
-//                        .attr('id', 'clean_var_topo' + "_" + id)
-//                        .attr('type', 'button')
-//                        .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
-//                        .click(function(e) {
-//
-//                            self.arrayOtherSelected = [];
-//                            // self.groupothervar_dataset = [];
-//                            self.cleanVariables('jstree_topo_' + id, 'treeAddedPanel_' + id, _TYPE_TERRESTRE);
-//
-//                            e.preventDefault();
-//
-//                        })
-//                        .appendTo(tab_pane);
-//
-//                // carga árbol de variables topográficas
-//                // self.loadTreeTopo();
-//
-//
-//            }
-
 
         });
 
@@ -1106,9 +919,9 @@ var variable_module = (function (verbose, url_zacatuche) {
         };
 
         // Evento generado cuando cambia el estado de selección del árbol, almacena los elementos que fueron seleccionados del grupo de variables climáticas.
-        self.getChangeTreeVarBioclim = function (e, data) {
+        self.getChangeTreeVarRaster = function (e, data) {
 
-            _VERBOSE ? console.log("self.getChangeTreeVarBioclim") : _VERBOSE;
+            _VERBOSE ? console.log("self.getChangeTreeVarRaster") : _VERBOSE;
 
             self.arrayBioclimSelected = [];
 
@@ -1128,27 +941,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
         };
 
-        // Evento generado cuando cambia el estado de selección del árbol, almacena los elementos que fueron seleccionados del grupo de variables topográficas. 
-        // TODO: Integrar con _getChangeTreeVarBioclim (Existe un problema al llamar funciones anonimas anidas... resolver)
-        self.getChangeTreeOther = function (e, data, idtree, arrayVar) {
 
-            _VERBOSE ? console.log("self.getChangeTreeOther") : _VERBOSE;
-
-            if ($('#' + idtree).jstree(true).get_top_selected().length > 0) {
-
-                var headers_selected = $('#' + idtree).jstree(true).get_top_selected().length;
-
-                for (i = 0; i < headers_selected; i++) {
-                    var node_temp = $('#' + idtree).jstree(true).get_node($('#' + idtree).jstree(true).get_top_selected()[i]).original;
-
-                    _VERBOSE ? console.log(node_temp) : _VERBOSE;
-
-                    arrayVar.push({label: node_temp.text, id: node_temp.attr.bid, parent: node_temp.attr.parent, level: node_temp.attr.level, type: node_temp.attr.type});
-                }
-
-            }
-
-        };
 
         self.isKingdomLevel = function (arraySelected) {
 
@@ -1572,7 +1365,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function loadAvailableLayers(parent, id, title) {
+    function loadAvailableLayers() {
 
         _VERBOSE ? console.log("loadAvailableLayers") : _VERBOSE;
 
@@ -1585,9 +1378,9 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                 if (resp.ok === true) {
                     
-                    var data = resp.data;
                     console.log(data);
-                    _selectors_created.push(new VariableSelector(parent, id, title));
+                    var data = resp.data;
+                    _available_variables = data;
 
                 } else {
 
@@ -1615,7 +1408,13 @@ var variable_module = (function (verbose, url_zacatuche) {
     function createSelectorComponent(parent, id, title) {
 
         _VERBOSE ? console.log("createSelectorComponent") : _VERBOSE;
-        loadAvailableLayers(parent, id, title);
+
+        var variable_selector = new VariableSelector(parent, id, title);
+
+        _selectors_created.push(variable_selector);
+        return variable_selector;
+
+//        loadAvailableLayers(parent, id, title);
 
     }
 
@@ -1682,8 +1481,9 @@ var variable_module = (function (verbose, url_zacatuche) {
     return{
         startVar: startVar,
         getVarSelArray: getVarSelArray,
-        createSelectorComponent: createSelectorComponent
-//        loadAvailableLayers: loadAvailableLayers
+        createSelectorComponent: createSelectorComponent,
+        getSelectorVaribles: getSelectorVaribles
+
     }
 
 });
