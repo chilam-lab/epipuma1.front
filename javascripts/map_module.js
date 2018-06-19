@@ -38,6 +38,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             _overlaySP_Maps,
             _layer_SP_control,
             _specie_target_SP;
+    
+    var _REGION_SELECTED;
 
 
 
@@ -361,11 +363,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 .drawing(_drawingOnCanvas);
 
         
-        if (parseInt(localStorage.getItem("ambiente")) === 0 || parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3 || parseInt(localStorage.getItem("ambiente")) === 5) {
+        if ( parseInt(localStorage.getItem("ambiente")) === 0 || parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3 ) {
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
 
-        } else if (parseInt(localStorage.getItem("ambiente")) === 4 ) {
+        } else if ( parseInt(localStorage.getItem("ambiente")) === 4 || parseInt(localStorage.getItem("ambiente")) === 5) {
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         } else {
@@ -406,9 +408,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
     }
-
-
-
+    
+    
     function _mapSPConfigure() {
 
         _VERBOSE ? console.log("_mapSPConfigure") : _VERBOSE;
@@ -478,6 +479,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         $('#map').loading({
             stoppable: true
         });
+        
+        _REGION_SELECTED = parseInt($("#footprint_region_select").val());
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie/getGridGeoJson",
@@ -485,11 +488,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             dataType: "json",
             data: {
                 "grid_res": grid_res,
-                "footprint_region": 1 // Checar la selección del footprint_region en el cliente
+                "footprint_region": _REGION_SELECTED
             },
             success: function (json) {
 
-                console.log(json);
+//                console.log(json);
 
                 // Asegura que el grid este cargado antes de realizar una generacion por enlace
                 $("#loadData").prop("disabled", false);
@@ -532,7 +535,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 console.log(error);
                 console.log(errorThrown);
                 // alert("Existe un error en la conexión con el servidor, intente mas tarde");
-                console.log("abort");
+//                console.log("abort");
                 $('#map').loading('stop');
             }
 
@@ -947,6 +950,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         $('#tuto_mapa_occ').loading({
             stoppable: true
         });
+        
+        _REGION_SELECTED = parseInt($("#footprint_region_select").val());
 
 
         $.ajax({
@@ -954,14 +959,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             type: 'post',
             dataType: "json",
             data: {
-//                "qtype": "getSpecies",
                 "id": _specie_target.spid,
                 "idtime": milliseconds,
                 "lim_inf": _lin_inf,
                 "lim_sup": _lin_sup,
                 "sfecha": _sin_fecha,
                 "sfosil": _con_fosil,
-                "grid_res": grid_res_val
+                "grid_res": grid_res_val,
+                "footprint_region": _REGION_SELECTED
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('X-Test-Header', 'test-value');
@@ -1508,6 +1513,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         return grid_color;
 
     }
+    
+    
+    
 
     /**
      * Éste método obtiene la escala de colores para la coloración del mapa
@@ -1932,6 +1940,38 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         return sp_target_2export;
 
     }
+    
+    
+    function changeRegionView(region){
+        
+        _VERBOSE ? console.log("changeRegionView") : _VERBOSE;
+        _VERBOSE ? console.log("region: " + region) : _VERBOSE;
+        
+        if(region === 1){
+            _VERBOSE ? console.log("region1") : _VERBOSE;
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
+        }
+        else if(region === 2){
+            _VERBOSE ? console.log("region2") : _VERBOSE;
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [40.5, -97] : [30.5, -102];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+        }
+        else{
+            _VERBOSE ? console.log("region3") : _VERBOSE;
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+        }
+        
+        _VERBOSE ? console.log(_centro_mapa) : _VERBOSE;
+        _VERBOSE ? console.log(_zoom_module) : _VERBOSE;
+        
+        map.setView(_centro_mapa, _zoom_module, {animate: true});
+        map_sp.setView(_centro_mapa, _zoom_module, {animate: true});
+        
+    }
+    
+    
 
 
 
@@ -1958,6 +1998,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     return{
         map: map,
         busca_especie: busca_especie,
+        changeRegionView: changeRegionView,
         busca_especie_filtros: busca_especie_filtros,
         set_specieTarget: set_specieTarget,
         get_specieTarget: get_specieTarget,

@@ -17,9 +17,6 @@ var variable_module = (function (verbose, url_zacatuche) {
             _TYPE_TERRESTRE = 2;
 
 
-    var _FOOTPRINT_REGION = 1;
-
-
     var _TYPE_TAXON = 4,
             _TYPE_CLIMA = 0,
             _TYPE_TOPO = 1,
@@ -38,6 +35,8 @@ var variable_module = (function (verbose, url_zacatuche) {
     var _MODULO_COMUNIDAD = 1;
     
     var _available_variables = [];
+    
+    var _REGION_SELECTED;
 
 
 
@@ -127,13 +126,15 @@ var variable_module = (function (verbose, url_zacatuche) {
             var var_selected = "root_bioclim";
             var level_root = 0;
             var level_vartree = 1;
+            
+            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getRasterVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-                    "footprint_region": _FOOTPRINT_REGION,
+                    "footprint_region": _REGION_SELECTED,
                     "level": level_root
                 },
                 success: function (resp) {
@@ -146,7 +147,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                             "text": text_raster,
                             "id": var_selected,
                             attr: {"bid": var_selected, "parent": text_raster, "level": level_root, "type": _TYPE_CLIMA},
-                            'state': {'opened': true},
+                            'state': {'opened': true, 'disabled' : true },
                             "icon": "plugins/jstree/dist/themes/default/throbber.gif"
                         }];
 
@@ -222,6 +223,8 @@ var variable_module = (function (verbose, url_zacatuche) {
 //            console.log(raster_type);
 //            console.log(parent_name);
 
+            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getRasterVariables",
                 dataType: "json",
@@ -229,7 +232,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                 data: {
                     "level": level_vartree,
                     "field": current_id,
-                    "type": raster_type
+                    "type": raster_type,
+                    "region": _REGION_SELECTED
                 },
                 success: function (resp) {
 
@@ -472,16 +476,18 @@ var variable_module = (function (verbose, url_zacatuche) {
                             source: function (request, response) {
 
                                 _VERBOSE ? console.log(self) : _VERBOSE;
+                                
+                                _REGION_SELECTED = parseInt($("#footprint_region_select").val());
 
                                 $.ajax({
                                     url: _url_zacatuche + "/niche/especie/getEntList",
                                     dataType: "json",
                                     type: "post",
                                     data: {
-//                                        qtype: 'getEntList',
                                         searchStr: request.term,
                                         nivel: self.varfilter_selected[1],
-                                        source: 0 // source para saber si viene de objetivo o el target
+                                        source: 0, // source para saber si viene de objetivo o el target
+                                        footprint_region: _REGION_SELECTED
                                     },
                                     success: function (resp) {
 
@@ -681,21 +687,22 @@ var variable_module = (function (verbose, url_zacatuche) {
             // se incrementa level para  asignar el nivel adecuado a los hijos de la raiz
             // la funcion es llamda dos veces, por tantro se decidio utilizar el arreglo + 1, en lufar de utilzar la variable global "level_vartree"
             self.level_vartree = parseInt(self.varfilter_selected[2]) + 1;
-            _VERBOSE ? console.log(self.level_vartree) : _VERBOSE;
-            _VERBOSE ? console.log(self.field_vartree) : _VERBOSE;
-            _VERBOSE ? console.log(self.value_vartree) : _VERBOSE;
+//            _VERBOSE ? console.log(self.level_vartree) : _VERBOSE;
+//            _VERBOSE ? console.log(self.field_vartree) : _VERBOSE;
+//            _VERBOSE ? console.log(self.value_vartree) : _VERBOSE;
+            
+            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
 
 
             $.ajax({
-                // url: _url_trabajo,
                 url: _url_zacatuche + "/niche/especie/getVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-//                    "qtype": "getVariables",
                     "field": self.field_vartree,
                     "parentfield": self.parent_field_vartree,
-                    "parentitem": self.value_vartree
+                    "parentitem": self.value_vartree,
+                    "footprint_region": _REGION_SELECTED
                 },
                 success: function (resp) {
 
@@ -795,17 +802,18 @@ var variable_module = (function (verbose, url_zacatuche) {
 
             _VERBOSE ? console.log(d.node.id) : _VERBOSE
             _VERBOSE ? console.log(d.node.text.split(" ")[0]) : _VERBOSE
+            
+            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
 
             $.ajax({
-                // url: _url_trabajo,
                 url: _url_zacatuche + "/niche/especie/getVariables",
                 dataType: "json",
                 type: "post",
                 data: {
-//                    "qtype": "getVariables",
                     "field": next_field,
                     "parentfield": parent_field,
-                    "parentitem": d.node.text.split(" ")[0]
+                    "parentitem": d.node.text.split(" ")[0],
+                    "footprint_region": _REGION_SELECTED
                 },
                 success: function (resp) {
 

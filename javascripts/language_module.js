@@ -202,13 +202,17 @@ var language_module = (function (verbose) {
 
 
         // labels para nicho
-        if (_tipo_modulo == 0) {
+        if (_tipo_modulo === 0) {
 
             $("#lb_titulo").text($.i18n.prop('lb_titulo'));
             $("#lb_sub_titulo").text($.i18n.prop('lb_sub_titulo'));
             $("#nicho_link").text($.i18n.prop('nicho_link'));
             $("#a_espanol").text($.i18n.prop('a_espanol'));
             $("#a_ingles").text($.i18n.prop('a_ingles'));
+            
+            $("#footprint_region").text($.i18n.prop('footprint_region') + ":");
+            
+            
 
             if (firstLoad) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");

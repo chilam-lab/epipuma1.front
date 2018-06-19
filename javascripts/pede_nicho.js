@@ -9,9 +9,11 @@ var module_nicho = (function () {
     var _TEST = false;
     var MOD_NICHO = 0;
     var _VERBOSE = true;
+    var _REGION_SELECTED;
     
+
     var _tipo_modulo = MOD_NICHO;
-    
+
     var _map_module_nicho,
             _variable_module_nicho,
             _res_display_module_nicho,
@@ -46,7 +48,6 @@ var module_nicho = (function () {
         $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
 
 
-
         $(function () {
 
             var year = parseInt(new Date().getFullYear());
@@ -61,7 +62,7 @@ var module_nicho = (function () {
                 values: [1500, year],
                 change: function (event, ui) {
 
-                    _VERBOSE ? console.log(ui.values) : _VERBOSE;
+//                    _VERBOSE ? console.log(ui.values) : _VERBOSE;
 
                     var value = ui.values[1];
                     if (value == year) {
@@ -106,6 +107,8 @@ var module_nicho = (function () {
 
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
         $("#chkValidation").click(function (event) {
+
+            console.log("cambia validacion");
 
             var $this = $(this);
 
@@ -217,6 +220,16 @@ var module_nicho = (function () {
             }
 
         });
+        
+        
+        $("#footprint_region_select").change(function (e) {
+
+            console.log($("#footprint_region_select").val());
+
+            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+            _map_module_nicho.changeRegionView(_REGION_SELECTED);
+
+        });
 
 
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
@@ -317,17 +330,12 @@ var module_nicho = (function () {
         });
 
 
-
-
         $('.ct-sliderPop-close').on('click', function () {
             $('.sliderPop').hide();
             $('.ct-sliderPop-container').removeClass('open');
             $('.sliderPop').removeClass('flexslider');
             $('.sliderPop .ct-sliderPop-container').removeClass('slides');
         });
-
-
-
 
 
         $("#nom_sp").autocomplete({
@@ -341,17 +349,19 @@ var module_nicho = (function () {
                 $("#params_next").hide("slow");
                 $("#map_next").hide("slow");
                 $("#hist_next").hide("slow");
+                
+                _REGION_SELECTED = parseInt($("#footprint_region_select").val());
 
                 $.ajax({
                     url: _url_api + "/niche/especie/getEntList",
                     dataType: "json",
                     type: "post",
                     data: {
-//                        qtype: 'getEntList',
                         limit: true,
                         searchStr: request.term,
                         source: 1, // source para saber si viene de objetivo o el target
-                        grid_res: grid_res_val
+                        grid_res: grid_res_val,
+                        footprint_region: _REGION_SELECTED
                     },
                     success: function (resp) {
 
@@ -446,8 +456,8 @@ var module_nicho = (function () {
             var data_link = "";
 
             var sp_data = JSON.stringify(_map_module_nicho.get_specieTarget());
-            
-            
+
+
             var subgroups = _componente_fuente.getVarSelArray();
 
             data_link += "sp_data=" + sp_data + "&";
@@ -892,8 +902,8 @@ var module_nicho = (function () {
 
         _res_display_module_nicho.set_spid(spid);
         _res_display_module_nicho.set_idReg(idreg);
-        
-        
+
+
         _componente_fuente.setVarSelArray(subgroups);
 
         var groups = subgroups.slice();
@@ -976,7 +986,7 @@ var module_nicho = (function () {
             idreg = _region_module_nicho.getRegionSelected();
 
             _res_display_module_nicho.set_idReg(idreg);
-            
+
 
 
             subgroups = _componente_fuente.getVarSelArray();
@@ -1051,8 +1061,8 @@ var module_nicho = (function () {
 
 //            slider_value = val_process ? $("#sliderValidation").slider("value") : 0;
             var slider_value = val_process ? true : false;
-            
-            
+
+
 
 
             // Falta agregar la condición makesense. 
@@ -1079,7 +1089,7 @@ var module_nicho = (function () {
 
         _VERBOSE = verbose;
         _VERBOSE ? console.log("startModule") : _VERBOSE;
-        
+
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         _language_module_nicho = language_module(_VERBOSE);
         _language_module_nicho.startLanguageModule(this, _tipo_modulo);
@@ -1113,11 +1123,11 @@ var module_nicho = (function () {
         // un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)
         _variable_module_nicho = variable_module(_VERBOSE, _url_api);
         _variable_module_nicho.startVar(0, _language_module_nicho, _tipo_modulo);
-        
+
 
         var ids_comp_variables = ['fuente'];
         _componente_fuente = _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
-        
+
 
         _table_module = table_module(_VERBOSE);
         _table_module.startTableModule();
@@ -1128,8 +1138,8 @@ var module_nicho = (function () {
         _res_display_module_nicho.startResDisplay(_map_module_nicho, _histogram_module_nicho, _table_module, _language_module_nicho, ids_comp_variables);
 
         _map_module_nicho.setDisplayModule(_res_display_module_nicho);
-        
-        
+
+
         _histogram_module_nicho.setDisplayModule(_res_display_module_nicho);
 
 
@@ -1199,7 +1209,7 @@ var module_nicho = (function () {
 $(document).ready(function () {
 
     if (localStorage.getItem("url_front")) {
-        
+
         var verbose = localStorage.getItem("verbose");
         module_nicho.setUrlFront(localStorage.getItem("url_front"));
         module_nicho.setUrlApi(localStorage.getItem("url_api"));
@@ -1207,21 +1217,21 @@ $(document).ready(function () {
         module_nicho.startModule(verbose);
 
     } else {
-        
+
         // en caso de no tener los datos necesarios en el local storage se redirecciona a index
-        var url = window.location.href;        
+        var url = window.location.href;
         var url_array = url.split("/");
         var new_url = "";
-        
-        for (var i=0; i<url_array.length-1; i++) {
+
+        for (var i = 0; i < url_array.length - 1; i++) {
             new_url += url_array[i] + "/";
         }
         new_url += "index.html";
         window.location.replace(new_url);
 
     }
-    
-    
+
+
 
 });
 
