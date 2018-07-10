@@ -36,7 +36,7 @@ var variable_module = (function (verbose, url_zacatuche) {
     
     var _available_variables = [];
     
-    var _REGION_SELECTED;
+    var _REGION_SELECTED = 19;
 
 
 
@@ -122,12 +122,18 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.loadTreeVarRaster = function () {
 
             _VERBOSE ? console.log("self.loadTreeVarRaster") : _VERBOSE;
+            
             var text_raster = _iTrans.prop('lb_raster');
             var var_selected = "root_bioclim";
             var level_root = 0;
             var level_vartree = 1;
             
-            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+//            console.log("val: " + $("#footprint_region_select").val());
+//            console.log("_REGION_SELECTED: " + _REGION_SELECTED);
+            
+            
+            _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+//            console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getRasterVariables",
@@ -223,7 +229,8 @@ var variable_module = (function (verbose, url_zacatuche) {
 //            console.log(raster_type);
 //            console.log(parent_name);
 
-            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+            _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+//            console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getRasterVariables",
@@ -477,7 +484,8 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                                 _VERBOSE ? console.log(self) : _VERBOSE;
                                 
-                                _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+                                _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+//                                console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
                                 $.ajax({
                                     url: _url_zacatuche + "/niche/especie/getEntList",
@@ -691,7 +699,8 @@ var variable_module = (function (verbose, url_zacatuche) {
 //            _VERBOSE ? console.log(self.field_vartree) : _VERBOSE;
 //            _VERBOSE ? console.log(self.value_vartree) : _VERBOSE;
             
-            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+            _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+//            console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
 
             $.ajax({
@@ -803,7 +812,8 @@ var variable_module = (function (verbose, url_zacatuche) {
             _VERBOSE ? console.log(d.node.id) : _VERBOSE
             _VERBOSE ? console.log(d.node.text.split(" ")[0]) : _VERBOSE
             
-            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+            _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+//            console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getVariables",
