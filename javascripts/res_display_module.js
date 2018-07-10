@@ -28,14 +28,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _computed_occ_cells = d3.map([]);
 
     var _cell_set = d3.map([]);
-    _discarded_cell_set = d3.map([]),
+    var _discarded_cell_set = d3.map([]),
             // _discardedFilter_cell_set = d3.map([]),
             _dataChartValSet = [];
 
     var _REQUESTS, _ITER_REQUESTS,
             _ITER = 0, _NUM_ITERATIONS = 5;
 
-    var _min_occ_process, _mapa_prob, _fossil, _grid_res;
+    var _min_occ_process, _mapa_prob, _fossil, _grid_res, _footprint_region;
 
     var _rangofechas, _chkfecha;
 
@@ -445,7 +445,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} chkFosil - Bandera que indica si serán tomados en cuenta los registros fósiles para realizar un análisis de nicho ecológico
      * @param {interger} grid_res - Valor con el cual se realizan los calculos para la resolución de la malla
      */
-    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res) {
+    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res, footprint_region) {
 
         _VERBOSE ? console.log("refreshData") : _VERBOSE;
 
@@ -458,6 +458,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _mapa_prob = mapa_prob;
         _fossil = chkFosil;
         _grid_res = grid_res;
+        _footprint_region = footprint_region;
 
 
         _rangofechas = rango_fechas;
@@ -488,9 +489,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _VERBOSE ? console.log("elimina tabla: " + _idtemptable) : _VERBOSE;
             _deleteValidationTables();
         }
-
+        
         // Se realiza la carga de la malla antes de iniciar el análisis de nicho
-        _map_module_nicho.loadD3GridMX(val_process, grid_res);
+        _map_module_nicho.loadD3GridMX(val_process, grid_res, _footprint_region);
 
 
     }
@@ -763,7 +764,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res
+            "grid_res": _grid_res,
+            "footprint_region": _footprint_region
         };
 
         // verbo: getFreqCelda
@@ -778,8 +780,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "mapa_prob": mapap // necesario para verbo: getGridSpecies
+            "grid_res": _grid_res, 
+            "mapa_prob": mapap, // necesario para verbo: getGridSpecies
+            "footprint_region": _footprint_region
         };
 
         // verbo: getScoreDecil
@@ -794,7 +797,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res
+            "grid_res": _grid_res,
+            "footprint_region": _footprint_region
 
 
         };
@@ -811,7 +815,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res
+            "grid_res": _grid_res,
+            "footprint_region": _footprint_region
         };
 
         // verbo: getScoreDecil
@@ -826,7 +831,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res
+            "grid_res": _grid_res,
+            "footprint_region": _footprint_region
         };
 
         // verbo: getCellScore
@@ -842,7 +848,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res
+            "grid_res": _grid_res,
+            "footprint_region": _footprint_region
         };
 
         // verbo: getGeoRel
@@ -857,7 +864,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res
+            "grid_res": _grid_res,
+            "footprint_region": _footprint_region
         };
 
 
@@ -873,7 +881,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "sfecha": sin_fecha,
             "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res
+            "grid_res": _grid_res,
+            "footprint_region": _footprint_region
         }
 
 
@@ -1026,7 +1035,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 if (hasChildren) {
 //                    console.log("hasChildren");
                     _VERBOSE ? console.log(_decil_data) : _VERBOSE;
-                    _createScore_Decil(_decil_data, false, false);
+//                    _createScore_Decil(_decil_data, false, false);
                 }
 
 
@@ -1051,7 +1060,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _decil_group_data['tdelta'] = active_time;
 
             _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
-            _createScore_Decil(_decil_group_data, hasChildren, false);
+//            _createScore_Decil(_decil_group_data, hasChildren, false);
 
         });
 
@@ -1106,7 +1115,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         if (hasTotal) {
             _VERBOSE ? console.log(_total_data_decil) : _VERBOSE;
-            _createScore_Decil(_total_data_decil, false, hasTotal);
+//            _createScore_Decil(_total_data_decil, false, hasTotal);
         }
 
     }

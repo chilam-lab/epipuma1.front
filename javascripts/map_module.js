@@ -461,12 +461,15 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      */
-    function loadD3GridMX(val_process, grid_res) {
+    function loadD3GridMX(val_process, grid_res, region_selected) {
 
         _VERBOSE ? console.log("_loadD3GridMX") : _VERBOSE;
+        
+        _VERBOSE ? console.log("_REGION_SELECTED: " + _REGION_SELECTED) : _VERBOSE;
+        _VERBOSE ? console.log("region_selected: " + region_selected ) : _VERBOSE;
 
         // Deja la malla cuando ya existe previemente y no se cambia la resolución
-        if (_grid_map !== undefined && _grid_res === grid_res) {
+        if (_grid_map !== undefined && _grid_res === grid_res && _REGION_SELECTED === region_selected ) {
             _VERBOSE ? console.log("Se mantiene resolución") : _VERBOSE;
             _display_module.callDisplayProcess(val_process);
             return;
@@ -480,7 +483,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             stoppable: true
         });
         
-        _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+        _REGION_SELECTED = region_selected;
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie/getGridGeoJson",
@@ -945,13 +948,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
 
-        console.log(dPoints);
+//        console.log(dPoints);
 
         $('#tuto_mapa_occ').loading({
             stoppable: true
         });
         
-        _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+        var footprint_region = parseInt($("#footprint_region_select").val());
 
 
         $.ajax({
@@ -966,7 +969,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 "sfecha": _sin_fecha,
                 "sfosil": _con_fosil,
                 "grid_res": grid_res_val,
-                "footprint_region": _REGION_SELECTED
+                "footprint_region": footprint_region
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('X-Test-Header', 'test-value');
@@ -1005,7 +1008,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                         gridItems.push(item.feature.properties.gridid);
                     });
 
-                    console.log(gridItems);
+//                    console.log(gridItems);
                 }
 
                 // var computed_occ_cells_totals = d3.map([]);
@@ -1942,29 +1945,34 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     }
     
     
-    function changeRegionView(region){
+    function changeRegionView(region, text_selected){
         
         _VERBOSE ? console.log("changeRegionView") : _VERBOSE;
         _VERBOSE ? console.log("region: " + region) : _VERBOSE;
         
-        if(region === 1){
+        if(text_selected === 'MEXICO'){
             _VERBOSE ? console.log("region1") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
         }
-        else if(region === 2){
+        else if(text_selected === 'UNITED STATES, THE'){
             _VERBOSE ? console.log("region2") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [40.5, -97] : [30.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         }
+        else if(text_selected === 'COLOMBIA'){
+            _VERBOSE ? console.log("region_3") : _VERBOSE;
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [4, -73] : [4, -73];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
+        }
         else{
-            _VERBOSE ? console.log("region3") : _VERBOSE;
+            _VERBOSE ? console.log("region_4") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         }
         
-        _VERBOSE ? console.log(_centro_mapa) : _VERBOSE;
-        _VERBOSE ? console.log(_zoom_module) : _VERBOSE;
+//        _VERBOSE ? console.log(_centro_mapa) : _VERBOSE;
+//        _VERBOSE ? console.log(_zoom_module) : _VERBOSE;
         
         map.setView(_centro_mapa, _zoom_module, {animate: true});
         map_sp.setView(_centro_mapa, _zoom_module, {animate: true});
