@@ -4,6 +4,8 @@
  * @namespace language_module
  */
 var language_module = (function (verbose) {
+    
+    console.log("*** loading language_module... ***");
 
     var _language_selected;
     var _language_label_selected;
@@ -39,7 +41,7 @@ var language_module = (function (verbose) {
 
 
         if (localStorage.getItem("language") === undefined) {
-            _language_selected = 'es_MX';
+            _language_selected = 'es_ES';
             localStorage.language = _language_selected;
         } else {
             _language_selected = localStorage.getItem("language");
@@ -59,7 +61,10 @@ var language_module = (function (verbose) {
             callback: function () {
 
                 _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
-
+                console.log("local language: " + localStorage.getItem("language"));
+               
+                
+                
                 if (localStorage.getItem("language") === undefined) {
 
                     _VERBOSE ? console.log("undefined") : _VERBOSE;
@@ -79,6 +84,7 @@ var language_module = (function (verbose) {
 
 
                 // carga los modulos siguientes una vez que se han cargado los archivos de idiomas
+                console.log("calling pede...");
                 main_pede.loadModules();
 
             }
@@ -218,7 +224,7 @@ var language_module = (function (verbose) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
             } else {
                 // agregar casos si se agregan mas idiomas
-                if (_language_selected == "es_MX") {
+                if (_language_selected == "es_ES") {
                     $("#btn_idioma").text($.i18n.prop('a_espanol') + " ");
                 } else {
                     $("#btn_idioma").text($.i18n.prop('a_ingles') + " ");
@@ -430,7 +436,7 @@ var language_module = (function (verbose) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
             } else {
                 // agregar casos si se agregan mas idiomas
-                if (_language_selected == "es_MX") {
+                if (_language_selected == "es_ES") {
                     $("#btn_idioma").text($.i18n.prop('a_espanol') + " ");
                 } else {
                     $("#btn_idioma").text($.i18n.prop('a_ingles') + " ");
@@ -475,7 +481,7 @@ var language_module = (function (verbose) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
             } else {
                 // agregar casos si se agregan mas idiomas
-                if (_language_selected == "es_MX") {
+                if (_language_selected == "es_ES") {
                     $("#btn_idioma").text($.i18n.prop('a_espanol') + " ");
                 } else {
                     $("#btn_idioma").text($.i18n.prop('a_ingles') + " ");
