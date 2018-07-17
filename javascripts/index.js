@@ -258,6 +258,9 @@ var module_index = (function() {
      * @param {boolean} verbose - Se activa mesnajes de debug
      */
     function startModule(tipo_modulo) {
+        
+        _VERBOSE ? console.log("startModule Index") : _VERBOSE;
+        
 
         _url_front = localStorage.getItem("url_front");
         _url_api = localStorage.getItem("url_api");
@@ -266,12 +269,13 @@ var module_index = (function() {
         _VERBOSE = localStorage.getItem("verbose");
         _tipo_modulo = tipo_modulo;
         
-        _VERBOSE ? console.log("startModule Index") : _VERBOSE;
         
 
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         // _VERBOSE ? console.log(this) : _VERBOSE
-        _language_module_index = language_module();
+        
+        _VERBOSE ? console.log("before language_module") : _VERBOSE;
+        _language_module_index = language_module(_VERBOSE);
         _language_module_index.startLanguageModule(this, _tipo_modulo);
 
     }
