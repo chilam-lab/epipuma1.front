@@ -37,7 +37,7 @@ var module_index = (function() {
 
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
-        if (localStorage.getItem("register") === undefined) {
+        if (localStorage.getItem("register") === null) {
             
             localStorage.register = true;
             
@@ -261,7 +261,6 @@ var module_index = (function() {
         
         _VERBOSE ? console.log("startModule Index") : _VERBOSE;
         
-
         _url_front = localStorage.getItem("url_front");
         _url_api = localStorage.getItem("url_api");
         _url_nicho = localStorage.getItem("url_nicho");
@@ -273,8 +272,7 @@ var module_index = (function() {
 
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         // _VERBOSE ? console.log(this) : _VERBOSE
-        
-        _VERBOSE ? console.log("before language_module") : _VERBOSE;
+//        _VERBOSE ? console.log("before language_module INDEX") : _VERBOSE;
         _language_module_index = language_module(_VERBOSE);
         _language_module_index.startLanguageModule(this, _tipo_modulo);
 
@@ -290,7 +288,7 @@ var module_index = (function() {
      */
     function loadModules() {
         
-        _VERBOSE ? console.log("loadModules") : _VERBOSE;
+        _VERBOSE ? console.log("loadModules INDEX") : _VERBOSE;
         _iTrans = _language_module_index.getI18();
         _initializeComponents();
         
