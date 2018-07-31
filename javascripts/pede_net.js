@@ -11,6 +11,8 @@ var module_net = (function () {
     var _TEST = false;
     var _VERBOSE = true;
     var MOD_COMUNIDAD = 1;
+    var _REGION_SELECTED;
+    var _REGION_TEXT_SELECTED;
     
     var _tipo_modulo = MOD_COMUNIDAD;
     
@@ -73,11 +75,12 @@ var module_net = (function () {
 
             var s_filters = _res_display_module_net.getFilters(_componente_fuente.getVarSelArray(), TIPO_FUENTE);
             var t_filters = _res_display_module_net.getFilters(_componente_sumidero.getVarSelArray(), TIPO_SUMIDERO);
+            var footprint_region = parseInt($("#footprint_region_select").val());
 
             var grid_res_val = $("#grid_resolution").val();
             console.log("grid_resolution: " + grid_res_val);
 
-            _res_display_module_net.createLinkNodes(s_filters, t_filters, min_occ, grid_res_val);
+            _res_display_module_net.createLinkNodes(s_filters, t_filters, min_occ, grid_res_val, footprint_region);
 
             $("#show_gen").css('visibility', 'visible');
 
@@ -141,8 +144,6 @@ var module_net = (function () {
 //            $("#modalRegenera").modal();
 //            $("#lb_enlace").val(cadena_ini);
 
-
-
         });
 
         $("#lb_enlace").click(function () {
@@ -155,6 +156,13 @@ var module_net = (function () {
             $("#modalRegenera").modal("hide");
 
         });
+        
+        $("#footprint_region_select").change(function (e) {
+
+            _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+            _REGION_TEXT_SELECTED = $("#footprint_region_select option:selected").text();
+
+        });
 
         document.getElementById("tbl_hist_comunidad").style.display = "none";
 
@@ -165,7 +173,44 @@ var module_net = (function () {
         document.getElementById("hist_map_comunidad").style.display = "none";
 
         _genLinkURL();
+        _loadCountrySelect();
 
+    }
+    
+    
+    
+    function _loadCountrySelect() {
+
+        console.log("_loadCountrySelect");
+
+        $.ajax({
+            url: _url_api + "/niche/especie/getAvailableCountriesFootprint",
+            type: 'post',
+            dataType: "json",
+            success: function (resp) {
+
+                var data = resp.data;
+                console.log(data);
+
+                $.each(data, function (i, item) {
+
+                    if (i === 0) {
+                        $('#footprint_region_select').append('<option selected="selected" value="' + item.footprint_region + '">' + item.country + '</option>');
+                    } else {
+                        $('#footprint_region_select').append($('<option>', {
+                            value: item.footprint_region,
+                            text: item.country
+                        }));
+                    }
+
+                });
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+            }
+        });
     }
 
 

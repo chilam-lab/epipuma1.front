@@ -11,6 +11,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
     var _VERBOSE = verbose;
 
     var _variable_module_net, _language_module_net, _map_module_net, _net_module, _histogram_module_net, _table_module_net;
+    var _footprint_region;
 
     var iTrans;
 
@@ -261,13 +262,14 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {array} t_filters - Array con los grupos de variables seleccionados en target
      * @param {integer} min_occ - Número mínimo de ocurrencias de una variable en nj necesarias para ser considerada en el análisis de comunidad ecológica
      */
-    function createLinkNodes(s_filters, t_filters, min_occ, grid_res_val) {
+    function createLinkNodes(s_filters, t_filters, min_occ, grid_res_val, footprint_region) {
 
         _VERBOSE ? console.log("createLinkNodes") : _VERBOSE;
 
         // obtinene e numero minimo de interaciones entre las especies
         _min_occ = min_occ;
         _grid_res = grid_res_val;
+        _footprint_region = footprint_region;
 
         var hasBiosSource = false;
         var hasRasterSource = false;
@@ -331,7 +333,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                                 hasbiotarget: hasBiosTarget,
                                 hasrastertarget: hasRasterTarget,
                                 min_occ: _min_occ,
-                                grid_res: _grid_res
+                                grid_res: _grid_res,
+                                footprint_region: _footprint_region
 
                             }),
                             function (error, resp) {
@@ -362,7 +365,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                                                     hasrastertarget: hasRasterTarget,
                                                     ep_th: 0.0,
                                                     min_occ: _min_occ,
-                                                    grid_res: _grid_res
+                                                    grid_res: _grid_res,
+                                                    footprint_region: _footprint_region
 
                                                 }),
                                                 function (error, resp) {
@@ -549,7 +553,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         self.renderAll();
 
-        adjust = $(window).height() + 60;
+        var adjust = $(window).height() + 60;
         _VERBOSE ? console.log("adjust: " + adjust) : _VERBOSE;
         $("html, body").animate({scrollTop: (adjust / 3)}, 1000);
 

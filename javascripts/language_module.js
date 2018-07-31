@@ -426,6 +426,7 @@ var language_module = (function (verbose) {
             $("#btn_topo").text($.i18n.prop('btn_topo'));
 
             $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res') + ":");
+            $("#lb_region_filter").text($.i18n.prop('lb_region_filter') + ":");
 
             // **** rep
             $("#lb_sub_titulo").text($.i18n.prop('lb_sub_titulo'));

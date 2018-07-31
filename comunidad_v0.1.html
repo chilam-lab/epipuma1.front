@@ -178,22 +178,22 @@
                     <div class="col-md-6">
                         <span id="lb_titulo_net" class="site-name"></span>
                         <span id="lb_sub_titulo" class="site-desc"></span>
-                        
+
                     </div>
 
                     <div class="col-md-6">
-                        
+
                         <div class="col-md-9 col-sm-12 col-xs-12 margin-top-15">
                             <button id="btn_tuto_steps" type="button" title="" class="btn btn-warning  display-marker">Live Tutorial</button>
                             <button id="btn_tutorial" type="button" title="" class="btn btn-warning "></button>
                             <button id="net_link" type="button" class="btn btn-primary "></button>
                             <button id="tuto_res" class="btn btn-warning display-marker" type="button" 
                                     style="visibility: hidden"
-                                ></button>
+                                    ></button>
                         </div>
-                        
+
                         <div class="col-md-3 col-sm-12 col-xs-12 margin-top-15">
-                            
+
                             <div class="language_drop pull-right">
 
                                 <div class=" dropdown_group ">
@@ -214,7 +214,7 @@
                                 </div>
 
                             </div>
-                            
+
                         </div>
 
                     </div>
@@ -242,49 +242,61 @@
 
                     <div class="row">
 
-                        <div class="col-lg-offset-2 col-md-offset-2 col-lg-8 col-md-8 col-sm-12 col-xs-12 componente_header">
+                        <div class="col-lg-offset-1 col-md-offset-1 col-lg-10 col-md-10 col-sm-12 col-xs-12 componente_header">
 
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-group">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <label id="lb_occ_min" class="checkbox_label"></label>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <input id="occ_number" class="occ_number" type="number" min="0" value="0">
+                                    <input id="occ_number" class="occ_number" type="number" min="5" value="5">
                                 </div> 
                             </div> 
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-group">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <label id="lb_mapa_res" for="grid_resolution"></label>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <select class="form-control" id="grid_resolution">
-                                    <option value="8">8 km</option>
-                                    <option selected="selected" value="16">16 km</option>
-                                    <option value="32">32 km</option>
-                                    <option value="64">64 km</option>
-                                </select>
+                                        <option value="8">8 km</option>
+                                        <option selected="selected" value="16">16 km</option>
+                                        <option value="32">32 km</option>
+                                        <option value="64">64 km</option>
+                                    </select>
                                 </div>
-                                
+
+                            </div> 
+
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label id="lb_region_filter"></label>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <select id="footprint_region_select" class="form-control">
+                                    </select>
+                                </div>
+
                             </div> 
 
                             <div class="row">
 
                                 <div class="col-md-12 col-sm-12 col-xs-12">
 
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-centered" >
+                                    <button id="generaRed" type="button" class="btn btn-primary col-centered"></button>
+                                   
+                                </div>
 
-                                        
-                                        <div class="col-md-6 col-sm-12 col-xs-12">
-                                            <button id="generaRed" type="button" class="btn btn-primary"></button>
-                                        </div>
-                                        <div class="col-md-6 col-sm-12 col-xs-12">
-                                            <button id="show_gen" class="btn btn-primary " type="button" title="Guardar enlace de resultados"  style="visibility: hidden" ></button>
-                                        </div>
+                            </div>
+                            
+                            <div class="row">
 
-                                    </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
 
+                                    <button id="show_gen" class="btn btn-primary " type="button" title="Guardar enlace de resultados"  style="visibility: hidden; margin-top: 5px;" ></button>
+                                   
                                 </div>
 
                             </div>
@@ -365,36 +377,36 @@
 
 
         <!-- Modals -->
-<!--        <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Descarga de red</h4>
-                    </div>
-                    <div class="modal-body">
-                        La descarga de la red se realiza a través de envio a una cuenta de correo electrónico, por favor proporciona una cuenta valida.
-                        <br/><br/>
-
-
-                        <div class="input-group emial_component">
-                            <input id="email_address" type="email" class="custom_form_control" placeholder=" Correo" required>
-                            <span class="input-group-btn">
-                                <button id="send_email" class="btn btn-primary" type="button">Enviar</button>
-                            </span>
+        <!--        <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Descarga de red</h4>
+                            </div>
+                            <div class="modal-body">
+                                La descarga de la red se realiza a través de envio a una cuenta de correo electrónico, por favor proporciona una cuenta valida.
+                                <br/><br/>
+        
+        
+                                <div class="input-group emial_component">
+                                    <input id="email_address" type="email" class="custom_form_control" placeholder=" Correo" required>
+                                    <span class="input-group-btn">
+                                        <button id="send_email" class="btn btn-primary" type="button">Enviar</button>
+                                    </span>
+                                </div>
+        
+        
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                            </div>
                         </div>
+                    </div>
+                </div>-->
 
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-        
-        
-        
+
         <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -416,7 +428,7 @@
                 </div>
             </div>
         </div>
-        
+
 
 
         <div class="modal fade mymodals_info" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
