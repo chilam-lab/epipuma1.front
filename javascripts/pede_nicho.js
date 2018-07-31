@@ -1137,7 +1137,9 @@ var module_nicho = (function () {
 
         _VERBOSE = verbose;
         _VERBOSE ? console.log("startModule") : _VERBOSE;
-
+        
+        
+        _VERBOSE ? console.log("before language_module NICHO") : _VERBOSE;
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         _language_module_nicho = language_module(_VERBOSE);
         _language_module_nicho.startLanguageModule(this, _tipo_modulo);

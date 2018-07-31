@@ -1035,7 +1035,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 if (hasChildren) {
 //                    console.log("hasChildren");
                     _VERBOSE ? console.log(_decil_data) : _VERBOSE;
-//                    _createScore_Decil(_decil_data, false, false);
+                    _createScore_Decil(_decil_data, false, false);
                 }
 
 
@@ -1060,7 +1060,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _decil_group_data['tdelta'] = active_time;
 
             _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
-//            _createScore_Decil(_decil_group_data, hasChildren, false);
+            _createScore_Decil(_decil_group_data, hasChildren, false);
 
         });
 
@@ -1115,7 +1115,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         if (hasTotal) {
             _VERBOSE ? console.log(_total_data_decil) : _VERBOSE;
-//            _createScore_Decil(_total_data_decil, false, hasTotal);
+            _createScore_Decil(_total_data_decil, false, hasTotal);
         }
 
     }

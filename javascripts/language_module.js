@@ -12,14 +12,14 @@ var language_module = (function (verbose) {
     var _first_load;
 
     var _map_module,
-            _variable_module,
-            _res_display_module,
-            _table_module,
-            _histogram_module;
+        _variable_module,
+        _res_display_module,
+        _table_module,
+        _histogram_module;
 
     var _tipo_modulo;
 
-    var _VERBOSE = verbose
+    var _VERBOSE = verbose;
 
 
     /**
@@ -38,16 +38,17 @@ var language_module = (function (verbose) {
 
         _tipo_modulo = tipo_modulo;
         _first_load = true;
+        
+//        _VERBOSE ? console.log("localstoarge item language: " + localStorage.getItem("language")) : _VERBOSE;
 
-
-        if (localStorage.getItem("language") === undefined) {
+        if (localStorage.getItem("language") === null) {
             _language_selected = 'es_ES';
             localStorage.language = _language_selected;
         } else {
             _language_selected = localStorage.getItem("language");
         }
 
-        _VERBOSE ? console.log("_language_selected: " + _language_selected) : _VERBOSE;
+//        _VERBOSE ? console.log("_language_selected: " + _language_selected) : _VERBOSE;
 
 
         $.i18n.properties({
@@ -60,31 +61,28 @@ var language_module = (function (verbose) {
             encoding: "UTF-8",
             callback: function () {
 
-                _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
-                console.log("local language: " + localStorage.getItem("language"));
+//                _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
+//                console.log("local language: " + localStorage.getItem("language"));
                
-                
-                
-                if (localStorage.getItem("language") === undefined) {
+                if (localStorage.getItem("language") === null) {
 
-                    _VERBOSE ? console.log("undefined") : _VERBOSE;
+//                    _VERBOSE ? console.log("undefined") : _VERBOSE;
                     localStorage.language = _language_selected;
                     _loadLabels(_first_load);
 
                 } else {
 
-                    _VERBOSE ? console.log("language loaded") : _VERBOSE;
+//                    _VERBOSE ? console.log("language loaded") : _VERBOSE;
                     _language_selected = localStorage.getItem("language");
-                    _VERBOSE ? console.log(_language_selected) : _VERBOSE;
+//                    _VERBOSE ? console.log(_language_selected) : _VERBOSE;
                     _loadLabels(_first_load);
 
                 }
 
                 _first_load = false;
 
-
                 // carga los modulos siguientes una vez que se han cargado los archivos de idiomas
-                console.log("calling pede...");
+//                console.log("calling pede...");
                 main_pede.loadModules();
 
             }
@@ -205,6 +203,7 @@ var language_module = (function (verbose) {
 
         _VERBOSE ? console.log("_loadLabels") : _VERBOSE;
         _VERBOSE ? console.log("tipo_modulo: " + _tipo_modulo) : _VERBOSE;
+        _VERBOSE ? console.log("firstLoad: " + firstLoad) : _VERBOSE;
 
 
         // labels para nicho
@@ -427,6 +426,7 @@ var language_module = (function (verbose) {
             $("#btn_topo").text($.i18n.prop('btn_topo'));
 
             $("#lb_mapa_res").text($.i18n.prop('lb_mapa_res') + ":");
+            $("#lb_region_filter").text($.i18n.prop('lb_region_filter') + ":");
 
             // **** rep
             $("#lb_sub_titulo").text($.i18n.prop('lb_sub_titulo'));
@@ -468,7 +468,10 @@ var language_module = (function (verbose) {
         }
         // index
         else {
-
+            
+//            _VERBOSE ? console.log("tipo_modulo: INDEX") : _VERBOSE;
+//            _VERBOSE ? console.log($.i18n.prop('lb_title_index')) : _VERBOSE;
+//            _VERBOSE ? console.log("lb_title_index: " + $("#lb_title_index").text()) : _VERBOSE;
 
             $("#lb_title_index").text($.i18n.prop('lb_title_index'));
             $("#lb_title_qs").text($.i18n.prop('lb_title_qs'));
