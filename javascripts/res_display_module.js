@@ -563,6 +563,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 _confDataRequest(_spid, _idreg, val_process, _idtemptable);
                 _panelGeneration(_idtemptable);
+                _generateCounts(_countsdata);
 
 //                _createTableEpSc(_tdata, _idtemptable, val_process);
 //                _createHistEpScr_Especie(_ddata);
@@ -1535,6 +1536,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     _createTableEpSc(counts);
 
                     if (_RUN_ON_SERVER) {
+                        
                         var freq_data = respuesta.data_freq;
                         _createHistEpScr_Especie(freq_data);
 

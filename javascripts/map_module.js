@@ -1046,9 +1046,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
 
                     if ($.inArray(item.gridid, gridItems) === -1) {
+                        
+                        var fecha_ano = item.aniocolecta === 9999 ? "" : item.aniocolecta;
                         _allowedPoints.set(item_id, {
                             "type": "Feature",
-                            "properties": {"url": item.urlejemplar, "fecha": item.fechacolecta, "specie": _specie_target.label, "gridid": item.gridid},
+                            "properties": {"url": item.urlejemplar, "fecha": fecha_ano, "specie": _specie_target.label, "gridid": item.gridid},
                             "geometry": JSON.parse(item.json_geom)
                         });
                     }

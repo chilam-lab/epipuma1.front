@@ -727,7 +727,7 @@ var histogram_module = (function (verbose) {
 
         $.each(distinctPoints, function (index, item) {
 
-            fecha_ano = item.fechacolecta == null || item.fechacolecta.split("-")[0] == "" ? 0 : parseInt(item.fechacolecta.split("-")[0]);
+            var fecha_ano = item.aniocolecta === null || item.aniocolecta === "" || item.aniocolecta === 9999 ? 0 : parseInt(item.aniocolecta);
 
             if (puntos_json.has(fecha_ano)) {
 

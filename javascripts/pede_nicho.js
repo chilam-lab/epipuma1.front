@@ -589,7 +589,7 @@ var module_nicho = (function () {
         console.log("_loadCountrySelect");
 
         $.ajax({
-            url: _url_api + "/niche/especie/getAvailableCountries",
+            url: _url_api + "/niche/especie/getAvailableCountriesFootprint",
             type: 'post',
             dataType: "json",
             success: function (resp) {
@@ -600,10 +600,10 @@ var module_nicho = (function () {
                 $.each(data, function (i, item) {
 
                     if (i === 0) {
-                        $('#footprint_region_select').append('<option selected="selected" value="' + item.gid + '">' + item.country + '</option>');
+                        $('#footprint_region_select').append('<option selected="selected" value="' + item.footprint_region + '">' + item.country + '</option>');
                     } else {
                         $('#footprint_region_select').append($('<option>', {
-                            value: item.gid,
+                            value: item.footprint_region,
                             text: item.country
                         }));
                     }
