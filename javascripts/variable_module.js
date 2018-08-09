@@ -36,7 +36,7 @@ var variable_module = (function (verbose, url_zacatuche) {
     
     var _available_variables = [];
     
-    var _REGION_SELECTED = 19;
+    var _REGION_SELECTED = 1;
 
 
 
