@@ -210,9 +210,11 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.getTreeVarRaster = function (e, d) {
 
             _VERBOSE ? console.log("self.getTreeVarRaster") : _VERBOSE;
-            _VERBOSE ? console.log(d) : _VERBOSE;
+//            _VERBOSE ? console.log(d) : _VERBOSE;
+//            _VERBOSE ? console.log("length: " + d.node.children.length) : _VERBOSE;
+//            _VERBOSE ? console.log("indexOf: " + d.node.children[0].indexOf("bio") === 0) : _VERBOSE;
 
-            if (d.node.children.length > 1)
+            if (d.node.children.length > 1 || d.node.children[0].indexOf("bio") === 0)
                 return;
 
             var level_vartree = d.node.original.attr.level;
@@ -223,13 +225,12 @@ var variable_module = (function (verbose, url_zacatuche) {
             var max_level = 3;
 
             $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
-
-//            console.log(current_id);
-//            console.log(level_vartree);
-//            console.log(raster_type);
-//            console.log(parent_name);
-
             _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+
+//            console.log("current_id: " + current_id);
+//            console.log("level_vartree: " + level_vartree);
+//            console.log("raster_type: " + raster_type);
+//            console.log("parent_name: " + parent_name);
 //            console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
             $.ajax({
@@ -263,9 +264,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                         if (level_vartree > 2) {
 
-//                            console.log("last node level");
-
-                            if (raster_type === 1) {
+                            if (data[i].type === 1 || data[i].type === 2) {
 
 //                                console.log("Is worldclim");
 
@@ -279,12 +278,12 @@ var variable_module = (function (verbose, url_zacatuche) {
                                     max = parseInt(tag[1].split(".")[0]) + " mm";
                                 }
 
-//                                console.log(min + " : " + max);
-
                             } else {
                                 tag = String(data[i].tag).split(":")
-                                min = parseFloat(tag[0].split(".")[0]).toFixed(3);
-                                max = parseFloat(tag[1].split(".")[0]).toFixed(3);
+//                                console.log(tag[0] + " : " + tag[1]);
+                                
+                                min = parseFloat(tag[0]).toFixed(3);
+                                max = parseFloat(tag[1]).toFixed(3);
                             }
 
                             var idNode = "";
@@ -303,8 +302,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 "children": default_son
                             };
 
-                        } else {
-
+                        } 
+                        else {
+                            
                             newNode = {
                                 id: (data[i].layer).replace(" ", ""),
                                 text: raster_type === 1 ? _iTrans.prop("a_item_" + data[i].layer) : data[i].label,
@@ -314,12 +314,12 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 "children": default_son
                             };
 
-                        }
-
-//                        console.log(newNode);
-
+                        }                        
+                            
                         $('#jstree_variables_bioclim_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
+                        
                     }
+                    
 
                     $("#jstree_variables_bioclim_" + id).jstree(true).delete_node(d.node.children[0]);
                     $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
