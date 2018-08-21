@@ -13,16 +13,15 @@ var variable_module = (function (verbose, url_zacatuche) {
     var _id;
 
     var _TYPE_BIO = 0,
-            _TYPE_ABIO = 1,
-            _TYPE_TERRESTRE = 2;
+        _TYPE_ABIO = 1,
+        _TYPE_TERRESTRE = 2;
 
-
-    var _TYPE_TAXON = 4,
-            _TYPE_CLIMA = 0,
-            _TYPE_TOPO = 1,
-            _TYPE_ELEVACION = 2,
-            _TYPE_PENDIENTE = 3,
-            _TYPE_TOPO_RASTER = 5;
+    var _TYPE_TAXON = 0,
+        _TYPE_CLIMA = 0,
+        _TYPE_TOPO = 1,
+        _TYPE_ELEVACION = 2,
+        _TYPE_PENDIENTE = 3,
+        _TYPE_TOPO_RASTER = 5;
 
     var _BORRADO = 0,
             _AGREGADO = 1;
