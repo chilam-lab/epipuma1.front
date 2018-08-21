@@ -1046,7 +1046,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             hasRaster = false;
 
             for (var i = 0; i < filterby_group.length; i++) {
-                if (filterby_group[i].type === 4) {
+                if (filterby_group[i].type === 0) {
                     hasBios = true;
                 } else {
                     hasRaster = true;
@@ -1079,7 +1079,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         hasRaster = false;
 
         for (var i = 0; i < filters.length; i++) {
-            if (filters[i].type === 4) {
+            if (filters[i].type === 0) {
                 hasBios = true;
             } else {
                 hasRaster = true;
@@ -1414,7 +1414,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 var occ = specie.nj;
                                 var occ_decil = specie.njd;
                                 var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
-                                decil_list.push({decil: specie.decile, species: specie.name, epsilons: specie.epsilon, scores: specie.score, occ: per_decil});
+                                
+                                var value_abio = "";
+                                if(specie.name.indexOf("bio0") !== -1) {
+                                    value_abio = _iTrans.prop("a_item_" + specie.name)
+                                }           
+                                else{
+                                    value_abio = specie.name
+                                }
+                                
+                                
+                                decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil});
                             });
 
                             _VERBOSE ? console.log(decil_list) : _VERBOSE;
@@ -1459,7 +1469,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                     var occ = specie.nj;
                                     var occ_decil = specie.njd;
                                     var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
-                                    decil_list.push({decil: specie.decile, species: specie.name, epsilons: specie.epsilon, scores: specie.score, occ: per_decil});
+                                    
+                                    var value_abio = "";
+                                    if(specie.name.indexOf("bio0") !== -1) {
+                                        value_abio = _iTrans.prop("a_item_" + specie.name)
+                                    }           
+                                    else{
+                                        value_abio = specie.name
+                                    }
+
+                                    decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil});
                                 });
 
                                 _VERBOSE ? console.log(decil_list) : _VERBOSE;
@@ -1606,8 +1625,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         data.forEach(function (d) {
             var item_list = [];
-            // item_list.push(d.generovalido)
-            item_list.push(d.especievalidabusqueda)
+            var value = "";
+                        
+            // las variables climáticas no cuentan con reino, phylum, clase, etc
+            if(d.reinovalido === "" && d.phylumdivisionvalido === "") {
+                value = _iTrans.prop("a_item_" + d.especievalidabusqueda)
+                item_list.push(value)
+            }           
+            else{
+                item_list.push(d.especievalidabusqueda)
+            }
+                
             item_list.push(d.nij)
             item_list.push(d.nj)
             item_list.push(d.ni)
@@ -1868,6 +1896,54 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_bio017_" + item).text($.i18n.prop('a_item_bio017'));
             $("#a_item_bio018_" + item).text($.i18n.prop('a_item_bio018'));
             $("#a_item_bio019_" + item).text($.i18n.prop('a_item_bio019'));
+            
+            $("#a_item_bio020_" + item).text($.i18n.prop('a_item_bio020'));
+            $("#a_item_bio021_" + item).text($.i18n.prop('a_item_bio021'));
+            $("#a_item_bio022_" + item).text($.i18n.prop('a_item_bio022'));
+            $("#a_item_bio023_" + item).text($.i18n.prop('a_item_bio023'));
+            $("#a_item_bio024_" + item).text($.i18n.prop('a_item_bio024'));
+            $("#a_item_bio025_" + item).text($.i18n.prop('a_item_bio025'));
+            $("#a_item_bio026_" + item).text($.i18n.prop('a_item_bio026'));
+            $("#a_item_bio027_" + item).text($.i18n.prop('a_item_bio027'));
+            $("#a_item_bio028_" + item).text($.i18n.prop('a_item_bio028'));
+            $("#a_item_bio029_" + item).text($.i18n.prop('a_item_bio029'));
+            $("#a_item_bio030_" + item).text($.i18n.prop('a_item_bio030'));
+            $("#a_item_bio031_" + item).text($.i18n.prop('a_item_bio031'));
+            $("#a_item_bio032_" + item).text($.i18n.prop('a_item_bio032'));
+            $("#a_item_bio033_" + item).text($.i18n.prop('a_item_bio033'));
+            $("#a_item_bio034_" + item).text($.i18n.prop('a_item_bio034'));
+            $("#a_item_bio035_" + item).text($.i18n.prop('a_item_bio035'));
+            $("#a_item_bio036_" + item).text($.i18n.prop('a_item_bio036'));
+            $("#a_item_bio037_" + item).text($.i18n.prop('a_item_bio037'));
+            $("#a_item_bio038_" + item).text($.i18n.prop('a_item_bio038'));
+            $("#a_item_bio039_" + item).text($.i18n.prop('a_item_bio039'));
+            $("#a_item_bio040_" + item).text($.i18n.prop('a_item_bio040'));
+            $("#a_item_bio041_" + item).text($.i18n.prop('a_item_bio041'));
+            $("#a_item_bio042_" + item).text($.i18n.prop('a_item_bio042'));
+            $("#a_item_bio043_" + item).text($.i18n.prop('a_item_bio043'));
+            $("#a_item_bio044_" + item).text($.i18n.prop('a_item_bio044'));
+            $("#a_item_bio045_" + item).text($.i18n.prop('a_item_bio045'));
+            $("#a_item_bio046_" + item).text($.i18n.prop('a_item_bio046'));
+            $("#a_item_bio047_" + item).text($.i18n.prop('a_item_bio047'));
+            $("#a_item_bio048_" + item).text($.i18n.prop('a_item_bio048'));
+            $("#a_item_bio049_" + item).text($.i18n.prop('a_item_bio049'));
+            $("#a_item_bio050_" + item).text($.i18n.prop('a_item_bio050'));
+            $("#a_item_bio051_" + item).text($.i18n.prop('a_item_bio051'));
+            $("#a_item_bio052_" + item).text($.i18n.prop('a_item_bio052'));
+            $("#a_item_bio053_" + item).text($.i18n.prop('a_item_bio053'));
+            $("#a_item_bio054_" + item).text($.i18n.prop('a_item_bio054'));
+            $("#a_item_bio045_" + item).text($.i18n.prop('a_item_bio055'));
+            $("#a_item_bio046_" + item).text($.i18n.prop('a_item_bio056'));
+            $("#a_item_bio047_" + item).text($.i18n.prop('a_item_bio057'));
+            $("#a_item_bio048_" + item).text($.i18n.prop('a_item_bio058'));
+            $("#a_item_bio049_" + item).text($.i18n.prop('a_item_bio059'));
+            $("#a_item_bio050_" + item).text($.i18n.prop('a_item_bio060'));
+            $("#a_item_bio051_" + item).text($.i18n.prop('a_item_bio061'));
+            
+            
+            
+            
+            
 
 
             $("#lb_des_modal_csv").text($.i18n.prop('lb_des_modal_csv'));
