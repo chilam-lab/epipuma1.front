@@ -944,6 +944,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
         var milliseconds = new Date().getTime();
         var grid_res_val = $("#grid_resolution").val();
+        
+//        console.log("grid_res_val: " + grid_res_val)
+//        console.log(_specie_target)
 
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
@@ -954,7 +957,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             stoppable: true
         });
         
-        var footprint_region = parseInt($("#footprint_region_select").val());
+        
+        //TODO: gueardar el footprint region en el enalce de generacion
+        var footprint_region = parseInt($("#footprint_region_select").val() === undefined || $("#footprint_region_select").val() === null ? 1 : $("#footprint_region_select").val());
+        console.log("footprint_region: " + footprint_region)
+        
 
 
         $.ajax({
@@ -982,6 +989,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 $("#specie_next").show("slow");
 
                 var data_sp = resp.data;
+//                console.log("data_sp: " + data_sp)
 
                 try {
                     _markersSP_Layer.clearLayers();
@@ -993,8 +1001,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 } catch (e) {
                     _VERBOSE ? console.log("primera vez") : _VERBOSE;
                 }
-
-
 
                 _discardedPoints = dPoints;		// puntos descartados por eliminacion
                 _allowedPoints = d3.map([]);		// puntos para analisis

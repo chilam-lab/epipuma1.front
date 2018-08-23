@@ -214,7 +214,7 @@ var table_module = (function(verbose) {
 
         _VERBOSE ? console.log("createEspList") : _VERBOSE;
 
-        data_list = rawdata.data;
+        var data_list = rawdata.data;
         // _VERBOSE ? console.log(data_list) : _VERBOSE;
 
         var prev = 0;
@@ -393,7 +393,7 @@ var table_module = (function(verbose) {
 
             _VERBOSE ? console.log("div each epsilonList") : _VERBOSE;
 
-            data_list = [];
+            var data_list = [];
 
 
             epsilonByGender.forEach(function(d) {
@@ -401,7 +401,7 @@ var table_module = (function(verbose) {
                 // item = d.values[0];
                 d.values.forEach(function(val) {
 
-                    item_list = [];
+                    var item_list = [];
 
                     item_list.push(_json.nodes[val.source].label);
                     item_list.push(_json.nodes[val.target].label);
