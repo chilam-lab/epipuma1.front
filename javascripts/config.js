@@ -12,7 +12,7 @@ $(document).ready(function () {
     //********************************
 
 
-    var ambiente = 5;
+    var ambiente = 0;
     var _VERBOSE = true;
 
     var modulo = 2; // modulo index
@@ -24,7 +24,8 @@ $(document).ready(function () {
 
     if (ambiente === 0) {
 
-        url_front = "http://localhost/species-front";
+        // url_front = "http://localhost/species-front";
+        url_front = "http://conabio.com";
         url_api = "http://localhost:8080";
 
     } else if (ambiente === 1) {

@@ -41,7 +41,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     
     var _REGION_SELECTED ;
 
-
+    _loadCountrySelect();
 
     // estilos para eliminar puntos
     var _geojsonMarkerOptions = {
@@ -135,6 +135,39 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     var _centro_mapa, _zoom_module;
 
 
+    function _loadCountrySelect() {
+
+        console.log("_loadCountrySelect");
+
+        $.ajax({
+            url: _url_zacatuche + "/niche/especie/getAvailableCountriesFootprint",
+            type: 'post',
+            dataType: "json",
+            success: function (resp) {
+
+                var data = resp.data;
+                console.log(data);
+
+                $.each(data, function (i, item) {
+
+                    if (i === 0) {
+                        $('#footprint_region_select').append('<option selected="selected" value="' + item.footprint_region + '">' + item.country + '</option>');
+                    } else {
+                        $('#footprint_region_select').append($('<option>', {
+                            value: item.footprint_region,
+                            text: item.country
+                        }));
+                    }
+
+                });
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+            }
+        });
+    }
 
 
     /**
@@ -950,6 +983,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 //        console.log("grid_res_val: " + grid_res_val)
 //        console.log(_specie_target)
 
+        $('#footprint_region_select').val(region);
+        
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
 
@@ -962,7 +997,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         
         //TODO: gueardar el footprint region en el enalce de generacion
         var footprint_region = region;
-        console.log("footprint_region: " + footprint_region)
+        console.log("footprint_region: " + footprint_region);
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie/getSpecies",
@@ -987,7 +1022,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 $('#tuto_mapa_occ').loading('stop');
                 $("#specie_next").css('visibility', 'visible');
-                $("#specie_next").show("slow");
+                $("#specie_next").show("slow");//
 
                 var data_sp = resp.data;
 //                console.log("data_sp: " + data_sp)

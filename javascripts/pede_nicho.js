@@ -197,7 +197,7 @@ var module_nicho = (function () {
 
         $("#footprint_region_select").change(function (e) {
 
-            console.log("Cambiando a " + $("#footprint_region_select").val());
+            console.log("Cambiando a " +  parseInt($("#footprint_region_select").val()));
 
             _REGION_SELECTED = parseInt($("#footprint_region_select").val());
             _REGION_TEXT_SELECTED = $("#footprint_region_select option:selected").text();
@@ -550,7 +550,8 @@ var module_nicho = (function () {
         $("#accept_link").click(function () {
 
             $("#modalRegenera").modal("hide");
-
+            document.execCommand("copy");
+            console.log('se copia url con toker');
         });
 
 
@@ -562,8 +563,6 @@ var module_nicho = (function () {
 
 //        _confLiveTutorial();
         _genLinkURL();
-        _loadCountrySelect();
-
     }
 
     function _regenMessage() {
@@ -586,47 +585,6 @@ var module_nicho = (function () {
         $("#hist_next").hide("slow");
         
     }
-
-
-
-    function _loadCountrySelect() {
-
-        console.log("_loadCountrySelect");
-
-        $.ajax({
-            url: _url_api + "/niche/especie/getAvailableCountriesFootprint",
-            type: 'post',
-            dataType: "json",
-            success: function (resp) {
-
-                var data = resp.data;
-                console.log(data);
-
-                $.each(data, function (i, item) {
-
-                    if (i === 0) {
-                        $('#footprint_region_select').append('<option selected="selected" value="' + item.footprint_region + '">' + item.country + '</option>');
-                    } else {
-                        $('#footprint_region_select').append($('<option>', {
-                            value: item.footprint_region,
-                            text: item.country
-                        }));
-                    }
-
-                });
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-
-            }
-        });
-    }
-
-
-
-
-
 
     /**
      * Realiza el envio de los parámetros seleccionados de un análisis de nicho para generar un token de recuperación.
