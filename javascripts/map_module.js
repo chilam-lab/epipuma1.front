@@ -39,9 +39,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             _layer_SP_control,
             _specie_target_SP;
     
-    var _REGION_SELECTED;
+    var _REGION_SELECTED ;
 
-
+    _loadCountrySelect();
 
     // estilos para eliminar puntos
     var _geojsonMarkerOptions = {
@@ -135,6 +135,39 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     var _centro_mapa, _zoom_module;
 
 
+    function _loadCountrySelect() {
+
+        console.log("_loadCountrySelect");
+
+        $.ajax({
+            url: _url_zacatuche + "/niche/especie/getAvailableCountriesFootprint",
+            type: 'post',
+            dataType: "json",
+            success: function (resp) {
+
+                var data = resp.data;
+                console.log(data);
+
+                $.each(data, function (i, item) {
+
+                    if (i === 0) {
+                        $('#footprint_region_select').append('<option selected="selected" value="' + item.footprint_region + '">' + item.country + '</option>');
+                    } else {
+                        $('#footprint_region_select').append($('<option>', {
+                            value: item.footprint_region,
+                            text: item.country
+                        }));
+                    }
+
+                });
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+            }
+        });
+    }
 
 
     /**
@@ -916,7 +949,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {boolean} sfecha - Bandera para saber si serán considerados los registros sin fecha
      * @param {boolean} sfosil - Bandera para saber si serán considerados los registros sin fosiles
      */
-    function busca_especie_filtros(rango, sfecha, sfosil, dPoints) {
+    function busca_especie_filtros(rango, sfecha, sfosil, dPoints, region) {
 
         _VERBOSE ? console.log("busca_especie_filtros") : _VERBOSE;
 
@@ -925,7 +958,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _sin_fecha = sfecha;
         _con_fosil = sfosil;
 
-        busca_especie(dPoints);
+        console.log("Region en busca_especie_filtros " + region);
+
+        busca_especie(dPoints, region);
 
         _toastr.info($.i18n.prop('lb_cal_occ'));
 
@@ -939,7 +974,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      */
-    function busca_especie(dPoints) {
+    function busca_especie(dPoints, region) {
 
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
         var milliseconds = new Date().getTime();
@@ -948,6 +983,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 //        console.log("grid_res_val: " + grid_res_val)
 //        console.log(_specie_target)
 
+        $('#footprint_region_select').val(region);
+        
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
 
@@ -959,10 +996,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         
         
         //TODO: gueardar el footprint region en el enalce de generacion
-        var footprint_region = parseInt($("#footprint_region_select").val() === undefined || $("#footprint_region_select").val() === null ? 1 : $("#footprint_region_select").val());
-        console.log("footprint_region: " + footprint_region)
-        
-
+        var footprint_region = region;
+        console.log("footprint_region: " + footprint_region);
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie/getSpecies",
@@ -981,12 +1016,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('X-Test-Header', 'test-value');
                 xhr.setRequestHeader("Accept", "text/json");
+                changeRegionView(footprint_region);
             },
             success: function (resp) {
 
                 $('#tuto_mapa_occ').loading('stop');
                 $("#specie_next").css('visibility', 'visible');
-                $("#specie_next").show("slow");
+                $("#specie_next").show("slow");//
 
                 var data_sp = resp.data;
 //                console.log("data_sp: " + data_sp)
@@ -1872,7 +1908,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         console.log("n: " + n);
 
         if (len % n === 0) {
-
             console.log("caso uno");
 
             size = Math.floor(len / n);
@@ -1953,30 +1988,30 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     }
     
     
-    function changeRegionView(region, text_selected){
+    function changeRegionView(region){
         
         _VERBOSE ? console.log("changeRegionView") : _VERBOSE;
         _VERBOSE ? console.log("region: " + region) : _VERBOSE;
         
-        if(text_selected === 'MEXICO'){
-            _VERBOSE ? console.log("region1") : _VERBOSE;
+        if(region === 1){
+            _VERBOSE ? console.log("region_1") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
         }
-        else if(text_selected === 'UNITED STATES, THE'){
+        else if(region === 2){
             _VERBOSE ? console.log("region2") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [40.5, -97] : [30.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         }
-        else if(text_selected === 'COLOMBIA'){
+        else if(region === 3){
             _VERBOSE ? console.log("region_3") : _VERBOSE;
-            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [4, -73] : [4, -73];
-            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -97] : [23.5, -102];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         }
         else{
             _VERBOSE ? console.log("region_4") : _VERBOSE;
-            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [4, -73] : [4, -73];
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ?  5 : 4;
         }
         
 //        _VERBOSE ? console.log(_centro_mapa) : _VERBOSE;
