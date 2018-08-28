@@ -197,11 +197,11 @@ var module_nicho = (function () {
 
         $("#footprint_region_select").change(function (e) {
 
-//            console.log($("#footprint_region_select").val());
+            console.log("Cambiando a " +  parseInt($("#footprint_region_select").val()));
 
             _REGION_SELECTED = parseInt($("#footprint_region_select").val());
             _REGION_TEXT_SELECTED = $("#footprint_region_select option:selected").text();
-            _map_module_nicho.changeRegionView(_REGION_SELECTED, _REGION_TEXT_SELECTED);
+            _map_module_nicho.changeRegionView(_REGION_SELECTED);
 
             _regenMessage();
 
@@ -339,7 +339,7 @@ var module_nicho = (function () {
 //                $("#map_next").hide("slow");
 //                $("#hist_next").hide("slow");
 
-                _REGION_SELECTED = parseInt($("#footprint_region_select").val());
+                region = parseInt($("#footprint_region_select").val());
 
                 $.ajax({
                     url: _url_api + "/niche/especie/getEntList",
@@ -350,7 +350,7 @@ var module_nicho = (function () {
                         searchStr: request.term,
                         source: 1, // source para saber si viene de objetivo o el target
                         grid_res: grid_res_val,
-                        footprint_region: _REGION_SELECTED
+                        footprint_region: region
                     },
                     success: function (resp) {
 
@@ -398,7 +398,7 @@ var module_nicho = (function () {
 
                 _map_module_nicho.set_specieTarget(specie_target);
 
-                _map_module_nicho.busca_especie(d3.map([]));
+                _map_module_nicho.busca_especie(d3.map([]), region);
 
                 _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
 
@@ -410,6 +410,10 @@ var module_nicho = (function () {
         $("#reload_map").click(function () {
 
             _VERBOSE ? console.log("reload_map") : _VERBOSE;
+
+            var region = _REGION_SELECTED;
+
+            //console.log("Region en reload_map " + region);
 
             if (_map_module_nicho.get_specieTarget()) {
 
@@ -426,7 +430,7 @@ var module_nicho = (function () {
 
                 $('.nav-tabs a[href="#tab_resumen"]').tab('show');
 
-                _map_module_nicho.busca_especie_filtros(rango_fechas, chkFecha, chkFosil, d3.map([]));
+                _map_module_nicho.busca_especie_filtros(rango_fechas, chkFecha, chkFosil, d3.map([]), region);
 
                 $("#reload_map").addClass('btn-primary').removeClass('btn-success');
 
@@ -493,6 +497,7 @@ var module_nicho = (function () {
 //            console.log($("#grid_resolution").val());
             data_link += "gridRes=" + parseInt($("#grid_resolution").val()) + "&";
 
+            data_link += "region=" + _REGION_SELECTED + "&";
 
             //add deleted occ
             var dPoints = _map_module_nicho.get_discardedPoints();
@@ -545,7 +550,8 @@ var module_nicho = (function () {
         $("#accept_link").click(function () {
 
             $("#modalRegenera").modal("hide");
-
+            document.execCommand("copy");
+            console.log('se copia url con toker');
         });
 
 
@@ -557,8 +563,6 @@ var module_nicho = (function () {
 
 //        _confLiveTutorial();
         _genLinkURL();
-        _loadCountrySelect();
-
     }
 
     function _regenMessage() {
@@ -582,47 +586,6 @@ var module_nicho = (function () {
         
     }
 
-
-
-    function _loadCountrySelect() {
-
-        console.log("_loadCountrySelect");
-
-        $.ajax({
-            url: _url_api + "/niche/especie/getAvailableCountriesFootprint",
-            type: 'post',
-            dataType: "json",
-            success: function (resp) {
-
-                var data = resp.data;
-                console.log(data);
-
-                $.each(data, function (i, item) {
-
-                    if (i === 0) {
-                        $('#footprint_region_select').append('<option selected="selected" value="' + item.footprint_region + '">' + item.country + '</option>');
-                    } else {
-                        $('#footprint_region_select').append($('<option>', {
-                            value: item.footprint_region,
-                            text: item.country
-                        }));
-                    }
-
-                });
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-
-            }
-        });
-    }
-
-
-
-
-
-
     /**
      * Realiza el envio de los parámetros seleccionados de un análisis de nicho para generar un token de recuperación.
      *
@@ -636,6 +599,7 @@ var module_nicho = (function () {
     function _getLinkToken(data_link) {
 
         console.log("_getLinkToken");
+        console.log(data_link)
 
         $.ajax({
             url: _url_api + "/niche/especie/getToken",
@@ -718,6 +682,8 @@ var module_nicho = (function () {
 
                 var gridRes = _json_config.gridRes ? parseInt(_json_config.gridRes) : 16;
 //                console.log("gridRes: " + gridRes);
+                
+                var region = _json_config.region ? parseInt(_json_config.region) : 1;
 
                 var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
 
@@ -738,7 +704,7 @@ var module_nicho = (function () {
                     filters.push(JSON.parse(_json_config["tfilters[" + i + "]"]));
                 }
 
-                _procesaValoresEnlace(sp_data, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, map_dPoints);
+                _procesaValoresEnlace(sp_data, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints);
                 $("#show_gen").css('visibility', 'hidden');
 
 
@@ -847,10 +813,12 @@ var module_nicho = (function () {
      * @param {array} rango_fechas - Rango de fecha para realizar los cálculos
      * @param {integer} gridRes - Resolución de la malla para ser considerado en los cálculos
      */
-    function _procesaValoresEnlace(sp_data, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, map_dPoints) {
+    function _procesaValoresEnlace(sp_data, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints) {
 
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
+        console.log("Region : " + region);
+        
         var spid = sp_data.spid;
 //        var discardedPoints = map_dPoints;
 //        var computed_discarded_cells = d3.map([]); // considerar arregle de celdas descartadas
@@ -937,12 +905,12 @@ var module_nicho = (function () {
             console.log("filtros");
             console.log(map_dPoints.values());
 
-            _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec, chkFosil, map_dPoints);
+            _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec, chkFosil, map_dPoints, region);
         } else {
             console.log("busca");
             console.log(map_dPoints.values());
 
-            _map_module_nicho.busca_especie(map_dPoints);
+            _map_module_nicho.busca_especie(map_dPoints, region);
         }
 
 

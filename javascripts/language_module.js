@@ -387,13 +387,13 @@ var language_module = (function (verbose) {
             $("#a_item_bio052").text($.i18n.prop('a_item_bio052'));
             $("#a_item_bio053").text($.i18n.prop('a_item_bio053'));
             $("#a_item_bio054").text($.i18n.prop('a_item_bio054'));
-            $("#a_item_bio045").text($.i18n.prop('a_item_bio055'));
-            $("#a_item_bio046").text($.i18n.prop('a_item_bio056'));
-            $("#a_item_bio047").text($.i18n.prop('a_item_bio057'));
-            $("#a_item_bio048").text($.i18n.prop('a_item_bio058'));
-            $("#a_item_bio049").text($.i18n.prop('a_item_bio059'));
-            $("#a_item_bio050").text($.i18n.prop('a_item_bio060'));
-            $("#a_item_bio051").text($.i18n.prop('a_item_bio061'));
+            $("#a_item_bio055").text($.i18n.prop('a_item_bio055'));
+            $("#a_item_bio056").text($.i18n.prop('a_item_bio056'));
+            $("#a_item_bio057").text($.i18n.prop('a_item_bio057'));
+            $("#a_item_bio058").text($.i18n.prop('a_item_bio058'));
+            $("#a_item_bio059").text($.i18n.prop('a_item_bio059'));
+            $("#a_item_bio060").text($.i18n.prop('a_item_bio060'));
+            $("#a_item_bio061").text($.i18n.prop('a_item_bio061'));
             
             
             

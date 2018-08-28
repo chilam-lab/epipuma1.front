@@ -82,7 +82,7 @@ var histogram_module = (function (verbose) {
 
         var margin = {top: 30, right: 40, bottom: 50, left: 40},
                 width = $(".myScrollableBlockEpsilonDecil").width() - margin.left - margin.right;
-        height = $(".myScrollableBlockEpsilonDecil").height() - margin.top - margin.bottom - 15; // 10px del icono de info
+        var height = $(".myScrollableBlockEpsilonDecil").height() - margin.top - margin.bottom - 15; // 10px del icono de info
 
 
         var x0 = d3.scale.ordinal()
@@ -97,6 +97,7 @@ var histogram_module = (function (verbose) {
 
         // variable que sirve para conocer el decil donde ya existen valores prar generar la gráfica
         var value_decil_ready = 0;
+        var length_names = 0;
 
         for (value_decil_ready = 0; value_decil_ready < _NUM_DECIL; value_decil_ready++) {
             try {
@@ -194,10 +195,10 @@ var histogram_module = (function (verbose) {
             var obj;
 
             if (nameMap.values().length > 0) {
-                arg_nulos = nameMap.get(name.p).recall_nulo;
+                var arg_nulos = nameMap.get(name.p).recall_nulo;
                 // _VERBOSE ? console.log(arg_nulos) : _VERBOSE;
                 // si al menos existe un valor calculado de recall (diferente a cero) se realiza el line chart del recall
-                fin_recall = ($.inArray(false, arg_nulos) != -1) ? false : true;
+                var fin_recall = ($.inArray(false, arg_nulos) != -1) ? false : true;
                 _VERBOSE ? console.log("name: " + name.p + " fin_recall: " + fin_recall) : _VERBOSE;
 
                 obj = {name: name.p, nulos: nameMap.get(name.p).nulos, recall_nulo: fin_recall};
@@ -244,7 +245,7 @@ var histogram_module = (function (verbose) {
 
 
 
-        totalmax_avg = d3.max(json_decil.map(function (d, index) {
+        var totalmax_avg = d3.max(json_decil.map(function (d, index) {
             if (value_decil_ready <= index) {
                 return d3.max(d.values, function (d) {
                     return parseFloat(d.p)
@@ -252,7 +253,7 @@ var histogram_module = (function (verbose) {
             }
         }));
 
-        totalmin_avg = d3.min(json_decil.map(function (d, index) {
+        var totalmin_avg = d3.min(json_decil.map(function (d, index) {
             if (value_decil_ready <= index) {
                 return d3.min(d.values, function (d) {
                     return parseFloat(d.p)
@@ -270,8 +271,9 @@ var histogram_module = (function (verbose) {
         }
 
 
-        totalmin_nice = Math.floor(totalmin_avg);
-        totalmax_nice = Math.ceil(totalmax_avg);
+        var totalmin_nice = Math.floor(totalmin_avg);
+        var totalmax_nice = Math.ceil(totalmax_avg);
+        var NEG_DECIL = 0;
 
 
         // TODO: analizar cuando son solo possitovos, solo negativos o combinación
@@ -289,7 +291,7 @@ var histogram_module = (function (verbose) {
         }
 
         // NOTA: En d3 el max de -0.12 y -0.86 es "-0.86", obtiene el minimo de los negativos
-        maxmin_avg = d3.max(json_decil.map(function (d, index) {
+        var maxmin_avg = d3.max(json_decil.map(function (d, index) {
             if (value_decil_ready <= index) {
                 return d3.max(d.values, function (d) {
                     if (d.p < 0)
@@ -321,7 +323,8 @@ var histogram_module = (function (verbose) {
 
         }
 
-
+        var translate_axis = 0;
+        
         // set the x axis in middle of the chart when there are negative values.
         // solo negativos
         if (NEG_DECIL == -1) {
