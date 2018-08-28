@@ -306,7 +306,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                             
                             newNode = {
                                 id: (data[i].layer).replace(" ", ""),
-                                text: raster_type === 1 ? _iTrans.prop("a_item_" + data[i].layer) : data[i].label,
+                                text: raster_type !== 0  ? _iTrans.prop("a_item_" + data[i].layer) : data[i].label,
                                 icon: "plugins/jstree/images/dna.png",
                                 attr: {"bid": data[i].layer, "parent": data[i].fuente, "level": level_vartree, "type": data[i].type},
                                 state: {'opened': false},

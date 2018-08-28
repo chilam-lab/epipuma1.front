@@ -10,7 +10,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     var _VERBOSE = verbose;
 
-    var _RUN_ON_SERVER = false;
+    var _RUN_ON_SERVER = true;
 
     var _subgroups, _spid, _idreg, _type_time;
 
@@ -1147,7 +1147,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         console.log(data_request);
 
 
-        if (_RUN_ON_SERVER) {
+        if (false) {
 
             $.ajax({
                 type: "post",
@@ -1250,6 +1250,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             decildata["with_data_freq"] = false;
             decildata["with_data_score_cell"] = false;
             decildata["with_data_freq_cell"] = false;
+            decildata["with_data_score_decil"] = false;
 
             $.ajax({
                 url: _url_zacatuche + "/niche/counts",
@@ -1392,7 +1393,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     stoppable: true
                 });
 
-                if (_RUN_ON_SERVER) {
+                if (false) {
 
                     value.request.decil = decil;
                     console.log(value);
@@ -1444,6 +1445,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     value.request["with_data_freq"] = false;
                     value.request["with_data_score_cell"] = false;
                     value.request["with_data_freq_cell"] = false;
+                    value.request["with_data_score_decil"] = false;
                     console.log(value);
 
                     $.ajax({
@@ -1541,6 +1543,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             counts_data["with_data_freq"] = false;
             counts_data["with_data_score_cell"] = false;
             counts_data["with_data_freq_cell"] = false;
+            counts_data["with_data_score_decil"] = false;
         }
 
         $.ajax({
