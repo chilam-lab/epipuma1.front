@@ -304,6 +304,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                         } 
                         else {
                             
+                            
+//                            console.log("label: " + _iTrans.prop("a_item_" + data[i].layer))
+                            
                             newNode = {
                                 id: (data[i].layer).replace(" ", ""),
                                 text: raster_type !== 0  ? _iTrans.prop("a_item_" + data[i].layer) : data[i].label,
