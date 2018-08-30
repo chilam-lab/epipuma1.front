@@ -173,7 +173,7 @@ var module_net = (function () {
         document.getElementById("hist_map_comunidad").style.display = "none";
 
         _genLinkURL();
-        _loadCountrySelect();
+//        _loadCountrySelect();
 
     }
     

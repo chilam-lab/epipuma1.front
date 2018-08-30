@@ -1935,13 +1935,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_bio052_" + item).text($.i18n.prop('a_item_bio052'));
             $("#a_item_bio053_" + item).text($.i18n.prop('a_item_bio053'));
             $("#a_item_bio054_" + item).text($.i18n.prop('a_item_bio054'));
-            $("#a_item_bio045_" + item).text($.i18n.prop('a_item_bio055'));
-            $("#a_item_bio046_" + item).text($.i18n.prop('a_item_bio056'));
-            $("#a_item_bio047_" + item).text($.i18n.prop('a_item_bio057'));
-            $("#a_item_bio048_" + item).text($.i18n.prop('a_item_bio058'));
-            $("#a_item_bio049_" + item).text($.i18n.prop('a_item_bio059'));
-            $("#a_item_bio050_" + item).text($.i18n.prop('a_item_bio060'));
-            $("#a_item_bio051_" + item).text($.i18n.prop('a_item_bio061'));
+            $("#a_item_bio055_" + item).text($.i18n.prop('a_item_bio055'));
+            $("#a_item_bio056_" + item).text($.i18n.prop('a_item_bio056'));
+            $("#a_item_bio057_" + item).text($.i18n.prop('a_item_bio057'));
+            $("#a_item_bio058_" + item).text($.i18n.prop('a_item_bio058'));
+            $("#a_item_bio059_" + item).text($.i18n.prop('a_item_bio059'));
+            $("#a_item_bio060_" + item).text($.i18n.prop('a_item_bio060'));
+            $("#a_item_bio061_" + item).text($.i18n.prop('a_item_bio061'));
             
             
             
@@ -2492,8 +2492,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var title_total;
         var total_celda;
 
-        var apriori = (json_data[0].apriori) ? parseFloat(json_data[0].apriori) : undefined;
-        var prob = (json_data[0].prob) ? parseFloat(json_data[0].prob) : undefined;
+        var apriori = json_data[0].apriori !== undefined ? parseFloat(json_data[0].apriori) : undefined;
+        var prob = json_data[0].prob !== undefined ? parseFloat(json_data[0].prob) : undefined;
 
 
         console.log(json_data.length);

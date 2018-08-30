@@ -4,7 +4,7 @@
  * @namespace language_module
  */
 var language_module = (function (verbose) {
-    
+
     console.log("*** loading language_module... ***");
 
     var _language_selected;
@@ -12,10 +12,10 @@ var language_module = (function (verbose) {
     var _first_load;
 
     var _map_module,
-        _variable_module,
-        _res_display_module,
-        _table_module,
-        _histogram_module;
+            _variable_module,
+            _res_display_module,
+            _table_module,
+            _histogram_module;
 
     var _tipo_modulo;
 
@@ -38,7 +38,7 @@ var language_module = (function (verbose) {
 
         _tipo_modulo = tipo_modulo;
         _first_load = true;
-        
+
 //        _VERBOSE ? console.log("localstoarge item language: " + localStorage.getItem("language")) : _VERBOSE;
 
         if (localStorage.getItem("language") === null) {
@@ -63,7 +63,7 @@ var language_module = (function (verbose) {
 
 //                _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
 //                console.log("local language: " + localStorage.getItem("language"));
-               
+
                 if (localStorage.getItem("language") === null) {
 
 //                    _VERBOSE ? console.log("undefined") : _VERBOSE;
@@ -214,10 +214,10 @@ var language_module = (function (verbose) {
             $("#nicho_link").text($.i18n.prop('nicho_link'));
             $("#a_espanol").text($.i18n.prop('a_espanol'));
             $("#a_ingles").text($.i18n.prop('a_ingles'));
-            
+
             $("#footprint_region").text($.i18n.prop('footprint_region') + ":");
-            
-            
+
+
 
             if (firstLoad) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
@@ -285,11 +285,11 @@ var language_module = (function (verbose) {
             $("#lb_tools_ayuda").text($.i18n.prop('lb_tools_ayuda'));
             $("#lb_panel_variables").text($.i18n.prop('lb_panel_variables'));
             $("#a_taxon_fuente").text($.i18n.prop('a_taxon'));
-            $("#a_clima_fuente").text($.i18n.prop('a_clima'));
+            $("#a_raster_fuente").text($.i18n.prop('a_raster'));
             $("#a_topo_fuente").text($.i18n.prop('a_topo'));
 
             $("#a_taxon_sumidero").text($.i18n.prop('a_taxon'));
-            $("#a_clima_sumidero").text($.i18n.prop('a_clima'));
+            $("#a_raster_sumidero").text($.i18n.prop('a_raster'));
             $("#a_topo_sumidero").text($.i18n.prop('a_topo'));
 
 
@@ -351,7 +351,7 @@ var language_module = (function (verbose) {
             $("#a_item_bio017").text($.i18n.prop('a_item_bio017'));
             $("#a_item_bio018").text($.i18n.prop('a_item_bio018'));
             $("#a_item_bio019").text($.i18n.prop('a_item_bio019'));
-            
+
             $("#a_item_bio020").text($.i18n.prop('a_item_bio020'));
             $("#a_item_bio021").text($.i18n.prop('a_item_bio021'));
             $("#a_item_bio022").text($.i18n.prop('a_item_bio022'));
@@ -394,11 +394,11 @@ var language_module = (function (verbose) {
             $("#a_item_bio059").text($.i18n.prop('a_item_bio059'));
             $("#a_item_bio060").text($.i18n.prop('a_item_bio060'));
             $("#a_item_bio061").text($.i18n.prop('a_item_bio061'));
-            
-            
-            
-            
-            
+
+
+
+
+
 
             $("#btn_variable_bioclim_time").text($.i18n.prop('btn_variable_bioclim_time') + " ");
             $("#btn_variable_bioclim_time").append('<span class="caret"></span>');
@@ -450,22 +450,21 @@ var language_module = (function (verbose) {
             $('#tdisplay tr:eq(0) th:eq(10)').text($.i18n.prop('a_item_clase'));
             $('#tdisplay tr:eq(0) th:eq(11)').text($.i18n.prop('a_item_orden'));
             $('#tdisplay tr:eq(0) th:eq(12)').text($.i18n.prop('a_item_familia'));
-            
+
             $("#specie_next").text($.i18n.prop('label_next'));
-            
+
             $("#params_next").text($.i18n.prop('params_next'));
             $("#map_next").text($.i18n.prop('map_next'));
             $("#hist_next").text($.i18n.prop('hist_next'));
-            
+
             $("#btn_tutorial").text($.i18n.prop('btn_tutorial'));
             $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
             $("#show_gen").text($.i18n.prop('show_gen'));
-            
+
             _confLiveTutorialNiche();
 
 
-        } 
-        else if (_tipo_modulo === 1) {
+        } else if (_tipo_modulo === 1) {
 
             $("#lb_titulo_net").text($.i18n.prop('lb_titulo_net'));
             $("#net_link").text($.i18n.prop('net_link'));
@@ -506,7 +505,7 @@ var language_module = (function (verbose) {
             $("#lb_des_modal_red").text($.i18n.prop('lb_des_modal_red'));
             $("#red_download").text($.i18n.prop('red_download'));
             $("#cancel_red_csv").text($.i18n.prop('cancel_red_csv'));
-            
+
             $("#btn_tutorial").text($.i18n.prop('btn_tutorial'));
             $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
             $("#show_gen").text($.i18n.prop('show_gen'));
@@ -516,7 +515,7 @@ var language_module = (function (verbose) {
         }
         // index
         else {
-            
+
 //            _VERBOSE ? console.log("tipo_modulo: INDEX") : _VERBOSE;
 //            _VERBOSE ? console.log($.i18n.prop('lb_title_index')) : _VERBOSE;
 //            _VERBOSE ? console.log("lb_title_index: " + $("#lb_title_index").text()) : _VERBOSE;
@@ -547,11 +546,11 @@ var language_module = (function (verbose) {
 
             $("#lb_modal_login").text($.i18n.prop('lb_modal_login'));
             $("#lb_des_modal_login").text($.i18n.prop('lb_des_modal_login'));
-            
+
             $("#btn_redirect").text($.i18n.prop('btn_redirect'));
-            
-            
-            
+
+
+
 
 
         }
@@ -562,12 +561,116 @@ var language_module = (function (verbose) {
 
         $('#btn_tuto_steps.display-marker').on('click', function () {
 
+//            console.log($("#a_taxon_fuente").parent().hasClass("active"));
+//            console.log($("#a_raster_fuente").parent().hasClass("active"));
+//            console.log($("#a_taxon_sumidero").parent().hasClass("active"));
+//            console.log($("#a_raster_sumidero").parent().hasClass("active"));
+            
+            
+            var item_tab, item_tree, group_btn, clean_btn;
+            
+            if ($("#a_taxon_fuente").parent().hasClass("active")) {
+                item_tab = {
+                    el: '#tuto_taxon_sp_fuente',
+                    position: {
+                        location: 'rm-b'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p22'),
+                        content: $.i18n.prop('label_esp_p23')
+                    }
+                }
+                item_tree = {
+                    el: '#treeVariable_fuente',
+                    position: {
+                        location: 'rm-b'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p24'),
+                        content: $.i18n.prop('label_esp_p25')
+                    }
+                }
+                group_btn = {
+                    el: '#add_group_fuente',
+                    position: {
+                        location: 'rm-t'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p26'),
+                        content: $.i18n.prop('label_esp_p27')
+                    }
+                }
+                clean_btn = {
+                    el: '#clean_var_fuente',
+                    position: {
+                        location: 'rm-t'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p28'),
+                        content: $.i18n.prop('label_esp_p29')
+                    }
+                }
+
+            }
+
+            if ($("#a_raster_fuente").parent().hasClass("active")) {
+                item_tab = {
+                    el: '#btn_bioclim_fuente',
+                    position: {
+                        location: 'rm-b'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p50'),
+                        content: $.i18n.prop('label_esp_p51')
+                    }
+
+                }
+                item_tree = {
+                    el: '#treeVariableBioclim_fuente',
+                    position: {
+                        location: 'rm-b'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p52'),
+                        content: $.i18n.prop('label_esp_p53')
+                    }
+                }
+                group_btn = {
+                    el: '#add_group_bioclim_fuente',
+                    position: {
+                        location: 'rm-t'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p26'),
+                        content: $.i18n.prop('label_esp_p27')
+                    }
+                }
+                clean_btn = {
+                    el: '#clean_var_bioclim_fuente',
+                    position: {
+                        location: 'rm-t'
+                    },
+                    templateData: {
+                        title: $.i18n.prop('label_esp_p28'),
+                        content: $.i18n.prop('label_esp_p29')
+                    }
+                }
+
+            }
+
+            
             $.ptJs({
                 autoStart: true,
                 continueEnable: true,
                 templateData: {
                     content: '',
-                    title: $.i18n.prop('label_com_p1')
+                    title: $.i18n.prop('label_com_p1'),
+                    'button-start': $.i18n.prop('button_start'),
+                    'button-next': $.i18n.prop('button_next'),
+                    'button-previous': $.i18n.prop('button_previous'),
+                    'button-restart': $.i18n.prop('button_restart'),
+                    'button-continue': $.i18n.prop('button_continue'),
+                    'button-end': $.i18n.prop('button_end')
                 },
                 steps: [
                     {
@@ -608,46 +711,50 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_com_p8')
                         }
                     },
-                    {
-                        el: '#tuto_taxon_sp_fuente',
-                        position: {
-                            location: 'rm-b'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_com_p9'),
-                            content: $.i18n.prop('label_com_p10')
-                        }
-                    },
-                    {
-                        el: '#treeVariable_fuente',
-                        position: {
-                            location: 'rm-b'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_com_p11'),
-                            content: $.i18n.prop('label_com_p12')
-                        }
-                    },
-                    {
-                        el: '#add_group_fuente',
-                        position: {
-                            location: 'rm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_com_p13'),
-                            content: $.i18n.prop('label_com_p14')
-                        }
-                    },
-                    {
-                        el: '#clean_var_fuente',
-                        position: {
-                            location: 'rm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_com_p15'),
-                            content: $.i18n.prop('label_com_p16')
-                        }
-                    },
+                    item_tab,
+                    item_tree,
+                    group_btn,
+                    clean_btn,
+//                    {
+//                        el: '#tuto_taxon_sp_fuente',
+//                        position: {
+//                            location: 'rm-b'
+//                        },
+//                        templateData: {
+//                            title: $.i18n.prop('label_com_p9'),
+//                            content: $.i18n.prop('label_com_p10')
+//                        }
+//                    },
+//                    {
+//                        el: '#treeVariable_fuente',
+//                        position: {
+//                            location: 'rm-b'
+//                        },
+//                        templateData: {
+//                            title: $.i18n.prop('label_com_p11'),
+//                            content: $.i18n.prop('label_com_p12')
+//                        }
+//                    },
+//                    {
+//                        el: '#add_group_fuente',
+//                        position: {
+//                            location: 'rm-t'
+//                        },
+//                        templateData: {
+//                            title: $.i18n.prop('label_com_p13'),
+//                            content: $.i18n.prop('label_com_p14')
+//                        }
+//                    },
+//                    {
+//                        el: '#clean_var_fuente',
+//                        position: {
+//                            location: 'rm-t'
+//                        },
+//                        templateData: {
+//                            title: $.i18n.prop('label_com_p15'),
+//                            content: $.i18n.prop('label_com_p16')
+//                        }
+//                    },
                     {
                         el: '#treeAddedPanel_fuente',
                         position: {
@@ -669,13 +776,33 @@ var language_module = (function (verbose) {
                         }
                     },
                     {
-                        el: '#occ_number',
+                        el: '#tuto_occ',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_com_p21'),
                             content: $.i18n.prop('label_com_p22')
+                        }
+                    },
+                    {
+                        el: '#tuto_resolution',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p5'),
+                            content: $.i18n.prop('label_esp_p6')
+                        }
+                    },
+                    {
+                        el: '#tuto_region',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p54'),
+                            content: $.i18n.prop('label_esp_p55')
                         }
                     },
                     {
@@ -691,11 +818,11 @@ var language_module = (function (verbose) {
                     {
                         el: '#show_gen',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_com_p24'),
-                            content: $.i18n.prop('label_com_p25')
+                            title: $.i18n.prop('label_esp_p44'),
+                            content: $.i18n.prop('label_esp_p45') + '<br><img style="width:100%" alt="Responsive image" src="images/img_gen_link' + $.i18n.prop('url_image_link') + '.png">'
                         }
                     }
 
@@ -717,15 +844,15 @@ var language_module = (function (verbose) {
             _VERBOSE ? console.log("btn_tuto_steps") : _VERBOSE;
 
 
-            console.log($("#a_taxon_fuente").parent().hasClass("active"));
-            console.log($("#a_clima_fuente").parent().hasClass("active"));
+//            console.log($("#a_taxon_fuente").parent().hasClass("active"));
+//            console.log($("#a_raster_fuente").parent().hasClass("active"));
 
-            var item_tab_btn, item_tree, group_btn, clean_btn;
+            var item_tab, item_tree, group_btn, clean_btn;
             if ($("#a_taxon_fuente").parent().hasClass("active")) {
                 item_tab = {
                     el: '#tuto_taxon_sp_fuente',
                     position: {
-                        location: 'lm-b'
+                        location: 'rm-b'
                     },
                     templateData: {
                         title: $.i18n.prop('label_esp_p22'),
@@ -735,7 +862,7 @@ var language_module = (function (verbose) {
                 item_tree = {
                     el: '#treeVariable_fuente',
                     position: {
-                        location: 'lm-b'
+                        location: 'rm-b'
                     },
                     templateData: {
                         title: $.i18n.prop('label_esp_p24'),
@@ -745,7 +872,7 @@ var language_module = (function (verbose) {
                 group_btn = {
                     el: '#add_group_fuente',
                     position: {
-                        location: 'lm-t'
+                        location: 'rm-t'
                     },
                     templateData: {
                         title: $.i18n.prop('label_esp_p26'),
@@ -755,7 +882,7 @@ var language_module = (function (verbose) {
                 clean_btn = {
                     el: '#clean_var_fuente',
                     position: {
-                        location: 'lm-t'
+                        location: 'rm-t'
                     },
                     templateData: {
                         title: $.i18n.prop('label_esp_p28'),
@@ -765,11 +892,11 @@ var language_module = (function (verbose) {
 
             }
 
-            if ($("#a_clima_fuente").parent().hasClass("active")) {
+            if ($("#a_raster_fuente").parent().hasClass("active")) {
                 item_tab = {
                     el: '#btn_bioclim_fuente',
                     position: {
-                        location: 'lm-b'
+                        location: 'rm-b'
                     },
                     templateData: {
                         title: $.i18n.prop('label_esp_p50'),
@@ -780,7 +907,7 @@ var language_module = (function (verbose) {
                 item_tree = {
                     el: '#treeVariableBioclim_fuente',
                     position: {
-                        location: 'lm-b'
+                        location: 'rm-b'
                     },
                     templateData: {
                         title: $.i18n.prop('label_esp_p52'),
@@ -790,7 +917,7 @@ var language_module = (function (verbose) {
                 group_btn = {
                     el: '#add_group_bioclim_fuente',
                     position: {
-                        location: 'lm-t'
+                        location: 'rm-t'
                     },
                     templateData: {
                         title: $.i18n.prop('label_esp_p26'),
@@ -800,7 +927,7 @@ var language_module = (function (verbose) {
                 clean_btn = {
                     el: '#clean_var_bioclim_fuente',
                     position: {
-                        location: 'lm-t'
+                        location: 'rm-t'
                     },
                     templateData: {
                         title: $.i18n.prop('label_esp_p28'),
@@ -819,7 +946,13 @@ var language_module = (function (verbose) {
                 continueEnable: true,
                 templateData: {
                     content: '',
-                    title: $.i18n.prop('label_esp_p1')
+                    title: $.i18n.prop('label_esp_p1'),
+                    'button-start': $.i18n.prop('button_start'),
+                    'button-next': $.i18n.prop('button_next'),
+                    'button-previous': $.i18n.prop('button_previous'),
+                    'button-restart': $.i18n.prop('button_restart'),
+                    'button-continue': $.i18n.prop('button_continue'),
+                    'button-end': $.i18n.prop('button_end')
                 },
                 steps: [
                     {
@@ -838,6 +971,16 @@ var language_module = (function (verbose) {
                         templateData: {
                             title: $.i18n.prop('label_esp_p3'),
                             content: $.i18n.prop('label_esp_p4')
+                        }
+                    },
+                    {
+                        el: '#tuto_region',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p54'),
+                            content: $.i18n.prop('label_esp_p55')
                         }
                     },
                     {
@@ -913,7 +1056,7 @@ var language_module = (function (verbose) {
                     {
                         el: '#tuto_variables',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p18'),
@@ -923,7 +1066,7 @@ var language_module = (function (verbose) {
                     {
                         el: '#tuto_nav_tabs_fuente',
                         position: {
-                            location: 'lm-b'
+                            location: 'rm-b'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p20'),
@@ -937,7 +1080,7 @@ var language_module = (function (verbose) {
                     {
                         el: '#treeAddedPanel_fuente',
                         position: {
-                            location: 'lm-t'
+                            location: 'rm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p30'),
@@ -947,27 +1090,27 @@ var language_module = (function (verbose) {
                     {
                         el: '#tuto_params',
                         position: {
-                            location: 'rm-t'
+                            location: 'lm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p32'),
                             content: $.i18n.prop('label_esp_p33')
                         }
                     },
-                    {
-                        el: '#tuto_val',
-                        position: {
-                            location: 'rm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p34'),
-                            content: $.i18n.prop('label_esp_p35')
-                        }
-                    },
+//                    {
+//                        el: '#tuto_val',
+//                        position: {
+//                            location: 'rm-t'
+//                        },
+//                        templateData: {
+//                            title: $.i18n.prop('label_esp_p34'),
+//                            content: $.i18n.prop('label_esp_p35')
+//                        }
+//                    },
                     {
                         el: '#tuto_min_occ',
                         position: {
-                            location: 'rm-t'
+                            location: 'lm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p36'),
@@ -977,7 +1120,7 @@ var language_module = (function (verbose) {
                     {
                         el: '#tuto_apriori',
                         position: {
-                            location: 'rm-t'
+                            location: 'lm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p38'),
@@ -987,7 +1130,7 @@ var language_module = (function (verbose) {
                     {
                         el: '#tuto_map_prob',
                         position: {
-                            location: 'rm-t'
+                            location: 'lm-t'
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p40'),
@@ -1011,7 +1154,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p44'),
-                            content: $.i18n.prop('label_esp_p45') + '<br><img style="width:100%" alt="Responsive image" src="images/img_gen_link.png">'
+                            content: $.i18n.prop('label_esp_p45') + '<br><img style="width:100%" alt="Responsive image" src="images/img_gen_link' + $.i18n.prop('url_image_link') + '.png">'
                         }
                     }
 
