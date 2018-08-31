@@ -2,7 +2,7 @@
 
 Species FrontEnd is a HTML+JS webapp, this app can be served as a static
 website but it will need an instance of the
-[SNIB middleware][https://bitbucket.org/conabio_c3/snib-middleware/].
+[SNIB middleware](https://bitbucket.org/conabio_c3/snib-middleware/).
 
 ## Configuration
 
