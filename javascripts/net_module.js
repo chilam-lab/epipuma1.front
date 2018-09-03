@@ -1356,6 +1356,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
         var spids = [];
         var footprint_region = parseInt($("#footprint_region_select").val());
+        var grid_res = parseInt($("#grid_resolution").val());
 
         $.each(_nodes_selected, function(index, value) {
             spids.push(value.spid);
@@ -1369,8 +1370,9 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
         var sdata = {
-//            'qtype': 'getCountGridid',
-            "spids": spids
+            "spids": spids,
+            "footprint_region": footprint_region,
+            "grid_res": grid_res
         };
         
         $('#map').loading({
@@ -1378,12 +1380,9 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
         $.ajax({
-            // url : _url_trabajo,
             url: _url_zacatuche + "/niche/especie/getCountGridid",
             type: 'post',
             data: sdata,
-            footprint_region: footprint_region,
-            // dataType : "json",
             success: function(resp) {
 
                 $('#map').loading('stop');
