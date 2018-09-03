@@ -9,6 +9,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
     var _url_zacatuche = url_zacatuche;
 
     var _VERBOSE = verbose;
+    
+    var _TYPE_BIO = 0;
 
     var _variable_module_net, _language_module_net, _map_module_net, _net_module, _histogram_module_net, _table_module_net;
     var _footprint_region;
@@ -294,7 +296,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         } else {
 
-            if (s_filters.length == 0 || t_filters.length == 0) {
+            if (s_filters.length === 0 || t_filters.length === 0) {
 
                 _toastr.warning(_iTrans.prop('lb_sin_filtros'));
 
@@ -303,7 +305,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             }
 
             for (var i = 0; i < s_filters.length; i++) {
-                if (s_filters[i].type == 4) {
+                if (s_filters[i].type === _TYPE_BIO) {
                     hasBiosSource = true;
                 } else {
                     hasRasterSource = true;
@@ -311,7 +313,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             }
 
             for (var i = 0; i < t_filters.length; i++) {
-                if (t_filters[i].type == 4) {
+                if (t_filters[i].type === _TYPE_BIO) {
                     hasBiosTarget = true;
                 } else {
                     hasRasterTarget = true;
@@ -685,7 +687,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         $.each(filters, function (i, item) {
 
-            if (filters[i].type == 4) {
+            if (filters[i].type == _TYPE_BIO) {
 
                 $.each(json, function (j, item) {
 
