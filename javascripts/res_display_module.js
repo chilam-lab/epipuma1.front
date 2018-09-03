@@ -9,6 +9,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _url_zacatuche = url_zacatuche;
 
     var _VERBOSE = verbose;
+    
+    var _TYPE_BIO = 0;
 
     var _RUN_ON_SERVER = true;
 
@@ -1020,7 +1022,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 hasRaster = false;
 
                 for (var i = 0; i < single_filter.length; i++) {
-                    if (single_filter[i].type === 4) {
+                    if (single_filter[i].type === _TYPE_BIO) {
                         hasBios = true;
                     } else {
                         hasRaster = true;
@@ -1046,7 +1048,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             hasRaster = false;
 
             for (var i = 0; i < filterby_group.length; i++) {
-                if (filterby_group[i].type === 0) {
+                if (filterby_group[i].type === _TYPE_BIO) {
                     hasBios = true;
                 } else {
                     hasRaster = true;
@@ -1079,7 +1081,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         hasRaster = false;
 
         for (var i = 0; i < filters.length; i++) {
-            if (filters[i].type === 0) {
+            if (filters[i].type === _TYPE_BIO) {
                 hasBios = true;
             } else {
                 hasRaster = true;

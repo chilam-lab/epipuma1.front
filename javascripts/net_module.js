@@ -1332,8 +1332,10 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         // Actualemnte no existe proceso de validacion en comunidad
         var val_process = false;
         // Actualemnte no existe cambio de resolución en comunidad
-        var grid_res = "16";
-        _map_module_net.loadD3GridMX(val_process, grid_res);
+        var grid_res = parseInt($("#grid_resolution").val());
+        var footprint_region = parseInt($("#footprint_region_select").val());
+        
+        _map_module_net.loadD3GridMX(val_process, grid_res, footprint_region);
 
     }
 
@@ -1353,6 +1355,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         _VERBOSE ? console.log("showSpecieOcc") : _VERBOSE;
 
         var spids = [];
+        var footprint_region = parseInt($("#footprint_region_select").val());
+        var grid_res = parseInt($("#grid_resolution").val());
 
         $.each(_nodes_selected, function(index, value) {
             spids.push(value.spid);
@@ -1366,8 +1370,9 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
         var sdata = {
-//            'qtype': 'getCountGridid',
-            "spids": spids
+            "spids": spids,
+            "footprint_region": footprint_region,
+            "grid_res": grid_res
         };
         
         $('#map').loading({
@@ -1375,11 +1380,9 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
         $.ajax({
-            // url : _url_trabajo,
             url: _url_zacatuche + "/niche/especie/getCountGridid",
             type: 'post',
             data: sdata,
-            // dataType : "json",
             success: function(resp) {
 
                 $('#map').loading('stop');
@@ -1393,7 +1396,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
                 $.each(json, function(index, item) {
                     arg_gridid.push(item.gridid);
-                    arg_count.push(parseInt(item.cont));
+                    arg_count.push(parseInt(item.conteo));
                 });
 
                 var max_eps = d3.max(arg_count);
