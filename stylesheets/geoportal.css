@@ -1000,7 +1000,7 @@ h3{
 
 .myBlockVariableAdded{
 
-    /*overflow: auto;*/ 
+    overflow: auto; 
 
     border-style: solid;
     border-color: #3B6A93;

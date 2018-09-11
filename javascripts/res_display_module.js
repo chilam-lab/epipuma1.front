@@ -2448,7 +2448,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // TODO: cambiar a getcounts
         $.ajax({
-            url: _url_zacatuche + "/niche/getGridSpecies",
+//            url: _url_zacatuche + "/niche/getGridSpecies",
+            url: _url_zacatuche + "/niche/counts",
             type: 'post',
             data: singleCellData,
             success: function (resp) {
