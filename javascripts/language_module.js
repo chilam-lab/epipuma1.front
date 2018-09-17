@@ -42,7 +42,7 @@ var language_module = (function (verbose) {
 //        _VERBOSE ? console.log("localstoarge item language: " + localStorage.getItem("language")) : _VERBOSE;
 
         if (localStorage.getItem("language") === null) {
-            _language_selected = 'es_ES';
+            _language_selected = 'en_EN';
             localStorage.language = _language_selected;
         } else {
             _language_selected = localStorage.getItem("language");
@@ -459,7 +459,8 @@ var language_module = (function (verbose) {
 
             $("#btn_tutorial").text($.i18n.prop('btn_tutorial'));
             $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
-            $("#show_gen").text($.i18n.prop('show_gen'));
+            $("#show_gen").text($.i18n.prop('show_gen'));            
+            
 
             _confLiveTutorialNiche();
 
@@ -1117,26 +1118,26 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p37')
                         }
                     },
-                    {
-                        el: '#tuto_apriori',
-                        position: {
-                            location: 'lm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p38'),
-                            content: $.i18n.prop('label_esp_p39')
-                        }
-                    },
-                    {
-                        el: '#tuto_map_prob',
-                        position: {
-                            location: 'lm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p40'),
-                            content: $.i18n.prop('label_esp_p41')
-                        }
-                    },
+//                    {
+//                        el: '#tuto_apriori',
+//                        position: {
+//                            location: 'lm-t'
+//                        },
+//                        templateData: {
+//                            title: $.i18n.prop('label_esp_p38'),
+//                            content: $.i18n.prop('label_esp_p39')
+//                        }
+//                    },
+//                    {
+//                        el: '#tuto_map_prob',
+//                        position: {
+//                            location: 'lm-t'
+//                        },
+//                        templateData: {
+//                            title: $.i18n.prop('label_esp_p40'),
+//                            content: $.i18n.prop('label_esp_p41')
+//                        }
+//                    },
                     {
                         el: '#get_esc_ep',
                         position: {

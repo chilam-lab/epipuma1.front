@@ -659,7 +659,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
                         .click(function (e) {
 
-                            self.addOtherGroup('jstree_variables_bioclim_' + id, self.arrayBioclimSelected, 'Abio', 'treeAddedPanel_' + id, _TYPE_ABIO);
+                            self.addOtherGroup('jstree_variables_bioclim_' + id, self.arrayBioclimSelected, 'Raster', 'treeAddedPanel_' + id, _TYPE_ABIO);
                             e.preventDefault();
 
                         })
@@ -1126,11 +1126,6 @@ var variable_module = (function (verbose, url_zacatuche) {
                         self.updateVarSelArray(gpo_deleted, _BORRADO);
 
                     });
-
-
-
-
-
 
         }
 

@@ -3,6 +3,7 @@ var utils_module = (function (verbose) {
     var _VERBOSE = verbose;
     var buckets = 20;
     var deciles = 10;
+    var _TYPE_BIO = 0;
 
 
     function processDataForFreqSpecie(data) {
@@ -27,7 +28,7 @@ var utils_module = (function (verbose) {
 
 
         var beans = d3.range(1, buckets + 1, 1);
-        
+
 //        var epsRange = d3.scaleQuantile().domain([min_eps, max_eps]).range(beans);
 //        var scrRange = d3.scaleQuantile().domain([min_scr, max_scr]).range(beans);
         var epsRange = d3.scale.quantile().domain([min_eps, max_eps]).range(beans);
@@ -85,7 +86,7 @@ var utils_module = (function (verbose) {
         // debug("min_score: " + max_scr)
 
         var beans = d3.range(1, buckets + 1, 1);
-        
+
 //        var scrRange = d3.scaleQuantile().domain([min_scr, max_scr]).range(beans);
         var scrRange = d3.scale.quantile().domain([min_scr, max_scr]).range(beans);
 
@@ -303,42 +304,50 @@ var utils_module = (function (verbose) {
         _VERBOSE ? console.log(groupid) : _VERBOSE;
         _VERBOSE ? console.log(tfilters) : _VERBOSE;
 
-        var title_valor = '';
+        var title_valor = ''
+
+        // debug("groupid: " + groupid)
+        // debug(tfilters)
 
         if (groupid !== undefined) {
+
             // group_item = 0 ->> root
-            if (tfilters[0].type === 4) {
+            if (parseInt(tfilters[0].type) === _TYPE_BIO) {
+
                 title_valor = JSON.stringify(
                         {'title': 'Grupo Bio ' + groupid,
                             'type': tfilters[0].type,
                             'group_item': tfilters[0].group_item,
                             'is_parent': true})
-            } else if (tfilters[0].type === 0) {
+            } else { //if (tfilters[0].type != 0) {
+
+                
                 title_valor = JSON.stringify(
-                        {'title': 'Grupo Abio ' + groupid,
+                        {'title': 'Grupo Raster ' + groupid,
                             'type': tfilters[0].type,
                             'group_item': tfilters[0].group_item,
                             'is_parent': true})
-                // title_valor = "Grupo Abio " + groupid;
-            } else { // if (tfilters[0].type == 1){
-                title_valor = JSON.stringify(
-                        {'title': 'Grupo Topo ' + groupid,
-                            'type': tfilters[0].type,
-                            'group_item': tfilters[0].group_item,
-                            'is_parent': true})
-                // title_valor = "Grupo Abio " + groupid;
             }
+            // else { 
+            //   title_valor = JSON.stringify(
+            //     {'title':'Grupo Topo ' + groupid, 
+            //       'type': tfilters[0].type , 
+            //       'group_item': tfilters[0].group_item, 
+            //       'is_parent':true })
+            // }
         } else if (tfilters[0].value) {
-            // debug("title: " + tfilters[0].value);
-            // debug("title: " + tfilters[0].label);
-            // debug(group_item);
-            if (tfilters[0].type === 4) {
+
+            if (parseInt(tfilters[0].type) === _TYPE_BIO) {
+
+
                 title_valor = JSON.stringify(
                         {'title': tfilters[0].value,
                             'type': tfilters[0].type,
                             'group_item': tfilters[0].group_item,
                             'is_parent': false})
             } else {
+
+
                 title_valor = JSON.stringify(
                         {'title': tfilters[0].label,
                             'type': tfilters[0].type,
@@ -347,7 +356,6 @@ var utils_module = (function (verbose) {
             }
         }
 
-//         debug("title_valor: " + title_valor);
         return JSON.parse(title_valor)
     }
 
@@ -401,8 +409,6 @@ var utils_module = (function (verbose) {
 
         })
 
-        // debug(map_spid.values());
-
         return map_spid.values();
 
 
@@ -439,8 +445,7 @@ var utils_module = (function (verbose) {
                 })
             })
         })
-        // debug(cells)
-
+        
         var cross_cells = crossfilter(cells)
         cross_cells.groupAll();
 
@@ -531,10 +536,6 @@ var utils_module = (function (verbose) {
 
         }
         cell_score_array.sort(_compare_desc);
-        // debug(cell_score_array)
-        // debug(cell_score_array[0].gridid)
-        // debug(cell_score_array[0].tscore)
-        // debug(cell_score_array[0].species)
         return cell_score_array
 
     }

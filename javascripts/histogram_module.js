@@ -843,8 +843,8 @@ var histogram_module = (function (verbose) {
                 .attr('class', 'd3-tip')
                 .offset([-10, 10])
                 .html(function (d) {
-                    return  "<strong>Fechas:</strong> <span >" + d.fechas + "</span><br/>" +
-                            "<strong>Registros:</strong> <span >" + d.cantidad + "</span>";
+                    return  "<strong>" + _iTrans.prop('hist_occ_fecha') + ":</strong> <span >" + d.fechas + "</span><br/>" +
+                            "<strong>" + _iTrans.prop('hist_occ_registros') + ":</strong> <span >" + d.cantidad + "</span>";
                 });
         svg.call(tip);
 

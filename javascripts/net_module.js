@@ -1430,6 +1430,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
     }
     
+    
+    
     function getGridNet2Export(nodes, links){
         
         _VERBOSE ? console.log("getGridNet2Export") : _VERBOSE;

@@ -386,8 +386,8 @@ button.glyphicon-remove{
     height: 27px;
 
     font-size: 1em;
-    margin-left: 110px;
-    margin-top: -28px;
+    /*margin-left: 20px;*/
+    margin-top: 0px;
     /*vertical-align: -2px;*/
 }
 
@@ -677,7 +677,7 @@ text {
 
 .myBlockVariableAdded{
 
-    /*overflow: auto;*/ 
+    overflow: auto; 
 
     border-style: solid;
     border-color: #3B6A93;
