@@ -1562,14 +1562,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     if (_RUN_ON_SERVER) {
 
-                        var freq_data = respuesta.data_freq;
-                        _createHistEpScr_Especie(freq_data);
-
-                        var freq_celda_data = respuesta.data_freq_cell;
-                        _createHistScore_Celda(freq_celda_data);
-
-                        var score_celda_data = respuesta.data_score_cell;
-                        _configureStyleMap(score_celda_data);
+                        _createHistEpScr_Especie(respuesta.data_freq);
+                        _createHistScore_Celda(respuesta.data_freq_cell);
+                        _configureStyleMap(respuesta.data_score_cell);
 
                     } else {
 
@@ -1674,7 +1669,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @private
      * @memberof! res_display_module
      * 
-     * @param {json} sdata - Json con la configuración seleccionada por el usuario
+     * @param {json} data - JSON con los resultados de id de celda y valor de total score
      */
     function _configureStyleMap(data) {
 
@@ -1682,48 +1677,22 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
 
-
-
-//        $.ajax({
-//            url: _url_zacatuche + "/niche/getCellScore",
-//            type: 'post',
-//            data: sdata,
-//            success: function (json_file) {
-
         $('#map').loading('stop');
         $("#map_next").css('visibility', 'visible');
         $("#map_next").show("slow");
 
-        var json = data;
-
-//                console.log(json);
+//        console.log(score_cell_resp.data);
+//        var json = data;
+        
+        // TODO: verificar si viene valor de apriori
+        
 
         // grid_map_color contiene colores y scores
-        var grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
-
-//                console.log(grid_map_color.values());
-//                console.log(grid_map_color.keys());
-
+        var grid_map_color = _map_module_nicho.createDecilColor(data, _mapa_prob);
         _map_module_nicho.colorizeFeatures(grid_map_color);
-
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
         document.getElementById("dShape").style.display = "inline";
-
-
-//            },
-//            error: function (jqXHR, textStatus, errorThrown) {
-//                _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
-//                $("#map_next").css('visibility', 'hidden');
-//                $("#map_next").hide("slow");
-//
-//                $('#map').loading('stop');
-//
-//                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_mapa'), "error");
-//                document.getElementById("dShape").style.display = "none";
-//
-//            }
-//        });
 
     }
 
