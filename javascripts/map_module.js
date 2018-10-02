@@ -1424,7 +1424,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         var apriori_cells = [];
 
 //        _VERBOSE ? console.log(json) : _VERBOSE;
-        var data = json.data;
+//        var data = json.data;
 
         var grid_color = d3.map([]);
 
@@ -1433,12 +1433,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             _VERBOSE ? console.log("Sin probabilidad") : _VERBOSE;
 
 
-            $.each(data, function (index, d) {
+            $.each(json, function (index, d) {
 
-                if (json.apriori && d.tscore === json.val_apriori) {
-                    apriori_cells.push({"girdid": d.gridid, "tscore": d.tscore})
-                    return true;
-                }
+//                if (json.apriori && d.tscore === json.val_apriori) {
+//                    apriori_cells.push({"girdid": d.gridid, "tscore": d.tscore})
+//                    return true;
+//                }
 
                 if (d.tscore >= 0) {
                     red_arg.push(d)
@@ -1517,20 +1517,20 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             }
 
-            _VERBOSE ? console.log(blue_chunks) : _VERBOSE;
-            _VERBOSE ? console.log(red_chunks) : _VERBOSE;
+//            _VERBOSE ? console.log(blue_chunks) : _VERBOSE;
+//            _VERBOSE ? console.log(red_chunks) : _VERBOSE;
 
 
             // CHECAR PARAMETRO INDEX!!
             var color_scale = colorbrewer.Reds[9];
             $.each(red_chunks, function (index, value) {
 
-                _VERBOSE ? console.log(index) : _VERBOSE;
+//                _VERBOSE ? console.log(index) : _VERBOSE;
 
 
                 value.forEach(function (d) {
 
-                    _VERBOSE ? console.log(color_scale[index]) : _VERBOSE;
+//                    _VERBOSE ? console.log(color_scale[index]) : _VERBOSE;
 
                     grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
                 });
