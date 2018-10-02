@@ -732,7 +732,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var idtabla = tabla || "no_table";
         var milliseconds = new Date().getTime();
         var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
-        var mapap = _mapa_prob ? "mapa_prob" : undefined;
+        var mapap = $("#chkMapaProb").is(':checked') ? "mapa_prob" : undefined; 
+//        _mapa_prob ? "mapa_prob" : undefined;
 
         var fossil = $("#chkFosil").is(':checked') ? true : false;
         var min_occ = _min_occ_process ? parseInt($("#occ_number").val()) : 1;
@@ -877,6 +878,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "id": spid,
             "idtime": milliseconds,
             "apriori": apriori,
+            "mapa_prob": mapap,
             "min_occ": min_occ,
             "fossil": fossil,
             "lim_inf": lin_inf,
@@ -2405,7 +2407,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             stoppable: true
         });
 
-
         var singleCellData = _cdata;
 
         var milliseconds = new Date().getTime();
@@ -2432,6 +2433,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _VERBOSE ? console.log(data) : _VERBOSE;
 
                 var htmltable = _createTableFromData(data);
+                if(htmltable === "") return;
                 _map_module_nicho.showPopUp(htmltable, [lat, long]);
 
                 $('#map').loading('stop');
@@ -2468,10 +2470,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var table_rt = "";
         var title_total;
         var total_celda;
+        
+//        console.log(json_data.apriori)
+//        console.log(json_data.apriori === undefined)
 
-        if (json_data.hasbio === false && json_data.hasraster === false) {
+        if (json_data.hasbio === false && json_data.hasraster === false && json_data.apriori === undefined && json_data.mapa_prob === undefined) {
             _VERBOSE ? console.log("No data") : _VERBOSE
-            return;
+            return "";
         }
 
         if (json_data.hasbio) {
@@ -2544,44 +2549,58 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             var title_total = $.i18n.prop('lb_pp_st');
             var total_celda = parseFloat(json_data.tscore + json_data.apriori).toFixed(2);
-
+            
+            
             htmltable += "<div class='panel-primary'>\n\
                                 <div class='panel-heading'>\n\
                                     <h3>Total</h3>\n\
                                 </div>\n\
                                 <table class='table table-striped'>\n\
-                                <thead>\n\
-                                    <tr>\n\
-                                        <th>" + title_total + "</th>\n\
-                                        <th>" + total_celda + "</th>\n\
-                                    </tr>\n\
-                                    <tr>\n\
-                                        <th>" + title_score + "</th>\n\
-                                        <th>" + parcial_score + "</th>\n\
-                                    </tr>\n\
-                                    <tr>\n\
-                                        <th>" + title_apriori + "</th>\n\
-                                        <th>" + total_apriori + "</th>\n\
-                                    </tr>";
+                                <thead>";
+            
+            if (json_data.hasbio === false && json_data.hasraster === false){    
+                htmltable +=    "<tr>\n\
+                                    <th>" + title_apriori + "</th>\n\
+                                    <th>" + total_apriori + "</th>\n\
+                                </tr>";
+            }
+            else{
+                htmltable +=    "<tr>\n\
+                                    <th>" + title_total + "</th>\n\
+                                    <th>" + total_celda + "</th>\n\
+                                </tr>\n\
+                                <tr>\n\
+                                    <th>" + title_score + "</th>\n\
+                                    <th>" + parcial_score + "</th>\n\
+                                </tr>\n\
+                                <tr>\n\
+                                    <th>" + title_apriori + "</th>\n\
+                                    <th>" + total_apriori + "</th>\n\
+                                </tr>";
+            }
+
+            
             
         } else {
             title_total = $.i18n.prop('lb_pp_st');
             total_celda = parseFloat(json_data.tscore).toFixed(2);
 
             htmltable += "<div class='panel-primary'>\
-                                    <div class='panel-heading'>\
-                                        <h3>Total</h3>\
-                                    </div>\
-                                    <table class='table table-striped'>\
-                                        <thead>\
-                                            <tr>\
-                                                <th>" + title_total + "</th>\
-                                                <th>" + total_celda + "</th>\
-                                            </tr>";
+                                <div class='panel-heading'>\
+                                    <h3>Total</h3>\
+                                </div>\
+                                <table class='table table-striped'>\
+                                    <thead>\
+                                        <tr>\
+                                            <th>" + title_total + "</th>\
+                                            <th>" + total_celda + "</th>\
+                                        </tr>";
                                             
         }
         
-        htmltable += "<tr>\
+        
+        if (json_data.hasbio !== false || json_data.hasraster !== false){    
+            htmltable += "<tr>\
                             <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
                             <th>" + json_data.bios + "</th>\
                         </tr>\
@@ -2596,9 +2615,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         <tr>\
                             <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
                             <th>" + json_data.negatives + "</th>\
-                        </tr>\
-                    </thead>\
+                        </tr>"
+        }
+        
+        htmltable += "</thead>\
                 <tbody>";
+        
+        
         
         htmltable += "</tbody></table></div>";
 
