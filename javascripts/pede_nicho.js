@@ -446,101 +446,134 @@ var module_nicho = (function () {
         $("#show_gen").click(function (e) {
 
             _VERBOSE ? console.log("show_gen") : _VERBOSE;
-
-            var data_link = "";
-
-            var sp_data = JSON.stringify(_map_module_nicho.get_specieTarget());
-
-
+            
             var subgroups = _componente_fuente.getVarSelArray();
-
-            data_link += "sp_data=" + sp_data + "&";
-
-            var val_process = $("#chkValidation").is(":checked");
-            if (val_process) {
-                data_link += "chkVal=" + val_process + "&";
-            }
-
-            var mapa_prob = $("#chkMapaProb").is(":checked");
-            if (mapa_prob) {
-                data_link += "chkPrb=" + mapa_prob + "&";
-            }
-
-            var fossils = $("#chkFosil").is(":checked");
-            if (fossils) {
-                data_link += "chkFosil=" + fossils + "&";
-            }
-
-            var apriori = $("#chkApriori").is(':checked');
-            if (apriori) {
-                data_link += "chkApr=" + apriori + "&";
-            }
-
-            var chkFecha = $("#chkFecha").is(':checked');
-
-            if (chkFecha) {
-                data_link += "chkFec=" + chkFecha + "&";
-            }
-
+            
+            var data_link = {};
+            data_link.id = _map_module_nicho.get_specieTarget().spid;
+            data_link.val_process = $("#chkValidation").is(":checked");
+            data_link.mapa_prob = $("#chkMapaProb").is(":checked");
+            data_link.fossil = $("#chkFosil").is(":checked");
+            data_link.apriori = $("#chkApriori").is(':checked');
+            data_link.sfecha = $("#chkFecha").is(':checked');
+            
             var rango_fechas = $("#sliderFecha").slider("values");
-
-            if (rango_fechas[0] != $("#sliderFecha").slider("option", "min") || rango_fechas[1] != $("#sliderFecha").slider("option", "max")) {
-                data_link += "minFec=" + rango_fechas[0] + "&maxFec=" + rango_fechas[1];
+            if (rango_fechas[0] !== $("#sliderFecha").slider("option", "min") || rango_fechas[1] !== $("#sliderFecha").slider("option", "max")) {
+                data_link.lim_inf = rango_fechas[0]
+                data_link.lim_sup = rango_fechas[1];
             }
-
+            else{
+                data_link.lim_inf = undefined;
+                data_link.lim_sup = undefined;
+            }
+            
             var min_occ = $("#chkMinOcc").is(':checked');
-
             if (min_occ) {
-                data_link += "chkOcc=" + parseInt($("#occ_number").val()) + "&";
+                data_link.min_occ = parseInt($("#occ_number").val());
             }
+            
+            data_link.grid_res = parseInt($("#grid_resolution").val());
+            data_link.footprint_region =  _REGION_SELECTED;
+            
+            data_link.discardedFilterids = _map_module_nicho.get_discardedPoints();
+            console.log(data_link.discardedFilterids);
+            
+            data_link.tfilters = subgroups;
+            data_link.tipo = "nicho";
+            
+            
+            console.log(data_link);
+            
+
+
+           
+//            var data_link = "";
+//            var sp_data = JSON.stringify(_map_module_nicho.get_specieTarget());
+            
+            
+
+//            data_link += "sp_data=" + sp_data + "&";
+
+//            var val_process = $("#chkValidation").is(":checked");
+//            if (val_process) {
+//                data_link += "chkVal=" + val_process + "&";
+//            }
+
+//            var mapa_prob = $("#chkMapaProb").is(":checked");
+//            if (mapa_prob) {
+//                data_link += "chkPrb=" + mapa_prob + "&";
+//            }
+
+//            var fossils = $("#chkFosil").is(":checked");
+//            if (fossils) {
+//                data_link += "chkFosil=" + fossils + "&";
+//            }
+//
+//            var apriori = $("#chkApriori").is(':checked');
+//            if (apriori) {
+//                data_link += "chkApr=" + apriori + "&";
+//            }
+//
+//            var chkFecha = $("#chkFecha").is(':checked');
+//            if (chkFecha) {
+//                data_link += "chkFec=" + chkFecha + "&";
+//            }
+//
+//            var rango_fechas = $("#sliderFecha").slider("values");
+//            if (rango_fechas[0] != $("#sliderFecha").slider("option", "min") || rango_fechas[1] != $("#sliderFecha").slider("option", "max")) {
+//                data_link += "minFec=" + rango_fechas[0] + "&maxFec=" + rango_fechas[1];
+//            }
+
+//            var min_occ = $("#chkMinOcc").is(':checked');
+//            if (min_occ) {
+//                data_link += "chkOcc=" + parseInt($("#occ_number").val()) + "&";
+//            }
 
 //            console.log($("#grid_resolution").val());
-            data_link += "gridRes=" + parseInt($("#grid_resolution").val()) + "&";
+//            data_link += "gridRes=" + parseInt($("#grid_resolution").val()) + "&";
 
-            data_link += "region=" + _REGION_SELECTED + "&";
+//            data_link += "region=" + _REGION_SELECTED + "&";
 
             //add deleted occ
-            var dPoints = _map_module_nicho.get_discardedPoints();
-            if (dPoints.values().length > 0) {
-                data_link += "num_dpoints=" + dPoints.values().length + "&";
-                dPoints.values().forEach(function (item, index) {
-//                console.log(item);
-//                console.log(item.feature.properties.gridid);
-
-                    var str_item = JSON.stringify(
-                            {feature: {
-                                    properties: {
-                                        gridid: item.feature.properties.gridid
-                                    }
-                                }
-                            });
-//                console.log(str_item);
-
-                    if (index === 0) {
-                        data_link += "deleteditem[" + index + "]=" + str_item;
-                    } else {
-                        data_link += "&deleteditem[" + index + "]=" + str_item;
-                    }
-
-                });
-                data_link += "&";
-            } else {
-                data_link += "num_dpoints=0&";
-            }
-
-            data_link += "num_filters=" + subgroups.length + "&";
-
-            $.each(subgroups, function (index, item) {
-
-                var str_item = JSON.stringify(item);
-
-                if (index == 0) {
-                    data_link += "tfilters[" + index + "]=" + str_item;
-                } else {
-                    data_link += "&tfilters[" + index + "]=" + str_item;
-                }
-
-            });
+//            var dPoints = _map_module_nicho.get_discardedPoints();
+//            if (dPoints.values().length > 0) {
+//                data_link += "num_dpoints=" + dPoints.values().length + "&";
+//                dPoints.values().forEach(function (item, index) {
+////                console.log(item);
+////                console.log(item.feature.properties.gridid);
+//                    var str_item = JSON.stringify(
+//                            {feature: {
+//                                    properties: {
+//                                        gridid: item.feature.properties.gridid
+//                                    }
+//                                }
+//                            });
+////                console.log(str_item);
+//                    if (index === 0) {
+//                        data_link += "deleteditem[" + index + "]=" + str_item;
+//                    } else {
+//                        data_link += "&deleteditem[" + index + "]=" + str_item;
+//                    }
+//
+//                });
+//                data_link += "&";
+//            } else {
+//                data_link += "num_dpoints=0&";
+//            }
+//
+//            data_link += "num_filters=" + subgroups.length + "&";
+//
+//            $.each(subgroups, function (index, item) {
+//
+//                var str_item = JSON.stringify(item);
+//
+//                if (index == 0) {
+//                    data_link += "tfilters[" + index + "]=" + str_item;
+//                } else {
+//                    data_link += "&tfilters[" + index + "]=" + str_item;
+//                }
+//
+//            });
 
             _getLinkToken(data_link);
 
@@ -605,9 +638,7 @@ var module_nicho = (function () {
             url: _url_api + "/niche/especie/getToken",
             type: 'post',
             data: {
-//                qtype: 'getToken',
-                confparams: data_link,
-                tipo: 'nicho'
+                data: data_link
             },
             dataType: "json",
             success: function (resp) {
