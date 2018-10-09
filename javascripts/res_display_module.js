@@ -732,7 +732,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var idtabla = tabla || "no_table";
         var milliseconds = new Date().getTime();
         var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
-        var mapap = _mapa_prob ? "mapa_prob" : undefined;
+        var mapap = $("#chkMapaProb").is(':checked') ? "mapa_prob" : undefined; 
+//        _mapa_prob ? "mapa_prob" : undefined;
 
         var fossil = $("#chkFosil").is(':checked') ? true : false;
         var min_occ = _min_occ_process ? parseInt($("#occ_number").val()) : 1;
@@ -877,6 +878,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "id": spid,
             "idtime": milliseconds,
             "apriori": apriori,
+            "mapa_prob": mapap,
             "min_occ": min_occ,
             "fossil": fossil,
             "lim_inf": lin_inf,
@@ -1256,104 +1258,104 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 //            console.log(decildata);
 
-            $.ajax({
-                url: _url_zacatuche + "/niche/counts",
-                type: 'post',
-                dataType: "json",
-                data: decildata,
-                success: function (respuesta) {
-
-                    _ITER_REQUESTS = _ITER_REQUESTS - 1;
-                    console.log("_ITER_REQUESTS: " + _ITER_REQUESTS);
-
-
-                    if (respuesta.ok) {
-                        var counts = respuesta.data;
-                        var data_score_cell = _utils_module.processDataForScoreCell(counts);
-                        var data = _utils_module.processDataForScoreDecil(data_score_cell);
-//                        console.log(data);
-
-                        var groupid = data_request.groupid;
-                        var tfilters = data_request.tfilters;
-                        var title_valor = {};
-                        if (groupid !== undefined || tfilters !== undefined) {
-                            title_valor = _utils_module.processTitleGroup(groupid, tfilters)
-                        }
-//                        console.log(title_valor);
-
-                        for (var i = 0; i < data.length; i++) {
-                            var item = data[i];
-                            item['title'] = title_valor;
-                        }
-//                        console.log(data);
-
-                        _tbl_decil = true;
-
-                        if (data.length > 0 && data[0].title.is_parent) {
-                            console.log("caso 1");
-
-                            if (hasChildren) {
-                                console.log("caso 1A");
-                                _fathers.push({item: data});
-
-                            } else {
-                                // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
-                                console.log("caso 1B");
-                                _fathers.push({item: data});
-                                _sons.push({item: data});
-                            }
-
-                            _decil_data_requests.push({"request": data_request, "name": data[0].title.title});
-                        } else {
-
-                            if (data.length > 0) {
-                                console.log("caso 2");
-                                _sons.push({item: data});
-                            } else {
-                                console.log("caso 4 Sin datos");
-                            }
-                        }
-                        if (isTotal) {
-                            console.log("caso 3");
-                            _totals.push({item: data});
-
-                            _decil_data_requests.push({"request": data_request, "name": "Total"});
-                        }
-
-                        if (_ITER_REQUESTS === 0) {
-
-                            _ITER_REQUESTS = _REQUESTS;
-
-                            loadDecilDataTable();
-
-                            var data_chart = _createSetStructure(_fathers, _sons);
-                            if (_totals.length > 0) {
-                                _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
-                                data_chart = _addDataChartTotal(data_chart, _totals[0].item);
-                            }
-                            $('#chartdiv_score_decil').loading('stop');
-                            $("#hist_next").css('visibility', 'visible');
-                            $("#hist_next").show("slow");
-                            _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
-                            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
-
-                        }
-
-
-                    } else {
-                        // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
-                    }
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(errorThrown);
-                    console.log(jqXHR);
-                    _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
-                    _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
-
-                }
-
-            });
+//            $.ajax({
+//                url: _url_zacatuche + "/niche/counts",
+//                type: 'post',
+//                dataType: "json",
+//                data: decildata,
+//                success: function (respuesta) {
+//
+//                    _ITER_REQUESTS = _ITER_REQUESTS - 1;
+//                    console.log("_ITER_REQUESTS: " + _ITER_REQUESTS);
+//
+//
+//                    if (respuesta.ok) {
+//                        var counts = respuesta.data;
+//                        var data_score_cell = _utils_module.processDataForScoreCell(counts);
+//                        var data = _utils_module.processDataForScoreDecil(data_score_cell);
+////                        console.log(data);
+//
+//                        var groupid = data_request.groupid;
+//                        var tfilters = data_request.tfilters;
+//                        var title_valor = {};
+//                        if (groupid !== undefined || tfilters !== undefined) {
+//                            title_valor = _utils_module.processTitleGroup(groupid, tfilters)
+//                        }
+////                        console.log(title_valor);
+//
+//                        for (var i = 0; i < data.length; i++) {
+//                            var item = data[i];
+//                            item['title'] = title_valor;
+//                        }
+////                        console.log(data);
+//
+//                        _tbl_decil = true;
+//
+//                        if (data.length > 0 && data[0].title.is_parent) {
+//                            console.log("caso 1");
+//
+//                            if (hasChildren) {
+//                                console.log("caso 1A");
+//                                _fathers.push({item: data});
+//
+//                            } else {
+//                                // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
+//                                console.log("caso 1B");
+//                                _fathers.push({item: data});
+//                                _sons.push({item: data});
+//                            }
+//
+//                            _decil_data_requests.push({"request": data_request, "name": data[0].title.title});
+//                        } else {
+//
+//                            if (data.length > 0) {
+//                                console.log("caso 2");
+//                                _sons.push({item: data});
+//                            } else {
+//                                console.log("caso 4 Sin datos");
+//                            }
+//                        }
+//                        if (isTotal) {
+//                            console.log("caso 3");
+//                            _totals.push({item: data});
+//
+//                            _decil_data_requests.push({"request": data_request, "name": "Total"});
+//                        }
+//
+//                        if (_ITER_REQUESTS === 0) {
+//
+//                            _ITER_REQUESTS = _REQUESTS;
+//
+//                            loadDecilDataTable();
+//
+//                            var data_chart = _createSetStructure(_fathers, _sons);
+//                            if (_totals.length > 0) {
+//                                _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
+//                                data_chart = _addDataChartTotal(data_chart, _totals[0].item);
+//                            }
+//                            $('#chartdiv_score_decil').loading('stop');
+//                            $("#hist_next").css('visibility', 'visible');
+//                            $("#hist_next").show("slow");
+//                            _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
+//                            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
+//
+//                        }
+//
+//
+//                    } else {
+//                        // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
+//                    }
+//
+//                },
+//                error: function (jqXHR, textStatus, errorThrown) {
+//                    console.log(errorThrown);
+//                    console.log(jqXHR);
+//                    _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
+//                    _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
+//
+//                }
+//
+//            });
 
         }
 
@@ -1562,14 +1564,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     if (_RUN_ON_SERVER) {
 
-                        var freq_data = respuesta.data_freq;
-                        _createHistEpScr_Especie(freq_data);
-
-                        var freq_celda_data = respuesta.data_freq_cell;
-                        _createHistScore_Celda(freq_celda_data);
-
-                        var score_celda_data = respuesta.data_score_cell;
-                        _configureStyleMap(score_celda_data);
+                        _createHistEpScr_Especie(respuesta.data_freq);
+                        _createHistScore_Celda(respuesta.data_freq_cell);
+                        _configureStyleMap(respuesta.data_score_cell);
 
                     } else {
 
@@ -1631,7 +1628,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         data.forEach(function (d) {
             var item_list = [];
-            
+
             // las variables climáticas no cuentan con reino, phylum, clase, etc
             if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
                 var arg_values = d.especievalidabusqueda.split(" ")
@@ -1674,7 +1671,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @private
      * @memberof! res_display_module
      * 
-     * @param {json} sdata - Json con la configuración seleccionada por el usuario
+     * @param {json} data - JSON con los resultados de id de celda y valor de total score
      */
     function _configureStyleMap(data) {
 
@@ -1682,48 +1679,22 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
 
-
-
-//        $.ajax({
-//            url: _url_zacatuche + "/niche/getCellScore",
-//            type: 'post',
-//            data: sdata,
-//            success: function (json_file) {
-
         $('#map').loading('stop');
         $("#map_next").css('visibility', 'visible');
         $("#map_next").show("slow");
 
-        var json = data;
+//        console.log(score_cell_resp.data);
+//        var json = data;
 
-//                console.log(json);
+        // TODO: verificar si viene valor de apriori
+
 
         // grid_map_color contiene colores y scores
-        var grid_map_color = _map_module_nicho.createDecilColor(json, _mapa_prob);
-
-//                console.log(grid_map_color.values());
-//                console.log(grid_map_color.keys());
-
+        var grid_map_color = _map_module_nicho.createDecilColor(data, _mapa_prob);
         _map_module_nicho.colorizeFeatures(grid_map_color);
-
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
         document.getElementById("dShape").style.display = "inline";
-
-
-//            },
-//            error: function (jqXHR, textStatus, errorThrown) {
-//                _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
-//                $("#map_next").css('visibility', 'hidden');
-//                $("#map_next").hide("slow");
-//
-//                $('#map').loading('stop');
-//
-//                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_mapa'), "error");
-//                document.getElementById("dShape").style.display = "none";
-//
-//            }
-//        });
 
     }
 
@@ -2432,6 +2403,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("showGetFeatureInfo") : _VERBOSE;
 
+        $('#map').loading({
+            stoppable: true
+        });
 
         var singleCellData = _cdata;
 
@@ -2440,7 +2414,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         singleCellData['long'] = long;
         singleCellData['idtime'] = milliseconds;
         singleCellData['get_grid_species'] = true;
-        
+
         singleCellData["with_data_freq"] = false;
         singleCellData["with_data_score_cell"] = false;
         singleCellData["with_data_freq_cell"] = false;
@@ -2459,11 +2433,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _VERBOSE ? console.log(data) : _VERBOSE;
 
                 var htmltable = _createTableFromData(data);
+                if(htmltable === "") return;
                 _map_module_nicho.showPopUp(htmltable, [lat, long]);
+
+                $('#map').loading('stop');
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
 
+                $('#map').loading('stop');
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
             }
@@ -2486,216 +2464,165 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
         _VERBOSE ? console.log(json_data) : _VERBOSE
-        
-        var total_score = 0.0;
+
         var htmltable = "<div class='myScrollableBlockPopup'>";
         var table_sp = "";
         var table_rt = "";
         var title_total;
         var total_celda;
         
-        if (json_data.hasbio === false && json_data.hasraster === false){
+//        console.log(json_data.apriori)
+//        console.log(json_data.apriori === undefined)
+
+        if (json_data.hasbio === false && json_data.hasraster === false && json_data.apriori === undefined && json_data.mapa_prob === undefined) {
             _VERBOSE ? console.log("No data") : _VERBOSE
-            return;
+            return "";
         }
-            
 
-//        var apriori = json_data[0].apriori !== undefined ? parseFloat(json_data[0].apriori) : undefined;
-//        var prob = json_data[0].prob !== undefined ? parseFloat(json_data[0].prob) : undefined;
+        if (json_data.hasbio) {
 
+            table_sp += "<div class='panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>";
 
+            for (i = 0; i < json_data.species.length; i++) {
 
-//        if (json_data.length == 1 && json_data[0].gridid == 0) {
-//
-//            console.log("Apriori");
-//
-//            title_total = "Apriori";
-//            total_celda = parseFloat(apriori).toFixed(2);
-//
-//            htmltable += "<div class='panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "</th></tr></thead><tbody>";
-//
-//        } else if (json_data.length == 1 && json_data[0].gridid == -1) {
-//
-//            console.log("Probabilidad");
-//
-//            title_total = $.i18n.prop('lb_pp_prob');
-//            total_celda = parseFloat(prob).toFixed(2);
-//
-//            htmltable += "<div class='panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda + "%</th></tr></thead><tbody>";
-//
-//        } else {
+                if (json_data.species[i].type === "bio") {
 
-
-
-            if (json_data.hasbio) {
-
-                table_sp += "<div class='panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>";
-
-                for (i = 0; i < json_data.species.length; i++) {
-
-                    if (json_data.species[i].type === "bio") {
-
-                        table_sp += "<tr><td>" + json_data.species[i].name + "</td><td>" + parseFloat(json_data.species[i].score).toFixed(2) + "</td></tr>";
-
-                    }
+                    table_sp += "<tr><td>" + json_data.species[i].name + "</td><td>" + parseFloat(json_data.species[i].score).toFixed(2) + "</td></tr>";
 
                 }
-
-                table_sp += "</tbody></table></div>";
 
             }
 
-            if (json_data.hasraster) {
+            table_sp += "</tbody></table></div>";
 
-                table_rt += "<div class='panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>"
+        }
 
-                for (var i = 0; i < json_data.species.length; i++) {
-                    
-                    if (json_data.species[i].type === "raster") {
-                        
-                        var arg_values = json_data.species[i].name.split(" ")
-                        var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
-                        table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.species[i].score).toFixed(2) + "</td></tr>";
+        if (json_data.hasraster) {
 
-                    }
+            table_rt += "<div class='panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>"
+
+            for (var i = 0; i < json_data.species.length; i++) {
+
+                if (json_data.species[i].type === "raster") {
+
+                    var arg_values = json_data.species[i].name.split(" ")
+                    var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
+                    table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.species[i].score).toFixed(2) + "</td></tr>";
 
                 }
 
-                table_rt += "</tbody></table></div>";
             }
 
+            table_rt += "</tbody></table></div>";
+        } 
+        
+        if (json_data.mapa_prob !== undefined) {
             
-            if (false) {
+            console.log("mapa_prob");
+            
+            var title_total = $.i18n.prop('lb_pp_probpre');
+            var prob = parseFloat(json_data.mapa_prob) === 100.00 ? 99.99 : parseFloat(json_data.mapa_prob);
+            prob = parseFloat(prob) === 0.00 ? 0.01 : parseFloat(prob);
+            // console.log(prob);
+            var total_celda = parseFloat(prob).toFixed(2) + "%";
 
-                title_score = $.i18n.prop('lb_pp_sp');
-                parcial_score = parseFloat(total_score).toFixed(2);
-
-                title_apriori = "Apriori";
-                total_apriori = parseFloat(apriori).toFixed(2);
-
-                // el valor apriori esta incluido en
-                if (total_apriori === 0) {
-                } else if (total_apriori > 0) {
-                    posocc--;
-                } else {
-                    negocc--;
-                }
-
-                title_total = $.i18n.prop('lb_pp_st');
-                total_celda = parseFloat(total_score + apriori).toFixed(2);
-
-                htmltable += "<div class='panel-primary'>\n\
-                                <div class='panel-heading'>\n\
-                                    <h3>Total</h3>\n\
-                                </div>\n\
-                                <table class='table table-striped'>\n\
-                                <thead>\n\
-                                    <tr>\n\
-                                        <th>" + title_total + "</th>\n\
-                                        <th>" + total_celda + "</th>\n\
-                                    </tr>\n\
-                                    <tr>\n\
-                                        <th>" + title_score + "</th>\n\
-                                        <th>" + parcial_score + "</th>\n\
-                                    </tr>\n\
-                                    <tr>\n\
-                                        <th>" + title_apriori + "</th>\n\
-                                        <th>" + total_apriori + "</th>\n\
-                                    </tr>\n\
-                                    <tr>\
-                                        <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
-                                        <th>" + contbio + "</th>\
-                                    </tr>\
-                                    <tr>\
-                                        <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
-                                        <th>" + contabio + "</th>\
-                                    </tr>\
-                                    <tr>\
-                                        <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
-                                        <th>" + posocc + "</th>\
-                                    </tr>\
-                                    <tr>\
-                                        <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
-                                        <th>" + negocc + "</th>\
-                                    </tr>\
-                                </thead>\n\
-                                <tbody>";
-            } 
-            else if (false) {
-                title_total = $.i18n.prop('lb_pp_probpre');
-                prob = Math.floor(prob * 100) / 100;
-                prob = parseFloat(prob) === 100.00 ? 99.99 : parseFloat(prob);
-                prob = parseFloat(prob) === 0.00 ? 0.01 : parseFloat(prob);
-                // console.log(prob);
-                total_celda = parseFloat(prob).toFixed(2) + "%";
-
-                htmltable += "<div class='panel-primary'>\n\
+            htmltable += "<div class='panel-primary'>\n\
                                 <div class='panel-heading'>\n\
                                 <h3>Total</h3>\n\
                                 </div>\n\
                                 <table class='table table-striped'>\n\
                                 <thead>\n\
-                                <tr>\n\
-                                <th>" + title_total + "</th>\n\
-                                <th>" + total_celda + "</th>\n\
-                                </tr>\n\
-                                <tr>\
-                                    <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
-                                    <th>" + contbio + "</th>\
-                                </tr>\
-                                <tr>\
-                                    <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
-                                    <th>" + contabio + "</th>\
-                                </tr>\
-                                <tr>\
-                                    <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
-                                    <th>" + posocc + "</th>\
-                                </tr>\
-                                <tr>\
-                                    <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
-                                    <th>" + negocc + "</th>\
-                                </tr>\
-                                </thead>\n\
-                                <tbody>";
-            } 
-            else {
-                title_total = $.i18n.prop('lb_pp_st');
-                total_celda = parseFloat(json_data.tscore).toFixed(2);
+                                    <tr>\n\
+                                    <th>" + title_total + "</th>\n\
+                                    <th>" + total_celda + "</th>\n\
+                                    </tr>";
+            
+        } else if (json_data.apriori !== undefined) {
 
-                htmltable += "<div class='panel-primary'>\
-                                    <div class='panel-heading'>\
-                                        <h3>Total</h3>\
-                                    </div>\
-                                    <table class='table table-striped'>\
-                                        <thead>\
-                                            <tr>\
-                                                <th>" + title_total + "</th>\
-                                                <th>" + total_celda + "</th>\
-                                            </tr>\
-                                            <tr>\
-                                                <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
-                                                <th>" + json_data.bios + "</th>\
-                                            </tr>\
-                                            <tr>\
-                                                <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
-                                                <th>" + json_data.raster + "</th>\
-                                            </tr>\
-                                            <tr>\
-                                                <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
-                                                <th>" + json_data.positives + "</th>\
-                                            </tr>\
-                                            <tr>\
-                                                <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
-                                                <th>" + json_data.negatives + "</th>\
-                                            </tr>\
-                                        </thead>\
-                                    <tbody>";
+            console.log("Apriori");
+
+            var title_score = $.i18n.prop('lb_pp_sp');
+            var parcial_score = parseFloat(json_data.tscore).toFixed(2);
+
+            var title_apriori = "Apriori";
+            var total_apriori = parseFloat(json_data.apriori).toFixed(2);
+
+            var title_total = $.i18n.prop('lb_pp_st');
+            var total_celda = parseFloat(json_data.tscore + json_data.apriori).toFixed(2);
+            
+            
+            htmltable += "<div class='panel-primary'>\n\
+                                <div class='panel-heading'>\n\
+                                    <h3>Total</h3>\n\
+                                </div>\n\
+                                <table class='table table-striped'>\n\
+                                <thead>";
+            
+            if (json_data.hasbio === false && json_data.hasraster === false){    
+                htmltable +=    "<tr>\n\
+                                    <th>" + title_apriori + "</th>\n\
+                                    <th>" + total_apriori + "</th>\n\
+                                </tr>";
+            }
+            else{
+                htmltable +=    "<tr>\n\
+                                    <th>" + title_total + "</th>\n\
+                                    <th>" + total_celda + "</th>\n\
+                                </tr>\n\
+                                <tr>\n\
+                                    <th>" + title_score + "</th>\n\
+                                    <th>" + parcial_score + "</th>\n\
+                                </tr>\n\
+                                <tr>\n\
+                                    <th>" + title_apriori + "</th>\n\
+                                    <th>" + total_apriori + "</th>\n\
+                                </tr>";
             }
 
-//        }
+            
+            
+        } else {
+            title_total = $.i18n.prop('lb_pp_st');
+            total_celda = parseFloat(json_data.tscore).toFixed(2);
 
-
-        // htmltable += "<div class='panel panel-primary'><div class='panel-heading'><h3>Total</h3></div><table class='table table-striped'><thead><tr><th>" + title_total + "</th><th>" + total_celda +"</th></tr></thead><tbody>";
+            htmltable += "<div class='panel-primary'>\
+                                <div class='panel-heading'>\
+                                    <h3>Total</h3>\
+                                </div>\
+                                <table class='table table-striped'>\
+                                    <thead>\
+                                        <tr>\
+                                            <th>" + title_total + "</th>\
+                                            <th>" + total_celda + "</th>\
+                                        </tr>";
+                                            
+        }
+        
+        
+        if (json_data.hasbio !== false || json_data.hasraster !== false){    
+            htmltable += "<tr>\
+                            <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
+                            <th>" + json_data.bios + "</th>\
+                        </tr>\
+                        <tr>\
+                            <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
+                            <th>" + json_data.raster + "</th>\
+                        </tr>\
+                        <tr>\
+                            <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
+                            <th>" + json_data.positives + "</th>\
+                        </tr>\
+                        <tr>\
+                            <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
+                            <th>" + json_data.negatives + "</th>\
+                        </tr>"
+        }
+        
+        htmltable += "</thead>\
+                <tbody>";
+        
+        
+        
         htmltable += "</tbody></table></div>";
 
         htmltable += json_data.hasbio ? table_sp : "";

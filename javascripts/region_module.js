@@ -15,10 +15,6 @@ var region_module = (function(url_trabajo, verbose){
 	var drawControl;
 
 
-
-
-
-
 	/***************************************************************** map styles */
 	var geojsonStyleDefault = {
 	    radius: 7,
