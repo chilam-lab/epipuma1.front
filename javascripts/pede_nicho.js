@@ -451,7 +451,9 @@ var module_nicho = (function () {
             
             var data_link = {};
             data_link.id = _map_module_nicho.get_specieTarget().spid;
+            data_link.label = _map_module_nicho.get_specieTarget().label;
             data_link.val_process = $("#chkValidation").is(":checked");
+            data_link.idtabla = data_link.val_process === true ? _res_display_module_nicho.getValidationTable() : "no_table";
             data_link.mapa_prob = $("#chkMapaProb").is(":checked");
             data_link.fossil = $("#chkFosil").is(":checked");
             data_link.apriori = $("#chkApriori").is(':checked');
@@ -459,7 +461,7 @@ var module_nicho = (function () {
             
             var rango_fechas = $("#sliderFecha").slider("values");
             if (rango_fechas[0] !== $("#sliderFecha").slider("option", "min") || rango_fechas[1] !== $("#sliderFecha").slider("option", "max")) {
-                data_link.lim_inf = rango_fechas[0]
+                data_link.lim_inf = rango_fechas[0];
                 data_link.lim_sup = rango_fechas[1];
             }
             else{
@@ -467,15 +469,13 @@ var module_nicho = (function () {
                 data_link.lim_sup = undefined;
             }
             
-            var min_occ = $("#chkMinOcc").is(':checked');
-            if (min_occ) {
-                data_link.min_occ = parseInt($("#occ_number").val());
-            }
+            data_link.min_occ = $("#chkMinOcc").is(':checked') === true ? parseInt($("#occ_number").val()): 0;
+            
             
             data_link.grid_res = parseInt($("#grid_resolution").val());
-            data_link.footprint_region =  _REGION_SELECTED;
+            data_link.footprint_region =  parseInt($("#footprint_region_select").val());
             
-            data_link.discardedFilterids = _map_module_nicho.get_discardedPoints();
+            data_link.discardedFilterids = _map_module_nicho.get_discardedPoints().values().map(function(value){ return value.feature.properties.gridid});
             console.log(data_link.discardedFilterids);
             
             data_link.tfilters = subgroups;
@@ -483,6 +483,7 @@ var module_nicho = (function () {
             
             
             console.log(data_link);
+            
             
 
 
@@ -560,7 +561,7 @@ var module_nicho = (function () {
 //            } else {
 //                data_link += "num_dpoints=0&";
 //            }
-//
+
 //            data_link += "num_filters=" + subgroups.length + "&";
 //
 //            $.each(subgroups, function (index, item) {
@@ -637,9 +638,7 @@ var module_nicho = (function () {
         $.ajax({
             url: _url_api + "/niche/especie/getToken",
             type: 'post',
-            data: {
-                data: data_link
-            },
+            data:  data_link,
             dataType: "json",
             success: function (resp) {
 
