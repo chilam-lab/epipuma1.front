@@ -11,6 +11,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _VERBOSE = verbose;
 
     var _TYPE_BIO = 0;
+    
+    var _idtemptable = "";
 
     var _RUN_ON_SERVER = true;
 
@@ -140,6 +142,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _decil_data_requests = [];
     var _currentNameView = "";
     var _currentDecil = 0;
+    
+    function getValidationTable(){
+        return _idtemptable;
+    }
 
 
 
@@ -531,7 +537,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
     }
 
 
-    var _idtemptable = "";
+    
 
     /**
      * Éste método ejecuta el Store Procedure que genera la tabla temporal donde se realizará el proceso de validación. 
@@ -730,7 +736,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
         var idtabla = tabla || "no_table";
-        var milliseconds = new Date().getTime();
         var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
         var mapap = $("#chkMapaProb").is(':checked') ? "mapa_prob" : undefined; 
 //        _mapa_prob ? "mapa_prob" : undefined;
@@ -757,26 +762,27 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //        _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
 
         // verbo: getFreq
-        _ddata = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region
-        };
+//        _ddata = {
+//            "id": spid,
+//            "idtime": milliseconds,
+//            "apriori": apriori,
+//            "min_occ": min_occ,
+//            "fossil": fossil,
+//            "lim_inf": lin_inf,
+//            "lim_sup": lin_sup,
+//            "sfecha": sin_fecha,
+//            "val_process": val_process,
+//            "idtabla": idtabla,
+//            "grid_res": _grid_res,
+//            "footprint_region": _footprint_region
+//        };
 
-        // verbo: getFreqCelda
+        // verbo: getFreqCelda // seleccion de celda
         _cdata = {
             "id": spid,
             "idtime": milliseconds,
             "apriori": apriori,
+            "mapa_prob": mapap,
             "min_occ": min_occ,
             "fossil": fossil,
             "lim_inf": lin_inf,
@@ -785,15 +791,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "val_process": val_process,
             "idtabla": idtabla,
             "grid_res": _grid_res,
-            "mapa_prob": mapap, // necesario para verbo: getGridSpecies
             "footprint_region": _footprint_region
         };
 
         // verbo: getScoreDecil
+        var milliseconds = new Date().getTime();
         _decil_data = {
             "id": spid,
             "idtime": milliseconds,
             "apriori": apriori,
+            "mapa_prob": mapap,
             "min_occ": min_occ,
             "fossil": fossil,
             "lim_inf": lin_inf,
@@ -802,16 +809,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "val_process": val_process,
             "idtabla": idtabla,
             "grid_res": _grid_res,
-            "footprint_region": _footprint_region
-
-
+            "footprint_region": _footprint_region,
+            "level_req": "single"
         };
 
         // verbo: getScoreDecil
+        milliseconds = new Date().getTime();
         _decil_group_data = {
             "id": spid,
             "idtime": milliseconds,
             "apriori": apriori,
+            "mapa_prob": mapap,
             "min_occ": min_occ,
             "fossil": fossil,
             "lim_inf": lin_inf,
@@ -820,10 +828,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "val_process": val_process,
             "idtabla": idtabla,
             "grid_res": _grid_res,
-            "footprint_region": _footprint_region
+            "footprint_region": _footprint_region,
+            "level_req": "group"
         };
 
         // verbo: getScoreDecil
+        milliseconds = new Date().getTime();
         _total_data_decil = {
             "id": spid,
             "idtime": milliseconds,
@@ -836,44 +846,46 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "val_process": val_process,
             "idtabla": idtabla,
             "grid_res": _grid_res,
-            "footprint_region": _footprint_region
+            "footprint_region": _footprint_region,
+            "level_req": "total"
         };
 
         // verbo: getCellScore
-        _sdata = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "mapa_prob": mapap,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region
-        };
+//        _sdata = {
+//            "id": spid,
+//            "idtime": milliseconds,
+//            "apriori": apriori,
+//            "min_occ": min_occ,
+//            "fossil": fossil,
+//            "mapa_prob": mapap,
+//            "lim_inf": lin_inf,
+//            "lim_sup": lin_sup,
+//            "sfecha": sin_fecha,
+//            "val_process": val_process,
+//            "idtabla": idtabla,
+//            "grid_res": _grid_res,
+//            "footprint_region": _footprint_region
+//        };
 
         // verbo: getGeoRel
-        _tdata = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region
-        };
+//        _tdata = {
+//            "id": spid,
+//            "idtime": milliseconds,
+//            "apriori": apriori,
+//            "min_occ": min_occ,
+//            "fossil": fossil,
+//            "lim_inf": lin_inf,
+//            "lim_sup": lin_sup,
+//            "sfecha": sin_fecha,
+//            "val_process": val_process,
+//            "idtabla": idtabla,
+//            "grid_res": _grid_res,
+//            "footprint_region": _footprint_region
+//        };
 
 
         // verbo: getCounts
+        milliseconds = new Date().getTime();
         _countsdata = {
             "id": spid,
             "idtime": milliseconds,
@@ -887,20 +899,20 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "val_process": val_process,
             "idtabla": idtabla,
             "grid_res": _grid_res,
-            "footprint_region": _footprint_region
+            "footprint_region": _footprint_region,
+            "level_req": "counts"
         }
 
 
-        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
-        _countsdata['discardedFilterids'] = _discarded_cell_set.values();
-
-        _tdata['discardedFilterids'] = _discarded_cell_set.values();
-        _sdata['discardedFilterids'] = _discarded_cell_set.values();
-        _ddata['discardedFilterids'] = _discarded_cell_set.values();
+//        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
+//        _tdata['discardedFilterids'] = _discarded_cell_set.values();
+//        _sdata['discardedFilterids'] = _discarded_cell_set.values();
+//        _ddata['discardedFilterids'] = _discarded_cell_set.values();
         _cdata['discardedFilterids'] = _discarded_cell_set.values();
         _total_data_decil['discardedFilterids'] = _discarded_cell_set.values();
         _decil_group_data['discardedFilterids'] = _discarded_cell_set.values();
         _decil_data['discardedFilterids'] = _discarded_cell_set.values();
+        _countsdata['discardedFilterids'] = _discarded_cell_set.values();
 
 
     }
@@ -927,12 +939,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var hasBios = false;
         var hasRaster = false;
-        var active_time = undefined;
+//        var active_time = undefined;
 
-        if (_type_time == 1) {
-            _VERBOSE ? console.log("2050 activado") : _VERBOSE;
-            active_time = true;
-        }
+//        if (_type_time === 1) {
+//            _VERBOSE ? console.log("2050 activado") : _VERBOSE;
+//            active_time = true;
+//        }
 
 
         var hasTotal = false;
@@ -955,11 +967,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 // if item is type 1 is a json and if 0 is a string
                 var itemGroup = item;
-                var single_filter = [];
+                var single_filter = {};
                 _VERBOSE ? console.log(itemGroup) : _VERBOSE;
 
                 // bioticos
-                if (grupo.type === _TYPE_BIO) {
+                if (parseInt(grupo.type) === _TYPE_BIO) {
 
                     console.log("bioticos");
 
@@ -969,22 +981,22 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     filters.push({
                         'field': _reino_campos[temp_item_field],
                         'value': temp_item_value,
-                        'type': itemGroup.type
+                        'type': parseInt(itemGroup.type)
                     });
 
                     filterby_group.push({
                         'field': _reino_campos[temp_item_field],
                         'value': temp_item_value,
-                        'type': itemGroup.type,
+                        'type': parseInt(itemGroup.type),
                         'group_item': grupo.groupid
                     });
 
-                    single_filter.push({
+                    single_filter = {
                         'field': _reino_campos[temp_item_field],
                         'value': temp_item_value,
-                        'type': itemGroup.type,
+                        'type': parseInt(itemGroup.type),
                         'group_item': grupo.groupid
-                    });
+                    };
 
                 }
                 // raster: bioclim, topo, elevacion y pendiente
@@ -997,44 +1009,44 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     filters.push({
                         'value': itemGroup.value,
-                        'type': itemGroup.type,
+                        'type': parseInt(itemGroup.type),
                         'level': parseInt(itemGroup.level),
                         'label': temp_item_value
                     });
 
                     filterby_group.push({
                         'value': itemGroup.value,
-                        'type': itemGroup.type,
+                        'type': parseInt(itemGroup.type),
                         'level': parseInt(itemGroup.level),
                         'group_item': grupo.groupid,
                         'label': temp_item_value
                     });
 
-                    single_filter.push({
+                    single_filter = {
                         'value': itemGroup.value,
-                        'type': itemGroup.type,
+                        'type': parseInt(itemGroup.type),
                         'level': parseInt(itemGroup.level),
                         'group_item': grupo.groupid,
                         'label': temp_item_value
-                    });
+                    };
 
                 }
 
                 hasBios = false;
                 hasRaster = false;
 
-                for (var i = 0; i < single_filter.length; i++) {
-                    if (single_filter[i].type === _TYPE_BIO) {
+//                for (var i = 0; i < single_filter.length; i++) {
+                    if (single_filter.type === _TYPE_BIO) {
                         hasBios = true;
                     } else {
                         hasRaster = true;
                     }
-                }
+//                }
                 _decil_data['hasBios'] = hasBios;
                 _decil_data['hasRaster'] = hasRaster;
 
                 _decil_data['tfilters'] = single_filter;
-                _decil_data['tdelta'] = active_time;
+//                _decil_data['tdelta'] = active_time;
 
                 // elimina una segunda petición cuando el grupo de variables solo contiene un elemento
                 if (hasChildren) {
@@ -1062,7 +1074,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             _decil_group_data['tfilters'] = filterby_group;
             _decil_group_data['groupid'] = grupo.groupid;
-            _decil_group_data['tdelta'] = active_time;
+//            _decil_group_data['tdelta'] = active_time;
 
             _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
             _createScore_Decil(_decil_group_data, hasChildren, false);
@@ -1072,9 +1084,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
         if (filters.length !== 0) {
             _countsdata['tfilters'] = filters;
 
-            _tdata['tfilters'] = filters;
-            _sdata['tfilters'] = filters;
-            _ddata['tfilters'] = filters;
+//            _tdata['tfilters'] = filters;
+//            _sdata['tfilters'] = filters;
+//            _ddata['tfilters'] = filters;
             _cdata['tfilters'] = filters;
             _total_data_decil['tfilters'] = filters;
         }
@@ -1093,29 +1105,29 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _countsdata['hasBios'] = hasBios;
         _countsdata['hasRaster'] = hasRaster;
 
-        _tdata["hasBios"] = hasBios;
-        _tdata["hasRaster"] = hasRaster;
-
-        _sdata['hasBios'] = hasBios;
-        _sdata['hasRaster'] = hasRaster;
-
+//        _tdata["hasBios"] = hasBios;
+//        _tdata["hasRaster"] = hasRaster;
+//
+//        _sdata['hasBios'] = hasBios;
+//        _sdata['hasRaster'] = hasRaster;
+//
         _cdata['hasBios'] = hasBios;
         _cdata['hasRaster'] = hasRaster;
-
-        _ddata['hasBios'] = hasBios;
-        _ddata['hasRaster'] = hasRaster;
+//
+//        _ddata['hasBios'] = hasBios;
+//        _ddata['hasRaster'] = hasRaster;
 
         _total_data_decil['hasBios'] = hasBios;
         _total_data_decil['hasRaster'] = hasRaster;
 
 
-        _countsdata['tdelta'] = active_time;
+//        _countsdata['tdelta'] = active_time;
 
-        _tdata['tdelta'] = active_time;
-        _sdata['tdelta'] = active_time;
-        _ddata['tdelta'] = active_time;
-        _cdata['tdelta'] = active_time;
-        _total_data_decil['tdelta'] = active_time;
+//        _tdata['tdelta'] = active_time;
+//        _sdata['tdelta'] = active_time;
+//        _ddata['tdelta'] = active_time;
+//        _cdata['tdelta'] = active_time;
+//        _total_data_decil['tdelta'] = active_time;
 
 
         if (hasTotal) {
@@ -1249,113 +1261,117 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             });
 
-        } else {
+        } 
+        
+        else {
 
             decildata["with_data_freq"] = false;
             decildata["with_data_score_cell"] = false;
             decildata["with_data_freq_cell"] = false;
             decildata["with_data_score_decil"] = false;
-
+            
+            var milliseconds = new Date().getTime();
 //            console.log(decildata);
 
-//            $.ajax({
-//                url: _url_zacatuche + "/niche/counts",
-//                type: 'post',
-//                dataType: "json",
-//                data: decildata,
-//                success: function (respuesta) {
-//
-//                    _ITER_REQUESTS = _ITER_REQUESTS - 1;
-//                    console.log("_ITER_REQUESTS: " + _ITER_REQUESTS);
-//
-//
-//                    if (respuesta.ok) {
-//                        var counts = respuesta.data;
-//                        var data_score_cell = _utils_module.processDataForScoreCell(counts);
-//                        var data = _utils_module.processDataForScoreDecil(data_score_cell);
-////                        console.log(data);
-//
-//                        var groupid = data_request.groupid;
-//                        var tfilters = data_request.tfilters;
-//                        var title_valor = {};
-//                        if (groupid !== undefined || tfilters !== undefined) {
-//                            title_valor = _utils_module.processTitleGroup(groupid, tfilters)
-//                        }
-////                        console.log(title_valor);
-//
-//                        for (var i = 0; i < data.length; i++) {
-//                            var item = data[i];
-//                            item['title'] = title_valor;
-//                        }
-////                        console.log(data);
-//
-//                        _tbl_decil = true;
-//
-//                        if (data.length > 0 && data[0].title.is_parent) {
-//                            console.log("caso 1");
-//
-//                            if (hasChildren) {
-//                                console.log("caso 1A");
-//                                _fathers.push({item: data});
-//
-//                            } else {
-//                                // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
-//                                console.log("caso 1B");
-//                                _fathers.push({item: data});
-//                                _sons.push({item: data});
-//                            }
-//
-//                            _decil_data_requests.push({"request": data_request, "name": data[0].title.title});
-//                        } else {
-//
-//                            if (data.length > 0) {
-//                                console.log("caso 2");
-//                                _sons.push({item: data});
-//                            } else {
-//                                console.log("caso 4 Sin datos");
-//                            }
-//                        }
-//                        if (isTotal) {
-//                            console.log("caso 3");
-//                            _totals.push({item: data});
-//
-//                            _decil_data_requests.push({"request": data_request, "name": "Total"});
-//                        }
-//
-//                        if (_ITER_REQUESTS === 0) {
-//
-//                            _ITER_REQUESTS = _REQUESTS;
-//
-//                            loadDecilDataTable();
-//
-//                            var data_chart = _createSetStructure(_fathers, _sons);
-//                            if (_totals.length > 0) {
-//                                _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
-//                                data_chart = _addDataChartTotal(data_chart, _totals[0].item);
-//                            }
-//                            $('#chartdiv_score_decil').loading('stop');
-//                            $("#hist_next").css('visibility', 'visible');
-//                            $("#hist_next").show("slow");
-//                            _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
-//                            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
-//
-//                        }
-//
-//
-//                    } else {
-//                        // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
-//                    }
-//
-//                },
-//                error: function (jqXHR, textStatus, errorThrown) {
-//                    console.log(errorThrown);
-//                    console.log(jqXHR);
-//                    _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
-//                    _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
-//
-//                }
-//
-//            });
+            $.ajax({
+                url: _url_zacatuche + "/niche/counts",
+                type: 'post',
+                idtime: milliseconds,
+                dataType: "json",
+                data: decildata,
+                success: function (respuesta) {
+
+                    _ITER_REQUESTS = _ITER_REQUESTS - 1;
+                    console.log("_ITER_REQUESTS: " + _ITER_REQUESTS);
+
+
+                    if (respuesta.ok) {
+                        var counts = respuesta.data;
+                        var data_score_cell = _utils_module.processDataForScoreCell(counts);
+                        var data = _utils_module.processDataForScoreDecil(data_score_cell);
+//                        console.log(data);
+
+                        var groupid = data_request.groupid;
+                        var tfilters = data_request.tfilters;
+                        var title_valor = {};
+                        if (groupid !== undefined || tfilters !== undefined) {
+                            title_valor = _utils_module.processTitleGroup(groupid, tfilters)
+                        }
+//                        console.log(title_valor);
+
+                        for (var i = 0; i < data.length; i++) {
+                            var item = data[i];
+                            item['title'] = title_valor;
+                        }
+//                        console.log(data);
+
+                        _tbl_decil = true;
+
+                        if (data.length > 0 && data[0].title.is_parent) {
+                            console.log("caso 1");
+
+                            if (hasChildren) {
+                                console.log("caso 1A");
+                                _fathers.push({item: data});
+
+                            } else {
+                                // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
+                                console.log("caso 1B");
+                                _fathers.push({item: data});
+                                _sons.push({item: data});
+                            }
+
+                            _decil_data_requests.push({"request": data_request, "name": data[0].title.title});
+                        } else {
+
+                            if (data.length > 0) {
+                                console.log("caso 2");
+                                _sons.push({item: data});
+                            } else {
+                                console.log("caso 4 Sin datos");
+                            }
+                        }
+                        if (isTotal) {
+                            console.log("caso 3");
+                            _totals.push({item: data});
+
+                            _decil_data_requests.push({"request": data_request, "name": "Total"});
+                        }
+
+                        if (_ITER_REQUESTS === 0) {
+
+                            _ITER_REQUESTS = _REQUESTS;
+
+                            loadDecilDataTable();
+
+                            var data_chart = _createSetStructure(_fathers, _sons);
+                            if (_totals.length > 0) {
+                                _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
+                                data_chart = _addDataChartTotal(data_chart, _totals[0].item);
+                            }
+                            $('#chartdiv_score_decil').loading('stop');
+                            $("#hist_next").css('visibility', 'visible');
+                            $("#hist_next").show("slow");
+                            _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
+                            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
+
+                        }
+
+
+                    } else {
+                        // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    console.log(jqXHR);
+                    _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
+                    _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
+
+                }
+
+            });
 
         }
 
@@ -1445,17 +1461,20 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     });
 
 
-                } else {
+                } 
+                else {
 
                     value.request["with_data_freq"] = false;
                     value.request["with_data_score_cell"] = false;
                     value.request["with_data_freq_cell"] = false;
                     value.request["with_data_score_decil"] = false;
 //                    console.log(value);
-
+                    var milliseconds = new Date().getTime();
+                    
                     $.ajax({
                         type: "post",
                         url: _url_zacatuche + "/niche/counts",
+                        idtiem: milliseconds,
                         data: value.request,
                         dataType: "json",
                         success: function (resp, status) {
@@ -1550,10 +1569,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
             counts_data["with_data_freq_cell"] = false;
             counts_data["with_data_score_decil"] = false;
         }
+        
+        var milliseconds = new Date().getTime();
 
         $.ajax({
             url: _url_zacatuche + "/niche/counts",
             type: 'post',
+            idtiem: milliseconds,
             dataType: "json",
             data: counts_data,
             success: function (respuesta) {
@@ -2419,11 +2441,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
         singleCellData["with_data_score_cell"] = false;
         singleCellData["with_data_freq_cell"] = false;
         singleCellData["with_data_score_decil"] = false;
+        
+        var milliseconds = new Date().getTime();
 
         // TODO: cambiar a getcounts
         $.ajax({
 //            url: _url_zacatuche + "/niche/getGridSpecies",
             url: _url_zacatuche + "/niche/counts",
+            idtiem: milliseconds,
             type: 'post',
             data: singleCellData,
             success: function (resp) {
@@ -2671,6 +2696,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         setMapModule: setMapModule,
         showGetFeatureInfo: showGetFeatureInfo,
         get_cData: get_cData,
+        getValidationTable: getValidationTable,
         updateLabels: updateLabels,
         callDisplayProcess: callDisplayProcess,
         setHistogramModule: setHistogramModule,

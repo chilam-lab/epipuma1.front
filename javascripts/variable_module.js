@@ -1140,7 +1140,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 //            console.log(idDivContainer);
 //            console.log(typeVar);
 
-            if (arraySelected.length == 0)
+            if (arraySelected.length === 0)
                 return;
 
             // Solo aplica el nivel a redes
@@ -1186,7 +1186,9 @@ var variable_module = (function (verbose, url_zacatuche) {
 
             }
 
-            groupid = maxGroup + 1;
+            var groupid = parseInt(maxGroup) + 1;
+            console.log("maxGroup: " + maxGroup);
+            console.log("groupid: " + groupid);
 
             var temp_grupo = {title: "Gpo " + gpoName + " " + groupid, elements: subgroup, groupid: groupid, close: true, type: typeVar};
             self.groupDatasetTotal.push(temp_grupo);
