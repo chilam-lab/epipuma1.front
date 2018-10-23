@@ -161,7 +161,7 @@ var module_nicho = (function () {
             } else {
 
                 $("#labelFosil").text("No");
-                
+
                 _regenMessage();
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_fosil_des'), "info");
@@ -179,14 +179,14 @@ var module_nicho = (function () {
             if ($this.is(':checked')) {
                 $("#sliderFecha").slider("enable");
                 $("#lb_sfecha").text(_iTrans.prop('lb_si'));
-                
+
                 _regenMessage();
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_chkfecha'), "info");
 
             } else {
 
                 $("#lb_sfecha").text(_iTrans.prop('lb_no'));
-                
+
                 _regenMessage();
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_chkfecha_des'), "info");
 
@@ -197,7 +197,7 @@ var module_nicho = (function () {
 
         $("#footprint_region_select").change(function (e) {
 
-            console.log("Cambiando a " +  parseInt($("#footprint_region_select").val()));
+            console.log("Cambiando a " + parseInt($("#footprint_region_select").val()));
 
             _REGION_SELECTED = parseInt($("#footprint_region_select").val());
             _REGION_TEXT_SELECTED = $("#footprint_region_select option:selected").text();
@@ -206,16 +206,16 @@ var module_nicho = (function () {
             _regenMessage();
 
         });
-        
-        
+
+
         $("#grid_resolution").change(function (e) {
-            
+
             _VERBOSE ? console.log("Cambia grid resolución") : _VERBOSE;
             // No es necesario regenerar resultados
-             _regenMessage();  
+            _regenMessage();
 
         });
-        
+
 
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
         $("#chkApriori").click(function (event) {
@@ -286,7 +286,7 @@ var module_nicho = (function () {
             $('html, body').animate({
                 scrollTop: $("#section1").offset().top - 40
             }, 2000);
-            
+
             _cleanTutorialButtons();
 //            $("#specie_next").hide("slow");
 
@@ -331,9 +331,9 @@ var module_nicho = (function () {
                 var grid_res_val = $("#grid_resolution").val();
 //                console.log("grid_resolution: " + grid_res_val);
                 $("#specie_next").css('visibility', 'hidden');
-                
+
                 _cleanTutorialButtons();
-                
+
 //                $("#specie_next").hide("slow");
 //                $("#params_next").hide("slow");
 //                $("#map_next").hide("slow");
@@ -446,9 +446,9 @@ var module_nicho = (function () {
         $("#show_gen").click(function (e) {
 
             _VERBOSE ? console.log("show_gen") : _VERBOSE;
-            
+
             var subgroups = _componente_fuente.getVarSelArray();
-            
+
             var data_link = {};
             data_link.id = _map_module_nicho.get_specieTarget().spid;
             data_link.label = _map_module_nicho.get_specieTarget().label;
@@ -458,40 +458,41 @@ var module_nicho = (function () {
             data_link.fossil = $("#chkFosil").is(":checked");
             data_link.apriori = $("#chkApriori").is(':checked');
             data_link.sfecha = $("#chkFecha").is(':checked');
-            
+
             var rango_fechas = $("#sliderFecha").slider("values");
             if (rango_fechas[0] !== $("#sliderFecha").slider("option", "min") || rango_fechas[1] !== $("#sliderFecha").slider("option", "max")) {
                 data_link.lim_inf = rango_fechas[0];
                 data_link.lim_sup = rango_fechas[1];
-            }
-            else{
+            } else {
                 data_link.lim_inf = undefined;
                 data_link.lim_sup = undefined;
             }
-            
-            data_link.min_occ = $("#chkMinOcc").is(':checked') === true ? parseInt($("#occ_number").val()): 0;
-            
-            
+
+            data_link.min_occ = $("#chkMinOcc").is(':checked') === true ? parseInt($("#occ_number").val()) : 0;
+
+
             data_link.grid_res = parseInt($("#grid_resolution").val());
-            data_link.footprint_region =  parseInt($("#footprint_region_select").val());
-            
-            data_link.discardedFilterids = _map_module_nicho.get_discardedPoints().values().map(function(value){ return value.feature.properties.gridid});
+            data_link.footprint_region = parseInt($("#footprint_region_select").val());
+
+            data_link.discardedFilterids = _map_module_nicho.get_discardedPoints().values().map(function (value) {
+                return value.feature.properties.gridid
+            });
             console.log(data_link.discardedFilterids);
-            
+
             data_link.tfilters = subgroups;
             data_link.tipo = "nicho";
-            
-            
+
+
             console.log(data_link);
-            
-            
 
 
-           
+
+
+
 //            var data_link = "";
 //            var sp_data = JSON.stringify(_map_module_nicho.get_specieTarget());
-            
-            
+
+
 
 //            data_link += "sp_data=" + sp_data + "&";
 
@@ -610,14 +611,14 @@ var module_nicho = (function () {
         }
 
     }
-    
-    function _cleanTutorialButtons(){
-        
+
+    function _cleanTutorialButtons() {
+
         $("#specie_next").hide("slow");
         $("#params_next").hide("slow");
         $("#map_next").hide("slow");
         $("#hist_next").hide("slow");
-        
+
     }
 
     /**
@@ -638,7 +639,7 @@ var module_nicho = (function () {
         $.ajax({
             url: _url_api + "/niche/especie/getToken",
             type: 'post',
-            data:  data_link,
+            data: data_link,
             dataType: "json",
             success: function (resp) {
 
@@ -712,7 +713,7 @@ var module_nicho = (function () {
 
                 var gridRes = _json_config.gridRes ? parseInt(_json_config.gridRes) : 16;
 //                console.log("gridRes: " + gridRes);
-                
+
                 var region = _json_config.region ? parseInt(_json_config.region) : 1;
 
                 var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
@@ -848,7 +849,7 @@ var module_nicho = (function () {
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
         console.log("Region : " + region);
-        
+
         var spid = sp_data.spid;
 //        var discardedPoints = map_dPoints;
 //        var computed_discarded_cells = d3.map([]); // considerar arregle de celdas descartadas
@@ -993,90 +994,66 @@ var module_nicho = (function () {
         var num_items = 0, spid, idreg, subgroups;
 
         $("#show_gen").css('visibility', 'visible');
-//        $("#tuto_res").css('visibility', 'visible');
 
-        $("#params_next").css('visibility', 'visible');
-        $("#params_next").show("slow");
-        
         _cleanTutorialButtons();
 
-//        $("#specie_next").hide("slow");
-//        $("#map_next").hide("slow");
-//        $("#hist_next").hide("slow");
+        if (!_map_module_nicho.get_specieTarget()) {
+            // no se ha seleccionado especie objetivo
+            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_especie'), "error");
+            return;
+        } 
+
+        spid = _map_module_nicho.get_specieTarget().spid;
+        _res_display_module_nicho.set_spid(spid);
+        _VERBOSE ? console.log(spid) : _VERBOSE;
+
+        // agregar validación para estados
+        idreg = _region_module_nicho.getRegionSelected();
+
+        _res_display_module_nicho.set_idReg(idreg);
 
 
-        // Configuración de TEST no actualizada. No se puede utilizat hasta el momento. 23-05-2016
-        if (_TEST) {
-            // 58390 - panthera onca, 46920 - Lynx rufus
-            _spid = 49405;
-            idreg = ["Estados"];
-            subgroups = [{value: ["Orden >> Artiodactyla", "Orden >> Carnivora"], type: 0, groupid: 1},
-                {value: [{label: "Bioclim >> Temperatura media anual", level: 1, value: "bio01"}], type: 1, groupid: 1}
-                // {label:"Bioclim >> Rango medio diurno", level:1, value:"bio02"}], type:1, groupid:1}, 
-                // {value:[{label:"Bioclim >> Forma Isométrica", level:1, value:"bio03"}], type:1, groupid:2}
-            ];
-            num_items = 5;
+
+        subgroups = _componente_fuente.getVarSelArray();
+
+        var type_time = _componente_fuente.getTimeBioclim();
+
+        _res_display_module_nicho.set_subGroups(subgroups);
+
+        _res_display_module_nicho.set_typeBioclim(type_time);
+
+
+        if (subgroups.length > 0) {
+
+            // asegura que si el grupo de variables seleccionado tiene mas de un grupo taxonomico agregue el total
+            subgroups.forEach(function (grupo) {
+
+                if (grupo.value.length > 1) {
+                    grupo.value.forEach(function (item) {
+                        num_items++;
+                    });
+                }
+
+            });
+
+            // asegura que si existe mas de un grupo de variables, se calcule el total  de todos los grupos
+            if (subgroups.length > 1) {
+                num_items++;
+            }
 
         } else {
 
-            if (_map_module_nicho.get_specieTarget()) {
-                spid = _map_module_nicho.get_specieTarget().spid;
-                _res_display_module_nicho.set_spid(spid);
-                _VERBOSE ? console.log(spid) : _VERBOSE;
-            } else {
+            $("#show_gen").css('visibility', 'hidden');
+            $("#tuto_res").css('visibility', 'hidden');
+            $("#params_next").css('visibility', 'hidden');
 
-                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_especie'), "error");
+            _cleanTutorialButtons();
 
-                return;
-            }
-
-            // agregar validación para estados
-            idreg = _region_module_nicho.getRegionSelected();
-
-            _res_display_module_nicho.set_idReg(idreg);
-
-
-
-            subgroups = _componente_fuente.getVarSelArray();
-
-            var type_time = _componente_fuente.getTimeBioclim();
-
-            _res_display_module_nicho.set_subGroups(subgroups);
-
-            _res_display_module_nicho.set_typeBioclim(type_time);
-
-
-            if (subgroups.length > 0) {
-
-                // asegura que si el grupo de variables seleccionado tiene mas de un grupo taxonomico agregue el total
-                subgroups.forEach(function (grupo) {
-
-                    if (grupo.value.length > 1) {
-                        grupo.value.forEach(function (item) {
-                            num_items++;
-                        });
-                    }
-
-                });
-
-                // asegura que si existe mas de un grupo de variables, se calcule el total  de todos los grupos
-                if (subgroups.length > 1) {
-                    num_items++;
-                }
-
-            } else {
-
-                $("#show_gen").css('visibility', 'hidden');
-                $("#tuto_res").css('visibility', 'hidden');
-                $("#params_next").css('visibility', 'hidden');
-                
-                _cleanTutorialButtons();
-
-                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
-                return;
-            }
-
+            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
+            return;
         }
+
+
 
         if (idreg[0] === "Estados" || idreg[0] === "Ecoregiones") {
 
@@ -1135,8 +1112,8 @@ var module_nicho = (function () {
 
         _VERBOSE = verbose;
         _VERBOSE ? console.log("startModule") : _VERBOSE;
-        
-        
+
+
         _VERBOSE ? console.log("before language_module NICHO") : _VERBOSE;
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
         _language_module_nicho = language_module(_VERBOSE);

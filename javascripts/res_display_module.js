@@ -11,7 +11,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _VERBOSE = verbose;
 
     var _TYPE_BIO = 0;
-    
+
     var _idtemptable = "";
 
     var _RUN_ON_SERVER = true;
@@ -142,8 +142,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _decil_data_requests = [];
     var _currentNameView = "";
     var _currentDecil = 0;
-    
-    function getValidationTable(){
+
+    function getValidationTable() {
         return _idtemptable;
     }
 
@@ -531,13 +531,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             _confDataRequest(_spid, _idreg, val_process);
             _panelGeneration();
-            _generateCounts(_countsdata);
+//            _generateCounts(_countsdata);
 
         }
     }
 
 
-    
+
 
     /**
      * Éste método ejecuta el Store Procedure que genera la tabla temporal donde se realizará el proceso de validación. 
@@ -737,7 +737,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var idtabla = tabla || "no_table";
         var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
-        var mapap = $("#chkMapaProb").is(':checked') ? "mapa_prob" : undefined; 
+        var mapap = $("#chkMapaProb").is(':checked') ? "mapa_prob" : undefined;
 //        _mapa_prob ? "mapa_prob" : undefined;
 
         var fossil = $("#chkFosil").is(':checked') ? true : false;
@@ -917,7 +917,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-
+    var _REQUESTS_MADE = [];
+    var _REQUESTS_NUMBER = 0;
+    var _REQUESTS_DONE = [];
+    var _TREE_GENERATED = {};
+    var _RESULTS_TODISPLAY = [];
     /**
      * Éste método configura las celdas del mapa que deben ser descartadas en los procesos de validación y eliminación de puntos para el análisis de nicho ecoógico. Además realiza las peticiones al servidor de forma seccionada para el cálculo de valores por decil.
      *
@@ -937,6 +941,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _sons = [];
         _totals = [];
 
+        _REQUESTS_MADE = [];
+        _REQUESTS_DONE = [];
+        _REQUESTS_NUMBER = 0;
+        _TREE_GENERATED = {};
+        _RESULTS_TODISPLAY = [];
+
         var hasBios = false;
         var hasRaster = false;
 //        var active_time = undefined;
@@ -951,23 +961,40 @@ var res_display_module = (function (verbose, url_zacatuche) {
         if (_subgroups.length > 1) {
             hasTotal = true;
         }
+        
+        _TREE_GENERATED.hasTotal = hasTotal;
 
-        _subgroups.forEach(function (grupo) {
+        _VERBOSE ? console.log(_subgroups) : _VERBOSE;
 
-            var filterby_group = [];
-            _VERBOSE ? console.log(grupo) : _VERBOSE;
+        _subgroups.forEach(function (grupo, index) {
+                        
+            if(!_TREE_GENERATED.groups){
+                _TREE_GENERATED.groups = [{index: (index+1), name: grupo.title}];
+            } 
+            else{
+                _TREE_GENERATED.groups.push({index: (index+1), name: grupo.title});
+            }
+            
+//            _VERBOSE ? console.log(_TREE_GENERATED) : _VERBOSE;
+
+//            var filterby_group = [];
+//            _VERBOSE ? console.log(grupo) : _VERBOSE;
 
             var hasChildren = false;
             if (grupo.value.length > 1) {
                 hasChildren = true;
             }
+            
+            var temp_group = _TREE_GENERATED.groups[index];
+            temp_group.hasChildren = hasChildren;
+            temp_group.groupid = grupo.groupid;
 
 
             grupo.value.forEach(function (item) {
-
+                
                 // if item is type 1 is a json and if 0 is a string
                 var itemGroup = item;
-                var single_filter = {};
+                var single_filter = [];
                 _VERBOSE ? console.log(itemGroup) : _VERBOSE;
 
                 // bioticos
@@ -978,25 +1005,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
                     var temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
 
-                    filters.push({
-                        'field': _reino_campos[temp_item_field],
-                        'value': temp_item_value,
-                        'type': parseInt(itemGroup.type)
-                    });
-
-                    filterby_group.push({
+                    single_filter.push({
                         'field': _reino_campos[temp_item_field],
                         'value': temp_item_value,
                         'type': parseInt(itemGroup.type),
                         'group_item': grupo.groupid
                     });
-
-                    single_filter = {
-                        'field': _reino_campos[temp_item_field],
-                        'value': temp_item_value,
-                        'type': parseInt(itemGroup.type),
-                        'group_item': grupo.groupid
-                    };
 
                 }
                 // raster: bioclim, topo, elevacion y pendiente
@@ -1007,133 +1021,66 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     // if the type is equal to 1 the item contains the parameter level
                     temp_item_value = itemGroup.label.split(">>")[1].trim();
 
-                    filters.push({
-                        'value': itemGroup.value,
-                        'type': parseInt(itemGroup.type),
-                        'level': parseInt(itemGroup.level),
-                        'label': temp_item_value
-                    });
-
-                    filterby_group.push({
+                    single_filter.push({
                         'value': itemGroup.value,
                         'type': parseInt(itemGroup.type),
                         'level': parseInt(itemGroup.level),
                         'group_item': grupo.groupid,
                         'label': temp_item_value
                     });
-
-                    single_filter = {
-                        'value': itemGroup.value,
-                        'type': parseInt(itemGroup.type),
-                        'level': parseInt(itemGroup.level),
-                        'group_item': grupo.groupid,
-                        'label': temp_item_value
-                    };
 
                 }
 
                 hasBios = false;
                 hasRaster = false;
 
-//                for (var i = 0; i < single_filter.length; i++) {
-                    if (single_filter.type === _TYPE_BIO) {
+                for (var i = 0; i < single_filter.length; i++) {
+                    if (single_filter[0].type === _TYPE_BIO) {
                         hasBios = true;
                     } else {
                         hasRaster = true;
                     }
-//                }
+                }
                 _decil_data['hasBios'] = hasBios;
                 _decil_data['hasRaster'] = hasRaster;
 
                 _decil_data['tfilters'] = single_filter;
 //                _decil_data['tdelta'] = active_time;
 
-                // elimina una segunda petición cuando el grupo de variables solo contiene un elemento
-                if (hasChildren) {
-//                    console.log("hasChildren");
-                    _VERBOSE ? console.log(_decil_data) : _VERBOSE;
-                    _createScore_Decil(_decil_data, false, false);
+                _VERBOSE ? console.log(hasChildren) : _VERBOSE;
+                _VERBOSE ? console.log(hasTotal) : _VERBOSE;
+                
+                _VERBOSE ? console.log(single_filter) : _VERBOSE;
+                _VERBOSE ? console.log(_decil_data) : _VERBOSE;
+                
+                var data_request = jQuery.extend(true, {}, _decil_data);
+                _REQUESTS_MADE.push(data_request);
+                
+                if(!temp_group.children){
+                    temp_group.children = [single_filter[0]];
                 }
-
+                else{
+                    temp_group.children.push(single_filter[0]);   
+                }
 
             });
 
             hasBios = false;
             hasRaster = false;
 
-            for (var i = 0; i < filterby_group.length; i++) {
-                if (filterby_group[i].type === _TYPE_BIO) {
-                    hasBios = true;
-                } else {
-                    hasRaster = true;
-                }
-            }
-            _decil_group_data['hasBios'] = hasBios;
-            _decil_group_data['hasRaster'] = hasRaster;
-
-
-            _decil_group_data['tfilters'] = filterby_group;
-            _decil_group_data['groupid'] = grupo.groupid;
-//            _decil_group_data['tdelta'] = active_time;
-
-            _VERBOSE ? console.log(_decil_group_data) : _VERBOSE;
-            _createScore_Decil(_decil_group_data, hasChildren, false);
-
         });
 
-        if (filters.length !== 0) {
-            _countsdata['tfilters'] = filters;
+        _REQUESTS_NUMBER = _REQUESTS_MADE.length;
+        console.log("_REQUESTS_NUMBER: " + _REQUESTS_NUMBER);
+        console.log(_TREE_GENERATED);
 
-//            _tdata['tfilters'] = filters;
-//            _sdata['tfilters'] = filters;
-//            _ddata['tfilters'] = filters;
-            _cdata['tfilters'] = filters;
-            _total_data_decil['tfilters'] = filters;
-        }
+        _REQUESTS_MADE.forEach(function (item, index) {
 
-        hasBios = false;
-        hasRaster = false;
+            console.log(item);
 
-        for (var i = 0; i < filters.length; i++) {
-            if (filters[i].type === _TYPE_BIO) {
-                hasBios = true;
-            } else {
-                hasRaster = true;
-            }
-        }
+            _createScore_Decil(item);
 
-        _countsdata['hasBios'] = hasBios;
-        _countsdata['hasRaster'] = hasRaster;
-
-//        _tdata["hasBios"] = hasBios;
-//        _tdata["hasRaster"] = hasRaster;
-//
-//        _sdata['hasBios'] = hasBios;
-//        _sdata['hasRaster'] = hasRaster;
-//
-        _cdata['hasBios'] = hasBios;
-        _cdata['hasRaster'] = hasRaster;
-//
-//        _ddata['hasBios'] = hasBios;
-//        _ddata['hasRaster'] = hasRaster;
-
-        _total_data_decil['hasBios'] = hasBios;
-        _total_data_decil['hasRaster'] = hasRaster;
-
-
-//        _countsdata['tdelta'] = active_time;
-
-//        _tdata['tdelta'] = active_time;
-//        _sdata['tdelta'] = active_time;
-//        _ddata['tdelta'] = active_time;
-//        _cdata['tdelta'] = active_time;
-//        _total_data_decil['tdelta'] = active_time;
-
-
-        if (hasTotal) {
-            _VERBOSE ? console.log(_total_data_decil) : _VERBOSE;
-            _createScore_Decil(_total_data_decil, false, hasTotal);
-        }
+        });
 
     }
 
@@ -1150,231 +1097,314 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} hasChildren - Bandera que indica si la configuración enviada es un conjunto de las variables seleccionadas o es una variable del grupo
      * @param {boolean} isTotal - Bandera que indica si la configuración enviada es el total de los conjuntos de las variables seleccionadas 
      */
-    function _createScore_Decil(decildata, hasChildren, isTotal) {
+    function _createScore_Decil(decildata) {
 
         _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
 
         $('#chartdiv_score_decil').loading({
             stoppable: true
         });
-
-        var data_request = jQuery.extend(true, {}, decildata);
-
-//        console.log(data_request);
-
-
-        if (false) {
-
-            $.ajax({
-                type: "post",
-                url: _url_zacatuche + "/niche/getScoreDecil",
-                data: decildata,
-                dataType: "json",
-                success: function (resp, status) {
-
-                    _ITER_REQUESTS = _ITER_REQUESTS - 1;
-                    console.log("_ITER_REQUESTS: " + _ITER_REQUESTS);
-
-                    var data = resp.data;
-                    _tbl_decil = true;
-
-                    if (data.length > 0 && data[0].title.is_parent) {
-                        console.log("caso 1");
-
-                        if (hasChildren) {
-                            console.log("caso 1A");
-                            _fathers.push({item: data});
-
-                        } else {
-                            // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
-                            console.log("caso 1B");
-                            _fathers.push({item: data});
-                            _sons.push({item: data});
-                        }
-
-                        _decil_data_requests.push({"request": data_request, "name": data[0].title.title});
-                    } else {
-
-                        if (data.length > 0) {
-                            console.log("caso 2");
-                            _sons.push({item: data});
-                        } else {
-                            console.log("caso 4 Sin datos");
-                        }
-                    }
-                    if (isTotal) {
-                        console.log("caso 3");
-                        _totals.push({item: data});
-
-                        _decil_data_requests.push({"request": data_request, "name": "Total"});
-                    }
-
-                    if (_ITER_REQUESTS === 0) {
-
-                        _ITER_REQUESTS = _REQUESTS;
-
-                        loadDecilDataTable();
-                        var data_chart = _createSetStructure(_fathers, _sons);
-
-                        // añade totales cuando es mas de un grupo sea biotico  o abiotico.
-                        if (_totals.length > 0) {
-                            _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
-                            // ya no contiene valores del segundo grupo de variables...
-                            data_chart = _addDataChartTotal(data_chart, _totals[0].item);
-                        }
-
-//                    _VERBOSE ? console.log(data_chart) : _VERBOSE;
-
-                        $('#chartdiv_score_decil').loading('stop');
-//                    $('#div_example').loading('stop');
-                        $("#hist_next").css('visibility', 'visible');
-                        $("#hist_next").show("slow");
-
-
-                        _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
-                        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
-
-                    }
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    _VERBOSE ? console.log("error createScore_Decil: " + textStatus) : _VERBOSE;
-                    _VERBOSE ? console.log("error createScore_Decil: " + errorThrown) : _VERBOSE;
-
-                    $('#chartdiv_score_decil').loading('stop');
-//                $('#div_example').loading('stop');
-                    $("#hist_next").css('visibility', 'hidden');
-                    $("#hist_next").hide("slow");
-
-
-                    mensaje = "";
-                    mensaje = $("#chkValidation").is(':checked') ? _iTrans.prop('lb_error_proceso_val') : _iTrans.prop('lb_error_histograma');
-
-                    _module_toast.showToast_BottomCenter(mensaje, "error");
-
-                    _ITER = 0;
-                    _gridids_collection = [];
-                    _total_set_length = 0;
-                    _training_set_size = 0;
-                    _test_set_size = 0;
-                }
-
-            });
-
-        } 
         
-        else {
+        var data_request = jQuery.extend(true, {}, decildata);
+        
+        decildata["with_data_freq"] = false;
+        decildata["with_data_score_cell"] = true;
+        decildata["with_data_freq_cell"] = false;
+        decildata["with_data_score_decil"] = false;
 
-            decildata["with_data_freq"] = false;
-            decildata["with_data_score_cell"] = false;
-            decildata["with_data_freq_cell"] = false;
-            decildata["with_data_score_decil"] = false;
+        // cambiando peticiones ajax por promesas y fetch api
+        fetch(_url_zacatuche + "/niche/counts", {
+            method: "POST",
+            body: JSON.stringify(decildata),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(resp => resp.json())
+        .then(respuesta => {
             
-            var milliseconds = new Date().getTime();
-//            console.log(decildata);
-
-            $.ajax({
-                url: _url_zacatuche + "/niche/counts",
-                type: 'post',
-                idtime: milliseconds,
-                dataType: "json",
-                data: decildata,
-                success: function (respuesta) {
-
-                    _ITER_REQUESTS = _ITER_REQUESTS - 1;
-                    console.log("_ITER_REQUESTS: " + _ITER_REQUESTS);
-
-
-                    if (respuesta.ok) {
-                        var counts = respuesta.data;
-                        var data_score_cell = _utils_module.processDataForScoreCell(counts);
-                        var data = _utils_module.processDataForScoreDecil(data_score_cell);
-//                        console.log(data);
-
-                        var groupid = data_request.groupid;
-                        var tfilters = data_request.tfilters;
-                        var title_valor = {};
-                        if (groupid !== undefined || tfilters !== undefined) {
-                            title_valor = _utils_module.processTitleGroup(groupid, tfilters)
-                        }
-//                        console.log(title_valor);
-
-                        for (var i = 0; i < data.length; i++) {
-                            var item = data[i];
-                            item['title'] = title_valor;
-                        }
-//                        console.log(data);
-
-                        _tbl_decil = true;
-
-                        if (data.length > 0 && data[0].title.is_parent) {
-                            console.log("caso 1");
-
-                            if (hasChildren) {
-                                console.log("caso 1A");
-                                _fathers.push({item: data});
-
-                            } else {
-                                // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
-                                console.log("caso 1B");
-                                _fathers.push({item: data});
-                                _sons.push({item: data});
-                            }
-
-                            _decil_data_requests.push({"request": data_request, "name": data[0].title.title});
-                        } else {
-
-                            if (data.length > 0) {
-                                console.log("caso 2");
-                                _sons.push({item: data});
-                            } else {
-                                console.log("caso 4 Sin datos");
-                            }
-                        }
-                        if (isTotal) {
-                            console.log("caso 3");
-                            _totals.push({item: data});
-
-                            _decil_data_requests.push({"request": data_request, "name": "Total"});
-                        }
-
-                        if (_ITER_REQUESTS === 0) {
-
-                            _ITER_REQUESTS = _REQUESTS;
-
-                            loadDecilDataTable();
-
-                            var data_chart = _createSetStructure(_fathers, _sons);
-                            if (_totals.length > 0) {
-                                _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
-                                data_chart = _addDataChartTotal(data_chart, _totals[0].item);
-                            }
-                            $('#chartdiv_score_decil').loading('stop');
-                            $("#hist_next").css('visibility', 'visible');
-                            $("#hist_next").show("slow");
-                            _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
-                            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
-
-                        }
-
-
-                    } else {
-                        // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
-                    }
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(errorThrown);
-                    console.log(jqXHR);
-                    _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
-                    _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
-
+            
+            _REQUESTS_NUMBER = _REQUESTS_NUMBER - 1;
+            console.log("_REQUESTS_NUMBER: " + _REQUESTS_NUMBER);
+            
+            
+            // PROCESANDO PETICIONES INDIVIDUALES
+            var data_response = jQuery.extend(true, [], respuesta.data);
+            processSingleResponse(data_response, data_request);
+            
+            _REQUESTS_DONE.push(respuesta);
+            
+            // todas las peticiones han sido realizadas
+            if (_REQUESTS_NUMBER === 0) {
+                                
+                var total_eps_scr = [];
+                var total_score_cell = [];
+                
+                // SUMA DE VALORES POR ESPECIE Y POR CELDA SOLICITADOS AL SERVIDOR
+                _REQUESTS_DONE.forEach(function(item, index){
+                    total_eps_scr = total_eps_scr.concat(item.data)
+                    total_score_cell = total_score_cell.concat(item.data_score_cell);
+                });
+//                console.log(total_eps_scr);
+//                console.log(total_score_cell);
+                
+                // PETICION EN SERVER, SUMATORIA EN CLIENTE - getGeoRel - Tabla General
+                _createTableEpSc(total_eps_scr);
+                
+                
+                // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqSpecie - Histogramas por especie
+                var data_freq = _utils_module.processDataForFreqSpecie(total_eps_scr);
+                _createHistEpScr_Especie(data_freq);
+                
+                
+                // PROCESO EJECUTADO DEL LADO DEL SERVIDOR, SUMA EN CLIENTE - getScoreCell - Mapa
+                var data_score_cell = _utils_module.reduceScoreCell(total_score_cell);
+                _configureStyleMap(data_score_cell);
+                
+                
+                // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqCell - Histograma por celda
+                var data_freq_cell = _utils_module.processDataForFreqCell(data_score_cell);
+                _createHistScore_Celda(data_freq_cell);
+                
+                console.log(_TREE_GENERATED);
+                
+                var score_cell_byanalysis = [];
+                var names_byanalysis = [];
+                
+                _TREE_GENERATED.groups.forEach(function(group){
+                    
+                    var score_cell_bygroup = [];
+                    var names_bygroup = [];
+                    
+                    names_byanalysis.push(group.name);
+                    
+                    group.children.forEach(function(child){
+                        
+                        score_cell_bygroup = score_cell_bygroup.concat(child.response);
+                        score_cell_byanalysis = score_cell_byanalysis.concat(child.response);
+                        
+                        names_bygroup.push(child.value);
+                        
+                    });
+                    
+                    var data_cell_bygroup = _utils_module.reduceScoreCell(score_cell_bygroup);
+                    var data_decil_bygroup = {data: _utils_module.processDataForScoreDecil(data_cell_bygroup), gpo_name: group.name, names: names_bygroup };
+                    console.log(data_decil_bygroup);
+                    
+                    _RESULTS_TODISPLAY.push(data_decil_bygroup);
+                    
+                });
+                
+                if(_TREE_GENERATED.hasTotal){
+                    var data_cell_byanalysis = _utils_module.reduceScoreCell(score_cell_byanalysis);
+                    var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_cell_byanalysis), gpo_name: "root", names: names_byanalysis };
+                    console.log(data_decil_byanalysis);
+                    
+                    _RESULTS_TODISPLAY.push(data_decil_byanalysis);
                 }
+                
+                console.log(_RESULTS_TODISPLAY);
+                
+//                _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
+                
+                
+            }
 
-            });
+        })
+        .catch(console.error);
 
-        }
+//        $.ajax({
+//            url: _url_zacatuche + "/niche/counts",
+//            type: 'post',
+//            idtime: milliseconds,
+//            dataType: "json",
+//            data: decildata,
+//            success: function (respuesta) {
+//
+////                var data_receive = jQuery.extend(true, {}, counts);
+//                console.log(counts)
+//
+////                    _ITER_REQUESTS = _ITER_REQUESTS - 1;
+////                    console.log("_ITER_REQUESTS: " + _ITER_REQUESTS);
+////                    if (respuesta.ok) {
+////                        
+////                        
+//                        var counts = respuesta.data;
+//                        var data_score_cell = _utils_module.processDataForScoreCell(counts);
+//                        var data = _utils_module.processDataForScoreDecil(data_score_cell);
+////                        console.log(data);
+//
+//                        
+//                        var groupid = data_request.groupid;
+//                        var tfilters = data_request.tfilters;
+//                        var title_valor = {};
+//                        if (groupid !== undefined || tfilters !== undefined) {
+//                            title_valor = _utils_module.processTitleGroup(groupid, tfilters)
+//                        }
+//                        console.log(title_valor);
+//
+//                        for (var i = 0; i < data.length; i++) {
+//                            var item = data[i];
+//                            item['title'] = title_valor;
+//                        }
+//                        console.log(data);
+//
+//                        _tbl_decil = true;
+//
+//                        if (data.length > 0 && data[0].title.is_parent) {
+//                            console.log("caso 1");
+//
+//                            if (hasChildren) {
+//                                console.log("caso 1A");
+//                                _fathers.push({item: data});
+//
+//                            } else {
+//                                // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
+//                                console.log("caso 1B");
+//                                _fathers.push({item: data});
+//                                _sons.push({item: data});
+//                            }
+//
+//                            _decil_data_requests.push({"request": data_request, "name": data[0].title.title});
+//                        } else {
+//
+//                            if (data.length > 0) {
+//                                console.log("caso 2");
+//                                _sons.push({item: data});
+//                            } else {
+//                                console.log("caso 4 Sin datos");
+//                            }
+//                        }
+//                        if (isTotal) {
+//                            console.log("caso 3");
+//                            _totals.push({item: data});
+//
+//                            _decil_data_requests.push({"request": data_request, "name": "Total"});
+//                        }
+//
+//                        if (_ITER_REQUESTS === 0) {
+//
+//                            _ITER_REQUESTS = _REQUESTS;
+//
+                            loadDecilDataTable();
+//
+                            var data_chart = _createSetStructure(_fathers, _sons);
+//                            if (_totals.length > 0) {
+//                                _VERBOSE ? console.log("Se agregan totales") : _VERBOSE;
+//                                data_chart = _addDataChartTotal(data_chart, _totals[0].item);
+//                            }
+//                            $('#chartdiv_score_decil').loading('stop');
+//                            
+//                            _histogram_module_nicho.createMultipleBarChart(data_chart, [], _id_chartscr_decil, d3.map([]));
+//                            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_resultados_display'), "success");
+//                            
+//                            
+//
+//                        }
+////
+////
+////                    } else {
+////                        // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
+////                    }
+//
+//            },
+//            error: function (jqXHR, textStatus, errorThrown) {
+//                console.log(errorThrown);
+//                console.log(jqXHR);
+//                _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
+//                _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
+//
+//            }
+//
+//        });
 
+
+    }
+    
+    function processSingleResponse(data, data_request){
+        
+        console.log("processSingleResponse");
+        
+//        console.log(data_request);
+                
+        _TREE_GENERATED.groups.forEach(function(group_item, index){
+            
+//            console.log(group_item);
+            
+            if(group_item.groupid === data_request.tfilters[0].group_item){
+                
+                group_item.children.forEach(function(child, index){
+                    
+                    if(child.value === data_request.tfilters[0].value){
+                        
+                        var data_score_cell = _utils_module.processDataForScoreCell(data);
+                        child.response = data_score_cell;
+                        if (data_request.groupid !== undefined || data_request.tfilters !== undefined) {
+                            var title_valor = _utils_module.processTitleGroup(data_request.groupid, data_request.tfilters);
+                            child.title_valor = title_valor;
+                        }
+                        
+                    }
+                    
+                });
+            }
+        });
+        
+        console.log(_TREE_GENERATED);
+        
+//        var data_decil = _utils_module.processDataForScoreDecil(data_score_cell);
+//        console.log(data_decil);
+
+//        var groupid = data_request.groupid;
+//        var tfilters = data_request.tfilters;
+        
+//        console.log(title_valor);
+        
+        
+
+//        for (var i = 0; i < data_decil.length; i++) {
+//            var item = data_decil[i];
+//            item['title'] = title_valor;
+//        }
+//        console.log(data_decil);
+
+//        _tbl_decil = true;
+
+//        if (data_decil.length > 0 && data_decil[0].title.is_parent) {
+//            console.log("caso 1");
+//            
+////            if (hasChildren) {
+////                console.log("caso 1A");
+////                _fathers.push({item: data_decil});
+////
+////            } else {
+////                // si el padre no tiene hijos, se debe agregar una copia del padre como hijo para que se genere la estructura correctamente
+////                console.log("caso 1B");
+////                _fathers.push({item: data_decil});
+////                _sons.push({item: data_decil});
+////            }
+//
+//            _decil_data_requests.push({"request": data_request, "name": data_decil[0].title.title});
+//            
+//        } else {
+//
+////            if (data_decil.length > 0) {
+////                console.log("caso 2");
+////                _sons.push({item: data_decil});
+////            } else {
+////                console.log("caso 4 Sin datos");
+////            }
+//        }
+//        
+//        if (_TREE_GENERATED.hasTotal) {
+////            console.log("caso 3");
+////            _totals.push({item: data_decil});
+////
+////            _decil_data_requests.push({"request": data_request, "name": "Total"});
+//        }
+        
+        
+        
     }
 
     function loadDecilDataTable(decil = 10, name = "Total", first_loaded = true) {
@@ -1461,8 +1491,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     });
 
 
-                } 
-                else {
+                } else {
 
                     value.request["with_data_freq"] = false;
                     value.request["with_data_score_cell"] = false;
@@ -1470,7 +1499,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     value.request["with_data_score_decil"] = false;
 //                    console.log(value);
                     var milliseconds = new Date().getTime();
-                    
+
                     $.ajax({
                         type: "post",
                         url: _url_zacatuche + "/niche/counts",
@@ -1480,6 +1509,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         success: function (resp, status) {
 
                             $('#div_example').loading('stop');
+
+                            $("#map_next").css('visibility', 'visible');
+                            $("#map_next").show("slow");
 
                             var decil_list = [];
 
@@ -1563,13 +1595,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         despliegaLoadings();
 
-        if (!_RUN_ON_SERVER) {
-            counts_data["with_data_freq"] = false;
-            counts_data["with_data_score_cell"] = false;
-            counts_data["with_data_freq_cell"] = false;
-            counts_data["with_data_score_decil"] = false;
-        }
-        
+//        if (!_RUN_ON_SERVER) {
+//            counts_data["with_data_freq"] = false;
+//            counts_data["with_data_score_cell"] = false;
+//            counts_data["with_data_freq_cell"] = false;
+//            counts_data["with_data_score_decil"] = false;
+//        }
+
         var milliseconds = new Date().getTime();
 
         $.ajax({
@@ -1584,24 +1616,24 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var counts = respuesta.data;
                     _createTableEpSc(counts);
 
-                    if (_RUN_ON_SERVER) {
+//                    if (_RUN_ON_SERVER) {
+//
+//                        _createHistEpScr_Especie(respuesta.data_freq);
+//                        _createHistScore_Celda(respuesta.data_freq_cell);
+//                        _configureStyleMap(respuesta.data_score_cell);
+//
+//                    } else {
 
-                        _createHistEpScr_Especie(respuesta.data_freq);
-                        _createHistScore_Celda(respuesta.data_freq_cell);
-                        _configureStyleMap(respuesta.data_score_cell);
+                    var data_freq = _utils_module.processDataForFreqSpecie(counts);
+                    _createHistEpScr_Especie(data_freq);
 
-                    } else {
+                    var data_score_cell = _utils_module.processDataForScoreCell(counts);
+                    _configureStyleMap(data_score_cell);
 
-                        var data_freq = _utils_module.processDataForFreqSpecie(counts);
-                        _createHistEpScr_Especie(data_freq);
+                    var data_freq_cell = _utils_module.processDataForFreqCell(data_score_cell);
+                    _createHistScore_Celda(data_freq_cell);
 
-                        var data_score_cell = _utils_module.processDataForScoreCell(counts);
-                        _configureStyleMap(data_score_cell);
-
-                        var data_freq_cell = _utils_module.processDataForFreqCell(data_score_cell);
-                        _createHistScore_Celda(data_freq_cell);
-
-                    }
+//                    }
 
 
 
@@ -1682,6 +1714,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         $('#treeAddedPanel').loading('stop');
 
+        $("#hist_next").css('visibility', 'visible');
+        $("#hist_next").show("slow");
+
 
     }
 
@@ -1702,18 +1737,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
 
         $('#map').loading('stop');
-        $("#map_next").css('visibility', 'visible');
-        $("#map_next").show("slow");
-
-//        console.log(score_cell_resp.data);
-//        var json = data;
-
-        // TODO: verificar si viene valor de apriori
-
 
         // grid_map_color contiene colores y scores
         var grid_map_color = _map_module_nicho.createDecilColor(data, _mapa_prob);
         _map_module_nicho.colorizeFeatures(grid_map_color);
+
+        $("#params_next").css('visibility', 'visible');
+        $("#params_next").show("slow");
+
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
         document.getElementById("dShape").style.display = "inline";
@@ -1744,21 +1775,21 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var item = data;
 
-        for (j = 0; j < item.length; j++) {
+        for (var j = 0; j < item.length; j++) {
             totcount_epsilon = totcount_epsilon + parseInt(item[j].freq_epsilon);
             totcount_score = totcount_score + parseInt(item[j].freq_score);
         }
 
-        for (j = 0; j < item.length; j++) {
+        for (var j = 0; j < item.length; j++) {
 
-            elemento_epsilon = {
+            var elemento_epsilon = {
                 // bcenter : ((data[j].max_epsilon + data[j].min_epsilon) / 2).toFixed(2),
                 bcenter: parseFloat((parseFloat(item[j].min_epsilon) + parseFloat(item[j].max_epsilon)) / 2).toFixed(2),
                 frequency: parseFloat(parseInt(item[j].freq_epsilon) / totcount_epsilon).toFixed(2),
                 title: item[j].min_epsilon + " : " + item[j].max_epsilon
             };
 
-            elemento_score = {
+            var elemento_score = {
                 // bcenter : ((data[j].max_score + data[j].min_score) / 2).toFixed(2),
                 bcenter: parseFloat((parseFloat(item[j].min_score) + parseFloat(item[j].max_score)) / 2).toFixed(2),
                 frequency: parseFloat(parseInt(item[j].freq_score) / totcount_score).toFixed(2),
@@ -1773,64 +1804,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
         _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
 
-
-
-//        $.ajax({
-//            url: _url_zacatuche + "/niche/getFreq",
-//            type: "post",
-//            data: ddata,
-//            dataType: "json",
-//            success: function (res, status) {
-//
-//                var data = res.data;
-//                $('#hst_esp_eps').loading('stop');
-//                $('#hst_esp_scr').loading('stop');
-//
-//                var data2_epsilon = [];
-//                var data2_score = [];
-//                var totcount_epsilon = 0;
-//                var totcount_score = 0;
-//
-//                item = data;
-//
-//                for (j = 0; j < item.length; j++) {
-//                    totcount_epsilon = totcount_epsilon + parseInt(item[j].freq_epsilon);
-//                    totcount_score = totcount_score + parseInt(item[j].freq_score);
-//                }
-//
-//                for (j = 0; j < item.length; j++) {
-//
-//                    elemento_epsilon = {
-//                        // bcenter : ((data[j].max_epsilon + data[j].min_epsilon) / 2).toFixed(2),
-//                        bcenter: parseFloat((parseFloat(item[j].min_epsilon) + parseFloat(item[j].max_epsilon)) / 2).toFixed(2),
-//                        frequency: parseFloat(parseInt(item[j].freq_epsilon) / totcount_epsilon).toFixed(2),
-//                        title: item[j].min_epsilon + " : " + item[j].max_epsilon
-//                    };
-//
-//                    elemento_score = {
-//                        // bcenter : ((data[j].max_score + data[j].min_score) / 2).toFixed(2),
-//                        bcenter: parseFloat((parseFloat(item[j].min_score) + parseFloat(item[j].max_score)) / 2).toFixed(2),
-//                        frequency: parseFloat(parseInt(item[j].freq_score) / totcount_score).toFixed(2),
-//                        title: item[j].min_score + " : " + item[j].max_score
-//                    };
-//
-//                    data2_epsilon.push(elemento_epsilon);
-//                    data2_score.push(elemento_score);
-//
-//                }
-//
-//                _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
-//                _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
-//
-//            },
-//            error: function (jqXHR, textStatus, errorThrown) {
-//                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-//                $('#hst_esp_eps').loading('stop');
-//                $('#hst_esp_scr').loading('stop');
-//            }
-//
-//
-//        });
 
     }
 
@@ -2441,7 +2414,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         singleCellData["with_data_score_cell"] = false;
         singleCellData["with_data_freq_cell"] = false;
         singleCellData["with_data_score_decil"] = false;
-        
+
         var milliseconds = new Date().getTime();
 
         // TODO: cambiar a getcounts
@@ -2458,7 +2431,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _VERBOSE ? console.log(data) : _VERBOSE;
 
                 var htmltable = _createTableFromData(data);
-                if(htmltable === "") return;
+                if (htmltable === "")
+                    return;
                 _map_module_nicho.showPopUp(htmltable, [lat, long]);
 
                 $('#map').loading('stop');
@@ -2495,7 +2469,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var table_rt = "";
         var title_total;
         var total_celda;
-        
+
 //        console.log(json_data.apriori)
 //        console.log(json_data.apriori === undefined)
 
@@ -2539,12 +2513,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
             }
 
             table_rt += "</tbody></table></div>";
-        } 
-        
+        }
+
         if (json_data.mapa_prob !== undefined) {
-            
+
             console.log("mapa_prob");
-            
+
             var title_total = $.i18n.prop('lb_pp_probpre');
             var prob = parseFloat(json_data.mapa_prob) === 100.00 ? 99.99 : parseFloat(json_data.mapa_prob);
             prob = parseFloat(prob) === 0.00 ? 0.01 : parseFloat(prob);
@@ -2561,7 +2535,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                     <th>" + title_total + "</th>\n\
                                     <th>" + total_celda + "</th>\n\
                                     </tr>";
-            
+
         } else if (json_data.apriori !== undefined) {
 
             console.log("Apriori");
@@ -2574,23 +2548,22 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             var title_total = $.i18n.prop('lb_pp_st');
             var total_celda = parseFloat(json_data.tscore + json_data.apriori).toFixed(2);
-            
-            
+
+
             htmltable += "<div class='panel-primary'>\n\
                                 <div class='panel-heading'>\n\
                                     <h3>Total</h3>\n\
                                 </div>\n\
                                 <table class='table table-striped'>\n\
                                 <thead>";
-            
-            if (json_data.hasbio === false && json_data.hasraster === false){    
-                htmltable +=    "<tr>\n\
+
+            if (json_data.hasbio === false && json_data.hasraster === false) {
+                htmltable += "<tr>\n\
                                     <th>" + title_apriori + "</th>\n\
                                     <th>" + total_apriori + "</th>\n\
                                 </tr>";
-            }
-            else{
-                htmltable +=    "<tr>\n\
+            } else {
+                htmltable += "<tr>\n\
                                     <th>" + title_total + "</th>\n\
                                     <th>" + total_celda + "</th>\n\
                                 </tr>\n\
@@ -2604,8 +2577,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 </tr>";
             }
 
-            
-            
+
+
         } else {
             title_total = $.i18n.prop('lb_pp_st');
             total_celda = parseFloat(json_data.tscore).toFixed(2);
@@ -2620,11 +2593,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                             <th>" + title_total + "</th>\
                                             <th>" + total_celda + "</th>\
                                         </tr>";
-                                            
+
         }
-        
-        
-        if (json_data.hasbio !== false || json_data.hasraster !== false){    
+
+
+        if (json_data.hasbio !== false || json_data.hasraster !== false) {
             htmltable += "<tr>\
                             <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
                             <th>" + json_data.bios + "</th>\
@@ -2642,12 +2615,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             <th>" + json_data.negatives + "</th>\
                         </tr>"
         }
-        
+
         htmltable += "</thead>\
                 <tbody>";
-        
-        
-        
+
+
+
         htmltable += "</tbody></table></div>";
 
         htmltable += json_data.hasbio ? table_sp : "";
