@@ -72,7 +72,7 @@ var utils_module = (function (verbose) {
 
         return data_freq;
     }
-
+    
 
     function processDataForFreqCell(data) {
 
@@ -103,6 +103,8 @@ var utils_module = (function (verbose) {
 
         var score_cell_data = groupByScoreCell.top(Infinity);
         score_cell_data.sort(_compare);
+        
+        console.log(score_cell_data)
 
         var data_freq = [];
 
@@ -177,8 +179,40 @@ var utils_module = (function (verbose) {
         return data_freq;
     }
 
+    function reduceScoreCell(data) {
 
-    function processDataForScoreCell(data) {
+
+        var cross_cells = crossfilter(data)
+
+        cross_cells.groupAll();
+        var cells_dimension = cross_cells.dimension(function (d) {
+            return d.gridid;
+        });
+
+        var groupByCell = cells_dimension.group().reduceSum(function (d) {
+            return d.tscore;
+        });
+        var map_cell = groupByCell.top(Infinity);
+        
+        var cell_score_array = [];
+        for (var i = 0; i < map_cell.length; i++) {
+
+            const entry = map_cell[i];
+            var tscore = parseFloat(entry["value"])
+            var gridid = entry["key"]
+            
+            cell_score_array.push({gridid: gridid, tscore: parseFloat(tscore.toFixed(3))})
+
+        }
+        
+//        console.log(cell_score_array);
+        
+        return cell_score_array;
+
+    }
+
+
+    function processDataForScoreCell(data, apriori, mapa_prob, all_cells = []) {
 
         _VERBOSE ? console.log("processDataForScoreCell") : _VERBOSE;
 
@@ -321,7 +355,7 @@ var utils_module = (function (verbose) {
                             'is_parent': true})
             } else { //if (tfilters[0].type != 0) {
 
-                
+
                 title_valor = JSON.stringify(
                         {'title': 'Grupo Raster ' + groupid,
                             'type': tfilters[0].type,
@@ -445,7 +479,7 @@ var utils_module = (function (verbose) {
                 })
             })
         })
-        
+
         var cross_cells = crossfilter(cells)
         cross_cells.groupAll();
 
@@ -585,7 +619,8 @@ var utils_module = (function (verbose) {
         processDataForScoreDecilTable: processDataForScoreDecilTable,
         processDataForScoreCellTable: processDataForScoreCellTable,
         processDataForFreqSpecie: processDataForFreqSpecie,
-        processDataForFreqCell: processDataForFreqCell
+        processDataForFreqCell: processDataForFreqCell,
+        reduceScoreCell: reduceScoreCell
     }
 
 

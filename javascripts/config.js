@@ -3,7 +3,8 @@ $(document).ready(function () {
     var url_front = "http://localhost:8000";
     // SNIB Middleware URL
     var url_api = "http://localhost:8080/niche";
-
+    
+    
     var ambiente = 5;
     var _VERBOSE = true;
     var modulo = 2; // modulo index

@@ -409,7 +409,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
             if (i === 0) {
                 // generando tab panel para variables taxonomicas
-                _VERBOSE ? console.log(tags[i]) : _VERBOSE;
+//                _VERBOSE ? console.log(tags[i]) : _VERBOSE;
 
                 // div del tab[i]_id
                 var tab_pane = $('<div/>')
@@ -453,8 +453,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 self.varfilter_selected = [e.target.getAttribute("data-field"), e.target.getAttribute("parent-field"), e.target.getAttribute("level-field")];
                                 varfield = e.target.text;
 
-                                _VERBOSE ? console.log(varfield) : _VERBOSE;
-                                _VERBOSE ? console.log(self.varfilter_selected) : _VERBOSE;
+//                                _VERBOSE ? console.log(varfield) : _VERBOSE;
+//                                _VERBOSE ? console.log(self.varfilter_selected) : _VERBOSE;
 
                                 $("#btn_variable" + "_" + id).text(varfield + " ");
                                 $("#btn_variable" + "_" + id).append('<span class="caret"></span>');
@@ -484,7 +484,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .autocomplete({
                             source: function (request, response) {
 
-                                _VERBOSE ? console.log(self) : _VERBOSE;
+//                                _VERBOSE ? console.log(self) : _VERBOSE;
                                 
                                 _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
 //                                console.log("REGION_SELECTED: " + _REGION_SELECTED);
@@ -503,7 +503,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                                         response($.map(resp.data, function (item) {
 
-                                            _VERBOSE ? console.log(item) : _VERBOSE;
+//                                            _VERBOSE ? console.log(item) : _VERBOSE;
 
                                             return{
                                                 label: item[self.varfilter_selected[1]],
@@ -534,8 +534,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 self.parent_field_vartree = self.varfilter_selected[1];
                                 self.level_vartree = self.varfilter_selected[2];
 
-                                _VERBOSE ? console.log("nivel") : _VERBOSE;
-                                _VERBOSE ? console.log(self.level_vartree) : _VERBOSE;
+//                                _VERBOSE ? console.log("nivel") : _VERBOSE;
+//                                _VERBOSE ? console.log(self.level_vartree) : _VERBOSE;
 
                                 var tree_reinos = [{
                                         "text": self.value_vartree,
@@ -588,7 +588,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
                         .click(function (e) {
 
-                            console.log(self.arrayVarSelected);
+//                            console.log(self.arrayVarSelected);
 
                             self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
                             $('#jstree_variables_species_' + id).jstree("destroy").empty();
@@ -627,7 +627,7 @@ var variable_module = (function (verbose, url_zacatuche) {
             else if (i === 1) {
 
                 // generando tab panel para variables climaticas
-                _VERBOSE ? console.log(tags[i]) : _VERBOSE;
+//                _VERBOSE ? console.log(tags[i]) : _VERBOSE;
 
                 var tab_pane = $('<div/>')
                         .attr('id', 'tab' + i + "_" + id)
