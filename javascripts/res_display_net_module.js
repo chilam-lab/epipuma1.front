@@ -481,6 +481,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             associativeLinkArray[ "target" ] = _associativeArray[ json_file[i].target ].index;
             associativeLinkArray[ "target_node" ] = _associativeArray[ json_file[i].target ];
             associativeLinkArray[ "value" ] = json_file[i].value;
+            associativeLinkArray[ "score" ] = json_file[i].score;
 
             _arrayLinks.push(associativeLinkArray);
 

@@ -400,6 +400,8 @@ var table_module = (function(verbose) {
 
                 // item = d.values[0];
                 d.values.forEach(function(val) {
+                    
+                    console.log(val)
 
                     var item_list = [];
 
@@ -412,6 +414,8 @@ var table_module = (function(verbose) {
                     item_list.push(val.n);
 
                     item_list.push(val.value);
+                    
+                    item_list.push(val.score);
 
                     data_list.push(item_list)
 
@@ -454,7 +458,8 @@ var table_module = (function(verbose) {
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nj'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nj') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nj')},
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_ni')},
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_n')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + "Epsilon"}
+                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + "Epsilon"},
+                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Score'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_score') + "'); table_module().addImageScore(); $('#modalInfo').modal()\" ></button> " + "Score"}
                 ],
                 buttons: [
                     'copy', 'csv', 'excel', 'print'
