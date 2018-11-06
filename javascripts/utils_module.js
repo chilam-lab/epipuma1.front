@@ -104,7 +104,7 @@ var utils_module = (function (verbose) {
         var score_cell_data = groupByScoreCell.top(Infinity);
         score_cell_data.sort(_compare);
         
-        console.log(score_cell_data)
+//        console.log(score_cell_data)
 
         var data_freq = [];
 
