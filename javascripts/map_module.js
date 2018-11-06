@@ -38,8 +38,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             _overlaySP_Maps,
             _layer_SP_control,
             _specie_target_SP;
-    
-    var _REGION_SELECTED ;
+
+    var _REGION_SELECTED;
 
     _loadCountrySelect();
 
@@ -395,12 +395,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 })
                 .drawing(_drawingOnCanvas);
 
-        
-        if ( parseInt(localStorage.getItem("ambiente")) === 0 || parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3 ) {
+
+        if (parseInt(localStorage.getItem("ambiente")) === 0 || parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3) {
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
 
-        } else if ( parseInt(localStorage.getItem("ambiente")) === 4 || parseInt(localStorage.getItem("ambiente")) === 5) {
+        } else if (parseInt(localStorage.getItem("ambiente")) === 4 || parseInt(localStorage.getItem("ambiente")) === 5) {
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
         } else {
@@ -441,8 +441,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
     }
-    
-    
+
+
     function _mapSPConfigure() {
 
         _VERBOSE ? console.log("_mapSPConfigure") : _VERBOSE;
@@ -497,12 +497,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     function loadD3GridMX(val_process, grid_res, region_selected) {
 
         _VERBOSE ? console.log("_loadD3GridMX") : _VERBOSE;
-        
+
         _VERBOSE ? console.log("_REGION_SELECTED: " + _REGION_SELECTED) : _VERBOSE;
-        _VERBOSE ? console.log("region_selected: " + region_selected ) : _VERBOSE;
+        _VERBOSE ? console.log("region_selected: " + region_selected) : _VERBOSE;
 
         // Deja la malla cuando ya existe previemente y no se cambia la resolución
-        if (_grid_map !== undefined && _grid_res === grid_res && _REGION_SELECTED === region_selected ) {
+        if (_grid_map !== undefined && _grid_res === grid_res && _REGION_SELECTED === region_selected) {
             _VERBOSE ? console.log("Se mantiene resolución") : _VERBOSE;
             _display_module.callDisplayProcess(val_process);
             return;
@@ -515,7 +515,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         $('#map').loading({
             stoppable: true
         });
-        
+
         _REGION_SELECTED = region_selected;
 
         $.ajax({
@@ -979,12 +979,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _VERBOSE ? console.log("busca_especie") : _VERBOSE;
         var milliseconds = new Date().getTime();
         var grid_res_val = $("#grid_resolution").val();
-        
+
 //        console.log("grid_res_val: " + grid_res_val)
 //        console.log(_specie_target)
 
         $('#footprint_region_select').val(region);
-        
+
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
 
@@ -993,8 +993,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         $('#tuto_mapa_occ').loading({
             stoppable: true
         });
-        
-        
+
+
         //TODO: gueardar el footprint region en el enalce de generacion
         var footprint_region = region;
         console.log("footprint_region: " + footprint_region);
@@ -1088,7 +1088,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
 
                     if ($.inArray(item.gridid, gridItems) === -1) {
-                        
+
                         var fecha_ano = item.aniocolecta === 9999 ? "" : item.aniocolecta;
                         _allowedPoints.set(item_id, {
                             "type": "Feature",
@@ -1421,7 +1421,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         var prob_chunks = [];
         var red_chunks = [];
         var blue_chunks = [];
+        var apriori_cells = [];
 
+//        _VERBOSE ? console.log(json) : _VERBOSE;
+//        var data = json.data;
 
         var grid_color = d3.map([]);
 
@@ -1429,9 +1432,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             _VERBOSE ? console.log("Sin probabilidad") : _VERBOSE;
 
+
             $.each(json, function (index, d) {
 
-                d.tscore = parseFloat(d.tscore);
+//                if (json.apriori && d.tscore === json.val_apriori) {
+//                    apriori_cells.push({"girdid": d.gridid, "tscore": d.tscore})
+//                    return true;
+//                }
 
                 if (d.tscore >= 0) {
                     red_arg.push(d)
@@ -1440,6 +1447,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 }
 
             });
+
+            _VERBOSE ? console.log(apriori_cells) : _VERBOSE;
+
 
             if (blue_arg.length > 0 && red_arg.length > 0) {
 
@@ -1463,7 +1473,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     _resultado_grid = 0;
 
                     // _VERBOSE ? console.log(blue_arg.length) : _VERBOSE;
-                    t_chunks = _getDividedChunks(blue_arg, red_arg, false, mapa_prob);
+                    t_chunks = _getDividedChunks(blue_arg, red_arg, false, mapa_prob, apriori_cells);
                     blue_chunks = t_chunks[0];
                     red_chunks = t_chunks[1];
 
@@ -1478,7 +1488,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                     _resultado_grid = 1;
 
-                    t_chunks = _getDividedChunks(red_arg, blue_arg, true, mapa_prob);
+                    t_chunks = _getDividedChunks(red_arg, blue_arg, true, mapa_prob, apriori_cells);
                     red_chunks = t_chunks[0];
                     blue_chunks = t_chunks[1];
 
@@ -1491,7 +1501,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 _VERBOSE ? console.log("positivos") : _VERBOSE;
 
-                t_chunks = _getDividedChunks(red_arg, [], true, mapa_prob);
+                t_chunks = _getDividedChunks(red_arg, [], true, mapa_prob, apriori_cells);
                 red_chunks = t_chunks[0];
                 blue_chunks = t_chunks[1];
 
@@ -1501,38 +1511,57 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 _VERBOSE ? console.log("negativos") : _VERBOSE;
 
-                t_chunks = _getDividedChunks(blue_arg, [], false, mapa_prob);
+                t_chunks = _getDividedChunks(blue_arg, [], false, mapa_prob, apriori_cells);
                 blue_chunks = t_chunks[0];
                 red_chunks = t_chunks[1];
 
             }
 
-            _VERBOSE ? console.log(blue_chunks) : _VERBOSE;
-            _VERBOSE ? console.log(red_chunks) : _VERBOSE;
+//            _VERBOSE ? console.log(blue_chunks) : _VERBOSE;
+//            _VERBOSE ? console.log(red_chunks) : _VERBOSE;
 
 
-
+            // CHECAR PARAMETRO INDEX!!
             var color_scale = colorbrewer.Reds[9];
             $.each(red_chunks, function (index, value) {
 
+//                _VERBOSE ? console.log(index) : _VERBOSE;
+
+
                 value.forEach(function (d) {
 
-                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
+//                    _VERBOSE ? console.log(color_scale[index]) : _VERBOSE;
 
+                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
                 });
 
             });
+
+//            if(json.apriori && json.val_apriori >= 0){
+//                $.each(value_apriori, function (index, d) {
+//                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
+//                });
+//            }
+
 
             color_scale = colorbrewer.Blues[9];
             $.each(blue_chunks, function (index, value) {
 
                 value.forEach(function (d) {
-
                     grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
-
                 });
 
             });
+
+//            if(json.apriori && json.val_apriori < 0){
+//                $.each(value_apriori, function (index, d) {
+//                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
+//                });
+//            }
+
+
+
+
 
         } else {
 
@@ -1553,16 +1582,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         }
 
-//        _VERBOSE ? console.log(grid_color.values()) : _VERBOSE;
+        _VERBOSE ? console.log(grid_color.values()) : _VERBOSE;
 
         _cargaPaletaColor(mapa_prob);
 
         return grid_color;
 
     }
-    
-    
-    
+
+
+
 
     /**
      * Éste método obtiene la escala de colores para la coloración del mapa
@@ -1712,7 +1741,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {boolean} first_pos - Bandera para indicar que array de valores esta en el primer parámetro de la función, true para positivos y false para negativos
      * @param {boolean} mapa_prob - Bandera para indicar si el análisis de nicho ecológico se hizo con probabilidad
      */
-    function _getDividedChunks(arg_1, arg_2, first_pos, mapa_prob) {
+    function _getDividedChunks(arg_1, arg_2, first_pos, mapa_prob, apriori_cells = []) {
 
         _VERBOSE ? console.log("_getDividedChunks") : _VERBOSE;
 
@@ -1720,13 +1749,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _range_limits_blue = [];
         _range_limits_total = [];
 
+        var val_apriori = apriori_cells.length > 0 ? apriori_cells[0].tscore : 0
 
         // _VERBOSE ? console.log(arg_1.length) : _VERBOSE;
-        decil_length_1 = arg_1.length / NUM_SECTIONS;
-        module_1 = arg_1.length % NUM_SECTIONS;
+//        var decil_length_1 = arg_1.length / NUM_SECTIONS;
+//        var module_1 = arg_1.length % NUM_SECTIONS;
 
         // si esta completo
-        arg_result_1 = chunkify(arg_1, NUM_SECTIONS, true);
+        var arg_result_1 = chunkify(arg_1, NUM_SECTIONS, true);
         // arg_result_1 = _chunks(arg_1, decil_length_1, NUM_SECTIONS, module_1);
 
 
@@ -1734,8 +1764,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             [arg_result_1, []];
         }
 
-        first = true;
-        r_limit = 0.0;
+        var first = true;
+        var r_limit = 0.0;
 
         // getting boundaries of each decil
         $.each(arg_result_1, function (index, decil) {
@@ -1747,7 +1777,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 if (first_pos) {
 
-                    max_decil = d3.max(decil.map(function (d) {
+                    var max_decil = d3.max(decil.map(function (d) {
                         return parseFloat(d.tscore)
                     }));
                     r_limit = d3.min(decil.map(function (d) {
@@ -1757,7 +1787,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     _range_limits_red.push({right_limit: max_decil, left_limit: r_limit});
 
                 } else {
-                    max_decil = 0;
+                    var max_decil = 0;
                     r_limit = d3.min(decil.map(function (d) {
                         return parseFloat(d.tscore)
                     }));
@@ -1770,7 +1800,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             } else if (index == NUM_SECTIONS - 1) {
 
                 if (first_pos) {
-                    max_decil = d3.max(decil.map(function (d) {
+                    var max_decil = d3.max(decil.map(function (d) {
                         return parseFloat(d.tscore)
                     }));
                     r_limit = 0;
@@ -1778,7 +1808,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     _range_limits_red.push({right_limit: max_decil, left_limit: r_limit});
 
                 } else {
-                    max_decil = r_limit;
+                    var max_decil = r_limit;
                     r_limit = d3.min(decil.map(function (d) {
                         return parseFloat(d.tscore)
                     }));
@@ -1791,7 +1821,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             } else {
 
                 // avoiding spaces between decil boundaries
-                max_decil = r_limit;
+                var max_decil = r_limit;
                 r_limit = d3.min(decil.map(function (d) {
                     return parseFloat(d.tscore)
                 }));
@@ -1806,27 +1836,30 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         });
 
+        console.log(val_apriori);
+        console.log(_range_limits_red);
+        console.log(_range_limits_blue);
 
         var range = first_pos ? _range_limits_red : _range_limits_blue;
 
         if (arg_2.length > 0) {
 
             // clustering items of the second array
-            arg_result_2 = [];
+            var arg_result_2 = [];
 
             $.each(range, function (i, r_item) {
 
                 if (first_pos) {
 
-                    rlimit = r_item.right_limit * -1;
-                    llimit = r_item.left_limit * -1;
+                    var rlimit = r_item.right_limit * -1;
+                    var llimit = r_item.left_limit * -1;
 
                     _range_limits_blue.push({right_limit: llimit, left_limit: rlimit});
 
                 } else {
 
-                    rlimit = r_item.right_limit * -1;
-                    llimit = r_item.left_limit * -1;
+                    var rlimit = r_item.right_limit * -1;
+                    var llimit = r_item.left_limit * -1;
 
                     _range_limits_red.push({right_limit: llimit, left_limit: rlimit});
 
@@ -1849,9 +1882,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 $.each(arg_2, function (j, item) {
 
                     // score = Math.abs(item.tscore);
-                    score = parseFloat(item.tscore);
-                    llimit = limits.left_limit;
-                    rlimit = limits.right_limit;
+                    var score = parseFloat(item.tscore);
+                    var llimit = limits.left_limit;
+                    var rlimit = limits.right_limit;
 
                     // when the negative values (blues scale) is sent as arg_1, the boundaries must be changed
                     if (first_pos) {
@@ -1872,9 +1905,41 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             });
 
+            
+//            console.log(arg_result_1);
+//            $.each(_range_limits_red, function (index, item) {
+//
+//                console.log(item);
+//                if (item.left_limit < val_apriori && val_apriori >= item.right_limit) {
+//                    arg_result_1[index] = arg_result_1[index].concat(apriori_cells)
+//                }
+//
+//            })
+//
+//            console.log(arg_result_2);
+//            $.each(_range_limits_blue, function (index, item) {
+//
+//                console.log(item);
+//                if (item.left_limit < val_apriori && val_apriori >= item.right_limit) {
+//                    arg_result_1[index] = arg_result_1[index].concat(apriori_cells)
+//                }
+//
+//            })
+
             return [arg_result_1, arg_result_2];
 
         }
+
+//        console.log(arg_result_1);
+//
+//        $.each(range, function (index, item) {
+//
+//            console.log(item);
+//            if (item.left_limit < val_apriori && val_apriori >= item.right_limit) {
+//                arg_result_1[index] = arg_result_1[index].concat(apriori_cells)
+//            }
+//
+//        })
 
         return [arg_result_1, []];
 
@@ -1986,43 +2051,40 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         return sp_target_2export;
 
     }
-    
-    
-    function changeRegionView(region){
-        
+
+
+    function changeRegionView(region) {
+
         _VERBOSE ? console.log("changeRegionView") : _VERBOSE;
         _VERBOSE ? console.log("region: " + region) : _VERBOSE;
-        
-        if(region === 1){
+
+        if (region === 1) {
             _VERBOSE ? console.log("region_1") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
-        }
-        else if(region === 2){
+        } else if (region === 2) {
             _VERBOSE ? console.log("region2") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [40.5, -97] : [30.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
-        }
-        else if(region === 3){
+        } else if (region === 3) {
             _VERBOSE ? console.log("region_3") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -97] : [23.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
-        }
-        else{
+        } else {
             _VERBOSE ? console.log("region_4") : _VERBOSE;
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [4, -73] : [4, -73];
-            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ?  5 : 4;
+            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
         }
-        
+
 //        _VERBOSE ? console.log(_centro_mapa) : _VERBOSE;
 //        _VERBOSE ? console.log(_zoom_module) : _VERBOSE;
-        
+
         map.setView(_centro_mapa, _zoom_module, {animate: true});
         map_sp.setView(_centro_mapa, _zoom_module, {animate: true});
-        
+
     }
-    
-    
+
+
 
 
 
