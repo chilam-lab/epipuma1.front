@@ -103,6 +103,8 @@ var utils_module = (function (verbose) {
 
         var score_cell_data = groupByScoreCell.top(Infinity);
         score_cell_data.sort(_compare);
+        
+        console.log(score_cell_data)
 
         var data_freq = [];
 
@@ -203,7 +205,7 @@ var utils_module = (function (verbose) {
 
         }
         
-        console.log(cell_score_array);
+//        console.log(cell_score_array);
         
         return cell_score_array;
 
