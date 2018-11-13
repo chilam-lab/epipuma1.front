@@ -394,6 +394,17 @@ var language_module = (function (verbose) {
             $("#a_item_bio059").text($.i18n.prop('a_item_bio059'));
             $("#a_item_bio060").text($.i18n.prop('a_item_bio060'));
             $("#a_item_bio061").text($.i18n.prop('a_item_bio061'));
+            $("#a_item_bio062").text($.i18n.prop('a_item_bio062'));
+            $("#a_item_bio063").text($.i18n.prop('a_item_bio063'));
+            $("#a_item_bio064").text($.i18n.prop('a_item_bio064'));
+            $("#a_item_bio065").text($.i18n.prop('a_item_bio065'));
+            $("#a_item_bio066").text($.i18n.prop('a_item_bio066'));
+            $("#a_item_bio067").text($.i18n.prop('a_item_bio067'));
+            $("#a_item_bio068").text($.i18n.prop('a_item_bio068'));
+            $("#a_item_bio069").text($.i18n.prop('a_item_bio069'));
+            $("#a_item_bio070").text($.i18n.prop('a_item_bio070'));
+            $("#a_item_bio071").text($.i18n.prop('a_item_bio071'));
+            $("#a_item_bio072").text($.i18n.prop('a_item_bio072'));
 
 
 
