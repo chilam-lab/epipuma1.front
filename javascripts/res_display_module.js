@@ -19,15 +19,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _subgroups, _spid, _idreg, _type_time;
 
     var _validation_module_all,
-            _map_module_nicho,
-            _language_module_nicho,
-            _module_toast,
-            _utils_module;
+        _map_module_nicho,
+        _language_module_nicho,
+        _module_toast,
+        _utils_module;
 
 
     var _allowedPoints = d3.map([]),
-            _discardedPoints = d3.map([]),
-            _discardedPointsFilter = d3.map([]),
+            _discardedPoints = d3.map([]);
+    var        _discardedPointsFilter = d3.map([]),
             _computed_discarded_cells = d3.map([]),
             _computed_occ_cells = d3.map([]);
 

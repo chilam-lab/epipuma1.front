@@ -32,6 +32,11 @@ var module_nicho = (function () {
             _workspace = "cnb";
 
     var _iTrans;
+    
+    const _ACGetEntList = new AbortController();
+    const signal = _ACGetEntList.signal;
+    
+    var _getEntListInProcess = false;
 
 
     /**
@@ -326,6 +331,7 @@ var module_nicho = (function () {
 
 
         $("#nom_sp").autocomplete({
+            
             source: function (request, response) {
 
                 var grid_res_val = $("#grid_resolution").val();
@@ -334,27 +340,48 @@ var module_nicho = (function () {
 
                 _cleanTutorialButtons();
 
-//                $("#specie_next").hide("slow");
-//                $("#params_next").hide("slow");
-//                $("#map_next").hide("slow");
-//                $("#hist_next").hide("slow");
 
                 region = parseInt($("#footprint_region_select").val());
-
-                $.ajax({
-                    url: _url_api + "/niche/especie/getEntList",
-                    dataType: "json",
-                    type: "post",
-                    data: {
-                        limit: true,
-                        searchStr: request.term,
-                        source: 1, // source para saber si viene de objetivo o el target
-                        grid_res: grid_res_val,
-                        footprint_region: region
-                    },
-                    success: function (resp) {
-
-                        response($.map(resp.data, function (item) {
+                
+                var data = {
+                    limit: true,
+                    searchStr: request.term,
+                    source: 1, // source para saber si viene de objetivo o el target
+                    grid_res: grid_res_val,
+                    footprint_region: region
+                }
+                
+                
+                //TODO: CAMBIAR CODIGO A AJAX REQUEST EL FETCH DEJA CANCELADA LA PETICIÓN. 
+//                CORREGIR TMB EN GETSPECIES, NO ESTA FUNCIONANDO
+                
+                console.log("_getEntListInProcess: " + _getEntListInProcess)
+                
+                if(_getEntListInProcess){
+                    console.log("peticion abortada")
+                    _ACGetEntList.abort();
+                    _ACGetEntList = new AbortController();
+                    signal = _ACGetEntList.signal;
+                }
+                _getEntListInProcess = true;
+                
+                
+                
+                fetch(_url_api + "/niche/especie/getEntList", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    signal: signal,
+                    mode: 'cors',
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(resp => resp.json())
+                .then(respuesta => {
+                    
+                    _getEntListInProcess = false;
+            
+                    response($.map(respuesta.data, function (item) {
 
                             return{
 //                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
@@ -370,9 +397,42 @@ var module_nicho = (function () {
                                 occ: item.occ
                             };
                         })
-                                );
-                    }
-                });
+                    );
+            
+                })
+
+//                $.ajax({
+//                    url: _url_api + "/niche/especie/getEntList",
+//                    dataType: "json",
+//                    type: "post",
+//                    data: {
+//                        limit: true,
+//                        searchStr: request.term,
+//                        source: 1, // source para saber si viene de objetivo o el target
+//                        grid_res: grid_res_val,
+//                        footprint_region: region
+//                    },
+//                    success: function (resp) {
+//
+//                        response($.map(resp.data, function (item) {
+//
+//                            return{
+////                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
+//                                label: item.especievalidabusqueda,
+//                                id: item.spid,
+//                                reino: item.reinovalido,
+//                                phylum: item.phylumdivisionvalido,
+//                                clase: item.clasevalida,
+//                                orden: item.ordenvalido,
+//                                familia: item.familiavalida,
+//                                genero: item.generovalido,
+//                                especie: item.especievalidabusqueda,
+//                                occ: item.occ
+//                            };
+//                        })
+//                                );
+//                    }
+//                });
 
             },
             minLength: 2,
