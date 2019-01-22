@@ -343,96 +343,96 @@ var module_nicho = (function () {
 
                 region = parseInt($("#footprint_region_select").val());
                 
-                var data = {
-                    limit: true,
-                    searchStr: request.term,
-                    source: 1, // source para saber si viene de objetivo o el target
-                    grid_res: grid_res_val,
-                    footprint_region: region
-                }
+                // var data = {
+                //     limit: true,
+                //     searchStr: request.term,
+                //     source: 1, // source para saber si viene de objetivo o el target
+                //     grid_res: grid_res_val,
+                //     footprint_region: region
+                // }
                 
                 
                 //TODO: CAMBIAR CODIGO A AJAX REQUEST EL FETCH DEJA CANCELADA LA PETICIÓN. 
 //                CORREGIR TMB EN GETSPECIES, NO ESTA FUNCIONANDO
                 
-                console.log("_getEntListInProcess: " + _getEntListInProcess)
+                // console.log("_getEntListInProcess: " + _getEntListInProcess)
                 
-                if(_getEntListInProcess){
-                    console.log("peticion abortada")
-                    _ACGetEntList.abort();
-                    _ACGetEntList = new AbortController();
-                    signal = _ACGetEntList.signal;
-                }
-                _getEntListInProcess = true;
+                // if(_getEntListInProcess){
+                //     console.log("peticion abortada")
+                //     _ACGetEntList.abort();
+                //     _ACGetEntList = new AbortController();
+                //     signal = _ACGetEntList.signal;
+                // }
+                // _getEntListInProcess = true;
                 
                 
                 
-                fetch(_url_api + "/niche/especie/getEntList", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    signal: signal,
-                    mode: 'cors',
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-                .then(resp => resp.json())
-                .then(respuesta => {
+//                 fetch(_url_api + "/niche/especie/getEntList", {
+//                     method: "POST",
+//                     body: JSON.stringify(data),
+//                     signal: signal,
+//                     mode: 'cors',
+//                     headers: {
+//                         "Content-Type": "application/json"
+//                     }
+//                 })
+//                 .then(resp => resp.json())
+//                 .then(respuesta => {
                     
-                    _getEntListInProcess = false;
+//                     _getEntListInProcess = false;
             
-                    response($.map(respuesta.data, function (item) {
+//                     response($.map(respuesta.data, function (item) {
 
-                            return{
+//                             return{
+// //                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
+//                                 label: item.especievalidabusqueda,
+//                                 id: item.spid,
+//                                 reino: item.reinovalido,
+//                                 phylum: item.phylumdivisionvalido,
+//                                 clase: item.clasevalida,
+//                                 orden: item.ordenvalido,
+//                                 familia: item.familiavalida,
+//                                 genero: item.generovalido,
+//                                 especie: item.especievalidabusqueda,
+//                                 occ: item.occ
+//                             };
+//                         })
+//                     );
+            
+//                 })
+
+               $.ajax({
+                   url: _url_api + "/niche/especie/getEntList",
+                   dataType: "json",
+                   type: "post",
+                   data: {
+                       limit: true,
+                       searchStr: request.term,
+                       source: 1, // source para saber si viene de objetivo o el target
+                       grid_res: grid_res_val,
+                       footprint_region: region
+                   },
+                   success: function (resp) {
+
+                       response($.map(resp.data, function (item) {
+
+                           return{
 //                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
-                                label: item.especievalidabusqueda,
-                                id: item.spid,
-                                reino: item.reinovalido,
-                                phylum: item.phylumdivisionvalido,
-                                clase: item.clasevalida,
-                                orden: item.ordenvalido,
-                                familia: item.familiavalida,
-                                genero: item.generovalido,
-                                especie: item.especievalidabusqueda,
-                                occ: item.occ
-                            };
-                        })
-                    );
-            
-                })
-
-//                $.ajax({
-//                    url: _url_api + "/niche/especie/getEntList",
-//                    dataType: "json",
-//                    type: "post",
-//                    data: {
-//                        limit: true,
-//                        searchStr: request.term,
-//                        source: 1, // source para saber si viene de objetivo o el target
-//                        grid_res: grid_res_val,
-//                        footprint_region: region
-//                    },
-//                    success: function (resp) {
-//
-//                        response($.map(resp.data, function (item) {
-//
-//                            return{
-////                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
-//                                label: item.especievalidabusqueda,
-//                                id: item.spid,
-//                                reino: item.reinovalido,
-//                                phylum: item.phylumdivisionvalido,
-//                                clase: item.clasevalida,
-//                                orden: item.ordenvalido,
-//                                familia: item.familiavalida,
-//                                genero: item.generovalido,
-//                                especie: item.especievalidabusqueda,
-//                                occ: item.occ
-//                            };
-//                        })
-//                                );
-//                    }
-//                });
+                               label: item.especievalidabusqueda,
+                               id: item.spid,
+                               reino: item.reinovalido,
+                               phylum: item.phylumdivisionvalido,
+                               clase: item.clasevalida,
+                               orden: item.ordenvalido,
+                               familia: item.familiavalida,
+                               genero: item.generovalido,
+                               especie: item.especievalidabusqueda,
+                               occ: item.occ
+                           };
+                       })
+                               );
+                   }
+               });
 
             },
             minLength: 2,

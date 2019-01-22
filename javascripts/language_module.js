@@ -406,6 +406,18 @@ var language_module = (function (verbose) {
             $("#a_item_bio071").text($.i18n.prop('a_item_bio071'));
             $("#a_item_bio072").text($.i18n.prop('a_item_bio072'));
 
+            $("#a_item_bio073").text($.i18n.prop('a_item_bio073'));
+            $("#a_item_bio074").text($.i18n.prop('a_item_bio074'));
+            $("#a_item_bio075").text($.i18n.prop('a_item_bio075'));
+            $("#a_item_bio076").text($.i18n.prop('a_item_bio076'));
+            $("#a_item_bio077").text($.i18n.prop('a_item_bio077'));
+            $("#a_item_bio078").text($.i18n.prop('a_item_bio078'));
+            $("#a_item_bio079").text($.i18n.prop('a_item_bio079'));
+            $("#a_item_bio080").text($.i18n.prop('a_item_bio080'));
+            $("#a_item_bio081").text($.i18n.prop('a_item_bio081'));
+            $("#a_item_bio082").text($.i18n.prop('a_item_bio082'));
+
+
 
 
 

@@ -518,6 +518,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("callDisplayProcess NICHO") : _VERBOSE;
 
+        despliegaLoadings();
+
         if (val_process) {
 
             _VERBOSE ? console.log("VALIDACIÓN: ON") : _VERBOSE;
@@ -529,7 +531,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             _VERBOSE ? console.log("VALIDACIÓN: OFF") : _VERBOSE;
             
-            despliegaLoadings();
+            
             _confDataRequest(_spid, _idreg, val_process);
             _panelGeneration();
 //            _generateCounts(_countsdata);
@@ -562,7 +564,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             data: {
                 spid: _spid,
                 iter: _NUM_ITERATIONS,
-                grid_res: _grid_res
+                grid_res: _grid_res,
+                footprint_region: _footprint_region
             },
             dataType: "json",
             success: function (resp) {
@@ -572,7 +575,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 _confDataRequest(_spid, _idreg, val_process, _idtemptable);
                 _panelGeneration(_idtemptable);
-                _generateCounts(_countsdata);
+                // _generateCounts(_countsdata);
 
 //                _createTableEpSc(_tdata, _idtemptable, val_process);
 //                _createHistEpScr_Especie(_ddata);
@@ -1793,6 +1796,18 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_bio071_" + item).text($.i18n.prop('a_item_bio071'));
             $("#a_item_bio072_" + item).text($.i18n.prop('a_item_bio072'));
 
+            $("#a_item_bio073_" + item).text($.i18n.prop('a_item_bio073'));
+            $("#a_item_bio074_" + item).text($.i18n.prop('a_item_bio074'));
+            $("#a_item_bio075_" + item).text($.i18n.prop('a_item_bio075'));
+            $("#a_item_bio076_" + item).text($.i18n.prop('a_item_bio076'));
+            $("#a_item_bio077_" + item).text($.i18n.prop('a_item_bio077'));
+            $("#a_item_bio078_" + item).text($.i18n.prop('a_item_bio078'));
+            $("#a_item_bio079_" + item).text($.i18n.prop('a_item_bio079'));
+            $("#a_item_bio080_" + item).text($.i18n.prop('a_item_bio080'));
+            $("#a_item_bio081_" + item).text($.i18n.prop('a_item_bio081'));
+            $("#a_item_bio082_" + item).text($.i18n.prop('a_item_bio082'));
+            
+
 
 
 
@@ -2355,7 +2370,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
         _VERBOSE ? console.log(json_data) : _VERBOSE
 
-        var htmltable = "<div class='myScrollableBlockPopup'>";
+        var htmltable = "<div class='myScrollableBlockPopup mywidth'>";
         var table_sp = "";
         var table_rt = "";
         var title_total;
@@ -2371,7 +2386,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         if (json_data.hasbio) {
 
-            table_sp += "<div class='panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>";
+            table_sp += "<div class='panel-primary'><div class='panel-heading no-padding header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table class='table table-striped'>"
+            // + "<thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"+
+            + "<tbody>";
 
             for (i = 0; i < json_data.species.length; i++) {
 
@@ -2389,7 +2406,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         if (json_data.hasraster) {
 
-            table_rt += "<div class='panel-primary'><div class='panel-heading'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'><thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead><tbody>"
+            table_rt += "<div class='panel-primary'><div class='panel-heading panel-head header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'>" 
+            // + "<thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"
+            + "<tbody>"
 
             for (var i = 0; i < json_data.species.length; i++) {
 
@@ -2417,8 +2436,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             var total_celda = parseFloat(prob).toFixed(2) + "%";
 
             htmltable += "<div class='panel-primary'>\n\
-                                <div class='panel-heading'>\n\
-                                <h3>Total</h3>\n\
+                                <div class='panel-heading no-padding header-title-cell'>\n\
+                                <h3 class='h3-title-cell'>Total</h3>\n\
                                 </div>\n\
                                 <table class='table table-striped'>\n\
                                 <thead>\n\
@@ -2442,8 +2461,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
             htmltable += "<div class='panel-primary'>\n\
-                                <div class='panel-heading'>\n\
-                                    <h3>Total</h3>\n\
+                                <div class='panel-heading no-padding header-title-cell'>\n\
+                                    <h3 class='h3-title-cell'>Total</h3>\n\
                                 </div>\n\
                                 <table class='table table-striped'>\n\
                                 <thead>";
@@ -2475,8 +2494,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             total_celda = parseFloat(json_data.tscore).toFixed(2);
 
             htmltable += "<div class='panel-primary'>\
-                                <div class='panel-heading'>\
-                                    <h3>Total</h3>\
+                                <div class='panel-heading no-padding header-title-cell'>\
+                                    <h3 class='h3-title-cell'>Total</h3>\
                                 </div>\
                                 <table class='table table-striped'>\
                                     <thead>\
