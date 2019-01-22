@@ -1938,3 +1938,25 @@ button.glyphicon-remove:before {
     80% { transform: scale(1); }
     100% { transform: scale(1); }
 }
+
+
+
+.no-padding{
+    padding: 0px !important;
+}
+
+.header-title-cell{
+    border-bottom: 0px !important;
+    border-top-left-radius: 0px !important; 
+    border-top-right-radius: 0px !important;
+    
+}
+
+.h3-title-cell{
+    margin-top: 0px !important;
+}
+
+.mywidth{
+    width: 230px !important;
+}
+

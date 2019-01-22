@@ -1,11 +1,11 @@
 $(document).ready(function () {
     // Current SPECIES FrontEnd URL
-//    var url_front = "http://localhost";
-    var url_front = "http://species.conabio.gob.mx/dbdev";
+   var url_front = "http://species.conabio.gob.mx/dbdev";
+    // var url_front = "http://localhost/species-front";
     
     // SNIB Middleware URL
-//    var url_api = "http://localhost:8080";
-    var url_api = "http://species.conabio.gob.mx/api-db-dev";
+   var url_api = "http://species.conabio.gob.mx/api-db-dev";
+    // var url_api = "http://localhost:8080";
 
     
     var ambiente = 5;
