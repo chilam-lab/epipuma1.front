@@ -137,6 +137,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     var _requestReturned = 2;
 
+    var _current_data_score_cell;
+
 
     var _decil_values_tbl = [];
     var _decil_data_requests = [];
@@ -362,6 +364,29 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _validation_module_all = validation_module(_VERBOSE);
         _validation_module_all.startValidationModule();
         _validation_module_all.set_histogram_module(_histogram_module_nicho);
+
+
+        $('ul.dropdown-menu li a.map_type').click(function (e) {
+
+            _VERBOSE ? console.log("change map") : _VERBOSE;
+
+            var language_selected = e.target.getAttribute("value");
+            var language_label_selected = e.target.getAttribute("label");
+
+            _VERBOSE ? console.log("value: " + language_selected) : _VERBOSE;
+            _VERBOSE ? console.log("label: " + language_label_selected) : _VERBOSE;
+
+            $("#btn_map_type").attr("value", language_selected);
+            // $("#btn_map_type").text($.i18n.prop('lb_map') + " ");
+            $("#btn_map_type").text(language_label_selected + " ");
+            $("#btn_map_type").append('<span class="caret"></span>');
+
+               
+            _configureStyleMap()
+
+            
+            e.preventDefault();
+        });
 
 
         $("#send_email_csv").click(function (e) {
@@ -1159,14 +1184,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
                         // PROCESO EJECUTADO DEL LADO DEL SERVIDOR, SUMA EN CLIENTE - getScoreCell - Mapa
-                        var data_score_cell = _utils_module.reduceScoreCell(total_score_cell);
-                        _configureStyleMap(data_score_cell);
+                        _current_data_score_cell = _utils_module.reduceScoreCell(total_score_cell);
+                        _configureStyleMap();
 
 //                console.log(data_score_cell);
 
 
                         // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqCell - Histograma por celda
-                        var data_freq_cell = _utils_module.processDataForFreqCell(data_score_cell);
+                        var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
                         _createHistScore_Celda(data_freq_cell);
 
 //                console.log(_TREE_GENERATED);
@@ -1499,10 +1524,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var data_freq = _utils_module.processDataForFreqSpecie(counts);
                     _createHistEpScr_Especie(data_freq);
 
-                    var data_score_cell = _utils_module.processDataForScoreCell(counts);
-                    _configureStyleMap(data_score_cell);
+                    _current_data_score_cell = _utils_module.processDataForScoreCell(counts);
+                    _configureStyleMap();
 
-                    var data_freq_cell = _utils_module.processDataForFreqCell(data_score_cell);
+                    var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
                     _createHistScore_Celda(data_freq_cell);
 
 //                    }
@@ -1602,15 +1627,31 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * 
      * @param {json} data - JSON con los resultados de id de celda y valor de total score
      */
-    function _configureStyleMap(data) {
+    function _configureStyleMap() {
 
         _VERBOSE ? console.log("_configureStyleMap") : _VERBOSE;
+
+        
+        _VERBOSE ? console.log(_current_data_score_cell) : _VERBOSE;
+        if (_current_data_score_cell === undefined){
+            _VERBOSE ? console.log("No data to color the map") : _VERBOSE;
+            return
+        }
 
         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
 
         
         // grid_map_color contiene colores y scores
-        var grid_map_color = _map_module_nicho.createDecilColor(data, _mapa_prob);
+        var grid_map_color
+        var map_type = $("#btn_map_type").val()
+
+        // if(map_type == "range"){
+        //     grid_map_color = _map_module_nicho.createDecilColor(_current_data_score_cell, _mapa_prob);    
+        // }
+        // else{
+            grid_map_color = _map_module_nicho.createRankColor(_current_data_score_cell, _mapa_prob, map_type);
+        // }
+        
         _map_module_nicho.colorizeFeatures(grid_map_color);
 
         $("#params_next").css('visibility', 'visible');
@@ -1623,6 +1664,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         $('#map').loading('stop');
 
     }
+
 
 
     /**
