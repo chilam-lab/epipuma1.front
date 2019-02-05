@@ -235,6 +235,15 @@ section{
     z-index: 1000;
 }
 
+.link_map_type {
+    position: absolute;
+    top: 0;
+    left: 60;
+    margin-top: 10px;
+    /*display: none;*/
+    z-index: 1000;
+}
+
 .res_validation {
     position: fixed;
     bottom: 0;

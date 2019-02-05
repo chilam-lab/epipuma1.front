@@ -658,6 +658,53 @@
 
                     <div id="map" class="margin-top-15 box_shadow" >
 
+
+                        <!-- <div class="dropdown show link_map_type">
+                          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown link
+                          </a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                          </div>
+                        </div> -->
+
+                       <!--  <div class="dropdown link_map_type">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Visualización
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                          </div>
+                        </div> -->
+
+
+                        <div class=" dropdown_group link_map_type">
+
+                            <div class="input-group-btn ">
+
+                                <button id="btn_map_type" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="range" >Equal range <span class="caret"></span></button>
+
+                                <ul class="dropdown-menu dropdown_idioma">
+                                    <li><a class="map_type" label="Equal range" value="range">Equal range </a></li>
+                                    <li><a class="map_type" label="Standard deviation" value="deviation" ">Standard deviation </a></li>
+                                    <li><a class="map_type" label="Natural Breaks" value="jenks" ">Natural Breaks </a></li>
+                                    <li><a class="map_type" label="Quantize" value="quantize">Quantize </a></li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                        <!-- <div id='form' class="link_map_type">
+                          <input checked='true' type='radio' name='scale' id='jenks9' /><label for='jenks9'>jenks 9</label>
+                          <input type='radio' name='scale' id='quantize' /><label for='quantize'>quantize</label>
+                        </div> -->
+
                         <div class="link_shape">
                             <button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
                         </div>
@@ -895,6 +942,7 @@
         <div class="modalloading"><!-- Place at bottom of page --></div>
 
 
+        <script type="text/javascript" src="plugins/Bootstrap/popper.min.js"></script>
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
@@ -919,6 +967,11 @@
         <script src="plugins/BetterWMS/L.TileLayer.BetterWMS.js"></script>
         <script type="text/javascript" src="plugins/toastr/toastr.js"></script>
         <script type="text/javascript" src="plugins/i18n/in/jquery.i18n.properties.min.js"></script>
+        <script type="text/javascript" src="plugins/simpleStatistics/simple-statistics.js"></script>
+        <script type="text/javascript" src="plugins/de-array/d3-array.min.js"></script>
+
+        
+
 
 
         <script type="text/javascript" src="javascripts/pede_nicho.js"></script>
@@ -971,6 +1024,10 @@
         <script type="text/javascript" src="plugins/fullpage/jquery.fullPage.js"></script>
 
         <script type="text/javascript" src="plugins/loading/jquery.loading.min.js"></script>
+
+
+
+        <!-- <script src='https://unpkg.com/simple-statistics@6.1.1/dist/simple-statistics.min.js' /> -->
 
 
 

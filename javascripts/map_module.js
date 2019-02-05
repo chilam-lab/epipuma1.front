@@ -1539,6 +1539,166 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     }
 
 
+    function createRankColor(json, mapa_prob, map_type) {
+
+        _VERBOSE ? console.log("createRankColor") : _VERBOSE;
+
+        console.log("map_type: " + map_type)
+
+        var equal_range_sections = 9;
+        var grid_color = d3.map([]);
+        var colors = jQuery.extend(true, [], colorbrewer.RdBu[9]); 
+        colors = colors.reverse()
+
+
+        var equal_range_colors = jQuery.extend(true, [], colorbrewer.Blues[equal_range_sections])
+        equal_range_colors = equal_range_colors.reverse()
+        equal_range_colors = equal_range_colors.concat(jQuery.extend(true, [], colorbrewer.Reds[equal_range_sections]))
+        console.log(equal_range_colors)
+
+        
+        if (!mapa_prob) {
+
+            var scales = {};
+            
+            var rateById = {};
+            // var rateById2 = {};
+            json.forEach(function(d) { rateById[d.gridid] = +d.tscore; });
+            // json.forEach(function(d) { rateById2[d.gridid] = d.tscore; });
+
+            var arr_scores = json.map(function(d) {return parseFloat(d.tscore);})
+            var min_scr = d3.min(arr_scores);
+            var max_scr = d3.max(arr_scores);
+
+            var deviation = d3.deviation(arr_scores)
+            var mean = d3.mean(arr_scores)
+
+            console.log("min_scr: " + min_scr)
+            console.log("max_scr: " + max_scr)
+            console.log("deviation: " + deviation)
+            console.log("mean: " + mean)
+            // console.log(ss.jenks(json.map(function(d) { return +d.tscore; }), 9))
+
+            
+
+            // Calculo de rangos para coloración EQUAL RANGE
+            var equal_range_values = []
+            // solo positivos 
+            if(min_scr>0){
+                console.log("positivos")
+                // Revisar: chear si el minimo debe ser min_src o cero [0, max_src]
+                var scale_test = d3.scale.quantile()
+                // .domain([min_scr, max_scr])
+                .domain([0, max_scr])
+                .range(d3.range(equal_range_sections));
+
+                equal_range_values = scale_test.quantiles()
+                equal_range_colors = jQuery.extend(true, [], colorbrewer.Reds[equal_range_sections]); 
+                
+            }
+            // solo negativos
+            else if(max_scr<0){
+                console.log("negativos")
+
+                var scale_test = d3.scale.quantile()
+                // .domain([min_scr, max_scr])
+                .domain([min_scr, 0])
+                .range(d3.range(equal_range_sections));
+
+                equal_range_values = scale_test.quantiles()
+                equal_range_colors = jQuery.extend(true, [], colorbrewer.Blues[equal_range_sections]); 
+
+            }
+            // existen valores positivos y negativos
+            // negativo absoluto es mayor que positivo absoluto
+            else if(Math.abs(min_scr) > Math.abs(max_scr)){
+                console.log("negativo mayor")
+
+                var scale_test = d3.scale.quantile()
+                .domain([min_scr, 0])
+                .range(d3.range(equal_range_sections));
+
+                equal_range_values = scale_test.quantiles()
+                var inverse_temp = jQuery.extend(true, [], equal_range_values)
+                inverse_temp = inverse_temp.map(function(d) {return -d})
+                equal_range_values = equal_range_values.concat([0].concat(inverse_temp.reverse()))
+                
+            }
+            // positivo absoluto es mayor que negativo absoluto
+            else{
+                console.log("positivo mayor")
+
+                var scale_test = d3.scale.quantile()
+                .domain([0, max_scr])
+                .range(d3.range(equal_range_sections));
+
+                equal_range_values = scale_test.quantiles()
+                var inverse_temp = jQuery.extend(true, [], equal_range_values)
+                inverse_temp = inverse_temp.map(function(d) {return -d})
+                equal_range_values = inverse_temp.reverse().concat([0].concat(equal_range_values))   
+
+            }
+            // console.log(equal_range_values)
+            // console.log(equal_range_colors)
+                
+
+            
+            // Calculo de rangos para coloración STANDARD DEVIATION
+            var arr_range_deviations = []
+            arr_range_deviations = d3.range(4).map(function(d) {return mean + (d * -deviation) })
+            arr_range_deviations.reverse()
+            arr_range_deviations = arr_range_deviations.concat(d3.range(1,5).map(function(d) {return mean + (d * deviation) })) 
+            // console.log(arr_range_deviations)
+            // console.log(colors)
+
+
+            scales.range = d3.scale.threshold()
+                .domain(equal_range_values)
+                .range(equal_range_colors);
+            
+            //TODO: crear el dominio a partir del numero de desviaciones estandar de cada
+            // parsear o redondear a entero cada elemento
+            scales.deviation = d3.scale.threshold()
+                .domain(arr_range_deviations)
+                .range(colors);
+
+
+            scales.quantize = d3.scale.quantize()
+                .domain([min_scr, max_scr])
+                .range(colors);
+
+            scales.jenks = d3.scale.threshold()
+                .domain(ss.jenks(json.map(function(d) { return +d.tscore; }), 9))
+                .range(colors);
+
+            // console.log(colors)
+            // console.log(rateById)
+            // console.log(scales['jenks9'])
+            // console.log(rateById[8526])
+            // console.log(scales['jenks'](rateById[8526]))
+            // console.log(scales['deviation'](-45))
+            // console.log(scales['deviation'](0))
+            // console.log(scales['deviation'](3))
+            // console.log(scales['deviation'](20))
+            // console.log(scales['deviation'](80))
+
+            $.each(json, function (index, d) {
+
+                grid_color.set(parseInt(d.gridid), {color: scales[map_type](rateById[d.gridid]), score: d.tscore});
+                // grid_color.set(parseInt(d.gridid), {color: scales['deviation'](rateById[d.gridid]), score: d.tscore});
+
+            })
+
+            console.log(grid_color.values())
+
+            return grid_color;
+
+        }
+
+
+    }
+
+
 
     /**
      * Éste método realiza la partición en deciles y la asignación de escala de colores de un conjunto de celdas con valores de score asignado.
@@ -1898,6 +2058,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         // si esta completo
         var arg_result_1 = chunkify(arg_1, NUM_SECTIONS, true);
         // arg_result_1 = _chunks(arg_1, decil_length_1, NUM_SECTIONS, module_1);
+        console.log(arg_result_1)
 
 
         if (mapa_prob) {
@@ -2109,6 +2270,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 out = [],
                 i = 0,
                 size;
+
         console.log("len: " + len);
         console.log("n: " + n);
 
@@ -2117,7 +2279,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             size = Math.floor(len / n);
 
-            console.log("size: " + size);
+            // console.log("size: " + size);
 
             while (i < len) {
                 out.push(a.slice(i, i += size));
@@ -2276,7 +2438,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         clearMap: clearMap,
         startMap: startMap,
         getGridMap2Export: getGridMap2Export,
-        getSP2Export: getSP2Export
+        getSP2Export: getSP2Export,
+        createRankColor: createRankColor
     }
 
 });
