@@ -1426,13 +1426,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
         request.grid_res = child.request.grid_res;
         request.hasBios = request.hasBios ? request.hasBios : child.request.hasBios;
         request.hasRaster = request.hasRaster ? request.hasRaster : child.request.hasRaster;
+        request.apriori = request.apriori ? request.apriori : child.request.apriori;
+        request.mapa_prob = request.mapa_prob ? request.mapa_prob : child.request.mapa_prob;
+
         request.id = child.request.id;
-        request.idtabla = child.request.idtabla;
+        request.idtabla = request.idtabla ? request.idtabla : child.request.idtabla;
         request.min_occ = child.request.min_occ;
         request.sfecha = child.request.sfecha;
-        request.val_process = child.request.val_process;
+        request.val_process = request.val_process ? request.val_process : child.request.val_process;
         request.idtime = child.request.idtime;
         request.level_req = child.request.level_req;
+        
 
         request.with_data_freq = false;
         request.with_data_score_cell = false;
@@ -1848,6 +1852,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_bio080_" + item).text($.i18n.prop('a_item_bio080'));
             $("#a_item_bio081_" + item).text($.i18n.prop('a_item_bio081'));
             $("#a_item_bio082_" + item).text($.i18n.prop('a_item_bio082'));
+
+            $("#a_item_bio083_").text($.i18n.prop('a_item_bio083'));
+            $("#a_item_bio084_").text($.i18n.prop('a_item_bio084'));
             
 
 
