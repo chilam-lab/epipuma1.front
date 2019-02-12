@@ -1689,11 +1689,26 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             })
 
-            console.log(grid_color.values())
+            // console.log(grid_color.values())
+            
+        }
+        else{
 
-            return grid_color;
+            _VERBOSE ? console.log("Probabilidad") : _VERBOSE;
+            prob_arg = json;
+
+            var link_color = d3.scale.quantize().domain([1, 0]).range(colorbrewer.RdBu[11]);
+
+
+            $.each(prob_arg, function (index, value) {
+
+                grid_color.set(value.gridid, {color: link_color(parseFloat(value.tscore)), score: parseFloat(value.tscore)});
+
+            });
 
         }
+
+        return grid_color;
 
 
     }
