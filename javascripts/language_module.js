@@ -218,6 +218,9 @@ var language_module = (function (verbose) {
             $("#footprint_region").text($.i18n.prop('footprint_region') + ":");
 
 
+            $("#lb_params_variables").text($.i18n.prop('lb_params_variables'));
+
+
 
             if (firstLoad) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
