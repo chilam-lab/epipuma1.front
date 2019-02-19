@@ -1156,7 +1156,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     // PROCESANDO PETICIONES INDIVIDUALES
                     var data_response = jQuery.extend(true, [], respuesta.data);
-                    processSingleResponse(data_response, data_request);
+                    processSingleResponse(data_response, data_request, respuesta.validation_data);
 
                     _REQUESTS_DONE.push(respuesta);
 
@@ -1187,22 +1187,22 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         _current_data_score_cell = _utils_module.reduceScoreCell(total_score_cell);
                         _configureStyleMap();
 
-//                console.log(data_score_cell);
-
 
                         // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqCell - Histograma por celda
                         var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
                         _createHistScore_Celda(data_freq_cell);
 
-//                console.log(_TREE_GENERATED);
+                        console.log(_TREE_GENERATED);
 
                         var score_cell_byanalysis = [];
                         var names_byanalysis = [];
+                        var decil_total_results = []
 
                         _TREE_GENERATED.groups.forEach(function (group) {
 
                             var score_cell_bygroup = [];
                             var names_bygroup = [];
+                            var validation_data_bygroup = []
 
                             names_byanalysis.push(group.name);
 
@@ -1210,23 +1210,32 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                                 score_cell_bygroup = score_cell_bygroup.concat(child.response);
                                 score_cell_byanalysis = score_cell_byanalysis.concat(child.response);
-
+                                validation_data_bygroup = validation_data_bygroup.concat(child.validation_data);
+                                
                                 names_bygroup.push(child.value);
 
                             });
 
                             var data_cell_bygroup = _utils_module.reduceScoreCell(score_cell_bygroup);
-                            var data_decil_bygroup = {data: _utils_module.processDataForScoreDecil(data_cell_bygroup), gpo_name: group.name, names: names_bygroup};
-//                    console.log(data_decil_bygroup);
+                            
+                            // obtiene el promedio de las variables de un grupo
+                            var data_reduce_decilgroup = _utils_module.reduceDecilGroups(validation_data_bygroup);
+                            // agrega resultado por grupo a arraeglo de grupos
+                            decil_total_results = decil_total_results.concat(data_reduce_decilgroup)
+
+                            var data_decil_bygroup = {data: _utils_module.processDataForScoreDecil(data_cell_bygroup), gpo_name: group.name, names: names_bygroup, deciles: data_reduce_decilgroup};
 
                             _RESULTS_TODISPLAY.push(data_decil_bygroup);
 
                         });
 
+
                         if (_TREE_GENERATED.hasTotal) {
                             var data_cell_byanalysis = _utils_module.reduceScoreCell(score_cell_byanalysis);
-                            var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_cell_byanalysis), gpo_name: "Total", names: names_byanalysis};
-//                    console.log(data_decil_byanalysis);
+                            
+                            var data_decil_total = _utils_module.reduceDecilGroups(decil_total_results);
+
+                            var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_cell_byanalysis), gpo_name: "Total", names: names_byanalysis, deciles: data_decil_total};
 
                             _RESULTS_TODISPLAY.push(data_decil_byanalysis);
                         }
@@ -1248,11 +1257,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function processSingleResponse(data, data_request) {
+    function processSingleResponse(data, data_request, validation_data = []) {
 
         _VERBOSE ? console.log("processSingleResponse") : _VERBOSE;
-
-//        console.log(data_request);
 
         _TREE_GENERATED.groups.forEach(function (group_item, index) {
 
@@ -1266,6 +1273,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                         var data_score_cell = _utils_module.processDataForScoreCell(data);
                         child.response = data_score_cell;
+                        child.validation_data = validation_data
 
                         if (data_request.groupid !== undefined || data_request.tfilters !== undefined) {
                             var title_valor = _utils_module.processTitleGroup(data_request.groupid, data_request.tfilters);
@@ -1280,8 +1288,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             }
 
         });
-
-//        console.log(_TREE_GENERATED);
 
     }
 
@@ -1765,6 +1771,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_orden_" + item).text($.i18n.prop('a_item_orden'));
             $("#a_item_familia_" + item).text($.i18n.prop('a_item_familia'));
             $("#a_item_genero_" + item).text($.i18n.prop('a_item_genero'));
+
+            $("#lb_params_variables").text($.i18n.prop('lb_params_variables'));
 
 
             $("#a_item_bio00_" + item).text($.i18n.prop('a_item_bio00'));

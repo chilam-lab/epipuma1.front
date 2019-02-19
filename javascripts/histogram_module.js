@@ -582,182 +582,149 @@ var histogram_module = (function (verbose) {
                 });
 
 
-//        if ($("#chkValidation").is(':checked')) {
-//
-//            var tip_recall = d3.tip()
-//                    .attr('class', 'd3-tip')
-//                    .offset([-10, 0])
-//                    .html(function (d) {
-//                        recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
-//                                "<strong>" + _iTrans.prop('lb_vp_avg') + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
-//                                "<strong>" + _iTrans.prop('lb_fn_avg') + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>";
-//                        // "<strong>CSS prom:</strong> <span >" + parseFloat(d.ausentes).toFixed(2) + "%</span><br/>"
-//                        return  recall_values;
-//                    });
-//
-//            svg.call(tip_recall);
-//
-//
-//            var y_right = d3.scale.linear()
-//                    .range([translate_axis, 0]);
-//
-//            y_right.domain([0, 1]);
-//
-//            var yRightAxis = d3.svg.axis()
-//                    .scale(y_right)
-//                    .orient("right")
-//                    .ticks(5, "%");
-//
-//            // ** si el label cambia, es necesario agregar id **
-//            svg.append("g")
-//                    .attr("class", "y axis")
-//                    .attr("transform", "translate(" + width + " ,0)")
-//                    .call(yRightAxis)
-//                    .append("text")
-//                    .attr("y", -10)
-//                    .attr("x", margin.right - 40)
-//                    .attr("dy", ".71em")
-//                    .style("text-anchor", "end")
-//                    .text(_iTrans.prop('lb_recall'));
-//
-//
-//            // obtiene el numero de grupo analisados para generar la colección de elementos para desplegar el calculo de recall
-//            var array_recall = [];
-//
-//            var group_size = json_decil[0].names.length;
-//            console.log(group_size);
-//
-//            for (i = 0; i < group_size; i++) {
-//
-//                var item_recall = [];
-//
-//                $.each(json_decil, function (index, item) {
-//
-//                    var names = item.names;
-//                    var recall = item.recall;
-//                    var vp = item.vp;
-//                    var fn = item.fn;
-//
-//                    var item_decil = {
-//                        "group_name": names[i].p,
-//                        "recall": recall[i].p,
-//                        "vp": parseFloat(vp[i].p),
-//                        "fn": parseFloat(fn[i].p),
-//                        "decil": parseInt(item.decil),
-//                        "recall_nulo": 0
-//                    }
-//
-//                    item_recall.push(item_decil);
-//
-//                });
-//
-//                array_recall.push(item_recall);
-//
-//            }
-//
-//            // adding recall line
-//            _VERBOSE ? console.log(array_recall) : _VERBOSE;
-//
-//
-//            $.each(array_recall, function (i, recall_item) {
-//
-//                console.log(recall_item);
-//
-//                var line = d3.svg.line()
-//                        .x(function (d) {
-//                            // _VERBOSE ? console.log("movement: " + x1.rangeBand() * (ageNames.length/2)) : _VERBOSE;
-//                            // _VERBOSE ? console.log("x0: " + x0(array_recall.length - i) + x1.rangeBand()) : _VERBOSE;
-////                             (x1.rangeBand() * (ageNames.length/2)) ---> Moves the line to the center of the bars
-////                            console.log(d);
-////                            console.log(i);
-////                            console.log(x0(d.decil));
-////                            console.log(ageNames.length);
-////                            console.log(x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2)));
-//
-//                            return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
-//                        })
-//                        .y(function (d) {
-////                            _VERBOSE ? console.log("y: " + y_right(d.recall)) : _VERBOSE;
-//
-//                            return y_right(d.recall);
-//                        });
-//
-////                console.log(line);
-//
-//                svg.append("path")
-//                        .datum(recall_item)
-//                        .attr("class", "line")
-//                        .attr("d", line)
-//                        .style("stroke", function (d) {
-//
-////                            console.log(d[0].group_name);
-////                            console.log(color(d[0].group_name));
-//
-//                            // _VERBOSE ? console.log(color(d[0].group_name)) : _VERBOSE;
-//                            // _VERBOSE ? console.log( nameMap.get(d[0].group_name.name).recall_nulo ) : _VERBOSE;
-//
-////                            if ($.inArray(false, nameMap.get(d[0].group_name.name).recall_nulo) != -1) {
-////                            if ($.inArray(false, nameMap.get(d.group_name).recall_nulo) != -1) {
-////                                return color(d[0].group_name.name);
-//                            return color(d[0].group_name);
-////                            }
-////                            else {
-////                                return "none";
-////                            }
-//
-//
-//
-//                        })
-//
-//                svg.selectAll("dot")
-//                        .data(recall_item)
-//                        .enter().append("circle")
-//                        .attr("class", "dot")
-//                        .attr("r", 3.5)
-//                        .attr("cx", function (d, i) {
-//
-////                            return x0(recall_item.length - i) + (x1.rangeBand() * (ageNames.length / 2));
-//                            return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
-//
-//
-//                        })
-//                        .attr("cy", function (d) {
-//                            return y_right(d.recall);
-//                        })
-//                        .on('mouseover', function (d) {
-//
-//                            d3.select(this).attr("r", function (d) {
-//                                return 8 + Math.pow(d.recall / Math.PI, 0.5);
-//                            });
-//                            tip_recall.show(d)
-//                        })
-//                        .on('mouseout', function (d) {
-//
-//                            d3.select(this).attr("r", function (d) {
-//                                return 3.5;
-//                            });
-//                            tip_recall.hide(d)
-//                        })
-//                        .style("stroke", function (d) {
-//
-//                            // _VERBOSE ? console.log( nameMap.get(d.group_name.name).recall_nulo ) : _VERBOSE;
-//
-//                            console.log("color: " + d.group_name);
-//
-////                            if ($.inArray(false, nameMap.get(d.group_name.name).recall_nulo) != -1) {
-////                                return color(d.group_name.name);
-//                            return color(d.group_name);
-////                            }
-////                            else {
-////                                return "none";
-////                            }
-//
-//                        })
-//
-//
-//            });
-//
-//        }
+
+
+       // Despliega grafica de resultados de validación
+       if ($("#chkValidation").is(':checked')) {
+
+           var tip_recall = d3.tip()
+                   .attr('class', 'd3-tip')
+                   .offset([-10, 0])
+                   .html(function (d) {
+                       recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
+                               "<strong>" + _iTrans.prop('lb_vp_avg') + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
+                               "<strong>" + _iTrans.prop('lb_fn_avg') + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>";
+                       // "<strong>CSS prom:</strong> <span >" + parseFloat(d.ausentes).toFixed(2) + "%</span><br/>"
+                       return  recall_values;
+                   });
+
+           svg.call(tip_recall);
+
+
+           var y_right = d3.scale.linear()
+                   .range([translate_axis, 0]);
+
+           y_right.domain([0, 1]);
+
+           var yRightAxis = d3.svg.axis()
+                   .scale(y_right)
+                   .orient("right")
+                   .ticks(5, "%");
+
+           // ** si el label cambia, es necesario agregar id **
+           svg.append("g")
+                   .attr("class", "y axis")
+                   .attr("transform", "translate(" + width + " ,0)")
+                   .call(yRightAxis)
+                   .append("text")
+                   .attr("y", -10)
+                   .attr("x", margin.right - 40)
+                   .attr("dy", ".71em")
+                   .style("text-anchor", "end")
+                   .text(_iTrans.prop('lb_recall'));
+
+
+           // obtiene el numero de grupo analizados para generar la colección de elementos para desplegar el calculo de recall
+           var array_recall = [];
+           
+           $.each(json_decil, function (index, item) {
+
+               var item_recall = [];
+
+                $.each(item.deciles, function (index, decil) {
+
+                    var item_decil = {
+                       "group_name": item.gpo_name,
+                       "recall": decil.recall,
+                       "vp": decil.vp,
+                       "fn": decil.fn,
+                       "decil": decil.decil,
+                       "recall_nulo": decil.nulo
+                    }
+
+                    item_recall.push(item_decil);
+
+                })
+
+                array_recall.push(item_recall);
+
+           });
+               
+
+           // adding recall line
+           _VERBOSE ? console.log(array_recall) : _VERBOSE;
+
+           $.each(array_recall, function (i, recall_item) {
+
+               console.log(recall_item);
+
+               var line = d3.svg.line()
+                       .x(function (d) {
+                           return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
+                       })
+                       .y(function (d) {
+                           return y_right(d.recall);
+                       });
+
+//                console.log(line);
+
+               svg.append("path")
+                       .datum(recall_item)
+                       .attr("class", "line")
+                       .attr("d", line)
+                       .style("stroke", function (d) {
+
+                           // console.log(d);
+                           // console.log("name: " + d[0].group_name);
+                           // console.log("color: " + color(d[0].group_name));
+
+                           return color(d[0].group_name);
+
+                       })
+
+               svg.selectAll("dot")
+                       .data(recall_item)
+                       .enter().append("circle")
+                       .attr("class", "dot")
+                       .attr("r", 3.5)
+                       .attr("cx", function (d, i) {
+
+//                            return x0(recall_item.length - i) + (x1.rangeBand() * (ageNames.length / 2));
+                           return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
+
+
+                       })
+                       .attr("cy", function (d) {
+                           return y_right(d.recall);
+                       })
+                       .on('mouseover', function (d) {
+
+                           d3.select(this).attr("r", function (d) {
+                               return 8 + Math.pow(d.recall / Math.PI, 0.5);
+                           });
+                           tip_recall.show(d)
+                       })
+                       .on('mouseout', function (d) {
+
+                           d3.select(this).attr("r", function (d) {
+                               return 3.5;
+                           });
+                           tip_recall.hide(d)
+                       })
+                       .style("stroke", function (d) {
+
+                           // console.log(d);
+                           // console.log("name: " + d.group_name);
+                           // console.log("color: " + color(d.group_name));
+
+                           return color(d.group_name);
+
+                       })
+
+
+           });
+
+       }
 
 
     }

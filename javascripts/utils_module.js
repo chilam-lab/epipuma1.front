@@ -574,6 +574,68 @@ var utils_module = (function (verbose) {
 
     }
 
+    function reduceDecilGroups(validatation_data_result){
+
+          var cross_cells = crossfilter(validatation_data_result)
+          cross_cells.groupAll();
+
+          var decil_dimension = cross_cells.dimension(function(d) { return d.decil; });
+          
+          var groupByDecil = decil_dimension.group().reduce(
+            function(item,add){
+              ++item.count
+              
+              item.vp += add.vp
+              item.fn = item.fn + add.fn
+              item.nulo = item.nulo + add.nulo
+              item.recall = item.recall + add.recall
+              
+              return item
+            },
+            function(item,remove){
+              --item.count
+              
+              item.vp -= remove.vp
+              item.fn = item.fn - remove.fn
+              item.nulo = item.nulo - remove.nulo
+              item.recall = item.recall - remove.recall
+
+              return item
+            },
+            function(){
+              return {
+                count: 0,
+                vp: 0,
+                fn: 0,
+                nulo: 0,
+                recall: 0
+              }
+            }
+          )
+
+          var reduce_data = groupByDecil.top(Infinity);
+          reduce_data.sort(_compare_desc)
+
+          var data_result = []
+          for(var i=0; i<reduce_data.length; i++){
+              const entry = reduce_data[i];
+
+              data_result.push({
+                decil: entry["key"],
+                vp: parseFloat((entry["value"].vp / entry["value"].count).toFixed(2)),
+                fn: parseFloat((entry["value"].fn / entry["value"].count).toFixed(2)),
+                nulo: parseFloat((entry["value"].nulo / entry["value"].count).toFixed(2)),
+                recall: parseFloat((entry["value"].recall / entry["value"].count).toFixed(2))
+                
+              })
+          }
+
+          // debug(data_result)
+
+          return data_result
+
+    }
+
 
     function _compare(a, b) {
         if (a.key < b.key)
@@ -620,7 +682,8 @@ var utils_module = (function (verbose) {
         processDataForScoreCellTable: processDataForScoreCellTable,
         processDataForFreqSpecie: processDataForFreqSpecie,
         processDataForFreqCell: processDataForFreqCell,
-        reduceScoreCell: reduceScoreCell
+        reduceScoreCell: reduceScoreCell,
+        reduceDecilGroups: reduceDecilGroups
     }
 
 
