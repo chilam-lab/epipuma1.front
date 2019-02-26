@@ -1539,22 +1539,35 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     }
 
 
+
+    /**
+     * Éste método realiza la partición en deciles y la asignación de escala de colores de un conjunto de celdas con valores de score asignado.
+     *
+     * @function createRankColor
+     * @public
+     * @memberof! map_module
+     * 
+     * @param {json} json - Json con el conjunto de celdas y score asignado resultado del análisis de nicho ecológico
+     * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
+     */
+    
     function createRankColor(json, mapa_prob, map_type) {
 
         _VERBOSE ? console.log("createRankColor") : _VERBOSE;
 
-        console.log("map_type: " + map_type)
+        // console.log("map_type: " + map_type)
 
         var equal_range_sections = 9;
         var grid_color = d3.map([]);
         var colors = jQuery.extend(true, [], colorbrewer.RdBu[9]); 
         colors = colors.reverse()
+        // console.log(colors)
 
 
         var equal_range_colors = jQuery.extend(true, [], colorbrewer.Blues[equal_range_sections])
         equal_range_colors = equal_range_colors.reverse()
         equal_range_colors = equal_range_colors.concat(jQuery.extend(true, [], colorbrewer.Reds[equal_range_sections]))
-        console.log(equal_range_colors)
+        // console.log(equal_range_colors)
 
         
         if (!mapa_prob) {
@@ -1572,12 +1585,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             var deviation = d3.deviation(arr_scores)
             var mean = d3.mean(arr_scores)
+            var breaks = ss.jenks(json.map(function(d) { return +d.tscore; }), (colors.length-2))
 
-            console.log("min_scr: " + min_scr)
-            console.log("max_scr: " + max_scr)
-            console.log("deviation: " + deviation)
-            console.log("mean: " + mean)
-            // console.log(ss.jenks(json.map(function(d) { return +d.tscore; }), 9))
+            // console.log("min_scr: " + min_scr)
+            // console.log("max_scr: " + max_scr)
+            // console.log("deviation: " + deviation)
+            // console.log("mean: " + mean)
+            // console.log(ss.jenks(json.map(function(d) { return +d.tscore; }), (colors.length-2)))
 
             
 
@@ -1668,7 +1682,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 .range(colors);
 
             scales.jenks = d3.scale.threshold()
-                .domain(ss.jenks(json.map(function(d) { return +d.tscore; }), 9))
+                .domain(breaks)
                 .range(colors);
 
             // console.log(colors)
@@ -1689,6 +1703,34 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             })
 
+            
+
+            var colors_array = map_type === "range" ?  equal_range_colors : colors           
+            var values_array = [];
+
+            switch(map_type){
+                case "range":
+                    values_array = equal_range_values
+                    break;
+                case "deviation":
+                    values_array = arr_range_deviations
+                    break;
+                case "quantize":
+                    var temp_scale = d3.scale.quantile()
+                        .domain([min_scr, max_scr])
+                        .range(colors);
+                    values_array = temp_scale.quantiles()
+                    break;
+                case "jenks":
+                    values_array = breaks
+                    break;
+                default:
+                    values_array = equal_range_values
+
+            }
+
+            _cargaPaletaColor(colors_array, values_array);
+
             // console.log(grid_color.values())
             
         }
@@ -1706,7 +1748,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             });
 
+            var temp_scale = d3.scale.quantile()
+                        .domain([0, 100])
+                        .range(colors);
+
+            _cargaPaletaColor(colors, temp_scale.quantiles(), true);
+
         }
+
+
+        
 
         return grid_color;
 
@@ -1715,195 +1766,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
 
-    /**
-     * Éste método realiza la partición en deciles y la asignación de escala de colores de un conjunto de celdas con valores de score asignado.
-     *
-     * @function createDecilColor
-     * @public
-     * @memberof! map_module
-     * 
-     * @param {json} json - Json con el conjunto de celdas y score asignado resultado del análisis de nicho ecológico
-     * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
-     */
-    function createDecilColor(json, mapa_prob) {
-
-        _VERBOSE ? console.log("createDecilColor") : _VERBOSE;
-
-        var red_arg = [];
-        var blue_arg = [];
-        var prob_arg = [];
-        var t_chunks = [];
-        var prob_chunks = [];
-        var red_chunks = [];
-        var blue_chunks = [];
-        var apriori_cells = [];
-
-//        _VERBOSE ? console.log(json) : _VERBOSE;
-//        var data = json.data;
-
-        var grid_color = d3.map([]);
-
-        if (!mapa_prob) {
-
-            _VERBOSE ? console.log("Sin probabilidad") : _VERBOSE;
-
-
-            $.each(json, function (index, d) {
-
-//                if (json.apriori && d.tscore === json.val_apriori) {
-//                    apriori_cells.push({"girdid": d.gridid, "tscore": d.tscore})
-//                    return true;
-//                }
-
-                if (d.tscore >= 0) {
-                    red_arg.push(d)
-                } else {
-                    blue_arg.push(d);
-                }
-
-            });
-
-            _VERBOSE ? console.log(apriori_cells) : _VERBOSE;
-
-
-            if (blue_arg.length > 0 && red_arg.length > 0) {
-
-                _VERBOSE ? console.log("ambos") : _VERBOSE;
-
-                var min_json = d3.min(blue_arg.map(function (d) {
-                    return parseFloat(d.tscore)
-                }));
-                var max_json = d3.max(red_arg.map(function (d) {
-                    return parseFloat(d.tscore)
-                }));
-
-                _VERBOSE ? console.log("min_json: " + min_json) : _VERBOSE;
-                _VERBOSE ? console.log("max_json: " + max_json) : _VERBOSE;
-
-
-                if (Math.abs(min_json) > Math.abs(max_json)) {
-
-                    _VERBOSE ? console.log("primero blue") : _VERBOSE;
-
-                    _resultado_grid = 0;
-
-                    // _VERBOSE ? console.log(blue_arg.length) : _VERBOSE;
-                    t_chunks = _getDividedChunks(blue_arg, red_arg, false, mapa_prob, apriori_cells);
-                    blue_chunks = t_chunks[0];
-                    red_chunks = t_chunks[1];
-
-                    // red_chunks.reverse();
-
-
-                    // when blues go first the collection goes from min to max
-
-                } else {
-
-                    _VERBOSE ? console.log("primero red") : _VERBOSE;
-
-                    _resultado_grid = 1;
-
-                    t_chunks = _getDividedChunks(red_arg, blue_arg, true, mapa_prob, apriori_cells);
-                    red_chunks = t_chunks[0];
-                    blue_chunks = t_chunks[1];
-
-                    // when reds go first the collection goes from max to min
-                    red_chunks.reverse();
-
-                }
-
-            } else if (blue_arg.length == 0 && red_arg.length > 0) {
-
-                _VERBOSE ? console.log("positivos") : _VERBOSE;
-
-                t_chunks = _getDividedChunks(red_arg, [], true, mapa_prob, apriori_cells);
-                red_chunks = t_chunks[0];
-                blue_chunks = t_chunks[1];
-
-                red_chunks.reverse();
-
-            } else if (blue_arg.length > 0 && red_arg.length == 0) {
-
-                _VERBOSE ? console.log("negativos") : _VERBOSE;
-
-                t_chunks = _getDividedChunks(blue_arg, [], false, mapa_prob, apriori_cells);
-                blue_chunks = t_chunks[0];
-                red_chunks = t_chunks[1];
-
-            }
-
-//            _VERBOSE ? console.log(blue_chunks) : _VERBOSE;
-//            _VERBOSE ? console.log(red_chunks) : _VERBOSE;
-
-
-            // CHECAR PARAMETRO INDEX!!
-            var color_scale = colorbrewer.Reds[9];
-            $.each(red_chunks, function (index, value) {
-
-//                _VERBOSE ? console.log(index) : _VERBOSE;
-
-
-                value.forEach(function (d) {
-
-//                    _VERBOSE ? console.log(color_scale[index]) : _VERBOSE;
-
-                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
-                });
-
-            });
-
-//            if(json.apriori && json.val_apriori >= 0){
-//                $.each(value_apriori, function (index, d) {
-//                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
-//                });
-//            }
-
-
-            color_scale = colorbrewer.Blues[9];
-            $.each(blue_chunks, function (index, value) {
-
-                value.forEach(function (d) {
-                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
-                });
-
-            });
-
-//            if(json.apriori && json.val_apriori < 0){
-//                $.each(value_apriori, function (index, d) {
-//                    grid_color.set(parseInt(d.gridid), {color: color_scale[index], score: d.tscore});
-//                });
-//            }
-
-
-
-
-
-        } else {
-
-
-            _VERBOSE ? console.log("Probabilidad") : _VERBOSE;
-
-            prob_arg = json;
-
-//            console.log(colorbrewer.RdBu[11]);
-            var link_color = d3.scale.quantize().domain([1, 0]).range(colorbrewer.RdBu[11]);
-
-
-            $.each(prob_arg, function (index, value) {
-
-                grid_color.set(value.gridid, {color: link_color(parseFloat(value.tscore)), score: parseFloat(value.tscore)});
-
-            });
-
-        }
-
-        _VERBOSE ? console.log(grid_color.values()) : _VERBOSE;
-
-        _cargaPaletaColor(mapa_prob);
-
-        return grid_color;
-
-    }
+    
 
 
 
@@ -1917,129 +1780,69 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * 
      * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
      */
-    function _cargaPaletaColor(mapa_prob) {
+    function _cargaPaletaColor(colors_array, values_array, mapa_prob = false) {
 
         _VERBOSE ? console.log("_cargaPaletaColor") : _VERBOSE;
 
         $("#escala_color").empty();
-
-        // _VERBOSE ? console.log(_range_limits_red) : _VERBOSE;
-        _VERBOSE ? console.log(_range_limits_blue) : _VERBOSE;
-        // _VERBOSE ? console.log(_resultado_grid) : _VERBOSE;
-
-        var data = [];
-
-        var rojos = colorbrewer.Reds[9].slice();
-
-        var azules = colorbrewer.Blues[9].slice();
-
-        // _VERBOSE ? console.log(colorbrewer.Reds[9]) : _VERBOSE;
-
-        if (mapa_prob) {
-            data = colorbrewer.RdBu[11];
-        } else {
-            if (_range_limits_red.length > 0 && _range_limits_blue.length > 0 && _resultado_grid == 0) { // ambos, primero negativos
-
-                _range_limits_total = _range_limits_blue.reverse().concat(_range_limits_red);
-
-                data = d3.merge([rojos.reverse(), azules]);
-            } else if (_range_limits_red.length > 0 && _range_limits_blue.length > 0 && _resultado_grid == 1) { // ambos, primero positivos
-
-                _range_limits_total = _range_limits_blue.reverse().concat(_range_limits_red.reverse());
-
-                data = d3.merge([rojos.reverse(), azules]);
-            } else if (_range_limits_red.length > 0 && _range_limits_blue.length == 0) {// solo positivos
-                _VERBOSE ? console.log("solo positivos") : _VERBOSE;
-
-                _range_limits_total = d3.merge([[{right_limit: 0, left_limit: 0}], _range_limits_red]);
-                data = d3.merge([rojos, ["#ffffff"]]);
-                // data = colorbrewer.Reds[9];
-            } else if (_range_limits_red.length == 0 && _range_limits_blue.length > 0) {// solo negativos
-                _VERBOSE ? console.log("solo negativos") : _VERBOSE;
-
-                _range_limits_total = d3.merge([_range_limits_blue.reverse(), [{right_limit: 0, left_limit: 0}]]);
-                data = d3.merge([["#ffffff"], azules]);
-                ;
-            }
-
-        }
-
-//        console.log(_range_limits_total);
-//        console.log(data);
-
-
-        var gradient_data = [];
-
-        $.each(data, function (index, item) {
-
-            // console.log(parseFloat((index)/data.length*100).toFixed(2)+"%");
-            gradient_data.push({offset: parseFloat((index) / data.length * 100).toFixed(2) + "%", color: item});
-
-        });
-
-        // console.log(gradient_data);
-
 
         var w = 70, h = 300;
 
         var key = d3.select("#escala_color").append("svg")
                 .attr("width", w)
                 .attr("height", h)
-//                .attr("transform", "translate(10,10)");
 
-        var legend = key.append("defs")
-                .append("svg:linearGradient")
-                .attr("id", "gradient")
-                .attr("x1", "100%")
-                .attr("y1", "0%")
-                .attr("x2", "100%")
-                .attr("y2", "100%")
-                .attr("spreadMethod", "pad");
+        // var colors = d3.scale.quantize()
+        //     .domain(values_array)
+        //     .range(colors_array);
+                
+        var rects = key.selectAll(".rects")
+            .data(colors_array)
+            .enter()
+            .append("rect")
+            .attr("y", 10)
+            .attr("height", 40)
+            .attr("x", (d,i)=>-300 + i*15)
+            .attr("width", 16)
+            .attr("fill", (d,i)=>colors_array[i])
+            .attr("stroke", "gray")
+            .attr("transform", "rotate(270)");
+
+        // // console.log(values_array)
+        // var delta = Math.abs(values_array[0] - values_array[1])
+        // values_array.unshift(values_array[0] - delta); 
+        // // console.log(values_array)
+        // values_array.push(values_array[values_array.length-1]+delta)
+        console.log(values_array)
+        console.log(colors_array)
+        // console.log("length values: " + values_array.length)
+        // console.log("length colors: " + colors_array.length)
 
 
-        legend.selectAll("stop")
-                .data(gradient_data)
-                .enter().append("stop")
-                .attr("offset", function (d) {
-                    return d.offset;
-                })
-                .attr("stop-color", function (d) {
-                    return d.color;
-                });
+        key.selectAll(".rect")
+            .data(values_array)
+            .enter()
+            .append("text")
+            .style("font-size", "8px")
+            .attr("text-anchor", "middle")
+            .attr("fill", "black")
+            .attr("x", (d,i)=>-300 + (i+1)*15)
+            .attr("y", function (d,i) {
+                return i%2==0 ? 6 : 60
+            })
+            .text(function (d) {
+                return parseFloat(d).toFixed(2);
+            })
+            .attr("transform", "rotate(270)");
 
-        key.append("rect")
-                .attr("width", w - 50)
-                .attr("height", h - 100)
-                .style("fill", "url(#gradient)")
-                .attr("transform", "translate(50,60)");
+
+        // console.log(key.selectAll(".text"))
+        // key.selectAll("text")
+        //     .attr("transform", "rotate(" + (90 * 180) / Math.PI + ",225, 225)");
 
 
-        if (mapa_prob) {
-            var y = d3.scale.linear().range([h - 100, 0]).domain([1, 100]);
-        } else {
-            var y = d3.scale.ordinal().rangeBands([h - 100, 0], .5);
-            y.domain(_range_limits_total.map(function (d) {
-                // console.log(d.right_limit);
-                return parseFloat(d.left_limit).toFixed(2);
-            }));
-        }
 
-        var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left");
 
-        var text_legend = mapa_prob ? $.i18n.prop('lb_per_prob') : "Score";
-
-        key.append("g")
-                .attr("class", "y axis")
-                .attr("transform", "translate(49,60)")
-                .call(yAxis)
-                .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", -45)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text(text_legend);
 
     }
 
@@ -2437,7 +2240,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         get_discardedPointsFilter: get_discardedPointsFilter,
         get_discardedCellFilter: get_discardedCellFilter,
         get_allowedCells: get_allowedCells,
-        createDecilColor: createDecilColor,
+        // createDecilColor: createDecilColor,
         setDisplayModule: setDisplayModule,
         showPopUp: showPopUp,
         get_layerControl: get_layerControl,

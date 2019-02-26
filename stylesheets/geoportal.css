@@ -121,8 +121,10 @@ section{
     /*display: table;
     margin: 0 auto;*/
 
-}
+    z-index: 5;
 
+}
+    
 
 #map2{
 
@@ -241,7 +243,7 @@ section{
     left: 60;
     margin-top: 10px;
     /*display: none;*/
-    z-index: 1000;
+    z-index: 9999;
 }
 
 .res_validation {
@@ -1615,7 +1617,7 @@ button.glyphicon-remove:before {
     z-index: 5000;
     width: 6%;
     height: 300px;
-    top: 120;
+    top: 70px;
     text-align: right;
     /*margin-left: : 40;*/
     /*margin-right: 100px;*/
@@ -1675,6 +1677,34 @@ button.glyphicon-remove:before {
     margin-left: 10px;
 }
 
+.margin-right-10{
+    margin-right: 10px;
+}
+
+.margin-right-20{
+    margin-right: 20px;
+}
+
+.margin-right-30{
+    margin-right: 30px;
+}
+
+.margin-right-50{
+    margin-right: 50px;
+}
+
+.margin-right-60{
+    margin-right: 60px;
+}
+
+.margin-right-80{
+    margin-right: 80px;
+}
+
+.margin-right-90{
+    margin-right: 90px;
+}
+
 .margin-left-five{
     margin-left: 5px;
 }
@@ -1685,6 +1715,10 @@ button.glyphicon-remove:before {
 
 .margin-top-15{    
     margin-top: 15px;
+}
+
+.margin-top-20{    
+    margin-top: 20px;
 }
 
 .margin-top-ten{    
@@ -1969,3 +2003,6 @@ button.glyphicon-remove:before {
     width: 230px !important;
 }
 
+#btn_map_type{
+    z-index: 2001;
+}
