@@ -1382,10 +1382,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 var data_score_cell = _utils_module.processDataForScoreCellTable(counts);
                                 var data_freq_decil_tbl = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
 
+                                console.log(data_freq_decil_tbl)
+                                // console.log(data_freq_decil_tbl.map(function(d){return d.decile}))
+
                                 data_freq_decil_tbl.forEach(function (specie, index) {
                                     var occ = specie.nj;
                                     var occ_decil = specie.njd;
                                     var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
+                                    var occ_perdecile = parseFloat(occ_decil / data_freq_decil_tbl.length * 100).toFixed(2) + "%";
 
                                     var value_abio = "";
                                     if (specie.name.indexOf("bio0") !== -1) {
@@ -1395,7 +1399,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                         value_abio = specie.name
                                     }
 
-                                    decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil});
+                                    decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil, occ_perdecile: occ_perdecile});
                                 });
 
                                 _VERBOSE ? console.log(decil_list) : _VERBOSE;

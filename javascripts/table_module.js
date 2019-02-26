@@ -79,6 +79,7 @@ var table_module = (function(verbose) {
             item_list.push(d.epsilons)
             item_list.push(d.scores)
             item_list.push(d.occ)
+            item_list.push(d.occ_perdecile)            
 
             data_list.push(item_list)
 
@@ -114,7 +115,8 @@ var table_module = (function(verbose) {
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_name') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_especie_tbl')},
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_epsilon')},
                     {title: ' <button type=\'button\' class=\'btn btn-info glyphicon glyphicon-info-sign btn_column\' onclick=\' $("#div_formula").empty(); $("#lb_header_info").text("Score"); $("#lb_body_info").text("' + _iTrans.prop('lb_msg_score') + '"); table_module().addImageScore(); $("#modalInfo").modal()\' ></button> ' + _iTrans.prop('tip_tbl_score')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje por decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occ')}
+                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje por decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occ')},
+                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje occ en decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_occdecil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occdecil')}
                 ],
                 // 'copy', 'csv', 'excel', 'pdf', 'print'
                 buttons: [
