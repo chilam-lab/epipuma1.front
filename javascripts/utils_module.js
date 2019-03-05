@@ -407,12 +407,24 @@ var utils_module = (function (verbose) {
             item["decile"] = dec > decile ? decile : dec
         })
         data_cell.reverse()
-        // debug(data_cell)
+        
+        // console.log(data_cell)
+        console.log(data_cell.length)
+        // console.log(data_cell[0].decile)
+        // console.log(decil_selected)
+        // console.log(data_cell[0].decile === decil_selected)
+        // console.log(data_cell[0].decile == decil_selected)
+        // console.log(8 == decil_selected)
 
-        // var cross_score = crossfilter(data_cell)
-        // cross_score.groupAll()
-        // var decil_dimension = cross_score.dimension(function(d) { return d.decile });
-        // decil_dimension.filter(10)
+        var decil_array = data_cell.filter(function(item){
+            
+          return item.decile == decil_selected  
+             
+        });
+
+        // console.log(decil_array)
+        console.log(decil_array.length)
+
 
         var map_spid = d3.map([]);
 
@@ -425,8 +437,8 @@ var utils_module = (function (verbose) {
 
                 if (!map_spid.has(specie.spid)) {
                     var item = {};
-                    item.decile = row_item.decile,
-                            item.spid = specie.spid
+                    item.decile = row_item.decile
+                    item.spid = specie.spid
                     item.score = specie.score
                     item.epsilon = specie.epsilon
                     item.nj = specie.nj
@@ -443,7 +455,10 @@ var utils_module = (function (verbose) {
 
         })
 
-        return map_spid.values();
+        return {
+            tbl_freq_decil: map_spid.values(), 
+            length_decil: decil_array.length 
+        } 
 
 
     }

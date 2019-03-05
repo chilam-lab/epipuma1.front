@@ -488,10 +488,15 @@ var language_module = (function (verbose) {
 
             $("#btn_tutorial").text($.i18n.prop('btn_tutorial'));
             $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
-            $("#show_gen").text($.i18n.prop('show_gen'));            
+            $("#show_gen").text($.i18n.prop('show_gen'));
+
+            $("#btn_tuto_steps_result").text($.i18n.prop('btn_tuto_steps_result'));
+
+                        
             
 
             _confLiveTutorialNiche();
+            _confLiveTutorialResultsNiche();
 
 
         } else if (_tipo_modulo === 1) {
@@ -589,13 +594,7 @@ var language_module = (function (verbose) {
 
     function _confLiveTutorialNet() {
 
-        $('#btn_tuto_steps.display-marker').on('click', function () {
-
-//            console.log($("#a_taxon_fuente").parent().hasClass("active"));
-//            console.log($("#a_raster_fuente").parent().hasClass("active"));
-//            console.log($("#a_taxon_sumidero").parent().hasClass("active"));
-//            console.log($("#a_raster_sumidero").parent().hasClass("active"));
-            
+        $('#btn_tuto_steps.display-marker').on('click', function () {            
             
             var item_tab, item_tree, group_btn, clean_btn;
             
@@ -865,6 +864,110 @@ var language_module = (function (verbose) {
 
 
 
+
+
+
+
+
+    function _confLiveTutorialResultsNiche(){
+
+        _VERBOSE ? console.log("_confLiveTutorialResultsNiche") : _VERBOSE;
+
+        $('#btn_tuto_steps_result.display-marker').on('click', function () {
+
+            _VERBOSE ? console.log("btn_tuto_steps_result") : _VERBOSE;
+
+
+            $.ptJs({
+                autoStart: true,
+                continueEnable: true,
+                templateData: {
+                    content: '',
+                    title: $.i18n.prop('label_esp_p50'),
+                    'button-start': $.i18n.prop('button_start'),
+                    'button-next': $.i18n.prop('button_next'),
+                    'button-previous': $.i18n.prop('button_previous'),
+                    'button-restart': $.i18n.prop('button_restart'),
+                    'button-continue': $.i18n.prop('button_continue'),
+                    'button-end': $.i18n.prop('button_end')
+                },
+                steps: [
+                    {
+                        el: document,
+                        modal: true,
+                        templateData: {
+                            content: $.i18n.prop('label_esp_p71'),
+                            title: $.i18n.prop('label_esp_p70')
+                        }
+                    },
+                     {
+                        el: '#map',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p48'),
+                            content: $.i18n.prop('label_esp_p49')
+                        }
+                    },
+                    {
+                        el: '#myScrollableBlockEpsilonDecil',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p72'),
+                            content: $.i18n.prop('label_esp_p73')
+                        }
+                    },
+                    {
+                        el: '#div_example',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p74'),
+                            content: $.i18n.prop('label_esp_p75')
+                        }
+                    },
+                    {
+                        el: '#histcontainer_row',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p76'),
+                            content: $.i18n.prop('label_esp_p77')
+                        }
+                    },
+                    {
+                        el: '#treeAddedPanel',
+                        position: {
+                            location: 'cm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p78'),
+                            content: $.i18n.prop('label_esp_p79')
+                        }
+                    },
+
+                    
+
+                    
+
+                    
+                ]
+            })
+
+
+
+        });
+
+
+    }
+
+
+
     function _confLiveTutorialNiche() {
 
         _VERBOSE ? console.log("_confLiveTutorialNiche") : _VERBOSE;
@@ -989,8 +1092,8 @@ var language_module = (function (verbose) {
                         el: document,
                         modal: true,
                         templateData: {
-                            content: $.i18n.prop('label_esp_p2'),
-                            title: $.i18n.prop('label_esp_p1')
+                            title: $.i18n.prop('label_esp_p1'),
+                            content: $.i18n.prop('label_esp_p2')
                         }
                     },
                     {
@@ -1187,6 +1290,8 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p45') + '<br><img style="width:100%" alt="Responsive image" src="images/img_gen_link' + $.i18n.prop('url_image_link') + '.png">'
                         }
                     }
+
+                   
 
                 ]
             });

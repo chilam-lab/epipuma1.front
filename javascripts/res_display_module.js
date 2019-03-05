@@ -1380,16 +1380,23 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                                 var counts = resp.data;
                                 var data_score_cell = _utils_module.processDataForScoreCellTable(counts);
-                                var data_freq_decil_tbl = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
+                                var data_result = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
+                                
+                                var data_freq_decil_tbl = data_result.tbl_freq_decil
+                                var length_decil = data_result.length_decil
 
-                                console.log(data_freq_decil_tbl)
+                                // console.log(data_freq_decil_tbl)
                                 // console.log(data_freq_decil_tbl.map(function(d){return d.decile}))
 
                                 data_freq_decil_tbl.forEach(function (specie, index) {
                                     var occ = specie.nj;
                                     var occ_decil = specie.njd;
                                     var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
-                                    var occ_perdecile = parseFloat(occ_decil / data_freq_decil_tbl.length * 100).toFixed(2) + "%";
+
+                                    // console.log("occ_decil: " + occ_decil)
+                                    // console.log("length_decil: " + length_decil)
+
+                                    var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
 
                                     var value_abio = "";
                                     if (specie.name.indexOf("bio0") !== -1) {
