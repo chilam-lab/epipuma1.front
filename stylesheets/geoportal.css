@@ -2006,3 +2006,15 @@ button.glyphicon-remove:before {
 #btn_map_type{
     z-index: 2001;
 }
+
+.multiselect{
+width: 490px !important;
+}
+
+.multiselect-container{
+    width: 490px !important;
+}
+
+
+
+

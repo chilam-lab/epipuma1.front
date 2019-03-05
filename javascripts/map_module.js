@@ -1677,9 +1677,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 .range(colors);
 
 
-            scales.quantize = d3.scale.quantize()
-                .domain([min_scr, max_scr])
-                .range(colors);
+            // scales.quantize = d3.scale.quantize()
+            //     .domain([min_scr, max_scr])
+            //     .range(colors);
 
             scales.jenks = d3.scale.threshold()
                 .domain(breaks)
@@ -1715,12 +1715,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 case "deviation":
                     values_array = arr_range_deviations
                     break;
-                case "quantize":
-                    var temp_scale = d3.scale.quantile()
-                        .domain([min_scr, max_scr])
-                        .range(colors);
-                    values_array = temp_scale.quantiles()
-                    break;
+                // case "quantize":
+                //     var temp_scale = d3.scale.quantile()
+                //         .domain([min_scr, max_scr])
+                //         .range(colors);
+                //     values_array = temp_scale.quantiles()
+                //     break;
                 case "jenks":
                     values_array = breaks
                     break;

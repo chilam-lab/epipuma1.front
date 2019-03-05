@@ -330,6 +330,20 @@ var module_nicho = (function () {
         });
 
 
+
+        // $('#nom_sp_multiple').multiselect({
+        //     // enableFiltering: true,
+        //     includeSelectAllOption: false,
+        //     selectAllJustVisible: false,
+        //     // enableCaseInsensitiveFiltering: true,
+        //     // filterPlaceholder: 'Buscar especie',
+        //     disableIfEmpty: true,
+        //      maxHeight: 300,
+        //      includeSelectAllOption: true,
+        //      selectAllText: 'Seleccionar todo'
+        // });
+
+
         $("#nom_sp").autocomplete({
             
             source: function (request, response) {
@@ -414,8 +428,24 @@ var module_nicho = (function () {
                    },
                    success: function (resp) {
 
+                       console.log(resp.data)
+
+
+                       // $('#nom_sp_multiple').children().remove();
+                       // $('#nom_sp_multiple').multiselect('rebuild');
+
+
+                       //  $.each(resp.data, function( index, item ) {
+                       //    $('#nom_sp_multiple').append('<option value="'+item.spid+'">'+item.especievalidabusqueda+'</option>')
+                       //  });
+                       //  $('#nom_sp_multiple').multiselect('rebuild');
+
+                       
+
                        response($.map(resp.data, function (item) {
 
+                           
+                           
                            return{
 //                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
                                label: item.especievalidabusqueda,

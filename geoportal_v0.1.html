@@ -55,6 +55,8 @@
 
         <link href="https://fonts.googleapis.com/css?family=Poppins|Raleway:500" rel="stylesheet"> 
 
+        <link rel="stylesheet" href="plugins/multiselect/css/bootstrap-multiselect.css" type="text/css"/>
+
 
 
 
@@ -312,12 +314,29 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
 
                                 <label id="lb_sp_list" for="grid_resolution"></label>
-                                <div id="tuto_autocomplete" class="input-group text-input">
+                                <div id="tuto_autocomplete" class="input-group text-input ">
 
-                                    <input id="nom_sp" type="text" class="form-control" />
-                                    <span id="lb_example" class="input-group-addon" id="basic-addon1"></span>
+                                    <!-- <div class="row"> -->
+
+                                        <input id="nom_sp" type="text" class="form-control " />
+                                        
+                                        <span id="lb_example" class="input-group-addon" id="basic-addon1"></span>
+                                        
+                                    <!-- </div> -->
+
+                                   
+
+                                    
 
                                 </div>
+
+                                 <!-- <div class="row"> -->
+
+                                        <!-- <select id="nom_sp_multiple" multiple="multiple" class="col-sm-12"></select> -->
+                                        
+                                    <!-- </div> -->
+
+
                             </div>
 
                         </div>
@@ -626,7 +645,7 @@
 
                 <div id="tuto_correr_analisis" class="col-md-12 margin-top-15 ">
 
-                    <div class=" col-md-4 col-centered " >
+                    <div class=" col-md-5 col-centered " >
 
                         <!--<div class="col-md-12 margin-top-15">-->
                         <button id="get_esc_ep" class="btn btn-primary " type="button" ></button>
@@ -634,6 +653,7 @@
                                 type="button" title="" 
                                 style="visibility: hidden" 
                                 ></button>                        
+                        <button id="btn_tuto_steps_result" type="button" title="" class="btn btn-warning  display-marker "></button>
 
                     </div>
 
@@ -671,7 +691,7 @@
                                     <li><a class="map_type" label="Equal range" value="range">Equal range </a></li>
                                     <li><a class="map_type" label="Standard deviation" value="deviation" ">Standard deviation </a></li>
                                     <li><a class="map_type" label="Natural Breaks" value="jenks" ">Natural Breaks </a></li>
-                                    <li><a class="map_type" label="Quantize" value="quantize">Quantize </a></li>
+                                    <!-- <li><a class="map_type" label="Quantize" value="quantize">Quantize </a></li> -->
                                 </ul>
 
                             </div>
@@ -1043,6 +1063,11 @@
         <script type="text/javascript" src="plugins/fullpage/jquery.fullPage.js"></script>
 
         <script type="text/javascript" src="plugins/loading/jquery.loading.min.js"></script>
+
+        <script type="text/javascript" src="plugins/RequireJS/js/RequireJS.js"></script>
+
+        <script type="text/javascript" src="plugins/multiselect/js/bootstrap-multiselect.js"></script>
+        
 
 
 
