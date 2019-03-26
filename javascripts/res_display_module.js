@@ -843,41 +843,41 @@ var res_display_module = (function (verbose, url_zacatuche) {
         };
 
         // verbo: getScoreDecil
-        milliseconds = new Date().getTime();
-        _decil_group_data = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "mapa_prob": mapap,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region,
-            "level_req": "group"
-        };
+        // milliseconds = new Date().getTime();
+        // _decil_group_data = {
+        //     "id": spid,
+        //     "idtime": milliseconds,
+        //     "apriori": apriori,
+        //     "mapa_prob": mapap,
+        //     "min_occ": min_occ,
+        //     "fossil": fossil,
+        //     "lim_inf": lin_inf,
+        //     "lim_sup": lin_sup,
+        //     "sfecha": sin_fecha,
+        //     "val_process": val_process,
+        //     "idtabla": idtabla,
+        //     "grid_res": _grid_res,
+        //     "footprint_region": _footprint_region,
+        //     "level_req": "group"
+        // };
 
         // verbo: getScoreDecil
-        milliseconds = new Date().getTime();
-        _total_data_decil = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region,
-            "level_req": "total"
-        };
+        // milliseconds = new Date().getTime();
+        // _total_data_decil = {
+        //     "id": spid,
+        //     "idtime": milliseconds,
+        //     "apriori": apriori,
+        //     "min_occ": min_occ,
+        //     "fossil": fossil,
+        //     "lim_inf": lin_inf,
+        //     "lim_sup": lin_sup,
+        //     "sfecha": sin_fecha,
+        //     "val_process": val_process,
+        //     "idtabla": idtabla,
+        //     "grid_res": _grid_res,
+        //     "footprint_region": _footprint_region,
+        //     "level_req": "total"
+        // };
 
         // verbo: getCellScore
 //        _sdata = {
@@ -914,23 +914,23 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
         // verbo: getCounts
-        milliseconds = new Date().getTime();
-        _countsdata = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "mapa_prob": mapap,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region,
-            "level_req": "counts"
-        }
+        // milliseconds = new Date().getTime();
+        // _countsdata = {
+        //     "id": spid,
+        //     "idtime": milliseconds,
+        //     "apriori": apriori,
+        //     "mapa_prob": mapap,
+        //     "min_occ": min_occ,
+        //     "fossil": fossil,
+        //     "lim_inf": lin_inf,
+        //     "lim_sup": lin_sup,
+        //     "sfecha": sin_fecha,
+        //     "val_process": val_process,
+        //     "idtabla": idtabla,
+        //     "grid_res": _grid_res,
+        //     "footprint_region": _footprint_region,
+        //     "level_req": "counts"
+        // }
 
 
 //        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
@@ -938,10 +938,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //        _sdata['discardedFilterids'] = _discarded_cell_set.values();
 //        _ddata['discardedFilterids'] = _discarded_cell_set.values();
         _cdata['discardedFilterids'] = _discarded_cell_set.values();
-        _total_data_decil['discardedFilterids'] = _discarded_cell_set.values();
-        _decil_group_data['discardedFilterids'] = _discarded_cell_set.values();
+        // _total_data_decil['discardedFilterids'] = _discarded_cell_set.values();
+        // _decil_group_data['discardedFilterids'] = _discarded_cell_set.values();
         _decil_data['discardedFilterids'] = _discarded_cell_set.values();
-        _countsdata['discardedFilterids'] = _discarded_cell_set.values();
+        // _countsdata['discardedFilterids'] = _discarded_cell_set.values();
 
 
     }

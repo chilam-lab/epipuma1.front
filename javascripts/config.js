@@ -17,12 +17,12 @@ $(document).ready(function () {
     url_nicho = url_front + "/geoportal_v0.1.html";
     url_comunidad = url_front + "/comunidad_v0.1.html";
 
-    _VERBOSE ? console.log("url_front: " + url_front) : _VERBOSE;
-    _VERBOSE ? console.log("url_api: " + url_api) : _VERBOSE;
-    _VERBOSE ? console.log("url_nicho: " + url_nicho) : _VERBOSE;
-    _VERBOSE ? console.log("url_comunidad: " + url_comunidad) : _VERBOSE;
-    _VERBOSE ? console.log("modulo: " + modulo) : _VERBOSE;
-    _VERBOSE ? console.log("verbose: " + _VERBOSE) : _VERBOSE;
+    // _VERBOSE ? console.log("url_front: " + url_front) : _VERBOSE;
+    // _VERBOSE ? console.log("url_api: " + url_api) : _VERBOSE;
+    // _VERBOSE ? console.log("url_nicho: " + url_nicho) : _VERBOSE;
+    // _VERBOSE ? console.log("url_comunidad: " + url_comunidad) : _VERBOSE;
+    // _VERBOSE ? console.log("modulo: " + modulo) : _VERBOSE;
+    // _VERBOSE ? console.log("verbose: " + _VERBOSE) : _VERBOSE;
 
     // localStorage.clear();
     localStorage.setItem("url_front", url_front);

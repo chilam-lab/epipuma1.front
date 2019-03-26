@@ -2008,13 +2008,17 @@ button.glyphicon-remove:before {
 }
 
 .multiselect{
-width: 490px !important;
+width: 382 !important;
+display: none;
 }
 
 .multiselect-container{
     width: 490px !important;
 }
 
-
+.pd-no-sides{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
 
 

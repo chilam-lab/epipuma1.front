@@ -331,17 +331,37 @@ var module_nicho = (function () {
 
 
 
-        // $('#nom_sp_multiple').multiselect({
-        //     // enableFiltering: true,
-        //     includeSelectAllOption: false,
-        //     selectAllJustVisible: false,
-        //     // enableCaseInsensitiveFiltering: true,
-        //     // filterPlaceholder: 'Buscar especie',
-        //     disableIfEmpty: true,
-        //      maxHeight: 300,
-        //      includeSelectAllOption: true,
-        //      selectAllText: 'Seleccionar todo'
-        // });
+
+        $('#nom_sp_multiple').multiselect({
+            // enableFiltering: true,
+            selectAllJustVisible: false,
+            // enableCaseInsensitiveFiltering: true,
+            // filterPlaceholder: 'Buscar especie',
+            disableIfEmpty: true,
+            maxHeight: 300,
+            includeSelectAllOption: true,
+            selectAllText: 'Seleccionar todo',
+            numberDisplayed: 1,
+            onChange: function(option, checked, select) {
+                multiselectSpProcess();
+            },
+            onSelectAll: function() {
+                multiselectSpProcess();
+            },
+            onDeselectAll: function() {
+                multiselectSpProcess();
+            }
+        });
+
+        $("#schSp").click(function(){
+
+            multiselectSpProcess();
+
+        });
+
+        $('#nom_sp_multiple').width($("#nom_sp").width());
+
+        
 
 
         $("#nom_sp").autocomplete({
@@ -357,66 +377,8 @@ var module_nicho = (function () {
 
                 region = parseInt($("#footprint_region_select").val());
                 
-                // var data = {
-                //     limit: true,
-                //     searchStr: request.term,
-                //     source: 1, // source para saber si viene de objetivo o el target
-                //     grid_res: grid_res_val,
-                //     footprint_region: region
-                // }
-                
-                
-                //TODO: CAMBIAR CODIGO A AJAX REQUEST EL FETCH DEJA CANCELADA LA PETICIÓN. 
-//                CORREGIR TMB EN GETSPECIES, NO ESTA FUNCIONANDO
-                
-                // console.log("_getEntListInProcess: " + _getEntListInProcess)
-                
-                // if(_getEntListInProcess){
-                //     console.log("peticion abortada")
-                //     _ACGetEntList.abort();
-                //     _ACGetEntList = new AbortController();
-                //     signal = _ACGetEntList.signal;
-                // }
-                // _getEntListInProcess = true;
-                
-                
-                
-//                 fetch(_url_api + "/niche/especie/getEntList", {
-//                     method: "POST",
-//                     body: JSON.stringify(data),
-//                     signal: signal,
-//                     mode: 'cors',
-//                     headers: {
-//                         "Content-Type": "application/json"
-//                     }
-//                 })
-//                 .then(resp => resp.json())
-//                 .then(respuesta => {
-                    
-//                     _getEntListInProcess = false;
-            
-//                     response($.map(respuesta.data, function (item) {
-
-//                             return{
-// //                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
-//                                 label: item.especievalidabusqueda,
-//                                 id: item.spid,
-//                                 reino: item.reinovalido,
-//                                 phylum: item.phylumdivisionvalido,
-//                                 clase: item.clasevalida,
-//                                 orden: item.ordenvalido,
-//                                 familia: item.familiavalida,
-//                                 genero: item.generovalido,
-//                                 especie: item.especievalidabusqueda,
-//                                 occ: item.occ
-//                             };
-//                         })
-//                     );
-            
-//                 })
-
                $.ajax({
-                   url: _url_api + "/niche/especie/getEntList",
+                   url: _url_api + "/niche/especie/getEntListByTaxon",
                    dataType: "json",
                    type: "post",
                    data: {
@@ -428,71 +390,101 @@ var module_nicho = (function () {
                    },
                    success: function (resp) {
 
-                       console.log(resp.data)
+                        console.log(resp.data)
 
+                        // limpia combo y vuelve a agregar elementos de la busqueda
+                        $('#nom_sp_multiple').children().remove();
+                        $('#nom_sp_multiple').multiselect('rebuild');
+                        $.each(resp.data, function( index, item ) {
+                            $('#nom_sp_multiple')
+                                .append('<option value="'+item.spid
+                                    +'" reino="'+item.reinovalido
+                                    +'" phylum="'+item.phylumdivisionvalido
+                                    +'" clase="'+item.clasevalida
+                                    +'" orden="'+item.ordenvalido
+                                    +'" familia="'+item.familiavalida
+                                    +'" nombre_sp="'+item.especievalidabusqueda
+                                    +'">'+item.especievalidabusqueda+'</option>')
+                        });
+                        $('#nom_sp_multiple').multiselect('rebuild');
 
-                       // $('#nom_sp_multiple').children().remove();
-                       // $('#nom_sp_multiple').multiselect('rebuild');
+                        response(
 
-
-                       //  $.each(resp.data, function( index, item ) {
-                       //    $('#nom_sp_multiple').append('<option value="'+item.spid+'">'+item.especievalidabusqueda+'</option>')
-                       //  });
-                       //  $('#nom_sp_multiple').multiselect('rebuild');
-
-                       
-
-                       response($.map(resp.data, function (item) {
-
+                            $.map(resp.data, function (item) {                           
                            
-                           
-                           return{
-//                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
-                               label: item.especievalidabusqueda,
-                               id: item.spid,
-                               reino: item.reinovalido,
-                               phylum: item.phylumdivisionvalido,
-                               clase: item.clasevalida,
-                               orden: item.ordenvalido,
-                               familia: item.familiavalida,
-                               genero: item.generovalido,
-                               especie: item.especievalidabusqueda,
-                               occ: item.occ
-                           };
-                       })
-                               );
+                                return{
+    //                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
+                                   label: item.especievalidabusqueda,
+                                   id: item.spid,
+                                   reino: item.reinovalido,
+                                   phylum: item.phylumdivisionvalido,
+                                   clase: item.clasevalida,
+                                   orden: item.ordenvalido,
+                                   familia: item.familiavalida,
+                                   // genero: item.generovalido,
+                                   // especie: item.especievalidabusqueda,
+                                   occ: item.occ
+                               }
+
+                            })
+
+                        )
+
                    }
+
                });
 
             },
             minLength: 2,
-            change: function (event, ui) {
-                if (!ui.item) {
-                    $("#nom_sp").val("");
-                }
+            open: function(event, ui){
+                console.log("open")
+                // console.log(ui)
+                // console.log(ui.item.reino)
+
+                $(".ui-menu-item").hide();
+                $('.btn-group').addClass("open");
+                $('#nom_sp_multiple .open > .dropdown-menu').css("display","block");
+
             },
-            select: function (event, ui) {
-                var specie_target = {
-                    "reino": ui.item.reino,
-                    "phylum": ui.item.phylum,
-                    "clase": ui.item.clase,
-                    "orden": ui.item.orden,
-                    "familia": ui.item.familia,
-                    "genero": ui.item.genero,
-                    "especie": ui.item.especie,
-                    "spid": ui.item.id,
-                    "label": ui.item.especie
-                };
+            focus: function(event, ui){
+                console.log("focus")
 
-                _VERBOSE ? console.log(specie_target) : _VERBOSE;
+                $(".ui-menu-item").hide();
+                $('.btn-group').addClass("open");
+                $('#nom_sp_multiple .open > .dropdown-menu').css("display","block");
+            },
+            // change: function (event, ui) {
+            //     if (!ui.item) {
+            //         $("#nom_sp").val("");
+            //     }
+            //     $('#nom_sp_multiple').children().remove();
+            //     $('#nom_sp_multiple').multiselect('rebuild');
 
-                _map_module_nicho.set_specieTarget(specie_target);
+            // },
+            // select: function (event, ui) {
+                
 
-                _map_module_nicho.busca_especie(d3.map([]), region);
+            //     var specie_target = {
+            //         "reino": ui.item.reino,
+            //         "phylum": ui.item.phylum,
+            //         "clase": ui.item.clase,
+            //         "orden": ui.item.orden,
+            //         "familia": ui.item.familia,
+            //         "genero": ui.item.genero,
+            //         "especie": ui.item.especie,
+            //         "spid": ui.item.id,
+            //         "label": ui.item.especie
+            //     };
 
-                _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
+            //     _VERBOSE ? console.log(specie_target) : _VERBOSE;
 
-            }
+            //     _map_module_nicho.set_specieTarget(specie_target);
+
+            //     _map_module_nicho.busca_especie(d3.map([]), region);
+
+            //     _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
+
+            // }
 
         });
 
@@ -689,6 +681,61 @@ var module_nicho = (function () {
 //        _confLiveTutorial();
         _genLinkURL();
     }
+
+
+
+    function multiselectSpProcess(){
+
+        var selectedOptions = $('#nom_sp_multiple option:selected');
+        console.log(selectedOptions);
+
+        if(selectedOptions.length === 0){
+            _map_module_nicho.clearAllLayers();
+            return;
+        }
+
+        var arg_spids = [];
+        var nombres_sp = [];
+        var reino, phylum, clase, orden, familia;
+
+        $.each(selectedOptions, function( index, item ) {
+          // console.log(item);
+          
+          var spid = item.value
+          var nombre_sp = item.attributes["nombre_sp"].nodeValue
+
+          reino = item.attributes["reino"].nodeValue
+          phylum = item.attributes["phylum"].nodeValue
+          clase = item.attributes["clase"].nodeValue
+          orden = item.attributes["orden"].nodeValue
+          familia = item.attributes["familia"].nodeValue
+          
+          arg_spids.push(spid)
+          nombres_sp.push(nombre_sp)
+
+        });
+
+        var specie_target = {
+            "reino": reino,
+            "phylum": phylum,
+            "clase": clase,
+            "orden": orden,
+            "familia": familia,
+            "spid": arg_spids,
+            "especie": nombres_sp.toString(),
+            "label": nombres_sp.toString()
+        };
+
+        console.log(specie_target)
+
+        _map_module_nicho.busca_especie(d3.map([]), region, arg_spids);
+
+        _map_module_nicho.set_specieTarget(specie_target);
+
+        _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
+
+    }
+
 
     function _regenMessage() {
 
@@ -1084,6 +1131,7 @@ var module_nicho = (function () {
         var num_items = 0, spid, idreg, subgroups;
 
         $("#show_gen").css('visibility', 'visible');
+        $("#btn_tuto_steps_result").css('visibility', 'visible');
 
         _cleanTutorialButtons();
 
@@ -1134,6 +1182,7 @@ var module_nicho = (function () {
         } else {
 
             $("#show_gen").css('visibility', 'hidden');
+            $("#btn_tuto_steps_result").css('visibility', 'hidden');
             $("#tuto_res").css('visibility', 'hidden');
             $("#params_next").css('visibility', 'hidden');
 
