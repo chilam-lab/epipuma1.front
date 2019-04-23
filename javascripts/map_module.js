@@ -41,6 +41,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
     var _REGION_SELECTED;
 
+    var _lin_inf = undefined;
+    var _lin_sup = undefined;
+    var _sin_fecha = undefined;
+    var _con_fosil = undefined;
+
+
     _loadCountrySelect();
 
     // estilos para eliminar puntos
@@ -197,6 +203,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function get_specieTarget() {
         return _specie_target;
+    }
+
+
+    function get_spTaxon() {
+        return _taxones;
     }
 
 
@@ -384,10 +395,23 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         // relieve: http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png
         // cartoDB: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
 
-        _OSM_layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
+
+        // var Thunderforest_OpenCycleMap = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey={apikey}', {
+        //     attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        //     apikey: '<your apikey>',
+        //     maxZoom: 22
+        // });
+
+
+        _OSM_layer = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
         _OSM_layer.getAttribution = function () {
-            return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
+            return '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         };
+
+        // _OSM_layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
+        // _OSM_layer.getAttribution = function () {
+        //     return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
+        // };
 
 
         // ******************************************************************* geojson-vt
@@ -452,10 +476,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_mapSPConfigure") : _VERBOSE;
 
-        _OSMSP_layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
+        
+        _OSMSP_layer = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
         _OSMSP_layer.getAttribution = function () {
-            return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
+            return '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         };
+
+        // _OSMSP_layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
+        // _OSMSP_layer.getAttribution = function () {
+        //     return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
+        // };
 
         map_sp = L.map('map2', {
             center: _centro_mapa,
@@ -597,11 +627,17 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function clearMap() {
 
-        if (!_first_loaded) {
+        _VERBOSE ? console.log("clearMap") : _VERBOSE;
+        _VERBOSE ? console.log(_grid_map) : _VERBOSE;
+        _VERBOSE ? console.log(_first_loaded) : _VERBOSE;
+
+        if (!_first_loaded && _grid_map !== undefined && _grid_map.features !== undefined) {
             for (var i = 0; i < _grid_map.features.length; i++) {
                 _grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
             }
         }
+
+        _VERBOSE ? console.log("_tileLayer") : _VERBOSE;
 
         _tileLayer.redraw();
     }
@@ -937,11 +973,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
 
-    var _lin_inf = undefined;
-    var _lin_sup = undefined;
-    var _sin_fecha = undefined;
-    var _con_fosil = undefined;
-
+    
 
     /**
      * Busca las ocurrencias de una especie asignando filtros por fecha.
@@ -963,9 +995,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _sin_fecha = sfecha;
         _con_fosil = sfosil;
 
-        console.log("Region en busca_especie_filtros " + region);
+        // console.log("Region en busca_especie_filtros " + region);
+        // _VERBOSE ? console.log(_specie_target.spid) : _VERBOSE;
 
-        busca_especie(dPoints, region, _specie_target.spid);
+        // busca_especie(dPoints, region, _specie_target.spid);
+        //TODO: Obtener los taxones del compornete variable
+        var taxones = _componente_target.getVarSelArray();
+        busca_especie_grupo(taxones, dPoints);
 
         _toastr.info($.i18n.prop('lb_cal_occ'));
 
@@ -983,6 +1019,167 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
        } catch (e) {
            _VERBOSE ? console.log("primera vez") : _VERBOSE;
        }
+
+    }
+
+
+    /**
+     * Busca las ocurrencias de un grupo de especies.
+     *
+     * @function busca_especie_grupo
+     * @public
+     * @memberof! map_module
+     * 
+     * @param {array} taxones - Array con taxones seleccionados
+     */
+    function busca_especie_grupo(taxones, dPoints = d3.map([])) {
+
+        _VERBOSE ? console.log("busca_especie_grupo") : _VERBOSE;
+
+
+        var milliseconds = new Date().getTime();
+        var grid_res_val = $("#grid_resolution").val();
+
+        var footprint_region = parseInt($("#footprint_region_select").val());
+        console.log("footprint_region: " + footprint_region);
+        
+        _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
+        _con_fosil = $("#chkFosil").is(':checked') ? true : false;
+
+        $('#tuto_mapa_occ').loading({
+            stoppable: true
+        });
+
+
+        $.ajax({
+               url: _url_zacatuche + "/niche/especie/getSpeciesTaxon",
+               type: 'post',
+               dataType: "json",
+               data: {
+                   "taxones": taxones,
+                   "idtime": milliseconds,
+                   "lim_inf": _lin_inf,
+                   "lim_sup": _lin_sup,
+                   "sfecha": _sin_fecha,
+                   "sfosil": _con_fosil,
+                   "grid_res": grid_res_val,
+                   "footprint_region": footprint_region
+               },
+               beforeSend: function (xhr) {
+                   xhr.setRequestHeader('X-Test-Header', 'test-value');
+                   xhr.setRequestHeader("Accept", "text/json");
+                   changeRegionView(footprint_region);
+               },
+               success: function (resp) {
+
+                   // console.log(resp)
+
+                   $('#tuto_mapa_occ').loading('stop');
+                   $("#specie_next").css('visibility', 'visible');
+                   $("#specie_next").show("slow");//
+
+                   var data_sp = resp.data;
+                   // console.log("data_sp: " + data_sp)
+
+                   clearAllLayers();
+
+                   _discardedPoints = dPoints;        // puntos descartados por eliminacion
+                   _allowedPoints = d3.map([]);        // puntos para analisis
+                   _discardedPointsFilter = d3.map([]);     // puntos descartados por filtros
+                   _computed_occ_cells = d3.map([]);    // celdas para analisis
+                   // _computed_discarded_cells = d3.map([]);    // celdas descartadas por filtros
+
+                   var gridItems = [];
+                   if (dPoints.values().length > 0) {
+                       $.each(dPoints.values(), function (index, item) {
+                           gridItems.push(item.feature.properties.gridid);
+                       });
+    //                    console.log(gridItems);
+                   }
+
+                   // var computed_occ_cells_totals = d3.map([]);
+                   var distinctPoints = d3.map([]);
+
+
+                   if (data_sp.length === 0) {
+                       _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
+                       $("#specie_next").css('visibility', 'hidden');
+    //                    TODO: HAcer internacionalización del label
+                       _toastr.info("La especie no tiene registros");
+                       _clearFieldsSP();
+
+                       return;
+                   }
+
+
+                   // obtiene registros unicos en coordenadas
+                   for (i = 0; i < data_sp.length; i++) {
+
+                       var item_id = JSON.parse(data_sp[i].json_geom).coordinates;
+                       // console.log(d[i].gridid);
+                       distinctPoints.set(item_id, data_sp[i]);
+                       _computed_occ_cells.set(parseInt(data_sp[i].gridid), data_sp[i]);
+                   }
+
+
+    //                var occ_cell = _computed_occ_cells.values().length;
+                   var occ_cell = data_sp[0].occ;
+
+                   $.each(distinctPoints.values(), function (index, item) {
+
+                       var item_id = JSON.parse(item.json_geom).coordinates.toString();
+
+                       // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
+
+                       if ($.inArray(item.gridid, gridItems) === -1) {
+
+                           var fecha_ano = item.aniocolecta === 9999 ? "" : item.aniocolecta;
+                           _allowedPoints.set(item_id, {
+                               "type": "Feature",
+                               "properties": {"url": item.urlejemplar, "fecha": fecha_ano, 
+                               // "specie": _specie_target.label, 
+                               "specie": item.especie, 
+                               "gridid": item.gridid},
+                               "geometry": JSON.parse(item.json_geom)
+                           });
+                       }
+
+                   });
+
+
+                   try {
+    //                    map.removeLayer(_switchD3Layer);
+                       map_sp.removeLayer(_switchD3Layer);
+                   } catch (e) {
+                       _VERBOSE ? console.log("layer no creado") : _VERBOSE;
+                   }
+
+                   _addPointLayer();
+
+                   if (_tipo_modulo === _MODULO_NICHO) {
+
+                       _histogram_module.createBarChartFecha(distinctPoints.values());
+
+                   }
+
+                   _fillSpeciesData(_allowedPoints.values().length, occ_cell);
+
+                   $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
+
+               },
+               error: function (jqXHR, textStatus, errorThrown) {
+                   _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                   _VERBOSE ? console.log(errorThrown) : _VERBOSE;
+                   _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+
+                   $('#tuto_mapa_occ').loading('stop');
+                   $("#specie_next").css('visibility', 'hidden');
+               }
+
+           });
+
+
+
 
     }
 
@@ -1063,7 +1260,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                        $.each(dPoints.values(), function (index, item) {
                            gridItems.push(item.feature.properties.gridid);
                        });
-
     //                    console.log(gridItems);
                    }
 
@@ -1320,13 +1516,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_specie_target") : _VERBOSE;
 
-        $("#lb_sum_reino_res").text(_specie_target.reino);
-        $("#lb_sum_phylum_res").text(_specie_target.phylum);
-        $("#lb_sum_clase_res").text(_specie_target.clase);
-        $("#lb_sum_orden_res").text(_specie_target.orden);
-        $("#lb_sum_familia_res").text(_specie_target.familia);
-        // $("#lb_sum_genero_res").text(_specie_target.genero);
-        $("#lb_sum_especie_res").text(_specie_target.especie);
+        // $("#lb_sum_reino_res").text(_specie_target.reino);
+        // $("#lb_sum_phylum_res").text(_specie_target.phylum);
+        // $("#lb_sum_clase_res").text(_specie_target.clase);
+        // $("#lb_sum_orden_res").text(_specie_target.orden);
+        // $("#lb_sum_familia_res").text(_specie_target.familia);
+        // // $("#lb_sum_genero_res").text(_specie_target.genero);
+        // $("#lb_sum_especie_res").text(_specie_target.especie);
 
 
         $("#num_occ").text(occ);
@@ -2237,7 +2433,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
     return{
         map: map,
+        get_spTaxon: get_spTaxon,
         busca_especie: busca_especie,
+        busca_especie_grupo: busca_especie_grupo,
         changeRegionView: changeRegionView,
         busca_especie_filtros: busca_especie_filtros,
         set_specieTarget: set_specieTarget,

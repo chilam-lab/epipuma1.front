@@ -309,51 +309,87 @@
                         <!-- No eliminar, utilizado para enlace de regeneración! -->
                         <div id="result"></div>
 
-                        <div class="row margin-top-ten">
+                        <div id="var_target" class="row ">
 
-                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <!-- <div class="col-md-9 col-sm-12 col-xs-12 pd-no-rside">
 
-                                <label id="lb_sp_list" for="grid_resolution"></label>
-                                <div id="tuto_autocomplete" class="input-group text-input ">
+                                <label id="lb_sp_list"></label>
 
-                                        <input id="nom_sp" type="text" class="form-control " />    
-                                        
-                                        <span id="lb_example" class="input-group-addon" id="basic-addon1">
-                                        </span>
-
+                                <div id="tuto_taxon_sp_target" class="input-group dropdown_group">
+                                    <div class="input-group-btn">
+                                        <button id="btn_variable_target" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-primary dropdown-toggle">Taxon <span class="caret"></span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <li>
+                                                <a id="a_item_reino_target" parent-field="reinovalido" data-field="phylumdivisionvalido" level-field="2" class="biotica">Kingdom</a>
+                                            </li>
+                                            <li>
+                                                <a id="a_item_phylum_target" parent-field="phylumdivisionvalido" data-field="clasevalida" level-field="3" class="biotica">Phylum</a>
+                                            </li>
+                                            <li>
+                                                <a id="a_item_clase_target" parent-field="clasevalida" data-field="ordenvalido" level-field="4" class="biotica">Class</a>
+                                            </li>
+                                            <li>
+                                                <a id="a_item_orden_target" parent-field="ordenvalido" data-field="familiavalida" level-field="5" class="biotica">Order</a>
+                                            </li>
+                                            <li><a id="a_item_familia_target" parent-field="familiavalida" data-field="generovalido" level-field="6" class="biotica">Family</a></li>
+                                            <li>
+                                                <a id="a_item_genero_target" parent-field="generovalido" data-field="especievalidabusqueda" level-field="7" class="biotica">Genus</a>
+                                            </li>
+                                        </div>
+                                    </div>
+                                    <input id="text_variable_target" type="text" aria-label="..." disabled="" class="form-control ui-autocomplete-input" autocomplete="off">
                                 </div>
+
+                                <div id="spContainer" class="col-xs-12 pd-no-sides">
+                                </div>
+
+                                comentado
+                                 <div class="col-md-10 col-sm-10 col-xs-10 pd-no-sides">
+                                    <div id="tuto_autocomplete" class="input-group text-input ">
+                                            <input id="nom_sp" type="text" class="form-control " />    
+                                            <span id="lb_example" class="input-group-addon" id="basic-addon1">
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2 pd-no-sides">
+                                    <input id="btnSchSp" class="btn btn-primary" type="button" />
+                                </div>
+                                
+                                
 
                                 <div class="col-xs-12 pd-no-sides">
                                          <select id="nom_sp_multiple" multiple="multiple " class="col-xs-12" ></select>   
+
                                 </div>
 
-                                <!-- <div class="col-xs-2 pd-no-sides">
-                                    <input id="schSp" value="Buscar" class="btn btn-primary col-xs-12" type="button" />
-                                </div> -->
-
-                                 
-
+                                <div id="spContainer" class="col-xs-12 pd-no-sides">
+                                </div> 
+                                comentado
 
                             </div>
+
+                            <div class="col-md-3 col-sm-12 col-xs-12 pd-no-lside">
+
+                                <div id="spRigthContainer" class="pd-no-sides">
+
+                                </div>
+                                
+                            </div> -->
 
                         </div>
                         
                         <div class="row margin-top-ten">
                             
-                            <div id="tuto_region"  class="col-md-12 col-sm-12 col-xs-12">
+                            <div id="tuto_region"  class="col-md-6 col-sm-12 col-xs-12">
                                 <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
                                     <label id="footprint_region" ></label>
                                     <select id="footprint_region_select" class="form-control" >
                                     </select>
                                 <!--</div>-->
                             </div>
-                            
-                        </div>
-
-                        <div class="row margin-top-ten">
 
                             <div id="tuto_resolution"  class="col-md-6 col-sm-12 col-xs-12">
-
 
                                 <div class="form-group">
                                     <label id="lb_mapa_res" for="grid_resolution"></label>
@@ -366,8 +402,13 @@
                                 </div> 
 
                             </div>
+                            
+                        </div>
 
-                            <div id="tuto_fil_fecha" class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="row margin-top-ten">
+
+
+                            <div id="tuto_fil_fecha" class="col-md-5 col-sm-12 col-xs-12">
 
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <label id="lb_range_fecha" for="sliderFecha"></label>
@@ -379,11 +420,7 @@
 
                             </div>
 
-                        </div>
-
-                        <div class="row margin-top-ten">
-
-                            <div id="tuto_reg_fecha" class="col-md-6 col-sm-12 col-xs-12">
+                            <div id="tuto_reg_fecha" class="col-md-4 col-sm-12 col-xs-12">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <label id="lb_reg_fecha" for="chkFecha"></label>
                                 </div>
@@ -394,7 +431,7 @@
 
                             </div>
 
-                            <div id="tuto_reg_fosil" class="col-md-6 col-sm-12 col-xs-12">
+                            <div id="tuto_reg_fosil" class="col-md-3 col-sm-12 col-xs-12">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <label id="lb_fosil" for="chkFosil"></label>
                                 </div>
@@ -1064,6 +1101,9 @@
         <script type="text/javascript" src="plugins/RequireJS/js/RequireJS.js"></script>
 
         <script type="text/javascript" src="plugins/multiselect/js/bootstrap-multiselect.js"></script>
+
+        <script type="text/javascript" src="https://ecoinformatica.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-5gc1ua/b/44/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=es-ES&collectorId=a6649d25"></script>
+
         
 
 
