@@ -1407,7 +1407,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                                     'type': 0,
                                                     'group_item': data_request.covariables[0].group_item,
                                                     'is_parent': true});
-                            
+
                             child.request = data_request;
                         }
 
@@ -1431,12 +1431,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _decil_values_tbl = [];
 
 
-//        console.log(_TREE_GENERATED);
+       console.log(_TREE_GENERATED);
 ////        console.log(_RESULTS_TODISPLAY);
 //        console.log("tbl_request: " + tbl_request);
-//        console.log("name: " + name);
-//        console.log("decil: " + decil);
-//        console.log("first_loaded: " + first_loaded);
+       console.log("name: " + name);
+       console.log("decil: " + decil);
+       console.log("first_loaded: " + first_loaded);
 
 
         // obteniendo request total
@@ -1519,6 +1519,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 // console.log(data_freq_decil_tbl.map(function(d){return d.decile}))
 
                                 data_freq_decil_tbl.forEach(function (specie, index) {
+                                    console.log(specie)
+                                    
                                     var occ = specie.nj;
                                     var occ_decil = specie.njd;
                                     var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
@@ -1564,42 +1566,52 @@ var res_display_module = (function (verbose, url_zacatuche) {
     function mergeRequest(request = {}, child = []){
 
         _VERBOSE ? console.log("mergeRequest") : _VERBOSE;
-//        console.log(request);
-//        console.log(child);
+       console.log(request);
+       console.log(child);
 
         // este conjunto de parámetros no importa que sean sobreescritos en cada iteración por que no cambian en la petición global
-        request.footprint_region = child.request.footprint_region;
-        request.fossil = child.request.fossil;
-        request.grid_res = child.request.grid_res;
-        request.hasBios = request.hasBios ? request.hasBios : child.request.hasBios;
-        request.hasRaster = request.hasRaster ? request.hasRaster : child.request.hasRaster;
+        request.grid_resolution = child.request.grid_resolution;
+        request.region = child.request.region;
+        request.min_cells = child.request.min_cells;
+        request.idtabla = request.idtabla ? request.idtabla : child.request.idtabla;
+        request.iterations = child.request.iterations;
+        request.fosil = child.request.fosil;
+        request.date = child.request.date;
+        request.lim_inf = child.request.lim_inf;
+        request.lim_sup = child.request.lim_sup;
+        request.get_grid_species = child.request.get_grid_species;
         request.apriori = request.apriori ? request.apriori : child.request.apriori;
         request.mapa_prob = request.mapa_prob ? request.mapa_prob : child.request.mapa_prob;
-
-        request.id = child.request.id;
-        request.idtabla = request.idtabla ? request.idtabla : child.request.idtabla;
-        request.min_occ = child.request.min_occ;
-        request.sfecha = child.request.sfecha;
-        // request.val_process = request.val_process ? request.val_process : child.request.val_process;
-        request.idtime = child.request.idtime;
-        request.level_req = child.request.level_req;
-        
-
         request.with_data_freq = false;
         request.with_data_score_cell = false;
         request.with_data_freq_cell = false;
         request.with_data_score_decil = false;
 
         // se realiza un analisis del contenido y se concatena
-        if (!request.discardedFilterids)
-            request.discardedFilterids = child.request.discardedFilterids;
+        if (!request.excluded_cells)
+            request.excluded_cells = child.request.excluded_cells;
         else
-            request.discardedFilterids = request.discardedFilterids.concat(child.request.discardedFilterids);
+            request.excluded_cells = request.excluded_cells.concat(child.request.excluded_cells);
 
-        if (!request.tfilters)
-            request.tfilters = child.request.tfilters;
-        else
-            request.tfilters = request.tfilters.concat(child.request.tfilters);
+        if (!request.covariables)
+            request.covariables = child.request.covariables;
+        else{
+            child.request.covariables.forEach(function(item,index){
+                request.covariables.push(item)
+            })
+        }
+
+        if (!request.target_taxons)
+            request.target_taxons = child.request.target_taxons;
+        else{
+            child.request.target_taxons.forEach(function(item,index){
+                request.target_taxons.push(item)
+            })
+        }
+
+        // request.val_process = request.val_process ? request.val_process : child.request.val_process;
+        // request.level_req = child.request.level_req;
+        
 
         return request;
 
@@ -1732,14 +1744,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
             var item_list = [];
 
             // las variables climáticas no cuentan con reino, phylum, clase, etc
-            if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
-                var arg_values = d.especievalidabusqueda.split(" ")
-                var value = _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
-                item_list.push(value)
-            } else {
-                item_list.push(d.especievalidabusqueda)
-            }
+            // if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
+            //     var arg_values = d.especievalidabusqueda.split(" ")
+            //     var value = _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
+            //     item_list.push(value)
+            // } else {
+            //     item_list.push(d.especievalidabusqueda)
+            // }
 
+
+            item_list.push(d.name)
             item_list.push(d.nij)
             item_list.push(d.nj)
             item_list.push(d.ni)
