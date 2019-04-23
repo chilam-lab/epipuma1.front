@@ -38,6 +38,8 @@ var module_nicho = (function () {
     
     var _getEntListInProcess = false;
 
+    var groupSpSelection = [];
+
 
     /**
      * Enlaza la funcionalidad de los componentes visuales de las secciones de nicho ecológico.
@@ -331,170 +333,156 @@ var module_nicho = (function () {
 
 
 
+
         // $('#nom_sp_multiple').multiselect({
         //     // enableFiltering: true,
-        //     includeSelectAllOption: false,
         //     selectAllJustVisible: false,
         //     // enableCaseInsensitiveFiltering: true,
         //     // filterPlaceholder: 'Buscar especie',
         //     disableIfEmpty: true,
-        //      maxHeight: 300,
-        //      includeSelectAllOption: true,
-        //      selectAllText: 'Seleccionar todo'
+        //     maxHeight: 300,
+        //     includeSelectAllOption: true,
+        //     selectAllText: 'Seleccionar todo',
+        //     numberDisplayed: 1,
+        //     onChange: function(option, checked, select) {
+        //         // multiselectSpProcess();
+        //     },
+        //     onSelectAll: function() {
+        //         // multiselectSpProcess();
+        //     },
+        //     onDeselectAll: function() {
+        //         // multiselectSpProcess();
+        //     }
         // });
 
+        // $("#btnSchSp").click(function(){
+        //     multiselectSpProcess();
+        // });
+        // $('#nom_sp_multiple').width($("#nom_sp").width());
 
-        $("#nom_sp").autocomplete({
+
+    //     $("#nom_sp").autocomplete({
             
-            source: function (request, response) {
+    //         source: function (request, response) {
 
-                var grid_res_val = $("#grid_resolution").val();
-//                console.log("grid_resolution: " + grid_res_val);
-                $("#specie_next").css('visibility', 'hidden');
+    //             var grid_res_val = $("#grid_resolution").val();
+    //             $("#specie_next").css('visibility', 'hidden');
 
-                _cleanTutorialButtons();
+    //             _cleanTutorialButtons();
 
 
-                region = parseInt($("#footprint_region_select").val());
+    //             region = parseInt($("#footprint_region_select").val());
                 
-                // var data = {
-                //     limit: true,
-                //     searchStr: request.term,
-                //     source: 1, // source para saber si viene de objetivo o el target
-                //     grid_res: grid_res_val,
-                //     footprint_region: region
-                // }
-                
-                
-                //TODO: CAMBIAR CODIGO A AJAX REQUEST EL FETCH DEJA CANCELADA LA PETICIÓN. 
-//                CORREGIR TMB EN GETSPECIES, NO ESTA FUNCIONANDO
-                
-                // console.log("_getEntListInProcess: " + _getEntListInProcess)
-                
-                // if(_getEntListInProcess){
-                //     console.log("peticion abortada")
-                //     _ACGetEntList.abort();
-                //     _ACGetEntList = new AbortController();
-                //     signal = _ACGetEntList.signal;
-                // }
-                // _getEntListInProcess = true;
-                
-                
-                
-//                 fetch(_url_api + "/niche/especie/getEntList", {
-//                     method: "POST",
-//                     body: JSON.stringify(data),
-//                     signal: signal,
-//                     mode: 'cors',
-//                     headers: {
-//                         "Content-Type": "application/json"
-//                     }
-//                 })
-//                 .then(resp => resp.json())
-//                 .then(respuesta => {
-                    
-//                     _getEntListInProcess = false;
-            
-//                     response($.map(respuesta.data, function (item) {
+    //            $.ajax({
+    //                url: _url_api + "/niche/especie/getEntListByTaxon",
+    //                dataType: "json",
+    //                type: "post",
+    //                data: {
+    //                    limit: true,
+    //                    searchStr: request.term,
+    //                    source: 1, // source para saber si viene de objetivo o el target
+    //                    grid_res: grid_res_val,
+    //                    footprint_region: region
+    //                },
+    //                success: function (resp) {
 
-//                             return{
-// //                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
-//                                 label: item.especievalidabusqueda,
-//                                 id: item.spid,
-//                                 reino: item.reinovalido,
-//                                 phylum: item.phylumdivisionvalido,
-//                                 clase: item.clasevalida,
-//                                 orden: item.ordenvalido,
-//                                 familia: item.familiavalida,
-//                                 genero: item.generovalido,
-//                                 especie: item.especievalidabusqueda,
-//                                 occ: item.occ
-//                             };
-//                         })
-//                     );
-            
-//                 })
+    //                     console.log(resp.data)
 
-               $.ajax({
-                   url: _url_api + "/niche/especie/getEntList",
-                   dataType: "json",
-                   type: "post",
-                   data: {
-                       limit: true,
-                       searchStr: request.term,
-                       source: 1, // source para saber si viene de objetivo o el target
-                       grid_res: grid_res_val,
-                       footprint_region: region
-                   },
-                   success: function (resp) {
+    //                     // limpia combo y vuelve a agregar elementos de la busqueda
+    //                     $('#nom_sp_multiple').children().remove();
+    //                     $('#nom_sp_multiple').multiselect('rebuild');
+    //                     $.each(resp.data, function( index, item ) {
+    //                         $('#nom_sp_multiple')
+    //                             .append('<option value="'+item.spid
+    //                                 +'" reino="'+item.reinovalido
+    //                                 +'" phylum="'+item.phylumdivisionvalido
+    //                                 +'" clase="'+item.clasevalida
+    //                                 +'" orden="'+item.ordenvalido
+    //                                 +'" familia="'+item.familiavalida
+    //                                 +'" nombre_sp="'+item.especievalidabusqueda
+    //                                 +'">'+item.especievalidabusqueda+'</option>')
+    //                     });
+    //                     $('#nom_sp_multiple').multiselect('rebuild');
 
-                       console.log(resp.data)
+    //                     response(
 
-
-                       // $('#nom_sp_multiple').children().remove();
-                       // $('#nom_sp_multiple').multiselect('rebuild');
-
-
-                       //  $.each(resp.data, function( index, item ) {
-                       //    $('#nom_sp_multiple').append('<option value="'+item.spid+'">'+item.especievalidabusqueda+'</option>')
-                       //  });
-                       //  $('#nom_sp_multiple').multiselect('rebuild');
-
-                       
-
-                       response($.map(resp.data, function (item) {
-
+    //                         $.map(resp.data, function (item) {                           
                            
-                           
-                           return{
-//                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
-                               label: item.especievalidabusqueda,
-                               id: item.spid,
-                               reino: item.reinovalido,
-                               phylum: item.phylumdivisionvalido,
-                               clase: item.clasevalida,
-                               orden: item.ordenvalido,
-                               familia: item.familiavalida,
-                               genero: item.generovalido,
-                               especie: item.especievalidabusqueda,
-                               occ: item.occ
-                           };
-                       })
-                               );
-                   }
-               });
+    //                             return{
+    // //                                label: item.especievalidabusqueda + " (all occ: " + item.occ + ")",
+    //                                label: item.especievalidabusqueda,
+    //                                id: item.spid,
+    //                                reino: item.reinovalido,
+    //                                phylum: item.phylumdivisionvalido,
+    //                                clase: item.clasevalida,
+    //                                orden: item.ordenvalido,
+    //                                familia: item.familiavalida,
+    //                                // genero: item.generovalido,
+    //                                // especie: item.especievalidabusqueda,
+    //                                occ: item.occ
+    //                            }
 
-            },
-            minLength: 2,
-            change: function (event, ui) {
-                if (!ui.item) {
-                    $("#nom_sp").val("");
-                }
-            },
-            select: function (event, ui) {
-                var specie_target = {
-                    "reino": ui.item.reino,
-                    "phylum": ui.item.phylum,
-                    "clase": ui.item.clase,
-                    "orden": ui.item.orden,
-                    "familia": ui.item.familia,
-                    "genero": ui.item.genero,
-                    "especie": ui.item.especie,
-                    "spid": ui.item.id,
-                    "label": ui.item.especie
-                };
+    //                         })
 
-                _VERBOSE ? console.log(specie_target) : _VERBOSE;
+    //                     )
 
-                _map_module_nicho.set_specieTarget(specie_target);
+    //                }
 
-                _map_module_nicho.busca_especie(d3.map([]), region);
+    //            });
 
-                _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
+    //         },
+    //         minLength: 2,
+    //         open: function(event, ui){
+    //             console.log("open")
+    //             // console.log(ui)
+    //             // console.log(ui.item.reino)
 
-            }
+    //             $(".ui-menu-item").hide();
+    //             $('.btn-group').addClass("open");
+    //             $('#nom_sp_multiple .open > .dropdown-menu').css("display","block");
 
-        });
+    //         },
+    //         focus: function(event, ui){
+    //             console.log("focus")
+
+    //             $(".ui-menu-item").hide();
+    //             $('.btn-group').addClass("open");
+    //             $('#nom_sp_multiple .open > .dropdown-menu').css("display","block");
+    //         },
+    //         // change: function (event, ui) {
+    //         //     if (!ui.item) {
+    //         //         $("#nom_sp").val("");
+    //         //     }
+    //         //     $('#nom_sp_multiple').children().remove();
+    //         //     $('#nom_sp_multiple').multiselect('rebuild');
+
+    //         // },
+    //         // select: function (event, ui) {
+                
+
+    //         //     var specie_target = {
+    //         //         "reino": ui.item.reino,
+    //         //         "phylum": ui.item.phylum,
+    //         //         "clase": ui.item.clase,
+    //         //         "orden": ui.item.orden,
+    //         //         "familia": ui.item.familia,
+    //         //         "genero": ui.item.genero,
+    //         //         "especie": ui.item.especie,
+    //         //         "spid": ui.item.id,
+    //         //         "label": ui.item.especie
+    //         //     };
+
+    //         //     _VERBOSE ? console.log(specie_target) : _VERBOSE;
+
+    //         //     _map_module_nicho.set_specieTarget(specie_target);
+
+    //         //     _map_module_nicho.busca_especie(d3.map([]), region);
+
+    //         //     _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
+
+    //         // }
+
+    //     });
 
 
         $("#reload_map").click(function () {
@@ -689,6 +677,148 @@ var module_nicho = (function () {
 //        _confLiveTutorial();
         _genLinkURL();
     }
+
+
+
+    // function multiselectSpProcess(){
+
+    //     var selectedOptions = $('#nom_sp_multiple option:selected');
+    //     console.log(selectedOptions);
+
+    //     if(selectedOptions.length === 0){
+    //         _map_module_nicho.clearAllLayers();
+    //         return;
+    //     }
+
+    //     var arg_spids = [];
+    //     var nombres_sp = [];
+    //     var reino, phylum, clase, orden, familia;
+
+    //     $.each(selectedOptions, function( index, item ) {
+    //       // console.log(item);
+          
+    //       var spid = item.value
+    //       var nombre_sp = item.attributes["nombre_sp"].nodeValue
+
+    //       reino = item.attributes["reino"].nodeValue
+    //       phylum = item.attributes["phylum"].nodeValue
+    //       clase = item.attributes["clase"].nodeValue
+    //       orden = item.attributes["orden"].nodeValue
+    //       familia = item.attributes["familia"].nodeValue
+          
+    //       arg_spids.push(spid)
+    //       nombres_sp.push(nombre_sp)
+
+    //     });
+
+    //     var milliseconds = new Date().getTime();
+    //     var specie_target = {
+    //         "id_group": milliseconds,
+    //         "reino": reino,
+    //         "phylum": phylum,
+    //         "clase": clase,
+    //         "orden": orden,
+    //         "familia": familia,
+    //         "spid": arg_spids,
+    //         "especie": nombres_sp.toString(),
+    //         "label": nombres_sp.toString(),
+    //         "close": true
+    //     };
+
+    //     console.log(specie_target)
+    //     groupSpSelection.push(specie_target)
+    //     addSpSelection(groupSpSelection)
+
+        
+    //     _map_module_nicho.busca_especie(d3.map([]), region, arg_spids);
+
+    //     _map_module_nicho.set_specieTarget(specie_target);
+
+    //     _module_toast.showToast_CenterCenter(_iTrans.prop('lb_occ_cargado'), "info");
+
+    // }
+
+    // function addSpSelection(groupSpSelection){
+
+    //     var div_item = d3.select("#spContainer").selectAll("div")
+    //         .data(groupSpSelection)
+    //         .enter()
+    //         .append("div")
+    //         .attr("class", "row_var_item_sp col-md-4")
+    //         .attr("items", function (d) {
+    //             return d.label.split(",");
+    //         })
+    //         .text(function (d) {
+    //             return d.label.substr(0,5)+" ...  ("+d.spid.length+")";
+    //         })
+    //         .on('click', function (d) {
+
+    //             if (d.close) {
+
+    //                 d.close = false;
+    //                 d3.select(this).selectAll("div")
+    //                         .data(d.label.split(","))
+    //                         .enter()
+    //                         .append("div")
+    //                         .attr("class", "cell_item")
+    //                         .text(function (t) {
+    //                             return t;
+    //                         })
+    //                         .style("text-align", "left");
+
+
+    //             } else {
+
+    //                 d.close = true;
+    //                 d3.selectAll(this).remove();
+    //                 $(this).text(d.label.substr(0,5)+" ...  ("+d.spid.length+")");
+    //                 $(this).css("text-align", "left");
+
+    //                 d3.select(this).append("button")
+    //                     .attr("width", "10px")
+    //                     .attr("height", "10px")
+    //                     .attr("class", "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var")
+    //                     .on("click", function () {
+    //                         // _VERBOSE ? console.log("remove item") : _VERBOSE;
+    //                         d3.select(this.parentNode).remove();
+
+    //                         var gpo_deleted;
+    //                         $.each(groupSpSelection, function (index, obj) {
+    //                             if (obj.groupid == d.groupid) {
+    //                                 // _VERBOSE ? console.log(d) : _VERBOSE;
+    //                                 gpo_deleted = groupSpSelection.splice(index, 1);
+    //                                 return false;
+    //                             }
+    //                         })
+    //                         // _VERBOSE ? console.log(gpo_deleted) : _VERBOSE;
+    //                         // self.updateVarSelArray(gpo_deleted, _BORRADO);
+
+    //                     });
+
+    //                 }
+    //         })
+    //         .append("button")
+    //         .attr("width", "10px")
+    //         .attr("height", "10px")
+    //         .attr("class", "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var")
+    //         .on("click", function (d) {
+    //             // _VERBOSE ? console.log("remove item") : _VERBOSE;
+    //             d3.select(this.parentNode).remove();
+                
+    //             var gpo_deleted;
+    //             $.each(groupSpSelection, function (index, obj) {
+    //                 if (obj.groupid == d.groupid) {
+    //                     // _VERBOSE ? console.log(d) : _VERBOSE;
+    //                     gpo_deleted = groupSpSelection.splice(index, 1);
+    //                     return false;
+    //                 }
+    //             })
+
+    //         });
+
+
+    // }
+
 
     function _regenMessage() {
 
@@ -1020,18 +1150,21 @@ var module_nicho = (function () {
         $('#grid_resolution option[value=' + gridRes + ']').attr('selected', 'selected');
 
         console.log(map_dPoints.values());
+        console.log(spid);
+        // console.log(chkFec);
+        // console.log(rango_fechas);
 
         if (chkFec !== undefined || rango_fechas !== undefined) {
 
             console.log("filtros");
-            console.log(map_dPoints.values());
+            // console.log(map_dPoints.values());
 
             _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec, chkFosil, map_dPoints, region);
         } else {
             console.log("busca");
-            console.log(map_dPoints.values());
+            // console.log(map_dPoints.values());
 
-            _map_module_nicho.busca_especie(map_dPoints, region);
+            _map_module_nicho.busca_especie(map_dPoints, region, spid);
         }
 
 
@@ -1081,21 +1214,25 @@ var module_nicho = (function () {
     $("#get_esc_ep").click(function () {
 
         _VERBOSE ? console.log("get_esc_ep") : _VERBOSE;
-        var num_items = 0, spid, idreg, subgroups;
+        var num_items = 0, spid, idreg, subgroups, sp_target;
 
         $("#show_gen").css('visibility', 'visible');
+        $("#btn_tuto_steps_result").css('visibility', 'visible');
 
         _cleanTutorialButtons();
 
-        if (!_map_module_nicho.get_specieTarget()) {
+        // console.log(_componente_target.getTaxones())
+
+        // if (!_map_module_nicho.get_specieTarget()) {
+        if (_componente_target.getTaxones().length === 0) {
             // no se ha seleccionado especie objetivo
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_especie'), "error");
             return;
         } 
 
-        spid = _map_module_nicho.get_specieTarget().spid;
-        _res_display_module_nicho.set_spid(spid);
-        _VERBOSE ? console.log(spid) : _VERBOSE;
+        // spid = _map_module_nicho.get_specieTarget().spid;
+        
+        // _VERBOSE ? console.log(spid) : _VERBOSE;
 
         // agregar validación para estados
         idreg = _region_module_nicho.getRegionSelected();
@@ -1105,6 +1242,14 @@ var module_nicho = (function () {
 
 
         subgroups = _componente_fuente.getVarSelArray();
+
+        sp_target_group = _componente_target.getTaxones();
+
+        console.log(sp_target_group)
+
+        _res_display_module_nicho.set_taxones(sp_target_group);
+        
+
 
         var type_time = _componente_fuente.getTimeBioclim();
 
@@ -1134,6 +1279,7 @@ var module_nicho = (function () {
         } else {
 
             $("#show_gen").css('visibility', 'hidden');
+            $("#btn_tuto_steps_result").css('visibility', 'hidden');
             $("#tuto_res").css('visibility', 'hidden');
             $("#params_next").css('visibility', 'hidden');
 
@@ -1235,15 +1381,6 @@ var module_nicho = (function () {
         _map_module_nicho = map_module(_url_geoserver, _workspace, _VERBOSE, _url_api);
         _map_module_nicho.startMap(_language_module_nicho, _tipo_modulo, _histogram_module_nicho);
 
-        // un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)
-        _variable_module_nicho = variable_module(_VERBOSE, _url_api);
-        _variable_module_nicho.startVar(0, _language_module_nicho, _tipo_modulo);
-
-
-        var ids_comp_variables = ['fuente'];
-        _componente_fuente = _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
-
-
         _table_module = table_module(_VERBOSE);
         _table_module.startTableModule();
 
@@ -1254,8 +1391,19 @@ var module_nicho = (function () {
 
         _map_module_nicho.setDisplayModule(_res_display_module_nicho);
 
-
         _histogram_module_nicho.setDisplayModule(_res_display_module_nicho);
+
+
+        // un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)
+        _variable_module_nicho = variable_module(_VERBOSE, _url_api);
+        _variable_module_nicho.startVar(0, _language_module_nicho, _tipo_modulo, _map_module_nicho);
+
+
+        var ids_comp_variables = ['fuente', 'target'];
+        _componente_fuente = _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
+
+        _componente_target = _variable_module_nicho.createSelectorComponent("var_target", ids_comp_variables[1], "", false, true, true);
+
 
 
         // se envia url con direccion a servidor zacatuche

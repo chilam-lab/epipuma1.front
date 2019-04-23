@@ -237,6 +237,8 @@ var language_module = (function (verbose) {
 
             $("#lb_especie").text($.i18n.prop('lb_especie'));
 
+            $("#btnSchSp").prop("value", $.i18n.prop('btnSchSp'));
+
 //            $("#nom_sp").attr("placeholder", $.i18n.prop('esp_name'));
 
             $("#lb_example").text($.i18n.prop('lb_example'));
@@ -322,6 +324,13 @@ var language_module = (function (verbose) {
             $("#a_item_familia_fuente").text($.i18n.prop('a_item_familia'));
             $("#a_item_genero_fuente").text($.i18n.prop('a_item_genero'));
 
+            $("#a_item_reino_target").text($.i18n.prop('a_item_reino'));
+            $("#a_item_phylum_target").text($.i18n.prop('a_item_phylum'));
+            $("#a_item_clase_target").text($.i18n.prop('a_item_clase'));
+            $("#a_item_orden_target").text($.i18n.prop('a_item_orden'));
+            $("#a_item_familia_target").text($.i18n.prop('a_item_familia'));
+            $("#a_item_genero_target").text($.i18n.prop('a_item_genero'));
+
             $("#a_item_reino_sumidero").text($.i18n.prop('a_item_reino'));
             $("#a_item_phylum_sumidero").text($.i18n.prop('a_item_phylum'));
             $("#a_item_clase_sumidero").text($.i18n.prop('a_item_clase'));
@@ -332,6 +341,10 @@ var language_module = (function (verbose) {
 
             $("#btn_variable_bioclim").text($.i18n.prop('btn_variable_bioclim') + " ");
             $("#btn_variable_bioclim").append('<span class="caret"></span>');
+
+
+
+            
 
             $("#a_item_bio00").text($.i18n.prop('a_item_bio00'));
 

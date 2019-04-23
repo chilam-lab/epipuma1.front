@@ -16,7 +16,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     var _RUN_ON_SERVER = true;
 
-    var _subgroups, _spid, _idreg, _type_time;
+    var _subgroups, _spid, _idreg, _type_time, _taxones;
 
     var _validation_module_all,
         _map_module_nicho,
@@ -76,6 +76,27 @@ var res_display_module = (function (verbose, url_zacatuche) {
         "especie": "especievalidabusqueda",
         "species": "especievalidabusqueda"
     };
+
+    var map_taxon = new Map()
+    map_taxon.set("reino", "kingdom");
+    map_taxon.set("kingdom", "kingdom");
+    map_taxon.set("phylum", "phylum");
+    map_taxon.set("clase", "class");
+    map_taxon.set("class", "class");
+    map_taxon.set("orden", "order");
+    map_taxon.set("order", "order");
+    map_taxon.set("familia", "family");
+    map_taxon.set("family", "family");
+    map_taxon.set("genero", "genus");
+    map_taxon.set("genus", "genus");
+    map_taxon.set("especie", "species");
+    map_taxon.set("species", "species");
+
+
+    var map_abio = new Map()
+    map_abio.set(1, "type");
+    map_abio.set(2, "layer");
+    map_abio.set(3, "bid");
 
     var _tbl_decil = false;
     var _tbl_eps = false;
@@ -188,6 +209,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
      */
     function set_spid(spid) {
         _spid = spid;
+    }
+
+    /**
+     * Método setter del id de la especie objetivo seleccionada para el análisis de nicho ecológico
+     *
+     * @function set_spid
+     * @public
+     * @memberof! res_display_module
+     * 
+     * @param {integer} spid - Identificador de la especie objetivo para el análisis de nicho ecológico
+     */
+    function set_taxones(taxones) {
+        _taxones = taxones;
     }
 
     /**
@@ -545,19 +579,34 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         despliegaLoadings();
 
+        var taxon_values = [];
+
+        _taxones.forEach(function (taxon, index) {
+
+            // console.log(taxon.taxon)
+            var temp = {};
+            temp["taxon_rank"] = map_taxon.get(taxon.taxon.toLowerCase());
+            temp["value"] = taxon.value;
+            taxon_values.push(temp);
+
+        })
+
+        _VERBOSE ? console.log(taxon_values) : _VERBOSE;
+
         if (val_process) {
 
             _VERBOSE ? console.log("VALIDACIÓN: ON") : _VERBOSE;
 
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'), "warning");
-            _initializeValidationTables(val_process);
+            _initializeValidationTables(val_process, taxon_values);
 
         } else {
 
             _VERBOSE ? console.log("VALIDACIÓN: OFF") : _VERBOSE;
             
             
-            _confDataRequest(_spid, _idreg, val_process);
+            // _confDataRequest(_spid, _idreg, val_process);
+            _confDataRequest(taxon_values, _idreg, val_process);
             _panelGeneration();
 //            _generateCounts(_countsdata);
 
@@ -577,17 +626,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {String} idtemptable - Nombre de la tabla temporal que debe ser eliminada
      *
      */
-    function _initializeValidationTables(val_process) {
+    function _initializeValidationTables(val_process, taxones) {
 
         _VERBOSE ? console.log("_initializeValidationTables") : _VERBOSE;
 
         _VERBOSE ? console.log("grid_res: " + _grid_res) : _VERBOSE;
+        
 
         $.ajax({
-            url: _url_zacatuche + "/niche/especie/getValidationTables",
+            url: _url_zacatuche + "/niche/especie/getGroupValidationTables",
             type: 'post',
             data: {
-                spid: _spid,
+                // spid: _spid,
+                target_taxons: taxones,
                 iter: _NUM_ITERATIONS,
                 grid_res: _grid_res,
                 footprint_region: _footprint_region
@@ -595,10 +646,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
             dataType: "json",
             success: function (resp) {
 
+                console.log(resp)
+
                 _idtemptable = resp.data[0].tblname;
                 _VERBOSE ? console.log("Creación tabla: " + _idtemptable) : _VERBOSE;
 
-                _confDataRequest(_spid, _idreg, val_process, _idtemptable);
+                // _confDataRequest(_spid, _idreg, val_process, _idtemptable);
+                _confDataRequest(taxones, _idreg, val_process, _idtemptable);
                 _panelGeneration(_idtemptable);
                 // _generateCounts(_countsdata);
 
@@ -714,12 +768,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
      */
     function _cleanPanel() {
 
+        _VERBOSE ? console.log("_cleanPanel") : _VERBOSE;
 
         _table_module_eps.clearEspList();
         _table_module_eps.clearDecilList();
-
-
-
 
         try {
             $("#" + _id_charteps.id).empty();
@@ -759,14 +811,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {integer} num_items - Número de grupos de variables seleccionado
      * @param {boolean} val_process - Bandera que indica si será ejecutado el proceso de validación
      */
-    function _confDataRequest(spid, idreg, val_process, tabla) {
+    function _confDataRequest(taxones, idreg, val_process, tabla) {
 
         _VERBOSE ? console.log("_confDataRequest") : _VERBOSE;
 
 
-        var idtabla = tabla || "no_table";
-        var apriori = $("#chkApriori").is(':checked') ? "apriori" : undefined;
-        var mapap = $("#chkMapaProb").is(':checked') ? "mapa_prob" : undefined;
+        var idtabla = tabla || "";
+        // var idtabla = tabla || "no_table";
+        var apriori = $("#chkApriori").is(':checked') ? true : false;
+        var mapap = $("#chkMapaProb").is(':checked') ? true : false;
 //        _mapa_prob ? "mapa_prob" : undefined;
 
         var fossil = $("#chkFosil").is(':checked') ? true : false;
@@ -806,78 +859,115 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //            "footprint_region": _footprint_region
 //        };
 
+
         // verbo: getFreqCelda // seleccion de celda
-        _cdata = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "mapa_prob": mapap,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region
-        };
-
-        // verbo: getScoreDecil
         var milliseconds = new Date().getTime();
+        _cdata = {
+            "target_taxons": taxones,
+            "idtime": milliseconds,
+            "apriori": apriori,
+            "mapa_prob": mapap,
+            "min_cells": min_occ,
+            "fosil": fossil,
+            "lim_inf": lin_inf,
+            "lim_sup": lin_sup,
+            "date": sin_fecha,
+            // "val_process": val_process,
+            "idtabla": idtabla,
+            "grid_resolution": parseInt(_grid_res),
+            "region": _footprint_region,
+            "get_grid_species": false,
+            "with_data_score_cell": true,
+            "with_data_freq": true,
+            "with_data_freq_cell":true,
+            "with_data_score_decil": false,
+            "excluded_cells":_discarded_cell_set.values(),
+            "target_name": "targetGroup",
+            "iterations": val_process ? undefined : 1 // si es indefinido toma las iteraciones del servidor
+        };
+
+        // verbo: getScoreDecil
+        milliseconds = new Date().getTime();
+        
+
         _decil_data = {
-            "id": spid,
+            "target_taxons": taxones,
             "idtime": milliseconds,
             "apriori": apriori,
             "mapa_prob": mapap,
-            "min_occ": min_occ,
-            "fossil": fossil,
+            "min_cells": min_occ,
+            "fosil": fossil,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
+            "date": sin_fecha,
+            // "val_process": val_process,
             "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region,
-            "level_req": "single"
+            "grid_resolution": parseInt(_grid_res),
+            "region": _footprint_region,
+            "get_grid_species": false,
+            "with_data_score_cell": true,
+            "with_data_freq": true,
+            "with_data_freq_cell":true,
+            "with_data_score_decil": false,
+            "excluded_cells":_discarded_cell_set.values(),
+            "target_name": "targetGroup",
+            "iterations": val_process ? undefined : 1 // si es indefinido toma las iteraciones del servidor
         };
 
-        // verbo: getScoreDecil
-        milliseconds = new Date().getTime();
-        _decil_group_data = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "mapa_prob": mapap,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region,
-            "level_req": "group"
-        };
+        // _decil_data = {
+        //     "id": spid,
+        //     "idtime": milliseconds,
+        //     "apriori": apriori,
+        //     "mapa_prob": mapap,
+        //     "min_occ": min_occ,
+        //     "fossil": fossil,
+        //     "lim_inf": lin_inf,
+        //     "lim_sup": lin_sup,
+        //     "sfecha": sin_fecha,
+        //     "val_process": val_process,
+        //     "idtabla": idtabla,
+        //     "grid_res": _grid_res,
+        //     "footprint_region": _footprint_region,
+        //     "level_req": "single"
+        // };
+
 
         // verbo: getScoreDecil
-        milliseconds = new Date().getTime();
-        _total_data_decil = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region,
-            "level_req": "total"
-        };
+        // milliseconds = new Date().getTime();
+        // _decil_group_data = {
+        //     "id": spid,
+        //     "idtime": milliseconds,
+        //     "apriori": apriori,
+        //     "mapa_prob": mapap,
+        //     "min_occ": min_occ,
+        //     "fossil": fossil,
+        //     "lim_inf": lin_inf,
+        //     "lim_sup": lin_sup,
+        //     "sfecha": sin_fecha,
+        //     "val_process": val_process,
+        //     "idtabla": idtabla,
+        //     "grid_res": _grid_res,
+        //     "footprint_region": _footprint_region,
+        //     "level_req": "group"
+        // };
+
+        // verbo: getScoreDecil
+        // milliseconds = new Date().getTime();
+        // _total_data_decil = {
+        //     "id": spid,
+        //     "idtime": milliseconds,
+        //     "apriori": apriori,
+        //     "min_occ": min_occ,
+        //     "fossil": fossil,
+        //     "lim_inf": lin_inf,
+        //     "lim_sup": lin_sup,
+        //     "sfecha": sin_fecha,
+        //     "val_process": val_process,
+        //     "idtabla": idtabla,
+        //     "grid_res": _grid_res,
+        //     "footprint_region": _footprint_region,
+        //     "level_req": "total"
+        // };
 
         // verbo: getCellScore
 //        _sdata = {
@@ -914,34 +1004,34 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
         // verbo: getCounts
-        milliseconds = new Date().getTime();
-        _countsdata = {
-            "id": spid,
-            "idtime": milliseconds,
-            "apriori": apriori,
-            "mapa_prob": mapap,
-            "min_occ": min_occ,
-            "fossil": fossil,
-            "lim_inf": lin_inf,
-            "lim_sup": lin_sup,
-            "sfecha": sin_fecha,
-            "val_process": val_process,
-            "idtabla": idtabla,
-            "grid_res": _grid_res,
-            "footprint_region": _footprint_region,
-            "level_req": "counts"
-        }
+        // milliseconds = new Date().getTime();
+        // _countsdata = {
+        //     "id": spid,
+        //     "idtime": milliseconds,
+        //     "apriori": apriori,
+        //     "mapa_prob": mapap,
+        //     "min_occ": min_occ,
+        //     "fossil": fossil,
+        //     "lim_inf": lin_inf,
+        //     "lim_sup": lin_sup,
+        //     "sfecha": sin_fecha,
+        //     "val_process": val_process,
+        //     "idtabla": idtabla,
+        //     "grid_res": _grid_res,
+        //     "footprint_region": _footprint_region,
+        //     "level_req": "counts"
+        // }
 
 
 //        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
 //        _tdata['discardedFilterids'] = _discarded_cell_set.values();
 //        _sdata['discardedFilterids'] = _discarded_cell_set.values();
 //        _ddata['discardedFilterids'] = _discarded_cell_set.values();
-        _cdata['discardedFilterids'] = _discarded_cell_set.values();
-        _total_data_decil['discardedFilterids'] = _discarded_cell_set.values();
-        _decil_group_data['discardedFilterids'] = _discarded_cell_set.values();
-        _decil_data['discardedFilterids'] = _discarded_cell_set.values();
-        _countsdata['discardedFilterids'] = _discarded_cell_set.values();
+        // _cdata['discardedFilterids'] = _discarded_cell_set.values();
+        // _total_data_decil['discardedFilterids'] = _discarded_cell_set.values();
+        // _decil_group_data['discardedFilterids'] = _discarded_cell_set.values();
+        // _decil_data['discardedFilterids'] = _discarded_cell_set.values();
+        // _countsdata['discardedFilterids'] = _discarded_cell_set.values();
 
 
     }
@@ -1006,7 +1096,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //            _VERBOSE ? console.log(_TREE_GENERATED) : _VERBOSE;
 
 //            var filterby_group = [];
-//            _VERBOSE ? console.log(grupo) : _VERBOSE;
+           _VERBOSE ? console.log(grupo) : _VERBOSE;
 
             var hasChildren = false;
             if (grupo.value.length > 1) {
@@ -1022,7 +1112,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 // if item is type 1 is a json and if 0 is a string
                 var itemGroup = item;
-                var single_filter = [];
+                var single_filter = {};
+                var merge_vars = [];
+
                 _VERBOSE ? console.log(itemGroup) : _VERBOSE;
 
                 // bioticos
@@ -1033,11 +1125,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
                     var temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
 
-                    single_filter.push({
-                        'field': _reino_campos[temp_item_field],
+                    // single_filter.push({
+                    //     'field': _reino_campos[temp_item_field],
+                    //     'value': temp_item_value,
+                    //     'type': parseInt(itemGroup.type),
+                    //     'group_item': grupo.groupid
+                    // });
+
+                    merge_vars.push({
+                        'rank': map_taxon.get(temp_item_field),
                         'value': temp_item_value,
-                        'type': parseInt(itemGroup.type),
-                        'group_item': grupo.groupid
+                        'type': parseInt(itemGroup.type)
                     });
 
                 }
@@ -1049,12 +1147,18 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     // if the type is equal to 1 the item contains the parameter level
                     temp_item_value = itemGroup.label.split(">>")[1].trim();
 
-                    single_filter.push({
+                    // single_filter.push({
+                    //     'value': itemGroup.value,
+                    //     'type': parseInt(itemGroup.type),
+                    //     'level': parseInt(itemGroup.level),
+                    //     'group_item': grupo.groupid,
+                    //     'label': temp_item_value
+                    // });
+
+                    merge_vars.push({
+                        'rank': map_abio.get(parseInt(itemGroup.level)),
                         'value': itemGroup.value,
                         'type': parseInt(itemGroup.type),
-                        'level': parseInt(itemGroup.level),
-                        'group_item': grupo.groupid,
-                        'label': temp_item_value
                     });
 
                 }
@@ -1062,33 +1166,46 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 hasBios = false;
                 hasRaster = false;
 
-                for (var i = 0; i < single_filter.length; i++) {
-                    if (single_filter[0].type === _TYPE_BIO) {
+                for (var i = 0; i < merge_vars.length; i++) {
+                    if (merge_vars[0].type === _TYPE_BIO) {
                         hasBios = true;
                     } else {
                         hasRaster = true;
                     }
                 }
-                _decil_data['hasBios'] = hasBios;
-                _decil_data['hasRaster'] = hasRaster;
 
-                _decil_data['tfilters'] = single_filter;
-//                _decil_data['tdelta'] = active_time;
+                // _decil_data['hasBios'] = hasBios;
+                // _decil_data['hasRaster'] = hasRaster;
+                // _decil_data['tfilters'] = single_filter;
 
-                _VERBOSE ? console.log(hasChildren) : _VERBOSE;
-                _VERBOSE ? console.log(hasTotal) : _VERBOSE;
+                // console.log(merge_vars)
 
-                _VERBOSE ? console.log(single_filter) : _VERBOSE;
+                single_filter["name"] = grupo.title.replace(/ /g,'')
+                single_filter["biotic"] = hasBios ? true : false;
+                single_filter["merge_vars"] = merge_vars;
+                single_filter["group_item"] = grupo.groupid
+
+                _decil_data.covariables = [];
+                _decil_data.covariables.push(single_filter)
+
+
+                // _VERBOSE ? console.log(hasChildren) : _VERBOSE;
+                // _VERBOSE ? console.log(hasTotal) : _VERBOSE;
+
+                // _VERBOSE ? console.log(single_filter) : _VERBOSE;
                 _VERBOSE ? console.log(_decil_data) : _VERBOSE;
 
                 var data_request = jQuery.extend(true, {}, _decil_data);
                 _REQUESTS_MADE.push(data_request);
 
                 if (!temp_group.children) {
-                    temp_group.children = [single_filter[0]];
+                    // temp_group.children = [single_filter[0]];
+                    temp_group.children = [merge_vars[0]];
                 } else {
-                    temp_group.children.push(single_filter[0]);
+                    // temp_group.children.push(single_filter[0]);
+                    temp_group.children.push(merge_vars[0]);
                 }
+
 
             });
 
@@ -1134,21 +1251,26 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var data_request = jQuery.extend(true, {}, decildata);
 
-        decildata["with_data_freq"] = false;
-        decildata["with_data_score_cell"] = true;
-        decildata["with_data_freq_cell"] = false;
-        decildata["with_data_score_decil"] = false;
+        console.log(data_request)
+
+
+        // decildata["with_data_freq"] = false;
+        // decildata["with_data_score_cell"] = true;
+        // decildata["with_data_freq_cell"] = false;
+        // decildata["with_data_score_decil"] = false;
 
         // cambiando peticiones ajax por promesas y fetch api
-        fetch(_url_zacatuche + "/niche/counts", {
+        fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
             method: "POST",
-            body: JSON.stringify(decildata),
+            body: JSON.stringify(data_request),
             headers: {
                 "Content-Type": "application/json"
             }
         })
                 .then(resp => resp.json())
                 .then(respuesta => {
+
+                    console.log(respuesta)
 
                     _REQUESTS_NUMBER = _REQUESTS_NUMBER - 1;
 //            console.log("_REQUESTS_NUMBER: " + _REQUESTS_NUMBER);
@@ -1240,9 +1362,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             _RESULTS_TODISPLAY.push(data_decil_byanalysis);
                         }
 
-//                console.log(_RESULTS_TODISPLAY);
+                       console.log(_RESULTS_TODISPLAY);
 
                         _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
+                        
                         loadDecilDataTable();
 
                         $('#chartdiv_score_decil').loading('stop');
@@ -1263,21 +1386,28 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _TREE_GENERATED.groups.forEach(function (group_item, index) {
 
-//            console.log(group_item);
+           console.log(group_item);
+           console.log(data_request);
 
-            if (group_item.groupid === data_request.tfilters[0].group_item) {
+            if (group_item.groupid === data_request.covariables[0].group_item) {
 
                 group_item.children.forEach(function (child, index) {
 
-                    if (child.value === data_request.tfilters[0].value) {
+                    if (child.value === data_request.covariables[0].merge_vars[0].value) {
 
                         var data_score_cell = _utils_module.processDataForScoreCell(data);
                         child.response = data_score_cell;
                         child.validation_data = validation_data
 
-                        if (data_request.groupid !== undefined || data_request.tfilters !== undefined) {
-                            var title_valor = _utils_module.processTitleGroup(data_request.groupid, data_request.tfilters);
-                            child.title_valor = title_valor;
+                        if (data_request.groupid !== undefined || data_request.covariables !== undefined) {
+                            // var title_valor = _utils_module.processTitleGroup(data_request.groupid, data_request.covariables);
+                            // child.title_valor = title_valor;
+
+                            child.title_valor = JSON.stringify({'title': 'Grupo Bio ' + data_request.groupid,
+                                                    'type': 0,
+                                                    'group_item': data_request.covariables[0].group_item,
+                                                    'is_parent': true});
+
                             child.request = data_request;
                         }
 
@@ -1301,12 +1431,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _decil_values_tbl = [];
 
 
-//        console.log(_TREE_GENERATED);
+       console.log(_TREE_GENERATED);
 ////        console.log(_RESULTS_TODISPLAY);
 //        console.log("tbl_request: " + tbl_request);
-//        console.log("name: " + name);
-//        console.log("decil: " + decil);
-//        console.log("first_loaded: " + first_loaded);
+       console.log("name: " + name);
+       console.log("decil: " + decil);
+       console.log("first_loaded: " + first_loaded);
 
 
         // obteniendo request total
@@ -1359,7 +1489,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
 //                console.log(request);
 
-                fetch(_url_zacatuche + "/niche/counts", {
+                fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
                     method: "POST",
                     body: JSON.stringify(request),
                     headers: {
@@ -1389,6 +1519,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 // console.log(data_freq_decil_tbl.map(function(d){return d.decile}))
 
                                 data_freq_decil_tbl.forEach(function (specie, index) {
+                                    console.log(specie)
+                                    
                                     var occ = specie.nj;
                                     var occ_decil = specie.njd;
                                     var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
@@ -1434,42 +1566,52 @@ var res_display_module = (function (verbose, url_zacatuche) {
     function mergeRequest(request = {}, child = []){
 
         _VERBOSE ? console.log("mergeRequest") : _VERBOSE;
-//        console.log(request);
-//        console.log(child);
+       console.log(request);
+       console.log(child);
 
         // este conjunto de parámetros no importa que sean sobreescritos en cada iteración por que no cambian en la petición global
-        request.footprint_region = child.request.footprint_region;
-        request.fossil = child.request.fossil;
-        request.grid_res = child.request.grid_res;
-        request.hasBios = request.hasBios ? request.hasBios : child.request.hasBios;
-        request.hasRaster = request.hasRaster ? request.hasRaster : child.request.hasRaster;
+        request.grid_resolution = child.request.grid_resolution;
+        request.region = child.request.region;
+        request.min_cells = child.request.min_cells;
+        request.idtabla = request.idtabla ? request.idtabla : child.request.idtabla;
+        request.iterations = child.request.iterations;
+        request.fosil = child.request.fosil;
+        request.date = child.request.date;
+        request.lim_inf = child.request.lim_inf;
+        request.lim_sup = child.request.lim_sup;
+        request.get_grid_species = child.request.get_grid_species;
         request.apriori = request.apriori ? request.apriori : child.request.apriori;
         request.mapa_prob = request.mapa_prob ? request.mapa_prob : child.request.mapa_prob;
-
-        request.id = child.request.id;
-        request.idtabla = request.idtabla ? request.idtabla : child.request.idtabla;
-        request.min_occ = child.request.min_occ;
-        request.sfecha = child.request.sfecha;
-        request.val_process = request.val_process ? request.val_process : child.request.val_process;
-        request.idtime = child.request.idtime;
-        request.level_req = child.request.level_req;
-        
-
         request.with_data_freq = false;
         request.with_data_score_cell = false;
         request.with_data_freq_cell = false;
         request.with_data_score_decil = false;
 
         // se realiza un analisis del contenido y se concatena
-        if (!request.discardedFilterids)
-            request.discardedFilterids = child.request.discardedFilterids;
+        if (!request.excluded_cells)
+            request.excluded_cells = child.request.excluded_cells;
         else
-            request.discardedFilterids = request.discardedFilterids.concat(child.request.discardedFilterids);
+            request.excluded_cells = request.excluded_cells.concat(child.request.excluded_cells);
 
-        if (!request.tfilters)
-            request.tfilters = child.request.tfilters;
-        else
-            request.tfilters = request.tfilters.concat(child.request.tfilters);
+        if (!request.covariables)
+            request.covariables = child.request.covariables;
+        else{
+            child.request.covariables.forEach(function(item,index){
+                request.covariables.push(item)
+            })
+        }
+
+        if (!request.target_taxons)
+            request.target_taxons = child.request.target_taxons;
+        else{
+            child.request.target_taxons.forEach(function(item,index){
+                request.target_taxons.push(item)
+            })
+        }
+
+        // request.val_process = request.val_process ? request.val_process : child.request.val_process;
+        // request.level_req = child.request.level_req;
+        
 
         return request;
 
@@ -1523,7 +1665,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var milliseconds = new Date().getTime();
 
         $.ajax({
-            url: _url_zacatuche + "/niche/counts",
+            url: _url_zacatuche + "/niche/countsTaxonsGroup",
             type: 'post',
             idtiem: milliseconds,
             dataType: "json",
@@ -1602,25 +1744,27 @@ var res_display_module = (function (verbose, url_zacatuche) {
             var item_list = [];
 
             // las variables climáticas no cuentan con reino, phylum, clase, etc
-            if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
-                var arg_values = d.especievalidabusqueda.split(" ")
-                var value = _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
-                item_list.push(value)
-            } else {
-                item_list.push(d.especievalidabusqueda)
-            }
+            // if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
+            //     var arg_values = d.especievalidabusqueda.split(" ")
+            //     var value = _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
+            //     item_list.push(value)
+            // } else {
+            //     item_list.push(d.especievalidabusqueda)
+            // }
 
+
+            item_list.push(d.name)
             item_list.push(d.nij)
             item_list.push(d.nj)
             item_list.push(d.ni)
             item_list.push(d.n)
             item_list.push(d.epsilon)
             item_list.push(d.score)
-            item_list.push(d.reinovalido)
-            item_list.push(d.phylumdivisionvalido)
-            item_list.push(d.clasevalida)
-            item_list.push(d.ordenvalido)
-            item_list.push(d.familiavalida)
+            // item_list.push(d.reinovalido)
+            // item_list.push(d.phylumdivisionvalido)
+            // item_list.push(d.clasevalida)
+            // item_list.push(d.ordenvalido)
+            // item_list.push(d.familiavalida)
 
             data_list.push(item_list)
         });
@@ -2386,7 +2530,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // TODO: cambiar a getcounts
         $.ajax({
 //            url: _url_zacatuche + "/niche/getGridSpecies",
-            url: _url_zacatuche + "/niche/counts",
+            url: _url_zacatuche + "/niche/countsTaxonsGroup",
             idtiem: milliseconds,
             type: 'post',
             data: singleCellData,
@@ -2651,7 +2795,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         updateLabels: updateLabels,
         callDisplayProcess: callDisplayProcess,
         setHistogramModule: setHistogramModule,
-        loadDecilDataTable: loadDecilDataTable
+        loadDecilDataTable: loadDecilDataTable,
+        set_taxones: set_taxones
     }
 
 

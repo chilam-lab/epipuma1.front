@@ -28,6 +28,8 @@ var variable_module = (function (verbose, url_zacatuche) {
 
     var _language_module;
     var _iTrans;
+    var _map_module;
+    var _taxones = [];
 
     var _toastr = toastr;
     var _tipo_modulo;
@@ -50,7 +52,6 @@ var variable_module = (function (verbose, url_zacatuche) {
     function getVarSelArray() {
         return _var_sel_array;
     }
-
 
     /**
      * Método getter de los grupos de variables seleccionados
@@ -77,11 +78,11 @@ var variable_module = (function (verbose, url_zacatuche) {
      * @param {String} id - Id del selector de variables
      * @param {String} title - Título del selector de variables desplegado en la parte superior
      */
-    function VariableSelector(parent, id, title) {
+    function VariableSelector(parent, id, title, abio_tab, reduced_height, btn_visualize) {
 
         // se comentan variables topograficas por expansión de terreno
-//        var tags = ['a_taxon', 'a_clima'];
-        var tags = ['a_taxon', 'a_raster'];
+
+        var tags = abio_tab ? ['a_taxon', 'a_raster'] : ['a_taxon'];
 
 
         var sp_items = ['a_item_reino', 'a_item_phylum', 'a_item_clase', 'a_item_orden', 'a_item_familia', 'a_item_genero'];
@@ -102,6 +103,7 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.field_vartree;
         self.parent_field_vartree;
         self.type_time = 0;
+        self.taxones = [];
 
         self.arrayVarSelected;
         self.groupvar_dataset = [];
@@ -117,8 +119,17 @@ var variable_module = (function (verbose, url_zacatuche) {
         self.groupothervar_dataset = [];
 
 
+        self.getTaxones =function() {
+            return self.taxones;
+        }
+
+
+
         // Evento generado cuando se selecciona un grupo de variables climáticas, realiza la carga del árbol de selección del grupo seleccionado.
         self.loadTreeVarRaster = function () {
+
+            //evita la petición cuando no se requieren las variables climáticas
+            if(!abio_tab) return;
 
             _VERBOSE ? console.log("self.loadTreeVarRaster") : _VERBOSE;
             
@@ -207,6 +218,9 @@ var variable_module = (function (verbose, url_zacatuche) {
 
 
         self.getTreeVarRaster = function (e, d) {
+
+            //evita la petición cuando no se requieren las variables climáticas
+            if(!abio_tab) return;
 
             _VERBOSE ? console.log("self.getTreeVarRaster") : _VERBOSE;
 //            _VERBOSE ? console.log(d) : _VERBOSE;
@@ -339,16 +353,20 @@ var variable_module = (function (verbose, url_zacatuche) {
         // $("#" + parent)
         // 	.addClass('tab_total');
 
-        // titulo del selector de varibles
-        var header_panel = $('<h3/>')
+        // titulo del selector de varibles, se agrega solo cuando el parametro es enviado
+        if(title !== ""){
+            var header_panel = $('<h3/>')
                 .attr('id', title)
                 .addClass('label_componenete sidebar-header')
                 .text(_iTrans.prop(title))
                 .appendTo($("#" + parent));
+        }
+        
 
-        // div contenedor del cuerpo de la sección grupo de variables
+        // div contenedor del cuerpo de la sección grupo de variables, puede ser del 80% de la altura de la página o de 300px en su tamaño reducido
+        var container_height = reduced_height ? "reduced_var_container" : "var_container"
         var var_container = $('<div/>')
-                .addClass('col-md-12 col-sm-12 col-xs-12 var_container')
+                .addClass('col-md-12 col-sm-12 col-xs-12 ' + container_height)
                 .appendTo($("#" + parent));
 
         // div contenedor de los selectores bioticos y abioticos
@@ -563,8 +581,9 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .appendTo(drop_item);
 
                 // contendor de arbol y panel de seleccion
+                var class_nav_species = reduced_height ? "reduced_nav_species_container" : "nav_species_container"
                 var tree_nav_container = $('<div/>')
-                        .addClass('row row3')
+                        .addClass('row ' + class_nav_species)
                         .appendTo(tab_pane);
 
                 var div_tree = $('<div/>')
@@ -585,10 +604,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                 var btn_add = $('<button/>')
                         .attr('id', 'add_group' + "_" + id)
                         .attr('type', 'button')
-                        .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
+                        .addClass('btn btn-primary glyphicon glyphicon-plus pull-left no-mg-top')
                         .click(function (e) {
-
-//                            console.log(self.arrayVarSelected);
 
                             self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
                             $('#jstree_variables_species_' + id).jstree("destroy").empty();
@@ -604,7 +621,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                 var btn_add = $('<button/>')
                         .attr('id', 'clean_var' + "_" + id)
                         .attr('type', 'button')
-                        .addClass('btn btn-primary glyphicon glyphicon-trash pull-left')
+                        .addClass('btn btn-primary glyphicon glyphicon-trash pull-left no-mg-top')
                         .click(function (e) {
 
                             $("#text_variable" + "_" + id).val("");
@@ -619,6 +636,58 @@ var variable_module = (function (verbose, url_zacatuche) {
                             e.preventDefault();
                         })
                         .appendTo(tab_pane);
+
+
+                if(btn_visualize){
+                   var btn_add = $('<button/>')
+                        .attr('id', 'visualize_var' + "_" + id)
+                        .attr('type', 'button')
+                        .addClass('btn btn-primary glyphicon glyphicon-eye-open pull-left no-mg-top')
+                        .click(function (e) {
+
+                            console.log(self.groupDatasetTotal);
+                            // console.log(self.getVarSelArray());                            
+
+                            if(self.groupDatasetTotal.length == 0){
+                                console.log("No species selected");
+                                return;
+                            }
+
+                            self.taxones = [];
+
+                            $.each(self.groupDatasetTotal, function(index_i, grupo){
+
+                                console.log(grupo);
+
+                                $.each(grupo.elements, function(index_j, sp_grupo){
+
+                                    // console.log(sp_grupo.label);
+                                    var array_sp = sp_grupo.label.split(">>");
+
+                                    var temp_item = {};
+                                    temp_item["taxon"] = array_sp[0].trim();
+                                    temp_item["value"] = array_sp[1].trim();
+                                    temp_item["title"] = grupo.title;
+                                    temp_item["nivel"] = parseInt(sp_grupo.level); //0:root, 1:reino, etc...
+                                    self.taxones.push(temp_item);
+                                })
+
+                            })
+
+                            console.log(self.taxones);
+
+                            _map_module.busca_especie_grupo(self.taxones);
+
+                            $("#text_variable" + "_" + id).val("");
+                            $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
+                            $("#jstree_variables_species_" + id).off('changed.jstree', self.getChangeTreeVar);
+                            $("#jstree_variables_species_" + id).off('ready.jstree', self.loadNodes);
+                            
+                            e.preventDefault();
+                        })
+                        .appendTo(tab_pane); 
+                }
+                
 
 
 
@@ -1150,14 +1219,14 @@ var variable_module = (function (verbose, url_zacatuche) {
                 _toastr.warning(_iTrans.prop('lb_nivel_reino'));
                 return;
             }
-            _VERBOSE ? console.log(nivel_reino) : _VERBOSE;
+            // _VERBOSE ? console.log(nivel_reino) : _VERBOSE;
             // }
 
             var new_element = self.existsGroup(arraySelected);
-            _VERBOSE ? console.log(new_element) : _VERBOSE;
+            // _VERBOSE ? console.log(new_element) : _VERBOSE;
 
             if (!new_element) {
-                _VERBOSE ? console.log(self.var_sel_array) : _VERBOSE;
+                // _VERBOSE ? console.log(self.var_sel_array) : _VERBOSE;
                 _toastr.warning(_iTrans.prop('lb_existente'));
                 return;
             }
@@ -1422,11 +1491,11 @@ var variable_module = (function (verbose, url_zacatuche) {
      * @param {String} id - Id del selector de variables
      * @param {String} title - Título del selector de variables desplegado en la parte superior
      */
-    function createSelectorComponent(parent, id, title) {
+    function createSelectorComponent(parent, id, title, abio_tab = true, reduced_height = false, btn_visualize = false) {
 
         _VERBOSE ? console.log("createSelectorComponent") : _VERBOSE;
 
-        var variable_selector = new VariableSelector(parent, id, title);
+        var variable_selector = new VariableSelector(parent, id, title, abio_tab, reduced_height, btn_visualize);
 
         _selectors_created.push(variable_selector);
         return variable_selector;
@@ -1446,7 +1515,7 @@ var variable_module = (function (verbose, url_zacatuche) {
      * @param {object} language_module - Módulo de internacionalización
      * @param {integer} tipo_modulo - Tipo de módulo donde serán asignados los selectores de variables, nicho o comunidad ecológica  
      */
-    function _initializeVarComponents(language_module, tipo_modulo) {
+    function _initializeVarComponents(language_module, tipo_modulo, map_module) {
 
         _VERBOSE ? console.log("_initializeVarComponents variables") : _VERBOSE;
 
@@ -1465,6 +1534,7 @@ var variable_module = (function (verbose, url_zacatuche) {
         };
 
         _language_module = language_module;
+        _map_module = map_module;
         _iTrans = _language_module.getI18();
         _tipo_modulo = tipo_modulo;
 
@@ -1484,7 +1554,7 @@ var variable_module = (function (verbose, url_zacatuche) {
      * @param {object} language_module - Módulo de internacionalización
      * @param {integer} tipo_modulo - Tipo de módulo donde serán asignados los selectores de variables, nicho o comunidad ecológica  
      */
-    function startVar(id, language_module, tipo_modulo) {
+    function startVar(id, language_module, tipo_modulo, map_module) {
         _VERBOSE ? console.log("startVar") : _VERBOSE;
 
         _id = "" + id;
@@ -1492,7 +1562,7 @@ var variable_module = (function (verbose, url_zacatuche) {
             _id = "";
         _VERBOSE ? console.log("_id: " + _id) : _VERBOSE;
 
-        _initializeVarComponents(language_module, tipo_modulo);
+        _initializeVarComponents(language_module, tipo_modulo, map_module);
     }
 
     return{

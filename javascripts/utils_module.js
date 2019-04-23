@@ -476,7 +476,8 @@ var utils_module = (function (verbose) {
                 epsilon: parseFloat(d.epsilon),
                 score: parseFloat(d.score),
                 nj: d.nj,
-                name: d.especievalidabusqueda
+                // name: d.especievalidabusqueda
+                name: d.name
             }
         })
 
