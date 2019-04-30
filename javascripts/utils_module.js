@@ -435,20 +435,24 @@ var utils_module = (function (verbose) {
 
             row_item.species.forEach(function (specie, index) {
 
-                if (!map_spid.has(specie.spid)) {
+                // if (!map_spid.has(specie.spid)) {
+                if (!map_spid.has(specie.name)) {
                     var item = {};
                     item.decile = row_item.decile
-                    item.spid = specie.spid
+                    // item.spid = specie.spid
                     item.score = specie.score
                     item.epsilon = specie.epsilon
                     item.nj = specie.nj
                     item.njd = 1
                     item.name = specie.name
-                    map_spid.set(specie.spid, item)
+                    // map_spid.set(specie.spid, item)
+                    map_spid.set(specie.name, item)
                 } else {
-                    var item = map_spid.get(specie.spid);
+                    // var item = map_spid.get(specie.spid);
+                    var item = map_spid.get(specie.name);
                     item.njd = item.njd + 1
-                    map_spid.set(specie.spid, item)
+                    map_spid.set(specie.name, item)
+                    // map_spid.set(specie.spid, item)
                 }
 
             })
@@ -474,10 +478,10 @@ var utils_module = (function (verbose) {
                 score: parseFloat(d.score),
                 spid: d.spid,
                 epsilon: parseFloat(d.epsilon),
-                score: parseFloat(d.score),
+                // score: parseFloat(d.score),
                 nj: d.nj,
                 // name: d.especievalidabusqueda
-                name: d.name
+                name: d.reinovalido === "" ? d.layer : (d.generovalido +" "+d.especieepiteto+" "+d.nombreinfra)
             }
         })
 
@@ -506,7 +510,7 @@ var utils_module = (function (verbose) {
         var groupByScoreCell = cells_dimension.group().reduce(
                 function (item, add) {
                     item.tscore = item.tscore + add.score
-                    item.spids.push(add.spid)
+                    // item.spids.push(add.spid)
                     item.epsilons.push(add.epsilon)
                     item.scores.push(add.score)
                     item.njs.push(add.nj)
@@ -517,28 +521,31 @@ var utils_module = (function (verbose) {
                 function (item, remove) {
                     item.tscore = item.tscore - remove.score
 
-                    var index = item.spids.indexOf(remove.spid);
-                    if (index > -1) {
-                        item.spids.splice(index, 1);
-                    }
+                    // var index = item.spids.indexOf(remove.spid);
+                    // if (index > -1) {
+                    //     item.spids.splice(index, 1);
+                    // }
 
-                    index = item.epsilons.indexOf(remove.epsilon);
+                    // var index = item.epsilons.indexOf(remove.epsilon);
+                    // if (index > -1) {
+                    //     item.epsilons.splice(index, 1);
+                    // }
+
+                    // index = item.scores.indexOf(remove.score);
+                    // if (index > -1) {
+                    //     item.scores.splice(index, 1);
+                    // }
+
+                    // index = item.njs.indexOf(remove.nj);
+                    // if (index > -1) {
+                    //     item.njs.splice(index, 1);
+                    // }
+
+                    var index = item.names.indexOf(remove.name);
                     if (index > -1) {
                         item.epsilons.splice(index, 1);
-                    }
-
-                    index = item.scores.indexOf(remove.score);
-                    if (index > -1) {
                         item.scores.splice(index, 1);
-                    }
-
-                    index = item.njs.indexOf(remove.nj);
-                    if (index > -1) {
                         item.njs.splice(index, 1);
-                    }
-
-                    index = item.names.indexOf(remove.name);
-                    if (index > -1) {
                         item.names.splice(index, 1);
                     }
 
@@ -563,7 +570,8 @@ var utils_module = (function (verbose) {
         var cell_score_array = [];
         for (var i = 0; i < map_cell.length; i++) {
             const entry = map_cell[i];
-            var len = entry["value"].spids.length;
+            // var len = entry["value"].spids.length;
+            var len = entry["value"].names.length;
 
             var item = {};
             item.gridid = entry["key"];
@@ -573,7 +581,7 @@ var utils_module = (function (verbose) {
             for (var j = 0; j < len; j++) {
 
                 var specie = {};
-                specie.spid = entry["value"].spids[j];
+                // specie.spid = entry["value"].spids[j];
                 specie.epsilon = entry["value"].epsilons[j];
                 specie.score = entry["value"].scores[j];
                 specie.nj = entry["value"].njs[j];

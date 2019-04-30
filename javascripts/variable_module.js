@@ -78,16 +78,16 @@ var variable_module = (function (verbose, url_zacatuche) {
      * @param {String} id - Id del selector de variables
      * @param {String} title - Título del selector de variables desplegado en la parte superior
      */
-    function VariableSelector(parent, id, title, abio_tab, reduced_height, btn_visualize) {
+    function VariableSelector(parent, id, title, abio_tab, reduced_height, btn_visualize, start_level) {
 
         // se comentan variables topograficas por expansión de terreno
 
         var tags = abio_tab ? ['a_taxon', 'a_raster'] : ['a_taxon'];
 
 
-        var sp_items = ['a_item_reino', 'a_item_phylum', 'a_item_clase', 'a_item_orden', 'a_item_familia', 'a_item_genero'];
-        var sp_parent_field = ['reinovalido', 'phylumdivisionvalido', 'clasevalida', 'ordenvalido', 'familiavalida', 'generovalido'];
-        var sp_data_field = ['phylumdivisionvalido', 'clasevalida', 'ordenvalido', 'familiavalida', 'generovalido', 'especievalidabusqueda'];
+        var sp_items = ['a_item_reino', 'a_item_phylum', 'a_item_clase', 'a_item_orden', 'a_item_familia', 'a_item_genero','a_item_especie'];
+        var sp_parent_field = ['reinovalido', 'phylumdivisionvalido', 'clasevalida', 'ordenvalido', 'familiavalida', 'generovalido','especieepiteto'];
+        var sp_data_field = ['phylumdivisionvalido', 'clasevalida', 'ordenvalido', 'familiavalida', 'generovalido', 'especieepiteto']; //'especievalidabusqueda'
         var NUM_ABIO = 20;
         var NIVEL_REINO = 2
         var NIVEL_PHYLUM = 3
@@ -279,8 +279,6 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                             if (data[i].type === 1 || data[i].type === 2) {
 
-//                                console.log("Is worldclim");
-
                                 if (data[i].label.indexOf("Precipita") === -1) {
                                     tag = String(data[i].tag).split(":")
                                     min = parseInt(tag[0].split(".")[0]) / 10 + " ºC";
@@ -292,9 +290,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 }
 
                             } else {
-                                tag = String(data[i].tag).split(":")
-//                                console.log(tag[0] + " : " + tag[1]);
-                                
+                                tag = String(data[i].tag).split(":")                                
                                 min = parseFloat(tag[0]).toFixed(3);
                                 max = parseFloat(tag[1]).toFixed(3);
                             }
@@ -464,6 +460,12 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .appendTo(btn_div);
 
                 $.each(sp_items, function (i) {
+
+                    // establece el nivel taxonomico inicial del buscador. Donde 0 es reino.
+                    if(start_level > i)
+                        return true;
+
+
                     var li = $('<li/>')
                             .click(function (e) {
                                 // evento que guarda selección taxonomica.
@@ -471,8 +473,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 self.varfilter_selected = [e.target.getAttribute("data-field"), e.target.getAttribute("parent-field"), e.target.getAttribute("level-field")];
                                 varfield = e.target.text;
 
-//                                _VERBOSE ? console.log(varfield) : _VERBOSE;
-//                                _VERBOSE ? console.log(self.varfilter_selected) : _VERBOSE;
+                               _VERBOSE ? console.log(varfield) : _VERBOSE;
+                               _VERBOSE ? console.log(self.varfilter_selected) : _VERBOSE;
 
                                 $("#btn_variable" + "_" + id).text(varfield + " ");
                                 $("#btn_variable" + "_" + id).append('<span class="caret"></span>');
@@ -707,7 +709,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                 // contendor de arbol y panel de seleccion
                 var tree_nav_container = $('<div/>')
-                        .addClass('row row3')
+                        .addClass('row nav_species_container')
                         .appendTo(tab_pane);
 
                 var div_tree = $('<div/>')
@@ -1491,11 +1493,11 @@ var variable_module = (function (verbose, url_zacatuche) {
      * @param {String} id - Id del selector de variables
      * @param {String} title - Título del selector de variables desplegado en la parte superior
      */
-    function createSelectorComponent(parent, id, title, abio_tab = true, reduced_height = false, btn_visualize = false) {
+    function createSelectorComponent(parent, id, title, abio_tab = true, reduced_height = false, btn_visualize = false, start_level = 0) {
 
         _VERBOSE ? console.log("createSelectorComponent") : _VERBOSE;
 
-        var variable_selector = new VariableSelector(parent, id, title, abio_tab, reduced_height, btn_visualize);
+        var variable_selector = new VariableSelector(parent, id, title, abio_tab, reduced_height, btn_visualize, start_level);
 
         _selectors_created.push(variable_selector);
         return variable_selector;

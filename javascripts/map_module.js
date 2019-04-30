@@ -1042,6 +1042,17 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         var footprint_region = parseInt($("#footprint_region_select").val());
         console.log("footprint_region: " + footprint_region);
+
+
+        var rango_fechas = $("#sliderFecha").slider("values");
+        if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+            rango_fechas = undefined;
+        }
+        else{
+            _lin_inf = _rangofechas ? _rangofechas[0] : undefined;
+            _lin_sup = _rangofechas ? _rangofechas[1] : undefined;
+        }
+
         
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
@@ -1201,6 +1212,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 //        console.log(_specie_target)
 
         $('#footprint_region_select').val(region);
+
+
+        var rango_fechas = $("#sliderFecha").slider("values");
+        if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+            rango_fechas = undefined;
+        }
+        else{
+            _lin_inf = _rangofechas ? _rangofechas[0] : undefined;
+            _lin_sup = _rangofechas ? _rangofechas[1] : undefined;
+        }
 
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;

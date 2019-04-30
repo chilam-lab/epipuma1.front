@@ -485,40 +485,40 @@ var module_nicho = (function () {
     //     });
 
 
-        $("#reload_map").click(function () {
+        // $("#reload_map").click(function () {
 
-            _VERBOSE ? console.log("reload_map") : _VERBOSE;
+        //     _VERBOSE ? console.log("reload_map") : _VERBOSE;
 
-            var region = _REGION_SELECTED;
+        //     var region = _REGION_SELECTED;
 
-            //console.log("Region en reload_map " + region);
+        //     //console.log("Region en reload_map " + region);
 
-            if (_map_module_nicho.get_specieTarget()) {
+        //     if (_map_module_nicho.get_specieTarget()) {
 
-                var rango_fechas = $("#sliderFecha").slider("values");
+        //         var rango_fechas = $("#sliderFecha").slider("values");
 
-                if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
-                    rango_fechas = undefined;
-                }
+        //         if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+        //             rango_fechas = undefined;
+        //         }
 
 
-                var chkFecha = $("#chkFecha").is(':checked') ? true : false;
+        //         var chkFecha = $("#chkFecha").is(':checked') ? true : false;
 
-                var chkFosil = $("#chkFosil").is(':checked') ? true : false;
+        //         var chkFosil = $("#chkFosil").is(':checked') ? true : false;
 
-                $('.nav-tabs a[href="#tab_resumen"]').tab('show');
+        //         $('.nav-tabs a[href="#tab_resumen"]').tab('show');
 
-                _map_module_nicho.busca_especie_filtros(rango_fechas, chkFecha, chkFosil, d3.map([]), region);
+        //         _map_module_nicho.busca_especie_filtros(rango_fechas, chkFecha, chkFosil, d3.map([]), region);
 
-                $("#reload_map").addClass('btn-primary').removeClass('btn-success');
+        //         $("#reload_map").addClass('btn-primary').removeClass('btn-success');
 
-            } else {
+        //     } else {
 
-                _module_toast.showToast_CenterCenter(_iTrans.prop('lb_sin_especie'), "warning");
+        //         _module_toast.showToast_CenterCenter(_iTrans.prop('lb_sin_especie'), "warning");
 
-            }
+        //     }
 
-        });
+        // });
 
 
         $("#show_gen").click(function (e) {
@@ -1154,18 +1154,18 @@ var module_nicho = (function () {
         // console.log(chkFec);
         // console.log(rango_fechas);
 
-        if (chkFec !== undefined || rango_fechas !== undefined) {
+        // if (chkFec !== undefined || rango_fechas !== undefined) {
 
-            console.log("filtros");
-            // console.log(map_dPoints.values());
+        //     console.log("filtros");
+        //     // console.log(map_dPoints.values());
 
-            _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec, chkFosil, map_dPoints, region);
-        } else {
-            console.log("busca");
+        //     _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec, chkFosil, map_dPoints, region);
+        // } else {
+        //     console.log("busca");
             // console.log(map_dPoints.values());
 
             _map_module_nicho.busca_especie(map_dPoints, region, spid);
-        }
+        // }
 
 
 
@@ -1402,7 +1402,7 @@ var module_nicho = (function () {
         var ids_comp_variables = ['fuente', 'target'];
         _componente_fuente = _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
 
-        _componente_target = _variable_module_nicho.createSelectorComponent("var_target", ids_comp_variables[1], "", false, true, true);
+        _componente_target = _variable_module_nicho.createSelectorComponent("var_target", ids_comp_variables[1], "", false, true, true, 4);
 
 
 
