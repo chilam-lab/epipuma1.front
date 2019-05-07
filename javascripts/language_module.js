@@ -264,7 +264,7 @@ var language_module = (function (verbose) {
 
             $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha') + ":");
 
-            $("#reload_map").text($.i18n.prop('reload_map'));
+            $("#reload_map").text($.i18n.prop('see_species'));
 
             $("#tab_resumen").text($.i18n.prop('tab_resumen'));
             $("#tab_variables").text($.i18n.prop('tab_variables'));

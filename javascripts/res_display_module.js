@@ -88,6 +88,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
     map_taxon.set("familia", "family");
     map_taxon.set("family", "family");
     map_taxon.set("genero", "genus");
+    map_taxon.set("género", "genus");
     map_taxon.set("genus", "genus");
     map_taxon.set("especie", "species");
     map_taxon.set("species", "species");
@@ -1527,7 +1528,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 // console.log(data_freq_decil_tbl.map(function(d){return d.decile}))
 
                                 data_freq_decil_tbl.forEach(function (specie, index) {
-                                    console.log(specie)
+                                    // console.log(specie)
                                     
                                     var occ = specie.nj;
                                     var occ_decil = specie.njd;
@@ -1934,6 +1935,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log("updateLabels") : _VERBOSE;
 
         _ids_componentes_var.forEach(function (item, index) {
+
+            console.log(item)
 
             $("#btn_variable_" + item).text($.i18n.prop('btn_variable') + " ");
             $("#btn_variable_" + item).append('<span class="caret"></span>');

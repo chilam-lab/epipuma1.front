@@ -1032,15 +1032,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * 
      * @param {array} taxones - Array con taxones seleccionados
      */
-    function busca_especie_grupo(taxones, dPoints = d3.map([])) {
+    function busca_especie_grupo(taxones, dPoints = d3.map([]), region = 1) {
 
         _VERBOSE ? console.log("busca_especie_grupo") : _VERBOSE;
-
 
         var milliseconds = new Date().getTime();
         var grid_res_val = $("#grid_resolution").val();
 
-        var footprint_region = parseInt($("#footprint_region_select").val());
+        var footprint_region = $("#footprint_region_select").val() === undefined ? region : parseInt($("#footprint_region_select").val());
         console.log("footprint_region: " + footprint_region);
 
 
@@ -1049,8 +1048,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             rango_fechas = undefined;
         }
         else{
-            _lin_inf = _rangofechas ? _rangofechas[0] : undefined;
-            _lin_sup = _rangofechas ? _rangofechas[1] : undefined;
+            _lin_inf = rango_fechas ? rango_fechas[0] : undefined;
+            _lin_sup = rango_fechas ? rango_fechas[1] : undefined;
         }
 
         
@@ -1133,7 +1132,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                    }
 
 
-    //                var occ_cell = _computed_occ_cells.values().length;
+                   // var occ_cell = _computed_occ_cells.values().length;
                    var occ_cell = data_sp[0].occ;
 
                    $.each(distinctPoints.values(), function (index, item) {
