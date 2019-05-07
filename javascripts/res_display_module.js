@@ -88,9 +88,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
     map_taxon.set("familia", "family");
     map_taxon.set("family", "family");
     map_taxon.set("genero", "genus");
+    map_taxon.set("género", "genus");
     map_taxon.set("genus", "genus");
     map_taxon.set("especie", "species");
     map_taxon.set("species", "species");
+
+    var group_level_biotic = "species";
+    var group_level_abiotic = "bid";
 
 
     var map_abio = new Map()
@@ -1135,7 +1139,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     merge_vars.push({
                         'rank': map_taxon.get(temp_item_field),
                         'value': temp_item_value,
-                        'type': parseInt(itemGroup.type)
+                        'type': parseInt(itemGroup.type),
+                        'level': group_level_biotic
                     });
 
                 }
@@ -1157,8 +1162,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     merge_vars.push({
                         'rank': map_abio.get(parseInt(itemGroup.level)),
-                        'value': itemGroup.value,
+                        'value': parseInt(itemGroup.level) !== 1 ? itemGroup.value : itemGroup.type,
                         'type': parseInt(itemGroup.type),
+                        'level': group_level_abiotic
                     });
 
                 }
@@ -1510,16 +1516,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                                 var counts = resp.data;
                                 var data_score_cell = _utils_module.processDataForScoreCellTable(counts);
+                                console.log(data_score_cell)
+
                                 var data_result = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
                                 
                                 var data_freq_decil_tbl = data_result.tbl_freq_decil
                                 var length_decil = data_result.length_decil
 
-                                // console.log(data_freq_decil_tbl)
+                                console.log(data_freq_decil_tbl)
+                                console.log(length_decil)
                                 // console.log(data_freq_decil_tbl.map(function(d){return d.decile}))
 
                                 data_freq_decil_tbl.forEach(function (specie, index) {
-                                    console.log(specie)
+                                    // console.log(specie)
                                     
                                     var occ = specie.nj;
                                     var occ_decil = specie.njd;
@@ -1533,7 +1542,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                     var value_abio = "";
                                     if (specie.name.indexOf("bio0") !== -1) {
                                         var arg_values = specie.name.split(" ")
-                                        value_abio = _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
+                                        value_abio = _iTrans.prop("a_item_" + arg_values[0])
+                                        // + " " + arg_values[1] + " : " + arg_values[2]
                                     } else {
                                         value_abio = specie.name
                                     }
@@ -1566,8 +1576,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
     function mergeRequest(request = {}, child = []){
 
         _VERBOSE ? console.log("mergeRequest") : _VERBOSE;
-       console.log(request);
-       console.log(child);
+        console.log(request);
+        console.log(child);
+
+        
 
         // este conjunto de parámetros no importa que sean sobreescritos en cada iteración por que no cambian en la petición global
         request.grid_resolution = child.request.grid_resolution;
@@ -1593,19 +1605,39 @@ var res_display_module = (function (verbose, url_zacatuche) {
         else
             request.excluded_cells = request.excluded_cells.concat(child.request.excluded_cells);
 
+
         if (!request.covariables)
             request.covariables = child.request.covariables;
         else{
             child.request.covariables.forEach(function(item,index){
-                request.covariables.push(item)
+
+                var name_request = request.covariables.map(function (d) {return d.name;});
+                
+                if(name_request.indexOf(item.name) === -1){
+                    request.covariables.push(item);
+                }
+                else{
+                    var index = name_request.indexOf(item.name)
+                    var merge_vars = request.covariables[index].merge_vars;
+                    merge_vars.push(item.merge_vars[0]);
+                }
             })
         }
+
+
 
         if (!request.target_taxons)
             request.target_taxons = child.request.target_taxons;
         else{
+            
             child.request.target_taxons.forEach(function(item,index){
-                request.target_taxons.push(item)
+
+                var values_request = request.target_taxons.map(function (d) {return d.value;})
+                var taxons_request = request.target_taxons.map(function (d) {return d.taxon_rank;})
+
+                if(values_request.indexOf(item.value) === -1 && taxons_request.indexOf(item.taxon_rank) === -1 ){
+                    request.target_taxons.push(item)
+                }
             })
         }
 
@@ -1744,27 +1776,28 @@ var res_display_module = (function (verbose, url_zacatuche) {
             var item_list = [];
 
             // las variables climáticas no cuentan con reino, phylum, clase, etc
-            // if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
-            //     var arg_values = d.especievalidabusqueda.split(" ")
-            //     var value = _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
-            //     item_list.push(value)
-            // } else {
-            //     item_list.push(d.especievalidabusqueda)
-            // }
+            if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
+                // var arg_values = d.especievalidabusqueda.split(" ")
+                var value = _iTrans.prop("a_item_" + d.layer)
+                 // + " " + arg_values[1] + " : " + arg_values[2]
+                item_list.push(value)
+            } else {
+                item_list.push(d.generovalido + " " +d.especieepiteto + " " + d.nombreinfra)
+            }
 
-
-            item_list.push(d.name)
+            // var namesp = d.reinovalido === "" ? d.type +" "+ d.layer : 
+            // item_list.push(namesp)
             item_list.push(d.nij)
             item_list.push(d.nj)
             item_list.push(d.ni)
             item_list.push(d.n)
             item_list.push(d.epsilon)
             item_list.push(d.score)
-            // item_list.push(d.reinovalido)
-            // item_list.push(d.phylumdivisionvalido)
-            // item_list.push(d.clasevalida)
-            // item_list.push(d.ordenvalido)
-            // item_list.push(d.familiavalida)
+            item_list.push(d.reinovalido)
+            item_list.push(d.phylumdivisionvalido)
+            item_list.push(d.clasevalida)
+            item_list.push(d.ordenvalido)
+            item_list.push(d.familiavalida)
 
             data_list.push(item_list)
         });
@@ -1902,6 +1935,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log("updateLabels") : _VERBOSE;
 
         _ids_componentes_var.forEach(function (item, index) {
+
+            console.log(item)
 
             $("#btn_variable_" + item).text($.i18n.prop('btn_variable') + " ");
             $("#btn_variable_" + item).append('<span class="caret"></span>');

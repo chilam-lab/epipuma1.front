@@ -304,10 +304,36 @@
 
                     <div id="sp_section" class="col-md-12 margin-top-15 box_shadow height95 display-marker">
 
-                        <h2 id="lb_especie" class="sidebar-header-species"></h2>
+                        <h2 id="lb_especie" class="sidebar-header-species no-mg-top"></h2>
 
                         <!-- No eliminar, utilizado para enlace de regeneración! -->
                         <div id="result"></div>
+
+                        <div class="row ">
+                            
+                            <div id="tuto_region"  class="col-md-6 col-sm-12 col-xs-12">
+                                <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
+                                    <label id="footprint_region" ></label>
+                                    <select id="footprint_region_select" class="form-control" >
+                                    </select>
+                                <!--</div>-->
+                            </div>
+
+                            <div id="tuto_resolution"  class="col-md-6 col-sm-12 col-xs-12">
+
+                                <div class="form-group">
+                                    <label id="lb_mapa_res" for="grid_resolution"></label>
+                                    <select class="form-control" id="grid_resolution">
+                                        <option value="8">8 km</option>
+                                        <option selected="selected" value="16">16 km</option>
+                                        <option value="32">32 km</option>
+                                        <option value="64">64 km</option>
+                                    </select>
+                                </div> 
+
+                            </div>
+                            
+                        </div>
 
                         <div id="var_target" class="row ">
 
@@ -379,33 +405,9 @@
 
                         </div>
                         
-                        <div class="row margin-top-ten">
-                            
-                            <div id="tuto_region"  class="col-md-6 col-sm-12 col-xs-12">
-                                <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
-                                    <label id="footprint_region" ></label>
-                                    <select id="footprint_region_select" class="form-control" >
-                                    </select>
-                                <!--</div>-->
-                            </div>
+                        
 
-                            <div id="tuto_resolution"  class="col-md-6 col-sm-12 col-xs-12">
-
-                                <div class="form-group">
-                                    <label id="lb_mapa_res" for="grid_resolution"></label>
-                                    <select class="form-control" id="grid_resolution">
-                                        <option value="8">8 km</option>
-                                        <option selected="selected" value="16">16 km</option>
-                                        <option value="32">32 km</option>
-                                        <option value="64">64 km</option>
-                                    </select>
-                                </div> 
-
-                            </div>
-                            
-                        </div>
-
-                        <div class="row margin-top-ten">
+                        <div class="row ">
 
 
                             <div id="tuto_fil_fecha" class="col-md-5 col-sm-12 col-xs-12">
@@ -446,7 +448,7 @@
 
 
 
-                        <div class="row margin-top-ten">
+                        <div class="row ">
 
                             <div id="tuto_histo_reg" class="col-md-12">
                                 <div id="hist_fecha_container" class="fecha_container">
