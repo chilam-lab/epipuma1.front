@@ -1109,16 +1109,16 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p2')
                         }
                     },
-                    {
-                        el: '#tuto_autocomplete',
-                        position: {
-                            location: 'rm-b'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p3'),
-                            content: $.i18n.prop('label_esp_p4')
-                        }
-                    },
+                    // {
+                    //     el: '#tuto_autocomplete',
+                    //     position: {
+                    //         location: 'rm-b'
+                    //     },
+                    //     templateData: {
+                    //         title: $.i18n.prop('label_esp_p3'),
+                    //         content: $.i18n.prop('label_esp_p4')
+                    //     }
+                    // },
                     {
                         el: '#tuto_region',
                         position: {
@@ -1139,6 +1139,16 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p6')
                         }
                     },
+                    {
+                        el: '#var_target',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p80'),
+                            content: $.i18n.prop('label_esp_p81')
+                        }
+                    },                    
                     {
                         el: '#tuto_fil_fecha',
                         position: {
@@ -1219,8 +1229,8 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p21')
                         }
                     },
-                    item_tab,
-                    item_tree,
+                    // item_tab,
+                    // item_tree,
                     group_btn,
                     clean_btn,
                     {
@@ -1243,16 +1253,16 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p33')
                         }
                     },
-//                    {
-//                        el: '#tuto_val',
-//                        position: {
-//                            location: 'rm-t'
-//                        },
-//                        templateData: {
-//                            title: $.i18n.prop('label_esp_p34'),
-//                            content: $.i18n.prop('label_esp_p35')
-//                        }
-//                    },
+                   {
+                       el: '#tuto_val',
+                       position: {
+                           location: 'lm-b'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('label_esp_p34'),
+                           content: $.i18n.prop('label_esp_p35')
+                       }
+                   },
                     {
                         el: '#tuto_min_occ',
                         position: {
@@ -1263,26 +1273,26 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p37')
                         }
                     },
-//                    {
-//                        el: '#tuto_apriori',
-//                        position: {
-//                            location: 'lm-t'
-//                        },
-//                        templateData: {
-//                            title: $.i18n.prop('label_esp_p38'),
-//                            content: $.i18n.prop('label_esp_p39')
-//                        }
-//                    },
-//                    {
-//                        el: '#tuto_map_prob',
-//                        position: {
-//                            location: 'lm-t'
-//                        },
-//                        templateData: {
-//                            title: $.i18n.prop('label_esp_p40'),
-//                            content: $.i18n.prop('label_esp_p41')
-//                        }
-//                    },
+                   {
+                       el: '#tuto_apriori',
+                       position: {
+                           location: 'lm-t'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('label_esp_p38'),
+                           content: $.i18n.prop('label_esp_p39')
+                       }
+                   },
+                   {
+                       el: '#tuto_map_prob',
+                       position: {
+                           location: 'lm-t'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('label_esp_p40'),
+                           content: $.i18n.prop('label_esp_p41')
+                       }
+                   },
                     {
                         el: '#get_esc_ep',
                         position: {
