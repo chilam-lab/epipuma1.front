@@ -121,8 +121,10 @@ section{
     /*display: table;
     margin: 0 auto;*/
 
-}
+    z-index: 5;
 
+}
+    
 
 #map2{
 
@@ -233,6 +235,15 @@ section{
     margin-top: 10px;
     /*display: none;*/
     z-index: 1000;
+}
+
+.link_map_type {
+    position: absolute;
+    top: 0;
+    left: 60;
+    margin-top: 10px;
+    /*display: none;*/
+    z-index: 9999;
 }
 
 .res_validation {
@@ -744,6 +755,22 @@ table{
     /*height: 65% !important;*/
 }
 
+.myButtonNextContainer{
+    /*overflow: auto; */
+    /*border-style: solid;*/
+    /*border-color: #3B6A93;*/
+    /*border-width: 1px;*/
+    /*height: 45%;*/
+    /*border-radius: 10px;*/
+    /*text-align: left;*/
+    /*float: left;*/
+    /*clear: none;*/
+    /*width: 95%;*/
+    margin-top: 20px;
+    height: 50px;
+    /*height: 65% !important;*/
+}
+
 #chartdiv_epsilon {
     /*height    : 100%;*/
     font-size : 11px;
@@ -970,26 +997,33 @@ h3{
 }
 
 
-.row3{
+.nav_species_container{
     height: 70% !important;
     width: 100% !important;
     margin-top: .1em;
     margin-left: .2em;
     margin-right: .2em;
-
-    /*border-style: solid;*/
 }
+
+.reduced_nav_species_container{
+    height: 40% !important;
+    width: 100% !important;
+    margin-top: .1em;
+    margin-left: .2em;
+    margin-right: .2em;
+}
+
 
 
 
 .myBlockVariableAdded{
 
-    /*overflow: auto;*/ 
+    overflow: auto; 
 
     border-style: solid;
     border-color: #3B6A93;
     border-radius: 10px;
-    height: 100%;
+    height: 95%;
     padding: 0px;
 
     /*    float: left;
@@ -1019,8 +1053,6 @@ h3{
 .variable_refresh_container{
     width: 100%;
     height: 100%;
-
-
 }
 
 .var-pane{
@@ -1057,11 +1089,15 @@ h3{
 }
 
 .var_container{
-    /*width: 100%;*/
     height: 80%;
+}
 
-    /*border-style: solid;
-    border-color: green;*/
+.reduced_var_container{
+    height: 220px;
+}
+
+.no-mg-top{
+    margin-top: 0px;
 }
 
 
@@ -1079,7 +1115,7 @@ h3{
 
 .nav-variables{
     font-size: 10px;
-    height: 10%;
+    height: 32px;
 }
 
 
@@ -1146,7 +1182,7 @@ h3{
 .dropdown_group{
     /*margin-left: 5px;*/
     /*border-style: solid;*/
-    width: 100% !important;
+    /*width: 100% !important;*/
 }
 
 .dropdown_bioclim{
@@ -1354,6 +1390,15 @@ pre{
 }
 
 
+.row_var_item_sp {
+    line-height: 2em;
+    background: #3B6A93;
+    border-radius: 4px;
+    margin: 2px;
+    color: #fff;
+    padding-top: 2px;
+}
+
 
 .row_var_item {
     line-height: 2em;
@@ -1556,7 +1601,7 @@ button.glyphicon-remove:before {
     /*width: 80%;*/
     margin: 0 auto;
     /*width: 450px;*/
-    height: 100px;
+    height: 80px;
 
     border-style: solid;
     border-radius: 5px;
@@ -1590,7 +1635,7 @@ button.glyphicon-remove:before {
     z-index: 5000;
     width: 6%;
     height: 300px;
-    top: 120;
+    top: 70px;
     text-align: right;
     /*margin-left: : 40;*/
     /*margin-right: 100px;*/
@@ -1650,6 +1695,34 @@ button.glyphicon-remove:before {
     margin-left: 10px;
 }
 
+.margin-right-10{
+    margin-right: 10px;
+}
+
+.margin-right-20{
+    margin-right: 20px;
+}
+
+.margin-right-30{
+    margin-right: 30px;
+}
+
+.margin-right-50{
+    margin-right: 50px;
+}
+
+.margin-right-60{
+    margin-right: 60px;
+}
+
+.margin-right-80{
+    margin-right: 80px;
+}
+
+.margin-right-90{
+    margin-right: 90px;
+}
+
 .margin-left-five{
     margin-left: 5px;
 }
@@ -1662,6 +1735,10 @@ button.glyphicon-remove:before {
     margin-top: 15px;
 }
 
+.margin-top-20{    
+    margin-top: 20px;
+}
+
 .margin-top-ten{    
     margin-top: 10px;
 }
@@ -1672,6 +1749,10 @@ button.glyphicon-remove:before {
 
 .padding-top-15{
     padding-top: 15px;
+}
+
+.padding-bottom-15{
+    padding-bottom: 15px;
 }
 
 .box_shadow{
@@ -1692,6 +1773,14 @@ button.glyphicon-remove:before {
 
 .height80{
     height: 80%; 
+}
+
+.height90{
+    height: 90%; 
+}
+
+.height85{
+    height: 85%; 
 }
 
 .height20{
@@ -1829,7 +1918,7 @@ button.glyphicon-remove:before {
 }
 
 .visibleItem{
-    
+
 }
 
 .anterior{
@@ -1841,8 +1930,8 @@ button.glyphicon-remove:before {
 }
 
 #section0, #section1, #section2 {
-  overflow-y: scroll;
-  scroll-behavior: smooth;   
+    overflow-y: scroll;
+    scroll-behavior: smooth;   
 }
 
 .a_estatus{
@@ -1856,8 +1945,124 @@ button.glyphicon-remove:before {
 }
 
 
-#show_gen #get_esc_ep{
-    
+#show_gen #get_esc_ep #params_next{
+
     height: 25px !important;
+
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.btn-sig{
+
+    position: fixed;
+    left: 45%;
+    top: 95%;
+    z-index: 100;
+    /*border-radius: 50%;*/
+}
+
+.btn-sig-left{
+    position: fixed;
+    left: 25%;
+    top: 95%;
+    z-index: 100;
+    /*border-radius: 50%;*/
+}
+
+.btn-sig-rigth{
+    position: fixed;
+    left: 65%;
+    top: 95%;
+    z-index: 100;
+    /*border-radius: 50%;*/
+}
+
+.pulse {
+	animation-name: pulse_animation;
+	animation-duration: 2000ms;
+	transform-origin:70% 70%;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+@keyframes pulse_animation {
+    0% { transform: scale(1); }
+    30% { transform: scale(1); }
+    40% { transform: scale(1.08); }
+    50% { transform: scale(1); }
+    60% { transform: scale(1); }
+    70% { transform: scale(1.05); }
+    80% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+
+
+.no-padding{
+    padding: 0px !important;
+}
+
+.header-title-cell{
+    border-bottom: 0px !important;
+    border-top-left-radius: 0px !important; 
+    border-top-right-radius: 0px !important;
     
 }
+
+.h3-title-cell{
+    margin-top: 0px !important;
+}
+
+.mywidth{
+    width: 230px !important;
+}
+
+#btn_map_type{
+    z-index: 2001;
+}
+
+.multiselect{
+width: 382 !important;
+display: none;
+}
+
+.multiselect-container{
+    width: 490px !important;
+}
+
+.pd-no-sides{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.pd-no-rside{
+ padding-right: 0px !important;   
+}
+
+.pd-no-lside{
+ padding-left: 0px !important;
+}
+
+
+#spContainer{
+    height: 80px;
+    overflow: auto;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #3B6A93; 
+    border-radius: 5px;  
+}
+
+#spRigthContainer{
+    height: 140px;
+    overflow: auto;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #3B6A93; 
+    border-radius: 5px;  
+}
+

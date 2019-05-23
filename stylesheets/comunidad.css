@@ -386,8 +386,8 @@ button.glyphicon-remove{
     height: 27px;
 
     font-size: 1em;
-    margin-left: 110px;
-    margin-top: -28px;
+    /*margin-left: 20px;*/
+    margin-top: 0px;
     /*vertical-align: -2px;*/
 }
 
@@ -666,18 +666,18 @@ text {
 }
 
 .var_container{
-    /*width: 100%;*/
     height: 80%;
+}
 
-    /*border-style: solid;
-    border-color: green;*/
+.reduced_var_container{
+    height: 230px;
 }
 
 
 
 .myBlockVariableAdded{
 
-    /*overflow: auto;*/ 
+    overflow: auto; 
 
     border-style: solid;
     border-color: #3B6A93;
@@ -758,8 +758,16 @@ text {
 
 
 
-.row3{
+.nav_species_container{
     height: 60% !important;
+    width: 100% !important;
+    margin-top: .1em;
+    margin-left: .2em;
+    margin-right: .2em;
+}
+
+.reduced_nav_species_container{
+    height: 40% !important;
     width: 100% !important;
     margin-top: .1em;
     margin-left: .2em;

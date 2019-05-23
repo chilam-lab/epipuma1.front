@@ -5,13 +5,17 @@
  *
  * @namespace histogram_module
  */
-var histogram_module = (function(verbose) {
+var histogram_module = (function (verbose) {
 
     var _VERBOSE = verbose;
-    var _table_module_decil, _language_module_nicho;
+    var _table_module_decil, _language_module_nicho, _display_module_nicho;
     var _highlight_color = "#48D7D5";
     var _iTrans;
     var _NUM_DECIL = 10;
+    
+    function setDisplayModule(displayModule) {
+        _display_module_nicho = displayModule;
+    }
 
 
 
@@ -56,6 +60,84 @@ var histogram_module = (function(verbose) {
         _VERBOSE ? console.log("_initilizeHistogram") : _VERBOSE;
 
     }
+    
+    function addTooltipBarChart(svg){
+        
+        // POPUP DE
+        var tip = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function (d) {
+                    
+//                    console.log(d);
+
+                    var var_group_label = "<strong>" + d.name + "</strong><br/>" +
+                            "<strong>" + _iTrans.prop('lb_score_conjunto') + ":</strong> <span >" + parseFloat(d.avg).toFixed(2) + "</span><br/><br/>";
+//                            "<strong>" + _iTrans.prop('lb_conformado') + ":</strong><br/><br/>";
+//
+//                    d.value.s.forEach(function (item, index) {
+//                        
+//                        if(d.name.p === "Total"){
+//                            var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + d.name.s[index] + "</span><br/>" +
+//                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + item + "</span><br/><br/>";
+//                        }
+//                        else{
+//                            var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + d.name.s[index*10] + "</span><br/>" +
+//                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + item + "</span><br/><br/>";
+//                        }
+//                        
+//                    });
+
+                    return  var_group_label;
+
+                });
+
+        svg.call(tip);
+        
+        return tip;
+    }
+    
+    
+    function groupDataByAtributte(json_decil){
+        
+        _VERBOSE ? console.log("groupDataByAtributte") : _VERBOSE;
+        
+        var verticalData = [];
+        
+        var size = json_decil.length;
+        var num_decile = _NUM_DECIL;
+        
+        
+        for(var i=0; i<num_decile; i++){
+            
+            for(var j=0; j<size; j++){
+            
+                var decil_item = json_decil[j].data[i];
+//                console.log(decil_item);
+                
+                if(!verticalData[i]){
+                    
+                    verticalData.push({
+                            decil: decil_item.decil,
+                            value: [{ name: json_decil[j].gpo_name, avg:decil_item.avg, decil: decil_item.decil, children: json_decil[j].names  }]
+                        });
+                    
+                }
+                else{
+                    
+//                    console.log(verticalData[i]);
+                    verticalData[i].value.push({ name: json_decil[j].gpo_name, avg:decil_item.avg, decil: decil_item.decil, children: json_decil[j].names });
+                    
+                }    
+
+            }
+            
+        }
+        
+        console.log(verticalData);
+        return verticalData;
+        
+    }
 
 
     /**
@@ -73,12 +155,14 @@ var histogram_module = (function(verbose) {
     function createMultipleBarChart(json_decil, array_recall, idComponent, nameMap) {
 
         _VERBOSE ? console.log("createMultipleBarChart") : _VERBOSE;
-
+        
+        // LIMPIA EL AREA DONDE SE ENCUENTRA EL HISTOGRAMA
         $("#" + idComponent.id).empty();
 
+        // OBTIENE EL ESPACIO NECESARIO PARA EL CONTENEDOR DEL HISTOGRAMA
         var margin = {top: 30, right: 40, bottom: 50, left: 40},
-        width = $(".myScrollableBlockEpsilonDecil").width() - margin.left - margin.right;
-        height = $(".myScrollableBlockEpsilonDecil").height() - margin.top - margin.bottom - 15; // 10px del icono de info
+                width = $(".myScrollableBlockEpsilonDecil").width() - margin.left - margin.right;
+        var height = $(".myScrollableBlockEpsilonDecil").height() - margin.top - margin.bottom - 15; // 10px del icono de info
 
 
         var x0 = d3.scale.ordinal()
@@ -91,26 +175,30 @@ var histogram_module = (function(verbose) {
 
         var color_array = [];
 
-        // variable que sirve para conocer el decil donde ya existen valores prar generar la gráfica
+        // variable que sirve para conocer el decil donde ya existen valores para generar la gráfica
         var value_decil_ready = 0;
+        var length_names = 0;
+        
+        _VERBOSE ? console.log(json_decil) : _VERBOSE;
+        
 
         for (value_decil_ready = 0; value_decil_ready < _NUM_DECIL; value_decil_ready++) {
             try {
-                length_names = json_decil[value_decil_ready].names.length;
+                length_names = json_decil.length;
                 break;
             } catch (e) {
                 _VERBOSE ? console.log("sin valores decil: " + value_decil_ready) : _VERBOSE;
             }
         }
 
-        _VERBOSE ? console.log("value_decil_ready: " + value_decil_ready) : _VERBOSE;
-        _VERBOSE ? console.log("length_names: " + length_names) : _VERBOSE;
+//        _VERBOSE ? console.log("value_decil_ready: " + value_decil_ready) : _VERBOSE;
+//        _VERBOSE ? console.log("length_names: " + length_names) : _VERBOSE;
 
 
         for (i = 0; i < length_names; i++) {
             color_array.push(_randomColor());
         }
-        // _VERBOSE ? console.log(color_array) : _VERBOSE;
+//         _VERBOSE ? console.log(color_array) : _VERBOSE;
 
 
         var color = d3.scale.ordinal()
@@ -143,122 +231,86 @@ var histogram_module = (function(verbose) {
                 .style("text-anchor", "end")
                 .text(_iTrans.prop('titulo_hist_score_decil'));
 
-
-
-        var tip = d3.tip()
-                .attr('class', 'd3-tip')
-                .offset([-10, 0])
-                .html(function(d) {
-
-                    var_group_label = "<strong>" + d.name.p + "</strong><br/>" +
-                            "<strong>" + _iTrans.prop('lb_score_conjunto') + ":</strong> <span >" + parseFloat(d.value.p).toFixed(2) + "</span><br/><br/>" +
-                            "<strong>" + _iTrans.prop('lb_conformado') + ":</strong><br/><br/>";
-
-                    d.name.s.forEach(function(item, index) {
-
-                        var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + item + "</span><br/>" +
-                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + d.value.s[index] + "</span><br/><br/>"
-                    });
-
-                    return  var_group_label;
-
-                });
-
-        svg.call(tip);
+        
+        var tip = addTooltipBarChart(svg);
+        
 
         // nameMap es mayor que 0 cuando se realiza el proceso de validación
         var ageNames = []; //nameMap.values();
+        ageNames = json_decil.map(group => group.gpo_name)
+//        if(ageNames.length > 1) ageNames.push("root");
+        
+//        _VERBOSE ? console.log(nameMap) : _VERBOSE;
 
-        _VERBOSE ? console.log(nameMap) : _VERBOSE;
+//        _VERBOSE ? console.log(ageNames) : _VERBOSE;
+        
+        // CREADO DATA VERTICAL.
+        // NOTA: LOS DATOS ANTES DE ESTE PUNTO ESTAN ALMACENADOS POR GRUPO DE VARIABLES, PARA GENERAR EL HISTOGRAMA
+        // ES NECESARIO AGRUPAR POR DECIL LOS DIFERENTES GRUPOS DE VARIABLES 
+        var verticalData = groupDataByAtributte(json_decil);
 
-        json_decil[value_decil_ready].names.forEach(function(name, index) {
+        // INICIA CONSTRUCCIÓN DEL HISTOGRAMA
+        var deciles = verticalData.map(item => item.decil);
+        
+//        _VERBOSE ? console.log(deciles) : _VERBOSE;
+        
+        x0.domain(deciles);
+        
+//        _VERBOSE ? console.log(x0.rangeBand()) : _VERBOSE;
+        
+        x1.domain(ageNames)
+                .rangeRoundBands([0, x0.rangeBand()]);
+        
+//        console.log(x0.rangeBand());
+//        console.log(x0(10));
+//        console.log(x1("root"));
+        
 
-            var obj;
-
-            if (nameMap.values().length > 0) {
-                arg_nulos = nameMap.get(name.p).recall_nulo;
-                // _VERBOSE ? console.log(arg_nulos) : _VERBOSE;
-                // si al menos existe un valor calculado de recall (diferente a cero) se realiza el line chart del recall
-                fin_recall = ($.inArray(false, arg_nulos) != -1) ? false : true;
-                _VERBOSE ? console.log("name: " + name.p + " fin_recall: " + fin_recall) : _VERBOSE;
-
-                obj = {name: name.p, nulos: nameMap.get(name.p).nulos, recall_nulo: fin_recall};
-            }
-            else {
-                obj = {name: name.p};
-            }
-
-            ageNames.push(obj);
-
-        });
-
-        _VERBOSE ? console.log(ageNames) : _VERBOSE;
-
-
-        json_decil.forEach(function(d, index) {
-            // no retorna el objeto json cuando el decil no tiene valores
+                
+        var totalmax_avg = d3.max(json_decil.map(function (d, index) {
+            
             if (value_decil_ready <= index) {
-                d.ages = d.names.map(function(name, i) {
-//                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i], gridids: d.gridids[i]};
-                    return {name: name, value: d.values[i], decil: d.decil, species: d.species[i]};
-//                    return {name: name, value: d.values[i], decil: d.decil};
+                
+                return d3.max(d.data, function (d) {
+                    return parseFloat(d.avg)
                 });
+                
             }
-            // asigna valores falsos a los deciles ausentes
-            else {
-                // d.decil_nulo = true;
-                d.ages = json_decil[value_decil_ready].names.map(function(name, i) {
-//                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), species: [], gridids: [], decil_nulo: true};
-                    return {name: name, value: [], decil: "" + (_NUM_DECIL - index), decil_nulo: true, species: []};
-                });
-            }
-        });
-
-        _VERBOSE ? console.log(json_decil) : _VERBOSE;
-
-
-        x0.domain(json_decil.map(function(d) {
-            return d.decil;
+            
         }));
-        // _VERBOSE ? console.log("x0: " + x0.rangeBand()) : _VERBOSE;
-        x1.domain(ageNames.map(function(item, i) {
-            return item.name;
-        })).rangeRoundBands([0, x0.rangeBand()]);
+        
+//        console.log("totalmax_avg: " + totalmax_avg);
 
-
-
-        totalmax_avg = d3.max(json_decil.map(function(d, index) {
+        var totalmin_avg = d3.min(json_decil.map(function (d, index) {
+            
             if (value_decil_ready <= index) {
-                return d3.max(d.values, function(d) {
-                    return parseFloat(d.p)
+                
+                return d3.min(d.data, function (d) {
+                    return parseFloat(d.avg)
                 });
+                
             }
+            
         }));
-
-        totalmin_avg = d3.min(json_decil.map(function(d, index) {
-            if (value_decil_ready <= index) {
-                return d3.min(d.values, function(d) {
-                    return parseFloat(d.p)
-                });
-            }
-        }));
+        
+//        console.log("totalmin_avg: " + totalmin_avg);
 
         // que ocurre cuando min y max son iguales, no se esta generando la gráfica... cehcar validacion
-        if (totalmax_avg == totalmin_avg) {
+        if (totalmax_avg === totalmin_avg) {
             if (totalmax_avg < 0) {
                 totalmax_avg = 0;
-            }
-            else {
+            } else {
                 totalmin_avg = 0;
             }
         }
+        
+        
+        var totalmin_nice = Math.floor(totalmin_avg);
+        var totalmax_nice = Math.ceil(totalmax_avg);
+        var NEG_DECIL = 0;
 
 
-        totalmin_nice = Math.floor(totalmin_avg);
-        totalmax_nice = Math.ceil(totalmax_avg);
-
-
-        // TODO: analizar cuando son solo possitovos, solo negativos o combinación
+        // TODO: analizar cuando son solo positovos, solo negativos o combinación
         // solo negativos
         if (totalmax_avg < 0 && totalmin_avg < 0) {
             NEG_DECIL = -1;
@@ -273,49 +325,53 @@ var histogram_module = (function(verbose) {
         }
 
         // NOTA: En d3 el max de -0.12 y -0.86 es "-0.86", obtiene el minimo de los negativos
-        maxmin_avg = d3.max(json_decil.map(function(d, index) {
+        var maxmin_avg = d3.max(json_decil.map(function (d, index) {
+            
             if (value_decil_ready <= index) {
-                return d3.max(d.values, function(d) {
-                    if (d.p < 0)
-                        return d.p
+                return d3.max(d.data, function (d) {
+                    if (d.avg < 0){
+                        return d.avg;
+                    }
+                        
                 });
             }
+            
         }));
 
+//        console.log("maxmin_avg: " + maxmin_avg);
 
         // si existen valores combinados el axis se divide de forma equitativa
-        if (NEG_DECIL == 0) {
+        if (NEG_DECIL === 0) {
 
             if (Math.abs(totalmin_avg) < Math.abs(totalmax_avg)) {
 
                 y.domain([-totalmax_avg, totalmax_avg])
                         .nice([totalmin_nice, totalmax_nice]);
 
-            }
-            else {
+            } else {
 
                 y.domain([totalmin_avg, -totalmin_avg])
                         .nice([totalmin_nice, totalmax_nice]);
 
             }
 
-        }
-        else {
+        } else {
 
             y.domain([totalmin_avg, totalmax_avg])
                     .nice([totalmin_nice, totalmax_nice]);
 
         }
 
-
+        var translate_axis = 0;
+        
         // set the x axis in middle of the chart when there are negative values.
         // solo negativos
-        if (NEG_DECIL == -1) {
+        if (NEG_DECIL === -1) {
 
             translate_axis = y(totalmax_avg); // valor de cero, ajusta en la parte superior del histograma
         }
         // combinado
-        else if (NEG_DECIL == 0) {
+        else if (NEG_DECIL === 0) {
 
             translate_axis = y(Math.max(0, maxmin_avg)); // ajusta en la parte superior del histograma
         }
@@ -325,6 +381,8 @@ var histogram_module = (function(verbose) {
             translate_axis = height; // valor maximos, ajusta en la parte inferior del histograma
         }
 
+
+        // CREACIÓN DE EJES DEL HISTOGRAMA
         svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + translate_axis + ")")
@@ -349,213 +407,136 @@ var histogram_module = (function(verbose) {
                 .text(_iTrans.prop('tip_tbl_score'));
 
 
-
+        
+        // CREACION DE BARRAS DEL HISTOGRAMA
         var state = svg.selectAll(".state")
-                .data(json_decil)
+                .data(verticalData)
                 .enter().append("g")
                 .attr("class", "state")
-                .attr("transform", function(d) {
+                .attr("transform", function (d) {
+//                    console.log(d.decil);            
                     return "translate(" + x0(d.decil) + ",0)";
                 });
 
         state.selectAll(".rect")
-                .data(function(d) {
-                    return d.ages;
+                .data(function (d) {
+                    return d.value;
                 })
                 .enter().append("rect")
                 .attr("class", "bar")
                 .attr("width", x1.rangeBand())
-                .attr("x", function(d) {
-
-                    // _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
-                    // _VERBOSE ? console.log(x1(d.name.p)) : _VERBOSE;
-                    return x1(d.name.p);
+                .attr("x", function (d) {
+                    
+//                    console.log(d.name)
+//                    console.log(x1(d.name))
+//                    console.log(x1.rangeBand())                    
+                    return x1(d.name);
                 })
-                .attr("y", function(d) {
+                .attr("y", function (d) {
 
-
-                    _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
+//                    _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
 
                     if (d.decil_nulo)
                         return y(0);
 
                     // locate the bars in the chart correctly when there are negative values.
-                    if (NEG_DECIL == -1) {
+                    if (NEG_DECIL === -1) {
+                        
                         return y(totalmax_avg);
-                    }
-                    else if (NEG_DECIL == 0) {
-                        return y(Math.max(0, d.value.p));
-                    }
-                    else {
-                        return y(d.value.p);
+                    } else if (NEG_DECIL === 0) {
+                        
+                        return y(Math.max(0, d.avg));
+                    } else {
+                        
+                        return y(d.avg);
                     }
                 })
-                .attr("height", function(d) {
+                .attr("height", function (d) {
 
                     _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
-                    var val_h = d.decil_nulo ? 0 : d.value.p;
+            
+                    var val_h = d.decil_nulo ? 0 : d.avg;
 
                     // locate the bars in the chart correctly when there are negative values.
                     if (NEG_DECIL == -1) {
 
                         return Math.abs(y(val_h) - y(totalmax_avg))
-                    }
-                    else if (NEG_DECIL == 0) {
+                    } else if (NEG_DECIL == 0) {
 
                         return Math.abs(y(val_h) - y(0))
-                    }
-                    else {
+                    } else {
 
                         return height - y(val_h);
                     }
                 })
-                .style("fill", function(d) {
+                .style("fill", function (d) {
 
-                    // _VERBOSE ? console.log(d.name.p) : _VERBOSE;
-
-                    return color(d.name.p);
+                    return color(d.name);
                 })
                 .style("opacity", 0.7)
-                .on('mouseover', function(d) {
+                .on('mouseover', function (d) {
 
                     tip.show(d);
 
                 })
-                .on('mouseout', function(d) {
+                .on('mouseout', function (d) {
 
                     tip.hide(d);
 
                 })
-                .on("click", function(d) {
+                .on("click", function (d) {
+                    
+                    console.log(d);
 
-//                    _VERBOSE ? console.log("decil_nulo: " + d.decil_nulo) : _VERBOSE;
-//                    if (d.decil_nulo)
-//                        return;
-
-                    // _VERBOSE ? console.log(d.gridids.p) : _VERBOSE;
-
-//                    g = d3.select("#grid_map");
-//                    feature = g.selectAll("path");
-//
-//                    feature.each(function(cell, i) {
-//
-//                        if ($.inArray(cell.properties.gridid, d.gridids.p) != -1) {
-//                            d3.select(this).style("stroke", _highlight_color);
-//                            d3.select(this).style("stroke-width", 2);
-//                        } else {
-//                            d3.select(this).style("stroke", "none");
-//                            d3.select(this).style("stroke-width", "none");
-//                        }
-//
-//                    });
-
-                    state.selectAll("rect.bar").each(function(bar, i) {
+                    state.selectAll("rect.bar").each(function (bar, i) {
                         d3.select(this).style("stroke", "none");
                     });
                     d3.select(this).style("stroke", "black");
                     d3.select(this).style("stroke-width", 3);
-
-                    var decil_list = [];
-//                    _VERBOSE ? console.log(d) : _VERBOSE;
                     
-                    
-                    d.species.p.forEach(function(sp, index) {
-
-                        // spid, label, epsilon, score, occ(nj), occ_decil
-                        params = sp.split("|");
-//                         _VERBOSE ? console.log(params) : _VERBOSE;
-
-                        occ = parseFloat(params[3]);
-                        occ_decil = parseFloat(params[4])
-                        per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
-
-                        // console.log(params[1]);
-                        // console.log(params[4]);
-                        // console.log(params[5]);
-
-                        decil_list.push({decil: d.decil, species: params[0].replace("\"",""), epsilons: params[1], scores: params[2], occ: per_decil});
-                    });
-
-                    // _VERBOSE ? console.log(decil_list) : _VERBOSE;
-
-                    _table_module_decil.createDecilList(decil_list);
+                    _display_module_nicho.loadDecilDataTable(d.decil, d.name, false);
 
                 });
 
 
-
-
-
-        var decil_list = [];
-        $.each(json_decil, function(index, value) {
-
-//            _VERBOSE ? console.log("decil: " + value.decil) : _VERBOSE;
-//            _VERBOSE ? console.log("species: " + value.species) : _VERBOSE;
-//            
-//            _VERBOSE ? console.log("decil_nulo: " + value.decil_nulo) : _VERBOSE;
-//            if (value.decil_nulo)
-//                return false;
-
-            value.species[0].p.forEach(function(sp, index) {
-                
-//                _VERBOSE ? console.log(sp) : _VERBOSE;
-
-                // spid, epsilon, score, occ(nj), occ_decil
-                var params = sp.split("|");
-//                 _VERBOSE ? console.log(params) : _VERBOSE;
-
-                // EJEMPLO Panthera leo - occ_total = 2 y occ_decil = 3 => 1.5 => 150% (ERROR)
-                occ_total = parseFloat(params[3]);
-                occ_decil = parseFloat(params[4]);
-                per_decil = parseFloat(occ_decil / occ_total * 100).toFixed(2) + "%";
-                decil_list.push({decil: value.decil, species: params[0].replace("\"",""), epsilons: params[1], scores: params[2], occ: per_decil});
-
-            });
-
-            return false;
-        });
-
-
-        _table_module_decil.createDecilList(decil_list);
-
-
-        /***************** rect legend */
+        // CREACION DE LEYENDA INFOERIOR DEL HISTOGRAMA
         var yTextPadding = -5;
 
         state.selectAll(".rect")
-                .data(function(d) {
-                    return d.ages;
+                .data(function (d) {
+                    return d.value;
                 })
                 .enter()
                 .append("text")
                 .style("font-size", "8px")
                 .attr("text-anchor", "middle")
                 .attr("fill", "black")
-                .attr("x", function(d, i) {
-                    return x1(d.name.p) + 10;
+                .attr("x", function (d) {
+                    return x1(d.name) + 10;
                 })
-                .attr("y", function(d, i) {
+                .attr("y", function (d) {
 
                     if (d.decil_nulo)
                         return y(0) + yTextPadding;
+                    
                     // locate the bars in the chart correctly when there are negative values.
-                    if (NEG_DECIL == -1) {
+                    if (NEG_DECIL === -1) {
                         return y(totalmax_avg) + yTextPadding;
-                    }
-                    else if (NEG_DECIL == 0) {
-                        return y(Math.max(0, d.value.p)) + yTextPadding;
-                    }
+                    } 
+                    else if (NEG_DECIL === 0) {
+                        return y(Math.max(0, d.avg)) + yTextPadding;
+                    } 
                     else {
-                        return y(d.value.p) + yTextPadding;
+                        return y(d.avg) + yTextPadding;
                     }
 
                 })
-                .text(function(d) {
+                .text(function (d) {
                     // // console.log(d);
                     // if( parseFloat(d.value.p) == 0.0)
                     // 	return "";
                     // else
-                    return d.value.p;
+                    return d.avg;
                 });
 
 
@@ -564,255 +545,192 @@ var histogram_module = (function(verbose) {
                 .data(ageNames.slice().reverse())
                 .enter().append("g")
                 .attr("class", "legend")
-                .attr("transform", function(d, i) {
+                .attr("transform", function (d) {
                     return "translate(0," + (height + 20) + ")";
                 });
 
         legend.append("rect")
-                .attr("x", function(d, i) {
+                .attr("x", function (d, i) {
                     return (width - 18) - (i * 130);
                 })
                 .attr("y", 3)
                 .attr("width", 20)
                 .attr("height", 20)
-                .style("fill", function(d, i) {
-
-                    if (d.recall_nulo) {
-                        return "black";
-                    }
-                    else {
-                        return color(d.name);
-                    }
+                .style("fill", function (d, i) {
+//                    if (d.recall_nulo) {
+//                        return "black";
+//                    } 
+//                    else {
+//                        console.log(d)
+//                        console.log(color(d))
+                        return color(d);
+//                    }
 
                 })
                 .style("opacity", 0.7);
 
         legend.append("text")
-                .attr("x", function(d, i) {
+                .attr("x", function (d, i) {
                     return (width - 24) - (i * 130);
                 })
                 .attr("y", 9)
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
-                .text(function(d) {
-                    return d.name;
+                .text(function (d) {
+//                    console.log(d)
+                    return d;
                 });
 
-//        if (nameMap.values().length > 0) {
-//
-//            legend.append("text")
-//                    .attr("x", function(d, i) {
-//                        return (width - 24) - (i * 130);
-//                    })
-//                    .attr("y", 20)
-//                    .attr("dy", ".35em")
-//                    .style("text-anchor", "end")
-//                    .text(function(d) {
-//                        _VERBOSE ? console.log(d.recall_nulo) : _VERBOSE;
-//
-//                        prom = 0;
-//                        $.each(d.nulos, function() {
-//                            prom += this;
-//                        });
-//
-//                        if (d.recall_nulo) {
-//                            _VERBOSE ? console.log("aplica recall nulo") : _VERBOSE;
-//
-//                            return _iTrans.prop('recall_nulo');
-//                        }
-//                        else {
-//                            return _iTrans.prop('lb_nulos') + ": " + parseFloat(prom / d.nulos.length).toFixed(2);
-//                        }
-//
-//                    });
-//
-//
-//        }
-
-
-        if ($("#chkValidation").is(':checked')) {
-
-            var tip_recall = d3.tip()
-                    .attr('class', 'd3-tip')
-                    .offset([-10, 0])
-                    .html(function(d) {
-                        recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
-                                "<strong>" + _iTrans.prop('lb_vp_avg') + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
-                                "<strong>" + _iTrans.prop('lb_fn_avg') + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>";
-                        // "<strong>CSS prom:</strong> <span >" + parseFloat(d.ausentes).toFixed(2) + "%</span><br/>"
-                        return  recall_values;
-                    });
-
-            svg.call(tip_recall);
-
-
-            var y_right = d3.scale.linear()
-                    .range([translate_axis, 0]);
-
-            y_right.domain([0, 1]);
-
-            var yRightAxis = d3.svg.axis()
-                    .scale(y_right)
-                    .orient("right")
-                    .ticks(5, "%");
-
-            // ** si el label cambia, es necesario agregar id **
-            svg.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + width + " ,0)")
-                    .call(yRightAxis)
-                    .append("text")
-                    .attr("y", -10)
-                    .attr("x", margin.right - 40)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text(_iTrans.prop('lb_recall'));
 
 
 
+       // Despliega grafica de resultados de validación
+       if ($("#chkValidation").is(':checked')) {
 
-            
+           var tip_recall = d3.tip()
+                   .attr('class', 'd3-tip')
+                   .offset([-10, 0])
+                   .html(function (d) {
+                       recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
+                               "<strong>" + _iTrans.prop('lb_vp_avg') + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
+                               "<strong>" + _iTrans.prop('lb_fn_avg') + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>";
+                       // "<strong>CSS prom:</strong> <span >" + parseFloat(d.ausentes).toFixed(2) + "%</span><br/>"
+                       return  recall_values;
+                   });
 
-            // obtiene el numero de grupo analisados para generar la colección de elementos para desplegar el calculo de recall
-            var array_recall = [];
-            
-            var group_size = json_decil[0].names.length;
-            console.log(group_size);
-            
-            for (i = 0; i < group_size; i++) {
-                
-                var item_recall = [];
-                
-                $.each(json_decil, function(index, item) {
+           svg.call(tip_recall);
 
-                    var names = item.names;
-                    var recall = item.recall;
-                    var vp = item.vp;
-                    var fn = item.fn;
+
+           var y_right = d3.scale.linear()
+                   .range([translate_axis, 0]);
+
+           y_right.domain([0, 1]);
+
+           var yRightAxis = d3.svg.axis()
+                   .scale(y_right)
+                   .orient("right")
+                   .ticks(5, "%");
+
+           // ** si el label cambia, es necesario agregar id **
+           svg.append("g")
+                   .attr("class", "y axis")
+                   .attr("transform", "translate(" + width + " ,0)")
+                   .call(yRightAxis)
+                   .append("text")
+                   .attr("y", -10)
+                   .attr("x", margin.right - 40)
+                   .attr("dy", ".71em")
+                   .style("text-anchor", "end")
+                   .text(_iTrans.prop('lb_recall'));
+
+
+           // obtiene el numero de grupo analizados para generar la colección de elementos para desplegar el calculo de recall
+           var array_recall = [];
+           
+           $.each(json_decil, function (index, item) {
+
+               var item_recall = [];
+
+                $.each(item.deciles, function (index, decil) {
 
                     var item_decil = {
-                        "group_name": names[i].p,
-                        "recall": recall[i].p,
-                        "vp": parseFloat(vp[i].p),
-                        "fn": parseFloat(fn[i].p),
-                        "decil": parseInt(item.decil),
-                        "recall_nulo": 0
+                       "group_name": item.gpo_name,
+                       "recall": decil.recall,
+                       "vp": decil.vp,
+                       "fn": decil.fn,
+                       "decil": decil.decil,
+                       "recall_nulo": decil.nulo
                     }
 
                     item_recall.push(item_decil);
 
-                });
-                
+                })
+
                 array_recall.push(item_recall);
 
-            }
+           });
+               
 
-            // adding recall line
-            _VERBOSE ? console.log(array_recall) : _VERBOSE;
+           // adding recall line
+           _VERBOSE ? console.log(array_recall) : _VERBOSE;
 
+           $.each(array_recall, function (i, recall_item) {
 
-            $.each(array_recall, function(i, recall_item) {
+               console.log(recall_item);
 
-                console.log(recall_item);
-
-                var line = d3.svg.line()
-                        .x(function(d) {
-                            // _VERBOSE ? console.log("movement: " + x1.rangeBand() * (ageNames.length/2)) : _VERBOSE;
-                            // _VERBOSE ? console.log("x0: " + x0(array_recall.length - i) + x1.rangeBand()) : _VERBOSE;
-//                             (x1.rangeBand() * (ageNames.length/2)) ---> Moves the line to the center of the bars
-//                            console.log(d);
-//                            console.log(i);
-//                            console.log(x0(d.decil));
-//                            console.log(ageNames.length);
-//                            console.log(x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2)));
-
-                            return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
-                        })
-                        .y(function(d) {
-//                            _VERBOSE ? console.log("y: " + y_right(d.recall)) : _VERBOSE;
-
-                            return y_right(d.recall);
-                        });
+               var line = d3.svg.line()
+                       .x(function (d) {
+                           return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
+                       })
+                       .y(function (d) {
+                           return y_right(d.recall);
+                       });
 
 //                console.log(line);
 
-                svg.append("path")
-                        .datum(recall_item)
-                        .attr("class", "line")
-                        .attr("d", line)
-                        .style("stroke", function(d) {
+               svg.append("path")
+                       .datum(recall_item)
+                       .attr("class", "line")
+                       .attr("d", line)
+                       .style("stroke", function (d) {
 
-//                            console.log(d[0].group_name);
-//                            console.log(color(d[0].group_name));
+                           // console.log(d);
+                           // console.log("name: " + d[0].group_name);
+                           // console.log("color: " + color(d[0].group_name));
 
-                            // _VERBOSE ? console.log(color(d[0].group_name)) : _VERBOSE;
-                            // _VERBOSE ? console.log( nameMap.get(d[0].group_name.name).recall_nulo ) : _VERBOSE;
+                           return color(d[0].group_name);
 
-//                            if ($.inArray(false, nameMap.get(d[0].group_name.name).recall_nulo) != -1) {
-//                            if ($.inArray(false, nameMap.get(d.group_name).recall_nulo) != -1) {
-//                                return color(d[0].group_name.name);
-                            return color(d[0].group_name);
-//                            }
-//                            else {
-//                                return "none";
-//                            }
+                       })
 
-
-
-                        })
-
-                svg.selectAll("dot")
-                        .data(recall_item)
-                        .enter().append("circle")
-                        .attr("class", "dot")
-                        .attr("r", 3.5)
-                        .attr("cx", function(d, i) {
+               svg.selectAll("dot")
+                       .data(recall_item)
+                       .enter().append("circle")
+                       .attr("class", "dot")
+                       .attr("r", 3.5)
+                       .attr("cx", function (d, i) {
 
 //                            return x0(recall_item.length - i) + (x1.rangeBand() * (ageNames.length / 2));
-                            return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
+                           return x0(d.decil) + (x1.rangeBand() * (ageNames.length / 2));
 
 
-                        })
-                        .attr("cy", function(d) {
-                            return y_right(d.recall);
-                        })
-                        .on('mouseover', function(d) {
+                       })
+                       .attr("cy", function (d) {
+                           return y_right(d.recall);
+                       })
+                       .on('mouseover', function (d) {
 
-                            d3.select(this).attr("r", function(d) {
-                                return 8 + Math.pow(d.recall / Math.PI, 0.5);
-                            });
-                            tip_recall.show(d)
-                        })
-                        .on('mouseout', function(d) {
+                           d3.select(this).attr("r", function (d) {
+                               return 8 + Math.pow(d.recall / Math.PI, 0.5);
+                           });
+                           tip_recall.show(d)
+                       })
+                       .on('mouseout', function (d) {
 
-                            d3.select(this).attr("r", function(d) {
-                                return 3.5;
-                            });
-                            tip_recall.hide(d)
-                        })
-                        .style("stroke", function(d) {
+                           d3.select(this).attr("r", function (d) {
+                               return 3.5;
+                           });
+                           tip_recall.hide(d)
+                       })
+                       .style("stroke", function (d) {
 
-                            // _VERBOSE ? console.log( nameMap.get(d.group_name.name).recall_nulo ) : _VERBOSE;
+                           // console.log(d);
+                           // console.log("name: " + d.group_name);
+                           // console.log("color: " + color(d.group_name));
 
-                            console.log("color: " + d.group_name);
+                           return color(d.group_name);
 
-//                            if ($.inArray(false, nameMap.get(d.group_name.name).recall_nulo) != -1) {
-//                                return color(d.group_name.name);
-                            return color(d.group_name);
-//                            }
-//                            else {
-//                                return "none";
-//                            }
-
-                        })
+                       })
 
 
-            });
+           });
 
-        }
+       }
 
 
     }
+    
+    
+    
 
 
     /**
@@ -828,17 +746,16 @@ var histogram_module = (function(verbose) {
 
         var puntos_json = d3.map([]);
 
-        $.each(distinctPoints, function(index, item) {
+        $.each(distinctPoints, function (index, item) {
 
-            fecha_ano = item.fechacolecta == null || item.fechacolecta.split("-")[0] == "" ? 0 : parseInt(item.fechacolecta.split("-")[0]);
+            var fecha_ano = item.aniocolecta === null || item.aniocolecta === "" || item.aniocolecta === 9999 ? 0 : parseInt(item.aniocolecta);
 
             if (puntos_json.has(fecha_ano)) {
 
                 var item_colecta = puntos_json.get(fecha_ano);
                 puntos_json.set(fecha_ano, {"fechacolecta": fecha_ano, "cantidad": (item_colecta.cantidad + 1)});
 
-            }
-            else {
+            } else {
 
                 puntos_json.set(fecha_ano, {"fechacolecta": fecha_ano, "cantidad": 1});
 
@@ -849,12 +766,11 @@ var histogram_module = (function(verbose) {
         var colectas = puntos_json.values();
         var colectas_zero = [];
         var colectas_dif = [];
-        $.each(colectas, function(index, item) {
+        $.each(colectas, function (index, item) {
 
             if (item.fechacolecta > 0) {
                 colectas_dif.push(item);
-            }
-            else {
+            } else {
                 colectas_zero.push(item);
             }
 
@@ -868,10 +784,10 @@ var histogram_module = (function(verbose) {
         // 	$("#lb_regfecha").text(colectas_zero[0].cantidad);
         // }
 
-        var max_fecha = d3.max(colectas_dif.map(function(d) {
+        var max_fecha = d3.max(colectas_dif.map(function (d) {
             return d.fechacolecta;
         }));
-        var min_fecha = d3.min(colectas_dif.map(function(d) {
+        var min_fecha = d3.min(colectas_dif.map(function (d) {
             return d.fechacolecta;
         }));
 
@@ -880,14 +796,14 @@ var histogram_module = (function(verbose) {
         var rangofechas = d3.scale.quantize().domain([min_fecha, max_fecha]).range(NUM_BARS);
 
         var rango_fechas = d3.map([]);
-        $.each(NUM_BARS, function(index, item) {
+        $.each(NUM_BARS, function (index, item) {
 
             var rango = parseInt(rangofechas.invertExtent(item)[0]) + " - " + parseInt(rangofechas.invertExtent(item)[1]);
             rango_fechas.set(item, {"fechas": rango, "cantidad": 0});
 
         })
 
-        $.each(colectas_dif, function(index, item) {
+        $.each(colectas_dif, function (index, item) {
 
             if (rango_fechas.has(rangofechas(item.fechacolecta))) {
 
@@ -904,7 +820,7 @@ var histogram_module = (function(verbose) {
         $("#hist_fecha_container").empty();
 
         var margin = {top: 10, right: 10, bottom: 20, left: 30},
-        width = $("#hist_fecha_container").width() - margin.left - margin.right,
+                width = $("#hist_fecha_container").width() - margin.left - margin.right,
                 height = $("#hist_fecha_container").height() - margin.top - margin.bottom;
 
 
@@ -915,10 +831,10 @@ var histogram_module = (function(verbose) {
                 .range([height, 0]);
 
 
-        x.domain(data.map(function(d) {
+        x.domain(data.map(function (d) {
             return d.fechas;
         }));
-        y.domain([0, d3.max(data, function(d) {
+        y.domain([0, d3.max(data, function (d) {
                 return d.cantidad;
             })]);
 
@@ -944,9 +860,9 @@ var histogram_module = (function(verbose) {
         var tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 10])
-                .html(function(d) {
-                    return  "<strong>Fechas:</strong> <span >" + d.fechas + "</span><br/>" +
-                            "<strong>Registros:</strong> <span >" + d.cantidad + "</span>";
+                .html(function (d) {
+                    return  "<strong>" + _iTrans.prop('hist_occ_fecha') + ":</strong> <span >" + d.fechas + "</span><br/>" +
+                            "<strong>" + _iTrans.prop('hist_occ_registros') + ":</strong> <span >" + d.cantidad + "</span>";
                 });
         svg.call(tip);
 
@@ -974,20 +890,20 @@ var histogram_module = (function(verbose) {
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) {
+                .attr("x", function (d) {
                     return x(d.fechas);
                 })
-                .attr("y", function(d) {
+                .attr("y", function (d) {
                     return y(d.cantidad);
                 })
-                .attr("height", function(d) {
+                .attr("height", function (d) {
                     return height - y(d.cantidad);
                 })
                 .attr("width", x.rangeBand())
-                .on("mouseover", function(d) {
+                .on("mouseover", function (d) {
                     tip.show(d);
                 })
-                .on("mouseout", function(d) {
+                .on("mouseout", function (d) {
                     tip.hide(d);
                 });
 
@@ -1015,7 +931,7 @@ var histogram_module = (function(verbose) {
         // _VERBOSE ? console.log($(".myScrollableBlockEpsilon").height()) : _VERBOSE;
 
         var margin = {top: 30, right: 40, bottom: 60, left: 40},
-        width = $(".myScrollableBlockEpsilonSmallHist").width() - margin.left - margin.right,
+                width = $(".myScrollableBlockEpsilonSmallHist").width() - margin.left - margin.right,
                 height = $(".myScrollableBlockEpsilonSmallHist").height() - margin.top - margin.bottom;
 
         // _VERBOSE ? console.log(width) : _VERBOSE;
@@ -1075,7 +991,7 @@ var histogram_module = (function(verbose) {
         var tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
-                .html(function(d) {
+                .html(function (d) {
                     return  "<strong>" + _iTrans.prop('lb_rango') + ":</strong> <span >" + d.title + "</span><br/><br/>" +
                             "<strong>" + _iTrans.prop('lb_frecuencia') + ":</strong> <span >" + parseInt(d.frequency * 100) + " %</span>";
                 });
@@ -1083,11 +999,11 @@ var histogram_module = (function(verbose) {
         svg.call(tip);
 
 
-        x.domain(data.map(function(d) {
+        x.domain(data.map(function (d) {
             return d.bcenter;
         }));
 
-        max_freq = d3.max(data.map(function(d) {
+        max_freq = d3.max(data.map(function (d) {
             return parseFloat(d.frequency);
         }));
         // _VERBOSE ? console.log(max_freq) : _VERBOSE;
@@ -1104,7 +1020,7 @@ var histogram_module = (function(verbose) {
                 .style("font-size", "10px")
                 .attr("dx", "-.8em")
                 .attr("dy", "-.55em")
-                .attr("transform", function(d) {
+                .attr("transform", function (d) {
                     return "rotate(-90)"
                 });
         // .append("text")
@@ -1129,21 +1045,21 @@ var histogram_module = (function(verbose) {
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function(d) {
+                .attr("x", function (d) {
                     return x(d.bcenter);
                 })
                 .attr("width", x.rangeBand())
-                .attr("y", function(d) {
+                .attr("y", function (d) {
                     return y(parseFloat(d.frequency));
                 })
-                .attr("height", function(d) {
+                .attr("height", function (d) {
                     return height - y(parseFloat(d.frequency));
                 })
 
-                .on('mouseover', function(d) {
+                .on('mouseover', function (d) {
                     tip.show(d)
                 })
-                .on('mouseout', function(d) {
+                .on('mouseout', function (d) {
                     tip.hide(d)
                 })
 
@@ -1159,11 +1075,11 @@ var histogram_module = (function(verbose) {
      * @memberof! histogram_module
      * 
      */
-    var _randomColor = (function() {
+    var _randomColor = (function () {
         var golden_ratio_conjugate = 0.618033988749895;
         var h = Math.random();
 
-        var hslToRgb = function(h, s, l) {
+        var hslToRgb = function (h, s, l) {
             var r, g, b;
 
             if (s == 0) {
@@ -1193,7 +1109,7 @@ var histogram_module = (function(verbose) {
             return '#' + Math.round(r * 255).toString(16) + Math.round(g * 255).toString(16) + Math.round(b * 255).toString(16);
         };
 
-        return function() {
+        return function () {
             h += golden_ratio_conjugate;
             h %= 1;
             return hslToRgb(h, 0.5, 0.60);
@@ -1223,7 +1139,7 @@ var histogram_module = (function(verbose) {
 
         var chart_component = d3.selectAll(".chart")
                 .data(chart_array)
-                .each(function(chart) {
+                .each(function (chart) {
                     chart.on("brushend", display_obj.renderAll);
                 });
 
@@ -1288,9 +1204,9 @@ var histogram_module = (function(verbose) {
             data = group.all();
 
             // it contains an array from 1 to 20, create key missing elements and set value to 0
-            display_obj.epsilon_beans.forEach(function(d) {
+            display_obj.epsilon_beans.forEach(function (d) {
                 exists = false;
-                $.each(data, function(index, value) {
+                $.each(data, function (index, value) {
                     if (d == value.key) {
                         exists = true;
                         return false;
@@ -1305,7 +1221,7 @@ var histogram_module = (function(verbose) {
             data.sort(_sort_by('key', false, parseInt));
             _VERBOSE ? console.log(data) : _VERBOSE;
 
-            $.each(data, function(index, value) {
+            $.each(data, function (index, value) {
 
                 tvalue = value.value;
 
@@ -1319,7 +1235,7 @@ var histogram_module = (function(verbose) {
             _VERBOSE ? console.log(epsRange) : _VERBOSE;
 
 
-            x.domain(data.map(function(d) {
+            x.domain(data.map(function (d) {
                 avg = parseFloat((display_obj.epsRange.invertExtent(d.key)[0] + display_obj.epsRange.invertExtent(d.key)[1]) / 2).toFixed(2);
                 return avg;
             }));
@@ -1329,7 +1245,7 @@ var histogram_module = (function(verbose) {
             y.domain([0, group.top(1)[0].value]);
 
 
-            div.each(function() {
+            div.each(function () {
 
                 _VERBOSE ? console.log("div.each chart") : _VERBOSE;
 
@@ -1381,7 +1297,7 @@ var histogram_module = (function(verbose) {
                             .style("font-size", "10px")
                             .attr("dx", "-.8em")
                             .attr("dy", "-.55em")
-                            .attr("transform", function(d) {
+                            .attr("transform", function (d) {
                                 return "rotate(-90)"
                             });
 
@@ -1404,18 +1320,18 @@ var histogram_module = (function(verbose) {
                             .data(data)
                             .enter().append("rect")
                             .attr("class", "bar")
-                            .attr("x", function(d) {
+                            .attr("x", function (d) {
                                 // _VERBOSE ? console.log(d) : _VERBOSE;
                                 return x(parseFloat((display_obj.epsRange.invertExtent(d.key)[0] + display_obj.epsRange.invertExtent(d.key)[1]) / 2).toFixed(2));
                             })
                             .attr("width", x.rangeBand())
-                            .attr("y", function(d) {
+                            .attr("y", function (d) {
                                 return y(parseFloat(d.value));
                             })
-                            .attr("height", function(d) {
+                            .attr("height", function (d) {
                                 return height - y(parseFloat(d.value));
                             })
-                            .attr("fill", function(d) {
+                            .attr("fill", function (d) {
 
                                 left = display_obj.epsRange.invertExtent(d.key)[0]
                                 right = display_obj.epsRange.invertExtent(d.key)[1]
@@ -1428,8 +1344,7 @@ var histogram_module = (function(verbose) {
                                 if (display_obj.ep_th < min_val) {
                                     return d3.rgb(102, 184, 243);
                                     // return "steelblue";
-                                }
-                                else {
+                                } else {
                                     return d3.rgb(213, 215, 223);
                                 }
                             });
@@ -1477,7 +1392,7 @@ var histogram_module = (function(verbose) {
         } // function chart(div) closed
 
 
-        brush.on("brush.chart", function(e) {
+        brush.on("brush.chart", function (e) {
 
             _VERBOSE ? console.log("brush.chart") : _VERBOSE;
 
@@ -1498,13 +1413,12 @@ var histogram_module = (function(verbose) {
 
 
             // Fade all years in the histogram not within the brush
-            d3.selectAll("rect.bar").style("opacity", function(d, i) {
+            d3.selectAll("rect.bar").style("opacity", function (d, i) {
                 // _VERBOSE ? console.log(d.key) : _VERBOSE;
 
                 if (d.key < localBrushStart || d.key >= localBrushEnd || brush.empty()) {
                     return "0.4";
-                }
-                else {
+                } else {
                     return "1";
                 }
             });
@@ -1514,7 +1428,7 @@ var histogram_module = (function(verbose) {
         });
 
 
-        brush.on("brushend.chart", function() {
+        brush.on("brushend.chart", function () {
 
             _VERBOSE ? console.log("brushend.chart") : _VERBOSE;
 
@@ -1536,12 +1450,11 @@ var histogram_module = (function(verbose) {
 
                 dim_eps_freq.filterAll();
 
-                d3.selectAll("rect.bar").style("opacity", function(d, i) {
+                d3.selectAll("rect.bar").style("opacity", function (d, i) {
                     return "1";
                 });
 
-            }
-            else {
+            } else {
 
                 if (d3.round(localBrushStart, 0) == 0)
                     left_extent = 1
@@ -1556,7 +1469,7 @@ var histogram_module = (function(verbose) {
                 _VERBOSE ? console.log(display_obj.epsRange.invertExtent(left_extent)) : _VERBOSE;
                 _VERBOSE ? console.log(display_obj.epsRange.invertExtent(rigth_extent)) : _VERBOSE;
 
-                display_obj.dim_eps_freq.filterFunction(function(d) {
+                display_obj.dim_eps_freq.filterFunction(function (d) {
                     // _VERBOSE ? console.log(d) : _VERBOSE;
 
                     if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] + 0.1)
@@ -1565,11 +1478,10 @@ var histogram_module = (function(verbose) {
                 });
 
                 // Fade all years in the histogram not within the brush
-                d3.selectAll("rect.bar").style("opacity", function(d, i) {
+                d3.selectAll("rect.bar").style("opacity", function (d, i) {
                     if (d.key < localBrushStart || d.key > localBrushEnd) {
                         return "0.4";
-                    }
-                    else {
+                    } else {
                         return "1";
                     }
                 });
@@ -1581,7 +1493,7 @@ var histogram_module = (function(verbose) {
         });
 
 
-        chart.margin = function(_) {
+        chart.margin = function (_) {
 
             _VERBOSE ? console.log("chart.margin") : _VERBOSE;
 
@@ -1591,7 +1503,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.x = function(_) {
+        chart.x = function (_) {
 
             _VERBOSE ? console.log("chart.x") : _VERBOSE;
 
@@ -1605,7 +1517,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.y = function(_) {
+        chart.y = function (_) {
 
             _VERBOSE ? console.log("chart.y") : _VERBOSE;
 
@@ -1615,7 +1527,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.dimension = function(_) {
+        chart.dimension = function (_) {
 
             _VERBOSE ? console.log("chart.dimension") : _VERBOSE;
             // _VERBOSE ? console.log(_) : _VERBOSE;
@@ -1626,7 +1538,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.filter = function(_) {
+        chart.filter = function (_) {
 
             _VERBOSE ? console.log("chart.filter") : _VERBOSE;
 
@@ -1641,7 +1553,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.group = function(_) {
+        chart.group = function (_) {
 
             _VERBOSE ? console.log("chart.group") : _VERBOSE;
             // _VERBOSE ? console.log(_) : _VERBOSE;
@@ -1652,7 +1564,7 @@ var histogram_module = (function(verbose) {
             return chart;
         };
 
-        chart.round = function(_) {
+        chart.round = function (_) {
 
             _VERBOSE ? console.log("chart.round") : _VERBOSE;
 
@@ -1681,16 +1593,16 @@ var histogram_module = (function(verbose) {
     function _sort_by(field, reverse, primer) {
 
         var key = primer ?
-                function(x) {
+                function (x) {
                     return primer(x[field])
                 } :
-                function(x) {
+                function (x) {
                     return x[field]
                 };
 
         reverse = !reverse ? 1 : -1;
 
-        return function(a, b) {
+        return function (a, b) {
             return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
         }
     }
@@ -1718,7 +1630,8 @@ var histogram_module = (function(verbose) {
         // updateLabels: updateLabels,
         createBarChart: createBarChart,
         createBarChartNet: createBarChartNet,
-        createBarChartFecha: createBarChartFecha
+        createBarChartFecha: createBarChartFecha,
+        setDisplayModule: setDisplayModule
     }
 
 

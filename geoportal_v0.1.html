@@ -29,7 +29,7 @@
         <link rel="stylesheet" href="plugins/jstree/dist/themes/proton/style.css" />
 
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
 
@@ -54,6 +54,8 @@
         <link rel="stylesheet" type="text/css" href="plugins/loading/jquery.loading.min.css" />
 
         <link href="https://fonts.googleapis.com/css?family=Poppins|Raleway:500" rel="stylesheet"> 
+
+        <link rel="stylesheet" href="plugins/multiselect/css/bootstrap-multiselect.css" type="text/css"/>
 
 
 
@@ -113,7 +115,7 @@
 
         <script src="plugins/jquery-ui/jquery-ui.js"></script>
 
-        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 
         <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -248,25 +250,26 @@
 
                     <div class="col-md-6 col-sm-12 col-xs-12">
 
-                        <div class="col-md-1 col-sm-12 col-xs-12 margin-top-15">
+                        <div class="col-md-9 col-sm-12 col-xs-12 margin-top-15 ">
+                            <button id="btn_tuto_steps" type="button" title="" class="btn btn-warning  display-marker "></button>
+                            <button id="btn_tutorial" type="button" title="" class="btn btn-warning "></button>
+                            <button id="nicho_link" type="button" class="btn btn-primary "></button>
+                            <button id="tuto_res" class="btn btn-warning display-marker" type="button" 
+                                    style="visibility: hidden"
+                                    ></button>
                         </div>
 
-                        <div class="col-md-5 col-sm-12 col-xs-12  margin-top-15 ">
-                            <button id="nicho_link" type="button" class="btn btn-info pull-right"></button>
-                        </div>
-
-                        <div class="col-md-2 col-sm-12 col-xs-12 margin-top-15 ">
-
-                            <div class="language_drop pull-right">
+                        <div class="col-md-3 col-sm-12 col-xs-12 margin-top-15 ">
+                            <div class="language_drop ">
 
                                 <div class=" dropdown_group ">
 
                                     <div class="input-group-btn ">
 
-                                        <button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+                                        <button id="btn_idioma" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="en_EN" >Language <span class="caret"></span></button>
 
                                         <ul class="dropdown-menu dropdown_idioma">
-                                            <li><a id="a_espanol" class="idioma " value="es_MX" label="Español ">Español </a></li>
+                                            <li><a id="a_espanol" class="idioma " value="es_ES" label="Español ">Español </a></li>
                                             <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
                                         </ul>
 
@@ -275,17 +278,6 @@
                                 </div>
 
                             </div>
-
-                        </div>
-
-                        <div class="col-md-1 col-sm-12 col-xs-12 margin-top-15">
-                            <button id="btn_tutorial" type="button" title="Ver tutorial en PDF" class="btn btn-primary glyphicon glyphicon-book glyphicon-head pull-right"></button>
-                        </div>
-
-                        <div class="col-md-3 margin-top-15">
-                            <!--<button id="btn_steps" type="button" title="Ver Pasos" class="btn btn-primary glyphicon glyphicon-info-sign glyphicon-head pull-right"></button>-->
-                            <!--glyphicon glyphicon-info-sign glyphicon-head-->
-                            <button id="btn_tuto_steps" type="button" title="Iniciar tutorial" class="btn btn-warning pull-right display-marker">Live Tutorial</button>
                         </div>
 
                     </div>
@@ -312,30 +304,22 @@
 
                     <div id="sp_section" class="col-md-12 margin-top-15 box_shadow height95 display-marker">
 
-                        <h2 id="lb_especie" class="sidebar-header-species"></h2>
+                        <h2 id="lb_especie" class="sidebar-header-species no-mg-top"></h2>
 
                         <!-- No eliminar, utilizado para enlace de regeneración! -->
                         <div id="result"></div>
 
-                        <div class="row margin-top-ten">
-
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-
-                                <label id="lb_sp_list" for="grid_resolution"></label>
-                                <div id="tuto_autocomplete" class="input-group text-input">
-
-                                    <input id="nom_sp" type="text" class="form-control" />
-                                    <span id="lb_example" class="input-group-addon" id="basic-addon1"></span>
-
-                                </div>
+                        <div class="row ">
+                            
+                            <div id="tuto_region"  class="col-md-6 col-sm-12 col-xs-12">
+                                <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
+                                    <label id="footprint_region" ></label>
+                                    <select id="footprint_region_select" class="form-control" >
+                                    </select>
+                                <!--</div>-->
                             </div>
 
-                        </div>
-
-                        <div class="row margin-top-ten">
-
                             <div id="tuto_resolution"  class="col-md-6 col-sm-12 col-xs-12">
-
 
                                 <div class="form-group">
                                     <label id="lb_mapa_res" for="grid_resolution"></label>
@@ -348,8 +332,85 @@
                                 </div> 
 
                             </div>
+                            
+                        </div>
 
-                            <div id="tuto_fil_fecha" class="col-md-6 col-sm-12 col-xs-12">
+                        <div id="var_target" class="row ">
+
+                            <!-- <div class="col-md-9 col-sm-12 col-xs-12 pd-no-rside">
+
+                                <label id="lb_sp_list"></label>
+
+                                <div id="tuto_taxon_sp_target" class="input-group dropdown_group">
+                                    <div class="input-group-btn">
+                                        <button id="btn_variable_target" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-primary dropdown-toggle">Taxon <span class="caret"></span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <li>
+                                                <a id="a_item_reino_target" parent-field="reinovalido" data-field="phylumdivisionvalido" level-field="2" class="biotica">Kingdom</a>
+                                            </li>
+                                            <li>
+                                                <a id="a_item_phylum_target" parent-field="phylumdivisionvalido" data-field="clasevalida" level-field="3" class="biotica">Phylum</a>
+                                            </li>
+                                            <li>
+                                                <a id="a_item_clase_target" parent-field="clasevalida" data-field="ordenvalido" level-field="4" class="biotica">Class</a>
+                                            </li>
+                                            <li>
+                                                <a id="a_item_orden_target" parent-field="ordenvalido" data-field="familiavalida" level-field="5" class="biotica">Order</a>
+                                            </li>
+                                            <li><a id="a_item_familia_target" parent-field="familiavalida" data-field="generovalido" level-field="6" class="biotica">Family</a></li>
+                                            <li>
+                                                <a id="a_item_genero_target" parent-field="generovalido" data-field="especievalidabusqueda" level-field="7" class="biotica">Genus</a>
+                                            </li>
+                                        </div>
+                                    </div>
+                                    <input id="text_variable_target" type="text" aria-label="..." disabled="" class="form-control ui-autocomplete-input" autocomplete="off">
+                                </div>
+
+                                <div id="spContainer" class="col-xs-12 pd-no-sides">
+                                </div>
+
+                                comentado
+                                 <div class="col-md-10 col-sm-10 col-xs-10 pd-no-sides">
+                                    <div id="tuto_autocomplete" class="input-group text-input ">
+                                            <input id="nom_sp" type="text" class="form-control " />    
+                                            <span id="lb_example" class="input-group-addon" id="basic-addon1">
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2 pd-no-sides">
+                                    <input id="btnSchSp" class="btn btn-primary" type="button" />
+                                </div>
+                                
+                                
+
+                                <div class="col-xs-12 pd-no-sides">
+                                         <select id="nom_sp_multiple" multiple="multiple " class="col-xs-12" ></select>   
+
+                                </div>
+
+                                <div id="spContainer" class="col-xs-12 pd-no-sides">
+                                </div> 
+                                comentado
+
+                            </div>
+
+                            <div class="col-md-3 col-sm-12 col-xs-12 pd-no-lside">
+
+                                <div id="spRigthContainer" class="pd-no-sides">
+
+                                </div>
+                                
+                            </div> -->
+
+                        </div>
+                        
+                        
+
+                        <div class="row ">
+
+
+                            <div id="tuto_fil_fecha" class="col-md-5 col-sm-12 col-xs-12">
 
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <label id="lb_range_fecha" for="sliderFecha"></label>
@@ -361,11 +422,7 @@
 
                             </div>
 
-                        </div>
-
-                        <div class="row margin-top-ten">
-
-                            <div id="tuto_reg_fecha" class="col-md-6 col-sm-12 col-xs-12">
+                            <div id="tuto_reg_fecha" class="col-md-4 col-sm-12 col-xs-12">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <label id="lb_reg_fecha" for="chkFecha"></label>
                                 </div>
@@ -376,7 +433,7 @@
 
                             </div>
 
-                            <div id="tuto_reg_fosil" class="col-md-6 col-sm-12 col-xs-12">
+                            <div id="tuto_reg_fosil" class="col-md-3 col-sm-12 col-xs-12">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <label id="lb_fosil" for="chkFosil"></label>
                                 </div>
@@ -391,7 +448,7 @@
 
 
 
-                        <div class="row margin-top-ten">
+                        <div class="row ">
 
                             <div id="tuto_histo_reg" class="col-md-12">
                                 <div id="hist_fecha_container" class="fecha_container">
@@ -403,6 +460,10 @@
                                 <button id="reload_map" class="btn btn-primary pull-right" type="button"></button>
                             </div>
 
+
+                            <button id="specie_next" class="btn btn-success btn-sig " type="button" 
+                                    style="visibility: hidden"
+                                    >Siguiente</button>
 
                         </div>
 
@@ -524,14 +585,14 @@
 
 
 
-                                                <div class="row">
+                                                <!-- <div class="row">
                                                     <div class="col-md-6 margin-top-five">
                                                         <h5 id="lb_sum_genero" class="summary_lb"></h5>
                                                     </div>
                                                     <div class="col-md-6 margin-top-five">
                                                         <h5 id="lb_sum_genero_res" class="summary_lb">-</h5>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
 
 
@@ -554,10 +615,16 @@
             </div>
 
 
-            <div id="section1" class="row-fluid margin-top-15 section page">
+            <div id="section1" class="row-fluid margin-top-15 section page" >
+                
+                <div id="tuto_variables" class="col-md-9 margin-top-15 " style="padding-left: 0px">
+
+                    <div class="col-md-12 box_shadow padding-sides-zero height85" id="variables"></div>
+
+                </div>
 
 
-                <div id="tuto_params" class="col-md-5 margin-top-15 box_shadow height80 padding-sides-zero">
+                <div id="tuto_params" class="col-md-3 margin-top-15 box_shadow height85 padding-sides-zero">
 
                     <div class="col-md-12 ">
 
@@ -579,8 +646,8 @@
                                 <h5 id="lb_occ_min"></h5>
                             </div>
                             <div class="col-md-6 margin-top-five">
-                                <input id="chkMinOcc" class="checkbox_item pull-right" type="checkbox"/>
-                                <input id="occ_number" class="occ_number pull-right " type="number" min="1" disabled="true" value="1">
+                                <input id="chkMinOcc" class="checkbox_item pull-right" type="checkbox" checked="true"/>
+                                <input id="occ_number" class="occ_number pull-right " type="number" min="1" value="5">
                             </div>
                         </div>
 
@@ -610,28 +677,30 @@
 
                 </div>
 
-                <div id="tuto_variables" class="col-md-7 margin-top-15 ">
-
-                    <div class="col-md-12 box_shadow padding-sides-zero height80" id="variables"></div>
-
-                </div>
+                
 
                 <div id="tuto_correr_analisis" class="col-md-12 margin-top-15 ">
 
-                    <div class="col-md-offset-5 col-md-3 padding-sides-zero " >
+                    <div class=" col-md-5 col-centered " >
 
                         <!--<div class="col-md-12 margin-top-15">-->
-                        <button id="get_esc_ep" class="btn btn-primary pull-left" type="button" ></button>
-                        <button id="show_gen" class="btn btn-warning glyphicon glyphicon-link " 
-                                type="button" title="Guardar enlace de resultados" 
-                                style="visibility: hidden" ></button>                        
-                        <button id="tuto_res" class="btn btn-warning display-marker" type="button" style="visibility: hidden"></button>
-                        <!--</div>-->
+                        <button id="get_esc_ep" class="btn btn-primary " type="button" ></button>
+                        <button id="show_gen" class="btn btn-primary margin-left-two" 
+                                type="button" title="" 
+                                style="visibility: hidden" 
+                                ></button>                        
+                        <button id="btn_tuto_steps_result" type="button" title="" class="btn btn-warning  display-marker " style="visibility: hidden" ></button>
 
                     </div>
 
+
                 </div>
 
+
+                <button id="params_next" class="btn btn-success btn-sig-left" type="button" 
+                        style="visibility: hidden"
+                        ></button>
+                <!---->
 
             </div>
 
@@ -641,9 +710,75 @@
 
                 <div class="col-md-12 margin-top-15">
 
-                    <h3 id="lb_resultados" class="sidebar-header-species"></h3>
+                    <div class="row">
+
+                        <div class="col-lg-1">
+                            <h3 id="lb_resultados" class="sidebar-header-species"></h3>    
+                        </div>
+
+                        <div class="col-lg-1 margin-top-20 margin-right-90  pull-right">
+                            <div class=" dropdown_group ">
+
+                            <div class="input-group-btn ">
+
+                                <button id="btn_map_type" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="range" >Equal range <span class="caret"></span></button>
+
+                                <ul class="dropdown-menu dropdown_idioma">
+                                    <li><a class="map_type" label="Equal range" value="range">Equal range </a></li>
+                                    <li><a class="map_type" label="Standard deviation" value="deviation" ">Standard deviation </a></li>
+                                    <li><a class="map_type" label="Natural Breaks" value="jenks" ">Natural Breaks </a></li>
+                                    <!-- <li><a class="map_type" label="Quantize" value="quantize">Quantize </a></li> -->
+                                </ul>
+
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                        </div>
+
+                        
+
+
+                    
+
+
+                    
+
 
                     <div id="map" class="margin-top-15 box_shadow" >
+
+
+                        <!-- <div class="dropdown show link_map_type">
+                          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown link
+                          </a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                          </div>
+                        </div> -->
+
+                       <!--  <div class="dropdown link_map_type">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Visualización
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                          </div>
+                        </div> -->
+
+
+                        
+
+                        <!-- <div id='form' class="link_map_type">
+                          <input checked='true' type='radio' name='scale' id='jenks9' /><label for='jenks9'>jenks 9</label>
+                          <input type='radio' name='scale' id='quantize' /><label for='quantize'>quantize</label>
+                        </div> -->
 
                         <div class="link_shape">
                             <button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
@@ -655,10 +790,17 @@
                     </div>
                 </div>
 
+                <!--<div class="col-md-12 margin-top-15">-->
+
+                <!--</div>-->
+
+
             </div>
 
-
-            <!--style="display:  none;"-->
+            <button id="map_next" class="btn btn-success btn-sig" type="button" 
+                    style="visibility: hidden"
+                    ></button>
+            <!---->
 
 
             <div class="row-fluid row_panel margin-top-35 section page" id="tbl_hist" > 
@@ -680,7 +822,13 @@
                     </div>
 
 
-                    <div id="histcontainer_row" class="row-fluid histcontainer_row box_shadow">
+                    <button id="hist_next" class="btn btn-success btn-sig-rigth" type="button" 
+                            style="visibility: hidden"
+                            ></button>
+                    <!--style="visibility: hidden"-->
+
+
+                    <div id="histcontainer_row" class="row-fluid histcontainer_row box_shadow ">
 
                         <div id="hst_esp_eps" class="myScrollableBlockEpsilonSmallHist col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Epsilon Especie');
@@ -771,7 +919,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4  id="lb_modal_shp" class="modal-title" id="myModalLabel"></h4>
+                        <h4  id="lb_modal_shp" class="modal-title" ></h4>
                     </div>
 
                     <div class="modal-body">
@@ -850,18 +998,18 @@
 
 
 
-<!--        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-6 alwaysvisible">
-
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  pull-left">
-                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem anterior">
-                    <a id="ant_a" href="#" class="a_estatus">Anterior</a>
-                </div>
-                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem siguiente">
-                    
-                    <a id="sig_a" href="#" class="a_estatus">Siguiente</a>
-                </div>
-            </div>
-        </div>-->
+        <!--        <div class="col-md-3 col-lg-3 col-sm-6 col-xs-6 alwaysvisible">
+        
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  pull-left">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem anterior">
+                            <a id="ant_a" href="#" class="a_estatus">Anterior</a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 visibleItem siguiente">
+        
+                            <a id="sig_a" href="#" class="a_estatus">Siguiente</a>
+                        </div>
+                    </div>
+                </div>-->
 
 
 
@@ -869,6 +1017,7 @@
         <div class="modalloading"><!-- Place at bottom of page --></div>
 
 
+        <script type="text/javascript" src="plugins/Bootstrap/popper.min.js"></script>
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
@@ -893,6 +1042,11 @@
         <script src="plugins/BetterWMS/L.TileLayer.BetterWMS.js"></script>
         <script type="text/javascript" src="plugins/toastr/toastr.js"></script>
         <script type="text/javascript" src="plugins/i18n/in/jquery.i18n.properties.min.js"></script>
+        <script type="text/javascript" src="plugins/simpleStatistics/simple-statistics.js"></script>
+        <script type="text/javascript" src="plugins/de-array/d3-array.min.js"></script>
+
+        
+
 
 
         <script type="text/javascript" src="javascripts/pede_nicho.js"></script>
@@ -903,6 +1057,7 @@
         <script type="text/javascript" src="javascripts/validation_module.js"></script>
         <script type="text/javascript" src="javascripts/histogram_module.js"></script> 
         <script type="text/javascript" src="javascripts/table_module.js"></script> 
+        <script type="text/javascript" src="javascripts/utils_module.js"></script>
         <script type="text/javascript" src="javascripts/language_module.js"></script> 
         <script type="text/javascript" src="javascripts/toast_module.js"></script> 
 
@@ -945,6 +1100,18 @@
 
         <script type="text/javascript" src="plugins/loading/jquery.loading.min.js"></script>
 
+        <script type="text/javascript" src="plugins/RequireJS/js/RequireJS.js"></script>
+
+        <script type="text/javascript" src="plugins/multiselect/js/bootstrap-multiselect.js"></script>
+
+        <script type="text/javascript" src="https://ecoinformatica.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-5gc1ua/b/44/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=es-ES&collectorId=a6649d25"></script>
+
+        
+
+
+
+        <!-- <script src='https://unpkg.com/simple-statistics@6.1.1/dist/simple-statistics.min.js' /> -->
+
 
 
         <!-- <script src="plugins/markercluster/src/MarkerCluster.js"></script>
@@ -953,70 +1120,6 @@
 
         <!-- <a href="https://github.com/Turbo87/sidebar-v2/"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Hecho en Conabio"></a> -->
 
-
-        <script>
-            $(document).ready(function () {
-
-                var estado_page = 0;
-
-                // Add smooth scrolling to all links
-                $("#sig_a").on('click', function (event) {
-
-                    if (estado_page === 2) {
-                        return;
-                    }
-
-                    estado_page = estado_page + 1;
-                    $("#sig_a").attr("href", "#section" + estado_page);
-
-                    // Make sure this.hash has a value before overriding default behavior
-                    if (this.hash !== "") {
-                        event.preventDefault();
-                        var hash = this.hash;
-
-//                            console.log($(hash).offset().top);
-                        var value = $(hash).offset().top - 40;
-//                            console.log(value);
-
-                        $('html, body').animate({
-                            scrollTop: value
-                        }, 800, function () {
-//                                window.location.hash = hash;
-                        });
-                    }
-
-                });
-
-                $("#ant_a").on('click', function (event) {
-
-                    if (estado_page === 0) {
-                        return;
-                    }
-
-                    estado_page = estado_page - 1;
-                    $("#ant_a").attr("href", "#section" + estado_page);
-
-                    // Make sure this.hash has a value before overriding default behavior
-                    if (this.hash !== "") {
-                        event.preventDefault();
-                        var hash = this.hash;
-
-//                            console.log($(hash).offset().top);
-                        var value = $(hash).offset().top - 40;
-//                            console.log(value);
-
-                        $('html, body').animate({
-                            scrollTop: value
-                        }, 800, function () {
-//                                window.location.hash = hash;
-                        });
-                    }
-
-                });
-
-
-            });
-        </script>
 
         <!-- <script type="text/javascript" src="bs_js/jquery.appear.js"></script>
     <script type="text/javascript" src="bs_js/wow.min.js"></script>
