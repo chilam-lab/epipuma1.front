@@ -1530,21 +1530,26 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 data_freq_decil_tbl.forEach(function (specie, index) {
                                     // console.log(specie)
                                     
-                                    var occ = specie.nj;
-                                    var occ_decil = specie.njd;
-                                    var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
+                                    var occ = parseFloat(specie.nj)
+                                    
+                                    // **** TODO: REVISAR si la cantidad de njd calculada contempla las 5 iteraciones en caso de ser validación
+                                    var occ_decil = specie.njd
+                                    var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%"
 
-                                    // console.log("occ_decil: " + occ_decil)
-                                    // console.log("length_decil: " + length_decil)
+                                    console.log("occ: " + occ)
+                                    console.log("occ_decil: " + occ_decil)
+                                    console.log("length_decil: " + length_decil)
 
                                     var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
 
                                     var value_abio = "";
                                     if (specie.name.indexOf("bio0") !== -1) {
                                         var arg_values = specie.name.split(" ")
-                                        value_abio = _iTrans.prop("a_item_" + arg_values[0])
-                                        // + " " + arg_values[1] + " : " + arg_values[2]
-                                    } else {
+                                        var bio = arg_values[0]
+                                        var range = arg_values[1].split(":")
+                                        value_abio = _iTrans.prop("a_item_" + bio) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
+                                    } 
+                                    else {
                                         value_abio = specie.name
                                     }
 
@@ -1778,7 +1783,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
             // las variables climáticas no cuentan con reino, phylum, clase, etc
             if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
                 // var arg_values = d.especievalidabusqueda.split(" ")
-                var value = _iTrans.prop("a_item_" + d.layer)
+
+                var range = d.tag.split(":")
+                var value = _iTrans.prop("a_item_" + d.layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
                  // + " " + arg_values[1] + " : " + arg_values[2]
                 item_list.push(value)
             } else {
@@ -2702,7 +2709,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     // var arg_values = json_data.groups[i].name.split(" ")
                     // var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
                     // table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
-                    var layer = _iTrans.prop("a_item_" + json_data.groups[i].layer)
+                    var range = json_data.groups[i].tag.split(":")
+                    var layer = _iTrans.prop("a_item_" + json_data.groups[i].layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
                     table_rt += "<tr><td>" + layer + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
 
                 }

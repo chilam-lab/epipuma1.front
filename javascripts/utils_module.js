@@ -475,13 +475,12 @@ var utils_module = (function (verbose) {
         var cells_array = data.map(function (d) {
             return {
                 cells: d.cells,
-                score: parseFloat(d.score),
                 spid: d.spid,
                 epsilon: parseFloat(d.epsilon),
-                // score: parseFloat(d.score),
+                score: parseFloat(d.score),
                 nj: d.nj,
                 // name: d.especievalidabusqueda
-                name: d.reinovalido === "" ? d.layer : (d.generovalido +" "+d.especieepiteto+" "+d.nombreinfra)
+                name: d.reinovalido === "" ? (d.layer + " " + d.tag) : (d.generovalido +" "+d.especieepiteto+" "+d.nombreinfra)
             }
         })
 
