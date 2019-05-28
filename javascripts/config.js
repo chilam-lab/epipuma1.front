@@ -8,7 +8,7 @@ $(document).ready(function () {
     // var url_api = "http://localhost:8080";
 
     
-    var ambiente = 5;
+    var ambiente = 0;
     var _VERBOSE = true;
     var modulo = 2; // modulo index
 

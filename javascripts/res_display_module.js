@@ -1530,21 +1530,26 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 data_freq_decil_tbl.forEach(function (specie, index) {
                                     // console.log(specie)
                                     
-                                    var occ = specie.nj;
-                                    var occ_decil = specie.njd;
-                                    var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%";
+                                    var occ = parseFloat(specie.nj)
+                                    
+                                    // **** TODO: REVISAR si la cantidad de njd calculada contempla las 5 iteraciones en caso de ser validación
+                                    var occ_decil = specie.njd
+                                    var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%"
 
-                                    // console.log("occ_decil: " + occ_decil)
-                                    // console.log("length_decil: " + length_decil)
+                                    console.log("occ: " + occ)
+                                    console.log("occ_decil: " + occ_decil)
+                                    console.log("length_decil: " + length_decil)
 
                                     var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
 
                                     var value_abio = "";
                                     if (specie.name.indexOf("bio0") !== -1) {
                                         var arg_values = specie.name.split(" ")
-                                        value_abio = _iTrans.prop("a_item_" + arg_values[0])
-                                        // + " " + arg_values[1] + " : " + arg_values[2]
-                                    } else {
+                                        var bio = arg_values[0]
+                                        var range = arg_values[1].split(":")
+                                        value_abio = _iTrans.prop("a_item_" + bio) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
+                                    } 
+                                    else {
                                         value_abio = specie.name
                                     }
 
@@ -1680,78 +1685,78 @@ var res_display_module = (function (verbose, url_zacatuche) {
     }
 
 
-    function _generateCounts(counts_data) {
+//     function _generateCounts(counts_data) {
 
-        _VERBOSE ? console.log("_generateCounts") : _VERBOSE;
-        _VERBOSE ? console.log(counts_data) : _VERBOSE;
+//         _VERBOSE ? console.log("_generateCounts") : _VERBOSE;
+//         _VERBOSE ? console.log(counts_data) : _VERBOSE;
 
-        despliegaLoadings();
+//         despliegaLoadings();
 
-//        if (!_RUN_ON_SERVER) {
-//            counts_data["with_data_freq"] = false;
-//            counts_data["with_data_score_cell"] = false;
-//            counts_data["with_data_freq_cell"] = false;
-//            counts_data["with_data_score_decil"] = false;
-//        }
+// //        if (!_RUN_ON_SERVER) {
+// //            counts_data["with_data_freq"] = false;
+// //            counts_data["with_data_score_cell"] = false;
+// //            counts_data["with_data_freq_cell"] = false;
+// //            counts_data["with_data_score_decil"] = false;
+// //        }
 
-        var milliseconds = new Date().getTime();
+//         var milliseconds = new Date().getTime();
 
-        $.ajax({
-            url: _url_zacatuche + "/niche/countsTaxonsGroup",
-            type: 'post',
-            idtiem: milliseconds,
-            dataType: "json",
-            data: counts_data,
-            success: function (respuesta) {
-//                console.log(respuesta);
-                if (respuesta.ok) {
-                    var counts = respuesta.data;
-                    _createTableEpSc(counts);
+//         $.ajax({
+//             url: _url_zacatuche + "/niche/countsTaxonsGroup",
+//             type: 'post',
+//             idtiem: milliseconds,
+//             dataType: "json",
+//             data: counts_data,
+//             success: function (respuesta) {
+// //                console.log(respuesta);
+//                 if (respuesta.ok) {
+//                     var counts = respuesta.data;
+//                     _createTableEpSc(counts);
 
-//                    if (_RUN_ON_SERVER) {
-//
-//                        _createHistEpScr_Especie(respuesta.data_freq);
-//                        _createHistScore_Celda(respuesta.data_freq_cell);
-//                        _configureStyleMap(respuesta.data_score_cell);
-//
-//                    } else {
+// //                    if (_RUN_ON_SERVER) {
+// //
+// //                        _createHistEpScr_Especie(respuesta.data_freq);
+// //                        _createHistScore_Celda(respuesta.data_freq_cell);
+// //                        _configureStyleMap(respuesta.data_score_cell);
+// //
+// //                    } else {
 
-                    var data_freq = _utils_module.processDataForFreqSpecie(counts);
-                    _createHistEpScr_Especie(data_freq);
+//                     var data_freq = _utils_module.processDataForFreqSpecie(counts);
+//                     _createHistEpScr_Especie(data_freq);
 
-                    _current_data_score_cell = _utils_module.processDataForScoreCell(counts);
-                    _configureStyleMap();
+//                     _current_data_score_cell = _utils_module.processDataForScoreCell(counts);
+//                     _configureStyleMap();
 
-                    var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
-                    _createHistScore_Celda(data_freq_cell);
+//                     var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
+//                     _createHistScore_Celda(data_freq_cell);
 
-//                    }
-
-
-
-                } else {
-                    // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
-                }
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-
-                console.log(errorThrown);
-                console.log(jqXHR);
-
-                _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
-                _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
-//                TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
+// //                    }
 
 
 
-//                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_tblsp'), "error");
+//                 } else {
+//                     // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
+//                 }
 
-            }
+//             },
+//             error: function (jqXHR, textStatus, errorThrown) {
 
-        });
+//                 console.log(errorThrown);
+//                 console.log(jqXHR);
 
-    }
+//                 _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
+//                 _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
+// //                TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
+
+
+
+// //                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_tblsp'), "error");
+
+//             }
+
+//         });
+
+//     }
 
 
     /**
@@ -1778,7 +1783,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
             // las variables climáticas no cuentan con reino, phylum, clase, etc
             if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
                 // var arg_values = d.especievalidabusqueda.split(" ")
-                var value = _iTrans.prop("a_item_" + d.layer)
+
+                var range = d.tag.split(":")
+                var value = _iTrans.prop("a_item_" + d.layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
                  // + " " + arg_values[1] + " : " + arg_values[2]
                 item_list.push(value)
             } else {
@@ -2550,8 +2557,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var singleCellData = _cdata;
 
         var milliseconds = new Date().getTime();
-        singleCellData['lat'] = lat;
-        singleCellData['long'] = long;
+        singleCellData['latitud'] = lat;
+        singleCellData['longitud'] = long;
         singleCellData['idtime'] = milliseconds;
         singleCellData['get_grid_species'] = true;
 
@@ -2562,42 +2569,80 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var milliseconds = new Date().getTime();
 
-        // TODO: cambiar a getcounts
-        $.ajax({
-//            url: _url_zacatuche + "/niche/getGridSpecies",
-            url: _url_zacatuche + "/niche/countsTaxonsGroup",
-            idtiem: milliseconds,
-            type: 'post',
-            data: singleCellData,
-            success: function (resp) {
+        fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
+            method: "POST",
+            body: JSON.stringify(singleCellData),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(resp => resp.json())
+        .then(respuesta => {
 
-                if (resp.ok) {
+            if (respuesta.ok) {
 
-                    var data = resp.data;
+                var data = respuesta.data;
 
-                    _VERBOSE ? console.log(data) : _VERBOSE;
+                _VERBOSE ? console.log(data) : _VERBOSE;
 
-                    if (data.species.length > 0) {
-                        var htmltable = _createTableFromData(data);
-                        if (htmltable === "")
-                            return;
-                        _map_module_nicho.showPopUp(htmltable, [lat, long]);
-                    }
-
+                if (data.groups.length > 0) {
+                    var htmltable = _createTableFromData(data);
+                    if (htmltable === "")
+                        return;
+                    _map_module_nicho.showPopUp(htmltable, [lat, long]);
                 }
 
-
-                $('#map').loading('stop');
-
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-
-                $('#map').loading('stop');
-                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-
             }
+
+
+            $('#map').loading('stop');
+
+
+        })
+        .catch(err => {
+            $('#map').loading('stop');
+            _VERBOSE ? console.log("error: " + err) : _VERBOSE;
         });
+
+
+
+
+//         // TODO: cambiar a getcounts
+//         $.ajax({
+// //            url: _url_zacatuche + "/niche/getGridSpecies",
+//             url: _url_zacatuche + "/niche/countsTaxonsGroup",
+//             idtiem: milliseconds,
+//             type: 'post',
+//             data: singleCellData,
+//             success: function (resp) {
+
+//                 if (resp.ok) {
+
+//                     var data = resp.data;
+
+//                     _VERBOSE ? console.log(data) : _VERBOSE;
+
+//                     if (data.species.length > 0) {
+//                         var htmltable = _createTableFromData(data);
+//                         if (htmltable === "")
+//                             return;
+//                         _map_module_nicho.showPopUp(htmltable, [lat, long]);
+//                     }
+
+//                 }
+
+
+//                 $('#map').loading('stop');
+
+
+//             },
+//             error: function (jqXHR, textStatus, errorThrown) {
+
+//                 $('#map').loading('stop');
+//                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+//             }
+//         });
 
 
     }
@@ -2637,11 +2682,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
             // + "<thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"+
             + "<tbody>";
 
-            for (i = 0; i < json_data.species.length; i++) {
+            for (i = 0; i < json_data.groups.length; i++) {
 
-                if (json_data.species[i].type === "bio") {
+                if (json_data.groups[i].tipo === "bio") {
 
-                    table_sp += "<tr><td>" + json_data.species[i].name + "</td><td>" + parseFloat(json_data.species[i].score).toFixed(2) + "</td></tr>";
+                    table_sp += "<tr><td>" + json_data.groups[i].generovalido + " " + json_data.groups[i].especieepiteto + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
 
                 }
 
@@ -2657,13 +2702,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
             // + "<thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"
             + "<tbody>"
 
-            for (var i = 0; i < json_data.species.length; i++) {
+            for (var i = 0; i < json_data.groups.length; i++) {
 
-                if (json_data.species[i].type === "raster") {
+                if (json_data.groups[i].tipo === "raster") {
 
-                    var arg_values = json_data.species[i].name.split(" ")
-                    var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
-                    table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.species[i].score).toFixed(2) + "</td></tr>";
+                    // var arg_values = json_data.groups[i].name.split(" ")
+                    // var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
+                    // table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
+                    var range = json_data.groups[i].tag.split(":")
+                    var layer = _iTrans.prop("a_item_" + json_data.groups[i].layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                    table_rt += "<tr><td>" + layer + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
 
                 }
 
