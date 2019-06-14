@@ -59,6 +59,9 @@ var histogram_module = (function (verbose) {
 
         _VERBOSE ? console.log("_initilizeHistogram") : _VERBOSE;
 
+        $('#lb_header_info').text(_iTrans.prop('lb_index_hist_decil'));
+        $('#lb_body_info').text(_iTrans.prop('lb_msg_graf_decil'));
+
     }
     
     function addTooltipBarChart(svg){
@@ -1166,6 +1169,9 @@ var histogram_module = (function (verbose) {
 
         _VERBOSE ? console.log("BarChart") : _VERBOSE;
 
+        _VERBOSE ? console.log(json) : _VERBOSE;
+
+
         var margin = {top: 5, right: 20, bottom: 55, left: 20};
         var width = $("#hist").width() - margin.left - margin.right;
         var height = $("#hist").height() - margin.top - margin.bottom;
@@ -1200,8 +1206,13 @@ var histogram_module = (function (verbose) {
 
         function chart(div) {
 
+            _VERBOSE ? console.log(div) : _VERBOSE;
+
             height = y.range()[0];
             data = group.all();
+
+
+            _VERBOSE ? console.log(data) : _VERBOSE;
 
             // it contains an array from 1 to 20, create key missing elements and set value to 0
             display_obj.epsilon_beans.forEach(function (d) {

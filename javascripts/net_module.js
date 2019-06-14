@@ -85,6 +85,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             "progressBar": true
         };
 
+
+        //TODO: ajustar a nueva estructura
         $("#send_email").click(function(e) {
 
             // _VERBOSE ? console.log($("#email_address")) : _VERBOSE;
@@ -518,8 +520,17 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                             .duration(200)
                             .style("opacity", .9);
 
+                    var name_sp = ""
+
+                    if(d.biotic){
+                        name_sp = d.generovalido + " " + d.especieepiteto
+                    }
+                    else{
+                         name_sp = d.tag
+                    }
+
                     div_tip.html(
-                            "<strong>" + _iTrans.prop('lb_variable_name') + ":</strong> <span >" + d.label + "</span><br/><br/>" +
+                            "<strong>" + _iTrans.prop('lb_variable_name') + ":</strong> <span >" + name_sp + "</span><br/><br/>" +
                             "<strong>" + _iTrans.prop('lb_occ') + ":</strong> <span >" + d.occ + "</span>"
                             )
                             .style("left", (d3.event.pageX + 20) + "px")

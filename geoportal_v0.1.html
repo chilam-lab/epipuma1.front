@@ -721,7 +721,7 @@
 
                             <div class="input-group-btn ">
 
-                                <button id="btn_map_type" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="range" >Equal range <span class="caret"></span></button>
+                                <button id="btn_map_type" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="deviation" >Standard deviation <span class="caret"></span></button>
 
                                 <ul class="dropdown-menu dropdown_idioma">
                                     <li><a class="map_type" label="Equal range" value="range">Equal range </a></li>
@@ -808,9 +808,9 @@
                 <div class="col-md-12 margin-top-15">
 
                     <div id="myScrollableBlockEpsilonDecil" class="row-fluid myScrollableBlockEpsilonDecil margin-top-15 box_shadow">
-                        <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#lb_header_info').text('Histograma Score Decil');
-                                        $('#lb_body_info').text('Muestra el valor promedio del score por grupo de variable en cada decil.');
-                                        $('#modalInfo').modal()" ></button>
+                        
+                        <button id="btn_msg_hist_decil" type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#modalInfo').modal()" >
+                        </button>
 
                         <div id="chartdiv_score_decil"></div>	
                     </div>

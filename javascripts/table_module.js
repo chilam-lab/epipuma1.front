@@ -394,6 +394,8 @@ var table_module = (function(verbose) {
 
         _VERBOSE ? console.log("list") : _VERBOSE;
 
+        _VERBOSE ? console.log(_json.nodes) : _VERBOSE;
+
 
         div.each(function() {
 
@@ -407,12 +409,27 @@ var table_module = (function(verbose) {
                 // item = d.values[0];
                 d.values.forEach(function(val) {
                     
-                    console.log(val)
+                    // console.log(val)
 
                     var item_list = [];
 
-                    item_list.push(_json.nodes[val.source].label);
-                    item_list.push(_json.nodes[val.target].label);
+                    var name_s, name_t;
+                    if(_json.nodes[val.source].biotic){
+                        name_s = _json.nodes[val.source].generovalido + " " + _json.nodes[val.source].especieepiteto
+                    }
+                    else{
+                        name_s = _json.nodes[val.source].tag
+                    }
+
+                    if(_json.nodes[val.target].biotic){
+                        name_t = _json.nodes[val.target].generovalido + " " + _json.nodes[val.target].especieepiteto
+                    }
+                    else{
+                        name_t = _json.nodes[val.target].tag
+                    }
+
+                    item_list.push(name_s);
+                    item_list.push(name_t);
 
                     item_list.push(val.nij);
                     item_list.push(val.nj);

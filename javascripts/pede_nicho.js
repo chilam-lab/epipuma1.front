@@ -1045,10 +1045,13 @@ var module_nicho = (function () {
         _module_toast = toast_module(_VERBOSE);
         _module_toast.startToast();
 
-        _histogram_module_nicho = histogram_module(_VERBOSE);
-        _histogram_module_nicho.startHistogramModule();
 
         _iTrans = _language_module_nicho.getI18();
+
+        _histogram_module_nicho = histogram_module(_VERBOSE);
+        _histogram_module_nicho.setLanguageModule(_language_module_nicho);
+        _histogram_module_nicho.startHistogramModule();
+        
 
         _map_module_nicho = map_module(_url_geoserver, _workspace, _VERBOSE, _url_api);
         _map_module_nicho.startMap(_language_module_nicho, _tipo_modulo, _histogram_module_nicho);
@@ -1062,6 +1065,7 @@ var module_nicho = (function () {
         _map_module_nicho.setDisplayModule(_res_display_module_nicho);
 
         _histogram_module_nicho.setDisplayModule(_res_display_module_nicho);
+
 
 
         // un id es enviado para diferenciar el componente del grupo de variables en caso de que sea mas de uno (caso comunidad)

@@ -330,6 +330,11 @@ var utils_module = (function (verbose) {
 
     }
 
+    function hashCode(str) {
+      return str.split('').reduce((prevHash, currVal) =>
+        (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0);
+    }
+
 
     function processTitleGroup(groupid, tfilters) {
 
@@ -428,10 +433,11 @@ var utils_module = (function (verbose) {
 
         var map_spid = d3.map([]);
 
-        data_cell.forEach(function (row_item, index) {
+        // data_cell.forEach(function (row_item, index) {
+        decil_array.forEach(function (row_item, index) {
 
-            if (row_item.decile != decil_selected)
-                return;
+            // if (row_item.decile != decil_selected)
+            //     return;
 
             row_item.species.forEach(function (specie, index) {
 
@@ -475,31 +481,40 @@ var utils_module = (function (verbose) {
         var cells_array = data.map(function (d) {
             return {
                 cells: d.cells,
-                spid: d.spid,
+                // spid: d.spid,
                 epsilon: parseFloat(d.epsilon),
                 score: parseFloat(d.score),
-                nj: d.nj,
+                nj: parseFloat(d.nj),
                 // name: d.especievalidabusqueda
                 name: d.reinovalido === "" ? (d.layer + " " + d.tag) : (d.generovalido +" "+d.especieepiteto+" "+d.nombreinfra)
             }
         })
 
-        var cells = []
+        // console.log(cells_array)
+
+        // var cells = []
+        var cells = d3.map([]);
         cells_array.forEach(function (item, index) {
             item.cells.forEach(function (cell_item, index) {
-                cells.push({
+                
+                var item_map = {
                     cell: cell_item,
                     score: item.score,
-                    spid: item.spid,
+                    // spid: item.spid,
                     epsilon: item.epsilon,
                     score: item.score,
                     nj: item.nj,
                     name: item.name
-                })
+                }
+
+                cells.set(""+cell_item+item.name, item_map)
+                
             })
         })
 
-        var cross_cells = crossfilter(cells)
+        // console.log(cells.values())
+
+        var cross_cells = crossfilter(cells.values())
         cross_cells.groupAll();
 
         var cells_dimension = cross_cells.dimension(function (d) {
@@ -519,26 +534,6 @@ var utils_module = (function (verbose) {
                 },
                 function (item, remove) {
                     item.tscore = item.tscore - remove.score
-
-                    // var index = item.spids.indexOf(remove.spid);
-                    // if (index > -1) {
-                    //     item.spids.splice(index, 1);
-                    // }
-
-                    // var index = item.epsilons.indexOf(remove.epsilon);
-                    // if (index > -1) {
-                    //     item.epsilons.splice(index, 1);
-                    // }
-
-                    // index = item.scores.indexOf(remove.score);
-                    // if (index > -1) {
-                    //     item.scores.splice(index, 1);
-                    // }
-
-                    // index = item.njs.indexOf(remove.nj);
-                    // if (index > -1) {
-                    //     item.njs.splice(index, 1);
-                    // }
 
                     var index = item.names.indexOf(remove.name);
                     if (index > -1) {
@@ -571,6 +566,7 @@ var utils_module = (function (verbose) {
             const entry = map_cell[i];
             // var len = entry["value"].spids.length;
             var len = entry["value"].names.length;
+            // console.log("len: " + len)
 
             var item = {};
             item.gridid = entry["key"];
@@ -706,7 +702,8 @@ var utils_module = (function (verbose) {
         processDataForFreqSpecie: processDataForFreqSpecie,
         processDataForFreqCell: processDataForFreqCell,
         reduceScoreCell: reduceScoreCell,
-        reduceDecilGroups: reduceDecilGroups
+        reduceDecilGroups: reduceDecilGroups,
+        hashCode: hashCode
     }
 
 
