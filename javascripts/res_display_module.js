@@ -1257,7 +1257,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var data_request = jQuery.extend(true, {}, decildata);
 
-        console.log(data_request)
+        // console.log(data_request)
 
 
         // decildata["with_data_freq"] = false;
@@ -1368,7 +1368,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             _RESULTS_TODISPLAY.push(data_decil_byanalysis);
                         }
 
-                       console.log(_RESULTS_TODISPLAY);
+                       // console.log(_RESULTS_TODISPLAY);
 
                         _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                         
@@ -1459,7 +1459,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
         console.log(total_request);
         // se enlaza total del request para selección de celda
         _cdata = jQuery.extend(true, {}, total_request);
-        ;
 
         //TODO: optimizar metodo:
         // esta mandando varias peticiones cada que se seleccioan una barra
@@ -1515,8 +1514,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 _VERBOSE ? console.log("loadDecilDataTable resp.ok") : _VERBOSE;
 
                                 var counts = resp.data;
+                                // console.log(counts)
+                                // console.log(counts.length)
+
                                 var data_score_cell = _utils_module.processDataForScoreCellTable(counts);
-                                console.log(data_score_cell)
+                                // console.log(data_score_cell)
 
                                 var data_result = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
                                 
@@ -1530,15 +1532,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                 data_freq_decil_tbl.forEach(function (specie, index) {
                                     // console.log(specie)
                                     
-                                    var occ = parseFloat(specie.nj)
+                                    // Necesario cuando se realiza validación, debido al promedio que se realiza en nj
+                                    var occ = Math.ceil(specie.nj)
+                                    occ = occ < specie.njd ? (occ+1) : occ;
+
                                     
                                     // **** TODO: REVISAR si la cantidad de njd calculada contempla las 5 iteraciones en caso de ser validación
                                     var occ_decil = specie.njd
                                     var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%"
 
-                                    console.log("occ: " + occ)
-                                    console.log("occ_decil: " + occ_decil)
-                                    console.log("length_decil: " + length_decil)
+                                    // console.log("specie.name: " + specie.name)
+                                    // console.log("occ: " + occ)
+                                    // console.log("occ_decil: " + occ_decil)
+                                    // console.log("length_decil: " + length_decil)
 
                                     var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
 
@@ -1556,7 +1562,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                     decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil, occ_perdecile: occ_perdecile});
                                 });
 
-                                _VERBOSE ? console.log(decil_list) : _VERBOSE;
+                                // _VERBOSE ? console.log(decil_list) : _VERBOSE;
                                 _table_module_eps.createDecilList(decil_list);
 
                             }

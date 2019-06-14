@@ -12,7 +12,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
     
     var _TYPE_BIO = 0;
 
-    var _variable_module_net, _language_module_net, _map_module_net, _net_module, _histogram_module_net, _table_module_net;
+    var _variable_module_net, _language_module_net, _map_module_net, _net_module, _histogram_module_net, _table_module_net, _utils_module;
     var _footprint_region;
 
     var iTrans;
@@ -57,6 +57,31 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         "especie": "especievalidabusqueda",
         "species": "especievalidabusqueda"
     };
+
+    var map_abio = new Map()
+    map_abio.set(1, "type");
+    map_abio.set(2, "layer");
+    map_abio.set(3, "bid");
+
+    var map_taxon = new Map()
+    map_taxon.set("reino", "kingdom");
+    map_taxon.set("kingdom", "kingdom");
+    map_taxon.set("phylum", "phylum");
+    map_taxon.set("clase", "class");
+    map_taxon.set("class", "class");
+    map_taxon.set("orden", "order");
+    map_taxon.set("order", "order");
+    map_taxon.set("familia", "family");
+    map_taxon.set("family", "family");
+    map_taxon.set("genero", "genus");
+    map_taxon.set("género", "genus");
+    map_taxon.set("genus", "genus");
+    map_taxon.set("especie", "species");
+    map_taxon.set("species", "species");
+
+    var group_level_biotic = "species";
+    var group_level_abiotic = "bid";
+
 
 
 
@@ -106,6 +131,9 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         // _table_module_net = table_module;
         _variable_module_net = variable_module;
         _map_module_net = map_module;
+
+        _utils_module = utils_module();
+        _utils_module.startUtilsModule();
 
         var self = this;
         self.NUM_BEANS = 21;
@@ -211,14 +239,18 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
 //                    _VERBOSE ? console.log(_reino_campos[temp_item_field]) : _VERBOSE;
 
-//                    _VERBOSE ? console.log(temp_item_field) : _VERBOSE;
-//                    _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
+                   _VERBOSE ? console.log(temp_item_field) : _VERBOSE;
+                   _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
+                   _VERBOSE ? console.log(temp_item_parent) : _VERBOSE;
 
                     filters.push({
-                        'field': _reino_campos[temp_item_field],
+                        'biotic': true,
+                        'level': group_level_biotic,
+                        'rank': map_taxon.get(temp_item_field),
                         'value': temp_item_value,
                         'type': itemGroup.type,
-                        'parent': temp_item_parent,
+                        // 'field': _reino_campos[temp_item_field],
+                        // 'parent': temp_item_parent,
                         "fGroupId": _idFilterGroup,
                         "grp": grp_type
                                 // 'level' : parseInt(itemGroup.level)
@@ -232,10 +264,13 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                     _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
 
                     filters.push({
-                        'value': itemGroup.value,
-                        'type': itemGroup.type,
-                        'level': parseInt(itemGroup.level),
-                        'label': temp_item_value,
+                        'biotic': false,
+                        'level': group_level_abiotic,
+                        'rank': map_abio.get(parseInt(itemGroup.level)),
+                        'value': parseInt(itemGroup.level) !== 1 ? itemGroup.value : itemGroup.type,
+                        'type': parseInt(itemGroup.type),
+                        // 'level': parseInt(itemGroup.level),
+                        // 'label': temp_item_value,
                         "fGroupId": _idFilterGroup,
                         "grp": grp_type
                     });
@@ -323,17 +358,17 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
 //            var milliseconds = new Date().getTime();
 
-            d3.json(_url_zacatuche + "/niche/getNodes")
+            d3.json(_url_zacatuche + "/niche/getTaxonsGroupNodes")
                     .header("Content-Type", "application/json")
                     .post(
                             JSON.stringify({
-                                qtype: "getNodes",
-                                s_tfilters: s_filters,
-                                t_tfilters: t_filters,
-                                hasbiosource: hasBiosSource,
-                                hasrastersource: hasRasterSource,
-                                hasbiotarget: hasBiosTarget,
-                                hasrastertarget: hasRasterTarget,
+                                // qtype: "getNodes",
+                                source: s_filters,
+                                target: t_filters,
+                                // hasbiosource: hasBiosSource,
+                                // hasrastersource: hasRasterSource,
+                                // hasbiotarget: hasBiosTarget,
+                                // hasrastertarget: hasRasterTarget,
                                 min_occ: _min_occ,
                                 grid_res: _grid_res,
                                 footprint_region: _footprint_region
@@ -348,24 +383,24 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
                                 var json = resp.data;
 
-                                _createNodeDictionary(json, s_filters, t_filters);
+                                console.log(json);
 
-//                                console.log(json);
+                                _createNodeDictionary(json, s_filters, t_filters);
 
 
                                 // it ensures that the dictionary of nodes is created before the link list is recived.
-                                d3.json(_url_zacatuche + "/niche/getEdges")
+                                d3.json(_url_zacatuche + "/niche/getTaxonsGroupEdges")
                                         .header("Content-Type", "application/json")
                                         .post(
                                                 JSON.stringify({
-                                                    qtype: "getEdges",
-                                                    s_tfilters: s_filters,
-                                                    t_tfilters: t_filters,
-                                                    hasbiosource: hasBiosSource,
-                                                    hasrastersource: hasRasterSource,
-                                                    hasbiotarget: hasBiosTarget,
-                                                    hasrastertarget: hasRasterTarget,
-                                                    ep_th: 0.0,
+                                                    // qtype: "getEdges",
+                                                    source: s_filters,
+                                                    target: t_filters,
+                                                    // hasbiosource: hasBiosSource,
+                                                    // hasrastersource: hasRasterSource,
+                                                    // hasbiotarget: hasBiosTarget,
+                                                    // hasrastertarget: hasRasterTarget,
+                                                    // ep_th: 0.0,
                                                     min_occ: _min_occ,
                                                     grid_res: _grid_res,
                                                     footprint_region: _footprint_region
@@ -378,12 +413,13 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
                                                     var json = resp.data;
 
+                                                    console.log(json)
+
                                                     _createLinkDictionary(json);
 
+                                                    console.log(_associativeArray)
 
-//                                                    console.log(json);
-
-//                                                    console.log(_arrayLinks);
+                                                    console.log(_arrayLinks);
 
                                                     // if(_arrayLinks.length > 10000){
                                                     //   _toastr.warning("Numero de aristas exceden memoria del explorador, intente un relación mas pequeña");
@@ -430,13 +466,30 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         $.each(json, function (i, item) {
 
-            map_node.set(item.spid, item);
+            var idsp = _utils_module.hashCode(
+                item.reinovalido +
+              item.phylumdivisionvalido + 
+              item.clasevalida + 
+              item.ordenvalido + 
+              item.familiavalida + 
+              item.generovalido + 
+              item.especieepiteto + 
+              item.nombreinfra +
+              item.type + 
+              item.layer + 
+              item.bid)
+
+            // console.log(idsp)
+
+            item["id"] = idsp
+
+            map_node.set(idsp, item);
         });
 
         // each node id has an index, 87456 -> 1, 87457 -> 2, ...
         $.each(map_node.values(), function (i, item) {
             item["index"] = i;
-            _associativeArray[item.spid] = item;
+            _associativeArray[item.id] = item;
         });
 
         // Saving nodes for future issues, and with index added.
@@ -446,6 +499,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         // _VERBOSE ? console.log(JSON.stringify(_json_nodes)) : _VERBOSE; 
 
         // funcion que asigna el color a los nodos
+        
         _getColorFilterGroups(_json_nodes, s_filters, t_filters);
 
     }
@@ -468,24 +522,54 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         // replacing node id with the index of the node array
         $.each(json_file, function (i, item) {
 
+            var idsource = _utils_module.hashCode(item.reinovalido_s +
+              item.phylumdivisionvalido_s + 
+              item.clasevalida_s + 
+              item.ordenvalido_s + 
+              item.familiavalida_s + 
+              item.generovalido_s + 
+              item.especieepiteto_s + 
+              item.nombreinfra_s +
+              item.type_s + 
+              item.layer_s + 
+              item.bid_s)
+
+            // console.log(idsource)
+
+            var idtarget = _utils_module.hashCode(item.reinovalido_t +
+              item.phylumdivisionvalido_t + 
+              item.clasevalida_t + 
+              item.ordenvalido_t + 
+              item.familiavalida_t + 
+              item.generovalido_t + 
+              item.especieepiteto_t + 
+              item.nombreinfra_t +
+              item.type_t + 
+              item.layer_t + 
+              item.bid_t)
+
+            // console.log(idtarget)
+
             associativeLinkArray = {}
-            associativeLinkArray[ "source" ] = _associativeArray[ json_file[i].source ].index;
+            associativeLinkArray[ "source" ] = _associativeArray[ idsource ].index;
 
             associativeLinkArray[ "nij" ] = json_file[i].nij;
             associativeLinkArray[ "nj" ] = json_file[i].nj;
             associativeLinkArray[ "ni" ] = json_file[i].ni;
             associativeLinkArray[ "n" ] = json_file[i].n;
 
-            associativeLinkArray[ "source_node" ] = _associativeArray[ json_file[i].source ];
+            associativeLinkArray[ "source_node" ] = _associativeArray[ idsource ];
 
-            associativeLinkArray[ "target" ] = _associativeArray[ json_file[i].target ].index;
-            associativeLinkArray[ "target_node" ] = _associativeArray[ json_file[i].target ];
+            associativeLinkArray[ "target" ] = _associativeArray[ idtarget ].index;
+            associativeLinkArray[ "target_node" ] = _associativeArray[ idtarget ];
             associativeLinkArray[ "value" ] = json_file[i].value;
             associativeLinkArray[ "score" ] = json_file[i].score;
 
             _arrayLinks.push(associativeLinkArray);
 
         });
+
+        // console.log(_arrayLinks);
 
     }
 
@@ -543,8 +627,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         // _graph_component = _net_module.createNetWebGL(json, this);
 
         _histogram_module_net = histogram_module(_VERBOSE);
-        _histogram_module_net.startHistogramModule();
         _histogram_module_net.setLanguageModule(_language_module_net);
+        _histogram_module_net.startHistogramModule();
         _hist_component = _histogram_module_net.createBarChartNet(json, this);
 
         _table_module_net = table_module(_url_zacatuche);
@@ -557,7 +641,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         self.renderAll();
 
         var adjust = $(window).height() + 60;
-        _VERBOSE ? console.log("adjust: " + adjust) : _VERBOSE;
+        // _VERBOSE ? console.log("adjust: " + adjust) : _VERBOSE;
         $("html, body").animate({scrollTop: (adjust / 3)}, 1000);
 
         // Verificar si se desea agregar la interacción por selección de estados
@@ -694,7 +778,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
                     // _VERBOSE ? console.log(filters[i].field) : _VERBOSE;
 
-                    switch (filters[i].field) {
+                    switch (filters[i].rank) {
 
                         case "reinovalido":
                             if (json[j].reinovalido == filters[i].value) {
@@ -764,7 +848,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                             }
                             break;
 
-                        case "especievalidabusqueda":
+                        case "especieepiteto":
 
 //                            if (json[j].label.split(" ")[1] == filters[i].value) {
                             if (json[j].label == filters[i].value) {
