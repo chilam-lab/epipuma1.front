@@ -157,8 +157,9 @@ html, body {
     /*border-style: solid;
     border-color: yellow;*/
 
-    width: 100%;
-    height: 100%;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    height: 700px;
 }
 
 
@@ -167,18 +168,18 @@ html, body {
 
     /*border-style: solid;*/
 
-    width: 37%;
-    float: left;
+    /*width: 37%;
+    float: left;*/
     height: 90%;
-    margin-left: 30px;
+    /*margin-left: 30px;*/
 }
 
 
 
 #graphs{
     /*margin-top: 10px;*/
-    width: 58%;
-    float: left;
+    /*width: 58%;*/
+    /*float: left;*/
     height: 90%;
 
     /*border-style: solid;*/
@@ -191,7 +192,7 @@ html, body {
     border-style: solid;
     border-color: #3B6A93;
     border-radius: 5px;
-    margin-left: 30px;
+    /*margin-left: 30px;*/
 
 }
 
@@ -208,7 +209,7 @@ html, body {
     /*border-style: solid;*/
     /*border-color: #3B6A93;*/
     border-radius: 5px;
-    margin-left: 30px;
+    /*margin-left: 30px;*/
 
 }
 
@@ -1181,3 +1182,32 @@ button.link-comunidad {
 .margin-top-five{    
     margin-top: 5px;
 }
+
+.pd-top10{
+    padding-top: 10px;
+}
+
+.pd-top20{
+    padding-top: 20px;
+}
+
+.pd-top30{
+    padding-top: 30px;
+}
+
+.pd-top40{
+    padding-top: 40px;
+}
+
+.pd-top50{
+    padding-top: 50px;
+}
+
+.pd-top100{
+    padding-top: 100px;
+}
+
+.pd-top120{
+    padding-top: 120px;
+}
+

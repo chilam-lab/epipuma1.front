@@ -13,6 +13,7 @@ var module_net = (function () {
     var MOD_COMUNIDAD = 1;
     var _REGION_SELECTED;
     var _REGION_TEXT_SELECTED;
+    var _MODULO = "comunidad"
     
     var _tipo_modulo = MOD_COMUNIDAD;
     
@@ -21,7 +22,8 @@ var module_net = (function () {
     var _map_module_net,
             _variable_module_net,
             _language_module_net,
-            _res_display_module_net;
+            _res_display_module_net,
+            _utils_module;
 
     var _url_front, _url_api, _url_comunidad;
 
@@ -50,6 +52,9 @@ var module_net = (function () {
     function _initializeComponents() {
 
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
+
+        _utils_module = utils_module();
+        _utils_module.startUtilsModule();
 
         _toastr.options = {
             "debug": false,
@@ -101,45 +106,62 @@ var module_net = (function () {
             _VERBOSE ? console.log("show_gen") : _VERBOSE;
 
 //            var cadena_ini = _url_comunidad + '#link/?';
-            var data_link = "";
+            var data_link = {};
+
+            data_link.tipo = "comunidad"
 
             var subgroups_source = _componente_fuente.getVarSelArray();
+            
             var subgroups_target = _componente_sumidero.getVarSelArray();
 
-            data_link += "minOcc=" + parseInt($("#occ_number").val()) + "&";
+            data_link.sfilters = subgroups_source;
 
-            data_link += "num_filters_source=" + subgroups_source.length + "&";
+            data_link.tfilters = subgroups_target;
 
-            data_link += "num_filters_target=" + subgroups_target.length + "&";
+            data_link.min_occ = parseInt($("#occ_number").val());
+
+            data_link.grid_res = parseInt($("#grid_resolution").val());
+
+            data_link.footprint_region = parseInt($("#footprint_region_select").val());
+
+            data_link.num_sfilters = subgroups_source.length;
+
+            data_link.num_tfilters = subgroups_target.length;
 
 
-            $.each(subgroups_source, function (index, item) {
+            // $.each(subgroups_source, function (index, item) {
 
-                var str_item = JSON.stringify(item);
+            //     var str_item = JSON.stringify(item);
 
-                if (index === 0) {
-                    data_link += "tfilters_s[" + index + "]=" + str_item;
-                } else {
-                    data_link += "&tfilters_s[" + index + "]=" + str_item;
-                }
+            //     if (index === 0) {
+            //         data_link += "tfilters_s[" + index + "]=" + str_item;
+            //     } else {
+            //         data_link += "&tfilters_s[" + index + "]=" + str_item;
+            //     }
 
-            });
+            // });
 
-            data_link += "&";
+            // data_link += "&";
 
-            $.each(subgroups_target, function (index, item) {
+            // $.each(subgroups_target, function (index, item) {
 
-                var str_item = JSON.stringify(item);
+            //     var str_item = JSON.stringify(item);
 
-                if (index == 0) {
-                    data_link += "tfilters_t[" + index + "]=" + str_item;
-                } else {
-                    data_link += "&tfilters_t[" + index + "]=" + str_item;
-                }
+            //     if (index == 0) {
+            //         data_link += "tfilters_t[" + index + "]=" + str_item;
+            //     } else {
+            //         data_link += "&tfilters_t[" + index + "]=" + str_item;
+            //     }
 
-            });
+            // });
 
-            _getLinkToken(data_link);
+            // console.log(data_link);
+            // console.log(_url_api);
+            // console.log(_url_comunidad);
+
+            _utils_module.getLinkToken(data_link, _MODULO, _url_api, _url_comunidad)
+
+            // _getLinkToken(data_link);
 
 //            $("#modalRegenera").modal();
 //            $("#lb_enlace").val(cadena_ini);
@@ -164,13 +186,15 @@ var module_net = (function () {
 
         });
 
-        document.getElementById("tbl_hist_comunidad").style.display = "none";
+        // document.getElementById("tbl_hist_comunidad").style.display = "none";
 
-        document.getElementById("map_panel").style.display = "none";
+        // document.getElementById("map_panel").style.display = "none";
+
+        // document.getElementById("hist_map_comunidad").style.display = "none";
+
 
         // document.getElementById("graph_map_comunidad").style.display = "none";
 
-        document.getElementById("hist_map_comunidad").style.display = "none";
 
         _genLinkURL();
 //        _loadCountrySelect();
@@ -225,37 +249,37 @@ var module_net = (function () {
      * @param {String} data_link - Cadena que contiene los parametros selecicoandos por el usuario en el análisis.
      * 
      */
-    function _getLinkToken(data_link) {
+    // function _getLinkToken(data_link) {
 
-        console.log("_getLinkToken");
+    //     console.log("_getLinkToken");
 
-        $.ajax({
-            url: _url_api + "/niche/especie",
-            type: 'post',
-            data: {
-                qtype: 'getToken',
-                confparams: data_link,
-                tipo: 'comunidad'
-            },
-            dataType: "json",
-            success: function (resp) {
+    //     $.ajax({
+    //         url: _url_api + "/niche/especie",
+    //         type: 'post',
+    //         data: {
+    //             qtype: 'getToken',
+    //             confparams: data_link,
+    //             tipo: 'comunidad'
+    //         },
+    //         dataType: "json",
+    //         success: function (resp) {
 
-                var cadena_ini = _url_comunidad + '#link/?';
-                var tokenlink = resp.data[0].token;
+    //             var cadena_ini = _url_comunidad + '#link/?';
+    //             var tokenlink = resp.data[0].token;
 
-                console.log("token: " + tokenlink);
+    //             console.log("token: " + tokenlink);
 
-                $("#modalRegenera").modal();
-                $("#lb_enlace").val(cadena_ini + "token=" + tokenlink);
+    //             $("#modalRegenera").modal();
+    //             $("#lb_enlace").val(cadena_ini + "token=" + tokenlink);
 
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+    //         },
+    //         error: function (jqXHR, textStatus, errorThrown) {
+    //             _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
-            }
-        });
+    //         }
+    //     });
 
-    }
+    // }
 
 
 
@@ -316,56 +340,54 @@ var module_net = (function () {
      * @param {String} token - token relacionado a un conjunto de paramétros utilizados en un análisis de nicho.
      * 
      */
-    function _getValuesFromToken(token) {
+     function _getValuesFromToken(token) {
 
         console.log("_getValuesFromToken");
+        console.log("token: " + token);
 
 
         $.ajax({
-            url: _url_api + "/niche/especie",
+            url: _url_api + "/niche/especie/getValuesFromToken",
             type: 'post',
             data: {
-                qtype: 'getValuesFromToken',
                 token: token,
                 tipo: 'comunidad'
             },
             dataType: "json",
             success: function (resp) {
 
+                console.log(resp);
+
                 var all_data = resp.data[0].parametros;
                 _json_config = _parseURL("?" + all_data);
 
-                console.log(_json_config);
+                var minOcc = _json_config.chkOcc ? parseInt(_json_config.chkOcc) : 5;
 
-                if (_json_config == undefined) {
-                    return;
+                var gridRes = _json_config.gridRes ? parseInt(_json_config.gridRes) : 16;
+
+                var region = _json_config.region ? parseInt(_json_config.region) : 1;
+
+                var num_sfilters = parseInt(_json_config.num_sfilters);
+                
+                var num_tfilters = parseInt(_json_config.num_filters);
+                
+                var sfilters = [];
+
+                var filters = [];
+
+                for (i = 0; i < num_sfilters; i++) {
+                    var item = _json_config["sfilters[" + i + "]"];
+                    sfilters.push(JSON.parse(_json_config["sfilters[" + i + "]"]));
                 }
 
-                var minOcc = _json_config.minOcc ? parseInt(_json_config.minOcc) : 0;
-
-                var num_filters_source = parseInt(_json_config.num_filters_source);
-                var num_filters_target = parseInt(_json_config.num_filters_target);
-
-                var filters_source = [];
-                var filters_target = [];
-
-                for (i = 0; i < num_filters_source; i++) {
-
-                    filters_source.push(JSON.parse(_json_config["tfilters_s[" + i + "]"]));
-
+                for (i = 0; i < num_tfilters; i++) {
+                    var item = _json_config["tfilters[" + i + "]"];
+                    filters.push(JSON.parse(_json_config["tfilters[" + i + "]"]));
                 }
 
-                for (i = 0; i < num_filters_target; i++) {
-
-                    filters_target.push(JSON.parse(_json_config["tfilters_t[" + i + "]"]));
-
-                }
-
-                _procesaValoresEnlace(filters_source, filters_target, minOcc);
+                _procesaValoresEnlace(sfilters, filters, minOcc, region, gridRes);
 
                 $("#show_gen").css('visibility', 'hidden');
-
-
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -376,9 +398,8 @@ var module_net = (function () {
 
 
     }
-
-
-
+    
+    
     /**
      * Asigna los valores obtenidos de la URL y configura los componentes visuales para regenerar los resultados.
      *
@@ -389,7 +410,7 @@ var module_net = (function () {
      * @param {json} subgroups - JSON  con el grupo de variables seleccionado
      * @param {integer} chkOcc - Número mínimo de ocurrencias en nj para ser considerado en los cálculos
      */
-    function _procesaValoresEnlace(subgroups_s, subgroups_t, nimOcc) {
+    function _procesaValoresEnlace(subgroups_s, subgroups_t, nimOcc, region, resolution) {
 
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
@@ -399,6 +420,11 @@ var module_net = (function () {
 
         $("#occ_number").val(nimOcc);
 
+        $('#grid_resolution option[value=' + resolution + ']').attr('selected', 'selected');
+
+        $('#footprint_region_select option[value=' + region + ']').attr('selected', 'selected');
+
+
         _componente_fuente.setVarSelArray(subgroups_s);
         _componente_sumidero.setVarSelArray(subgroups_t);
 
@@ -407,32 +433,6 @@ var module_net = (function () {
 
         _componente_fuente.addUIItem(groups_s);
         _componente_sumidero.addUIItem(groups_t);
-
-//        _res_display_module_net.set_subGroups(subgroups_s);
-//        _res_display_module_net.set_typeBioclim(type_time_s);
-//        
-//        _res_display_module_net.set_subGroups(subgroups_s);
-//        _res_display_module_net.set_typeBioclim(type_time_s);
-
-
-//        if (subgroups.length > 0) {
-//            // asegura que si el grupo de variables seleccionado tiene mas de un grupo taxonomico agregue el total
-//            subgroups.forEach(function(grupo) {
-//                if (grupo.value.length > 1) {
-//                    grupo.value.forEach(function(item) {
-//                        num_items++;
-//                    });
-//                }
-//            });
-//            // asegura que si existe mas de un grupo de variables, se calcule el total  de todos los grupos
-//            if (subgroups.length > 1) {
-//                num_items++;
-//            }
-//        }
-//        else {
-//            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
-//            return;
-//        }
 
 //        _module_toast.showToast_BottomCenter("Generando resultados a partir de link", "info");
 
@@ -556,30 +556,15 @@ var module_net = (function () {
 
 
 $(document).ready(function () {
-    
-    if (localStorage.getItem("url_front")) {
-        
-        var verbose = localStorage.getItem("verbose");
-        module_net.setUrlFront(localStorage.getItem("url_front"));
-        module_net.setUrlApi(localStorage.getItem("url_api"));
-        module_net.setUrlComunidad(localStorage.getItem("url_comunidad"));
-        module_net.startModule(verbose);
 
-    } else {
-        
-        // en caso de no tener los datos necesarios en el local storage se redirecciona a index
-        var url = window.location.href;        
-        var url_array = url.split("/");
-        var new_url = "";
-        
-        for (var i=0; i<url_array.length-1; i++) {
-            new_url += url_array[i] + "/";
-        }
-        new_url += "index.html";
-        window.location.replace(new_url);
+    console.log(config.url_front)
+    console.log(config.url_api)
+    console.log(config.url_nicho)
+    console.log(config.url_comunidad)
 
-    }
-
-    
+    module_net.setUrlFront(config.url_front);
+    module_net.setUrlApi(config.url_api);
+    module_net.setUrlComunidad(config.url_comunidad);
+    module_net.startModule(config.verbose);
 
 });

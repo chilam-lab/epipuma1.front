@@ -39,16 +39,9 @@ var language_module = (function (verbose) {
         _tipo_modulo = tipo_modulo;
         _first_load = true;
 
-//        _VERBOSE ? console.log("localstoarge item language: " + localStorage.getItem("language")) : _VERBOSE;
+        _language_selected = config.language
 
-        if (localStorage.getItem("language") === null) {
-            _language_selected = 'en_EN';
-            localStorage.language = _language_selected;
-        } else {
-            _language_selected = localStorage.getItem("language");
-        }
-
-//        _VERBOSE ? console.log("_language_selected: " + _language_selected) : _VERBOSE;
+       _VERBOSE ? console.log("_language_selected: " + _language_selected) : _VERBOSE;
 
 
         $.i18n.properties({
@@ -61,28 +54,15 @@ var language_module = (function (verbose) {
             encoding: "UTF-8",
             callback: function () {
 
-//                _VERBOSE ? console.log("idiomas cargados") : _VERBOSE;
-//                console.log("local language: " + localStorage.getItem("language"));
-
-                if (localStorage.getItem("language") === null) {
-
-//                    _VERBOSE ? console.log("undefined") : _VERBOSE;
-                    localStorage.language = _language_selected;
-                    _loadLabels(_first_load);
-
-                } else {
-
-//                    _VERBOSE ? console.log("language loaded") : _VERBOSE;
-                    _language_selected = localStorage.getItem("language");
+                _language_selected = config.language
 //                    _VERBOSE ? console.log(_language_selected) : _VERBOSE;
-                    _loadLabels(_first_load);
-
-                }
-
+                _loadLabels(_first_load);
+                
                 _first_load = false;
 
                 // carga los modulos siguientes una vez que se han cargado los archivos de idiomas
 //                console.log("calling pede...");
+                // _VERBOSE ? console.log(main_pede) : _VERBOSE
                 main_pede.loadModules();
 
             }
@@ -93,7 +73,9 @@ var language_module = (function (verbose) {
             _language_selected = e.target.getAttribute("value");
             _language_label_selected = e.target.getAttribute("label");
 
-            localStorage.language = _language_selected;
+            config.language = _language_selected;
+
+            // localStorage.language = _language_selected;
 
             _VERBOSE ? console.log("value: " + _language_selected) : _VERBOSE;
             _VERBOSE ? console.log("label: " + _language_label_selected) : _VERBOSE;

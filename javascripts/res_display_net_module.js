@@ -592,10 +592,10 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         $("#graph").empty();
         $("#hist").empty();
 
-        document.getElementById("tbl_hist_comunidad").style.display = "inline";
-        document.getElementById("map_panel").style.display = "inline";
-        // document.getElementById("graph_map_comunidad").style.display = "inline";
-        document.getElementById("hist_map_comunidad").style.display = "inline";
+        // document.getElementById("tbl_hist_comunidad").style.display = "inline";
+        // document.getElementById("map_panel").style.display = "inline";
+        // // document.getElementById("graph_map_comunidad").style.display = "inline";
+        // document.getElementById("hist_map_comunidad").style.display = "inline";
 
 
         // se carga mapa, controles y grid

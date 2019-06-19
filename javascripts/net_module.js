@@ -1054,6 +1054,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             d3.selectAll("g.node").selectAll("circle")
                     .each(function(item) {
 
+                        // console.log(label)
+
                         if (item.label.toLowerCase().startsWith(search_str.toLowerCase())) {
 
                             // _VERBOSE ? console.log(item.label + " " + item.index) : _VERBOSE;

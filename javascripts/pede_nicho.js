@@ -403,6 +403,8 @@ var module_nicho = (function () {
             var subgroups_target = _componente_target.getVarSelArray();
 
             var data_link = {};
+
+            data_link.tipo = "nicho"
             
             // data_link.taxones = _taxones;
             data_link.sfilters = subgroups_target;
@@ -433,7 +435,6 @@ var module_nicho = (function () {
             // console.log(data_link.discardedFilterids);
 
             data_link.tfilters = subgroups;
-            data_link.tipo = "nicho";
 
             console.log(data_link);
             _getLinkToken(data_link);
@@ -1149,30 +1150,21 @@ var module_nicho = (function () {
 
 $(document).ready(function () {
 
-    if (localStorage.getItem("url_front")) {
+    console.log(config.url_front)
+    console.log(config.url_api)
+    console.log(config.url_nicho)
+    console.log(config.url_comunidad)
 
-        var verbose = localStorage.getItem("verbose");
-        module_nicho.setUrlFront(localStorage.getItem("url_front"));
-        module_nicho.setUrlApi(localStorage.getItem("url_api"));
-        module_nicho.setUrlNicho(localStorage.getItem("url_nicho"));
-        module_nicho.startModule(verbose);
+    // localStorage.setItem("url_front", config.url_front);
+    // localStorage.setItem("url_api", config.url_api);
+    // localStorage.setItem("url_nicho", config.url_nicho);
+    // localStorage.setItem("url_comunidad", config.url_comunidad);
+    // localStorage.setItem("verbose", _VERBOSE);
 
-    } else {
-
-        // en caso de no tener los datos necesarios en el local storage se redirecciona a index
-        var url = window.location.href;
-        var url_array = url.split("/");
-        var new_url = "";
-
-        for (var i = 0; i < url_array.length - 1; i++) {
-            new_url += url_array[i] + "/";
-        }
-        new_url += "index.html";
-        window.location.replace(new_url);
-
-    }
-
-
+    module_nicho.setUrlFront(config.url_front);
+    module_nicho.setUrlApi(config.url_api);
+    module_nicho.setUrlNicho(config.url_nicho);
+    module_nicho.startModule(config.verbose);
 
 });
 

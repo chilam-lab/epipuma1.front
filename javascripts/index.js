@@ -22,9 +22,6 @@ var module_index = (function() {
     var _url_comunidad;
     
             
-    // TEMPORAL DESARROLLO
-//    var _url_api, _url_nicho, _url_comunidad;
-
     /**
      * Método de inicialización de componentes necesarios en la primera pantalla
      * del sistema
@@ -37,23 +34,12 @@ var module_index = (function() {
 
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
-        if (localStorage.getItem("register") === null) {
-            
-            localStorage.register = true;
-            
-            $("#div_rel_nicho").attr('href',_url_nicho);
-            $("#div_rel_com").attr('href',_url_comunidad);
-            $("#link_modelo_nicho").append("<a href=\"#\"  id=\"a_modelo_nicho\" link-id=\"" + _url_nicho + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" >" + _iTrans.prop("a_modelo_nicho") + "</a>");
-            $("#link_modelo_comunidad").append("<a href=\"#\" id=\"a_modelo_comunidad\" link-id=\"" + _url_comunidad + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
-            
-        }
-        else {
-            $("#div_rel_nicho").attr('href',_url_nicho);
-            $("#div_rel_com").attr('href',_url_comunidad);
-            $("#link_modelo_nicho").append("<a href=\"" + _url_nicho + "\"  id=\"a_modelo_nicho\"  >" + _iTrans.prop("a_modelo_nicho") + "</a>");
-            $("#link_modelo_comunidad").append("<a href=\"" + _url_comunidad + "\" id=\"a_modelo_comunidad\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
-        }
 
+        $("#div_rel_nicho").attr('href',_url_nicho);
+        $("#div_rel_com").attr('href',_url_comunidad);
+        $("#link_modelo_nicho").append("<a href=\"" + _url_nicho + "\"  id=\"a_modelo_nicho\"  >" + _iTrans.prop("a_modelo_nicho") + "</a>");
+        $("#link_modelo_comunidad").append("<a href=\"" + _url_comunidad + "\" id=\"a_modelo_comunidad\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
+        
         _toastr.options = {
             "debug": false,
             "onclick": null,
@@ -175,7 +161,6 @@ var module_index = (function() {
 
         var timer = 5000;
         
-        
         var names_nicho = ["lb_index_hist_decil", "lb_index_hist_score", "lb_index_map_pres"];
         var names_net = [ "lb_index_map_riq", "lb_index_tbl_rel", "lb_index_net"];
         
@@ -261,22 +246,23 @@ var module_index = (function() {
         
         _VERBOSE ? console.log("startModule Index") : _VERBOSE;
         
-        _url_front = localStorage.getItem("url_front");
-        _url_api = localStorage.getItem("url_api");
-        _url_nicho = localStorage.getItem("url_nicho");
-        _url_comunidad = localStorage.getItem("url_comunidad");
-        _VERBOSE = localStorage.getItem("verbose");
-        _tipo_modulo = tipo_modulo;
+        _url_front = config.url_front
+        _url_api = config.url_api
+        _url_nicho = config.url_nicho
+        _url_comunidad = config.url_comunidad
+        _VERBOSE = config.verbose
+        _tipo_modulo = 2; // index
         
         
-
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
-        // _VERBOSE ? console.log(this) : _VERBOSE
+        _VERBOSE ? console.log(this) : _VERBOSE
 //        _VERBOSE ? console.log("before language_module INDEX") : _VERBOSE;
         _language_module_index = language_module(_VERBOSE);
         _language_module_index.startLanguageModule(this, _tipo_modulo);
 
     }
+
+    // startModule()
 
 
     /**
@@ -302,3 +288,6 @@ var module_index = (function() {
     };
 
 })();
+
+var modulo = 2
+module_index.startModule(modulo)

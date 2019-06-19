@@ -97,13 +97,9 @@
             // variable sglobal para la configuración y regeneración del enlace
             var _json_config;
 
-
             $(function () {
 
-//                console.log("_json_config2");
-
                 var result = $('#result');
-
 
                 // Print a hash
                 $.print = function (dict) {
@@ -134,24 +130,20 @@
                     if (match) {
                         var template = $(match.route.template);
 
-
-
                         if (template.length) {
                             var text = match.route.callback.apply(match.route.callback, match.args);
                             // template.text(text);
                             // console.log(template);
                             _json_config = JSON.parse(text)
 
-                            console.log("_json_config");
-                            console.log(_json_config);
-
-
+                            // console.log("_json_config");
+                            // console.log(_json_config);
                         }
 
                     }
 
                 } else {
-                    console.log("inicio");
+                    // console.log("inicio");
                 }
 
             })
@@ -162,6 +154,7 @@
 
 
     </head>
+    
     <body>
 
 
@@ -295,7 +288,7 @@
 
                                 <div class="col-md-12 col-sm-12 col-xs-12">
 
-                                    <button id="show_gen" class="btn btn-primary " type="button" title="Guardar enlace de resultados"  style="visibility: hidden; margin-top: 5px;" ></button>
+                                    <button id="show_gen" class="btn btn-primary " type="button" title=""  style="visibility: hidden; margin-top: 5px;" ></button>
                                    
                                 </div>
 
@@ -305,108 +298,76 @@
 
                     </div>
 
-
-
-
                 </div>
 
 
             </div>
 
 
-            <div class="" id="tbl_hist_comunidad">
+            
+            <div class="row pd-top100" id="tbl_hist_comunidad">
 
+                <div class="col-lg-7">
 
-                <div id="graphs">
+                     <div id="graphs" class="row">
 
-                    <div id="graph_controls" class="graph_controls"></div>
-                    <div id="graph" class="graph"></div>
+                        <div class="col-lg-12">
+                            <div id="graph_controls" class="graph_controls"></div>    
+                        </div>
+                        <div class="col-lg-12">
+                            <div id="graph" class="graph"></div>    
+                        </div>
 
-                </div>
-
-                <div class="" id="hist_map_comunidad">
-
-                    <div id="charts" class="myScrollableBlockEpsilon">
-
-                        <button id="btn_hist" type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#modalInfo').modal()" ></button>
-
-                        <div id="hist" class="chart"></div>
-
-                    </div>
-
-                    <div id="map" class="map"></div>
-
-                </div>
-
-            </div>
-
-
-            <!-- <div class="row-fluid row_panel" id="tbl_hist_comunidad">
-
-                    <div id="charts" class="myScrollableBlockEpsilon">
-                            <div id="hist" class="chart"></div>
                     </div>
                     
-            </div>
-
-            <div class="row-fluid row_panel" id="graph_map_comunidad">
-
-                    <div id="graphs">
-                            <div id="graph" class="graph"></div>
-                    </div>
-
-                    <div id="map" class="map"></div>
-
-            </div> -->
-
-
-            <div class="row-fluid row_panel table_panel" id="map_panel">			
-
-                <div id="lists" class="myScrollableEpsList margin-top-30">
-                    <!-- <div id="relation-list" class="list"></div> -->
-                    <table id="relation-list" class="display compact cell-border list" cellspacing="0"></table>
                 </div>
 
+                <div class="col-lg-5">
+
+                    <div class="row" id="hist_map_comunidad">
+
+                        <div class="col-lg-12">
+
+                            <div id="charts" class="myScrollableBlockEpsilon">
+
+                                <button id="btn_hist" type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#modalInfo').modal()" ></button>
+
+                                <div id="hist" class="chart"></div>
+
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-lg-12">
+
+                            <div id="map" class="map"></div>
+                            
+                        </div>
+                        
+
+                    </div>
+
+
+                    
+                </div>                
+
             </div>
 
-            <!-- <div class="row-fluid row_panel">
-            </div> -->
+
+            <div class="row margin-top-10" id="map_panel">
+
+                <div id="lists" class="myScrollableEpsList ">
+                    <!-- <div id="relation-list" class="list"></div> -->
+                    <table id="relation-list" class="display compact cell-border list pd-top10" cellspacing="0"></table>
+                </div>
+                
+            </div>
 
 
         </div>	
 
 
-        <!-- Modals -->
-        <!--        <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Descarga de red</h4>
-                            </div>
-                            <div class="modal-body">
-                                La descarga de la red se realiza a través de envio a una cuenta de correo electrónico, por favor proporciona una cuenta valida.
-                                <br/><br/>
         
-        
-                                <div class="input-group emial_component">
-                                    <input id="email_address" type="email" class="custom_form_control" placeholder=" Correo" required>
-                                    <span class="input-group-btn">
-                                        <button id="send_email" class="btn btn-primary" type="button">Enviar</button>
-                                    </span>
-                                </div>
-        
-        
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
-
-
-
         <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -494,6 +455,7 @@
         <script src="http://www.sumbera.com/gist/js/vt/geojson-vt-dev.js"></script>
         <script src="http://www.sumbera.com/gist/js/leaflet/canvas/L.CanvasTiles.js"></script>
 
+        <script type="text/javascript" src="javascripts/config.js"></script>
         <script type="text/javascript" src="javascripts/pede_net.js"></script>
         <script type="text/javascript" src="javascripts/res_display_net_module.js"></script>
         <script type="text/javascript" src="javascripts/variable_module.js"></script>

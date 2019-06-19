@@ -676,6 +676,53 @@ var utils_module = (function (verbose) {
     }
 
 
+    function getLinkToken(data_link, type, url_api, url_front) {
+
+        console.log("utils getLinkToken");
+        // console.log(data_link)
+
+        $.ajax({
+            url: url_api + "/niche/especie/getToken",
+            type: 'post',
+            data: data_link,
+            dataType: "json",
+            success: function (resp) {
+
+                var cadena_ini = url_front + '#link/?';
+                var tokenlink = resp.data[0].token;
+
+                console.log("token: " + tokenlink);
+
+                $("#modalRegenera").modal();
+                $("#lb_enlace").val(cadena_ini + "token=" + tokenlink);
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+
+            }
+        });
+
+    }
+
+
+    function genLinkURL() {
+
+        _VERBOSE ? console.log("utils genLinkURL") : _VERBOSE;
+
+        if (_json_config == undefined) {
+            return;
+        }
+
+//        console.log(_json_config.token);
+        var token = _json_config.token;
+        getValuesFromToken(token);
+
+    }
+
+
+    
+
 
 
     /**
@@ -703,7 +750,10 @@ var utils_module = (function (verbose) {
         processDataForFreqCell: processDataForFreqCell,
         reduceScoreCell: reduceScoreCell,
         reduceDecilGroups: reduceDecilGroups,
-        hashCode: hashCode
+        hashCode: hashCode,
+        getLinkToken: getLinkToken,
+        // genLinkURL: genLinkURL
+        // getValuesFromToken: getValuesFromToken
     }
 
 
