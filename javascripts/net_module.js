@@ -526,7 +526,10 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                         name_sp = d.generovalido + " " + d.especieepiteto
                     }
                     else{
-                         name_sp = d.tag
+                        var range = d.tag.split(":")
+                        var inf = parseFloat(range[0]).toFixed(2)
+                        var sup = parseFloat(range[1]).toFixed(2)
+                        name_sp = _iTrans.prop("a_item_" + d.layer) + " " + inf + ":" + sup
                     }
 
                     div_tip.html(
@@ -1367,13 +1370,36 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
         _VERBOSE ? console.log("showSpecieOcc") : _VERBOSE;
 
-        var spids = [];
+        var nodes = [];
         var footprint_region = parseInt($("#footprint_region_select").val());
         var grid_res = parseInt($("#grid_resolution").val());
 
+
+        console.log(_nodes_selected)
+
         $.each(_nodes_selected, function(index, value) {
-            spids.push(value.spid);
-        });
+            
+            var node = {}
+
+            node.biotic = value.biotic
+            node.merge_vars = []
+
+            var temp_var = {}
+            
+            if(value.biotic){
+                temp_var.rank = "species"
+                temp_var.value = value.generovalido + " " + value.especieepiteto    
+            }
+            else{
+                temp_var.rank = "bid"
+                temp_var.value = value.bid
+            }
+            node.merge_vars.push(temp_var)
+
+            nodes.push(node);
+        })
+
+        console.log(nodes)
 
         _map_conected = d3.map([]);
         _clean_search();
@@ -1383,17 +1409,20 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
         var sdata = {
-            "spids": spids,
-            "footprint_region": footprint_region,
+            "nodes": nodes,
+            "region": footprint_region,
             "grid_res": grid_res
         };
+
+        console.log(sdata)
         
         $('#map').loading({
             stoppable: true
         });
 
         $.ajax({
-            url: _url_zacatuche + "/niche/especie/getCountGridid",
+            // url: _url_zacatuche + "/niche/especie/getCountGridid",
+            url: _url_zacatuche + "/niche/especie/getGroupCountGridid",
             type: 'post',
             data: sdata,
             success: function(resp) {

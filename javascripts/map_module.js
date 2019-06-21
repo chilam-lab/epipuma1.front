@@ -424,18 +424,19 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 })
                 .drawing(_drawingOnCanvas);
 
+        console.log(config)
 
-        if (parseInt(localStorage.getItem("ambiente")) === 0 || parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3) {
+        // if (parseInt(localStorage.getItem("ambiente")) === 0 || parseInt(localStorage.getItem("ambiente")) === 1 || parseInt(localStorage.getItem("ambiente")) === 2 || parseInt(localStorage.getItem("ambiente")) === 3) {
             _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
             _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
 
-        } else if (parseInt(localStorage.getItem("ambiente")) === 4 || parseInt(localStorage.getItem("ambiente")) === 5) {
-            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
-            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
-        } else {
-            _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
-            _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
-        }
+        // } else if (parseInt(localStorage.getItem("ambiente")) === 4 || parseInt(localStorage.getItem("ambiente")) === 5) {
+        //     _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [30.5, -99] : [30.5, -102];
+        //     _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 4 : 3;
+        // } else {
+        //     _centro_mapa = (_tipo_modulo === _MODULO_NICHO) ? [23.5, -102] : [23.5, -102];
+        //     _zoom_module = (_tipo_modulo === _MODULO_NICHO) ? 5 : 4;
+        // }
 
         // ambos div tienen el id = 'map', tanto en nicho como en comunidad
         map = L.map('map', {
