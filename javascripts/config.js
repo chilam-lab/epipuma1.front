@@ -1,8 +1,6 @@
 
-// var url_front = "http://species.conabio.gob.mx/dbdev";
-// var url_api = "http://species.conabio.gob.mx/api-db-dev";
-var url_front = "http://localhost/species-front";
-var url_api = "http://localhost:8080";
+var url_front = "http://species.conabio.gob.mx/dbdev";
+var url_api = "http://species.conabio.gob.mx/api-db-dev";
 
 
 var url_nicho = url_front + "/geoportal_v0.1.html";

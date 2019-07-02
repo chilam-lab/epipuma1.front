@@ -4,11 +4,14 @@
  *
  * @namespace net_module
  */
-var net_module = (function(verbose, url_zacatuche, map_module_net) {
+var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module) {
 
     var _url_zacatuche = url_zacatuche;
 
     var _map_module_net = map_module_net;
+
+    var _utils_module = utils_module
+
 
     var _VERBOSE = verbose;
     var _UMBRAL = 0.2;
@@ -39,6 +42,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
      * @param {object} languageModule - Módulo de internacionalización
      */
     function setLanguageModule(languageModule) {
+        _language_module_net = languageModule;
+        _iTrans = _language_module_net.getI18();
+    }
+
+    function setUtilsModulo(languageModule) {
         _language_module_net = languageModule;
         _iTrans = _language_module_net.getI18();
     }
@@ -280,7 +288,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         // })
 
 
-        // TODO: Verificar el ajsute en a,tura del mensaje de selección
+        // TODO: Verificar el ajsute en altura del mensaje de selección
         svg_g.append("text")
                 .append('svg:tspan')
                 .attr("id", "info_text_net")
@@ -780,24 +788,45 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                 var indexVisibleNodes = []
                 var nodes_related = d3.map([]);
 
+                epsilonBySource.sort(_compare_desc)
+
                 console.log(epsilonBySource);
+
 
                 _linkedByIndex = {};
 
+                var max_link = display_obj.max_num_link
+                var link_counter = 0
+
+                console.log("max_link: " + max_link)
+                console.log("first_load: " + display_obj.hist_load)
+
                 epsilonBySource.forEach(function(bean, i) {
+
                     bean.values.forEach(function(val) {
 
                         if (Math.abs(val.value) > display_obj.ep_th) {
 
-                            // _VERBOSE ? console.log(val) : _VERBOSE;
+                            link_counter++
+                            // console.log("link_counter: " + link_counter)
 
-                            json_temp.push({"source": val.source, "target": val.target, "value": val.value});
-                            nodes_related.set(val.source, parseInt(val.source));
-                            nodes_related.set(val.target, parseInt(val.target));
+                            if(display_obj.hist_load || link_counter <= max_link){
 
-                            _linkedByIndex[val.source + "," + val.target] = true;
+                                // console.log("ADD element")
+                                // display_obj.first_load = false
+
+                                json_temp.push({"source": val.source, "target": val.target, "value": val.value});
+                                nodes_related.set(val.source, parseInt(val.source));
+                                nodes_related.set(val.target, parseInt(val.target));
+
+                                _linkedByIndex[val.source + "," + val.target] = true;
+                                
+                            }       
+
 
                         }
+
+
                         // else{
 
                         //     nodes_related.set(parseInt(val.source), false);
@@ -806,7 +835,16 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                         // }
 
                     });
+
                 });
+
+
+                // obtiene el max y min de los enalces selecioandos
+                display_obj.hist_min_eps = d3.min(json_temp.map(function(d) {return parseFloat(d.value) }));
+                display_obj.hist_max_eps = d3.max(json_temp.map(function(d) {return parseFloat(d.value) }));
+                
+                                
+
 
                 _VERBOSE ? console.log(nodes_related.keys()) : _VERBOSE;
 
@@ -815,9 +853,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                 }
 
                 _VERBOSE ? console.log(indexVisibleNodes) : _VERBOSE;
-
                 _VERBOSE ? console.log(epsilonBySource) : _VERBOSE;
-                // _VERBOSE ? console.log("json_temp: " +json_temp.length) : _VERBOSE;
+                _VERBOSE ? console.log(json_temp) : _VERBOSE;
                 // _VERBOSE ? console.log(d3.selectAll("g.node").selectAll("circle")) : _VERBOSE;
 
 
@@ -1028,6 +1065,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         // Resalta los nodos que coinciden con el nombre de la cadena introducida.
         function _search_node(d) {
 
+            console.log(d)
+
             _clean_highlight();
 
             search_str = $("#input_text_search").val();
@@ -1057,9 +1096,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             d3.selectAll("g.node").selectAll("circle")
                     .each(function(item) {
 
-                        // console.log(label)
+                        // console.log(item)
 
-                        if (item.label.toLowerCase().startsWith(search_str.toLowerCase())) {
+                        var label = item.biotic ? item.generovalido + " " + item.especieepiteto : _iTrans.prop("a_item_" + item.layer) + " (" + parseFloat(item.tag.split(":")[0]).toFixed(2) + " : " + parseFloat(item.tag.split(":")[1]).toFixed(2) + ")"
+
+                        if (label.toLowerCase().startsWith(search_str.toLowerCase())) {
 
                             // _VERBOSE ? console.log(item.label + " " + item.index) : _VERBOSE;
                             // _VERBOSE ? console.log(highlight_color) : _VERBOSE;
@@ -1180,11 +1221,6 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             zoomer.scale(min_ratio);
 
         }
-        ;
-
-
-
-
 
 
 
@@ -1509,6 +1545,26 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         
         
         
+    }
+
+
+    function _compare(a, b) {
+        if (parseFloat(a.key) < parseFloat(b.key))
+            return -1;
+        if (parseFloat(a.key) > parseFloat(b.key))
+            return 1;
+        return 0;
+    }
+
+    function _compare_desc(a, b) {
+
+        // _VERBOSE ? console.log("_compare_desc") : _VERBOSE;
+
+        if (parseFloat(a.key) > parseFloat(b.key))
+            return -1;
+        if (parseFloat(a.key) < parseFloat(b.key))
+            return 1;
+        return 0;
     }
 
 

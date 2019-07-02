@@ -1407,6 +1407,10 @@ var histogram_module = (function (verbose) {
 
             _VERBOSE ? console.log("brush.chart") : _VERBOSE;
 
+            // desactiva el bloqueo del número de enlaces a desplegar
+            display_obj.hist_load = true
+
+
             var y = d3.scale.linear()
                     .domain([margin.left, width - margin.left])
                     .range([0, display_obj.NUM_BEANS]);
@@ -1502,6 +1506,69 @@ var histogram_module = (function (verbose) {
             // d3.event.sourceEvent.stopPropagation();
 
         });
+
+
+
+        // TODO: definir creación del brush
+        chart.drawBrush = function() {
+
+            console.log("chart.drawBrush")
+
+            console.log("display_obj.hist_min_eps: " + display_obj.hist_min_eps)
+            console.log("display_obj.hist_max_eps: " + display_obj.hist_max_eps)
+
+            // var y = d3.scale.linear()
+            //         .domain([margin.left, width - margin.left])
+            //         .range([0, display_obj.NUM_BEANS]);
+
+
+            // b = brush.extent();
+
+
+            // var localBrushStart = (brush.empty()) ? brushStart : y(b[20]),
+            //         localBrushEnd = (brush.empty()) ? brushEnd : y(b[35]);
+
+
+            // // Snap to rect edge
+            // // d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(display_obj.hist_min_eps), y.invert(display_obj.hist_max_eps)]));
+            // // d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(21), y.invert(35)]));
+            // d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(localBrushStart), y.invert(localBrushEnd)]));
+
+
+            // // Fade all years in the histogram not within the brush
+            // d3.selectAll("rect.bar").style("opacity", function (d, i) {
+            //     // _VERBOSE ? console.log(d.key) : _VERBOSE;
+
+            //     if (d.key < localBrushStart || d.key >= localBrushEnd || brush.empty()) {
+            //         return "0.4";
+            //     } else {
+            //         return "1";
+            //     }
+            // });
+
+// otro metodo -----
+
+            // brush.extent([display_obj.hist_min_eps, hist_max_eps])
+
+
+            
+            // // our year will this.innerText
+            // // console.log(this.innerText)
+
+            // // define our brush extent to be begin and end of the year
+            // brush.extent([new Date(this.innerText + '-01-01'), new Date(this.innerText + '-12-31')])
+
+            // // now draw the brush to match our extent
+            // // use transition to slow it down so we can see what is happening
+            // // remove transition so just d3.select(".brush") to just draw
+            // brush(d3.select(".brush").transition());
+
+            // // now fire the brushstart, brushmove, and brushend events
+            // // remove transition so just d3.select(".brush") to just draw
+            // brush.event(d3.select(".brush").transition().delay(1000))
+          }
+
+        chart.drawBrush()
 
 
         chart.margin = function (_) {

@@ -146,6 +146,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         var self = this;
         self.NUM_BEANS = 21;
+        self.MAX_LINKS = 500;
+
 
 
         $("#red_download").click(function (e) {
@@ -435,12 +437,12 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                                                     //   return;
                                                     // }
 
-                                                    max_eps = d3.max(_arrayLinks.map(function (d) {
-                                                        return d.value;
-                                                    }));
-                                                    min_eps = d3.min(_arrayLinks.map(function (d) {
-                                                        return d.value;
-                                                    }));
+                                                    // max_eps = d3.max(_arrayLinks.map(function (d) {
+                                                    //     return d.value;
+                                                    // }));
+                                                    // min_eps = d3.min(_arrayLinks.map(function (d) {
+                                                    //     return d.value;
+                                                    // }));
 
                                                     _createGraph(_arrayLinks, s_filters, t_filters);
 
@@ -627,8 +629,9 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         _configFilters(json);
 
-        _net_module = net_module(_VERBOSE, _url_zacatuche, _map_module_net);
+        _net_module = net_module(_VERBOSE, _url_zacatuche, _map_module_net, _utils_module);
         _net_module.startNet(_language_module_net, s_filters, t_filters);
+        _net_module.setLanguageModule(_language_module_net);
         _net_module.setLanguageModule(_language_module_net);
         _net_module.setLegendGroup(_legend_groups);
 
@@ -673,6 +676,14 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_configFilters") : _VERBOSE;
 
+        self.hist_load = false
+
+        self.hist_min_eps = 0
+
+        self.hist_max_eps = 0
+
+        self.max_num_link = self.MAX_LINKS
+
         self.nestByR = d3.nest().key(function (d) {
             return d.value
         });
@@ -685,12 +696,13 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             return parseFloat(d.value);
         }));
 
-        console.log("min_eps: " + min_eps);
-        console.log("max_eps: " + max_eps);
+        // console.log("min_eps: " + min_eps);
+        // console.log("max_eps: " + max_eps);
 
         self.epsRange = d3.scale.quantile().domain([min_eps, max_eps]).range(epsilon_beans);
 
         self.links_sp = crossfilter(json.links);
+
         self.all = links_sp.groupAll();
 
         self.dim_eps_freq = self.links_sp.dimension(function (d) {
