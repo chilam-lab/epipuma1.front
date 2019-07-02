@@ -1129,13 +1129,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
                     var temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
 
-                    // single_filter.push({
-                    //     'field': _reino_campos[temp_item_field],
-                    //     'value': temp_item_value,
-                    //     'type': parseInt(itemGroup.type),
-                    //     'group_item': grupo.groupid
-                    // });
-
                     merge_vars.push({
                         'rank': map_taxon.get(temp_item_field),
                         'value': temp_item_value,
@@ -1151,14 +1144,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     // if the type is equal to 1 the item contains the parameter level
                     temp_item_value = itemGroup.label.split(">>")[1].trim();
-
-                    // single_filter.push({
-                    //     'value': itemGroup.value,
-                    //     'type': parseInt(itemGroup.type),
-                    //     'level': parseInt(itemGroup.level),
-                    //     'group_item': grupo.groupid,
-                    //     'label': temp_item_value
-                    // });
 
                     merge_vars.push({
                         'rank': map_abio.get(parseInt(itemGroup.level)),
@@ -1180,10 +1165,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     }
                 }
 
-                // _decil_data['hasBios'] = hasBios;
-                // _decil_data['hasRaster'] = hasRaster;
-                // _decil_data['tfilters'] = single_filter;
-
                 // console.log(merge_vars)
 
                 single_filter["name"] = grupo.title.replace(/ /g,'')
@@ -1195,11 +1176,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _decil_data.covariables.push(single_filter)
 
 
-                // _VERBOSE ? console.log(hasChildren) : _VERBOSE;
-                // _VERBOSE ? console.log(hasTotal) : _VERBOSE;
-
                 // _VERBOSE ? console.log(single_filter) : _VERBOSE;
-                _VERBOSE ? console.log(_decil_data) : _VERBOSE;
+                // _VERBOSE ? console.log(_decil_data) : _VERBOSE;
 
                 var data_request = jQuery.extend(true, {}, _decil_data);
                 _REQUESTS_MADE.push(data_request);
@@ -1223,10 +1201,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _REQUESTS_NUMBER = _REQUESTS_MADE.length;
         console.log("_REQUESTS_NUMBER: " + _REQUESTS_NUMBER);
         console.log(_TREE_GENERATED);
+        console.log(_REQUESTS_MADE);
+
+        // return;
 
         _REQUESTS_MADE.forEach(function (item, index) {
 
-            console.log(item);
+            // console.log(item);
 
             _createScore_Decil(item);
 
@@ -1257,7 +1238,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var data_request = jQuery.extend(true, {}, decildata);
 
-        // console.log(data_request)
+        console.log(data_request)
 
 
         // decildata["with_data_freq"] = false;
@@ -1279,7 +1260,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     console.log(respuesta)
 
                     _REQUESTS_NUMBER = _REQUESTS_NUMBER - 1;
-//            console.log("_REQUESTS_NUMBER: " + _REQUESTS_NUMBER);
 
 
                     // PROCESANDO PETICIONES INDIVIDUALES
@@ -1320,7 +1300,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
                         _createHistScore_Celda(data_freq_cell);
 
-                        console.log(_TREE_GENERATED);
+                        // console.log(_TREE_GENERATED);
+
+                        // return;
 
                         var score_cell_byanalysis = [];
                         var names_byanalysis = [];
@@ -1358,7 +1340,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         });
 
 
+                        // console.log(_TREE_GENERATED);
+
+                        // return;
+
+
                         if (_TREE_GENERATED.hasTotal) {
+
                             var data_cell_byanalysis = _utils_module.reduceScoreCell(score_cell_byanalysis);
                             
                             var data_decil_total = _utils_module.reduceDecilGroups(decil_total_results);
@@ -1370,7 +1358,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                        // console.log(_RESULTS_TODISPLAY);
 
+                        // console.log(_TREE_GENERATED);
+
+                        // return;
+
                         _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
+
+                        // console.log(_TREE_GENERATED);
+
+                        // return;
                         
                         loadDecilDataTable();
 
@@ -1433,6 +1429,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("loadDecilDataTable") : _VERBOSE;
 
+        $('#div_example').loading({
+            stoppable: true
+        });
+
 //        var tbl_request = _TREE_GENERATED.groups.length;
         _decil_values_tbl = [];
 
@@ -1440,9 +1440,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
        console.log(_TREE_GENERATED);
 ////        console.log(_RESULTS_TODISPLAY);
 //        console.log("tbl_request: " + tbl_request);
-       console.log("name: " + name);
-       console.log("decil: " + decil);
-       console.log("first_loaded: " + first_loaded);
+       // console.log("name: " + name);
+       // console.log("decil: " + decil);
+       // console.log("first_loaded: " + first_loaded);
 
 
         // obteniendo request total
@@ -1451,13 +1451,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
         if (name === "Total") {
             $.each(_TREE_GENERATED.groups, function (i, grupo) {
                 $.each(grupo.children, function (j, child) {
-                    total_request = mergeRequest(total_request, child);
+
+                    var temp_child = jQuery.extend(true, {}, child);
+                    total_request = mergeRequest(total_request, temp_child);
+
                 });
             });
         }
 
-        console.log(total_request);
-        // se enlaza total del request para selección de celda
+        // console.log(total_request);
+        // No comentar. Enlaza total del request para selección de celda
         _cdata = jQuery.extend(true, {}, total_request);
 
         //TODO: optimizar metodo:
@@ -1466,10 +1469,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             var request = {};
 
-//            console.log(value);
-//            console.log("_currentNameView: " + _currentNameView);
-//            console.log("_currentDecil: " + _currentDecil);
-//            console.log(value.name === name);
+           // console.log(value);
+           // console.log("_currentNameView: " + _currentNameView);
+           // console.log("_currentDecil: " + _currentDecil);
+           // console.log("value.name: " + value.name);
+           // console.log("name: " + name);
 //            console.log(_currentNameView !== name);
 //            console.log(_currentDecil !== decil);
 
@@ -1480,19 +1484,24 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     (name === "Total" && (_currentNameView !== name || _currentDecil !== decil))
                     ) {
 
-//                console.log("Actualiza tabla");
+               // console.log("Actualiza tabla");
+               // console.log("name: " + name);
+               // console.log("decil: " + decil);
 
                 _currentNameView = name;
                 _currentDecil = decil;
 
                 if (name !== "Total") {
                     $.each(value.children, function (i, child) {
-                        request = mergeRequest(request, child);
+                        var temp_child = jQuery.extend(true, {}, child);
+                        request = mergeRequest(request, temp_child);
                     });
                 } else {
                     request = total_request;
                 }
-//                console.log(request);
+                // console.log(request);
+                // console.log(_TREE_GENERATED);
+                // return;
 
                 fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
                     method: "POST",
@@ -1634,6 +1643,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
             })
         }
+
+        console.log(request.covariables)
 
 
 
