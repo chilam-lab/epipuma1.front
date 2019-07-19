@@ -4,13 +4,17 @@
  *
  * @namespace net_module
  */
-var net_module = (function(verbose, url_zacatuche, map_module_net) {
+var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module) {
 
     var _url_zacatuche = url_zacatuche;
 
     var _map_module_net = map_module_net;
 
+    var _utils_module = utils_module
+
+
     var _VERBOSE = verbose;
+    var _UMBRAL = 0.2;
 
     var _toastr = toastr;
     var iTrans;
@@ -38,6 +42,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
      * @param {object} languageModule - Módulo de internacionalización
      */
     function setLanguageModule(languageModule) {
+        _language_module_net = languageModule;
+        _iTrans = _language_module_net.getI18();
+    }
+
+    function setUtilsModulo(languageModule) {
         _language_module_net = languageModule;
         _iTrans = _language_module_net.getI18();
     }
@@ -84,6 +93,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             "progressBar": true
         };
 
+
+        //TODO: ajustar a nueva estructura
         $("#send_email").click(function(e) {
 
             // _VERBOSE ? console.log($("#email_address")) : _VERBOSE;
@@ -277,7 +288,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         // })
 
 
-        // TODO: Verificar el ajsute en a,tura del mensaje de selección
+        // TODO: Verificar el ajsute en altura del mensaje de selección
         svg_g.append("text")
                 .append('svg:tspan')
                 .attr("id", "info_text_net")
@@ -517,8 +528,20 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                             .duration(200)
                             .style("opacity", .9);
 
+                    var name_sp = ""
+
+                    if(d.biotic){
+                        name_sp = d.generovalido + " " + d.especieepiteto
+                    }
+                    else{
+                        var range = d.tag.split(":")
+                        var inf = parseFloat(range[0]).toFixed(2)
+                        var sup = parseFloat(range[1]).toFixed(2)
+                        name_sp = _iTrans.prop("a_item_" + d.layer) + " " + inf + ":" + sup
+                    }
+
                     div_tip.html(
-                            "<strong>" + _iTrans.prop('lb_variable_name') + ":</strong> <span >" + d.label + "</span><br/><br/>" +
+                            "<strong>" + _iTrans.prop('lb_variable_name') + ":</strong> <span >" + name_sp + "</span><br/><br/>" +
                             "<strong>" + _iTrans.prop('lb_occ') + ":</strong> <span >" + d.occ + "</span>"
                             )
                             .style("left", (d3.event.pageX + 20) + "px")
@@ -765,24 +788,45 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                 var indexVisibleNodes = []
                 var nodes_related = d3.map([]);
 
+                epsilonBySource.sort(_compare_desc)
+
                 console.log(epsilonBySource);
+
 
                 _linkedByIndex = {};
 
+                var max_link = display_obj.max_num_link
+                var link_counter = 0
+
+                console.log("max_link: " + max_link)
+                console.log("first_load: " + display_obj.hist_load)
+
                 epsilonBySource.forEach(function(bean, i) {
+
                     bean.values.forEach(function(val) {
 
                         if (Math.abs(val.value) > display_obj.ep_th) {
 
-                            // _VERBOSE ? console.log(val) : _VERBOSE;
+                            link_counter++
+                            // console.log("link_counter: " + link_counter)
 
-                            json_temp.push({"source": val.source, "target": val.target, "value": val.value});
-                            nodes_related.set(val.source, parseInt(val.source));
-                            nodes_related.set(val.target, parseInt(val.target));
+                            if(display_obj.hist_load || link_counter <= max_link){
 
-                            _linkedByIndex[val.source + "," + val.target] = true;
+                                // console.log("ADD element")
+                                // display_obj.first_load = false
+
+                                json_temp.push({"source": val.source, "target": val.target, "value": val.value});
+                                nodes_related.set(val.source, parseInt(val.source));
+                                nodes_related.set(val.target, parseInt(val.target));
+
+                                _linkedByIndex[val.source + "," + val.target] = true;
+                                
+                            }       
+
 
                         }
+
+
                         // else{
 
                         //     nodes_related.set(parseInt(val.source), false);
@@ -791,7 +835,16 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                         // }
 
                     });
+
                 });
+
+
+                // obtiene el max y min de los enalces selecioandos
+                display_obj.hist_min_eps = d3.min(json_temp.map(function(d) {return parseFloat(d.value) }));
+                display_obj.hist_max_eps = d3.max(json_temp.map(function(d) {return parseFloat(d.value) }));
+                
+                                
+
 
                 _VERBOSE ? console.log(nodes_related.keys()) : _VERBOSE;
 
@@ -800,9 +853,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
                 }
 
                 _VERBOSE ? console.log(indexVisibleNodes) : _VERBOSE;
-
                 _VERBOSE ? console.log(epsilonBySource) : _VERBOSE;
-                // _VERBOSE ? console.log("json_temp: " +json_temp.length) : _VERBOSE;
+                _VERBOSE ? console.log(json_temp) : _VERBOSE;
                 // _VERBOSE ? console.log(d3.selectAll("g.node").selectAll("circle")) : _VERBOSE;
 
 
@@ -1013,6 +1065,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         // Resalta los nodos que coinciden con el nombre de la cadena introducida.
         function _search_node(d) {
 
+            console.log(d)
+
             _clean_highlight();
 
             search_str = $("#input_text_search").val();
@@ -1042,7 +1096,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             d3.selectAll("g.node").selectAll("circle")
                     .each(function(item) {
 
-                        if (item.label.toLowerCase().startsWith(search_str.toLowerCase())) {
+                        // console.log(item)
+
+                        var label = item.biotic ? item.generovalido + " " + item.especieepiteto : _iTrans.prop("a_item_" + item.layer) + " (" + parseFloat(item.tag.split(":")[0]).toFixed(2) + " : " + parseFloat(item.tag.split(":")[1]).toFixed(2) + ")"
+
+                        if (label.toLowerCase().startsWith(search_str.toLowerCase())) {
 
                             // _VERBOSE ? console.log(item.label + " " + item.index) : _VERBOSE;
                             // _VERBOSE ? console.log(highlight_color) : _VERBOSE;
@@ -1090,6 +1148,13 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         function _export_graph() {
 
             _VERBOSE ? console.log("export_graph") : _VERBOSE;
+            
+            //TODO: Verficar por que en chrome no detecta el cambio
+            $("#lb_modal_red").text(_iTrans.prop('lb_modal_red'));
+            $("#lb_des_modal_red").text(_iTrans.prop('lb_des_modal_red'));
+            $("#red_download").text(_iTrans.prop('red_download'));
+            $("#cancel_red_csv").text(_iTrans.prop('cancel_red_csv'));
+            
             $('#modalMail').modal('show');
 
         }
@@ -1156,11 +1221,6 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
             zoomer.scale(min_ratio);
 
         }
-        ;
-
-
-
-
 
 
 
@@ -1324,8 +1384,10 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         // Actualemnte no existe proceso de validacion en comunidad
         var val_process = false;
         // Actualemnte no existe cambio de resolución en comunidad
-        var grid_res = "16";
-        _map_module_net.loadD3GridMX(val_process, grid_res);
+        var grid_res = parseInt($("#grid_resolution").val());
+        var footprint_region = parseInt($("#footprint_region_select").val());
+        
+        _map_module_net.loadD3GridMX(val_process, grid_res, footprint_region);
 
     }
 
@@ -1344,11 +1406,36 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
         _VERBOSE ? console.log("showSpecieOcc") : _VERBOSE;
 
-        var spids = [];
+        var nodes = [];
+        var footprint_region = parseInt($("#footprint_region_select").val());
+        var grid_res = parseInt($("#grid_resolution").val());
+
+
+        console.log(_nodes_selected)
 
         $.each(_nodes_selected, function(index, value) {
-            spids.push(value.spid);
-        });
+            
+            var node = {}
+
+            node.biotic = value.biotic
+            node.merge_vars = []
+
+            var temp_var = {}
+            
+            if(value.biotic){
+                temp_var.rank = "species"
+                temp_var.value = value.generovalido + " " + value.especieepiteto    
+            }
+            else{
+                temp_var.rank = "bid"
+                temp_var.value = value.bid
+            }
+            node.merge_vars.push(temp_var)
+
+            nodes.push(node);
+        })
+
+        console.log(nodes)
 
         _map_conected = d3.map([]);
         _clean_search();
@@ -1358,20 +1445,22 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
         var sdata = {
-            'qtype': 'getCountGridid',
-            "spids": spids
+            "nodes": nodes,
+            "region": footprint_region,
+            "grid_res": grid_res
         };
+
+        console.log(sdata)
         
         $('#map').loading({
             stoppable: true
         });
 
         $.ajax({
-            // url : _url_trabajo,
-            url: _url_zacatuche + "/niche/especie",
+            // url: _url_zacatuche + "/niche/especie/getCountGridid",
+            url: _url_zacatuche + "/niche/especie/getGroupCountGridid",
             type: 'post',
             data: sdata,
-            // dataType : "json",
             success: function(resp) {
 
                 $('#map').loading('stop');
@@ -1385,7 +1474,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
 
                 $.each(json, function(index, item) {
                     arg_gridid.push(item.gridid);
-                    arg_count.push(parseInt(item.cont));
+                    arg_count.push(parseInt(item.conteo));
                 });
 
                 var max_eps = d3.max(arg_count);
@@ -1418,6 +1507,65 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         });
 
     }
+    
+    
+    
+    function getGridNet2Export(nodes, links){
+        
+        _VERBOSE ? console.log("getGridNet2Export") : _VERBOSE;
+        
+        var date = new Date();
+        var sufijo = "_Exp_"+date.getFullYear()+"_"+date.getMonth()+"_"+date.getDay()+"_"+date.getHours()+":"+date.getMinutes();
+        $("#red_download").attr("download","net" + sufijo + ".csv");
+        
+//        nodes tienen index
+//        enlaces tienen source & target & epsilon
+        
+        console.log(nodes);
+        console.log(links);
+
+        var grid_net_2export = "";
+        
+        for (var i = 0; i < links.length; i++) {
+            
+            var item = links[i];
+            if(parseFloat(item.value)>=_UMBRAL || parseFloat(item.value)<=-_UMBRAL){
+                
+                grid_net_2export += nodes[item.source].label + ","
+                grid_net_2export += nodes[item.target].label + ","
+                grid_net_2export += parseFloat(item.value) 
+                grid_net_2export += "\r\n"
+                
+            }
+
+        }
+        
+//        console.log(grid_net_2export);
+        return grid_net_2export;
+        
+        
+        
+    }
+
+
+    function _compare(a, b) {
+        if (parseFloat(a.key) < parseFloat(b.key))
+            return -1;
+        if (parseFloat(a.key) > parseFloat(b.key))
+            return 1;
+        return 0;
+    }
+
+    function _compare_desc(a, b) {
+
+        // _VERBOSE ? console.log("_compare_desc") : _VERBOSE;
+
+        if (parseFloat(a.key) > parseFloat(b.key))
+            return -1;
+        if (parseFloat(a.key) < parseFloat(b.key))
+            return 1;
+        return 0;
+    }
 
 
 
@@ -1444,7 +1592,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net) {
         createNet: createNet,
         setLanguageModule: setLanguageModule,
         setLegendGroup: setLegendGroup,
-        showSpecieOcc: showSpecieOcc
+        showSpecieOcc: showSpecieOcc,
+        getGridNet2Export: getGridNet2Export
     }
 
 });

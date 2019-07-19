@@ -10,20 +10,18 @@ var module_index = (function() {
 
     _VERBOSE ? console.log("*** loading index... ***") : _VERBOSE;
 
-    var _language_module_net;
+    var _language_module_index;
     var _toastr = toastr;
     var _iTrans;
     var _tipo_modulo;
     var _link_val;
 
-    var url_front;
-    var url_api;
-
-
-
-    // TEMPORAL DESARROLLO
-    var _url_api, _url_nicho, _url_comunidad;
-
+    var _url_front;
+    var _url_api;
+    var _url_nicho;
+    var _url_comunidad;
+    
+            
     /**
      * Método de inicialización de componentes necesarios en la primera pantalla
      * del sistema
@@ -36,22 +34,12 @@ var module_index = (function() {
 
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
-//        Cookies.remove('register');
 
-        if (Cookies.get("register") === undefined) {
-            Cookies.set("register", true, {expires: 7});
-            $("#div_rel_nicho").attr('href',_url_nicho);
-            $("#div_rel_com").attr('href',_url_comunidad);
-            $("#link_modelo_nicho").append("<a href=\"#\"  id=\"a_modelo_nicho\" link-id=\"" + _url_nicho + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" >" + _iTrans.prop("a_modelo_nicho") + "</a>");
-            $("#link_modelo_comunidad").append("<a href=\"#\" id=\"a_modelo_comunidad\" link-id=\"" + _url_comunidad + "\" data-target=\"#modalLogin\" data-toggle=\"modal\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
-        }
-        else {
-            $("#div_rel_nicho").attr('href',_url_nicho);
-            $("#div_rel_com").attr('href',_url_comunidad);
-            $("#link_modelo_nicho").append("<a href=\"" + _url_nicho + "\"  id=\"a_modelo_nicho\"  >" + _iTrans.prop("a_modelo_nicho") + "</a>");
-            $("#link_modelo_comunidad").append("<a href=\"" + _url_comunidad + "\" id=\"a_modelo_comunidad\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
-        }
-
+        $("#div_rel_nicho").attr('href',_url_nicho);
+        $("#div_rel_com").attr('href',_url_comunidad);
+        $("#link_modelo_nicho").append("<a href=\"" + _url_nicho + "\"  id=\"a_modelo_nicho\"  >" + _iTrans.prop("a_modelo_nicho") + "</a>");
+        $("#link_modelo_comunidad").append("<a href=\"" + _url_comunidad + "\" id=\"a_modelo_comunidad\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
+        
         _toastr.options = {
             "debug": false,
             "onclick": null,
@@ -82,52 +70,45 @@ var module_index = (function() {
 
         $("#send_email_login").click(function() {
             _VERBOSE ? console.log("send_email_login") : _VERBOSE;
-            _VERBOSE ? console.log(_link_val) : _VERBOSE;
-
-            _VERBOSE ? console.log($("#email_address")[0].validity["valid"]) : _VERBOSE;
-            _VERBOSE ? console.log($("#usaer_name").val()) : _VERBOSE;
+//            _VERBOSE ? console.log(_link_val) : _VERBOSE;
+            _VERBOSE ? console.log("valido: " + $("#email_address")[0].validity["valid"]) : _VERBOSE;
 
             var regexp = /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
 
-            if (!regexp.test($("#usaer_name").val())) {
-                _toastr.error("Por favor inserte un usuario valido. Debe contener al menos un nombre y un apellido");
-                $("#usaer_name").val("");
+            if (!regexp.test($("#user_name").val())) {
+                _toastr.error(_iTrans.prop("invalid_user"));
+                $("#user_name").val("");
+                $("#email_address").val("");
                 return;
             }
 
             if ($("#email_address")[0].validity["valid"]) {
                 var email = $("#email_address").val();
-                var fecha = getDateNow();
-                var usuario = $("#usaer_name").val();
+                var usuario = $("#user_name").val();
 
                 _VERBOSE ? console.log("email: " + email) : _VERBOSE;
-                _VERBOSE ? console.log("fecha: " + fecha) : _VERBOSE;
                 _VERBOSE ? console.log("usuario: " + usuario) : _VERBOSE;
 
-                // TODO: Registro de correo y redireccionamiento a pagina.
                 $.ajax({
-                    // url : "http://localhost:8080/snib/getUserReg",
-                    url: _url_api + "/niche/especie",
+                    url: _url_api + "/niche/especie/getUserReg",
                     type: "post",
                     data: {
-                        qtype: "getUserReg",
+//                        qtype: "getUserReg",
                         email: email
                     },
                     success: function(d) {
                         var res = d.data;
-                        // var res = JSON.parse(d)
+                        
+                        var count = parseInt(res[0].count);
+                        _VERBOSE ? console.log("count: " + count) : _VERBOSE;
 
-                        var count = res[0].registro;
-                        _VERBOSE ? console.log(count) : _VERBOSE;
-
-                        if (count == 0) {
+                        if (count === 0) {
                             $.ajax({
-                                url: _url_api,
+                                url: _url_api + "/niche/especie/setUserReg",
                                 type: "post",
                                 data: {
-                                    qtype: "setUserReg",
+//                                    qtype: "setUserReg",
                                     email: email,
-                                    fecha: fecha,
                                     usuario: usuario
                                 },
                                 success: function(d) {
@@ -137,13 +118,15 @@ var module_index = (function() {
                                     window.location.replace(_link_val);
                                 },
                                 error: function(jqXHR, textStatus, errorThrown) {
+                                    _VERBOSE ? console.log("error: " + jqXHR) : _VERBOSE;
                                     _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                                    _VERBOSE ? console.log("error: " + errorThrown) : _VERBOSE;
 
                                     $("#email_address").val("");
-                                    $("#usaer_name").val("");
+                                    $("#user_name").val("");
 
                                     $("#modalLogin").modal("hide");
-                                    _toastr.error("Existio un error de registro, intentelo nuevamente");
+                                    _toastr.error(_iTrans.prop("general_error"));
                                     // _module_toast.showToast_BottomCenter(_iTrans.prop('lb_correo_error'), "error")
                                 }
                             });
@@ -157,26 +140,26 @@ var module_index = (function() {
                         _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
                         $("#email_address").val("");
-                        $("#usaer_name").val("");
+                        $("#user_name").val("");
                         $("#modalLogin").modal("hide");
 
-                        _toastr.error("Existio un error de registro, intentelo nuevamente");
+                        _toastr.error(_iTrans.prop("general_error"));
                     }
                 });
 
             } else {
+                $("#user_name").val("");
                 $("#email_address").val("");
-                _toastr.error("Correo invalido, intentelo nuevamente");
+                _toastr.error(_iTrans.prop("invalid_user"));
             }
         });
 
 
         $("#btn_tutorial").click(function() {
-            window.open(url_front + "/docs/tutorial.pdf");
+            window.open(_url_front + "/docs/tutorial.pdf");
         });
 
         var timer = 5000;
-        
         
         var names_nicho = ["lb_index_hist_decil", "lb_index_hist_score", "lb_index_map_pres"];
         var names_net = [ "lb_index_map_riq", "lb_index_tbl_rel", "lb_index_net"];
@@ -200,18 +183,18 @@ var module_index = (function() {
 
         $(".box_nicho").bgswitcher({
             images: [
-                url_front + "/images/mapa.png",
-                url_front + "/images/decil.png",
-                url_front + "/images/score_celda.png"],
+                _url_front + "/images/mapa.png",
+                _url_front + "/images/decil.png",
+                _url_front + "/images/score_celda.png"],
             effect: "fade",
             interval: timer
         });
 
         $(".box_net").bgswitcher({
             images: [
-                url_front + "/images/red.png",
-                url_front + "/images/mapa_riqueza.png",
-                url_front + "/images/tabla_red.png"],
+                _url_front + "/images/red.png",
+                _url_front + "/images/mapa_riqueza.png",
+                _url_front + "/images/tabla_red.png"],
             effect: "fade",
             interval: timer
         });
@@ -222,12 +205,12 @@ var module_index = (function() {
     /**
      * Regresa la fecha actual con formato YYYY-MM-DD
      *
-     * @function getDateNow 
+     * @function _getDateNow 
      * @private
      * @memberof! module_index
      */
-    function getDateNow() {
-        _VERBOSE ? console.log("getDateNow") : _VERBOSE;
+    function _getDateNow() {
+        _VERBOSE ? console.log("_getDateNow") : _VERBOSE;
 
         var today = new Date();
         var dd = today.getDate();
@@ -259,38 +242,27 @@ var module_index = (function() {
      *                                1-comunidad, 2-index)
      * @param {boolean} verbose - Se activa mesnajes de debug
      */
-    function startModule(front, api, tipo_modulo, verbose) {
-
-        url_front = front;
-        url_api = api;
-
-        // _AMBIENTE = ambiente
-        _VERBOSE = verbose;
-
-        console.log("_VERBOSE: " + _VERBOSE);
-        _VERBOSE ? console.log("URL front: " + url_front) : _VERBOSE;
-        _VERBOSE ? console.log("URL api: " + url_api) : _VERBOSE;
+    function startModule(tipo_modulo) {
+        
         _VERBOSE ? console.log("startModule Index") : _VERBOSE;
-        _tipo_modulo = tipo_modulo;
-
-        // se guardan cookies para enviarlas a comunidad y nicho
-        Cookies.set("url_front", url_front);
-        Cookies.set("url_api", url_api);
-
-        // var _url_trabajo = "http://species.conabio.gob.mx/niche?", 
-        _url_nicho = url_front + "/geoportal_v0.1.html";
-        _url_comunidad = url_front + "/comunidad_v0.1.html";
-        _url_api = url_api;
-
-        Cookies.set("url_nicho", _url_nicho);
-        Cookies.set("url_comunidad", _url_comunidad);
-
+        
+        _url_front = config.url_front
+        _url_api = config.url_api
+        _url_nicho = config.url_nicho
+        _url_comunidad = config.url_comunidad
+        _VERBOSE = config.verbose
+        _tipo_modulo = 2; // index
+        
+        
         // Se cargan los archivos de idiomas y depsues son cargados los modulos subsecuentes
-        // _VERBOSE ? console.log(this) : _VERBOSE
-        _language_module_net = language_module();
-        _language_module_net.startLanguageModule(this, _tipo_modulo);
+        _VERBOSE ? console.log(this) : _VERBOSE
+//        _VERBOSE ? console.log("before language_module INDEX") : _VERBOSE;
+        _language_module_index = language_module(_VERBOSE);
+        _language_module_index.startLanguageModule(this, _tipo_modulo);
 
     }
+
+    // startModule()
 
 
     /**
@@ -301,9 +273,11 @@ var module_index = (function() {
      * @memberof! module_index
      */
     function loadModules() {
-        _VERBOSE ? console.log("loadModules") : _VERBOSE;
-        _iTrans = _language_module_net.getI18();
+        
+        _VERBOSE ? console.log("loadModules INDEX") : _VERBOSE;
+        _iTrans = _language_module_index.getI18();
         _initializeComponents();
+        
     }
 
 
@@ -315,56 +289,5 @@ var module_index = (function() {
 
 })();
 
-$(document).ready(function() {
-    // verbose por default es true
-    var verbose = true;
-
-    // 0 local, 1 producción, 2 desarrollo, 3 candidate
-    var ambiente = 1;
-
-    // 0 nicho, 1 comunidad, 2 index
-    var modulo = 2;
-
-    var url_front;
-    var url_api;
-
-
-    if (ambiente === 0) {
-        url_front = "http://localhost/species-front";
-        url_api = "http://localhost:8080";
-    }
-    else {
-
-        if (ambiente === 0) {
-
-            url_front = "http://localhost/species-front";
-            url_api = "http://localhost:8080";
-
-        }
-        else if (ambiente === 1) {
-
-            url_front = "http://species.conabio.gob.mx";
-            url_api = "http://species.conabio.gob.mx/api";
-
-        }
-        else if (ambiente === 2) {
-
-            url_front = "http://species.conabio.gob.mx/dev";
-            url_api = "http://species.conabio.gob.mx/api-dev";
-
-        }
-        // la version candidate tiene el front de dev y trabaja con el middleware de produccion
-        else {
-
-            url_front = "http://species.conabio.gob.mx/candidate";
-            url_api = "http://species.conabio.gob.mx/api-rc";
-
-        }
-
-
-    }
-
-    module_index.startModule(url_front, url_api, modulo, verbose);
-});
-
-
+var modulo = 2
+module_index.startModule(modulo)

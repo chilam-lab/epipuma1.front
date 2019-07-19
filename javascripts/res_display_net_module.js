@@ -9,8 +9,11 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
     var _url_zacatuche = url_zacatuche;
 
     var _VERBOSE = verbose;
+    
+    var _TYPE_BIO = 0;
 
-    var _variable_module_net, _language_module_net, _map_module_net, _net_module, _histogram_module_net, _table_module_net;
+    var _variable_module_net, _language_module_net, _map_module_net, _net_module, _histogram_module_net, _table_module_net, _utils_module;
+    var _footprint_region;
 
     var iTrans;
 
@@ -54,6 +57,40 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         "especie": "especievalidabusqueda",
         "species": "especievalidabusqueda"
     };
+
+    var map_abio = new Map()
+    map_abio.set(1, "type");
+    map_abio.set(2, "layer");
+    map_abio.set(3, "bid");
+
+    var map_taxon = new Map()
+    map_taxon.set("reino", "kingdom");
+    map_taxon.set("kingdom", "kingdom");
+    map_taxon.set("phylum", "phylum");
+    map_taxon.set("clase", "class");
+    map_taxon.set("class", "class");
+    map_taxon.set("orden", "order");
+    map_taxon.set("order", "order");
+    map_taxon.set("familia", "family");
+    map_taxon.set("family", "family");
+    map_taxon.set("genero", "genus");
+    map_taxon.set("género", "genus");
+    map_taxon.set("genus", "genus");
+    map_taxon.set("especie", "species");
+    map_taxon.set("species", "species");
+
+    var group_level_biotic = "species";
+    var group_level_abiotic = "bid";
+
+    var map_link_dbtaxon = new Map()
+    map_link_dbtaxon.set("reinovalido", "kingdom");
+    map_link_dbtaxon.set("phylumdivisionvalido", "phylum");
+    map_link_dbtaxon.set("clasevalida", "class");
+    map_link_dbtaxon.set("ordenvalido", "order");
+    map_link_dbtaxon.set("familiavalida", "family");
+    map_link_dbtaxon.set("generovalido", "genus");
+    map_link_dbtaxon.set("especieepiteto", "species");
+
 
 
 
@@ -104,8 +141,32 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         _variable_module_net = variable_module;
         _map_module_net = map_module;
 
+        _utils_module = utils_module();
+        _utils_module.startUtilsModule();
+
         var self = this;
         self.NUM_BEANS = 21;
+        self.MAX_LINKS = 500;
+
+
+
+        $("#red_download").click(function (e) {
+
+            _VERBOSE ? console.log("red_download") : _VERBOSE;
+
+            if (_json_nodes.length === 0) {
+                $("#modalMail").modal("hide");
+                return;
+            }
+
+            var net_info = _net_module.getGridNet2Export(_json_nodes, _arrayLinks);
+            var encodedUri = encodeURI(net_info);
+            this.href = "data:text/csv;charset=UTF-8," + encodedUri;
+
+//            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(net_info)], {type: 'text/csv;charset=utf-8;'}));
+            $("#modalMail").modal("hide");
+
+        });
 
     }
 
@@ -176,27 +237,31 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
             grupo.value.forEach(function (item) {
 
-                itemGroup = item;
+                var itemGroup = item;
                 _VERBOSE ? console.log(itemGroup) : _VERBOSE;
 
 
                 // bioticos
                 if (grupo.type == 0) {
 
-                    temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
-                    temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
-                    temp_item_parent = itemGroup.parent ? itemGroup.parent : "";
+                    var temp_item_field = itemGroup.label.toString().split(">>")[0].toLowerCase().trim();
+                    var temp_item_value = itemGroup.label.toString().split(">>")[1].trim();
+                    var temp_item_parent = itemGroup.parent ? itemGroup.parent : "";
 
-                    _VERBOSE ? console.log(_reino_campos[temp_item_field]) : _VERBOSE;
+//                    _VERBOSE ? console.log(_reino_campos[temp_item_field]) : _VERBOSE;
 
-                    _VERBOSE ? console.log(temp_item_field) : _VERBOSE;
-                    _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
+                   _VERBOSE ? console.log(temp_item_field) : _VERBOSE;
+                   _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
+                   _VERBOSE ? console.log(temp_item_parent) : _VERBOSE;
 
                     filters.push({
-                        'field': _reino_campos[temp_item_field],
+                        'biotic': true,
+                        'level': group_level_biotic,
+                        'rank': map_taxon.get(temp_item_field),
                         'value': temp_item_value,
                         'type': itemGroup.type,
-                        'parent': temp_item_parent,
+                        // 'field': _reino_campos[temp_item_field],
+                        // 'parent': temp_item_parent,
                         "fGroupId": _idFilterGroup,
                         "grp": grp_type
                                 // 'level' : parseInt(itemGroup.level)
@@ -210,10 +275,13 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                     _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
 
                     filters.push({
-                        'value': itemGroup.value,
-                        'type': itemGroup.type,
-                        'level': parseInt(itemGroup.level),
-                        'label': temp_item_value,
+                        'biotic': false,
+                        'level': group_level_abiotic,
+                        'rank': map_abio.get(parseInt(itemGroup.level)),
+                        'value': parseInt(itemGroup.level) !== 1 ? itemGroup.value : itemGroup.type,
+                        'type': parseInt(itemGroup.type),
+                        // 'level': parseInt(itemGroup.level),
+                        // 'label': temp_item_value,
                         "fGroupId": _idFilterGroup,
                         "grp": grp_type
                     });
@@ -242,24 +310,14 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {array} t_filters - Array con los grupos de variables seleccionados en target
      * @param {integer} min_occ - Número mínimo de ocurrencias de una variable en nj necesarias para ser considerada en el análisis de comunidad ecológica
      */
-    function createLinkNodes(s_filters, t_filters, min_occ, grid_res_val) {
+    function createLinkNodes(s_filters, t_filters, min_occ, grid_res_val, footprint_region) {
 
         _VERBOSE ? console.log("createLinkNodes") : _VERBOSE;
 
         // obtinene e numero minimo de interaciones entre las especies
         _min_occ = min_occ;
         _grid_res = grid_res_val;
-
-        var grid_res, cell_res, tbl_res;
-        if (_grid_res) {
-            grid_res = "gridid_" + _grid_res + "km";
-            cell_res = "cells_" + _grid_res + "km";
-            tbl_res = "grid_" + _grid_res + "km_aoi";
-        } else {
-            grid_res = "gridid_16km";
-            cell_res = "cells_16km";
-            tbl_res = "grid_16km_aoi";
-        }
+        _footprint_region = footprint_region;
 
         var hasBiosSource = false;
         var hasRasterSource = false;
@@ -271,25 +329,20 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
             _VERBOSE ? console.log("Testing...") : _VERBOSE;
 
-            d3.json("/javascripts/nodes_test.json", function (error, json_file) {
-                // d3.json("/javascripts/nodes_mammalia.json", function(error, json_file) {
-                // d3.json("/javascripts/nodes_mammalia_amphibia.json", function(error, json_file) {
-                _json_nodes = json_file;
-
-                d3.json("/javascripts/links_test.json", function (error, json_temp) {
-                    // d3.json("javascripts/links_mammalia.json", function(error, json_temp) {
-                    // d3.json("javascripts/links_mammalia_amphibia.json", function(error, json_temp) {
-
-                    _arrayLinks = json_temp;
-                    _createGraph(_arrayLinks, s_filters, t_filters);
-
-                });
-
-            });
+//            d3.json("/javascripts/nodes_test.json", function (error, json_file) {
+//                _json_nodes = json_file;
+//
+//                d3.json("/javascripts/links_test.json", function (error, json_temp) {
+//                    _arrayLinks = json_temp;
+//                    _createGraph(_arrayLinks, s_filters, t_filters);
+//
+//                });
+//
+//            });
 
         } else {
 
-            if (s_filters.length == 0 || t_filters.length == 0) {
+            if (s_filters.length === 0 || t_filters.length === 0) {
 
                 _toastr.warning(_iTrans.prop('lb_sin_filtros'));
 
@@ -298,7 +351,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             }
 
             for (var i = 0; i < s_filters.length; i++) {
-                if (s_filters[i].type == 4) {
+                if (s_filters[i].type === _TYPE_BIO) {
                     hasBiosSource = true;
                 } else {
                     hasRasterSource = true;
@@ -306,7 +359,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             }
 
             for (var i = 0; i < t_filters.length; i++) {
-                if (t_filters[i].type == 4) {
+                if (t_filters[i].type === _TYPE_BIO) {
                     hasBiosTarget = true;
                 } else {
                     hasRasterTarget = true;
@@ -314,53 +367,55 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             }
 
 
-            milliseconds = new Date().getTime();
+//            var milliseconds = new Date().getTime();
 
-            d3.json(_url_zacatuche + "/niche/getNodes")
+            d3.json(_url_zacatuche + "/niche/getTaxonsGroupNodes")
                     .header("Content-Type", "application/json")
                     .post(
                             JSON.stringify({
-                                qtype: "getNodes",
-                                s_tfilters: s_filters,
-                                t_tfilters: t_filters,
-                                hasbiosource: hasBiosSource,
-                                hasrastersource: hasRasterSource,
-                                hasbiotarget: hasBiosTarget,
-                                hasrastertarget: hasRasterTarget,
+                                // qtype: "getNodes",
+                                source: s_filters,
+                                target: t_filters,
+                                // hasbiosource: hasBiosSource,
+                                // hasrastersource: hasRasterSource,
+                                // hasbiotarget: hasBiosTarget,
+                                // hasrastertarget: hasRasterTarget,
                                 min_occ: _min_occ,
-                                res_celda_sp: cell_res,
-                                res_celda_snib: grid_res,
-                                res_celda_snib_tb: tbl_res
+                                grid_res: _grid_res,
+                                footprint_region: _footprint_region
+
                             }),
                             function (error, resp) {
 
-                                if (error)
+                                if (error) {
+                                    console.log(error);
                                     throw error;
+                                }
 
                                 var json = resp.data;
 
-                                _createNodeDictionary(json, s_filters, t_filters);
-
                                 console.log(json);
+
+                                _createNodeDictionary(json, s_filters, t_filters);
 
 
                                 // it ensures that the dictionary of nodes is created before the link list is recived.
-                                d3.json(_url_zacatuche + "/niche/getEdges")
+                                d3.json(_url_zacatuche + "/niche/getTaxonsGroupEdges")
                                         .header("Content-Type", "application/json")
                                         .post(
                                                 JSON.stringify({
-                                                    qtype: "getEdges",
-                                                    s_tfilters: s_filters,
-                                                    t_tfilters: t_filters,
-                                                    hasbiosource: hasBiosSource,
-                                                    hasrastersource: hasRasterSource,
-                                                    hasbiotarget: hasBiosTarget,
-                                                    hasrastertarget: hasRasterTarget,
-                                                    ep_th: 0.0,
+                                                    // qtype: "getEdges",
+                                                    source: s_filters,
+                                                    target: t_filters,
+                                                    // hasbiosource: hasBiosSource,
+                                                    // hasrastersource: hasRasterSource,
+                                                    // hasbiotarget: hasBiosTarget,
+                                                    // hasrastertarget: hasRasterTarget,
+                                                    // ep_th: 0.0,
                                                     min_occ: _min_occ,
-                                                    res_celda_sp: cell_res,
-                                                    res_celda_snib: grid_res,
-                                                    res_celda_snib_tb: tbl_res
+                                                    grid_res: _grid_res,
+                                                    footprint_region: _footprint_region
+
                                                 }),
                                                 function (error, resp) {
 
@@ -369,10 +424,11 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
                                                     var json = resp.data;
 
+                                                    console.log(json)
+
                                                     _createLinkDictionary(json);
 
-
-                                                    console.log(json);
+                                                    console.log(_associativeArray)
 
                                                     console.log(_arrayLinks);
 
@@ -381,12 +437,12 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                                                     //   return;
                                                     // }
 
-                                                    max_eps = d3.max(_arrayLinks.map(function (d) {
-                                                        return d.value;
-                                                    }));
-                                                    min_eps = d3.min(_arrayLinks.map(function (d) {
-                                                        return d.value;
-                                                    }));
+                                                    // max_eps = d3.max(_arrayLinks.map(function (d) {
+                                                    //     return d.value;
+                                                    // }));
+                                                    // min_eps = d3.min(_arrayLinks.map(function (d) {
+                                                    //     return d.value;
+                                                    // }));
 
                                                     _createGraph(_arrayLinks, s_filters, t_filters);
 
@@ -417,17 +473,34 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         _associativeArray = {};
 
-        map_node = d3.map([]);
+        var map_node = d3.map([]);
 
         $.each(json, function (i, item) {
 
-            map_node.set(item.spid, item);
+            var idsp = _utils_module.hashCode(
+                item.reinovalido +
+              item.phylumdivisionvalido + 
+              item.clasevalida + 
+              item.ordenvalido + 
+              item.familiavalida + 
+              item.generovalido + 
+              item.especieepiteto + 
+              item.nombreinfra +
+              item.type + 
+              item.layer + 
+              item.bid)
+
+            // console.log(idsp)
+
+            item["id"] = idsp
+
+            map_node.set(idsp, item);
         });
 
         // each node id has an index, 87456 -> 1, 87457 -> 2, ...
         $.each(map_node.values(), function (i, item) {
             item["index"] = i;
-            _associativeArray[item.spid] = item;
+            _associativeArray[item.id] = item;
         });
 
         // Saving nodes for future issues, and with index added.
@@ -437,6 +510,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         // _VERBOSE ? console.log(JSON.stringify(_json_nodes)) : _VERBOSE; 
 
         // funcion que asigna el color a los nodos
+        
         _getColorFilterGroups(_json_nodes, s_filters, t_filters);
 
     }
@@ -459,23 +533,54 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         // replacing node id with the index of the node array
         $.each(json_file, function (i, item) {
 
+            var idsource = _utils_module.hashCode(item.reinovalido_s +
+              item.phylumdivisionvalido_s + 
+              item.clasevalida_s + 
+              item.ordenvalido_s + 
+              item.familiavalida_s + 
+              item.generovalido_s + 
+              item.especieepiteto_s + 
+              item.nombreinfra_s +
+              item.type_s + 
+              item.layer_s + 
+              item.bid_s)
+
+            // console.log(idsource)
+
+            var idtarget = _utils_module.hashCode(item.reinovalido_t +
+              item.phylumdivisionvalido_t + 
+              item.clasevalida_t + 
+              item.ordenvalido_t + 
+              item.familiavalida_t + 
+              item.generovalido_t + 
+              item.especieepiteto_t + 
+              item.nombreinfra_t +
+              item.type_t + 
+              item.layer_t + 
+              item.bid_t)
+
+            // console.log(idtarget)
+
             associativeLinkArray = {}
-            associativeLinkArray[ "source" ] = _associativeArray[ json_file[i].source ].index;
+            associativeLinkArray[ "source" ] = _associativeArray[ idsource ].index;
 
             associativeLinkArray[ "nij" ] = json_file[i].nij;
             associativeLinkArray[ "nj" ] = json_file[i].nj;
             associativeLinkArray[ "ni" ] = json_file[i].ni;
             associativeLinkArray[ "n" ] = json_file[i].n;
 
-            associativeLinkArray[ "source_node" ] = _associativeArray[ json_file[i].source ];
+            associativeLinkArray[ "source_node" ] = _associativeArray[ idsource ];
 
-            associativeLinkArray[ "target" ] = _associativeArray[ json_file[i].target ].index;
-            associativeLinkArray[ "target_node" ] = _associativeArray[ json_file[i].target ];
+            associativeLinkArray[ "target" ] = _associativeArray[ idtarget ].index;
+            associativeLinkArray[ "target_node" ] = _associativeArray[ idtarget ];
             associativeLinkArray[ "value" ] = json_file[i].value;
+            associativeLinkArray[ "score" ] = json_file[i].score;
 
             _arrayLinks.push(associativeLinkArray);
 
         });
+
+        // console.log(_arrayLinks);
 
     }
 
@@ -498,10 +603,10 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         $("#graph").empty();
         $("#hist").empty();
 
-        document.getElementById("tbl_hist_comunidad").style.display = "inline";
-        document.getElementById("map_panel").style.display = "inline";
-        // document.getElementById("graph_map_comunidad").style.display = "inline";
-        document.getElementById("hist_map_comunidad").style.display = "inline";
+        // document.getElementById("tbl_hist_comunidad").style.display = "inline";
+        // document.getElementById("map_panel").style.display = "inline";
+        // // document.getElementById("graph_map_comunidad").style.display = "inline";
+        // document.getElementById("hist_map_comunidad").style.display = "inline";
 
 
         // se carga mapa, controles y grid
@@ -524,8 +629,9 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         _configFilters(json);
 
-        _net_module = net_module(_VERBOSE, _url_zacatuche, _map_module_net);
+        _net_module = net_module(_VERBOSE, _url_zacatuche, _map_module_net, _utils_module);
         _net_module.startNet(_language_module_net, s_filters, t_filters);
+        _net_module.setLanguageModule(_language_module_net);
         _net_module.setLanguageModule(_language_module_net);
         _net_module.setLegendGroup(_legend_groups);
 
@@ -533,8 +639,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         // _graph_component = _net_module.createNetWebGL(json, this);
 
         _histogram_module_net = histogram_module(_VERBOSE);
-        _histogram_module_net.startHistogramModule();
         _histogram_module_net.setLanguageModule(_language_module_net);
+        _histogram_module_net.startHistogramModule();
         _hist_component = _histogram_module_net.createBarChartNet(json, this);
 
         _table_module_net = table_module(_url_zacatuche);
@@ -546,8 +652,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         self.renderAll();
 
-        adjust = $(window).height() + 60;
-        _VERBOSE ? console.log("adjust: " + adjust) : _VERBOSE;
+        var adjust = $(window).height() + 60;
+        // _VERBOSE ? console.log("adjust: " + adjust) : _VERBOSE;
         $("html, body").animate({scrollTop: (adjust / 3)}, 1000);
 
         // Verificar si se desea agregar la interacción por selección de estados
@@ -570,6 +676,14 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_configFilters") : _VERBOSE;
 
+        self.hist_load = false
+
+        self.hist_min_eps = 0
+
+        self.hist_max_eps = 0
+
+        self.max_num_link = self.MAX_LINKS
+
         self.nestByR = d3.nest().key(function (d) {
             return d.value
         });
@@ -582,12 +696,13 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             return parseFloat(d.value);
         }));
 
-        console.log("min_eps: " + min_eps);
-        console.log("max_eps: " + max_eps);
+        // console.log("min_eps: " + min_eps);
+        // console.log("max_eps: " + max_eps);
 
         self.epsRange = d3.scale.quantile().domain([min_eps, max_eps]).range(epsilon_beans);
 
         self.links_sp = crossfilter(json.links);
+
         self.all = links_sp.groupAll();
 
         self.dim_eps_freq = self.links_sp.dimension(function (d) {
@@ -669,163 +784,157 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log("_getColorFilterGroups") : _VERBOSE;
 
         var filters = s_filters.concat(t_filters);
-        console.log(filters);
+        _VERBOSE ? console.log(filters) : _VERBOSE;
 
-        // _VERBOSE ? console.log(json) : _VERBOSE;
-        _VERBOSE ? console.log(s_filters) : _VERBOSE;
-        _VERBOSE ? console.log(t_filters) : _VERBOSE;
+        _VERBOSE ? console.log(json) : _VERBOSE;
+       _VERBOSE ? console.log(s_filters) : _VERBOSE;
+       _VERBOSE ? console.log(t_filters) : _VERBOSE;
+
+
+       // console.log(map_link_dbtaxon.get("clasevalida"))
+       // console.log(map_link_dbtaxon.get("class"))
+       // console.log(map_link_dbtaxon.has("clasevalida"))
+       // console.log(map_link_dbtaxon.values())
 
 
         $.each(filters, function (i, item) {
 
-            if (filters[i].type == 4) {
+            
+            $.each(json, function (j, item) {
 
-                $.each(json, function (j, item) {
+                switch (filters[i].rank) {
 
-                    // _VERBOSE ? console.log(filters[i].field) : _VERBOSE;
-
-                    switch (filters[i].field) {
-
-                        case "reinovalido":
-                            if (json[j].reinovalido == filters[i].value) {
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 6;
-                                } else if (json[j].stage > 6) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 6;
-                                }
+                    case map_link_dbtaxon.get("reinovalido"):
+                        if (json[j].reinovalido == filters[i].value) {
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 6;
+                            } else if (json[j].stage > 6) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 6;
                             }
-                            break;
-                        case "phylumdivisionvalido":
-                            if (json[j].phylumdivisionvalido == filters[i].value) {
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 5;
-                                } else if (json[j].stage > 5) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 5;
-                                }
+                        }
+                        break;
+                    case map_link_dbtaxon.get("phylumdivisionvalido"):
+                        if (json[j].phylumdivisionvalido == filters[i].value) {
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 5;
+                            } else if (json[j].stage > 5) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 5;
                             }
-                            break;
-                        case "clasevalida":
-                            if (json[j].clasevalida == filters[i].value) {
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 4;
-                                } else if (json[j].stage > 4) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 4;
-                                }
+                        }
+                        break;
+                    case map_link_dbtaxon.get("clasevalida"):
+
+                    // console.log("*** Entro clase!!!")
+
+
+                        if (json[j].clasevalida == filters[i].value) {
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 4;
+                            } else if (json[j].stage > 4) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 4;
                             }
-                            break;
-                        case "ordenvalido":
-                            if (json[j].ordenvalido == filters[i].value) {
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 3;
-                                } else if (json[j].stage > 3) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 3;
-                                }
+                        }
+                        break;
+                    case map_link_dbtaxon.get("ordenvalido"):
+                        if (json[j].ordenvalido == filters[i].value) {
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 3;
+                            } else if (json[j].stage > 3) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 3;
                             }
-                            break;
-                        case "familiavalida":
-                            if (json[j].familiavalida == filters[i].value) {
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 2;
-                                } else if (json[j].stage > 2) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 2;
-                                }
+                        }
+                        break;
+                    case map_link_dbtaxon.get("familiavalida"):
+                        if (json[j].familiavalida == filters[i].value) {
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 2;
+                            } else if (json[j].stage > 2) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 2;
                             }
-                            break;
-                        case "generovalido":
-                            if (json[j].generovalido == filters[i].value) {
+                        }
+                        break;
+                    case map_link_dbtaxon.get("generovalido"):
+                        if (json[j].generovalido == filters[i].value) {
 
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 1;
-                                } else if (json[j].stage > 1) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 1;
-                                }
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 1;
+                            } else if (json[j].stage > 1) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 1;
                             }
-                            break;
+                        }
+                        break;
 
-                        case "especievalidabusqueda":
+                    case map_link_dbtaxon.get("especieepiteto"):
 
-                            if (json[j].label.split(" ")[1] == filters[i].value) {
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 0;
-                                } else if (json[j].stage > 0) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 0;
-                                }
+                         //console.log("*** Entro!!!")
+
+//                            if (json[j].label.split(" ")[1] == filters[i].value) {
+                        if ((json[j].generovalido + " " + json[j].especieepiteto) == filters[i].value) {
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 0;
+                            } else if (json[j].stage > 0) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 0;
                             }
-                            break;
+                        }
+                        break;
 
-                    }
+                    case "type":
+                        // _VERBOSE ? console.log(json_nodes[j].reinovalido) : _VERBOSE;
+                        json[j].group = filters[i].fGroupId;
+                        json[j].stage = 2;
 
-                });
+                        break;
 
-            } else {
+                    case "layer":
+                        if (json[j].layer == filters[i].value) {
 
-                _VERBOSE ? console.log(filters[i].value) : _VERBOSE;
-                _VERBOSE ? console.log(filters[i].type) : _VERBOSE;
-
-                $.each(json, function (j, item) {
-
-                    if (json[j].reinovalido == "Animalia" || json[j].reinovalido == "Plantae" || json[j].reinovalido == "Fungi"
-                            || json[j].reinovalido == "Prokaryotae" || json[j].reinovalido == "Protoctista")
-                        return true;
-
-                    switch (filters[i].level) {
-
-                        case 0:
-                            // _VERBOSE ? console.log(json_nodes[j].reinovalido) : _VERBOSE;
-                            json[j].group = filters[i].fGroupId;
-                            json[j].stage = 2;
-
-                            break;
-
-                        case 1:
-                            if (json[j].reinovalido == filters[i].value) {
-
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 1;
-                                } else if (json[j].stage > 1) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 1;
-                                }
-
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 1;
+                            } else if (json[j].stage > 1) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 1;
                             }
-                            // json[j].group = filters[i].fGroupId;
-                            break;
 
-                        case 2:
-                            if (json[j].spid == filters[i].value) {
+                        }
+                        // json[j].group = filters[i].fGroupId;
+                        break;
 
-                                if (!json[j].group) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 0;
-                                } else if (json[j].stage > 0) {
-                                    json[j].group = filters[i].fGroupId;
-                                    json[j].stage = 0;
-                                }
+                    case "bid":
+                        if (json[j].bid == filters[i].value) {
 
+                            if (!json[j].group) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 0;
+                            } else if (json[j].stage > 0) {
+                                json[j].group = filters[i].fGroupId;
+                                json[j].stage = 0;
                             }
-                            // json[j].group = filters[i].fGroupId;
-                            break;
 
-                    }
+                        }
+                        // json[j].group = filters[i].fGroupId;
+                        break;
 
-                });
 
-            }
+
+
+                }
+
+            });
 
         });
 

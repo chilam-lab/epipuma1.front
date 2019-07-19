@@ -70,15 +70,16 @@ var table_module = (function(verbose) {
 
         _VERBOSE ? console.log("createDecilList") : _VERBOSE;
 
-        data_list = [];
+        var data_list = [];
 
         list_elements.forEach(function(d) {
-            item_list = [];
+            var item_list = [];
             item_list.push(d.decil)
             item_list.push(d.species)
             item_list.push(d.epsilons)
             item_list.push(d.scores)
             item_list.push(d.occ)
+            item_list.push(d.occ_perdecile)            
 
             data_list.push(item_list)
 
@@ -114,7 +115,8 @@ var table_module = (function(verbose) {
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_name') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_especie_tbl')},
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_epsilon')},
                     {title: ' <button type=\'button\' class=\'btn btn-info glyphicon glyphicon-info-sign btn_column\' onclick=\' $("#div_formula").empty(); $("#lb_header_info").text("Score"); $("#lb_body_info").text("' + _iTrans.prop('lb_msg_score') + '"); table_module().addImageScore(); $("#modalInfo").modal()\' ></button> ' + _iTrans.prop('tip_tbl_score')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje por decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occ')}
+                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje por decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occ')},
+                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje occ en decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_occdecil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occdecil')}
                 ],
                 // 'copy', 'csv', 'excel', 'pdf', 'print'
                 buttons: [
@@ -180,6 +182,8 @@ var table_module = (function(verbose) {
      * 
      */
     function clearEspList(){
+        _VERBOSE ? console.log("clearEspList") : _VERBOSE;
+
         if (_tbl) {
             $('#tdisplay').dataTable().fnClearTable();
         }
@@ -195,6 +199,8 @@ var table_module = (function(verbose) {
      * 
      */
     function clearDecilList(){
+        _VERBOSE ? console.log("clearDecilList") : _VERBOSE;
+        
         if (_tbl_decil) {
             $('#example').dataTable().fnClearTable();
         }
@@ -214,7 +220,7 @@ var table_module = (function(verbose) {
 
         _VERBOSE ? console.log("createEspList") : _VERBOSE;
 
-        data_list = rawdata.data;
+        var data_list = rawdata.data;
         // _VERBOSE ? console.log(data_list) : _VERBOSE;
 
         var prev = 0;
@@ -377,7 +383,6 @@ var table_module = (function(verbose) {
 
         var epsilonByGender = _display_obj.nestByR.entries(dim_eps_freq.top(Infinity));
         temp = [];
-
         epsilonByGender.forEach(function(bean, i) {
             if (Math.abs(parseFloat(bean.values[0].value)) > ep_th) {
                 temp.push(bean);
@@ -388,23 +393,46 @@ var table_module = (function(verbose) {
 
         _VERBOSE ? console.log("list") : _VERBOSE;
 
+        _VERBOSE ? console.log(_json.nodes) : _VERBOSE;
+
 
         div.each(function() {
 
             _VERBOSE ? console.log("div each epsilonList") : _VERBOSE;
 
-            data_list = [];
+            var data_list = [];
 
 
             epsilonByGender.forEach(function(d) {
 
                 // item = d.values[0];
                 d.values.forEach(function(val) {
+                    
+                    // console.log(val)
 
-                    item_list = [];
+                    var item_list = [];
 
-                    item_list.push(_json.nodes[val.source].label);
-                    item_list.push(_json.nodes[val.target].label);
+                    var name_s, name_t;
+                    if(_json.nodes[val.source].biotic){
+                        name_s = _json.nodes[val.source].generovalido + " " + _json.nodes[val.source].especieepiteto
+                    }
+                    else{
+                        var infimo = _json.nodes[val.source].tag.split(':')[0];
+                        var supremo = _json.nodes[val.source].tag.split(':')[1];
+                        name_s = _json.nodes[val.source].label + " " + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2);
+                    }
+
+                    if(_json.nodes[val.target].biotic){
+                        name_t = _json.nodes[val.target].generovalido + " " + _json.nodes[val.target].especieepiteto
+                    }
+                    else{
+                        var infimo = _json.nodes[val.target].tag.split(':')[0];
+                        var supremo = _json.nodes[val.target].tag.split(':')[1];
+                        name_t = _json.nodes[val.target].label + " " + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2);
+                    }
+
+                    item_list.push(name_s);
+                    item_list.push(name_t);
 
                     item_list.push(val.nij);
                     item_list.push(val.nj);
@@ -412,6 +440,8 @@ var table_module = (function(verbose) {
                     item_list.push(val.n);
 
                     item_list.push(val.value);
+                    
+                    item_list.push(val.score);
 
                     data_list.push(item_list)
 
@@ -455,6 +485,7 @@ var table_module = (function(verbose) {
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_ni')},
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_n')},
                     {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + "Epsilon"}
+                    // {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Score'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_score') + "'); table_module().addImageScore(); $('#modalInfo').modal()\" ></button> " + "Score"}
                 ],
                 buttons: [
                     'copy', 'csv', 'excel', 'print'
