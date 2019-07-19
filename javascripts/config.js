@@ -1,6 +1,6 @@
 
-var url_front = "http://species.conabio.gob.mx/dbdev";
-var url_api = "http://species.conabio.gob.mx/api-db-dev";
+var url_front = "http://species.conabio.gob.mx/candidate";
+var url_api = "http://species.conabio.gob.mx/api-rc";
 
 
 //var url_front = 'http://127.0.0.1:8000'
