@@ -14,6 +14,7 @@ var table_module = (function(verbose) {
     var _language_module;
     var _iTrans;
     var _json, _display_obj;
+    var _data_list_eps, _data_list_decil;
 
     var _fcols = {
         '0': 'generovalido', '1': 'epitetovalido',
@@ -66,77 +67,80 @@ var table_module = (function(verbose) {
      * 
      * @param {array} list_elements - Array con el resultado del análisis de nicho ecológico del histograma decil
      */
-    function createDecilList(list_elements) {
+    function createDecilList(list_elements = null) {
 
         _VERBOSE ? console.log("createDecilList") : _VERBOSE;
 
-        var data_list = [];
+        if(list_elements){
 
-        list_elements.forEach(function(d) {
-            var item_list = [];
-            item_list.push(d.decil)
-            item_list.push(d.species)
-            item_list.push(d.epsilons)
-            item_list.push(d.scores)
-            item_list.push(d.occ)
-            item_list.push(d.occ_perdecile)            
+            _data_list_decil = []
+            
+            list_elements.forEach(function(d) {
+                var item_list = [];
+                item_list.push(d.decil)
+                item_list.push(d.species)
+                item_list.push(d.epsilons)
+                item_list.push(d.scores)
+                item_list.push(d.occ)
+                item_list.push(d.occ_perdecile)            
+                _data_list_decil.push(item_list)
+            })
 
-            data_list.push(item_list)
-
-        })
+        }
+        
 
         if (_tbl_decil != false) {
-            $('#example').dataTable().fnClearTable();
-            $('#example').dataTable().fnAddData(data_list);
+            // $('#example').dataTable().fnClearTable();
+            // $('#example').dataTable().fnAddData(data_list);
+            $('#example').dataTable().fnDestroy();
         }
-        else {
+        // else {
 
-            $('#example').DataTable({
-                "dom": 'Bfrtip',
-                "info": true,
-                "bSort": true,
-                "aoColumnDefs": [{
-                        "bSortable": false,
-                        "aTargets": []
-                    }],
-                // "bFilter" : false,
-                "bLengthChange": false,
-                "bPaginate": true, // Pagination True
-                "processing": true, // Pagination True
-                // "pagingType" : 'simple',
-                "iDisplayLength": 10,
-                "searching": true,
-                "scrollY": "300px",
-                "scrollCollapse": true,
-                "paging": false,
-                data: data_list,
-                columns: [
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_decil')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_name') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_especie_tbl')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_epsilon')},
-                    {title: ' <button type=\'button\' class=\'btn btn-info glyphicon glyphicon-info-sign btn_column\' onclick=\' $("#div_formula").empty(); $("#lb_header_info").text("Score"); $("#lb_body_info").text("' + _iTrans.prop('lb_msg_score') + '"); table_module().addImageScore(); $("#modalInfo").modal()\' ></button> ' + _iTrans.prop('tip_tbl_score')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje por decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occ')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje occ en decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_occdecil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occdecil')}
-                ],
-                // 'copy', 'csv', 'excel', 'pdf', 'print'
-                buttons: [
-                    'copy', 'csv', 'excel', 'print'
-                ],
-                language: {
-                    "sEmptyTable": "Sin regsitros",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                    "search": "Buscar: ",
-                    "zeroRecords": "Sin coincidencias encontradas",
-                    "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-                    "infoFiltered": "(Filtrados de _MAX_ entradas totales)"
-                }
-
+        $('#example').DataTable({
+            "dom": 'Bfrtip',
+            "info": true,
+            "bSort": true,
+            "aoColumnDefs": [{
+                    "bSortable": false,
+                    "aTargets": []
+                }],
+            // "bFilter" : false,
+            "bLengthChange": false,
+            "bPaginate": true, // Pagination True
+            "processing": true, // Pagination True
+            // "pagingType" : 'simple',
+            "iDisplayLength": 10,
+            "searching": true,
+            "scrollY": "300px",
+            "scrollCollapse": true,
+            "paging": false,
+            data: _data_list_decil,
+            columns: [
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_decil')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Variable'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_name') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_especie_tbl')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_epsilon')},
+                {title: ' <button type=\'button\' class=\'btn btn-info glyphicon glyphicon-info-sign btn_column\' onclick=\' $("#div_formula").empty(); $("#lb_header_info").text("Score"); $("#lb_body_info").text("' + _iTrans.prop('lb_msg_score') + '"); table_module().addImageScore(); $("#modalInfo").modal()\' ></button> ' + _iTrans.prop('tip_tbl_score')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje por decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_decil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occ')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Porcentaje occ en decil'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_por_occdecil') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_procentaje_occdecil')}
+            ],
+            buttons: [
+                'copy', 'csv', 'excel', 'print'
+            ],
+            language: {
+                "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                "info": _iTrans.prop('info'),
+                "search": _iTrans.prop('search') + " ",
+                "zeroRecords": _iTrans.prop('zeroRecords'),
+                "infoEmpty": _iTrans.prop('infoEmpty'),
+                "infoFiltered": _iTrans.prop('infoFiltered')
+            }
 
 
 
-            });
 
-        }
+        });
+
+        // }
 
         _tbl_decil = true;
 
@@ -216,97 +220,67 @@ var table_module = (function(verbose) {
      * 
      * @param {array} rawdata - Array con el resultado de epsilon y score por especie del análisis de nicho ecológico. 
      */
-    function createEspList(rawdata) {
+    function createEspList(rawdata = null) {
 
         _VERBOSE ? console.log("createEspList") : _VERBOSE;
 
-        var data_list = rawdata.data;
-        // _VERBOSE ? console.log(data_list) : _VERBOSE;
-
-        var prev = 0;
+        // var data_list = rawdata.data;    
+        _data_list_eps = rawdata ? rawdata.data : _data_list_eps
+        
         if (_tbl != false) {
-
-            // _VERBOSE ? console.log("*********** second time") : _VERBOSE;
-            $('#tdisplay').dataTable().fnClearTable();
-            $('#tdisplay').dataTable().fnAddData(data_list);
+            // $('#tdisplay').dataTable().fnClearTable();
+            // $('#tdisplay').dataTable().fnAddData(data_list);
+            $('#tdisplay').dataTable().fnDestroy();
         }
-        else {
+        
 
-            $('#tdisplay').dataTable({
-                "dom": 'Bfrtip',
-                "info": true,
-                "bSort": true,
-                "aoColumnDefs": [{
-                        "bSortable": false,
-                        "aTargets": []
-                    }],
-                // "bFilter" : false,
-                "bLengthChange": false,
-                "bPaginate": true, // Pagination True
-                "processing": true, // Pagination True
-                // "serverSide" : true,
-                // "pagingType" : 'simple',
-                "iDisplayLength": 10,
-                "searching": true,
-                "scrollY": "300px",
-                "scrollCollapse": true,
-                "paging": false,
-                "data": data_list,
-                "columns": [
-                    // { title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Género/Raster'); $('#lb_body_info').text('Genero o raster de la variable explicatoria.'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_genero_tbl') },
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\"$('#lb_header_info').text('Especie/Rango'); $('#lb_body_info').text('Especie o rango del raster de la variable explicatoria.'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_especie_tbl_eps')},
-                    // { title: _iTrans.prop('lb_raster') },
-                    // { title: _iTrans.prop('lb_rango') },
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nij'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nij') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nij')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nj'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nj') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nj')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_ni')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_n')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_epsilon')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Score'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_score') + "'); table_module().addImageScore(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('tip_tbl_score')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Reino'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_reino') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_reino')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Phylum'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_phylum') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_phylum')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Clase'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_clase') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_clase')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Orden'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_orden') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_orden')},
-                    {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Familia'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_familia') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_familia')}
-                ],
-                // 'copy', 'csv', 'excel', 'pdf', 'print'
-                buttons: [
-                    'copy', 'csv', 'excel', 'print'
-                ],
-                language: {
-                    "sEmptyTable": "Sin regsitros",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                    "search": "Buscar: ",
-                    "zeroRecords": "Sin coincidencias encontradas",
-                    "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-                    "infoFiltered": "(Filtrados de _MAX_ entradas totales)"
-                }
-
-            });
-
-//            _adjustComponents();
-
-
-        }
-
-        $('#tdisplay tbody').each(function() {
-
-            _VERBOSE ? console.log("show table") : _VERBOSE;
-
-            var sTitle;
-            var nTds = $('td', this);
-
-
-            var column = $(nTds[1]).text();
-
-            // _VERBOSE ? console.log(nTds) : _VERBOSE;
-            // _VERBOSE ? console.log(column) : _VERBOSE;
-
-            sTitle = 'test...';
-            this.setAttribute('title', sTitle);
+        $('#tdisplay').dataTable({
+            "dom": 'Bfrtip',
+            "info": true,
+            "bSort": true,
+            "aoColumnDefs": [{
+                    "bSortable": false,
+                    "aTargets": []
+                }],
+            // "bFilter" : false,
+            "bLengthChange": false,
+            "bPaginate": true, // Pagination True
+            "processing": true, // Pagination True
+            // "serverSide" : true,
+            // "pagingType" : 'simple',
+            "iDisplayLength": 10,
+            "searching": true,
+            "scrollY": "300px",
+            "scrollCollapse": true,
+            "paging": false,
+            "data": _data_list_eps,
+            "columns": [
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\"(function(){$('#lb_header_info').text('"+_iTrans.prop('lb_especie_tbl_eps')+"'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_name') + "'); $('#modalInfo').modal();}())\" ></button> " + _iTrans.prop('lb_especie_tbl_eps')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nij'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nij') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nij')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Nj'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_nj') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_nj')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Ni'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_ni') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_ni')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('N'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_n') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_n')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Epsilon'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_epsilon') + "'); table_module().addImageEpsilon(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('lb_epsilon')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Score'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_score') + "'); table_module().addImageScore(); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('tip_tbl_score')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('"+_iTrans.prop('a_item_reino')+"'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_reino') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_reino')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('"+_iTrans.prop('a_item_phylum')+"'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_phylum') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_phylum')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('"+_iTrans.prop('a_item_clase')+"'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_clase') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_clase')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('"+_iTrans.prop('a_item_orden')+"'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_orden') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_orden')},
+                {title: " <button type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('"+_iTrans.prop('a_item_familia')+"'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_familia') + "'); $('#modalInfo').modal()\" ></button> " + _iTrans.prop('a_item_familia')}
+            ],
+            buttons: [
+                'copy', 'csv', 'excel', 'print'
+            ],
+            language: {
+                "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                "info": _iTrans.prop('info'),
+                "search": _iTrans.prop('search') + " ",
+                "zeroRecords": _iTrans.prop('zeroRecords'),
+                "infoEmpty": _iTrans.prop('infoEmpty'),
+                "infoFiltered": _iTrans.prop('infoFiltered')
+            }
 
         });
-
 
 
         _tbl = true;
@@ -526,7 +500,8 @@ var table_module = (function(verbose) {
         addImageScore: addImageScore,
         addImageEpsilon: addImageEpsilon,
         clearEspList: clearEspList,
-        clearDecilList: clearDecilList
+        clearDecilList: clearDecilList,
+        // getTblEps: getTblEps
     }
 
 
