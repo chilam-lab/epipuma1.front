@@ -357,7 +357,6 @@ var table_module = (function(verbose) {
 
         var epsilonByGender = _display_obj.nestByR.entries(dim_eps_freq.top(Infinity));
         temp = [];
-
         epsilonByGender.forEach(function(bean, i) {
             if (Math.abs(parseFloat(bean.values[0].value)) > ep_th) {
                 temp.push(bean);
@@ -392,14 +391,18 @@ var table_module = (function(verbose) {
                         name_s = _json.nodes[val.source].generovalido + " " + _json.nodes[val.source].especieepiteto
                     }
                     else{
-                        name_s = _json.nodes[val.source].tag
+                        var infimo = _json.nodes[val.source].tag.split(':')[0];
+                        var supremo = _json.nodes[val.source].tag.split(':')[1];
+                        name_s = _json.nodes[val.source].label + " " + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2);
                     }
 
                     if(_json.nodes[val.target].biotic){
                         name_t = _json.nodes[val.target].generovalido + " " + _json.nodes[val.target].especieepiteto
                     }
                     else{
-                        name_t = _json.nodes[val.target].tag
+                        var infimo = _json.nodes[val.target].tag.split(':')[0];
+                        var supremo = _json.nodes[val.target].tag.split(':')[1];
+                        name_t = _json.nodes[val.target].label + " " + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2);
                     }
 
                     item_list.push(name_s);

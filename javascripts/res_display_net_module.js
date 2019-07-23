@@ -878,7 +878,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
                     case map_link_dbtaxon.get("especieepiteto"):
 
-                        // console.log("*** Entro!!!")
+                         //console.log("*** Entro!!!")
 
 //                            if (json[j].label.split(" ")[1] == filters[i].value) {
                         if ((json[j].generovalido + " " + json[j].especieepiteto) == filters[i].value) {
