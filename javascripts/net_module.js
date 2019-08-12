@@ -798,8 +798,8 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
                 var max_link = display_obj.max_num_link
                 var link_counter = 0
 
-                console.log("max_link: " + max_link)
-                console.log("first_load: " + display_obj.hist_load)
+                console.log("net_module max_link: " + max_link)
+                console.log("net_module first_load: " + display_obj.hist_load)
 
                 epsilonBySource.forEach(function(bean, i) {
 
@@ -820,7 +820,9 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
                                 nodes_related.set(val.target, parseInt(val.target));
 
                                 _linkedByIndex[val.source + "," + val.target] = true;
-                                
+
+
+
                             }       
 
 
@@ -840,8 +842,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
 
                 // obtiene el max y min de los enalces selecioandos
-                display_obj.hist_min_eps = d3.min(json_temp.map(function(d) {return parseFloat(d.value) }));
-                display_obj.hist_max_eps = d3.max(json_temp.map(function(d) {return parseFloat(d.value) }));
+                var min_eps = d3.min(json_temp.map(function(d) {return parseFloat(d.value) }));
+                var max_eps = d3.max(json_temp.map(function(d) {return parseFloat(d.value) }));
+
+                // chart.drawBrush(min_eps, max_eps)
+                                
                 
                                 
 
@@ -1347,12 +1352,18 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
      */
     function _set_highlight(d) {
 
-        console.log("_set_highlight");
+        console.log("_set_highlight")
+
+        console.log(d)        
 
         d3.selectAll("g.node").selectAll("circle").attr("stroke", function(o) {
 
-            if ((_isConnected(d, o) && d.spid != o.spid) || _map_conected.has(o.spid)) {
-                _map_conected.set(o.spid, true);
+            console.log(o)
+
+            if ((_isConnected(d, o) && d.id != o.id) || _map_conected.has(o.id)) {
+
+
+                _map_conected.set(o.id, true);
                 return _highlight_linked_color;
             }
             else {
@@ -1363,11 +1374,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
         d3.selectAll("g.node").selectAll("circle").style("stroke-width", function(o) {
 
-            if ((_isConnected(d, o) && d.spid != o.spid) || _map_conected.has(o.spid)) {
+            if ((_isConnected(d, o) && d.id != o.id) || _map_conected.has(o.id)) {
 
                 console.log("4");
 
-                _map_conected.set(o.spid, true);
+                _map_conected.set(o.id, true);
                 return 4;
             }
             else {
@@ -1529,10 +1540,16 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
         for (var i = 0; i < links.length; i++) {
             
             var item = links[i];
+
+
             if(parseFloat(item.value)>=_UMBRAL || parseFloat(item.value)<=-_UMBRAL){
+
+
                 
-                grid_net_2export += nodes[item.source].label + ","
-                grid_net_2export += nodes[item.target].label + ","
+                // grid_net_2export += nodes[item.source].label + ","
+                // grid_net_2export += nodes[item.target].label + ","
+                grid_net_2export += nodes[item.source].generovalido + " " + nodes[item.source].especieepiteto + ","
+                grid_net_2export += nodes[item.target].generovalido + " " + nodes[item.target].especieepiteto + ","
                 grid_net_2export += parseFloat(item.value) 
                 grid_net_2export += "\r\n"
                 

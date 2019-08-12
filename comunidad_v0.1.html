@@ -17,6 +17,11 @@
         <link rel="stylesheet" type="text/css" href="stylesheets/comunidad.css">
 
 
+        <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/flexslider.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="plugins/popupSlider/popup-slider.css"> -->
+
+
+
         <link rel="stylesheet" href="plugins/jstree/dist/themes/proton/style.css" />
 
 
@@ -161,7 +166,7 @@
 
         <div id="main_container" class="container-fluid">
 
-
+            <!-- navegacion -->
             <header id="main-header">
 
 
@@ -217,7 +222,7 @@
 
             </header>
 
-
+            <!-- panel de seleccion -->
             <div class="row-fluid row_panel">
 
                 <div id="result"></div>
@@ -304,10 +309,131 @@
             </div>
 
 
-            
-            <div class="row pd-top100" id="tbl_hist_comunidad">
+            <!-- histograma -->
+            <div class="row margin-top100" id="hist_comunidad">
 
-                <div class="col-lg-7">
+                <div id="control-charts" class="col-md-4 border-blue-container">
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label id="lb_range_fecha" for="sliderFecha"></label>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="slider_item_fecha" id="sliderFecha"></div>
+                    </div>                        
+                        
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-ten pd-top10 pd-bt10 hist_control_container">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label class="label_item" id="" type="label">Epsilon</label>
+                        </div>
+
+                        <div class="col-md-12 filter_container">
+
+                            <div class="col-md-1">
+                                <input id="epsilon" type="radio" name="hist_compute" checked />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="label_item" type="label">Lim Izq</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input pattern="^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$" type="text" id="ep_izq" value="0" class="input-lim" name="lim_i"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="label_item" type="label">Lim Der</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input pattern="^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$" type="text" id="ep_der" value="0" class="input-lim" name="lim_d"/>
+                            </div>
+                            
+                        </div>
+
+                        
+
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-ten pd-top10 pd-bt10 hist_control_container">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label class="label_item" id="" type="label"># Aristas</label>
+                        </div>
+
+                        <div class="col-md-12 filter_container">
+
+                            <div class="col-md-1">
+                                <input id="naristas" type="radio" name="hist_compute"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="label_item" id="" type="label">Lim Izq</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input pattern="^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$" type="text" class="input-lim" name="lim_i"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="label_item" id="" type="label">Lim Der</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input pattern="^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$" type="text" class="input-lim" name="lim_d"/>
+                            </div>
+                            
+                        </div>
+                        
+
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-ten pd-top10 pd-bt10 hist_control_container">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label class="label_item" id="" type="label">% Aristas</label>
+                        </div>
+
+                        <div class="col-md-12 filter_container">
+
+                            <div class="col-md-1">
+                                <input id="paristas" type="radio" name="hist_compute"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="label_item" id="" type="label">Lim Izq</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input pattern="^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$" type="text" class="input-lim" name="lim_i"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="label_item" id="" type="label">Lim Der</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input pattern="^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$" type="text" class="input-lim" name="lim_d"/>
+                            </div>
+                            
+                        </div>
+
+                        
+
+                    </div> 
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-ten pd-top10 pd-bt10 hist_control_container">
+                        <button id="update-hist" type="button" class="btn btn-primary pull-right">Update</button>
+                    </div> 
+
+                                      
+                    
+                </div>
+
+                <div id="charts" class="col-md-8 border-blue-container">
+
+                    <button id="btn_hist" type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#modalInfo').modal()" ></button>
+
+                    <div id="hist" class="chart"></div>                    
+
+                </div>
+
+             </div>
+
+            <!-- red y mapa -->
+            <div class="row margin-top50" id="tbl_comunidad">
+
+                <div class="col-lg-6 ">
 
                      <div id="graphs" class="row">
 
@@ -322,21 +448,9 @@
                     
                 </div>
 
-                <div class="col-lg-5">
+                <div class="col-lg-6">
 
                     <div class="row" id="hist_map_comunidad">
-
-                        <div class="col-lg-12">
-
-                            <div id="charts" class="myScrollableBlockEpsilon">
-
-                                <button id="btn_hist" type='button' class='btn btn-info glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#modalInfo').modal()" ></button>
-
-                                <div id="hist" class="chart"></div>
-
-                            </div>
-                            
-                        </div>
 
                         <div class="col-lg-12">
 
@@ -354,7 +468,8 @@
             </div>
 
 
-            <div class="row margin-top-10" id="map_panel">
+            
+            <div class="row margin-top50" id="tbl_container">
 
                 <div id="lists" class="myScrollableEpsList ">
                     <!-- <div id="relation-list" class="list"></div> -->
@@ -466,6 +581,10 @@
         <script type="text/javascript" src="javascripts/table_module.js"></script> 
         <script type="text/javascript" src="javascripts/utils_module.js"></script>
         <script type="text/javascript" src="plugins/js-cookie/js.cookie.js"></script> 
+
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/jquery.flexslider-min.js"></script>
+        <script type="text/javascript" src="plugins/popupSlider/popup-slider.js"></script>  -->
+
 
 
         <script src="plugins/ptjs/js/modernizr-2.8.3-respond-1.4.2.min.js"></script>
