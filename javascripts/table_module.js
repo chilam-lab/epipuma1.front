@@ -327,6 +327,8 @@ var table_module = (function(verbose) {
     function createListNet(json, display_obj) {
 
         _VERBOSE ? console.log("createListNet") : _VERBOSE;
+
+        _display_obj = display_obj;
         
         var list_array = [EpsilonList];
         var list_component = d3.selectAll(".list")
@@ -335,7 +337,7 @@ var table_module = (function(verbose) {
         _json = json;
         _VERBOSE ? console.log(_json.links) : _VERBOSE;
 
-        _display_obj = display_obj;
+        
 
         return list_component;
 
@@ -356,18 +358,37 @@ var table_module = (function(verbose) {
         _VERBOSE ? console.log("EpsilonList: " + _tbl_net) : _VERBOSE;
 
         var epsilonByGender = _display_obj.nestByR.entries(dim_eps_freq.top(Infinity));
-        temp = [];
+        
+        var temp_list = [];
+        var link_counter = 0
+        var max_link = _display_obj.max_num_link
+
+        console.log("tbl_module max_link: " + max_link)
+        console.log("tbl_module first_load: " + _display_obj.hist_load)
+
+
         epsilonByGender.forEach(function(bean, i) {
-            if (Math.abs(parseFloat(bean.values[0].value)) > ep_th) {
-                temp.push(bean);
-            }
+
+            bean.values.forEach(function(item, j) {
+
+                if (Math.abs(parseFloat(item.value)) > ep_th) {
+                    link_counter++
+
+                    if(_display_obj.hist_load || link_counter <= max_link){
+                        temp_list.push(item);    
+                    }
+                    
+                }
+
+            })
+
         });
 
-        epsilonByGender = temp;
+        
+        // epsilonByGender = temp;
 
-        _VERBOSE ? console.log("list") : _VERBOSE;
-
-        _VERBOSE ? console.log(_json.nodes) : _VERBOSE;
+        console.log("temp_list length: " + temp_list.length)
+        console.log(temp_list)
 
 
         div.each(function() {
@@ -377,24 +398,36 @@ var table_module = (function(verbose) {
             var data_list = [];
 
 
-            epsilonByGender.forEach(function(d) {
+            // epsilonByGender.forEach(function(d) {
 
                 // item = d.values[0];
-                d.values.forEach(function(val) {
+                temp_list.forEach(function(val) {
                     
-                    // console.log(val)
+                    
+                    console.log(val)
+                    console.log(_json.nodes)
 
                     var item_list = [];
 
                     var name_s, name_t;
+
+                    if(_json.nodes[val.source] === undefined)
+                        return true;
+
+
                     if(_json.nodes[val.source].biotic){
-                        name_s = _json.nodes[val.source].generovalido + " " + _json.nodes[val.source].especieepiteto
+
+                        name_s =  _json.nodes[val.source].generovalido + " " + _json.nodes[val.source].especieepiteto
                     }
                     else{
                         var infimo = _json.nodes[val.source].tag.split(':')[0];
                         var supremo = _json.nodes[val.source].tag.split(':')[1];
-                        name_s = _json.nodes[val.source].label + " " + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2);
+
+                        name_s = _iTrans.prop("a_item_" + _json.nodes[val.source].layer) + " (" + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2) + ")";
                     }
+
+                    if(_json.nodes[val.target] === undefined)
+                        return true;
 
                     if(_json.nodes[val.target].biotic){
                         name_t = _json.nodes[val.target].generovalido + " " + _json.nodes[val.target].especieepiteto
@@ -402,7 +435,8 @@ var table_module = (function(verbose) {
                     else{
                         var infimo = _json.nodes[val.target].tag.split(':')[0];
                         var supremo = _json.nodes[val.target].tag.split(':')[1];
-                        name_t = _json.nodes[val.target].label + " " + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2);
+
+                        name_t = _iTrans.prop("a_item_" + _json.nodes[val.target].layer) + " (" + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2) + ")";
                     }
 
                     item_list.push(name_s);
@@ -421,7 +455,10 @@ var table_module = (function(verbose) {
 
                 });
 
-            })
+
+            // })
+
+            console.log("data_list.length: " + data_list.length)
 
 
 
@@ -465,12 +502,12 @@ var table_module = (function(verbose) {
                     'copy', 'csv', 'excel', 'print'
                 ],
                 language: {
-                    "sEmptyTable": "Sin regsitros",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                    "search": "Buscar: ",
-                    "zeroRecords": "Sin relaciones encontradas",
-                    "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-                    "infoFiltered": "(Filtrados de _MAX_ entradas totales)"
+                    "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                    "info": _iTrans.prop('info'),
+                    "search": _iTrans.prop('search') + " ",
+                    "zeroRecords": _iTrans.prop('zeroRecords'),
+                    "infoEmpty": _iTrans.prop('infoEmpty'),
+                    "infoFiltered": _iTrans.prop('infoFiltered')
                 }
             });
             // data-target='#modalInfo' data-toggle='modal'

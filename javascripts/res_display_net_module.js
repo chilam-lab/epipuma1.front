@@ -678,10 +678,6 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         self.hist_load = false
 
-        self.hist_min_eps = 0
-
-        self.hist_max_eps = 0
-
         self.max_num_link = self.MAX_LINKS
 
         self.nestByR = d3.nest().key(function (d) {
@@ -696,6 +692,12 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             return parseFloat(d.value);
         }));
 
+        self.hist_min_eps = min_eps
+
+        self.hist_max_eps = max_eps
+
+
+        // console.log(json.links);
         // console.log("min_eps: " + min_eps);
         // console.log("max_eps: " + max_eps);
 
@@ -787,8 +789,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log(filters) : _VERBOSE;
 
         _VERBOSE ? console.log(json) : _VERBOSE;
-       _VERBOSE ? console.log(s_filters) : _VERBOSE;
-       _VERBOSE ? console.log(t_filters) : _VERBOSE;
+       // _VERBOSE ? console.log(s_filters) : _VERBOSE;
+       _VERBOSE ? console.log(filters) : _VERBOSE;
 
 
        // console.log(map_link_dbtaxon.get("clasevalida"))
@@ -806,73 +808,70 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
                     case map_link_dbtaxon.get("reinovalido"):
                         if (json[j].reinovalido == filters[i].value) {
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 6;
-                            } else if (json[j].stage > 6) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 6;
-                            }
+                                // json[j].stage = 6;
+                            // } else if (json[j].stage > 6) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 6;
+                            // }
                         }
                         break;
                     case map_link_dbtaxon.get("phylumdivisionvalido"):
                         if (json[j].phylumdivisionvalido == filters[i].value) {
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 5;
-                            } else if (json[j].stage > 5) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 5;
-                            }
+                                // json[j].stage = 5;
+                            // } else if (json[j].stage > 5) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 5;
+                            // }
                         }
                         break;
                     case map_link_dbtaxon.get("clasevalida"):
 
-                    // console.log("*** Entro clase!!!")
-
-
                         if (json[j].clasevalida == filters[i].value) {
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 4;
-                            } else if (json[j].stage > 4) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 4;
-                            }
+                                // json[j].stage = 4;
+                            // } else if (json[j].stage > 4) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 4;
+                            // }
                         }
                         break;
                     case map_link_dbtaxon.get("ordenvalido"):
                         if (json[j].ordenvalido == filters[i].value) {
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 3;
-                            } else if (json[j].stage > 3) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 3;
-                            }
+                                // json[j].stage = 3;
+                            // } else if (json[j].stage > 3) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 3;
+                            // }
                         }
                         break;
                     case map_link_dbtaxon.get("familiavalida"):
                         if (json[j].familiavalida == filters[i].value) {
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 2;
-                            } else if (json[j].stage > 2) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 2;
-                            }
+                                // json[j].stage = 2;
+                            // } else if (json[j].stage > 2) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 2;
+                            // }
                         }
                         break;
                     case map_link_dbtaxon.get("generovalido"):
                         if (json[j].generovalido == filters[i].value) {
 
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 1;
-                            } else if (json[j].stage > 1) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 1;
-                            }
+                                // json[j].stage = 1;
+                            // } else if (json[j].stage > 1) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 1;
+                            // }
                         }
                         break;
 
@@ -882,33 +881,38 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
 //                            if (json[j].label.split(" ")[1] == filters[i].value) {
                         if ((json[j].generovalido + " " + json[j].especieepiteto) == filters[i].value) {
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 0;
-                            } else if (json[j].stage > 0) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 0;
-                            }
+                                // json[j].stage = 0;
+                            // } else if (json[j].stage > 0) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 0;
+                            // }
                         }
                         break;
 
                     case "type":
-                        // _VERBOSE ? console.log(json_nodes[j].reinovalido) : _VERBOSE;
-                        json[j].group = filters[i].fGroupId;
-                        json[j].stage = 2;
+                        if (parseInt(json[j].type) == filters[i].value) {
 
+                            // _VERBOSE ? console.log(json_nodes[j].reinovalido) : _VERBOSE;
+                            json[j].group = filters[i].fGroupId;
+                            // json[j].stage = 2;
+
+
+                        }
+                        
                         break;
 
                     case "layer":
                         if (json[j].layer == filters[i].value) {
 
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 1;
-                            } else if (json[j].stage > 1) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 1;
-                            }
+                                // json[j].stage = 1;
+                            // } else if (json[j].stage > 1) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 1;
+                            // }
 
                         }
                         // json[j].group = filters[i].fGroupId;
@@ -917,13 +921,13 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                     case "bid":
                         if (json[j].bid == filters[i].value) {
 
-                            if (!json[j].group) {
+                            // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
-                                json[j].stage = 0;
-                            } else if (json[j].stage > 0) {
-                                json[j].group = filters[i].fGroupId;
-                                json[j].stage = 0;
-                            }
+                                // json[j].stage = 0;
+                            // } else if (json[j].stage > 0) {
+                            //     json[j].group = filters[i].fGroupId;
+                            //     // json[j].stage = 0;
+                            // }
 
                         }
                         // json[j].group = filters[i].fGroupId;

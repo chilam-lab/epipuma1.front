@@ -353,7 +353,6 @@ var language_module = (function (verbose) {
             $("#a_item_bio017").text($.i18n.prop('a_item_bio017'));
             $("#a_item_bio018").text($.i18n.prop('a_item_bio018'));
             $("#a_item_bio019").text($.i18n.prop('a_item_bio019'));
-
             $("#a_item_bio020").text($.i18n.prop('a_item_bio020'));
             $("#a_item_bio021").text($.i18n.prop('a_item_bio021'));
             $("#a_item_bio022").text($.i18n.prop('a_item_bio022'));
@@ -407,7 +406,6 @@ var language_module = (function (verbose) {
             $("#a_item_bio070").text($.i18n.prop('a_item_bio070'));
             $("#a_item_bio071").text($.i18n.prop('a_item_bio071'));
             $("#a_item_bio072").text($.i18n.prop('a_item_bio072'));
-
             $("#a_item_bio073").text($.i18n.prop('a_item_bio073'));
             $("#a_item_bio074").text($.i18n.prop('a_item_bio074'));
             $("#a_item_bio075").text($.i18n.prop('a_item_bio075'));
@@ -418,9 +416,17 @@ var language_module = (function (verbose) {
             $("#a_item_bio080").text($.i18n.prop('a_item_bio080'));
             $("#a_item_bio081").text($.i18n.prop('a_item_bio081'));
             $("#a_item_bio082").text($.i18n.prop('a_item_bio082'));
-
             $("#a_item_bio083").text($.i18n.prop('a_item_bio083'));
             $("#a_item_bio084").text($.i18n.prop('a_item_bio084'));
+            $("#a_item_bio085").text($.i18n.prop('a_item_bio085'));
+            $("#a_item_bio086").text($.i18n.prop('a_item_bio086'));
+            $("#a_item_bio087").text($.i18n.prop('a_item_bio087'));
+            $("#a_item_bio088").text($.i18n.prop('a_item_bio088'));
+            $("#a_item_bio089").text($.i18n.prop('a_item_bio089'));
+            $("#a_item_bio090").text($.i18n.prop('a_item_bio090'));
+            $("#a_item_bio091").text($.i18n.prop('a_item_bio091'));
+            $("#a_item_bio092").text($.i18n.prop('a_item_bio092'));
+            
 
 
 
@@ -556,6 +562,9 @@ var language_module = (function (verbose) {
             $("#btn_tutorial").text($.i18n.prop('btn_tutorial'));
             $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
             $("#show_gen").text($.i18n.prop('show_gen'));
+
+            $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha_hist') + ":");
+            $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
 
             _confLiveTutorialNet();
 

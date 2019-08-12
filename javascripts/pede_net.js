@@ -100,6 +100,54 @@ var module_net = (function () {
         });
 
 
+        $(function () {
+
+            $("#sliderFecha").slider({
+                range: true,
+                min: 0,
+                max: 10,
+                step: 1,
+                values: [0, 10]
+            });
+
+        });
+
+
+        $('input[type="radio"]').on('change', function(e) {
+            console.log(e);
+            var id_selected = $('input[type="radio"]:checked')[0].id;
+            // console.log(e.type);
+            console.log(id_selected);
+
+            // hist_control_container
+
+            var hist_radios = $('input[type="radio"]')
+            hist_radios.each(function(){
+                // console.log(this);
+
+                if(id_selected !== this.id){
+                    // console.log(this.id + " toggle");
+                    
+                    var div_parent = $("#"+this.id).parent().parent()
+                    div_parent.removeClass("filter_container")
+
+                    div_parent.find("input:text").prop('disabled',true)
+
+                    // var items = $("#"+this.id).parent().parent().children()
+                }
+                else{
+                    var div_parent = $("#"+this.id).parent().parent()
+                    div_parent.addClass("filter_container")
+
+                    div_parent.find("input:text").prop('disabled',false)
+                    
+                    // $("filter_container :input").prop('disabled',true);
+                }
+
+            })
+        });
+
+
 
         $("#show_gen").click(function () {
 

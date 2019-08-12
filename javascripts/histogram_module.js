@@ -1175,13 +1175,51 @@ var histogram_module = (function (verbose) {
         var margin = {top: 5, right: 20, bottom: 55, left: 20};
         var width = $("#hist").width() - margin.left - margin.right;
         var height = $("#hist").height() - margin.top - margin.bottom;
+        var min_eps = display_obj.hist_min_eps
+        var max_eps = display_obj.hist_max_eps
+
+        console.log("height: " + height);
+
+        var max_value = d3.max(json.links.map(function (d) {
+            return parseFloat(d.value)
+        }));
+        var min_value = d3.min(json.links.map(function (d) {
+            return parseFloat(d.value)
+        }));
+
+        $("#ep_izq").val(min_value)
+        $("#ep_der").val(max_value)
+
+        // genera brush cuando se cambian los parámetros del slider
+        $("#sliderFecha").slider({
+            min: min_value,
+            max: max_value,
+            step: 0.1,
+            values: [min_value, max_value],
+            change: function (event, ui) {
+
+                console.log("change slider")
+
+                // console.log(ui)
+                //TODO: Asignar al radio button selecionado
+                $("#ep_izq").val(ui.values[0])
+                $("#ep_der").val(ui.values[1])
+
+                var lim_izq = $("#ep_izq").val()
+                var lim_der = $("#ep_der").val()
+
+                // ajusta brush a lso valores seleccionados por el slider
+                chart.drawBrush(lim_izq,lim_der)
+
+            }
+        });
 
 
         if (!BarChart.id)
             BarChart.id = 0;
 
         var y = d3.scale.linear()
-                .range([100, 0]);
+                .range([height, 0]);
         // .domain([0, max_eps]);
 
         var x = d3.scale.ordinal()
@@ -1199,6 +1237,7 @@ var histogram_module = (function (verbose) {
         var id = BarChart.id++,
                 brush = d3.svg.brush(),
                 brushDirty, dimension, group, round;
+        
         //margin = {top: 10, right: 10, bottom: 20, left: 10}
         var brushStart = 0;
         var brushEnd = display_obj.NUM_BEANS - 1;
@@ -1210,7 +1249,6 @@ var histogram_module = (function (verbose) {
 
             height = y.range()[0];
             data = group.all();
-
 
             _VERBOSE ? console.log(data) : _VERBOSE;
 
@@ -1242,8 +1280,8 @@ var histogram_module = (function (verbose) {
             });
 
 
-            _VERBOSE ? console.log(display_obj.epsRange) : _VERBOSE;
-            _VERBOSE ? console.log(epsRange) : _VERBOSE;
+            // _VERBOSE ? console.log(display_obj.epsRange) : _VERBOSE;
+            // _VERBOSE ? console.log(epsRange) : _VERBOSE;
 
 
             x.domain(data.map(function (d) {
@@ -1284,8 +1322,6 @@ var histogram_module = (function (verbose) {
                             .style("font-size", "12px")
                             .style("text-anchor", "end")
                             .text(_iTrans.prop('titulo_hist_eps'));
-
-
 
 
                     g.append("clipPath")
@@ -1332,7 +1368,15 @@ var histogram_module = (function (verbose) {
                             .enter().append("rect")
                             .attr("class", "bar")
                             .attr("x", function (d) {
+                                
                                 // _VERBOSE ? console.log(d) : _VERBOSE;
+                                // _VERBOSE ? console.log( display_obj.epsRange.invertExtent(d.key)[0] ) : _VERBOSE;
+                                // _VERBOSE ? console.log( display_obj.epsRange.invertExtent(d.key)[1] ) : _VERBOSE;
+                                // _VERBOSE ? console.log( x(display_obj.epsRange.invertExtent(d.key)[0])  ) : _VERBOSE;
+                                // _VERBOSE ? console.log( x(display_obj.epsRange.invertExtent(d.key)[1])  ) : _VERBOSE;
+                                // _VERBOSE ? console.log( display_obj.epsRange(2.23) ) : _VERBOSE;
+                                // _VERBOSE ? console.log( display_obj.epsRange(7.08) ) : _VERBOSE;
+
                                 return x(parseFloat((display_obj.epsRange.invertExtent(d.key)[0] + display_obj.epsRange.invertExtent(d.key)[1]) / 2).toFixed(2));
                             })
                             .attr("width", x.rangeBand())
@@ -1403,6 +1447,8 @@ var histogram_module = (function (verbose) {
         } // function chart(div) closed
 
 
+        // funcion que realiza el filtrado de valores despues de la interacción con el histograma
+
         brush.on("brush.chart", function (e) {
 
             _VERBOSE ? console.log("brush.chart") : _VERBOSE;
@@ -1410,6 +1456,7 @@ var histogram_module = (function (verbose) {
             // desactiva el bloqueo del número de enlaces a desplegar
             display_obj.hist_load = true
 
+            // console.log(brush)
 
             var y = d3.scale.linear()
                     .domain([margin.left, width - margin.left])
@@ -1417,11 +1464,20 @@ var histogram_module = (function (verbose) {
 
 
             b = brush.extent();
-            // _VERBOSE ? console.log(b) : _VERBOSE;
+            _VERBOSE ? console.log(b) : _VERBOSE;
 
             // d3.round(y(b[1], 0) for rounded values
             var localBrushStart = (brush.empty()) ? brushStart : y(b[0]),
                     localBrushEnd = (brush.empty()) ? brushEnd : y(b[1]);
+
+            // console.log("y(b[0]): " + y(b[0]))
+            // console.log("y(b[1]): " + y(b[1]))
+
+            // console.log("localBrushStart: " + localBrushStart)
+            // console.log("localBrushEnd: " + localBrushEnd)
+
+            // console.log("y.invert(localBrushStart): " + y.invert(localBrushStart))
+            // console.log("y.invert(localBrushEnd): " + y.invert(localBrushEnd))
 
             // Snap to rect edge
             d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(localBrushStart), y.invert(localBrushEnd)]));
@@ -1429,6 +1485,7 @@ var histogram_module = (function (verbose) {
 
             // Fade all years in the histogram not within the brush
             d3.selectAll("rect.bar").style("opacity", function (d, i) {
+                
                 // _VERBOSE ? console.log(d.key) : _VERBOSE;
 
                 if (d.key < localBrushStart || d.key >= localBrushEnd || brush.empty()) {
@@ -1457,7 +1514,6 @@ var histogram_module = (function (verbose) {
             var localBrushStart = (brush.empty()) ? brushStart : y(b[0]),
                     localBrushEnd = (brush.empty()) ? brushEnd : y(b[1]);
 
-            // Snap to rect edge
             d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(localBrushStart), y.invert(localBrushEnd)]));
 
 
@@ -1510,65 +1566,35 @@ var histogram_module = (function (verbose) {
 
 
         // TODO: definir creación del brush
-        chart.drawBrush = function() {
+        chart.drawBrush = function(lim_izq, lim_der) {
 
             console.log("chart.drawBrush")
 
-            console.log("display_obj.hist_min_eps: " + display_obj.hist_min_eps)
-            console.log("display_obj.hist_max_eps: " + display_obj.hist_max_eps)
+            console.log("lim_izq: " + lim_izq)
+            console.log("lim_der: " + lim_der)
 
-            // var y = d3.scale.linear()
-            //         .domain([margin.left, width - margin.left])
-            //         .range([0, display_obj.NUM_BEANS]);
+            // como pasar del epsilon al width real del brush
+            var y = d3.scale.linear()
+                    .domain([margin.left, width - margin.left])
+                    .range([display_obj.hist_min_eps, display_obj.hist_max_eps]);
 
-
-            // b = brush.extent();
-
-
-            // var localBrushStart = (brush.empty()) ? brushStart : y(b[20]),
-            //         localBrushEnd = (brush.empty()) ? brushEnd : y(b[35]);
-
-
-            // // Snap to rect edge
-            // // d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(display_obj.hist_min_eps), y.invert(display_obj.hist_max_eps)]));
-            // // d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(21), y.invert(35)]));
-            // d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(localBrushStart), y.invert(localBrushEnd)]));
-
-
-            // // Fade all years in the histogram not within the brush
-            // d3.selectAll("rect.bar").style("opacity", function (d, i) {
-            //     // _VERBOSE ? console.log(d.key) : _VERBOSE;
-
-            //     if (d.key < localBrushStart || d.key >= localBrushEnd || brush.empty()) {
-            //         return "0.4";
-            //     } else {
-            //         return "1";
-            //     }
-            // });
-
-// otro metodo -----
-
-            // brush.extent([display_obj.hist_min_eps, hist_max_eps])
-
-
+            // console.log("y.invert: " + y.invert(lim_izq))
+            // console.log("y.invert: " + y.invert(lim_der))
             
-            // // our year will this.innerText
-            // // console.log(this.innerText)
+            brush.extent([y.invert(lim_izq), y.invert(lim_der)])
 
-            // // define our brush extent to be begin and end of the year
-            // brush.extent([new Date(this.innerText + '-01-01'), new Date(this.innerText + '-12-31')])
+            brush(d3.select(".brush").transition());
 
-            // // now draw the brush to match our extent
-            // // use transition to slow it down so we can see what is happening
-            // // remove transition so just d3.select(".brush") to just draw
-            // brush(d3.select(".brush").transition());
+            display_obj.renderAll()
 
-            // // now fire the brushstart, brushmove, and brushend events
-            // // remove transition so just d3.select(".brush") to just draw
-            // brush.event(d3.select(".brush").transition().delay(1000))
-          }
+            // brush.event(d3.select(".brush").transition().delay(1000));
 
-        chart.drawBrush()
+           
+        }
+
+        
+
+
 
 
         chart.margin = function (_) {
