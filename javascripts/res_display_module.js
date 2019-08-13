@@ -2139,7 +2139,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_bio070_" + item).text($.i18n.prop('a_item_bio070'));
             $("#a_item_bio071_" + item).text($.i18n.prop('a_item_bio071'));
             $("#a_item_bio072_" + item).text($.i18n.prop('a_item_bio072'));
-
             $("#a_item_bio073_" + item).text($.i18n.prop('a_item_bio073'));
             $("#a_item_bio074_" + item).text($.i18n.prop('a_item_bio074'));
             $("#a_item_bio075_" + item).text($.i18n.prop('a_item_bio075'));
@@ -2150,14 +2149,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_bio080_" + item).text($.i18n.prop('a_item_bio080'));
             $("#a_item_bio081_" + item).text($.i18n.prop('a_item_bio081'));
             $("#a_item_bio082_" + item).text($.i18n.prop('a_item_bio082'));
-
-            $("#a_item_bio083_").text($.i18n.prop('a_item_bio083'));
-            $("#a_item_bio084_").text($.i18n.prop('a_item_bio084'));
-            
-
-
-
-
+            $("#a_item_bio083_" + item).text($.i18n.prop('a_item_bio083'));
+            $("#a_item_bio084_" + item).text($.i18n.prop('a_item_bio084'));
+            $("#a_item_bio085_" + item).text($.i18n.prop('a_item_bio085'));
+            $("#a_item_bio086_" + item).text($.i18n.prop('a_item_bio086'));
+            $("#a_item_bio087_" + item).text($.i18n.prop('a_item_bio087'));
+            $("#a_item_bio088_" + item).text($.i18n.prop('a_item_bio088'));
+            $("#a_item_bio089_" + item).text($.i18n.prop('a_item_bio089'));
+            $("#a_item_bio090_" + item).text($.i18n.prop('a_item_bio090'));
+            $("#a_item_bio091_" + item).text($.i18n.prop('a_item_bio091'));
+            $("#a_item_bio092_" + item).text($.i18n.prop('a_item_bio092'));
 
 
 
@@ -2729,6 +2730,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
     function _createTableFromData(json_data) {
 
         _VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
+
+        // descending order in json array by score
+        json_data.groups.sort(function(a, b) {
+            return parseFloat(b.score) - parseFloat(a.score) ;
+        });
+
         _VERBOSE ? console.log(json_data) : _VERBOSE
 
         var htmltable = "<div class='myScrollableBlockPopup mywidth'>";
