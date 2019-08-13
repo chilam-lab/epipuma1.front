@@ -168,6 +168,129 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         });
 
+
+
+        $('input[type="radio"]').on('change', function(e) {
+            // console.log(e);
+            
+            var id_selected = $('input[type="radio"]:checked')[0].id;
+            console.log(id_selected);
+
+
+            var hist_radios = $('input[type="radio"]')
+            hist_radios.each(function(){
+                // console.log(this);
+
+                if(id_selected !== this.id){
+                    // console.log(this.id + " toggle");
+                    
+                    var div_parent = $("#"+this.id).parent().parent()
+                    div_parent.removeClass("filter_container")
+
+                    div_parent.find("input:text").prop('disabled',true)
+                    // div_parent.find("input:number").prop('disabled',true)
+
+                    // var items = $("#"+this.id).parent().parent().children()
+                }
+                else{
+
+                    var div_parent = $("#"+this.id).parent().parent()
+                    div_parent.addClass("filter_container")
+
+                    div_parent.find("input:text").prop('disabled',false)
+                    // div_parent.find("input:number").prop('disabled',false)
+                    
+                }
+
+            })
+
+
+            // Asigna nuevos parametros al slider
+            var max_value, min_value, step
+            var lim_izq, lim_der
+
+            $("#ep_izq").val(self.hist_min_eps)
+            $("#ep_der").val(self.hist_max_eps)
+            $("#ari_izq").val(0)
+            $("#ari_der").val(self.num_links)
+            $("#arip_izq").val(0)
+            $("#arip_der").val(100)
+
+                    
+            if(id_selected == "epsilon"){
+                min_value = self.hist_min_eps
+                max_value = self.hist_max_eps
+                step = 0.1
+            }
+            else if(id_selected == "naristas"){
+                min_value = 0
+                max_value = self.num_links
+                step = 1
+            }
+            else{
+                min_value = 0
+                max_value = 100
+                step = 1
+            }
+
+            console.log("min_value: " + min_value)
+            console.log("max_value: " + max_value)
+            console.log("step: " + step)
+
+
+            $( "#sliderFecha" ).slider( "option", "min", min_value );
+            $( "#sliderFecha" ).slider( "option", "max", max_value );
+            $( "#sliderFecha" ).slider( "option", "values", [min_value,max_value] );
+            $( "#sliderFecha" ).slider( "option", "step", step );
+            // $( "#sliderFecha" ).on( "slidechange", function( event, ui ) {
+
+            //     console.log("change slider")
+            //     console.log("id_selected: " + id_selected)
+
+            //     lim_izq = parseFloat(ui.values[0]) 
+            //     lim_der = parseFloat(ui.values[1]) 
+
+            //     console.log("lim_izq: " + lim_izq)
+            //     console.log("lim_der: " + lim_der)
+
+            //     if(id_selected === "epsilon"){
+            //         $("#ep_izq").val(lim_izq)
+            //         $("#ep_der").val(lim_der)
+
+            //         $("#ari_izq").val(0)
+            //         $("#ari_der").val(self.num_links)
+            //         $("#arip_izq").val(0)
+            //         $("#arip_der").val(100)
+            //     }
+            //     else if(id_selected === "naristas"){
+            //         $("#ari_izq").val(lim_izq)
+            //         $("#ari_der").val(lim_der)
+
+            //         $("#ep_izq").val(self.hist_min_eps)
+            //         $("#ep_der").val(self.hist_max_eps)
+            //         $("#arip_izq").val(0)
+            //         $("#arip_der").val(100)
+            //     }
+            //     else{
+            //         $("#arip_izq").val(lim_izq)
+            //         $("#arip_der").val(lim_der)
+
+            //         $("#ep_izq").val(self.hist_min_eps)
+            //         $("#ep_der").val(self.hist_max_eps)
+            //         $("#ari_izq").val(0)
+            //         $("#ari_der").val(self.num_links)
+            //     }
+
+            // } );
+
+
+
+
+        });
+
+
+
+
     }
 
 
@@ -696,6 +819,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         self.hist_max_eps = max_eps
 
+        self.num_links = json.links.length
+
 
         // console.log(json.links);
         // console.log("min_eps: " + min_eps);
@@ -765,7 +890,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      */
     function _render(method) {
 
-        _VERBOSE ? console.log("render") : _VERBOSE;
+        _VERBOSE ? console.log("_render") : _VERBOSE;
         d3.select(this).call(method);
 
     }

@@ -1144,7 +1144,7 @@ var histogram_module = (function (verbose) {
                 .data(chart_array)
                 .each(function (chart) {
                     chart.on("brushend", display_obj.renderAll);
-                });
+                })
 
         $("#lb_body_info").text(_iTrans.prop('lb_msg_hist_epsilon'));
         $('#lb_header_info').text(_iTrans.prop('titulo_hist_eps'));
@@ -1169,50 +1169,131 @@ var histogram_module = (function (verbose) {
 
         _VERBOSE ? console.log("BarChart") : _VERBOSE;
 
-        _VERBOSE ? console.log(json) : _VERBOSE;
+        // _VERBOSE ? console.log(json) : _VERBOSE;
 
 
         var margin = {top: 5, right: 20, bottom: 55, left: 20};
         var width = $("#hist").width() - margin.left - margin.right;
         var height = $("#hist").height() - margin.top - margin.bottom;
+
         var min_eps = display_obj.hist_min_eps
         var max_eps = display_obj.hist_max_eps
+        var num_links = display_obj.num_links
+        var max_value, min_value, step
+        var lim_izq, lim_der
+        
+        var id_selected = $('input[type="radio"]:checked')[0].id;
+        console.log(id_selected);
 
-        console.log("height: " + height);
+        $("#ep_izq").val(min_eps)
+        $("#ep_der").val(max_eps)
+        $("#ari_izq").val(0)
+        $("#ari_der").val(num_links)
+        $("#arip_izq").val(0)
+        $("#arip_der").val(100)
+        
+        if(id_selected === "epsilon"){
+            min_value = min_eps
+            max_value = max_eps
+            step = 0.1
+        }
+        else if(id_selected === "naristas"){
+            min_value = 0
+            max_value = num_links
+            step = 1
+        }
+        else{
+            min_value = 0
+            max_value = 100
+            step = 1
+        }
 
-        var max_value = d3.max(json.links.map(function (d) {
-            return parseFloat(d.value)
-        }));
-        var min_value = d3.min(json.links.map(function (d) {
-            return parseFloat(d.value)
-        }));
+        console.log("min_value: " + min_value)
+        console.log("max_value: " + max_value)
+        console.log("step: " + step)
 
-        $("#ep_izq").val(min_value)
-        $("#ep_der").val(max_value)
 
-        // genera brush cuando se cambian los parámetros del slider
-        $("#sliderFecha").slider({
-            min: min_value,
-            max: max_value,
-            step: 0.1,
-            values: [min_value, max_value],
-            change: function (event, ui) {
+        $( "#sliderFecha" ).slider( "enable" );
+        $( "#sliderFecha" ).slider( "option", "min", min_value );
+        $( "#sliderFecha" ).slider( "option", "max", max_value );
+        $( "#sliderFecha" ).slider( "option", "values", [min_value,max_value] );
+        $( "#sliderFecha" ).slider( "option", "step", step );
+        $( "#sliderFecha" ).on( "slidechange", function( event, ui ) {
 
-                console.log("change slider")
+            console.log("change slider")
+            id_selected = $('input[type="radio"]:checked')[0].id;
+            console.log(id_selected);
 
-                // console.log(ui)
-                //TODO: Asignar al radio button selecionado
+            if(id_selected == "epsilon"){
+                console.log("case: change epsilon")
+
                 $("#ep_izq").val(ui.values[0])
                 $("#ep_der").val(ui.values[1])
-
-                var lim_izq = $("#ep_izq").val()
-                var lim_der = $("#ep_der").val()
-
-                // ajusta brush a lso valores seleccionados por el slider
-                chart.drawBrush(lim_izq,lim_der)
-
             }
-        });
+            else if(id_selected == "naristas"){
+                console.log("case: change naristas")
+
+                $("#ari_izq").val(ui.values[0])
+                $("#ari_der").val(ui.values[1])
+            }
+            else{
+                console.log("case: change paristas")
+
+                $("#arip_izq").val(ui.values[0])
+                $("#arip_der").val(ui.values[1])
+            }
+
+            lim_izq = ui.values[0]
+            lim_der = ui.values[1]
+
+        } );
+        
+
+        // genera brush cuando se cambian los parámetros del slider
+        // $("#sliderFecha").slider({
+        //     min: min_value,
+        //     max: max_value,
+        //     step: step,
+        //     values: [min_value, max_value],
+        //     disabled: false,
+        //     change: function (event, ui) {
+
+        //         console.log("change slider")
+
+        //         if(id_selected === "epsilon"){
+        //             console.log("case: change epsilon")
+
+        //             $("#ep_izq").val(ui.values[0])
+        //             $("#ep_der").val(ui.values[1])
+        //         }
+        //         else if(id_selected === "naristas"){
+        //             console.log("case: change naristas")
+
+        //             $("#ari_izq").val(ui.values[0])
+        //             $("#ari_der").val(ui.values[1])
+        //         }
+        //         else{
+        //             console.log("case: change paristas")
+
+        //             $("#arip_izq").val(ui.values[0])
+        //             $("#arip_der").val(ui.values[1])
+        //         }
+
+        //         lim_izq = ui.values[0]
+        //         lim_der = ui.values[1]
+
+
+        //     }
+        // });
+
+
+
+
+
+        $("#update-hist").click(function(){
+            console.log("click");
+            chart.drawBrush(lim_izq,lim_der,num_links)
+        })
 
 
         if (!BarChart.id)
@@ -1531,20 +1612,23 @@ var histogram_module = (function (verbose) {
                     left_extent = 1
                 else
                     left_extent = d3.round(localBrushStart, 0)
+
                 if (d3.round(localBrushEnd, 0) == 21)
                     rigth_extent = 20
                 else
                     rigth_extent = d3.round(localBrushEnd, 0)
 
 
-                _VERBOSE ? console.log(display_obj.epsRange.invertExtent(left_extent)) : _VERBOSE;
-                _VERBOSE ? console.log(display_obj.epsRange.invertExtent(rigth_extent)) : _VERBOSE;
+                // _VERBOSE ? console.log(display_obj.epsRange.invertExtent(left_extent)) : _VERBOSE;
+                // _VERBOSE ? console.log(display_obj.epsRange.invertExtent(rigth_extent)) : _VERBOSE;
 
                 display_obj.dim_eps_freq.filterFunction(function (d) {
-                    // _VERBOSE ? console.log(d) : _VERBOSE;
 
-                    if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] + 0.1)
-                        return true;
+                    // if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] + 0.1){
+                    if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] ){
+                            // _VERBOSE ? console.log(d) : _VERBOSE;
+                            return true;
+                    }
 
                 });
 
@@ -1566,17 +1650,46 @@ var histogram_module = (function (verbose) {
 
 
         // TODO: definir creación del brush
-        chart.drawBrush = function(lim_izq, lim_der) {
+        chart.drawBrush = function(lim_izq, lim_der, num_links) {
 
             console.log("chart.drawBrush")
+            var id_selected = $('input[type="radio"]:checked')[0].id;
+            
+            console.log(lim_izq);
+            console.log(lim_der);
+            console.log(num_links);
+            console.log(id_selected);
 
-            console.log("lim_izq: " + lim_izq)
-            console.log("lim_der: " + lim_der)
+            var y;
 
-            // como pasar del epsilon al width real del brush
-            var y = d3.scale.linear()
+            if(id_selected === "epsilon"){
+
+                console.log("case: epsilon")
+
+                // como pasar del epsilon al width real del brush
+                y = d3.scale.linear()
                     .domain([margin.left, width - margin.left])
                     .range([display_obj.hist_min_eps, display_obj.hist_max_eps]);
+
+            }
+            else if(id_selected === "naristas"){
+
+                console.log("case: naristas")
+
+                y = d3.scale.linear()
+                    .domain([margin.left, width - margin.left])
+                    .range([0, num_links]);
+
+            }
+            else{
+
+                console.log("case: paristas")
+
+                y = d3.scale.linear()
+                    .domain([margin.left, width - margin.left])
+                    .range([0, 100]);
+
+            }            
 
             // console.log("y.invert: " + y.invert(lim_izq))
             // console.log("y.invert: " + y.invert(lim_der))
@@ -1585,11 +1698,31 @@ var histogram_module = (function (verbose) {
 
             brush(d3.select(".brush").transition());
 
+            // console.log(lim_izq)
+            // console.log(lim_der)
+
+            display_obj.dim_eps_freq.filterFunction(function (d) {
+
+                
+                // _VERBOSE ? console.log(d) : _VERBOSE;
+                // _VERBOSE ? console.log(d > lim_izq) : _VERBOSE;
+                // _VERBOSE ? console.log(d < lim_der) : _VERBOSE;
+                // _VERBOSE ? console.log(d > lim_izq && d < lim_der ) : _VERBOSE;
+                
+
+                if (d > lim_izq && d < lim_der ){
+
+                    // _VERBOSE ? console.log(d) : _VERBOSE;
+                    
+                    return true;
+                }
+
+            });
+
             display_obj.renderAll()
 
             // brush.event(d3.select(".brush").transition().delay(1000));
 
-           
         }
 
         
