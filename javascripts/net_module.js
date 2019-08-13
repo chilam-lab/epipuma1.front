@@ -1347,12 +1347,18 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
      */
     function _set_highlight(d) {
 
-        console.log("_set_highlight");
+        console.log("_set_highlight")
+
+        // console.log(d)        
 
         d3.selectAll("g.node").selectAll("circle").attr("stroke", function(o) {
 
-            if ((_isConnected(d, o) && d.spid != o.spid) || _map_conected.has(o.spid)) {
-                _map_conected.set(o.spid, true);
+            // console.log(o)
+
+            if ((_isConnected(d, o) && d.id != o.id) || _map_conected.has(o.id)) {
+
+
+                _map_conected.set(o.id, true);
                 return _highlight_linked_color;
             }
             else {
@@ -1363,11 +1369,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
         d3.selectAll("g.node").selectAll("circle").style("stroke-width", function(o) {
 
-            if ((_isConnected(d, o) && d.spid != o.spid) || _map_conected.has(o.spid)) {
+            if ((_isConnected(d, o) && d.id != o.id) || _map_conected.has(o.id)) {
 
-                console.log("4");
+                // console.log("4");
 
-                _map_conected.set(o.spid, true);
+                _map_conected.set(o.id, true);
                 return 4;
             }
             else {
@@ -1411,7 +1417,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
         var grid_res = parseInt($("#grid_resolution").val());
 
 
-        console.log(_nodes_selected)
+        // console.log(_nodes_selected)
 
         $.each(_nodes_selected, function(index, value) {
             
@@ -1435,7 +1441,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
             nodes.push(node);
         })
 
-        console.log(nodes)
+        // console.log(nodes)
 
         _map_conected = d3.map([]);
         _clean_search();
@@ -1529,10 +1535,16 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
         for (var i = 0; i < links.length; i++) {
             
             var item = links[i];
+
+
             if(parseFloat(item.value)>=_UMBRAL || parseFloat(item.value)<=-_UMBRAL){
+
+
                 
-                grid_net_2export += nodes[item.source].label + ","
-                grid_net_2export += nodes[item.target].label + ","
+                // grid_net_2export += nodes[item.source].label + ","
+                // grid_net_2export += nodes[item.target].label + ","
+                grid_net_2export += nodes[item.source].generovalido + " " + nodes[item.source].especieepiteto + ","
+                grid_net_2export += nodes[item.target].generovalido + " " + nodes[item.target].especieepiteto + ","
                 grid_net_2export += parseFloat(item.value) 
                 grid_net_2export += "\r\n"
                 
