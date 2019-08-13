@@ -115,6 +115,10 @@ var language_module = (function (verbose) {
         return $.i18n;
     }
 
+    function setTableModule(table_module){
+        _table_module = table_module
+    }
+
 
 
     /**
@@ -403,7 +407,6 @@ var language_module = (function (verbose) {
             $("#a_item_bio070").text($.i18n.prop('a_item_bio070'));
             $("#a_item_bio071").text($.i18n.prop('a_item_bio071'));
             $("#a_item_bio072").text($.i18n.prop('a_item_bio072'));
-
             $("#a_item_bio073").text($.i18n.prop('a_item_bio073'));
             $("#a_item_bio074").text($.i18n.prop('a_item_bio074'));
             $("#a_item_bio075").text($.i18n.prop('a_item_bio075'));
@@ -414,12 +417,16 @@ var language_module = (function (verbose) {
             $("#a_item_bio080").text($.i18n.prop('a_item_bio080'));
             $("#a_item_bio081").text($.i18n.prop('a_item_bio081'));
             $("#a_item_bio082").text($.i18n.prop('a_item_bio082'));
-
             $("#a_item_bio083").text($.i18n.prop('a_item_bio083'));
             $("#a_item_bio084").text($.i18n.prop('a_item_bio084'));
-
-
-
+            $("#a_item_bio085").text($.i18n.prop('a_item_bio085'));
+            $("#a_item_bio086").text($.i18n.prop('a_item_bio086'));
+            $("#a_item_bio087").text($.i18n.prop('a_item_bio087'));
+            $("#a_item_bio088").text($.i18n.prop('a_item_bio088'));
+            $("#a_item_bio089").text($.i18n.prop('a_item_bio089'));
+            $("#a_item_bio090").text($.i18n.prop('a_item_bio090'));
+            $("#a_item_bio091").text($.i18n.prop('a_item_bio091'));
+            $("#a_item_bio092").text($.i18n.prop('a_item_bio092'));
 
 
 
@@ -451,29 +458,42 @@ var language_module = (function (verbose) {
             $("#email_address_shp").attr("placeholder", $.i18n.prop('email_address_shp'));
 
 
-            // actualiza los titulos de las tablas
-            $('#example tr:eq(0) th:eq(0)').text($.i18n.prop('lb_decil'));
-            $('#example tr:eq(0) th:eq(1)').text($.i18n.prop('lb_especie_tbl'));
-            $('#example tr:eq(0) th:eq(2)').text($.i18n.prop('lb_epsilon'));
-            $('#example tr:eq(0) th:eq(3)').text($.i18n.prop('tip_tbl_score'));
-            $('#example tr:eq(0) th:eq(4)').text($.i18n.prop('lb_procentaje_occ'));
+            if(_table_module){
 
+                _table_module.createEspList()
+                _table_module.createDecilList()
 
-            $('#tdisplay tr:eq(0) th:eq(0)').text($.i18n.prop('lb_genero_tbl'));
-            $('#tdisplay tr:eq(0) th:eq(1)').text($.i18n.prop('lb_especie_tbl'));
-            // $('#tdisplay tr:eq(0) th:eq(2)').text($.i18n.prop('lb_raster'));
-            // $('#tdisplay tr:eq(0) th:eq(3)').text($.i18n.prop('lb_rango'));
-            $('#tdisplay tr:eq(0) th:eq(2)').text($.i18n.prop('lb_nij'));
-            $('#tdisplay tr:eq(0) th:eq(3)').text($.i18n.prop('lb_nj'));
-            $('#tdisplay tr:eq(0) th:eq(4)').text($.i18n.prop('lb_ni'));
-            $('#tdisplay tr:eq(0) th:eq(5)').text($.i18n.prop('lb_n'));
-            $('#tdisplay tr:eq(0) th:eq(6)').text($.i18n.prop('lb_epsilon'));
-            $('#tdisplay tr:eq(0) th:eq(7)').text($.i18n.prop('tip_tbl_score'));
-            $('#tdisplay tr:eq(0) th:eq(8)').text($.i18n.prop('a_item_reino'));
-            $('#tdisplay tr:eq(0) th:eq(0)').text($.i18n.prop('a_item_phylum'));
-            $('#tdisplay tr:eq(0) th:eq(10)').text($.i18n.prop('a_item_clase'));
-            $('#tdisplay tr:eq(0) th:eq(11)').text($.i18n.prop('a_item_orden'));
-            $('#tdisplay tr:eq(0) th:eq(12)').text($.i18n.prop('a_item_familia'));
+                // var table = $('#tdisplay').DataTable()
+                // console.log(table)                
+                // var title = table.columns(0).header()
+                // console.log(title)
+
+            }
+            else{
+                $('#example tr:eq(0) th:eq(0)').text($.i18n.prop('lb_decil'));
+                $('#example tr:eq(0) th:eq(1)').text($.i18n.prop('lb_especie_tbl'));
+                $('#example tr:eq(0) th:eq(2)').text($.i18n.prop('lb_epsilon'));
+                $('#example tr:eq(0) th:eq(3)').text($.i18n.prop('tip_tbl_score'));
+                $('#example tr:eq(0) th:eq(4)').text($.i18n.prop('lb_procentaje_occ'));
+
+                $('#tdisplay tr:eq(0) th:eq(0)').text($.i18n.prop('lb_especie_tbl_eps'));    
+                $('#tdisplay tr:eq(0) th:eq(1)').text($.i18n.prop('lb_nij'));
+                $('#tdisplay tr:eq(0) th:eq(2)').text($.i18n.prop('lb_nj'));
+                $('#tdisplay tr:eq(0) th:eq(3)').text($.i18n.prop('lb_ni'));
+                $('#tdisplay tr:eq(0) th:eq(4)').text($.i18n.prop('lb_n'));
+                $('#tdisplay tr:eq(0) th:eq(5)').text($.i18n.prop('lb_epsilon'));
+                $('#tdisplay tr:eq(0) th:eq(6)').text($.i18n.prop('tip_tbl_score'));
+                $('#tdisplay tr:eq(0) th:eq(7)').text($.i18n.prop('a_item_reino'));
+                $('#tdisplay tr:eq(0) th:eq(8)').text($.i18n.prop('a_item_phylum'));
+                $('#tdisplay tr:eq(0) th:eq(9)').text($.i18n.prop('a_item_clase'));
+                $('#tdisplay tr:eq(0) th:eq(10)').text($.i18n.prop('a_item_orden'));
+                $('#tdisplay tr:eq(0) th:eq(11)').text($.i18n.prop('a_item_familia'));
+            }
+            
+            
+
+            
+            
 
             $("#specie_next").text($.i18n.prop('label_next'));
 
@@ -1421,7 +1441,8 @@ var language_module = (function (verbose) {
     return{
         startLanguageModule: startLanguageModule,
         getI18: getI18,
-        addModuleForLanguage: addModuleForLanguage
+        addModuleForLanguage: addModuleForLanguage,
+        setTableModule: setTableModule
 
     }
 });
