@@ -1061,6 +1061,9 @@ var module_nicho = (function () {
         _table_module.startTableModule();
 
 
+        _language_module_nicho.setTableModule(_table_module)
+
+
         _res_display_module_nicho = res_display_module(_VERBOSE, _url_api);
 
         _map_module_nicho.setDisplayModule(_res_display_module_nicho);

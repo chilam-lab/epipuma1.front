@@ -163,7 +163,7 @@ var histogram_module = (function (verbose) {
         $("#" + idComponent.id).empty();
 
         // OBTIENE EL ESPACIO NECESARIO PARA EL CONTENEDOR DEL HISTOGRAMA
-        var margin = {top: 30, right: 40, bottom: 50, left: 40},
+        var margin = {top: 30, right: 40, bottom: 70, left: 40},
                 width = $(".myScrollableBlockEpsilonDecil").width() - margin.left - margin.right;
         var height = $(".myScrollableBlockEpsilonDecil").height() - margin.top - margin.bottom - 15; // 10px del icono de info
 
@@ -497,7 +497,7 @@ var histogram_module = (function (verbose) {
                     d3.select(this).style("stroke", "black");
                     d3.select(this).style("stroke-width", 3);
                     
-                    _display_module_nicho.loadDecilDataTable(d.decil, d.name, false);
+                    _display_module_nicho.loadDecilDataTable(d.decil, d.name, false, []);
 
                 });
 
@@ -588,7 +588,7 @@ var histogram_module = (function (verbose) {
 
 
        // Despliega grafica de resultados de validación
-       if ($("#chkValidation").is(':checked')) {
+       // if ($("#chkValidation").is(':checked')) {
 
            var tip_recall = d3.tip()
                    .attr('class', 'd3-tip')
@@ -727,7 +727,7 @@ var histogram_module = (function (verbose) {
 
            });
 
-       }
+       // }
 
 
     }
@@ -933,7 +933,7 @@ var histogram_module = (function (verbose) {
         // _VERBOSE ? console.log($(window).width()) : _VERBOSE;
         // _VERBOSE ? console.log($(".myScrollableBlockEpsilon").height()) : _VERBOSE;
 
-        var margin = {top: 30, right: 40, bottom: 60, left: 40},
+        var margin = {top: 40, right: 40, bottom: 80, left: 40},
                 width = $(".myScrollableBlockEpsilonSmallHist").width() - margin.left - margin.right,
                 height = $(".myScrollableBlockEpsilonSmallHist").height() - margin.top - margin.bottom;
 
