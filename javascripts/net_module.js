@@ -781,7 +781,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
                 /*********************** init variables, and force object */
 
-                console.log(display_obj.dim_node_state.top(Infinity));
+                // console.log(display_obj.dim_node_state.top(Infinity));
 
                 var epsilonBySource = display_obj.nestByR.entries(display_obj.dim_node_state.top(Infinity));
                 var json_temp = []
@@ -790,7 +790,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
                 epsilonBySource.sort(_compare_desc)
 
-                console.log(epsilonBySource);
+                // console.log(epsilonBySource);
 
 
                 _linkedByIndex = {};
