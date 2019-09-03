@@ -1140,10 +1140,11 @@ var histogram_module = (function (verbose) {
                     .x(display_obj.x)
         ];
 
+        // agrega listner cuando el brushend es ejecutado para mandar llamar las funciones de la red y la tabla
         var chart_component = d3.selectAll(".chart")
                 .data(chart_array)
                 .each(function (chart) {
-                    chart.on("brushend", display_obj.renderAll);
+                    // chart.on("brushend", display_obj.renderAll);
                 })
 
         $("#lb_body_info").text(_iTrans.prop('lb_msg_hist_epsilon'));
@@ -1169,131 +1170,349 @@ var histogram_module = (function (verbose) {
 
         _VERBOSE ? console.log("BarChart") : _VERBOSE;
 
-        // _VERBOSE ? console.log(json) : _VERBOSE;
+        _VERBOSE ? console.log(json) : _VERBOSE;
 
+        // _VERBOSE ? console.log(display_obj.dim_eps_freq.top(Infinity)) : _VERBOSE;
 
-        var margin = {top: 5, right: 20, bottom: 55, left: 20};
+        
+        var margin = {top: 5, right: 20, bottom: 85, left: 20};
         var width = $("#hist").width() - margin.left - margin.right;
         var height = $("#hist").height() - margin.top - margin.bottom;
 
         var min_eps = display_obj.hist_min_eps
         var max_eps = display_obj.hist_max_eps
         var num_links = display_obj.num_links
-        var max_value, min_value, step
+        // var max_value, min_value, step
         var lim_izq, lim_der
         
         var id_selected = $('input[type="radio"]:checked')[0].id;
         console.log(id_selected);
 
-        $("#ep_izq").val(min_eps)
-        $("#ep_der").val(max_eps)
+        $("#ep_izq").val(0)
+        $("#ep_der").val(0)
         $("#ari_izq").val(0)
-        $("#ari_der").val(num_links)
+        $("#ari_der").val(0)
         $("#arip_izq").val(0)
-        $("#arip_der").val(100)
-        
-        if(id_selected === "epsilon"){
-            min_value = min_eps
-            max_value = max_eps
-            step = 0.1
-        }
-        else if(id_selected === "naristas"){
-            min_value = 0
-            max_value = num_links
-            step = 1
-        }
-        else{
-            min_value = 0
-            max_value = 100
-            step = 1
-        }
+        $("#arip_der").val(0)
 
-        console.log("min_value: " + min_value)
-        console.log("max_value: " + max_value)
-        console.log("step: " + step)
+        // min_value = min_eps
+        // max_value = max_eps
+        // step = 0.01
+
+        // console.log("min_value: " + min_value)
+        // console.log("max_value: " + max_value)
+        // console.log("step: " + step)
+
+        // $( "#sliderFecha" ).slider( "enable" );
+        // $( "#sliderFecha" ).slider( "option", "min", min_value );
+        // $( "#sliderFecha" ).slider( "option", "max", max_value );
+        // $( "#sliderFecha" ).slider( "option", "values", [min_value,max_value] );
+        // $( "#sliderFecha" ).slider( "option", "step", step );
+        // $( "#sliderFecha" ).on( "slidechange", function( event, ui ) {
+
+        //     console.log("change slider")
+        //     id_selected = $('input[type="radio"]:checked')[0].id;
+        //     // console.log(id_selected);
+
+        //     lim_izq = ui.values[0]
+        //     lim_der = ui.values[1]
+                
+        //     $("#ep_izq").val(lim_izq)
+        //     $("#ep_der").val(lim_der)
+
+        //     var aizq = 0
+        //     var ader = 0
+
+        //     json.links.forEach(function (item){
+
+        //         var item_eps = parseFloat(item.value)
+                
+        //         if(item_eps < lim_izq && item_eps > min_eps)
+        //             aizq++
+
+        //         if(item_eps > lim_der && item_eps < max_eps)
+        //             ader++
+
+        //     })
+
+        //     $("#ari_izq").val(aizq)
+        //     $("#ari_der").val(ader)
+
+        //     $("#arip_izq").val(parseFloat(aizq/num_links*100).toFixed(2))
+        //     $("#arip_der").val(parseFloat(ader/num_links*100).toFixed(2))
+
+             
+        // })
 
 
-        $( "#sliderFecha" ).slider( "enable" );
-        $( "#sliderFecha" ).slider( "option", "min", min_value );
-        $( "#sliderFecha" ).slider( "option", "max", max_value );
-        $( "#sliderFecha" ).slider( "option", "values", [min_value,max_value] );
-        $( "#sliderFecha" ).slider( "option", "step", step );
-        $( "#sliderFecha" ).on( "slidechange", function( event, ui ) {
+        $("#ep_izq").on("change", function(e){
 
-            console.log("change slider")
-            id_selected = $('input[type="radio"]:checked')[0].id;
-            console.log(id_selected);
+            console.log("cahnge izq")
 
-            if(id_selected == "epsilon"){
-                console.log("case: change epsilon")
 
-                $("#ep_izq").val(ui.values[0])
-                $("#ep_der").val(ui.values[1])
+            if($("#ep_izq").is(":valid")){
+
+
+                console.log("valido izq")
+
+                var value = $("#ep_izq").val()
+                var aizq = 0
+
+                display_obj.links.forEach(function (item){
+                    var item_eps = parseFloat(item.value)
+                    
+                    if(item_eps < value && item_eps > min_eps)
+                        aizq++
+
+                })
+
+                $("#ari_izq").val(aizq)
+                $("#arip_izq").val(parseFloat(aizq/num_links*100).toFixed(2))
+
+                if(display_obj.hist_min_eps > value){
+                    value = display_obj.hist_min_eps
+                    $("#ep_izq").val(value)
+                }
+
+                chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+
             }
-            else if(id_selected == "naristas"){
-                console.log("case: change naristas")
 
-                $("#ari_izq").val(ui.values[0])
-                $("#ari_der").val(ui.values[1])
+
+
+        })
+
+        $("#ep_der").on("change", function(e){
+
+            console.log("cahnge izq2")
+
+
+            if($("#ep_der").is(":valid")){
+
+                var value = $("#ep_der").val()
+                var ader = 0
+
+                display_obj.links.forEach(function (item){
+                    var item_eps = parseFloat(item.value)
+                    
+                    if(item_eps > value && item_eps < max_eps)
+                        ader++
+
+                })
+
+                $("#ari_der").val(ader)
+                $("#arip_der").val(parseFloat(ader/num_links*100).toFixed(2))
+
+
+                if( value > display_obj.hist_max_eps){
+                    value = display_obj.hist_max_eps
+                    $("#ep_der").val(value)
+                }
+
+                chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+
+
             }
-            else{
-                console.log("case: change paristas")
+            
+        })
 
-                $("#arip_izq").val(ui.values[0])
-                $("#arip_der").val(ui.values[1])
+
+
+        $("#ari_izq").on("change", function(e){
+
+            if($("#ari_izq").is(":valid")){
+
+                var value = $("#ari_izq").val()
+
+                // console.log(value)
+
+                if(parseFloat(value) === 0){
+                    $("#ep_izq").val(min_eps)
+                    $("#arip_izq").val(0)
+                    chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+                    return
+                }
+
+                $("#arip_izq").val(parseFloat(value/num_links*100).toFixed(2))
+
+                var eps_izq = 0
+                var count_izq = 0
+
+                // ordenando de forma creciente
+                var links_temp = jQuery.extend(true, [], display_obj.links);
+
+                // console.log(links_temp)
+                links_temp.sort(function(a, b) {
+                    return parseFloat(a.value) - parseFloat(b.value);
+                });
+
+                for(var i = 0; i<links_temp.length; i++){
+                    var item = links_temp[i];
+                    count_izq++
+                    
+                    if(count_izq == value){
+                        eps_izq = item.value
+                        break
+                    }
+                }
+
+                $("#ep_izq").val(eps_izq)
+
+
+                chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+                
+
             }
 
-            lim_izq = ui.values[0]
-            lim_der = ui.values[1]
-
-        } );
-        
-
-        // genera brush cuando se cambian los parámetros del slider
-        // $("#sliderFecha").slider({
-        //     min: min_value,
-        //     max: max_value,
-        //     step: step,
-        //     values: [min_value, max_value],
-        //     disabled: false,
-        //     change: function (event, ui) {
-
-        //         console.log("change slider")
-
-        //         if(id_selected === "epsilon"){
-        //             console.log("case: change epsilon")
-
-        //             $("#ep_izq").val(ui.values[0])
-        //             $("#ep_der").val(ui.values[1])
-        //         }
-        //         else if(id_selected === "naristas"){
-        //             console.log("case: change naristas")
-
-        //             $("#ari_izq").val(ui.values[0])
-        //             $("#ari_der").val(ui.values[1])
-        //         }
-        //         else{
-        //             console.log("case: change paristas")
-
-        //             $("#arip_izq").val(ui.values[0])
-        //             $("#arip_der").val(ui.values[1])
-        //         }
-
-        //         lim_izq = ui.values[0]
-        //         lim_der = ui.values[1]
+        })
 
 
-        //     }
-        // });
+        $("#ari_der").on("change", function(e){
+
+            if($("#ari_der").is(":valid")){
+
+                var value = $("#ari_der").val()
+
+                console.log(value)
+
+                if(parseFloat(value) === 0){
+                    $("#ep_der").val(max_eps)
+                    $("#arip_der").val(0)
+                    chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+                    return
+                }
+
+                $("#arip_der").val(parseFloat(value/num_links*100).toFixed(2))
+
+                var eps_der = 0
+                var count_der = 0
+
+                // ordenando de forma creciente
+                var links_temp = jQuery.extend(true, [], display_obj.links);
+
+                // console.log(links_temp)
+                links_temp.sort(function(a, b) {
+                    return parseFloat(b.value) - parseFloat(a.value);
+                });
+
+                for(var i = 0; i<links_temp.length; i++){
+                    var item = links_temp[i];
+                    count_der++
+                    
+                    if(count_der == value){
+                        eps_der = item.value
+                        break
+                    }
+                }
+
+                $("#ep_der").val(eps_der)
+                
+                chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+
+            }
+
+        })
 
 
+        $("#arip_izq").on("change", function(e){
 
+            if($("#arip_izq").is(":valid")){
+
+                var value = parseFloat($("#arip_izq").val())
+
+                if(value === 0){
+                    $("#ep_izq").val(min_eps)
+                    $("#ari_izq").val(0)
+                    chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+                    return
+                }
+
+                var aizq = parseInt(num_links*value/100)
+                $("#ari_izq").val(aizq)
+
+                var eps_izq = 0
+                var count_izq = 0
+
+                // ordenando de forma creciente
+                var links_temp = jQuery.extend(true, [], display_obj.links);
+
+                // console.log(links_temp)
+                links_temp.sort(function(a, b) {
+                    return parseFloat(a.value) - parseFloat(b.value);
+                });
+
+                for(var i = 0; i<links_temp.length; i++){
+                    var item = links_temp[i];
+                    count_izq++
+                    
+                    if(count_izq == aizq){
+                        eps_izq = item.value
+                        break
+                    }
+                }
+
+                $("#ep_izq").val(eps_izq)
+                
+                chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+
+            }
+
+        })
+
+
+        $("#arip_der").on("change", function(e){
+
+            if($("#arip_der").is(":valid")){
+
+                var value = parseFloat($("#arip_der").val()) 
+
+                
+                if(value === 0){
+                    $("#ep_der").val(max_eps)
+                    $("#ari_der").val(0)
+                    chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+                    return
+                }
+
+                var ader = parseInt(num_links*value/100)
+                $("#ari_der").val(ader)
+
+                var eps_der = 0
+                var count_der = 0
+
+                // ordenando de forma creciente
+                var links_temp = jQuery.extend(true, [], display_obj.links);
+
+                // console.log(links_temp)
+                links_temp.sort(function(a, b) {
+                    return parseFloat(b.value) - parseFloat(a.value);
+                });
+
+                for(var i = 0; i<links_temp.length; i++){
+                    var item = links_temp[i];
+                    count_der++
+                    
+                    if(count_der == ader){
+                        eps_der = item.value
+                        break
+                    }
+                }
+
+                $("#ep_der").val(eps_der)
+                
+                chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+
+            }
+
+        })
 
 
         $("#update-hist").click(function(){
             console.log("click");
-            chart.drawBrush(lim_izq,lim_der,num_links)
+            chart.filterBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
         })
+
+
 
 
         if (!BarChart.id)
@@ -1331,7 +1550,7 @@ var histogram_module = (function (verbose) {
             height = y.range()[0];
             data = group.all();
 
-            _VERBOSE ? console.log(data) : _VERBOSE;
+            // _VERBOSE ? console.log(data) : _VERBOSE;
 
             // it contains an array from 1 to 20, create key missing elements and set value to 0
             display_obj.epsilon_beans.forEach(function (d) {
@@ -1347,8 +1566,9 @@ var histogram_module = (function (verbose) {
                 }
             });
 
-            // Sort by price high to low
+            // Sort by key high to low
             data.sort(_sort_by('key', false, parseInt));
+
             _VERBOSE ? console.log(data) : _VERBOSE;
 
             $.each(data, function (index, value) {
@@ -1459,6 +1679,7 @@ var histogram_module = (function (verbose) {
                                 // _VERBOSE ? console.log( display_obj.epsRange(7.08) ) : _VERBOSE;
 
                                 return x(parseFloat((display_obj.epsRange.invertExtent(d.key)[0] + display_obj.epsRange.invertExtent(d.key)[1]) / 2).toFixed(2));
+
                             })
                             .attr("width", x.rangeBand())
                             .attr("y", function (d) {
@@ -1471,6 +1692,10 @@ var histogram_module = (function (verbose) {
 
                                 left = display_obj.epsRange.invertExtent(d.key)[0]
                                 right = display_obj.epsRange.invertExtent(d.key)[1]
+
+                                // console.log("left: " + left)
+                                // console.log("right: " + right)
+
                                 if (left <= 0 && right > 0)
                                     min_val = 0;
                                 else {
@@ -1478,12 +1703,16 @@ var histogram_module = (function (verbose) {
                                 }
 
                                 if (display_obj.ep_th < min_val) {
-                                    return d3.rgb(102, 184, 243);
-                                    // return "steelblue";
+                                    // return d3.rgb(102, 184, 243);
+                                    return d3.rgb(36, 149, 229);
+                                    
                                 } else {
                                     return d3.rgb(213, 215, 223);
+                                    
                                 }
                             });
+
+
 
                     // **** Initialize the brush component with pretty resize handles.
                     var gBrush = g.append("g")
@@ -1496,6 +1725,59 @@ var histogram_module = (function (verbose) {
                     gBrush.selectAll(".resize")
                             .append("path")
                             .attr("d", resizePath);
+
+
+
+
+                    // ***** agregando leyenda
+                    var nosig = display_obj.no_mean
+                    var legend = g.selectAll(".legend")
+                            // .data(["Descartado", "Visualizado", "Filtrado"])
+                            .attr("id", "legend_hist_net")
+                            .data([_iTrans.prop('lb_hist_net_descartados'), _iTrans.prop('lb_hist_net_visualizados'), _iTrans.prop('lb_hist_net_nosginificativo')+": " + nosig])
+                            .enter().append("g")
+                            .attr("class", "legend")
+                            .attr("transform", function (d) {
+                                return "translate(0," + (height + 60) + ")";
+                            });
+
+                    legend.append("rect")
+                            .attr("x", function (d, i) {
+                                return (width - 50) - (i * 130);
+                            })
+                            .attr("y", 3)
+                            .attr("width", 20)
+                            .attr("height", 20)
+                            .style("fill", function (d, i) {
+                                if(i==0)
+                                    // return d3.rgb(213, 215, 223);
+                                    return "#d3e9fa"
+                                if(i==1)
+                                    return d3.rgb(36, 149, 229);
+                                if(i==2)
+                                    return "#fff";
+                            })
+                            // .style("stroke", function(d,i){
+                            //     if(i==2)
+                            //         return "#000";
+                            // }) 
+                            // .style("opacity", 0.7);
+
+                    legend.append("text")
+                        .attr("x", function(d, i) {
+                            if(i==0)
+                                return (width - 60) - (i * 120);
+                            if(i==1)
+                                return (width - 70) - (i * 120);
+                            return (width - 40) - (i * 120);
+                            
+                        })
+                        .attr("y", 15)
+                        .attr("dy", ".35em")
+                        .style("text-anchor", "end")
+                        .text(function(d) {
+                            return d
+                        });
 
 
                 }
@@ -1537,42 +1819,28 @@ var histogram_module = (function (verbose) {
             // desactiva el bloqueo del número de enlaces a desplegar
             display_obj.hist_load = true
 
-            // console.log(brush)
-
             var y = d3.scale.linear()
                     .domain([margin.left, width - margin.left])
                     .range([0, display_obj.NUM_BEANS]);
 
 
             b = brush.extent();
-            _VERBOSE ? console.log(b) : _VERBOSE;
+            // _VERBOSE ? console.log(b) : _VERBOSE;
 
-            // d3.round(y(b[1], 0) for rounded values
             var localBrushStart = (brush.empty()) ? brushStart : y(b[0]),
                     localBrushEnd = (brush.empty()) ? brushEnd : y(b[1]);
 
-            // console.log("y(b[0]): " + y(b[0]))
-            // console.log("y(b[1]): " + y(b[1]))
-
-            // console.log("localBrushStart: " + localBrushStart)
-            // console.log("localBrushEnd: " + localBrushEnd)
-
-            // console.log("y.invert(localBrushStart): " + y.invert(localBrushStart))
-            // console.log("y.invert(localBrushEnd): " + y.invert(localBrushEnd))
-
             // Snap to rect edge
             d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(localBrushStart), y.invert(localBrushEnd)]));
-
 
             // Fade all years in the histogram not within the brush
             d3.selectAll("rect.bar").style("opacity", function (d, i) {
                 
                 // _VERBOSE ? console.log(d.key) : _VERBOSE;
-
                 if (d.key < localBrushStart || d.key >= localBrushEnd || brush.empty()) {
-                    return "0.4";
-                } else {
                     return "1";
+                } else {
+                    return "0.4";
                 }
             });
 
@@ -1585,6 +1853,55 @@ var histogram_module = (function (verbose) {
 
             _VERBOSE ? console.log("brushend.chart") : _VERBOSE;
 
+            
+            // Realiza la conversión de la selección a los valores de epsilon y calcula valores para los controles del histograma
+            var y_brush = d3.scale.linear()
+                .domain([margin.left, width - margin.left])
+                .range([display_obj.hist_min_eps, display_obj.hist_max_eps]);
+
+            // console.log(brush.extent())
+            // console.log([margin.left, width - margin.left])
+            // console.log(brush.extent()[0])
+            // console.log(brush.extent()[1])
+            // console.log(localBrushEnd)
+            // console.log(y_brush(brush.extent()[0]))
+
+            var eps_izq = 0
+            var eps_der = 0
+            if(brush.extent()[0] == brush.extent()[1]){
+                $("#ep_izq").val(0)
+                $("#ep_der").val(0)
+                $("#ari_izq").val(0)
+                $("#ari_der").val(0)
+                $("#arip_izq").val(0)
+                $("#arip_der").val(0)
+            }
+            else{
+                var eps_izq = parseFloat(y_brush(brush.extent()[0])).toFixed(2) 
+                var eps_der = parseFloat(y_brush(brush.extent()[1])).toFixed(2)
+                $("#ep_izq").val(eps_izq)
+                $("#ep_der").val(eps_der)
+                
+                var aizq = 0
+                var ader = 0
+
+                display_obj.links.forEach(function (item){
+                    var item_eps = parseFloat(item.value)
+                    if(item_eps < eps_izq && item_eps > display_obj.hist_min_eps)
+                        aizq++
+                    if(item_eps > eps_der && item_eps < display_obj.hist_max_eps)
+                        ader++
+                })
+
+                $("#ari_izq").val(aizq)
+                $("#ari_der").val(ader)
+                $("#arip_izq").val(parseFloat(aizq/num_links*100).toFixed(2))
+                $("#arip_der").val(parseFloat(ader/num_links*100).toFixed(2))
+
+            }
+
+
+            // Asigna opacidad a las barras alcanzadas por el arrastre del brush
             var y = d3.scale.linear()
                     .domain([margin.left, width - margin.left])
                     .range([0, display_obj.NUM_BEANS]);
@@ -1598,10 +1915,10 @@ var histogram_module = (function (verbose) {
             d3.select("g.brush").call((brush.empty()) ? brush.clear() : brush.extent([y.invert(localBrushStart), y.invert(localBrushEnd)]));
 
 
+            // Asigna opacidad a las barras alzanzadas por la extensión del brush
             if (brush.empty()) {
 
-                dim_eps_freq.filterAll();
-
+                // dim_eps_freq.filterAll();
                 d3.selectAll("rect.bar").style("opacity", function (d, i) {
                     return "1";
                 });
@@ -1618,28 +1935,30 @@ var histogram_module = (function (verbose) {
                 else
                     rigth_extent = d3.round(localBrushEnd, 0)
 
+                // No esta dando los valores correctos!!!
+                _VERBOSE ? console.log(display_obj.epsRange.invertExtent(left_extent)[0]) : _VERBOSE;
+                _VERBOSE ? console.log(display_obj.epsRange.invertExtent(rigth_extent)[1]) : _VERBOSE;
 
-                // _VERBOSE ? console.log(display_obj.epsRange.invertExtent(left_extent)) : _VERBOSE;
-                // _VERBOSE ? console.log(display_obj.epsRange.invertExtent(rigth_extent)) : _VERBOSE;
-
-                display_obj.dim_eps_freq.filterFunction(function (d) {
-
-                    // if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] + 0.1){
-                    if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] ){
-                            // _VERBOSE ? console.log(d) : _VERBOSE;
-                            return true;
-                    }
-
-                });
+                // Activa el filtrado de la red
+                // display_obj.dim_eps_freq.filterFunction(function (d) {
+                //     // if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] + 0.1){
+                //     // if (d > display_obj.epsRange.invertExtent(left_extent)[0] && d < display_obj.epsRange.invertExtent(rigth_extent)[1] ){
+                //         // COMMENT 19/08/19: Se invierte filtrado, ahora los valores que estan fuera de rango del brush son visualizados
+                //     if (d < display_obj.epsRange.invertExtent(left_extent)[0] || d > display_obj.epsRange.invertExtent(rigth_extent)[1] ){
+                //             // _VERBOSE ? console.log(d) : _VERBOSE;
+                //             return true;
+                //     }
+                // });
 
                 // Fade all years in the histogram not within the brush
                 d3.selectAll("rect.bar").style("opacity", function (d, i) {
                     if (d.key < localBrushStart || d.key > localBrushEnd) {
-                        return "0.4";
-                    } else {
                         return "1";
+                    } else {
+                        return "0.4";
                     }
                 });
+
 
             }
 
@@ -1648,48 +1967,52 @@ var histogram_module = (function (verbose) {
         });
 
 
-
-        // TODO: definir creación del brush
-        chart.drawBrush = function(lim_izq, lim_der, num_links) {
+        // genera brush con los datos recibidos
+        chart.drawBrush = function(lim_izq, lim_der) {
 
             console.log("chart.drawBrush")
-            var id_selected = $('input[type="radio"]:checked')[0].id;
+            // var id_selected = $('input[type="radio"]:checked')[0].id;
             
             console.log(lim_izq);
             console.log(lim_der);
-            console.log(num_links);
-            console.log(id_selected);
 
-            var y;
+            d3.selectAll("rect.bar").style("opacity", function (d, i) {
+                return "1";
+            });
+            
+            
+            // como pasar del epsilon al width real del brush
+            var y = d3.scale.linear()
+                .domain([margin.left, width - margin.left])
+                .range([display_obj.hist_min_eps, display_obj.hist_max_eps]);
 
-            if(id_selected === "epsilon"){
+            // console.log("y.invert: " + y.invert(lim_izq))
+            // console.log("y.invert: " + y.invert(lim_der))
+            
+            brush.extent([y.invert(lim_izq), y.invert(lim_der)])
 
-                console.log("case: epsilon")
+            brush(d3.select(".brush").transition());
 
-                // como pasar del epsilon al width real del brush
-                y = d3.scale.linear()
-                    .domain([margin.left, width - margin.left])
-                    .range([display_obj.hist_min_eps, display_obj.hist_max_eps]);
+        }
 
-            }
-            else if(id_selected === "naristas"){
 
-                console.log("case: naristas")
+        chart.filterBrush = function(lim_izq, lim_der) {
 
-                y = d3.scale.linear()
-                    .domain([margin.left, width - margin.left])
-                    .range([0, num_links]);
+            console.log("chart.filterBrush")
+            // var id_selected = $('input[type="radio"]:checked')[0].id;
+            
+            console.log(lim_izq);
+            console.log(lim_der);
 
-            }
-            else{
-
-                console.log("case: paristas")
-
-                y = d3.scale.linear()
-                    .domain([margin.left, width - margin.left])
-                    .range([0, 100]);
-
-            }            
+            d3.selectAll("rect.bar").style("opacity", function (d, i) {
+                return "1";
+            });
+            
+            
+            // como pasar del epsilon al width real del brush
+            var y = d3.scale.linear()
+                .domain([margin.left, width - margin.left])
+                .range([display_obj.hist_min_eps, display_obj.hist_max_eps]);
 
             // console.log("y.invert: " + y.invert(lim_izq))
             // console.log("y.invert: " + y.invert(lim_der))
@@ -1702,18 +2025,12 @@ var histogram_module = (function (verbose) {
             // console.log(lim_der)
 
             display_obj.dim_eps_freq.filterFunction(function (d) {
-
                 
                 // _VERBOSE ? console.log(d) : _VERBOSE;
-                // _VERBOSE ? console.log(d > lim_izq) : _VERBOSE;
-                // _VERBOSE ? console.log(d < lim_der) : _VERBOSE;
-                // _VERBOSE ? console.log(d > lim_izq && d < lim_der ) : _VERBOSE;
-                
-
-                if (d > lim_izq && d < lim_der ){
+                // COMMENT 19/08/19: Se invierte filtrado, ahora los valores que estan fuera de rango del brush son visualizados
+                if (d < lim_izq || d > lim_der ){
 
                     // _VERBOSE ? console.log(d) : _VERBOSE;
-                    
                     return true;
                 }
 
@@ -1723,12 +2040,10 @@ var histogram_module = (function (verbose) {
 
             // brush.event(d3.select(".brush").transition().delay(1000));
 
+            
         }
 
         
-
-
-
 
         chart.margin = function (_) {
 

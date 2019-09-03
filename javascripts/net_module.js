@@ -790,7 +790,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
                 epsilonBySource.sort(_compare_desc)
 
-                // console.log(epsilonBySource);
+                console.log("epsilonBySource: " + epsilonBySource.length);
 
 
                 _linkedByIndex = {};
@@ -800,6 +800,10 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
                 console.log("net_module max_link: " + max_link)
                 console.log("net_module first_load: " + display_obj.hist_load)
+
+                // console.log(epsilonBySource)
+
+
 
                 epsilonBySource.forEach(function(bean, i) {
 
@@ -829,23 +833,24 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
                         }
 
 
-                        // else{
-
-                        //     nodes_related.set(parseInt(val.source), false);
-                        //     nodes_related.set(parseInt(val.target), false);
-
-                        // }
 
                     });
 
                 });
 
+                _VERBOSE ? console.log("json_temp: " + json_temp.length) : _VERBOSE;
+
+
+
 
                 // obtiene el max y min de los enalces selecioandos
-                var min_eps = d3.min(json_temp.map(function(d) {return parseFloat(d.value) }));
-                var max_eps = d3.max(json_temp.map(function(d) {return parseFloat(d.value) }));
+                // var min_eps = d3.min(json_temp.map(function(d) {return parseFloat(d.value) }));
+                // var max_eps = d3.max(json_temp.map(function(d) {return parseFloat(d.value) }));
 
-                // chart.drawBrush(min_eps, max_eps)
+
+                // TODO: Enlazar al histograma para que se depsliegue el brush cuando hace la primera carga
+                // if(display_obj.chart != null)
+                //     display_obj.chart.drawBrush(min_eps, max_eps)
                                 
                 
                                 

@@ -404,8 +404,8 @@ var table_module = (function(verbose) {
                 temp_list.forEach(function(val) {
                     
                     
-                    console.log(val)
-                    console.log(_json.nodes)
+                    // console.log(val)
+                    // console.log(_json.nodes)
 
                     var item_list = [];
 

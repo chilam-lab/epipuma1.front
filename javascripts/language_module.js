@@ -566,6 +566,28 @@ var language_module = (function (verbose) {
             $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha_hist') + ":");
             $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
 
+            $("#lb_epsilon_hist_net").text($.i18n.prop('lb_epsilon_hist_net'));
+            $("#lb_epsilon_lizq_hist_net").text($.i18n.prop('lb_epsilon_lizq_hist_net'));
+            $("#lb_epsilon_lder_hist_net").text($.i18n.prop('lb_epsilon_lder_hist_net'));
+
+            $("#lb_arista_hist_net").text($.i18n.prop('lb_arista_hist_net'));
+            $("#lb_arista_lizq_hist_net").text($.i18n.prop('lb_arista_lizq_hist_net'));
+            $("#lb_arista_lder_hist_net").text($.i18n.prop('lb_arista_lder_hist_net'));
+
+            $("#lb_parista_hist_net").text($.i18n.prop('lb_parista_hist_net'));
+            $("#lb_parista_lizq_hist_net").text($.i18n.prop('lb_parista_lizq_hist_net'));
+            $("#lb_parista_lder_hist_net").text($.i18n.prop('lb_parista_lder_hist_net'));
+
+            $("#lb_hist_net_nosginificativo").text($.i18n.prop('lb_hist_net_nosginificativo'));
+            $("#lb_hist_net_visualizados").text($.i18n.prop('lb_hist_net_visualizados'));
+            $("#lb_hist_net_descartados").text($.i18n.prop('lb_hist_net_descartados'));
+
+
+          
+
+
+             
+
             _confLiveTutorialNet();
 
         }
