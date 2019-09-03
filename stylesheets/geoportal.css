@@ -2073,3 +2073,96 @@ display: none;
     border-radius: 5px;  
 }
 
+/*------------------------------------------------------------------------*/
+/* Tooltip container  */
+.ttip {
+    position: relative;
+    display: inline-block;
+}
+
+.ttext h5,
+.ttext[ttip-left] h5 {
+    margin-top: 0px;
+    margin-boton: 5px;
+    background: #f1f1f1;
+    padding: 4px 0px;
+}
+.ttext p,
+.ttext[ttip-left] p {
+    padding: 0px 8px;
+    font-weight: lighter;
+    font-size: 13px;
+}
+
+.ttext img,
+.ttext[ttip-left] img {
+    margin-bottom: 10px;
+}
+
+.ttip .ttext {
+    visibility: hidden;
+    width: 230px;
+    top: -5px;
+    left: 130%;
+    background-color: white;
+    color: #000;
+    text-align: center;	
+    border-style: solid;
+    border-width: thin;
+    border-color: #bbb;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.ttip .ttext[ttip-left] {
+  visibility: hidden;
+  width: 230px;
+  top: -5px;
+  left: unset;
+  right: 130%;
+  background-color: white;
+  color: #000;
+  text-align: center;	
+  border-style: solid;
+  border-width: thin;
+  border-color: #bbb;
+  border-radius: 6px;
+  
+  position: absolute;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.ttip .ttext::after {
+    content: " ";
+    position: absolute;
+    top: 10px;
+    right: 100%; /* To the left of the tooltip */
+    margin-top: -5px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent #f1f1f1 transparent transparent;
+}
+.ttip .ttext[ttip-left]::after {
+    content: " ";
+    position: absolute;
+    top: 10px;
+    right: unset;
+    left: 100%; /* To the left of the tooltip */
+    margin-top: -5px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent transparent #f1f1f1;
+    
+}
+/* Show the tooltip text when you mouse over the tooltip container  */
+.ttip:hover .ttext,
+.ttip:hover .ttext[ttip-left] {
+    visibility: visible;
+    opacity: 1;
+}
