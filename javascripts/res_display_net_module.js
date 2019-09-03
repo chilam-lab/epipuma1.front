@@ -706,7 +706,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
 
     /**
-     * Éste método inicializa una instancia de crossfilter para generar la relación de la información entre el módulo red, el módulo histograma y el módulo tabla.
+     * Éste método inicializa una instancia de crossfilter y otras variables necesarias que son visibles en el módulo red, el módulo histograma y el módulo tabla.
      *
      * @function _configFilters
      * @private
@@ -725,7 +725,26 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         self.nestByR = d3.nest().key(function (d) {
             return d.value
         });
+
         self.epsilon_beans = d3.range(1, self.NUM_BEANS, 1);
+
+        self.ep_th = 2.0;
+
+        // console.log(json.links);
+        // console.log(json.links.length);
+        // console.log("min_eps: " + min_eps);
+        // console.log("max_eps: " + max_eps);
+
+        var newlinks = []
+        var no_mean_lenght = 0
+
+        _VERBOSE ? console.log("json.links: " + json.links.length) : _VERBOSE;
+
+        
+
+        // json.links.sort(function(a, b) {
+        //     return parseFloat(b.value) - parseFloat(a.value) ;
+        // });
 
         var min_eps = d3.min(json.links.map(function (d) {
             return parseFloat(d.value);
@@ -734,26 +753,59 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             return parseFloat(d.value);
         }));
 
+        console.log("json.links min_eps: " + min_eps);
+        console.log("json.links max_eps: " + max_eps);
+
+
+        // filtrando los enlaces no significativos
+        json.links.forEach(function(item) {
+            if (Math.abs(parseFloat(item.value)) > self.ep_th) {
+                newlinks.push(item)
+            }
+            else{
+                no_mean_lenght++
+            }
+        })
+
+
+        // console.log(newlinks);
+        console.log("newlinks: " + newlinks.length);
+        console.log("no_mean_lenght: " + no_mean_lenght);
+
+        self.no_mean = no_mean_lenght
+
+        var min_eps = d3.min(newlinks.map(function (d) {
+            return parseFloat(d.value);
+        }));
+        var max_eps = d3.max(newlinks.map(function (d) {
+            return parseFloat(d.value);
+        }));
+
         self.hist_min_eps = min_eps
 
         self.hist_max_eps = max_eps
 
-        self.num_links = json.links.length
+        console.log("newlinks min_eps: " + min_eps);
+        console.log("newlinks max_eps: " + max_eps);
 
 
-        // console.log(json.links);
-        // console.log("min_eps: " + min_eps);
-        // console.log("max_eps: " + max_eps);
+
+
+        self.num_links = newlinks.length
+
+        self.links = newlinks
 
         self.epsRange = d3.scale.quantile().domain([min_eps, max_eps]).range(epsilon_beans);
 
-        self.links_sp = crossfilter(json.links);
+        // self.links_sp = crossfilter(json.links);
+        self.links_sp = crossfilter(newlinks);
 
         self.all = links_sp.groupAll();
 
         self.dim_eps_freq = self.links_sp.dimension(function (d) {
             return parseFloat(d.value);
         });
+
         self.group_eps_freq = dim_eps_freq.group(function (d) {
             return self.epsRange(d);
         });
@@ -761,6 +813,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         self.dim_src = self.links_sp.dimension(function (d) {
             return d;
         });
+
         self.group_eps_spname = dim_src.group();
 
         self.dim_node_state = self.links_sp.dimension(function (d) {
@@ -773,7 +826,9 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         self.height = $("#hist").height() - self.margin.top - self.margin.bottom;
         self.x = d3.scale.ordinal().rangeRoundBands([self.margin.left, self.width - self.margin.left], .1);
 
-        self.ep_th = 2.0;
+        
+
+        self.chart = null
 
     }
 
@@ -1065,6 +1120,22 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         $("#info_text_net").text($.i18n.prop('lb_info_net'));
 
         $("#title_barnet").text($.i18n.prop('titulo_hist_eps'));
+
+        // $("#lb_epsilon_hist_net").text($.i18n.prop('lb_epsilon_hist_net'));
+        // $("#lb_epsilon_lizq_hist_net").text($.i18n.prop('lb_epsilon_lizq_hist_net'));
+        // $("#lb_epsilon_lder_hist_net").text($.i18n.prop('lb_epsilon_lder_hist_net'));
+
+        // $("#lb_arista_hist_net").text($.i18n.prop('lb_arista_hist_net'));
+        // $("#lb_arista_lizq_hist_net").text($.i18n.prop('lb_arista_lizq_hist_net'));
+        // $("#lb_arista_lder_hist_net").text($.i18n.prop('lb_arista_lder_hist_net'));
+
+        // $("#lb_parista_hist_net").text($.i18n.prop('lb_parista_hist_net'));
+        // $("#lb_parista_lizq_hist_net").text($.i18n.prop('lb_parista_lizq_hist_net'));
+        // $("#lb_parista_lder_hist_net").text($.i18n.prop('lb_parista_lder_hist_net'));
+
+        // $("#lb_hist_net_nosginificativo").text($.i18n.prop('lb_hist_net_nosginificativo'));
+        // $("#lb_hist_net_visualizados").text($.i18n.prop('lb_hist_net_visualizados'));
+        // $("#lb_hist_net_descartados").text($.i18n.prop('lb_hist_net_descartados'));
 
 
         // $("#csv_request").attr("title", $.i18n.prop('lb_descarga_tbl'));

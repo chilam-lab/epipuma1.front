@@ -1383,7 +1383,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var data_score_cell = resp.data_score_cell
 
-                            // console.log(total_counts)
+                            console.log("total_counts: " + total_counts.length)
                             
                             // console.log(validation_data)
 
@@ -1618,36 +1618,44 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var decil_list = [];
 
-        var data_score_cell = _utils_module.processDataForScoreCellTable(counts);
-        // console.log(data_score_cell)
+        console.log("counts: " + counts.length)
+
+
+        // NOTA: 
+        // El algoritmo obtiene las celdas de la presencia de las especies que estan relacionadas al análisis configurado, 
+        // MAS NO!, el conjunto de todas las celdas que compone la malla. 
+        var result = _utils_module.processDataForScoreCellTable(counts)
+        var data_score_cell = result.array
+        var total_length = result.total_length
+
+        console.log("data_score_cell: " + data_score_cell.length)
+        console.log("total_length: " + total_length)
 
         var data_result = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
         
         var data_freq_decil_tbl = data_result.tbl_freq_decil
+        
+        // Se modifica la cantidad total de celdas por decil para que salga de manera correcta el porcentaje por decil
         var length_decil = data_result.length_decil
+        length_decil = Math.floor(total_length/_NUM_DECILES)
 
-        console.log(data_freq_decil_tbl)
-        console.log(length_decil)
-        // console.log(data_freq_decil_tbl.map(function(d){return d.decile}))
+        console.log("total_length: " + total_length)
+
 
         data_freq_decil_tbl.forEach(function (specie, index) {
             // console.log(specie)
             
+
             // Necesario cuando se realiza validación, debido al promedio que se realiza en nj
             var occ = Math.ceil(specie.nj)
             occ = occ < specie.njd ? (occ+1) : occ;
-
             
-            // **** TODO: REVISAR si la cantidad de njd calculada contempla las 5 iteraciones en caso de ser validación
             var occ_decil = specie.njd
             var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%"
-
-            // console.log("specie.name: " + specie.name)
-            // console.log("occ: " + occ)
-            // console.log("occ_decil: " + occ_decil)
-            // console.log("length_decil: " + length_decil)
-
             var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
+            
+            console.log("specie.name: " + specie.name + " length_decil: " + length_decil + " occ: " + occ + " occ_decil: " + occ_decil + " per_decil: " + per_decil + " occ_perdecile: " + occ_perdecile)
+                
 
             var value_abio = "";
             if (specie.name.indexOf("bio0") !== -1) {
