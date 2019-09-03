@@ -2086,6 +2086,7 @@ display: none;
     margin-boton: 5px;
     background: #f1f1f1;
     padding: 4px 0px;
+    font-weight: bolder;
 }
 .ttext p,
 .ttext[ttip-left] p {
@@ -2115,7 +2116,6 @@ display: none;
     position: absolute;
     z-index: 9999;
     opacity: 0;
-    transition: opacity 1s;
 }
 
 .ttip .ttext[ttip-left] {
@@ -2135,7 +2135,6 @@ display: none;
   position: absolute;
   z-index: 9999;
   opacity: 0;
-  transition: opacity 1s;
 }
 
 .ttip .ttext::after {
