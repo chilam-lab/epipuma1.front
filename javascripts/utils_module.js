@@ -478,41 +478,43 @@ var utils_module = (function (verbose) {
 
         _VERBOSE ? console.log("processDataForScoreCellTable") : _VERBOSE;
 
-        var cells_array = data.map(function (d) {
-            return {
-                cells: d.cells,
-                // spid: d.spid,
-                epsilon: parseFloat(d.epsilon),
-                score: parseFloat(d.score),
-                nj: parseFloat(d.nj),
-                // name: d.especievalidabusqueda
-                name: d.reinovalido === "" ? (d.layer + " " + d.tag) : (d.generovalido +" "+d.especieepiteto+" "+d.nombreinfra)
-            }
-        })
+        var total_length
 
-        // console.log(cells_array)
+        // var cells_array = data.map(function (d) {
+        //     total_length = d.n
+        //     return {
+        //         cells: d.cells,
+        //         epsilon: parseFloat(d.epsilon),
+        //         score: parseFloat(d.score),
+        //         nj: parseFloat(d.nj),
+        //         name: d.reinovalido === "" ? (d.layer + " " + d.tag) : (d.generovalido +" "+d.especieepiteto+" "+d.nombreinfra)
+        //     }
+        // })
 
-        // var cells = []
         var cells = d3.map([]);
-        cells_array.forEach(function (item, index) {
+
+        data.forEach(function (item, index) {
+
+            total_length = item.n
+
             item.cells.forEach(function (cell_item, index) {
+
+                var name = item.reinovalido === "" ? (item.layer + " " + item.tag) : (item.generovalido +" "+item.especieepiteto+" "+item.nombreinfra)
                 
                 var item_map = {
                     cell: cell_item,
-                    score: item.score,
-                    // spid: item.spid,
-                    epsilon: item.epsilon,
-                    score: item.score,
-                    nj: item.nj,
-                    name: item.name
+                    score: parseFloat(item.score),
+                    epsilon: parseFloat(item.epsilon),
+                    nj: parseFloat(item.nj),
+                    name: name
                 }
 
-                cells.set(""+cell_item+item.name, item_map)
+                cells.set("" + cell_item + name, item_map)
                 
             })
         })
 
-        // console.log(cells.values())
+        console.log("cells_values: " + cells.values().length)
 
         var cross_cells = crossfilter(cells.values())
         cross_cells.groupAll();
@@ -589,7 +591,9 @@ var utils_module = (function (verbose) {
 
         }
         cell_score_array.sort(_compare_desc);
-        return cell_score_array
+
+        // retorna y el total de celdas de la malla
+        return {array: cell_score_array, total_length: total_length} 
 
     }
 

@@ -236,12 +236,12 @@ html, body {
 }
 
 #charts{
-    height: 390px;
+    height: 410px;
     padding: 10px;
 }
 
 #control-charts{
- height: 390px;   
+ height: 410px;   
  padding: 10px;
 }
 
@@ -1303,3 +1303,14 @@ button.link-comunidad {
     padding-bottom: 20px;
 }
 
+
+/* edicion de colores del brush y de lso clipath*/
+.brush rect.extent {
+  fill: white;
+  fill-opacity: .5;
+}
+
+.brush .resize path {
+      fill: #eee;
+      stroke: #666;
+    }

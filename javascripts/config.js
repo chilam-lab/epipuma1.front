@@ -1,9 +1,8 @@
 
-var url_front = "http://species.conabio.gob.mx/candidate";
-var url_api = "http://species.conabio.gob.mx/api-rc";
-
-//var url_front = 'http://127.0.0.1:8000'
-//var url_api = 'http://127.0.0.1:8080'
+// var url_front = "http://species.conabio.gob.mx/dbdev";
+// var url_api = "http://species.conabio.gob.mx/api-db-dev";
+var url_front = "http://localhost/species-front";
+var url_api = "http://localhost:8080";
 
 
 var url_nicho = url_front + "/geoportal_v0.1.html";
