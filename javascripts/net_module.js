@@ -1359,11 +1359,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
         console.log("_set_highlight")
 
-        console.log(d)        
+        // console.log(d)        
 
         d3.selectAll("g.node").selectAll("circle").attr("stroke", function(o) {
 
-            console.log(o)
+            // console.log(o)
 
             if ((_isConnected(d, o) && d.id != o.id) || _map_conected.has(o.id)) {
 
@@ -1381,7 +1381,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
             if ((_isConnected(d, o) && d.id != o.id) || _map_conected.has(o.id)) {
 
-                console.log("4");
+                // console.log("4");
 
                 _map_conected.set(o.id, true);
                 return 4;
@@ -1427,7 +1427,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
         var grid_res = parseInt($("#grid_resolution").val());
 
 
-        console.log(_nodes_selected)
+        // console.log(_nodes_selected)
 
         $.each(_nodes_selected, function(index, value) {
             
@@ -1451,7 +1451,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
             nodes.push(node);
         })
 
-        console.log(nodes)
+        // console.log(nodes)
 
         _map_conected = d3.map([]);
         _clean_search();

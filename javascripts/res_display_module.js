@@ -2166,7 +2166,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_bio090_" + item).text($.i18n.prop('a_item_bio090'));
             $("#a_item_bio091_" + item).text($.i18n.prop('a_item_bio091'));
             $("#a_item_bio092_" + item).text($.i18n.prop('a_item_bio092'));
-            
+
 
 
             $("#lb_des_modal_csv").text($.i18n.prop('lb_des_modal_csv'));
@@ -2737,7 +2737,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
     function _createTableFromData(json_data) {
 
         _VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> remotes/origin/EDIG-1058-corrección-provisional-del-ver
         // descending order in json array by score
         json_data.groups.sort(function(a, b) {
             return parseFloat(b.score) - parseFloat(a.score) ;
