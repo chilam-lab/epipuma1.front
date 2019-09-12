@@ -318,7 +318,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
     // ******************************************************************* geojson-vt
-    var _tileIndex;
+    var _tileIndex, _tileIndexSP;
     var _tileOptions = {
         maxZoom: 20, // max zoom to preserve detail on
         tolerance: 5, // simplification tolerance (higher means simpler)
@@ -329,7 +329,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         indexMaxZoom: 0, // max zoom in the initial tile index
         indexMaxPoints: 100000, // max number of points per tile in the index
     };
-    var _tileLayer, _tileBoudary;
+    var _tileLayer, _tileLayerSP, _tileBoudary;
     var _pad;
 
     function whenClicked(e) {
@@ -488,11 +488,24 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         //     return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
         // };
 
+        // ******************************************************************* geojson-vt
+        _tileIndexSP = geojsonvt([], _tileOptions);
+        _tileLayerSP = L.canvasTiles()
+                .params({
+                    debug: false,
+                    padding: 5,
+                    onEachFeature: onEachFeature
+                })
+                .drawing(_drawingOnCanvas);
+
+
+
         map_sp = L.map('map2', {
             center: _centro_mapa,
             zoom: _zoom_module,
             layers: [
-                _OSMSP_layer
+                _OSMSP_layer,
+                _tileLayerSP
             ],
             zoomControl: false
         });
@@ -501,7 +514,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             "Open Street Maps": _OSMSP_layer
         };
 
-        _overlaySP_Maps = {};
+        _overlaySP_Maps = {
+            "Grid": _tileLayerSP
+        };
 
         _layer_SP_control = L.control.layers(_baseSP_Maps, _overlaySP_Maps).addTo(map_sp);
 
@@ -540,12 +555,15 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         // Deja la malla cuando ya existe previemente y no se cambia la resolución
         if (_grid_map !== undefined && _grid_res === grid_res && _REGION_SELECTED === region_selected) {
             _VERBOSE ? console.log("Se mantiene resolución") : _VERBOSE;
-            _display_module.callDisplayProcess(val_process);
+            
+            // _display_module.callDisplayProcess(val_process);
+
             return;
         } else {
             // Se elimina evento cuando la malla es reemplazada. Evita la acumulación de eventos
             _VERBOSE ? console.log("Carga de malla") : _VERBOSE;
             map.off('click');
+            // map2.off('click');
         }
 
         $('#map').loading({
@@ -588,6 +606,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 _tileIndex = geojsonvt(_grid_map, _tileOptions);
                 _tileLayer.redraw();
 
+                _tileIndexSP = geojsonvt(_grid_map, _tileOptions);
+                _tileLayerSP.redraw();
+
                 // agrega listener para generar pop en celda
                 map.on('click', function (e) {
                     console.log(e.latlng.lat + ", " + e.latlng.lng);
@@ -598,7 +619,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 });
 
-                _display_module.callDisplayProcess(val_process);
+                // _display_module.callDisplayProcess(val_process);
 
             },
             error: function (requestObject, error, errorThrown) {
@@ -641,6 +662,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _VERBOSE ? console.log("_tileLayer") : _VERBOSE;
 
         _tileLayer.redraw();
+        _tileLayerSP.redraw();
     }
 
 
@@ -667,7 +689,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 //                _grid_map.features[i].properties.color = '';
                 _grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
                 _grid_map.features[i].properties.score = null;
+                // _grid_map.features[i].properties.opacity = 0.5;
+                // _grid_map.features[i].properties.fillColor = 'blue';
+                
             }
+
         } else {
 
 //            console.log(grid_map_color.values());
@@ -692,6 +718,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         }
 
         _tileLayer.redraw();
+        _tileLayerSP.redraw();
 
     }
 
@@ -734,6 +761,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         _tileLayer.redraw();
+        // _tileLayerSP.redraw();
 
     }
 
@@ -779,7 +807,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         var features = tile.features;
 
         // borde de la malla
-        ctx.strokeStyle = 'rgba(255,0,0,0)';
+        // se agrega borde de la malla
+        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        // ctx.strokeStyle = 'rgba(255,0,0,0)';
         // ctx.strokeStyle = 'grey'; // hace malla visible
 
 
