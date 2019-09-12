@@ -426,10 +426,6 @@ var language_module = (function (verbose) {
             $("#a_item_bio090").text($.i18n.prop('a_item_bio090'));
             $("#a_item_bio091").text($.i18n.prop('a_item_bio091'));
             $("#a_item_bio092").text($.i18n.prop('a_item_bio092'));
-            
-
-
-
 
 
 

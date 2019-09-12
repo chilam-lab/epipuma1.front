@@ -520,16 +520,16 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         $.each(json, function (i, item) {
 
             var idsp = _utils_module.hashCode(
-                item.reinovalido +
-              item.phylumdivisionvalido + 
-              item.clasevalida + 
-              item.ordenvalido + 
-              item.familiavalida + 
+                //item.reinovalido +
+              //item.phylumdivisionvalido + 
+              //item.clasevalida + 
+              //item.ordenvalido + 
+              //item.familiavalida + 
               item.generovalido + 
               item.especieepiteto + 
               item.nombreinfra +
-              item.type + 
-              item.layer + 
+              //item.type + 
+              //item.layer + 
               item.bid)
 
             // console.log(idsp)
@@ -575,30 +575,30 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         // replacing node id with the index of the node array
         $.each(json_file, function (i, item) {
 
-            var idsource = _utils_module.hashCode(item.reinovalido_s +
-              item.phylumdivisionvalido_s + 
-              item.clasevalida_s + 
-              item.ordenvalido_s + 
-              item.familiavalida_s + 
+            var idsource = _utils_module.hashCode(//item.reinovalido_s +
+              //item.phylumdivisionvalido_s + 
+              //item.clasevalida_s + 
+              //item.ordenvalido_s + 
+              //item.familiavalida_s + 
               item.generovalido_s + 
               item.especieepiteto_s + 
               item.nombreinfra_s +
-              item.type_s + 
-              item.layer_s + 
+              //item.type_s + 
+              //item.layer_s + 
               item.bid_s)
 
             // console.log(idsource)
 
-            var idtarget = _utils_module.hashCode(item.reinovalido_t +
-              item.phylumdivisionvalido_t + 
-              item.clasevalida_t + 
-              item.ordenvalido_t + 
-              item.familiavalida_t + 
+            var idtarget = _utils_module.hashCode(//item.reinovalido_t +
+              //item.phylumdivisionvalido_t + 
+              //item.clasevalida_t + 
+              //item.ordenvalido_t + 
+              //item.familiavalida_t + 
               item.generovalido_t + 
               item.especieepiteto_t + 
               item.nombreinfra_t +
-              item.type_t + 
-              item.layer_t + 
+              //item.type_t + 
+              //item.layer_t + 
               item.bid_t)
 
             // console.log(idtarget)
