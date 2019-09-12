@@ -594,10 +594,24 @@ var histogram_module = (function (verbose) {
                    .attr('class', 'd3-tip')
                    .offset([-10, 0])
                    .html(function (d) {
+
+                       // console.log(d)
+                       var fn_lb, tp_lb, null_lb
+                       if ($("#chkValidation").is(':checked')) {
+                           fn_lb = _iTrans.prop('lb_vp_avg')
+                           tp_lb = _iTrans.prop('lb_fn_avg')
+                           null_lb = _iTrans.prop('lb_nulos_avg')
+                       }
+                       else{
+                            fn_lb = _iTrans.prop('lb_vp')
+                            tp_lb = _iTrans.prop('lb_fn')
+                            null_lb = _iTrans.prop('lb_nulos')   
+                       }
+
                        recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
-                               "<strong>" + _iTrans.prop('lb_vp_avg') + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
-                               "<strong>" + _iTrans.prop('lb_fn_avg') + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>";
-                       // "<strong>CSS prom:</strong> <span >" + parseFloat(d.ausentes).toFixed(2) + "%</span><br/>"
+                               "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
+                               "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>" +
+                               "<strong>" + null_lb + ":</strong> <span >" + parseFloat(d.recall_nulo).toFixed(2) + "</span><br/>"
                        return  recall_values;
                    });
 

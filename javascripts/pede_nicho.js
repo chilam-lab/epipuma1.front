@@ -390,6 +390,12 @@ var module_nicho = (function () {
 
             console.log(_taxones);
 
+            var val_process = $("#chkValidation").is(':checked');
+            var grid_res = $("#grid_resolution").val();
+            var footprint_region = parseInt($("#footprint_region_select").val());
+
+            _map_module_nicho.loadD3GridMX(val_process, grid_res, footprint_region);
+
             _map_module_nicho.busca_especie_grupo(_taxones);
 
         });
@@ -821,6 +827,11 @@ var module_nicho = (function () {
         })
 
         console.log(_taxones)
+
+        
+        var footprint_region = parseInt($("#footprint_region_select").val());
+
+        _map_module_nicho.loadD3GridMX(chkVal, gridRes, region);        
 
         _map_module_nicho.busca_especie_grupo(_taxones, d3.map([]), region)
 

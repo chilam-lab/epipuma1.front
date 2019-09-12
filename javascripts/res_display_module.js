@@ -562,7 +562,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         }
 
         // Se realiza la carga de la malla antes de iniciar el análisis de nicho
-        _map_module_nicho.loadD3GridMX(val_process, grid_res, _footprint_region);
+        // _map_module_nicho.loadD3GridMX(val_process, grid_res, _footprint_region);
+        callDisplayProcess(val_process)
 
 
     }
@@ -1385,13 +1386,18 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             console.log("total_counts: " + total_counts.length)
                             
-                            // console.log(validation_data)
+                            
+                            console.log(validation_data)
 
-                            // console.log(data_score_cell)
+                            console.log(data_score_cell)
 
                             var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_score_cell), gpo_name: "Total", names: names_byanalysis, deciles: validation_data};
 
+                            console.log(data_decil_byanalysis)
+
                             _RESULTS_TODISPLAY.push(data_decil_byanalysis);
+
+                            console.log(_RESULTS_TODISPLAY)
 
                             _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
@@ -1416,6 +1422,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
                 else{
 
+                    console.log(_RESULTS_TODISPLAY)
 
                     _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                 
@@ -1654,7 +1661,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%"
             var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
             
-            console.log("specie.name: " + specie.name + " length_decil: " + length_decil + " occ: " + occ + " occ_decil: " + occ_decil + " per_decil: " + per_decil + " occ_perdecile: " + occ_perdecile)
+            // console.log("specie.name: " + specie.name + " length_decil: " + length_decil + " occ: " + occ + " occ_decil: " + occ_decil + " per_decil: " + per_decil + " occ_perdecile: " + occ_perdecile)
                 
 
             var value_abio = "";
