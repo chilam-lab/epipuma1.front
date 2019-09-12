@@ -2737,11 +2737,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
     function _createTableFromData(json_data) {
 
         _VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> remotes/origin/EDIG-1058-corrección-provisional-del-ver
         // descending order in json array by score
         json_data.groups.sort(function(a, b) {
             return parseFloat(b.score) - parseFloat(a.score) ;
