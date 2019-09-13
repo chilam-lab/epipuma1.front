@@ -446,6 +446,7 @@ var utils_module = (function (verbose) {
                     var item = {};
                     item.decile = row_item.decile
                     // item.spid = specie.spid
+                    item.gridid = row_item.gridid
                     item.score = specie.score
                     item.epsilon = specie.epsilon
                     item.nj = specie.nj

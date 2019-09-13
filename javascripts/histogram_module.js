@@ -497,8 +497,9 @@ var histogram_module = (function (verbose) {
                     d3.select(this).style("stroke", "black");
                     d3.select(this).style("stroke-width", 3);
                     
+                    _display_module_nicho._configureStyleMap();
                     _display_module_nicho.loadDecilDataTable(d.decil, d.name, false, []);
-
+                    
                 });
 
 
