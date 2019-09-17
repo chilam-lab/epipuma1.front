@@ -1630,6 +1630,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         console.log(length_decil)
         // console.log(data_freq_decil_tbl.map(function(d){return d.decile}))
 
+        _map_module_nicho.set_colorCellsDecilMap(data_freq_decil_tbl)
+        
         data_freq_decil_tbl.forEach(function (specie, index) {
             // console.log(specie)
             
@@ -2955,7 +2957,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         callDisplayProcess: callDisplayProcess,
         setHistogramModule: setHistogramModule,
         loadDecilDataTable: loadDecilDataTable,
-        set_taxones: set_taxones
+        set_taxones: set_taxones,
+        _configureStyleMap: _configureStyleMap
     }
 
 
