@@ -852,8 +852,37 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     }
     ;
 
+    /**
+     * Modifica el color de celdas en el mapa, segun decil del histograma seleccionado.
+     * 
+     * @function set_colorCellsDecilMap
+     * @public
+     * @memberof! map_module
+     * 
+     *@param {array} tbl - arreglo donde se obtien los Gridid del decil seleccionado
+    */
+    function set_colorCellsDecilMap(tbl) {
 
+      var Cells_id = [];
+      
+      tbl.forEach(function(obj) {
+        Cells_id.push(obj.gridid);
+      });
+      
+      var set_id = new Set(Cells_id);
+      Cells_id = Array.from(set_id)
 
+    //   console.log(Cells_id);
+      
+      for (var i = 0; i < _grid_map.features.length; i++) {
+        
+        if (Cells_id.includes(_grid_map.features[i].properties.gridid)) {        
+          _grid_map.features[i].properties.color = '#00ff8c';
+        }
+      }
+
+      _tileLayer.redraw();
+    }
 
     /**
      * Agrega capas al controlador de capas.
@@ -2497,6 +2526,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         get_discardedCellFilter: get_discardedCellFilter,
         get_allowedCells: get_allowedCells,
         // createDecilColor: createDecilColor,
+        set_colorCellsDecilMap: set_colorCellsDecilMap,
         setDisplayModule: setDisplayModule,
         showPopUp: showPopUp,
         get_layerControl: get_layerControl,
