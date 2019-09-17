@@ -556,6 +556,12 @@ var module_nicho = (function () {
 
                 console.log(resp);
 
+
+                if(resp.data.length === 0){
+                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_link'), "error");
+                    return
+                }
+
                 var all_data = resp.data[0].parametros;
                 _json_config = _parseURL("?" + all_data);
 
