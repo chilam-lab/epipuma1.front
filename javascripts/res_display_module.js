@@ -16,6 +16,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     var _RUN_ON_SERVER = true;
 
+    var _first_analysis = true;
+
     var _subgroups, _spid, _idreg, _type_time, _taxones;
 
     var _validation_module_all,
@@ -553,7 +555,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 //        document.getElementById("tbl_hist").style.display = "inline";
         _cleanPanel();
-
+        _first_analysis = true;
 
         // Elimina tabla de validación en caso de existir
         if (_idtemptable !== "") {
@@ -1953,9 +1955,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             return
         }
 
-        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
-
-        
         // grid_map_color contiene colores y scores
         var grid_map_color
         var map_type = $("#btn_map_type").val()
@@ -1972,8 +1971,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         $("#params_next").css('visibility', 'visible');
         $("#params_next").show("slow");
 
+        if (_first_analysis) {
+            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");
+            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
 
-        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_carga_mapa'), "success");
+            _first_analysis = false;
+        }
         document.getElementById("dShape").style.display = "inline";
         
         $('#map').loading('stop');
