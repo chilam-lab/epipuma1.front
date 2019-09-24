@@ -2083,7 +2083,7 @@ display: none;
 .ttext h5,
 .ttext[ttip-left] h5 {
     margin-top: 0px;
-    margin-boton: 5px;
+    margin-bottom: 5px;
     background: #f1f1f1;
     padding: 4px 0px;
     font-weight: bolder;
