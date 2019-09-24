@@ -1395,8 +1395,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                    resp.data.forEach(function(item){
                        data_sp.push({
-                           "gridid": item["gridid_"+grid_res+"km"],
-                           "count": parseInt(item["sum"]) 
+                           "gridid": item["gridid"],
+                           "count": parseInt(item["occ"]) 
                        })
                    })
                    
