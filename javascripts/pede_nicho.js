@@ -379,7 +379,7 @@ var module_nicho = (function () {
 
                     var temp_item = {};
 
-                    temp_item["taxon"] = map_taxon.get(array_sp[0].trim().toLowerCase());
+                    temp_item["taxon_rank"] = map_taxon.get(array_sp[0].trim().toLowerCase());
                     temp_item["value"] = array_sp[1].trim();
                     temp_item["title"] = grupo.title;
                     temp_item["nivel"] = parseInt(sp_grupo.level); //0:root, 1:reino, etc...
@@ -394,9 +394,9 @@ var module_nicho = (function () {
             var grid_res = $("#grid_resolution").val();
             var footprint_region = parseInt($("#footprint_region_select").val());
 
-            _map_module_nicho.loadD3GridMX(val_process, grid_res, footprint_region);
+            // _map_module_nicho.loadD3GridMX(val_process, grid_res, footprint_region, _taxones);
 
-            _map_module_nicho.busca_especie_grupo(_taxones);
+            _map_module_nicho.busca_especie_grupo(_taxones, footprint_region, val_process, grid_res);
 
         });
 
@@ -817,7 +817,7 @@ var module_nicho = (function () {
 
                 var temp_item = {};
 
-                temp_item["taxon"] = map_taxon.get(array_sp[0].trim().toLowerCase());
+                temp_item["taxon_rank"] = map_taxon.get(array_sp[0].trim().toLowerCase());
                 temp_item["value"] = array_sp[1].trim();
                 temp_item["title"] = grupo.title;
                 temp_item["nivel"] = parseInt(sp_grupo.level); //0:root, 1:reino, etc...
@@ -831,9 +831,9 @@ var module_nicho = (function () {
         
         var footprint_region = parseInt($("#footprint_region_select").val());
 
-        _map_module_nicho.loadD3GridMX(chkVal, gridRes, region);        
+        _map_module_nicho.loadD3GridMX(chkVal, gridRes, region, _taxones);        
 
-        _map_module_nicho.busca_especie_grupo(_taxones, d3.map([]), region)
+        // _map_module_nicho.busca_especie_grupo(_taxones, d3.map([]), region)
 
         _componente_fuente.addUIItem(subgroups.slice());
         

@@ -588,9 +588,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _taxones.forEach(function (taxon, index) {
 
-            // console.log(taxon.taxon)
+            console.log(taxon)
+
             var temp = {};
-            temp["taxon_rank"] = map_taxon.get(taxon.taxon.toLowerCase());
+            temp["taxon_rank"] = map_taxon.get(taxon.taxon_rank.toLowerCase());
             temp["value"] = taxon.value;
             taxon_values.push(temp);
 
