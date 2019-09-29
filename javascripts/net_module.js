@@ -290,23 +290,37 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
         // TODO: Verificar el ajsute en altura del mensaje de selección
         svg_g.append("text")
+                .attr("x", 100)
+                .attr("y", $("#graph").height() - margin.bottom - 45)
                 .append('svg:tspan')
                 .attr("id", "info_text_net")
-                .attr("y", $("#graph").height() - margin.bottom - 30)
-                .attr("x", 360)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text(_iTrans.prop('lb_info_net'))
+                .attr("x", "4%")                
+                .text(_iTrans.prop('lb_info_net'));
+        
+        svg_g.append("text")
+                .attr("x", 100)
+                .attr("y", $("#graph").height() - margin.bottom - 25)                
                 .append('svg:tspan')
                 .attr("id", "info_text_slider")
-                .attr("y", $("#graph").height() - margin.bottom - 10)
-                .attr("x", 160)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
+                .attr("x", "8%")
                 .text(_iTrans.prop('lb_info_slider'));
-
-
-
+                                
+        svg_g.append("text")
+                .attr("x", 100)
+                .attr("y", $("#graph").height() - 10)
+                .append('svg:tspan')
+                .attr("id", "lb_info_slider_left")
+                .attr("x", 10)
+                .text(_iTrans.prop('lb_info_slider_left'));
+        
+        svg_g.append("text")
+                .attr("x", 100)
+                .attr("y", $("#graph").height() - 10)                
+                .append('svg:tspan')
+                .attr("id", "lb_info_slider_right")
+                .attr("x", "29%")
+                .text(_iTrans.prop('lb_info_slider_right'));
+                
         d3.select("#graph")
                 .append("div")
                 .attr("id", "slider_charge")

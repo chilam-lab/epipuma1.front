@@ -1065,7 +1065,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .slider_charge{
-    top: -20px;
+    top: -40px;
     left: 10px;
     width: 35%;
     position: relative;

@@ -1118,7 +1118,10 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         $("#export_btn").attr("title", $.i18n.prop('lb_exportar_net'));
 
         $("#info_text_net").text($.i18n.prop('lb_info_net'));
-
+        $("#info_text_slider").text($.i18n.prop('lb_info_slider'));
+        $("#lb_info_slider_left").text($.i18n.prop('lb_info_slider_left'));
+        $("#lb_info_slider_right").text($.i18n.prop('lb_info_slider_right'));
+        
         $("#title_barnet").text($.i18n.prop('titulo_hist_eps'));
 
         // $("#lb_epsilon_hist_net").text($.i18n.prop('lb_epsilon_hist_net'));
