@@ -18,6 +18,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     var _first_analysis = true;
 
+    var _show_greenCells = false;
+
     var _subgroups, _spid, _idreg, _type_time, _taxones;
 
     var _validation_module_all,
@@ -556,6 +558,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //        document.getElementById("tbl_hist").style.display = "inline";
         _cleanPanel();
         _first_analysis = true;
+        _show_greenCells = false;
 
         // Elimina tabla de validación en caso de existir
         if (_idtemptable !== "") {
@@ -1651,8 +1654,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         console.log("total_length: " + total_length)
 
-
-        _map_module_nicho.set_colorCellsDecilMap(data_freq_decil_tbl)
+        if (_show_greenCells) {
+            _map_module_nicho.set_colorCellsDecilMap(data_freq_decil_tbl)
+            console.log("set_colorCellsDecilMap")
+        }
+        else {
+            _show_greenCells = true
+        }
         
         data_freq_decil_tbl.forEach(function (specie, index) {
             // console.log(specie)
