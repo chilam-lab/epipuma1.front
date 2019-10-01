@@ -779,8 +779,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             for (var i = 0; i < grid_map.features.length; i++) {
                 
-                grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
-                // grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+                // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
                 grid_map.features[i].properties.score = null;
                 
             }
@@ -799,8 +799,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
                 } else {
 
-//                    _grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
-                    grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                   _grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+                    // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
                     grid_map.features[i].properties.score = null;
 
                     // _grid_map.features[i].properties.opacity = 0;
@@ -891,8 +891,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             } else {
 
-                grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
                 grid_array.features[i].properties.score = null;
+
 
             }
 
@@ -1045,7 +1047,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     type = feature.type;
 
             // background de la celda
-            ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(255,0,0,0)';
+            ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(0,0,0,0)';
             ctx.beginPath();
 
             for (var j = 0; j < feature.geometry.length; j++) {
