@@ -427,8 +427,7 @@ var language_module = (function (verbose) {
             $("#a_item_bio091").text($.i18n.prop('a_item_bio091'));
             $("#a_item_bio092").text($.i18n.prop('a_item_bio092'));
 
-
-
+            $("#hist_record").text($.i18n.prop('lb_reg_fecha') + ": ");
 
             $("#btn_variable_bioclim_time").text($.i18n.prop('btn_variable_bioclim_time') + " ");
             $("#btn_variable_bioclim_time").append('<span class="caret"></span>');
@@ -579,10 +578,7 @@ var language_module = (function (verbose) {
             $("#lb_hist_net_descartados").text($.i18n.prop('lb_hist_net_descartados'));
 
 
-          
 
-
-             
 
             _confLiveTutorialNet();
 
