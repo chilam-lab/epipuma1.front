@@ -1106,9 +1106,6 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
         })
 
         $("#yaxis_net").text($.i18n.prop('lb_frecuencia'));
-        $('#relation-list tr:eq(0) th:eq(0)').text($.i18n.prop('lb_fuente_tbl'));
-        $('#relation-list tr:eq(0) th:eq(1)').text($.i18n.prop('lb_sumidero_tbl'));
-        // $('#relation-list tr:eq(0) th:eq(2)').text($.i18n.prop('lb_bioclim'));
 
         $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
 
