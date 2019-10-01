@@ -1475,8 +1475,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                     clearAllLayers();
 
-                    // TODO: Ajustar estas dos funcionalidades
 
+                    // enviando datos para creación de barra de gradiente
+                    var values_occ = scale_color_function.quantiles()
+                    console.log(values_occ)
+
+                    _cargaPaletaColorMapaOcc(color_escale, values_occ)
+
+                    
                     if (_tipo_modulo === _MODULO_NICHO) {
 
                         $.ajax({
@@ -2415,6 +2421,61 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     }
 
 
+
+
+
+    /**
+     * Éste método obtiene la escala de colores para la coloración del mapa
+     *
+     * @function _cargaPaletaColorMapaOcc
+     * @private
+     * @memberof! map_module
+     * 
+     * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
+     */
+    function _cargaPaletaColorMapaOcc(colors_array, values_array) {
+
+        _VERBOSE ? console.log("_cargaPaletaColorMapaOcc") : _VERBOSE;
+
+        $("#escala_color_occ").empty();
+
+        var w = 140, h = 500;
+
+        var key = d3.select("#escala_color_occ").append("svg")
+                .attr("width", w)
+                .attr("height", h)
+
+        var rects = key.selectAll(".rects")
+            .data(colors_array)
+            .enter()
+            .append("rect")
+            .attr("y", 70)
+            .attr("height", 40)
+            .attr("x", (d,i)=>-250 + i*15)
+            .attr("width", 16)
+            .attr("fill", (d,i)=>colors_array[i])
+            .attr("stroke", "gray")
+            .attr("transform", "rotate(270)");
+
+        
+        var texts = key.selectAll(".rect")
+            .data(values_array)
+            .enter()
+            .append("text")
+            .style("font-size", "8px")
+            .attr("text-anchor", "middle")
+            .attr("fill", "black")
+            .attr("x", function(d,i){
+                return 125
+            })
+            .attr("y", function (d,i) {
+                return (250 - ((i+1)*15))+3
+            })
+            .text(function (d) {
+                return parseFloat(d).toFixed(2);
+            })
+            
+    }
 
     
 
