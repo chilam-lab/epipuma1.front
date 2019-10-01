@@ -760,41 +760,26 @@ var histogram_module = (function (verbose) {
      * 
      * @param {array} distinctPoints - Array con las ocurrencias que tiene la especie objetivo selecionada en el análisis de nicho ecológico.
      */
-    function createBarChartFecha(distinctPoints) {
+    function createBarChartFecha(data) {
 
-        var puntos_json = d3.map([]);
+        var colectas = [];
+        var reg_sfecha = 0;
 
-        $.each(distinctPoints, function (index, item) {
+        $.each(data, function (index, item) {
 
-            var fecha_ano = item.aniocolecta === null || item.aniocolecta === "" || item.aniocolecta === 9999 ? 0 : parseInt(item.aniocolecta);
-
-            if (puntos_json.has(fecha_ano)) {
-
-                var item_colecta = puntos_json.get(fecha_ano);
-                puntos_json.set(fecha_ano, {"fechacolecta": fecha_ano, "cantidad": (item_colecta.cantidad + 1)});
-
-            } else {
-
-                puntos_json.set(fecha_ano, {"fechacolecta": fecha_ano, "cantidad": 1});
-
+            if (item.aniocolecta === 9999) {
+                reg_sfecha = parseInt(item.occ)
             }
+            else{
+                colectas.push({
+                    "fechacolecta": item.aniocolecta, 
+                    "cantidad": parseInt(item.occ)
+                });
+            }            
 
         });
 
-        var colectas = puntos_json.values();
-        var colectas_zero = [];
-        var colectas_dif = [];
-        $.each(colectas, function (index, item) {
-
-            if (item.fechacolecta > 0) {
-                colectas_dif.push(item);
-            } else {
-                colectas_zero.push(item);
-            }
-
-        })
-
-        // VERIFICAR SI SE PUEDEN DESPLEGAR LOS REGISTROS SIN FECHA
+        // TODO: DESPLEGAR LEYENDA CON REGISTROS SIN FECHA
         // if(colectas_zero.length == 0){
         // 	$("#lb_regfecha").text("0");
         // }
@@ -802,14 +787,14 @@ var histogram_module = (function (verbose) {
         // 	$("#lb_regfecha").text(colectas_zero[0].cantidad);
         // }
 
-        var max_fecha = d3.max(colectas_dif.map(function (d) {
+        var max_fecha = d3.max(colectas.map(function (d) {
             return d.fechacolecta;
         }));
-        var min_fecha = d3.min(colectas_dif.map(function (d) {
+        var min_fecha = d3.min(colectas.map(function (d) {
             return d.fechacolecta;
         }));
 
-        var NUM_BARS = d3.range(1, 11, 1);
+        var NUM_BARS = d3.range(1, 21, 1);
 
         var rangofechas = d3.scale.quantize().domain([min_fecha, max_fecha]).range(NUM_BARS);
 
@@ -821,7 +806,7 @@ var histogram_module = (function (verbose) {
 
         })
 
-        $.each(colectas_dif, function (index, item) {
+        $.each(colectas, function (index, item) {
 
             if (rango_fechas.has(rangofechas(item.fechacolecta))) {
 
@@ -837,7 +822,7 @@ var histogram_module = (function (verbose) {
 
         $("#hist_fecha_container").empty();
 
-        var margin = {top: 10, right: 10, bottom: 20, left: 30},
+        var margin = {top: 10, right: 10, bottom: 35, left: 30},
                 width = $("#hist_fecha_container").width() - margin.left - margin.right,
                 height = $("#hist_fecha_container").height() - margin.top - margin.bottom;
 
@@ -923,7 +908,30 @@ var histogram_module = (function (verbose) {
                 })
                 .on("mouseout", function (d) {
                     tip.hide(d);
-                });
+                })
+
+
+        svg.append("text")
+            .attr("id", "hist_record")
+            .attr("y", 75)
+            .attr("x", 420)
+            .attr("dy", ".71em")
+            .style("font-size", "10px")
+            .style("text-anchor", "end")
+            .text(_iTrans.prop('lb_reg_fecha') + ": ");
+
+
+        svg.append("text")
+            .attr("id", "hist_record_number")
+            .attr("y", 75)
+            .attr("x", 440)
+            .attr("dy", ".71em")
+            .style("font-size", "10px")
+            .style("text-anchor", "end")
+            .text(reg_sfecha);
+
+
+
 
 
     }

@@ -540,7 +540,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         // Agregando controles cuando es análsis de nicho        
         if (_tipo_modulo === _MODULO_NICHO) {
-            _addControls();
+            // _addControls();
 
             $('#toolbar .hamburger').on('click', function () {
                 $(this).parent().toggleClass('open');
@@ -579,7 +579,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         //     // map2.off('click');
         // }
 
+        _taxones = taxones
+
         $('#map').loading({
+            stoppable: true
+        });
+
+        $('#map2').loading({
             stoppable: true
         });
 
@@ -604,6 +610,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 // Asegura que el grid este cargado antes de realizar una generacion por enlace
                 $("#loadData").prop("disabled", false);
                 $('#map').loading('stop');
+                $('#map2').loading('stop');
                 $('#tuto_mapa_occ').loading('stop');
 
                 _grid_map = json;
@@ -641,6 +648,38 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 });
 
+                map_sp.on('click', function (e) {
+                    console.log(e.latlng.lat + ", " + e.latlng.lng);
+
+                    if (_tipo_modulo === _MODULO_NICHO) {
+
+                        // verifica que ya este la malla cargada y que al menos exista un especie solcitada
+                        if(_grid_map_occ === undefined)
+                            return
+
+                        
+                        var rango_fechas = $("#sliderFecha").slider("values");
+                        console.log(rango_fechas)
+
+                        if(_lin_inf === undefined)
+                            _lin_inf = rango_fechas[0]
+
+                        if(_lin_sup === undefined)
+                            _lin_sup = rango_fechas[1]
+                        
+
+                        console.log("_lin_inf: " + _lin_inf)
+                        console.log("_lin_sup: " + _lin_sup)
+                        console.log("_sin_fecha: " + _sin_fecha)
+                        console.log("_con_fosil: " + _con_fosil)
+                        console.log(_taxones)
+
+
+                        _display_module.showGetFeatureInfoOccCell(e.latlng.lat, e.latlng.lng, _taxones, _lin_inf, _lin_sup, _sin_fecha, _con_fosil, _grid_res, _REGION_SELECTED );
+                    }
+
+                });
+
                 busca_especie_grupo(taxones, region_selected, val_process, grid_res)
 
                 // _display_module.callDisplayProcess(val_process);
@@ -654,6 +693,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 // alert("Existe un error en la conexión con el servidor, intente mas tarde");
 //                console.log("abort");
                 $('#map').loading('stop');
+                $('#map2').loading('stop');
             }
 
         });
@@ -847,7 +887,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 console.log("entra")
 
                 grid_array.features[i].properties.opacity = 1;
-                grid_array.features[i].properties.color = link_color_scale(json_result[index_grid].count);
+                grid_array.features[i].properties.color = link_color_scale(json_result[index_grid].occ);
 
             } else {
 
@@ -1155,14 +1195,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {String} htmltable - Tabla estructurada en formato HTML con la información por celda del análisis de nicho ecológico
      * @param {object} latlng - Objeto que contiene las coordenadas donde fue seleccionada la celda
      */
-    function showPopUp(htmltable, latlng) {
+    function showPopUp(htmltable, latlng, is_occ_map = false) {
 
         _VERBOSE ? console.log("showPopUp") : _VERBOSE;
 //        _VERBOSE ? console.log(htmltable) : _VERBOSE;
 //        _VERBOSE ? console.log(latlng) : _VERBOSE;
 
+        var map_ref = is_occ_map ? map_sp : map
+
         var popup = L.popup();
-        popup.setLatLng(latlng).setContent(htmltable).openOn(map);
+        popup.setLatLng(latlng).setContent(htmltable).openOn(map_ref);
 
     }
 
@@ -1290,6 +1332,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         console.log("grid_res: " + grid_res)
         console.log("_REGION_SELECTED: " + _REGION_SELECTED)
         console.log("region: " + region)
+        // console.log("_taxones: " + _taxones)
 
 
         if(_grid_map_occ === undefined || _grid_res !== grid_res || _REGION_SELECTED !== region){
@@ -1297,8 +1340,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             // console.log(_grid_map_occ)
             
             map.off('click');
+            map_sp.off('click');
+
             _grid_res = grid_res
             _REGION_SELECTED = region
+            _taxones = taxones
 
             loadD3GridMX(val_process, grid_res, region, taxones)
             return
@@ -1353,20 +1399,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         $.ajax({
-               // url: _url_zacatuche + "/niche/especie/getSpeciesTaxon",
                url: _url_zacatuche + "/niche/especie/getGridSpeciesTaxon",
                type: 'post',
                dataType: "json",
-               // data: {
-               //     "taxones": taxones,
-               //     "idtime": milliseconds,
-               //     "lim_inf": _lin_inf,
-               //     "lim_sup": _lin_sup,
-               //     "sfecha": _sin_fecha,
-               //     "sfosil": _con_fosil,
-               //     "grid_res": grid_res_val,
-               //     "footprint_region": footprint_region
-               // },
                data: {
                    "name": "k",
                    "target_taxons": taxones,
@@ -1385,31 +1420,45 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                },
                success: function (resp) {
 
-                   // console.log(resp)
-
                    $('#tuto_mapa_occ').loading('stop');
                    $("#specie_next").css('visibility', 'visible');
                    $("#specie_next").show("slow");//
 
-                   var data_sp =  [] 
+                   var data_sp = resp.data
 
-                   resp.data.forEach(function(item){
-                       data_sp.push({
-                           "gridid": item["gridid"],
-                           "count": parseInt(item["occ"]) 
-                       })
+                   var num_cell_occ = resp.data.length
+                   var num_occ = 0
+
+                   data_sp.forEach(function(item){
+                       num_occ += parseInt(item["occ"])
                    })
                    
                    console.log(data_sp)
+                   console.log("num_cell_occ: " + num_cell_occ)
+                   console.log("num_occ: " + num_occ)
 
+                   // rellena cuadro de resumen
+                   _fillSpeciesData(num_occ, num_cell_occ);
+
+                   
+                    // manda mensaje cuando no hay registro de especies en celdas
+                    if (num_cell_occ === 0) {
+                       _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
+                       $("#specie_next").css('visibility', 'hidden');
+                       
+                       //TODO: agregar texto en ingles
+                       _toastr.info("La especie no tiene registros");
+                       // _clearFieldsSP();
+                       return;
+                    }
 
                     var min_occ = d3.min(data_sp.map(function (d) {
-                        return parseFloat(d.count);
+                        return parseFloat(d.occ);
                     }));
                     console.log("min_occ: " + min_occ)
                     
                     var max_occ = d3.max(data_sp.map(function (d) {
-                        return parseFloat(d.count);
+                        return parseFloat(d.occ);
                     }));
                     console.log("max_occ: " + max_occ)
 
@@ -1420,99 +1469,128 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     .domain([min_occ, max_occ])
                     .range(color_escale)
 
-
                     colorizeFeaturesByJSON(_grid_map_occ, data_sp, scale_color_function)
 
+                    clearAllLayers();
 
-                    return
+                    // TODO: Ajustar estas dos funcionalidades
+
+                    if (_tipo_modulo === _MODULO_NICHO) {
+
+                        $.ajax({
+                           url: _url_zacatuche + "/niche/especie/getCountByYear",
+                           type: 'post',
+                           dataType: "json",
+                           data: {
+                               "target_taxons": taxones,
+                               "liminf": _lin_inf,
+                               "limsup": _lin_sup,
+                               "sfecha": _sin_fecha,
+                               "sfosil": _con_fosil,
+                               "grid_res": grid_res,
+                               "region": region
+                           },
+                           success: function (resp) {
+
+                               if(resp.ok == true){
+
+                                   var data = resp.data
+                                   console.log(data)
+
+                                   _histogram_module.createBarChartFecha(data);
+
+                               }
+
+                           },
+                           error: function (jqXHR, textStatus, errorThrown) {
+                               _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                               _VERBOSE ? console.log(errorThrown) : _VERBOSE;
+                               _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+                           }
+
+                        });
+                       
+                    }
+
+                    
 
 
-
-                   clearAllLayers();
-
-                   _discardedPoints = dPoints;        // puntos descartados por eliminacion
-                   _allowedPoints = d3.map([]);        // puntos para analisis
-                   _discardedPointsFilter = d3.map([]);     // puntos descartados por filtros
-                   _computed_occ_cells = d3.map([]);    // celdas para analisis
-                   // _computed_discarded_cells = d3.map([]);    // celdas descartadas por filtros
+                   // _discardedPoints = dPoints;        // puntos descartados por eliminacion
+                   // _allowedPoints = d3.map([]);        // puntos para analisis
+                   // _discardedPointsFilter = d3.map([]);     // puntos descartados por filtros
+                   // _computed_occ_cells = d3.map([]);    // celdas para analisis
 
                    
-                   var gridItems = [];
-                   if (dPoints.values().length > 0) {
-                       $.each(dPoints.values(), function (index, item) {
-                           gridItems.push(item.feature.properties.gridid);
-                       });
-    //                    console.log(gridItems);
-                   }
+                   // var gridItems = [];
+                   // if (dPoints.values().length > 0) {
+                   //     $.each(dPoints.values(), function (index, item) {
+                   //         gridItems.push(item.feature.properties.gridid);
+                   //     })
+                   // }
 
-                   // var computed_occ_cells_totals = d3.map([]);
-                   var distinctPoints = d3.map([]);
+                   // var distinctPoints = d3.map([]);
 
 
-                   if (data_sp.length === 0) {
-                       _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
-                       $("#specie_next").css('visibility', 'hidden');
-    //                    TODO: HAcer internacionalización del label
-                       _toastr.info("La especie no tiene registros");
-                       _clearFieldsSP();
+                   // if (data_sp.length === 0) {
+                   //     _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
+                   //     $("#specie_next").css('visibility', 'hidden');
+                   //     _toastr.info("La especie no tiene registros");
+                   //     _clearFieldsSP();
 
-                       return;
-                   }
-
-
-                   // obtiene registros unicos en coordenadas
-                   for (i = 0; i < data_sp.length; i++) {
-
-                       var item_id = JSON.parse(data_sp[i].json_geom).coordinates;
-                       // console.log(d[i].gridid);
-                       distinctPoints.set(item_id, data_sp[i]);
-                       _computed_occ_cells.set(parseInt(data_sp[i].gridid), data_sp[i]);
-                   }
+                   //     return;
+                   // }
 
 
-                   // var occ_cell = _computed_occ_cells.values().length;
-                   var occ_cell = data_sp[0].occ;
+                   // // obtiene registros unicos en coordenadas
+                   // for (i = 0; i < data_sp.length; i++) {
 
-                   $.each(distinctPoints.values(), function (index, item) {
-
-                       var item_id = JSON.parse(item.json_geom).coordinates.toString();
-
-                       // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
-
-                       if ($.inArray(item.gridid, gridItems) === -1) {
-
-                           var fecha_ano = item.aniocolecta === 9999 ? "" : item.aniocolecta;
-                           _allowedPoints.set(item_id, {
-                               "type": "Feature",
-                               "properties": {"url": item.urlejemplar, "fecha": fecha_ano, 
-                               // "specie": _specie_target.label, 
-                               "specie": item.especie, 
-                               "gridid": item.gridid},
-                               "geometry": JSON.parse(item.json_geom)
-                           });
-                       }
-
-                   });
+                   //     var item_id = JSON.parse(data_sp[i].json_geom).coordinates;
+                   //     // console.log(d[i].gridid);
+                   //     distinctPoints.set(item_id, data_sp[i]);
+                   //     _computed_occ_cells.set(parseInt(data_sp[i].gridid), data_sp[i]);
+                   // }
 
 
-                   try {
-    //                    map.removeLayer(_switchD3Layer);
-                       map_sp.removeLayer(_switchD3Layer);
-                   } catch (e) {
-                       _VERBOSE ? console.log("layer no creado") : _VERBOSE;
-                   }
+                   // // var occ_cell = _computed_occ_cells.values().length;
+                   // var occ_cell = data_sp[0].occ;
 
-                   _addPointLayer();
+                   // $.each(distinctPoints.values(), function (index, item) {
 
-                   if (_tipo_modulo === _MODULO_NICHO) {
+                   //     var item_id = JSON.parse(item.json_geom).coordinates.toString();
 
-                       _histogram_module.createBarChartFecha(distinctPoints.values());
+                   //     // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
 
-                   }
+                   //     if ($.inArray(item.gridid, gridItems) === -1) {
 
-                   _fillSpeciesData(_allowedPoints.values().length, occ_cell);
+                   //         var fecha_ano = item.aniocolecta === 9999 ? "" : item.aniocolecta;
+                   //         _allowedPoints.set(item_id, {
+                   //             "type": "Feature",
+                   //             "properties": {"url": item.urlejemplar, "fecha": fecha_ano, 
+                   //             // "specie": _specie_target.label, 
+                   //             "specie": item.especie, 
+                   //             "gridid": item.gridid},
+                   //             "geometry": JSON.parse(item.json_geom)
+                   //         });
+                   //     }
+                   // });
 
-                   $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
+                   // try {
+                   //     map_sp.removeLayer(_switchD3Layer);
+                   // } catch (e) {
+                   //     _VERBOSE ? console.log("layer no creado") : _VERBOSE;
+                   // }
+
+                   // _addPointLayer();
+
+                   
+                   // if (_tipo_modulo === _MODULO_NICHO) {
+                   //     _histogram_module.createBarChartFecha(distinctPoints.values());
+                   // }
+
+                   // _fillSpeciesData(_allowedPoints.values().length, occ_cell);
+
+                   
+                   // $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
 
 
 
@@ -1627,11 +1705,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                    // var computed_occ_cells_totals = d3.map([]);
                    var distinctPoints = d3.map([]);
 
-
+                   // manda mensaje cuando no hay registro de especies en celdas
                    if (data_sp.length === 0) {
                        _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
                        $("#specie_next").css('visibility', 'hidden');
-    //                    TODO: HAcer internacionalización del label
+    //                    TODO: Hacer internacionalización del label
                        _toastr.info("La especie no tiene registros");
                        _clearFieldsSP();
 

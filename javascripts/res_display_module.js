@@ -2180,6 +2180,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#a_item_bio091_" + item).text($.i18n.prop('a_item_bio091'));
             $("#a_item_bio092_" + item).text($.i18n.prop('a_item_bio092'));
 
+            $("#hist_record").text($.i18n.prop('lb_reg_fecha')  + ": ");
+
 
 
             $("#lb_des_modal_csv").text($.i18n.prop('lb_des_modal_csv'));
@@ -2657,6 +2659,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         singleCellData["with_data_freq_cell"] = false;
         singleCellData["with_data_score_decil"] = false;
 
+        console.log(singleCellData)
+
         var milliseconds = new Date().getTime();
 
         fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
@@ -2694,46 +2698,126 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _VERBOSE ? console.log("error: " + err) : _VERBOSE;
         });
 
+    }
 
 
+    /**
+     * Éste método realiza la petición al servidor cuando una celda es seleccionada por el usuario y obtiene el valor de score que se encuentran dentro de la celda en conjunto con el módulo mapa.
+     *
+     * @function showGetFeatureInfo
+     * @public
+     * @memberof! res_display_module
+     * 
+     * @param {float} lat - Latitud del punto sleccionado por el usuario
+     * @param {float} long - Longitud del punto sleccionado por el usuario
+     */
+    function showGetFeatureInfoOccCell(lat, long, _taxones, lin_inf, lin_sup, sin_fecha, con_fosil, grid_res, region ) {
 
-//         // TODO: cambiar a getcounts
-//         $.ajax({
-// //            url: _url_zacatuche + "/niche/getGridSpecies",
-//             url: _url_zacatuche + "/niche/countsTaxonsGroup",
-//             idtiem: milliseconds,
-//             type: 'post',
-//             data: singleCellData,
-//             success: function (resp) {
+        _VERBOSE ? console.log("showGetFeatureInfoOccCell") : _VERBOSE;
 
-//                 if (resp.ok) {
+        $('#map2').loading({
+            stoppable: true
+        });
 
-//                     var data = resp.data;
+        console.log(_taxones)
+        console.log("lin_inf: " + lin_inf)
+        console.log("grid_res: " + grid_res)
+        console.log("region: " + region)
 
-//                     _VERBOSE ? console.log(data) : _VERBOSE;
+        var milliseconds = new Date().getTime();
 
-//                     if (data.species.length > 0) {
-//                         var htmltable = _createTableFromData(data);
-//                         if (htmltable === "")
-//                             return;
-//                         _map_module_nicho.showPopUp(htmltable, [lat, long]);
-//                     }
+        var data_body_request = {
+            target_taxons: _taxones,
+            lininf: lin_inf,
+            limsup: lin_sup,
+            sfecha: sin_fecha,
+            sfosil: con_fosil,
+            grid_res: grid_res,
+            region: region,
+            latitud: lat,
+            longitud: long,
+            idtime: milliseconds
+        };
 
-//                 }
+        console.log(data_body_request)
+        
+        
+        fetch(_url_zacatuche + "/niche/especie/getCellOcurrences", {
+            method: "POST",
+            body: JSON.stringify(data_body_request),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(resp => resp.json())
+        .then(respuesta => {
+
+            if (respuesta.ok) {
+
+                var data = respuesta.data;
+
+                _VERBOSE ? console.log(data) : _VERBOSE;
+
+                if (data.length > 0) {
+                    var htmltable = _createOccTableFromData(data);
+                    if (htmltable === "")
+                        return;
+                    _map_module_nicho.showPopUp(htmltable, [lat, long], true);
+                }
+
+            }
+
+            $('#map2').loading('stop');
 
 
-//                 $('#map').loading('stop');
+        })
+        .catch(err => {
+            $('#map2').loading('stop');
+            _VERBOSE ? console.log("error: " + err) : _VERBOSE;
+        });
+
+    }
 
 
-//             },
-//             error: function (jqXHR, textStatus, errorThrown) {
+    function _createOccTableFromData(json_data) {
 
-//                 $('#map').loading('stop');
-//                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
-//             }
-//         });
+        var htmltable = "";
+        var table_sp = "";
 
+        //TODO: falta nombre de especie en la petición
+        
+        htmltable = '<div class="myScrollableBlockPopup mywidth">'+
+            '<div class="panel-primary">'+
+                '<div class="panel-heading no-padding header-title-cell">'+
+                    '<h3 class="h3-title-cell">Celda '+ json_data[0].gridid + '</h3>'+
+                '</div>'+
+                '<table class="table table-striped">'+
+                   '<thead>'+
+                        '<tr>'+
+                            '<th>Nombre</th>'+
+                            '<th>Año Colecta</th>'+                                 
+                            '<th>Info</th>'+                                 
+                        '</tr>'+
+                    '</thead>'+              
+                    '<tbody>';
+
+            json_data.forEach(function (item, index) {
+                htmltable +='<tr>'+
+                            '<td>nombre especie</td>'+
+                            '<td>' + item.aniocolecta + '</td>'+                                 
+                            '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
+                        '</tr>';
+            })
+
+        htmltable += '</tbody>'+
+                '</table>'+
+            '</div>'+
+        '</div>';
+
+        console.log(htmltable)
+
+        return htmltable;
 
     }
 
@@ -2969,6 +3053,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         set_allowedCells: set_allowedCells,
         setMapModule: setMapModule,
         showGetFeatureInfo: showGetFeatureInfo,
+        showGetFeatureInfoOccCell: showGetFeatureInfoOccCell,
         get_cData: get_cData,
         getValidationTable: getValidationTable,
         updateLabels: updateLabels,
