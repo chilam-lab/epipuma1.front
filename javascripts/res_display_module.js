@@ -2804,7 +2804,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             json_data.forEach(function (item, index) {
                 htmltable +='<tr>'+
-                            '<td>nombre especie</td>'+
+                            '<td>' + item.species + '</td>'+
                             '<td>' + item.aniocolecta + '</td>'+                                 
                             '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
                         '</tr>';
