@@ -2083,7 +2083,7 @@ display: none;
 .ttext[ttip-left] h5 {
     margin-top: 0px;
     margin-bottom: 5px;
-    background: #f1f1f1;
+    background: #e8e8e8;
     padding: 4px 0px;
     font-weight: bolder;
 }
@@ -2109,7 +2109,7 @@ display: none;
     text-align: center;	
     border-style: solid;
     border-width: thin;
-    border-color: #bbb;
+    border-color: #dedede;
     border-radius: 6px;
 
     position: absolute;
@@ -2128,7 +2128,7 @@ display: none;
   text-align: center;	
   border-style: solid;
   border-width: thin;
-  border-color: #bbb;
+  border-color: #dedede;
   border-radius: 6px;
   
   position: absolute;
@@ -2144,7 +2144,7 @@ display: none;
     margin-top: -5px;
     border-width: 7px;
     border-style: solid;
-    border-color: transparent #f1f1f1 transparent transparent;
+    border-color: transparent #dedede transparent transparent;
 }
 .ttip .ttext[ttip-left]::after {
     content: " ";
@@ -2155,7 +2155,7 @@ display: none;
     margin-top: -5px;
     border-width: 7px;
     border-style: solid;
-    border-color: transparent transparent transparent #f1f1f1;
+    border-color: transparent transparent transparent #dedede;
     
 }
 /* Show the tooltip text when you mouse over the tooltip container  */

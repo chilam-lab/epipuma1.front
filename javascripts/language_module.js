@@ -328,8 +328,27 @@ var language_module = (function (verbose) {
             $("#btn_variable_bioclim").text($.i18n.prop('btn_variable_bioclim') + " ");
             $("#btn_variable_bioclim").append('<span class="caret"></span>');
 
-
-
+            // Tooltip variables analisis
+            $("#tuto_val div:eq(2)").children("h5").text($.i18n.prop('label_esp_p34'));
+            $("#tuto_val div:eq(2)").children("p").text($.i18n.prop('label_esp_p35'));
+            
+            $("#tuto_min_occ div:eq(2)").children("h5").text($.i18n.prop('label_esp_p36'));
+            $("#tuto_min_occ div:eq(2)").children("p").text($.i18n.prop('label_esp_p37'));
+            
+            $("#tuto_apriori div:eq(2)").children("h5").text($.i18n.prop('label_esp_p38'));
+            $("#tuto_apriori div:eq(2)").children("p").text($.i18n.prop('label_esp_p39'));
+            
+            $("#tuto_map_prob div:eq(2)").children("h5").text($.i18n.prop('label_esp_p40'));
+            $("#tuto_map_prob div:eq(2)").children("p").text($.i18n.prop('label_esp_p41'));
+            
+            $("#tuto_fil_fecha div:eq(2)").children("h5").text($.i18n.prop('label_esp_p7'));
+            $("#tuto_fil_fecha div:eq(2)").children("p").text($.i18n.prop('label_esp_p8'));
+            
+            $("#tuto_reg_fecha div:eq(2)").children("h5").text($.i18n.prop('label_esp_p9'));
+            $("#tuto_reg_fecha div:eq(2)").children("p").text($.i18n.prop('label_esp_p10'));
+            
+            $("#tuto_reg_fosil div:eq(2)").children("h5").text($.i18n.prop('label_esp_p11'));
+            $("#tuto_reg_fosil div:eq(2)").children("p").text($.i18n.prop('label_esp_p12'));
             
 
             $("#a_item_bio00").text($.i18n.prop('a_item_bio00'));
