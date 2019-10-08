@@ -558,7 +558,8 @@ var language_module = (function (verbose) {
             $("#btn_tuto_steps").text($.i18n.prop('btn_tuto_steps'));
             $("#show_gen").text($.i18n.prop('show_gen'));
 
-            $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha_hist') + ":");
+            // $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha_hist') + ":");
+            
             $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
 
             $("#lb_epsilon_hist_net").text($.i18n.prop('lb_epsilon_hist_net'));
