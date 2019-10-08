@@ -14,10 +14,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     var _grid_d3;
     var _grid_map, _grid_map_occ = undefined;
     var _grid_res = undefined;
+    var _data_sp_occ, _scale_color_function_occ = undefined;
+    var _excludedcells = [];
 
     var _grid_map_hash = d3.map([]);
 
-    var _DELETE_STATE_POINTS = false;
+    var _DELETE_STATE_CELLS = false;
 
     var _url_geoserver = url_geoserver,
             _workspace = workspace;
@@ -208,6 +210,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
     function get_spTaxon() {
         return _taxones;
+    }
+
+    function getExcludedCells(){
+        return _excludedcells
     }
 
 
@@ -540,7 +546,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         // Agregando controles cuando es análsis de nicho        
         if (_tipo_modulo === _MODULO_NICHO) {
-            // _addControls();
+            _addControls();
 
             $('#toolbar .hamburger').on('click', function () {
                 $(this).parent().toggleClass('open');
@@ -640,6 +646,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 // agrega listener para generar pop en celda
                 map.on('click', function (e) {
+                    
                     console.log(e.latlng.lat + ", " + e.latlng.lng);
 
                     if (_tipo_modulo === _MODULO_NICHO) {
@@ -649,17 +656,19 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 });
 
                 map_sp.on('click', function (e) {
+                    
                     console.log(e.latlng.lat + ", " + e.latlng.lng);
 
                     if (_tipo_modulo === _MODULO_NICHO) {
 
                         // verifica que ya este la malla cargada y que al menos exista un especie solcitada
-                        if(_grid_map_occ === undefined)
+                        if(_grid_map_occ === undefined){
                             return
+                        }
 
                         
                         var rango_fechas = $("#sliderFecha").slider("values");
-                        console.log(rango_fechas)
+                        // console.log(rango_fechas)
 
                         if(_lin_inf === undefined)
                             _lin_inf = rango_fechas[0]
@@ -668,14 +677,15 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                             _lin_sup = rango_fechas[1]
                         
 
-                        console.log("_lin_inf: " + _lin_inf)
-                        console.log("_lin_sup: " + _lin_sup)
-                        console.log("_sin_fecha: " + _sin_fecha)
-                        console.log("_con_fosil: " + _con_fosil)
-                        console.log(_taxones)
+                        // console.log("_lin_inf: " + _lin_inf)
+                        // console.log("_lin_sup: " + _lin_sup)
+                        // console.log("_sin_fecha: " + _sin_fecha)
+                        // console.log("_con_fosil: " + _con_fosil)
+                        // console.log(_taxones)
+                        console.log("_DELETE_STATE_CELLS: " + _DELETE_STATE_CELLS)
 
-
-                        _display_module.showGetFeatureInfoOccCell(e.latlng.lat, e.latlng.lng, _taxones, _lin_inf, _lin_sup, _sin_fecha, _con_fosil, _grid_res, _REGION_SELECTED );
+                        _display_module.showGetFeatureInfoOccCell(e.latlng.lat, e.latlng.lng, _taxones, _lin_inf, _lin_sup, _sin_fecha, _con_fosil, _grid_res, _REGION_SELECTED, _DELETE_STATE_CELLS );
+                        
                     }
 
                 });
@@ -865,29 +875,59 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      * @param {array} grid_array - Referencia de la malla total
-     * @param {type} json_result - json con gridiid y conteos por celda
-     * @param {function} link_color_scale - Función que asigna color a cada celda de la malla
+     * @param {type} data_sp - json con gridiid y conteos por celda
      */
-    function colorizeFeaturesByJSON(grid_array, json_result, link_color_scale) {
+    function colorizeFeaturesByJSON(grid_array, data_sp, deletecells = false) {
 
         _VERBOSE ? console.log("colorizeFeaturesByJSON") : _VERBOSE;
 
-        var array_ids = json_result.map(function (d) {
-                    return parseFloat(d.gridid);
-                });
+        var new_data = []
+        $.each(data_sp, function(index, item){
+            if(_excludedcells.indexOf(item.gridid) === -1)
+                new_data.push(item)
+        }) 
+
+        console.log("new_data: " + new_data.length)
+
+
+        var min_occ = d3.min(new_data.map(function (d) {
+            return parseFloat(d.occ);
+        }));
+        console.log("min_occ: " + min_occ)
+        
+        var max_occ = d3.max(new_data.map(function (d) {
+            return parseFloat(d.occ);
+        }));
+        console.log("max_occ: " + max_occ)
+
+        var color_escale = colorbrewer.RdPu[9]
+        console.log(color_escale)
+
+        var scale_color_function = d3.scale.quantile()
+        .domain([min_occ, max_occ])
+        .range(color_escale)
+
+        var array_ids = new_data.map(function (d) {return parseFloat(d.gridid);});
+        // console.log("array_ids: " + array_ids.length)
 
 
         for (var i = 0; i < grid_array.features.length; i++) {
 
 
-            index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
+            var index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
 
-            if (index_grid != -1) {
+            if (index_grid != -1 ) {
 
                 console.log("entra")
 
                 grid_array.features[i].properties.opacity = 1;
-                grid_array.features[i].properties.color = link_color_scale(json_result[index_grid].occ);
+                if(deletecells){
+                    grid_array.features[i].properties.color = "#ff0000";    
+                }
+                else{
+                    grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
+                }
+                
 
             } else {
 
@@ -903,6 +943,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _tileLayer.redraw();
         _tileLayerSP.redraw();
+
+
+
+        // enviando datos para creación de barra de gradiente
+        var values_occ = scale_color_function.quantiles()
+        _cargaPaletaColorMapaOcc(color_escale, values_occ)
+
 
     }
 
@@ -1200,8 +1247,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     function showPopUp(htmltable, latlng, is_occ_map = false) {
 
         _VERBOSE ? console.log("showPopUp") : _VERBOSE;
-//        _VERBOSE ? console.log(htmltable) : _VERBOSE;
-//        _VERBOSE ? console.log(latlng) : _VERBOSE;
 
         var map_ref = is_occ_map ? map_sp : map
 
@@ -1211,7 +1256,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     }
 
 
-    var _search_control, _searchboxControl, _items_sp;
     /**
      * Agrega control personalizado para la eliminación de puntos.
      *
@@ -1223,10 +1267,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     function _addControls() {
 
         _VERBOSE ? console.log("_addControls") : _VERBOSE;
-
-//        var sidebar = L.control.sidebar('sidebar').addTo(map_sp);
-
-
 
         // Control para boton de eliminación de puntos
         var PointDeleteControl = L.Control.extend({
@@ -1240,7 +1280,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                         .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
                         .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
                         .addListener(controlDiv, 'click', function () {
-                            _deletePoints();
+                            _deleteCells();
                         });
 
                 _VERBOSE ? console.log(_iTrans.prop('lb_borra_puntos')) : _VERBOSE;
@@ -1267,37 +1307,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     
 
     /**
-     * Busca las ocurrencias de una especie asignando filtros por fecha.
+     * Reinicia los layers de los mampas.
      *
-     * @function busca_especie_filtros
+     * @function clearAllLayers
      * @public
      * @memberof! map_module
      * 
-     * @param {array} rango - Array con el rango de fechas
-     * @param {boolean} sfecha - Bandera para saber si serán considerados los registros sin fecha
-     * @param {boolean} sfosil - Bandera para saber si serán considerados los registros sin fosiles
      */
-    // function busca_especie_filtros(rango, sfecha, sfosil, dPoints, region) {
-
-    //     _VERBOSE ? console.log("busca_especie_filtros") : _VERBOSE;
-
-    //     _lin_inf = rango ? rango[0] : undefined;
-    //     _lin_sup = rango ? rango[1] : undefined;
-    //     _sin_fecha = sfecha;
-    //     _con_fosil = sfosil;
-
-    //     // console.log("Region en busca_especie_filtros " + region);
-    //     // _VERBOSE ? console.log(_specie_target.spid) : _VERBOSE;
-
-    //     // busca_especie(dPoints, region, _specie_target.spid);
-    //     //TODO: Obtener los taxones del compornete variable
-    //     var taxones = _componente_target.getVarSelArray();
-    //     busca_especie_grupo(taxones, dPoints);
-
-    //     _toastr.info($.i18n.prop('lb_cal_occ'));
-
-    // }
-
     function clearAllLayers(){
 
         try {
@@ -1424,18 +1440,26 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                    $('#tuto_mapa_occ').loading('stop');
                    $("#specie_next").css('visibility', 'visible');
-                   $("#specie_next").show("slow");//
+                   $("#specie_next").show("slow");
 
-                   var data_sp = resp.data
+                   // inicializa variables para eliminar celdas
+                   _DELETE_STATE_CELLS = false;
+                   _excludedcells = []
+                    $("#deletePointsButton").css("backgroundColor", "#fff");
+
+
+                   _data_sp_occ = resp.data
+                   // asigna una referencia global para tener el resultado de la útima petición
+                   // _data_sp_occ = data_sp
 
                    var num_cell_occ = resp.data.length
                    var num_occ = 0
 
-                   data_sp.forEach(function(item){
+                   _data_sp_occ.forEach(function(item){
                        num_occ += parseInt(item["occ"])
                    })
                    
-                   console.log(data_sp)
+                   console.log(_data_sp_occ)
                    console.log("num_cell_occ: " + num_cell_occ)
                    console.log("num_occ: " + num_occ)
 
@@ -1454,34 +1478,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                        return;
                     }
 
-                    var min_occ = d3.min(data_sp.map(function (d) {
-                        return parseFloat(d.occ);
-                    }));
-                    console.log("min_occ: " + min_occ)
                     
-                    var max_occ = d3.max(data_sp.map(function (d) {
-                        return parseFloat(d.occ);
-                    }));
-                    console.log("max_occ: " + max_occ)
 
-                    var color_escale = colorbrewer.RdPu[9]
-                    console.log(color_escale)
-
-                    var scale_color_function = d3.scale.quantile()
-                    .domain([min_occ, max_occ])
-                    .range(color_escale)
-
-                    colorizeFeaturesByJSON(_grid_map_occ, data_sp, scale_color_function)
+                    colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
 
                     clearAllLayers();
 
 
-                    // enviando datos para creación de barra de gradiente
-                    var values_occ = scale_color_function.quantiles()
-                    console.log(values_occ)
-
-                    _cargaPaletaColorMapaOcc(color_escale, values_occ)
-
+                    
                     
                     if (_tipo_modulo === _MODULO_NICHO) {
 
@@ -1503,7 +1507,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                                if(resp.ok == true){
 
                                    var data = resp.data
-                                   console.log(data)
+                                   // console.log(data)
 
                                    _histogram_module.createBarChartFecha(data);
 
@@ -1520,67 +1524,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                        
                     }
 
-                    
-
-
-                   // _discardedPoints = dPoints;        // puntos descartados por eliminacion
-                   // _allowedPoints = d3.map([]);        // puntos para analisis
-                   // _discardedPointsFilter = d3.map([]);     // puntos descartados por filtros
-                   // _computed_occ_cells = d3.map([]);    // celdas para analisis
-
-                   
-                   // var gridItems = [];
-                   // if (dPoints.values().length > 0) {
-                   //     $.each(dPoints.values(), function (index, item) {
-                   //         gridItems.push(item.feature.properties.gridid);
-                   //     })
-                   // }
-
-                   // var distinctPoints = d3.map([]);
-
-
-                   // if (data_sp.length === 0) {
-                   //     _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
-                   //     $("#specie_next").css('visibility', 'hidden');
-                   //     _toastr.info("La especie no tiene registros");
-                   //     _clearFieldsSP();
-
-                   //     return;
-                   // }
-
-
-                   // // obtiene registros unicos en coordenadas
-                   // for (i = 0; i < data_sp.length; i++) {
-
-                   //     var item_id = JSON.parse(data_sp[i].json_geom).coordinates;
-                   //     // console.log(d[i].gridid);
-                   //     distinctPoints.set(item_id, data_sp[i]);
-                   //     _computed_occ_cells.set(parseInt(data_sp[i].gridid), data_sp[i]);
-                   // }
-
-
-                   // // var occ_cell = _computed_occ_cells.values().length;
-                   // var occ_cell = data_sp[0].occ;
-
-                   // $.each(distinctPoints.values(), function (index, item) {
-
-                   //     var item_id = JSON.parse(item.json_geom).coordinates.toString();
-
-                   //     // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
-
-                   //     if ($.inArray(item.gridid, gridItems) === -1) {
-
-                   //         var fecha_ano = item.aniocolecta === 9999 ? "" : item.aniocolecta;
-                   //         _allowedPoints.set(item_id, {
-                   //             "type": "Feature",
-                   //             "properties": {"url": item.urlejemplar, "fecha": fecha_ano, 
-                   //             // "specie": _specie_target.label, 
-                   //             "specie": item.especie, 
-                   //             "gridid": item.gridid},
-                   //             "geometry": JSON.parse(item.json_geom)
-                   //         });
-                   //     }
-                   // });
 
                    // try {
                    //     map_sp.removeLayer(_switchD3Layer);
@@ -1589,13 +1532,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                    // }
 
                    // _addPointLayer();
-
-                   
-                   // if (_tipo_modulo === _MODULO_NICHO) {
-                   //     _histogram_module.createBarChartFecha(distinctPoints.values());
-                   // }
-
-                   // _fillSpeciesData(_allowedPoints.values().length, occ_cell);
 
                    
                    // $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
@@ -1790,139 +1726,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                }
 
            });
-        
-        
-//        $.ajax({
-//            url: _url_zacatuche + "/niche/especie/getSpecies",
-//            type: 'post',
-//            dataType: "json",
-//            data: {
-//                "id": _specie_target.spid,
-//                "idtime": milliseconds,
-//                "lim_inf": _lin_inf,
-//                "lim_sup": _lin_sup,
-//                "sfecha": _sin_fecha,
-//                "sfosil": _con_fosil,
-//                "grid_res": grid_res_val,
-//                "footprint_region": footprint_region
-//            },
-//            beforeSend: function (xhr) {
-//                xhr.setRequestHeader('X-Test-Header', 'test-value');
-//                xhr.setRequestHeader("Accept", "text/json");
-//                changeRegionView(footprint_region);
-//            },
-//            success: function (resp) {
 
-//                $('#tuto_mapa_occ').loading('stop');
-//                $("#specie_next").css('visibility', 'visible');
-//                $("#specie_next").show("slow");//
-
-//                var data_sp = resp.data;
-// //                console.log("data_sp: " + data_sp)
-
-//                try {
-//                    _markersSP_Layer.clearLayers();
-//                    _layer_SP_control.removeLayer(_markersSP_Layer);
-
-//                    _markersLayer.clearLayers();
-//                    _layer_control.removeLayer(_markersLayer);
-
-//                } catch (e) {
-//                    _VERBOSE ? console.log("primera vez") : _VERBOSE;
-//                }
-
-//                _discardedPoints = dPoints;		// puntos descartados por eliminacion
-//                _allowedPoints = d3.map([]);		// puntos para analisis
-//                _discardedPointsFilter = d3.map([]); 	// puntos descartados por filtros
-//                _computed_occ_cells = d3.map([]);	// celdas para analisis
-//                // _computed_discarded_cells = d3.map([]);	// celdas descartadas por filtros
-
-//                var gridItems = [];
-//                if (dPoints.values().length > 0) {
-//                    $.each(dPoints.values(), function (index, item) {
-//                        gridItems.push(item.feature.properties.gridid);
-//                    });
-
-// //                    console.log(gridItems);
-//                }
-
-//                // var computed_occ_cells_totals = d3.map([]);
-//                var distinctPoints = d3.map([]);
-
-
-//                if (data_sp.length === 0) {
-//                    _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
-//                    $("#specie_next").css('visibility', 'hidden');
-// //                    TODO: HAcer internacionalización del label
-//                    _toastr.info("La especie no tiene registros");
-//                    _clearFieldsSP();
-
-//                    return;
-//                }
-
-
-//                // obtiene registros unicos en coordenadas
-//                for (i = 0; i < data_sp.length; i++) {
-
-//                    var item_id = JSON.parse(data_sp[i].json_geom).coordinates;
-//                    // console.log(d[i].gridid);
-//                    distinctPoints.set(item_id, data_sp[i]);
-//                    _computed_occ_cells.set(parseInt(data_sp[i].gridid), data_sp[i]);
-//                }
-
-
-// //                var occ_cell = _computed_occ_cells.values().length;
-//                var occ_cell = data_sp[0].occ;
-
-//                $.each(distinctPoints.values(), function (index, item) {
-
-//                    var item_id = JSON.parse(item.json_geom).coordinates.toString();
-
-//                    // this map is fill with the records in the database from an specie, so it discards repetive elemnts.
-
-//                    if ($.inArray(item.gridid, gridItems) === -1) {
-
-//                        var fecha_ano = item.aniocolecta === 9999 ? "" : item.aniocolecta;
-//                        _allowedPoints.set(item_id, {
-//                            "type": "Feature",
-//                            "properties": {"url": item.urlejemplar, "fecha": fecha_ano, "specie": _specie_target.label, "gridid": item.gridid},
-//                            "geometry": JSON.parse(item.json_geom)
-//                        });
-//                    }
-
-//                });
-
-
-//                try {
-// //                    map.removeLayer(_switchD3Layer);
-//                    map_sp.removeLayer(_switchD3Layer);
-//                } catch (e) {
-//                    _VERBOSE ? console.log("layer no creado") : _VERBOSE;
-//                }
-
-//                _addPointLayer();
-
-//                if (_tipo_modulo === _MODULO_NICHO) {
-
-//                    _histogram_module.createBarChartFecha(distinctPoints.values());
-
-//                }
-
-//                _fillSpeciesData(_allowedPoints.values().length, occ_cell);
-
-//                $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
-
-//            },
-//            error: function (jqXHR, textStatus, errorThrown) {
-//                _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-//                _VERBOSE ? console.log(errorThrown) : _VERBOSE;
-//                _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
-
-//                $('#tuto_mapa_occ').loading('stop');
-//                $("#specie_next").css('visibility', 'hidden');
-//            }
-
-//        });
 
     }
 
@@ -2064,99 +1868,62 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     /**
      * Éste método controla la eliminación de puntos de una capa de ocurrencias de la especie objetivo seleccionada en el análisis de nicho ecológico.
      *
-     * @function _deletePoints
+     * @function _deleteCells
      * @private
      * @memberof! map_module
      * 
      */
-    function _deletePoints() {
+    function _deleteCells() {
 
-        _VERBOSE ? console.log("_deletePoints") : _VERBOSE;
+        _VERBOSE ? console.log("_deleteCells") : _VERBOSE;
 
-        if (!(_markersSP_Layer)) {
-            console.log("_markersSP_Layer null");
+        if (_grid_map_occ === undefined) {
+            console.log("_grid_map_occ null");
             return;
         }
 
+        if (_DELETE_STATE_CELLS === false) {
 
-
-        if (_DELETE_STATE_POINTS) {
-
-            try {
-                map_sp.addLayer(_switchD3Layer);
-            } catch (e) {
-                _VERBOSE ? console.log("layer no creado") : _VERBOSE;
-            }
-
-            _DELETE_STATE_POINTS = false;
-
-            $("#deletePointsButton").css("backgroundColor", "#fff");
-
-            _markersSP_Layer.getLayers().forEach(function (item) {
-
-                item.setStyle(_geojsonMarkerOptions);
-
-                item.off('click');
-
-                item.on('click', function () {
-
-                    L.DomEvent.stopPropagation;
-
-                    var popup = L.popup({className: 'custom'});
-                    // popup.className('custom');
-
-                    var message = _getMessagePopup(item.feature);
-                    popup.setLatLng([item.feature.geometry.coordinates[1], item.feature.geometry.coordinates[0]]).setContent(message).openOn(map_sp);
-
-                });
-
-            });
-
-        } else {
-
-            // remueve el layer del grid para poder eliminar puntos
-            try {
-                map_sp.removeLayer(_switchD3Layer);
-            } catch (e) {
-                _VERBOSE ? console.log("layer no creado") : _VERBOSE;
-            }
-
-            _DELETE_STATE_POINTS = true;
+            _DELETE_STATE_CELLS = true;
 
             $("#deletePointsButton").css("backgroundColor", "#BFADB6");
 
-            _markersSP_Layer.getLayers().forEach(function (item) {
-
-                item.off('click');
-
-                item.on('click', function () {
-
-                    L.DomEvent.stopPropagation;
-
-                    var item_id = item.feature.geometry.coordinates.toString();
-
-                    _discardedPoints.set(item_id, item);
+            colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ, true)
 
 
-                    if (_allowedPoints.remove(item_id)) {
-                        _VERBOSE ? console.log("deleted") : _VERBOSE;
-                    } else {
-                        _VERBOSE ? console.log("Error: point not deleted") : _VERBOSE;
-                    }
-                    _markersSP_Layer.removeLayer(item);
 
+        } else {
 
-                    _markersLayer.clearLayers();
-                    _addClusterLayer(_markersLayer);
+            _DELETE_STATE_CELLS = false;
 
+            $("#deletePointsButton").css("backgroundColor", "#fff");
 
-                });
+            colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
 
-                item.setStyle(_geojsonMarkerOptionsDelete);
-
-            });
+            
 
         }
+
+    }
+
+
+    /**
+     * Elimina la celda selecionada de la malla
+     *
+     * @function deleteCellFromOccGrid
+     * @private
+     * @memberof! map_module
+     * 
+     */
+    function deleteCellFromOccGrid(gridid) {
+
+        _VERBOSE ? console.log("deleteCellFromOccGrid") : _VERBOSE;
+
+        _VERBOSE ? console.log("gridid: " + gridid) : _VERBOSE;
+
+        _excludedcells.push(gridid)
+
+        colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ, true)
 
     }
 
@@ -2967,7 +2734,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         getGridMap2Export: getGridMap2Export,
         getSP2Export: getSP2Export,
         createRankColor: createRankColor,
-        clearAllLayers: clearAllLayers
+        clearAllLayers: clearAllLayers,
+        deleteCellFromOccGrid: deleteCellFromOccGrid,
+        getExcludedCells: getExcludedCells
     }
 
 });
