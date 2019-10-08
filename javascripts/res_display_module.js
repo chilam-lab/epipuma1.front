@@ -34,9 +34,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _computed_occ_cells = d3.map([]);
 
     var _cell_set = d3.map([]);
-    var _discarded_cell_set = d3.map([]),
-            // _discardedFilter_cell_set = d3.map([]),
-            _dataChartValSet = [];
+    var _dataChartValSet = [];
 
     var _REQUESTS, _ITER_REQUESTS,
             _ITER = 0, _NUM_ITERATIONS = 5;
@@ -524,8 +522,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _slider_value = slider_value;
 
-        _discarded_cell_set = d3.map([]);
-
         _dataChartValSet = [];
         _min_occ_process = min_occ_process;
         _mapa_prob = mapa_prob;
@@ -540,14 +536,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var discardedGridids = [];
 
 
-        // obteniendo solo las celdas de los puntos de las especies. NOTA: Estos se puede enviar desde el map_module
-        _discardedPoints.values().forEach(function (item, index) {
-//            console.log(item.feature.properties.gridid);
-            _discarded_cell_set.set(item.feature.properties.gridid, item.feature.properties.gridid);
-        });
-
-//        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
-//        _VERBOSE ? console.log(_computed_discarded_cells.values().length) : _VERBOSE;
+        
 
         _REQUESTS = num_items + _subgroups.length;
         _ITER_REQUESTS = _REQUESTS;
@@ -832,8 +821,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var fossil = $("#chkFosil").is(':checked') ? true : false;
         var min_occ = _min_occ_process ? parseInt($("#occ_number").val()) : 1;
-        //  var existeFiltro = (_discarded_cell_set.values().length > 0 || _computed_discarded_cells.values().length > 0) ? 1 : undefined;
-
+        
 
         var lin_inf = _rangofechas ? _rangofechas[0] : undefined;
         var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
@@ -889,7 +877,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "with_data_freq": true,
             "with_data_freq_cell":true,
             "with_data_score_decil": false,
-            "excluded_cells":_discarded_cell_set.values(),
+            "excluded_cells": _map_module_nicho.getExcludedCells(),
             "target_name": "targetGroup",
             "iterations": val_process ? undefined : 1 // si es indefinido toma las iteraciones del servidor
         };
@@ -917,7 +905,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "with_data_freq": true,
             "with_data_freq_cell":true,
             "with_data_score_decil": false,
-            "excluded_cells":_discarded_cell_set.values(),
+            "excluded_cells": _map_module_nicho.getExcludedCells(),
             "target_name": "targetGroup",
             "iterations": val_process ? undefined : 1 // si es indefinido toma las iteraciones del servidor
         };
@@ -1030,16 +1018,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
         //     "level_req": "counts"
         // }
 
-
-//        _VERBOSE ? console.log(_discarded_cell_set.values().length) : _VERBOSE;
-//        _tdata['discardedFilterids'] = _discarded_cell_set.values();
-//        _sdata['discardedFilterids'] = _discarded_cell_set.values();
-//        _ddata['discardedFilterids'] = _discarded_cell_set.values();
-        // _cdata['discardedFilterids'] = _discarded_cell_set.values();
-        // _total_data_decil['discardedFilterids'] = _discarded_cell_set.values();
-        // _decil_group_data['discardedFilterids'] = _discarded_cell_set.values();
-        // _decil_data['discardedFilterids'] = _discarded_cell_set.values();
-        // _countsdata['discardedFilterids'] = _discarded_cell_set.values();
 
 
     }
@@ -2711,7 +2689,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {float} lat - Latitud del punto sleccionado por el usuario
      * @param {float} long - Longitud del punto sleccionado por el usuario
      */
-    function showGetFeatureInfoOccCell(lat, long, _taxones, lin_inf, lin_sup, sin_fecha, con_fosil, grid_res, region ) {
+    function showGetFeatureInfoOccCell(lat, long, _taxones, lin_inf, lin_sup, sin_fecha, con_fosil, grid_res, region, isdeletecell ) {
 
         _VERBOSE ? console.log("showGetFeatureInfoOccCell") : _VERBOSE;
 
@@ -2759,10 +2737,20 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _VERBOSE ? console.log(data) : _VERBOSE;
 
                 if (data.length > 0) {
-                    var htmltable = _createOccTableFromData(data);
-                    if (htmltable === "")
-                        return;
-                    _map_module_nicho.showPopUp(htmltable, [lat, long], true);
+
+                    if(isdeletecell){
+
+                        _map_module_nicho.deleteCellFromOccGrid(data[0].gridid)
+                    }
+                    else{
+                        var htmltable = _createOccTableFromData(data);
+                        if (htmltable === "")
+                            return;
+                        _map_module_nicho.showPopUp(htmltable, [lat, long], true);
+                    }
+
+                    
+
                 }
 
             }
