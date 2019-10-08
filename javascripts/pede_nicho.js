@@ -803,6 +803,8 @@ var module_nicho = (function () {
 
         $('#grid_resolution option[value=' + gridRes + ']').attr('selected', 'selected');
 
+        $('#footprint_region_select option[value=' + region + ']').attr('selected', 'selected');
+
         // console.log(map_dPoints.values());
 
 
@@ -835,7 +837,7 @@ var module_nicho = (function () {
         console.log(_taxones)
 
         
-        var footprint_region = parseInt($("#footprint_region_select").val());
+        // var footprint_region = parseInt($("#footprint_region_select").val());
 
         _map_module_nicho.loadD3GridMX(chkVal, gridRes, region, _taxones);        
 
