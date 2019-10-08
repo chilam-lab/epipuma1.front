@@ -2164,3 +2164,9 @@ display: none;
     visibility: visible;
     opacity: 1;
 }
+
+
+
+.text-sm{
+    font-size: 12px !important;
+}

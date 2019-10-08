@@ -326,7 +326,7 @@
                             
                             <div id="tuto_region"  class="col-md-6 col-sm-12 col-xs-12">
                                 <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
-                                    <label id="footprint_region" ></label>
+                                    <label class="text-sm" id="footprint_region" ></label>
                                     <select id="footprint_region_select" class="form-control" >
                                     </select>
                                 <!--</div>-->
@@ -335,7 +335,7 @@
                             <div id="tuto_resolution"  class="col-md-6 col-sm-12 col-xs-12">
 
                                 <div class="form-group">
-                                    <label id="lb_mapa_res" for="grid_resolution"></label>
+                                    <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
                                     <select class="form-control" id="grid_resolution">
                                         <option value="8">8 km</option>
                                         <option selected="selected" value="16">16 km</option>
@@ -423,7 +423,8 @@
                         <div class="row ">
 
 
-                            <div id="tuto_fil_fecha" class="col-md-5 col-sm-12 col-xs-12">
+                            <div id="tuto_fil_fecha" class="col-md-4 col-sm-12 col-xs-12">
+                                
                                 <div class="col-md-1 col-sm-1 col-xs-1 margin-top-five">
                                     <div class="ttip">
                                         <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -433,18 +434,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-10 col-sm-10 col-xs-10">
-                                    <label id="lb_range_fecha" for="sliderFecha"></label>
+
+                                <div class="col-md-8 col-sm-10 col-xs-10">
+                                    <label class="text-sm" id="lb_range_fecha" for="sliderFecha"></label>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="slider_item_fecha" id="sliderFecha"></div>
-                                    <label class="label_item" id="labelFecha" type="label"></label>
+                                    <label class="label_item text-sm" id="labelFecha" type="label"></label>
                                 </div>
 
                             </div>
 
-                            <div id="tuto_reg_fecha" class="col-md-4 col-sm-12 col-xs-12">
-                                <div class="col-md-1 col-sm-1 col-xs-1 margin-top-five">
+                            <div id="tuto_reg_fecha" class="col-md-5 col-sm-12 col-xs-12">
+                                
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 margin-top-five">
                                     <div class="ttip">
                                         <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
                                         <div class="ttext">
@@ -453,12 +456,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-10 col-sm-10 col-xs-10">
-                                    <label id="lb_reg_fecha" for="chkFecha"></label>
+
+                                <div class="col-lg-9 col-md-9 col-sm-10 col-xs-10">
+                                    <label class="text-sm" id="lb_reg_fecha" for="chkFecha"></label>
                                 </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <input id="chkFecha" class="checkbox_item" type="checkbox" checked/>
-                                    <label class="label_item" id="lb_sfecha" type="label"></label>
+                                    <label class="label_item text-sm" id="lb_sfecha" type="label"></label>
                                 </div>
 
                             </div>
@@ -473,12 +478,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-9 col-sm-9 col-xs-9">
-                                    <label id="lb_fosil" for="chkFosil"></label>
+
+                                <div class="col-md-6 col-sm-9 col-xs-9">
+                                    <label class="text-sm" id="lb_fosil" for="chkFosil"></label>
                                 </div>
+
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <input id="chkFosil" class="checkbox_item" type="checkbox" checked/>
-                                    <label class="label_item" id="labelFosil" type="label" ></label>
+                                    <label class="label_item text-sm" id="labelFosil" type="label" ></label>
                                 </div>
                             </div>
 
@@ -495,9 +502,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12  margin-top-five">
-                                <button id="reload_map" class="btn btn-primary pull-right" type="button"></button>
-                            </div>
+                            
 
 
                             <button id="specie_next" class="btn btn-success btn-sig " type="button" 
@@ -575,6 +580,10 @@
 
                 </div>
 
+                <div class="col-md-12 text-center  margin-top-five">
+                    <button style="margin-top: -15px;" id="reload_map" class="btn btn-primary" type="button"></button>
+                </div>
+
             </div>
 
 
@@ -594,6 +603,7 @@
                         <h2 id="lb_params_variables" class="sidebar-header-species">Parámetros</h2>
 
                         <div id="tuto_val" class="row">
+                            
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -603,16 +613,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 margin-top-five">
+
+                            <div class="col-md-5 margin-top-five">
                                 <h5 id="lb_validacion"></h5>
                             </div>
-                            <div class="col-md-5 margin-top-five ">
-                                <input id="chkValidation" class="checkbox_item pull-right" type="checkbox"/>
-                                <label class="label_item pull-right" id="labelValidation" type="label"></label>
+
+                            <div class="col-md-5 margin-top-five pull-left ">
+                                <label class="label_item " id="labelValidation" type="label"></label>
+                                <input id="chkValidation" class="checkbox_item " type="checkbox"/>
                             </div>
                         </div>
 
                         <div id="tuto_min_occ" class="row">
+                            
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -622,16 +635,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 margin-top-five">
+
+                            <div class="col-md-5 margin-top-five">
                                 <h5 id="lb_occ_min"></h5>
                             </div>
-                            <div class="col-md-5 margin-top-five">
-                                <input id="chkMinOcc" class="checkbox_item pull-right" type="checkbox" checked="true"/>
-                                <input id="occ_number" class="occ_number pull-right " type="number" min="1" value="5">
+
+                            <div class="col-md-5 margin-top-five pull-left">
+                                
+                                <input id="chkMinOcc" class="checkbox_item pull-left" type="checkbox" checked="true"/>
+
+                                <input id="occ_number" class="occ_number  " type="number" min="1" value="5">
                             </div>
+
                         </div>
 
                         <div id="tuto_apriori" class="row">
+                            
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -641,16 +660,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 margin-top-five">
+
+                            <div class="col-md-5 margin-top-five">
                                 <h5 id="lb_apriori"></h5>
                             </div>
-                            <div class="col-md-5 margin-top-five">
-                                <input id="chkApriori" class="checkbox_item pull-right" type="checkbox" />
-                                <label class="label_item pull-right" id="lb_do_apriori" type="label"></label>
+
+                            <div class="col-md-5 margin-top-five pull-left">
+                                
+                                <label class="label_item pull-left" id="lb_do_apriori" type="label"></label>
+
+                                <input id="chkApriori" class="checkbox_item pull-left" type="checkbox" />
+
                             </div>
                         </div>
 
                         <div id="tuto_map_prob" class="row">
+                            
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -660,12 +685,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 margin-top-five">
+
+                            <div class="col-md-5 margin-top-five">
                                 <h5 id="lb_mapprob"></h5>
                             </div>
-                            <div class="col-md-5 margin-top-five">
-                                <input id="chkMapaProb" class="checkbox_item pull-right" type="checkbox" />
-                                <label class="label_item pull-right" id="lb_mapa_prob" type="label"></label>
+
+                            <div class="col-md-5 margin-top-five pull-left">
+                                
+                                <label class="label_item pull-left" id="lb_mapa_prob" type="label"></label>
+                                <input id="chkMapaProb" class="checkbox_item pull-left" type="checkbox" />
+
                             </div>
                         </div>
 
