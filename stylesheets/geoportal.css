@@ -1644,6 +1644,14 @@ button.glyphicon-remove:before {
     /*margin-right: 100px;*/
 }
 
+#map_text {
+    position: absolute;
+    width: 6%;
+    height: 30px;
+    bottom: 50%;
+    right: 0;
+    z-index: 5000;
+}
 
 .xaxis_legend text{
     font: 10px sans-serif;

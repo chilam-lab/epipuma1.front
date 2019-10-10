@@ -16,6 +16,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     var _grid_res = undefined;
     var _data_sp_occ, _scale_color_function_occ = undefined;
     var _excludedcells = [];
+    var _highlight_obj = {"cells": [], "decil": null};
 
     var _grid_map_hash = d3.map([]);
 
@@ -724,6 +725,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     function clearMap() {
 
         _VERBOSE ? console.log("clearMap") : _VERBOSE;
+        
+        // Variable para highlight 
+        _highlight_obj = {"cells": [], "decil": null};
+        
         // _VERBOSE ? console.log(_grid_map) : _VERBOSE;
         // _VERBOSE ? console.log(_first_loaded) : _VERBOSE;
 
@@ -1136,20 +1141,41 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      *@param {array} tbl - arreglo donde se obtien los Gridid del decil seleccionado
+     *@param {integer} dec - Numero del decil que se escogió 
     */
-    function set_colorCellsDecilMap(tbl) {
+    function set_colorCellsDecilMap(tbl = _highlight_obj["cells"], dec = _highlight_obj["decil"]) {
+    
+      if (dec == null)
+        return       
 
       _VERBOSE ? console.log("set_colorCellsDecilMap") : _VERBOSE;
+      
+      $("#map_text").empty();      
+
+      var svg_t = d3.select("#map_text")
+          .append("svg")
+          
+      svg_t.append("rect")
+          .attr("width", 40)
+          .attr("height", 16)
+          .attr("fill", "#00ff8c")
+          .attr("stroke", "gray")
+          .attr("y", 10)
+
+      svg_t.append("text")
+          .style("font-size", "9px")
+          .attr("x", 0)
+          .attr("y", 38)
+          .text("Cells decil: " + dec);
 
       var Cells_id = [];
       
+      _highlight_obj["cells"] = tbl;
+      _highlight_obj["decil"] = dec;
+
       tbl.forEach(function(obj) {
         Cells_id.push(obj.gridid);
       });
-      
-    //   var set_id = new Set(Cells_id);
-    //   Cells_id = Array.from(set_id)
-
     //   console.log(Cells_id);
       
       for (var i = 0; i < _grid_map.features.length; i++) {
@@ -2265,6 +2291,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _VERBOSE ? console.log("_cargaPaletaColor") : _VERBOSE;
 
         $("#escala_color").empty();
+        $("#map_text").empty();
 
         var w = 140, h = 300;
 

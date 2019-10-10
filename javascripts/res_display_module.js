@@ -421,8 +421,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#btn_map_type").text(language_label_selected + " ");
             $("#btn_map_type").append('<span class="caret"></span>');
 
-               
-            _configureStyleMap()
+            _configureStyleMap();
+            _map_module_nicho.set_colorCellsDecilMap();
 
             
             e.preventDefault();
@@ -1635,7 +1635,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         console.log("total_length: " + total_length)
 
         if (_show_greenCells) {
-            _map_module_nicho.set_colorCellsDecilMap(data_decil)
+            _map_module_nicho.set_colorCellsDecilMap(data_decil, decil)
         }
         else {
             _show_greenCells = true
