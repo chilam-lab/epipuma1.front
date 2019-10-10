@@ -14,6 +14,7 @@ var module_net = (function () {
     var _REGION_SELECTED;
     var _REGION_TEXT_SELECTED;
     var _MODULO = "comunidad"
+    var _taxones = []
     
     var _tipo_modulo = MOD_COMUNIDAD;
     
