@@ -1139,14 +1139,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     */
     function set_colorCellsDecilMap(tbl) {
 
+      _VERBOSE ? console.log("set_colorCellsDecilMap") : _VERBOSE;
+
       var Cells_id = [];
       
       tbl.forEach(function(obj) {
         Cells_id.push(obj.gridid);
       });
       
-      var set_id = new Set(Cells_id);
-      Cells_id = Array.from(set_id)
+    //   var set_id = new Set(Cells_id);
+    //   Cells_id = Array.from(set_id)
 
     //   console.log(Cells_id);
       

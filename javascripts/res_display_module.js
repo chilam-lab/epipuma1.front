@@ -1625,7 +1625,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var data_result = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
         
         var data_freq_decil_tbl = data_result.tbl_freq_decil
-        
+        var data_decil = data_result.decil_array
+        // console.log(data_decil)
+
         // Se modifica la cantidad total de celdas por decil para que salga de manera correcta el porcentaje por decil
         var length_decil = data_result.length_decil
         length_decil = Math.floor(total_length/_NUM_DECILES)
@@ -1633,8 +1635,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         console.log("total_length: " + total_length)
 
         if (_show_greenCells) {
-            _map_module_nicho.set_colorCellsDecilMap(data_freq_decil_tbl)
-            console.log("set_colorCellsDecilMap")
+            _map_module_nicho.set_colorCellsDecilMap(data_decil)
         }
         else {
             _show_greenCells = true

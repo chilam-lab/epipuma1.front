@@ -468,7 +468,8 @@ var utils_module = (function (verbose) {
 
         return {
             tbl_freq_decil: map_spid.values(), 
-            length_decil: decil_array.length 
+            length_decil: decil_array.length,
+            decil_array: decil_array
         } 
 
 
