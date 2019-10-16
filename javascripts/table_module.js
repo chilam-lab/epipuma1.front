@@ -124,7 +124,50 @@ var table_module = (function(verbose) {
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext"><h5>' + _iTrans.prop('lb_procentaje_occdecil') + '</h5><p>' + _iTrans.prop('lb_msg_por_occdecil') + '</p></div></div>' + _iTrans.prop('lb_procentaje_occdecil')}
             ],
             buttons: [
-                'copy', 'csv', 'excel', 'print'
+                { 
+                    extend: 'copy',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'csv',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'excel',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'print',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
             ],
             language: {
                 "sEmptyTable": _iTrans.prop('sEmptyTable'), 
@@ -269,7 +312,50 @@ var table_module = (function(verbose) {
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext" ttip-left><h5>' +_iTrans.prop('a_item_familia')+ '</h5><p>' + _iTrans.prop('lb_msg_familia') + '</p></div></div>' + _iTrans.prop('a_item_familia')}
             ],
             buttons: [
-                'copy', 'csv', 'excel', 'print'
+                { 
+                    extend: 'copy',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'csv',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'excel',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'print',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
             ],
             language: {
                 "sEmptyTable": _iTrans.prop('sEmptyTable'), 
@@ -499,7 +585,50 @@ var table_module = (function(verbose) {
                     // {title: " <button type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Score'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_score') + "'); table_module().addImageScore(); $('#modalInfo').modal()\" ></button> " + "Score"}
                 ],
                 buttons: [
-                    'copy', 'csv', 'excel', 'print'
+                    { 
+                        extend: 'copy',
+                        exportOptions: {
+                            format: { 
+                                header: function ( data, column, row ) 
+                                  {
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                  }
+                             }
+                        }
+                    },
+                    { 
+                        extend: 'csv',
+                        exportOptions: {
+                            format: { 
+                                header: function ( data, column, row ) 
+                                  {
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                  }
+                             }
+                        }
+                    },
+                    { 
+                        extend: 'excel',
+                        exportOptions: {
+                            format: { 
+                                header: function ( data, column, row ) 
+                                  {
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                  }
+                             }
+                        }
+                    },
+                    { 
+                        extend: 'print',
+                        exportOptions: {
+                            format: { 
+                                header: function ( data, column, row ) 
+                                  {
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                  }
+                             }
+                        }
+                    },
                 ],
                 language: {
                     "sEmptyTable": _iTrans.prop('sEmptyTable'), 
