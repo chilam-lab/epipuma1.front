@@ -2720,58 +2720,101 @@ var res_display_module = (function (verbose, url_zacatuche) {
             sfecha: sin_fecha,
             sfosil: con_fosil,
             grid_res: grid_res,
+            res: grid_res,
             region: region,
             latitud: lat,
             longitud: long,
             idtime: milliseconds
         };
 
-        console.log(data_body_request)
-        
-        
-        fetch(_url_zacatuche + "/niche/especie/getCellOcurrences", {
-            method: "POST",
-            body: JSON.stringify(data_body_request),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        .then(resp => resp.json())
-        .then(respuesta => {
+        // console.log(data_body_request)
 
-            if (respuesta.ok) {
+        if(isdeletecell){
 
-                var data = respuesta.data;
+            fetch(_url_zacatuche + "/niche/especie/getIDCellFromCoordinates", {
+                method: "POST",
+                body: JSON.stringify(data_body_request),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(resp => resp.json())
+            .then(respuesta => {
 
-                _VERBOSE ? console.log(data) : _VERBOSE;
+                if (respuesta.ok) {
 
-                if (data.length > 0) {
+                    var data = respuesta.data;
 
-                    if(isdeletecell){
+                    _VERBOSE ? console.log(data) : _VERBOSE;
 
-                        _map_module_nicho.deleteCellFromOccGrid(data[0].gridid)
+                    if (data.length > 0) {
+
+                        var item = data[0]
+                        var gridid = item["gridid_"+grid_res+"km"]
+
+                        // console.log("gridid: " + gridid)
+
+                        _map_module_nicho.deleteCellFromOccGrid(gridid)
+                        
                     }
-                    else{
+
+                }
+
+                $('#map2').loading('stop');
+
+
+            })
+            .catch(err => {
+                $('#map2').loading('stop');
+                _VERBOSE ? console.log("error: " + err) : _VERBOSE;
+            });
+
+
+        }
+        else{
+
+            fetch(_url_zacatuche + "/niche/especie/getCellOcurrences", {
+                method: "POST",
+                body: JSON.stringify(data_body_request),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(resp => resp.json())
+            .then(respuesta => {
+
+                if (respuesta.ok) {
+
+                    var data = respuesta.data;
+
+                    _VERBOSE ? console.log(data) : _VERBOSE;
+
+                    if (data.length > 0) {
+
                         var htmltable = _createOccTableFromData(data);
                         if (htmltable === "")
                             return;
                         _map_module_nicho.showPopUp(htmltable, [lat, long], true);
-                    }
+                                            
 
-                    
+                    }
 
                 }
 
-            }
-
-            $('#map2').loading('stop');
+                $('#map2').loading('stop');
 
 
-        })
-        .catch(err => {
-            $('#map2').loading('stop');
-            _VERBOSE ? console.log("error: " + err) : _VERBOSE;
-        });
+            })
+            .catch(err => {
+                $('#map2').loading('stop');
+                _VERBOSE ? console.log("error: " + err) : _VERBOSE;
+            });
+
+
+        }
+        
+        
+        
 
     }
 
@@ -2812,7 +2855,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             '</div>'+
         '</div>';
 
-        console.log(htmltable)
+        // console.log(htmltable)
 
         return htmltable;
 
