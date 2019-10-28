@@ -1968,7 +1968,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("deleteCellFromOccGrid") : _VERBOSE;
 
-        _VERBOSE ? console.log("gridid: " + gridid) : _VERBOSE;
+        // _VERBOSE ? console.log("gridid: " + gridid) : _VERBOSE;
 
         _excludedcells.push(gridid)
 
