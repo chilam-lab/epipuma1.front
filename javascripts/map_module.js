@@ -829,21 +829,35 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         console.log(grid_map_color)
         console.log(grid_map)
 
+        var gridid_occ = []
+        
+        // se obtiene arreglos de celdas de la malla y de la especie objetivo
+        if(_data_sp_occ !== undefined){
+
+            gridid_occ = _data_sp_occ.map(function (d) {
+                return d.gridid;
+            })
+
+            // console.log(gridid_occ)
+            // console.log(gridmap_ids)
+
+        }
+        
+
+
         if (_first_loaded) {
             _VERBOSE ? console.log("first loaded") : _VERBOSE;
 
             for (var i = 0; i < grid_map.features.length; i++) {
                 
                 // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
-                grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+                grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
                 grid_map.features[i].properties.score = null;
                 
             }
 
         } else {
 
-//            console.log(grid_map_color.values());
-            // console.log(grid_map);
 
             for (var i = 0; i < grid_map.features.length; i++) {
 
@@ -852,20 +866,43 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     grid_map.features[i].properties.opacity = 1;
                     grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color;  //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
                     grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
+                    
+                    
                 } else {
 
-                   _grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+                    grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
                     // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
                     grid_map.features[i].properties.score = null;
-
                     // _grid_map.features[i].properties.opacity = 0;
                 }
+
+                // verifica si en la celda tiene presencia de la especie objetivo
+                if(gridid_occ.indexOf(grid_map.features[i].properties.gridid) !== -1){
+
+                    // console.log("celda objetivo")
+
+                    // grid_map.features[i].properties.stroke = 'rgba(42,247,1,1)';
+                    grid_map.features[i].properties.stroke = 'rgba(0,255,255,1)';
+                    // grid_map.features[i].properties.stroke = 'rgba(73,0,106,1)';
+
+                }
+                else{
+
+                    grid_map.features[i].properties.stroke = 'rgba(0,0,0,0.1)';
+
+                }
+
+
             }
+
+
+
+
+
         }
 
         tileLayer.redraw();
-        // _tileLayerSP.redraw();
-
+        
     }
 
 
@@ -1011,6 +1048,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function _drawingOnCanvas(canvasOverlay, params) {
 
+        console.log("_drawingOnCanvas")
+
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
                 elemLeft = params.canvas.offsetLeft,
@@ -1024,11 +1063,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             var x = event.pageX - elemLeft,
                     y = event.pageY - elemTop;
 
-//            console.log(event);
-//            console.log(x);
-//            console.log(y);
-
         }, false);
+
 
         var tile = _tileIndex.getTile(params.tilePoint.z, params.tilePoint.x, params.tilePoint.y);
         if (!tile) {
@@ -1040,7 +1076,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         var features = tile.features;
 
         // borde de la malla
-        // se agrega borde de la malla
+        
         ctx.strokeStyle = 'rgba(0,0,0,0.1)';
         // ctx.strokeStyle = 'rgba(255,0,0,0)';
         // ctx.strokeStyle = 'grey'; // hace malla visible
@@ -1050,8 +1086,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             var feature = features[i],
                     type = feature.type;
 
+            // if(i == 0)      
+            //     console.log(feature)
+
             // background de la celda
-            ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(255,0,0,0)';
+            ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(0,0,0,0)';
+            ctx.strokeStyle = feature.tags.stroke ? feature.tags.stroke : 'rgba(0,0,0,0.1)';
+
+            // Aun no se encuentra una propiedad para hacer el borde de la celda mas ancho
+            // ctx["stroke-width"] = 5;
+
             ctx.beginPath();
 
             for (var j = 0; j < feature.geometry.length; j++) {
