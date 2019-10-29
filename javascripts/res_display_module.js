@@ -835,29 +835,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             existsDiscardedFilter = true;
 
         // _VERBOSE ? console.log("lin_inf: " + lin_inf) : _VERBOSE;
-        // _VERBOSE ? console.log("lin_sup: " + lin_sup) : _VERBOSE;
-        // _VERBOSE ? console.log("sin_fecha: " + lin_sup) : _VERBOSE;
-        // _VERBOSE ? console.log("apriori: " + apriori) : _VERBOSE;
-        // _VERBOSE ? console.log("min_occ: " + min_occ) : _VERBOSE;
-        // _VERBOSE ? console.log("existeFiltro: " + existeFiltro) : _VERBOSE;
-//        _VERBOSE ? console.log("grid_res: " + grid_res) : _VERBOSE;
-
-        // verbo: getFreq
-//        _ddata = {
-//            "id": spid,
-//            "idtime": milliseconds,
-//            "apriori": apriori,
-//            "min_occ": min_occ,
-//            "fossil": fossil,
-//            "lim_inf": lin_inf,
-//            "lim_sup": lin_sup,
-//            "sfecha": sin_fecha,
-//            "val_process": val_process,
-//            "idtabla": idtabla,
-//            "grid_res": _grid_res,
-//            "footprint_region": _footprint_region
-//        };
-
 
         // verbo: getFreqCelda // seleccion de celda
         var milliseconds = new Date().getTime();
@@ -912,116 +889,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "target_name": "targetGroup",
             "iterations": val_process ? undefined : 1 // si es indefinido toma las iteraciones del servidor
         };
-
-        // _decil_data = {
-        //     "id": spid,
-        //     "idtime": milliseconds,
-        //     "apriori": apriori,
-        //     "mapa_prob": mapap,
-        //     "min_occ": min_occ,
-        //     "fossil": fossil,
-        //     "lim_inf": lin_inf,
-        //     "lim_sup": lin_sup,
-        //     "sfecha": sin_fecha,
-        //     "val_process": val_process,
-        //     "idtabla": idtabla,
-        //     "grid_res": _grid_res,
-        //     "footprint_region": _footprint_region,
-        //     "level_req": "single"
-        // };
-
-
-        // verbo: getScoreDecil
-        // milliseconds = new Date().getTime();
-        // _decil_group_data = {
-        //     "id": spid,
-        //     "idtime": milliseconds,
-        //     "apriori": apriori,
-        //     "mapa_prob": mapap,
-        //     "min_occ": min_occ,
-        //     "fossil": fossil,
-        //     "lim_inf": lin_inf,
-        //     "lim_sup": lin_sup,
-        //     "sfecha": sin_fecha,
-        //     "val_process": val_process,
-        //     "idtabla": idtabla,
-        //     "grid_res": _grid_res,
-        //     "footprint_region": _footprint_region,
-        //     "level_req": "group"
-        // };
-
-        // verbo: getScoreDecil
-        // milliseconds = new Date().getTime();
-        // _total_data_decil = {
-        //     "id": spid,
-        //     "idtime": milliseconds,
-        //     "apriori": apriori,
-        //     "min_occ": min_occ,
-        //     "fossil": fossil,
-        //     "lim_inf": lin_inf,
-        //     "lim_sup": lin_sup,
-        //     "sfecha": sin_fecha,
-        //     "val_process": val_process,
-        //     "idtabla": idtabla,
-        //     "grid_res": _grid_res,
-        //     "footprint_region": _footprint_region,
-        //     "level_req": "total"
-        // };
-
-        // verbo: getCellScore
-//        _sdata = {
-//            "id": spid,
-//            "idtime": milliseconds,
-//            "apriori": apriori,
-//            "min_occ": min_occ,
-//            "fossil": fossil,
-//            "mapa_prob": mapap,
-//            "lim_inf": lin_inf,
-//            "lim_sup": lin_sup,
-//            "sfecha": sin_fecha,
-//            "val_process": val_process,
-//            "idtabla": idtabla,
-//            "grid_res": _grid_res,
-//            "footprint_region": _footprint_region
-//        };
-
-        // verbo: getGeoRel
-//        _tdata = {
-//            "id": spid,
-//            "idtime": milliseconds,
-//            "apriori": apriori,
-//            "min_occ": min_occ,
-//            "fossil": fossil,
-//            "lim_inf": lin_inf,
-//            "lim_sup": lin_sup,
-//            "sfecha": sin_fecha,
-//            "val_process": val_process,
-//            "idtabla": idtabla,
-//            "grid_res": _grid_res,
-//            "footprint_region": _footprint_region
-//        };
-
-
-        // verbo: getCounts
-        // milliseconds = new Date().getTime();
-        // _countsdata = {
-        //     "id": spid,
-        //     "idtime": milliseconds,
-        //     "apriori": apriori,
-        //     "mapa_prob": mapap,
-        //     "min_occ": min_occ,
-        //     "fossil": fossil,
-        //     "lim_inf": lin_inf,
-        //     "lim_sup": lin_sup,
-        //     "sfecha": sin_fecha,
-        //     "val_process": val_process,
-        //     "idtabla": idtabla,
-        //     "grid_res": _grid_res,
-        //     "footprint_region": _footprint_region,
-        //     "level_req": "counts"
-        // }
-
-
 
     }
 
@@ -1185,8 +1052,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _REQUESTS_NUMBER = _REQUESTS_MADE.length;
         console.log("_REQUESTS_NUMBER: " + _REQUESTS_NUMBER);
-        console.log(_TREE_GENERATED);
-        console.log(_REQUESTS_MADE);
+        // console.log(_TREE_GENERATED);
+        // console.log(_REQUESTS_MADE);
 
         // return;
 
@@ -1617,7 +1484,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // MAS NO!, el conjunto de todas las celdas que compone la malla. 
         var result = _utils_module.processDataForScoreCellTable(counts)
         var data_score_cell = result.array
+        // comentado para pruebas
         var total_length = result.total_length
+        // var total_length = data_score_cell.length
+
 
         console.log("data_score_cell: " + data_score_cell.length)
         console.log("total_length: " + total_length)
@@ -1630,9 +1500,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // Se modifica la cantidad total de celdas por decil para que salga de manera correcta el porcentaje por decil
         var length_decil = data_result.length_decil
+        // comentado para pruebas
         length_decil = Math.floor(total_length/_NUM_DECILES)
+        // console.log("length_decil: " + length_decil)
 
-        console.log("total_length: " + total_length)
 
         if (_show_greenCells) {
             _map_module_nicho.set_colorCellsDecilMap(data_decil, decil)
