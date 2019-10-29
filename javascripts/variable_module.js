@@ -297,8 +297,10 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                                 if (data[i].label.indexOf("Precipita") === -1) {
                                     tag = String(data[i].tag).split(":")
-                                    min = parseInt(tag[0].split(".")[0]) / 10 + " ºC";
-                                    max = parseInt(tag[1].split(".")[0]) / 10 + " ºC";
+                                    // min = parseInt(tag[0].split(".")[0]) / 10 + " ºC";
+                                    // max = parseInt(tag[1].split(".")[0]) / 10 + " ºC";
+                                    min = parseInt(tag[0].split(".")[0]) + " ºC";
+                                    max = parseInt(tag[1].split(".")[0]) + " ºC";
                                 } else {
                                     tag = String(data[i].tag).split(":")
                                     min = parseInt(tag[0].split(".")[0]) + " mm";
