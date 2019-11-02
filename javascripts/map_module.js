@@ -477,6 +477,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         if (_tipo_modulo === _MODULO_NICHO) {
             // document.getElementById("tbl_hist").style.display = "none";
             document.getElementById("dShape").style.display = "none";
+            document.getElementById("return_map").style.display = "none";
 //            _addControls();
         }
 
@@ -1235,6 +1236,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
       _VERBOSE ? console.log("set_colorCellsDecilMap") : _VERBOSE;
       
       $("#map_text").empty();      
+      document.getElementById("return_map").style.display = "inline";
 
       var svg_t = d3.select("#map_text")
           .append("svg")
