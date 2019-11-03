@@ -1532,7 +1532,10 @@ var histogram_module = (function (verbose) {
 
         $("#update-hist").click(function(){
             console.log("click");
+            module_net.loadingsNet(1);
             chart.filterBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
+            module_net.loadingsNet(0);
+
         })
 
 

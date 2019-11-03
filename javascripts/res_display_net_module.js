@@ -700,7 +700,8 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         // Verificar si se desea agregar la interacción por selección de estados
         // loadStatesLayer();
-
+        
+        module_net.loadingsNet(0);
     }
 
 
