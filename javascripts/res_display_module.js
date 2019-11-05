@@ -2667,12 +2667,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 _VERBOSE ? console.log(data) : _VERBOSE;
 
-                if (data.groups.length > 0) {
+                // if (data.groups.length > 0) {
                     var htmltable = _createTableFromData(data);
                     if (htmltable === "")
                         return;
                     _map_module_nicho.showPopUp(htmltable, [lat, long]);
-                }
+                // }
 
             }
 
