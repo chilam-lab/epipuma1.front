@@ -1485,8 +1485,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var result = _utils_module.processDataForScoreCellTable(counts)
         var data_score_cell = result.array
         // comentado para pruebas
-        var total_length = result.total_length
-        // var total_length = data_score_cell.length
+        // var total_length = result.total_length
+        var total_length = data_score_cell.length
 
 
         console.log("data_score_cell: " + data_score_cell.length)
@@ -1501,8 +1501,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // Se modifica la cantidad total de celdas por decil para que salga de manera correcta el porcentaje por decil
         var length_decil = data_result.length_decil
         // comentado para pruebas
-        length_decil = Math.floor(total_length/_NUM_DECILES)
-        // console.log("length_decil: " + length_decil)
+        // length_decil = Math.floor(total_length/_NUM_DECILES)
+        console.log("length_decil: " + length_decil)
 
 
         if (_show_greenCells) {
