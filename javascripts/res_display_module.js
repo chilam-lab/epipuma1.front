@@ -1955,6 +1955,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // }
         
         _map_module_nicho.colorizeFeatures(grid_map_color);
+        _map_module_nicho.colorizeTargetFeatures();
 
         $("#params_next").css('visibility', 'visible');
         $("#params_next").show("slow");
