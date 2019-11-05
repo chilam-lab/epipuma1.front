@@ -482,6 +482,8 @@ var utils_module = (function (verbose) {
 
         var total_length
 
+        console.log(data)
+
         // var cells_array = data.map(function (d) {
         //     total_length = d.n
         //     return {
@@ -500,6 +502,7 @@ var utils_module = (function (verbose) {
             total_length = item.n
 
             item.cells.forEach(function (cell_item, index) {
+            // item.cells_map.forEach(function (cell_item, index) {
 
                 var name = item.reinovalido === "" ? (item.layer + " " + item.tag) : (item.generovalido +" "+item.especieepiteto+" "+item.nombreinfra)
                 
@@ -564,6 +567,9 @@ var utils_module = (function (verbose) {
 
         // var groupByCell = cells_dimension.group().reduceSum(function(d) { return parseFloat(parseFloat(d.score).toFixed(3)); });
         var map_cell = groupByScoreCell.top(Infinity);
+
+        console.log(map_cell)
+        console.log("map_cell: " + map_cell.length)
 
         var cell_score_array = [];
         for (var i = 0; i < map_cell.length; i++) {
