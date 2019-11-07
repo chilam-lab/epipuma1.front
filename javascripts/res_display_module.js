@@ -1538,7 +1538,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 value_abio = specie.name
             }
 
-            decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil, occ_perdecile: occ_perdecile});
+            
+            if($("#chkValidation").is(':checked') == true){
+                decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: "-", occ_perdecile: "-"});
+            }
+            else{
+                decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil, occ_perdecile: occ_perdecile});
+            }
+
+            
+
         });
 
         // _VERBOSE ? console.log(decil_list) : _VERBOSE;

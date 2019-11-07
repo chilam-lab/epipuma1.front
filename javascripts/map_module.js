@@ -423,10 +423,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         // };
 
 
-        _OSM_layer = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
-        _OSM_layer.getAttribution = function () {
-                return '&copy; <a href="http://www.thunderforest.com/landscape">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        };
+
+        // _OSM_layer = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
+        _OSM_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png');
+
+        
+        // _OSM_layer.getAttribution = function () {
+        //         return '&copy; <a href="http://www.thunderforest.com/landscape">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        // };
 
 
         // ******************************************************************* geojson-vt
@@ -878,7 +882,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             if(gridid_occ.indexOf(grid_map.features[i].properties.gridid) !== -1){
 
                 console.log("celda objetivo")
-                grid_map.features[i].properties.stroke = 'rgba(0,255,255,1)';
+                // grid_map.features[i].properties.stroke = 'rgba(0,255,255,1)';
+                // grid_map.features[i].properties.stroke = 'rgba(152,78,173,1)';
+                grid_map.features[i].properties.stroke = 'rgba(247,129,191,1)';
 
             }
             else{
