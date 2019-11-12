@@ -19,6 +19,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _first_analysis = true;
 
     var _show_greenCells = false;
+    var _return_map = false;
 
     var _subgroups, _spid, _idreg, _type_time, _taxones;
 
@@ -422,12 +423,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#btn_map_type").append('<span class="caret"></span>');
 
             _configureStyleMap();
-            _map_module_nicho.set_colorCellsDecilMap();
 
+            if (_return_map) {
+              _map_module_nicho.set_colorCellsDecilMap();
+            }
             
             e.preventDefault();
         });
 
+        $('#return_map').click(function () {
+          _configureStyleMap();
+          _return_map = false;
+          document.getElementById("return_map").style.display = "none";
+        });
 
         $("#send_email_csv").click(function (e) {
 
@@ -548,6 +556,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _cleanPanel();
         _first_analysis = true;
         _show_greenCells = false;
+        _return_map = false;
 
         // Elimina tabla de validación en caso de existir
         if (_idtemptable !== "") {
@@ -1507,6 +1516,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         if (_show_greenCells) {
             _map_module_nicho.set_colorCellsDecilMap(data_decil, decil)
+            _return_map = true;
         }
         else {
             _show_greenCells = true
