@@ -599,13 +599,13 @@ var histogram_module = (function (verbose) {
                        // console.log(d)
                        var fn_lb, tp_lb, null_lb
                        if ($("#chkValidation").is(':checked')) {
-                           fn_lb = _iTrans.prop('lb_vp_avg')
-                           tp_lb = _iTrans.prop('lb_fn_avg')
+                           fn_lb = _iTrans.prop('lb_fn_avg')
+                           tp_lb = _iTrans.prop('lb_vp_avg')
                            null_lb = _iTrans.prop('lb_nulos_avg')
                        }
                        else{
-                            fn_lb = _iTrans.prop('lb_vp')
-                            tp_lb = _iTrans.prop('lb_fn')
+                            fn_lb = _iTrans.prop('lb_fn')
+                            tp_lb = _iTrans.prop('lb_vp')
                             null_lb = _iTrans.prop('lb_nulos')   
                        }
 
