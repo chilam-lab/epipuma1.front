@@ -74,7 +74,9 @@ var module_net = (function () {
             _VERBOSE ? console.log("generaRed") : _VERBOSE;
             _VERBOSE ? console.log(_componente_fuente.getVarSelArray()) : _VERBOSE;
             _VERBOSE ? console.log(_componente_sumidero.getVarSelArray()) : _VERBOSE;
-
+            
+            loadingsNet(1);
+            
             var min_occ = parseInt($("#occ_number").val());
 
             _res_display_module_net.cleanLegendGroups();
@@ -296,6 +298,21 @@ var module_net = (function () {
 
     // }
 
+    function loadingsNet(a) {
+      
+      if (a == 1) {
+        $('#charts').loading({ stoppable: true });
+        $('#graph').loading({ stoppable: true });
+        $('#map').loading({ stoppable: true });
+        $('#tbl_container').loading({ stoppable: true });
+      }
+      else if (a == 0) {
+        $('#charts').loading('stop');
+        $('#graph').loading('stop');
+        $('#map').loading('stop');
+        $('#tbl_container').loading('stop');
+      }
+    }
 
 
 
@@ -561,6 +578,7 @@ var module_net = (function () {
     return {
         startModule: startModule,
         loadModules: loadModules,
+        loadingsNet: loadingsNet,
         setUrlFront: setUrlFront,
         setUrlApi: setUrlApi,
         setUrlComunidad: setUrlComunidad
