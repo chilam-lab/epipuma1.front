@@ -74,13 +74,26 @@ var table_module = (function(verbose) {
         if(list_elements){
 
             _data_list_decil = []
-            
+
             list_elements.forEach(function(d) {
+
+                var value_abio = "";
+                if (d.species.indexOf("bio0") !== -1) {
+                    var arg_values = d.species.split(" ")
+                    var bio = arg_values[0]
+                    var range = arg_values[1].split(":")
+                    value_abio = _iTrans.prop("a_item_" + bio) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
+                } 
+                else {
+                    value_abio = d.species
+                }
+
+                
                 var item_list = [];
                 item_list.push(d.decil)
-                item_list.push(d.species)
-                item_list.push(d.epsilons)
-                item_list.push(d.scores)
+                item_list.push(value_abio)
+                item_list.push(d.epsilon)
+                item_list.push(d.score)
                 item_list.push(d.occ)
                 item_list.push(d.occ_perdecile)            
                 _data_list_decil.push(item_list)

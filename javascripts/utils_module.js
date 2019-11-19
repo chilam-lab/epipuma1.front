@@ -399,6 +399,7 @@ var utils_module = (function (verbose) {
     }
 
 
+    // Asigna el decil a cada una de las celdas, filtra las celdas que pertenecen al decil selecionado y obtiene el número de presencias de cada especie por decil
     function processDataForScoreDecilTable(data_cell, decil_selected) {
 
         _VERBOSE ? console.log("processDataForScoreDecilTable") : _VERBOSE;
@@ -475,35 +476,21 @@ var utils_module = (function (verbose) {
 
     }
 
-
+    // Obtiene el score por celda. Obtiene la sumatoria de todas las especies que tiene presencia en cada celda.
     function processDataForScoreCellTable(data) {
 
         _VERBOSE ? console.log("processDataForScoreCellTable") : _VERBOSE;
 
         var total_length
-
-        console.log(data)
-
-        // var cells_array = data.map(function (d) {
-        //     total_length = d.n
-        //     return {
-        //         cells: d.cells,
-        //         epsilon: parseFloat(d.epsilon),
-        //         score: parseFloat(d.score),
-        //         nj: parseFloat(d.nj),
-        //         name: d.reinovalido === "" ? (d.layer + " " + d.tag) : (d.generovalido +" "+d.especieepiteto+" "+d.nombreinfra)
-        //     }
-        // })
-
         var cells = d3.map([]);
+
 
         data.forEach(function (item, index) {
 
             total_length = item.n
 
             item.cells.forEach(function (cell_item, index) {
-            // item.cells_map.forEach(function (cell_item, index) {
-
+            
                 var name = item.reinovalido === "" ? (item.layer + " " + item.tag) : (item.generovalido +" "+item.especieepiteto+" "+item.nombreinfra)
                 
                 var item_map = {
@@ -570,6 +557,9 @@ var utils_module = (function (verbose) {
 
         console.log(map_cell)
         console.log("map_cell: " + map_cell.length)
+
+
+        // Obtiene un array con gridid, score total (key) y un array con las espcecies en la celda, cada especie con sus valores de epsilon, score y nj
 
         var cell_score_array = [];
         for (var i = 0; i < map_cell.length; i++) {
