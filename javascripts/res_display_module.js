@@ -59,6 +59,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _total_data_decil,
             _decil_group_data;
 
+
+    var _default_decil = 10
+
     // var _toastr = toastr;
 
     var _fathers = [], _sons = [], _totals = [];
@@ -1099,7 +1102,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var data_request = jQuery.extend(true, {}, decildata);
 
-        console.log(data_request)
+        // console.log(data_request)
+        data_request["decil_selected"] = _default_decil
 
 
         // decildata["with_data_freq"] = false;
@@ -1122,7 +1126,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             _REQUESTS_NUMBER = _REQUESTS_NUMBER - 1;
 
-
             // PROCESANDO PETICIONES INDIVIDUALES
             var data_response = jQuery.extend(true, [], respuesta.data);
             processSingleResponse(data_response, data_request, respuesta.validation_data);
@@ -1134,11 +1137,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 var total_eps_scr = [];
                 var total_score_cell = [];
+                var percentage_avg = [];
 
-                // SUMA DE VALORES POR ESPECIE Y POR CELDA SOLICITADOS AL SERVIDOR
+                // CONCATENA LAS DIFERENTES PETICIONES SOLICITADAS AL SERVIDOR, EN CASO DE VALIDACION LOS VALORES POR PETICIÓN YA VIENEN PROMEDIADOS
                 _REQUESTS_DONE.forEach(function (item, index) {
                     total_eps_scr = total_eps_scr.concat(item.data)
                     total_score_cell = total_score_cell.concat(item.data_score_cell);
+                    percentage_avg = percentage_avg.concat(item.percentage_avg);
                 });
 //                console.log(total_eps_scr);
 //                console.log(total_score_cell);
@@ -1161,7 +1166,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
                 _createHistScore_Celda(data_freq_cell);
 
-                console.log(_TREE_GENERATED);
+                // console.log(_TREE_GENERATED);
 
                 // return;
 
@@ -1223,6 +1228,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     _cdata = jQuery.extend(true, {}, total_request);
 
                     total_request.with_data_score_cell = true
+                    total_request.decil_selected = _default_decil
 
                     fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
                         method: "POST",
@@ -1244,8 +1250,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var data_score_cell = resp.data_score_cell
 
-                            console.log("total_counts: " + total_counts.length)
-                            
+                            var percentage_avg = []
+                            percentage_avg = resp.percentage_avg
+
+                            // console.log("total_counts: " + total_counts.length)
+                            console.log(percentage_avg)
                             
                             console.log(validation_data)
 
@@ -1253,15 +1262,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_score_cell), gpo_name: "Total", names: names_byanalysis, deciles: validation_data};
 
-                            console.log(data_decil_byanalysis)
+                            // console.log(data_decil_byanalysis)
 
                             _RESULTS_TODISPLAY.push(data_decil_byanalysis);
 
-                            console.log(_RESULTS_TODISPLAY)
+                            // console.log(_RESULTS_TODISPLAY)
 
                             _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
-                            loadDecilDataTable(10, "Total", true, total_counts);
+                            loadDecilDataTable(_default_decil, "Total", true, percentage_avg);
 
                         }
 
@@ -1282,11 +1291,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
                 else{
 
-                    console.log(_RESULTS_TODISPLAY)
+                    // console.log(_RESULTS_TODISPLAY)
 
                     _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                 
-                    loadDecilDataTable(10, "Total", true, total_eps_scr);
+                    loadDecilDataTable(_default_decil, "Total", true, percentage_avg);
 
                     $('#chartdiv_score_decil').loading('stop');
 
@@ -1349,7 +1358,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
     // function loadDecilDataTable(decil = 10, name = "Total", first_loaded = true, counts = []) {
-    function loadDecilDataTable(decil, name, first_loaded, counts) {
+    function loadDecilDataTable(decil, name, first_loaded, percentage_avg) {
 
         _VERBOSE ? console.log("loadDecilDataTable") : _VERBOSE;
 
@@ -1358,6 +1367,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         });
 
         _decil_values_tbl = [];
+
+        // console.log(counts)
 
 
        // console.log(_TREE_GENERATED);
@@ -1399,8 +1410,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 //            console.log(_currentNameView !== name);
 //            console.log(_currentDecil !== decil);
 
-            //TODO: Checar condición, no esta haciendo el cambio de decil en la grafica cuando son mas de dos grupos de variables!!!
-//            && (value.name === "Total" || tbl_request === 1)
+            
             if (first_loaded ||
                     (value.name === name && (_currentNameView !== name || _currentDecil !== decil)) ||
                     (name === "Total" && (_currentNameView !== name || _currentDecil !== decil))
@@ -1421,16 +1431,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 } else {
                     request = total_request;
                 }
-                // console.log(request);
-                // console.log(_TREE_GENERATED);
-                // return;
+
+                
+                request["decil_selected"] = decil
+
+                console.log(request);
+
 
                 if(first_loaded){
 
                     $("#map_next").css('visibility', 'visible');
                     $("#map_next").show("slow");
 
-                    createTableDecil(counts, decil);
+                    createTableDecil(percentage_avg, decil);
 
                     $('#div_example').loading('stop');
                 }
@@ -1453,9 +1466,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             _VERBOSE ? console.log("loadDecilDataTable resp.ok") : _VERBOSE;
 
-                            var counts = resp.data;
-                            
-                            createTableDecil(counts, decil)
+                            var percentage_avg = resp.percentage_avg;
+
+                            console.log(percentage_avg)
+
+                            createTableDecil(percentage_avg, decil)
 
                         }
                         
@@ -1485,83 +1500,87 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var decil_list = [];
 
-        console.log("counts: " + counts.length)
+        console.log(counts)
+        // console.log("counts: " + counts.length)
+
+        // // return;
 
 
-        // NOTA: 
-        // El algoritmo obtiene las celdas de la presencia de las especies que estan relacionadas al análisis configurado, 
-        // MAS NO!, el conjunto de todas las celdas que compone la malla. 
-        var result = _utils_module.processDataForScoreCellTable(counts)
-        var data_score_cell = result.array
-        // comentado para pruebas
-        // var total_length = result.total_length
-        var total_length = data_score_cell.length
+        // // NOTA: 
+        // // El algoritmo obtiene las celdas de la presencia de las especies que estan relacionadas al análisis configurado, 
+        // // MAS NO!, el conjunto de todas las celdas que compone la malla. 
+        // var result = _utils_module.processDataForScoreCellTable(counts)
+        // var data_score_cell = result.array
+        // // comentado para pruebas
+        // // var total_length = result.total_length
+        // var total_length = data_score_cell.length
 
 
-        console.log("data_score_cell: " + data_score_cell.length)
-        console.log("total_length: " + total_length)
+        // console.log(data_score_cell)
+        // // console.log("data_score_cell: " + data_score_cell.length)
+        // console.log("total_length: " + total_length)
 
-        var data_result = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
+        // var data_result = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
         
-        var data_freq_decil_tbl = data_result.tbl_freq_decil
-        var data_decil = data_result.decil_array
-        // console.log(data_decil)
+        // var data_freq_decil_tbl = data_result.tbl_freq_decil
+        // var data_decil = data_result.decil_array
+        // // console.log(data_decil)
 
-        // Se modifica la cantidad total de celdas por decil para que salga de manera correcta el porcentaje por decil
-        var length_decil = data_result.length_decil
-        // comentado para pruebas
-        // length_decil = Math.floor(total_length/_NUM_DECILES)
-        console.log("length_decil: " + length_decil)
+        // // Se modifica la cantidad total de celdas por decil para que salga de manera correcta el porcentaje por decil
+        // var length_decil = data_result.length_decil
+        // // comentado para pruebas
+        // // length_decil = Math.floor(total_length/_NUM_DECILES)
+        // console.log("length_decil: " + length_decil)
 
 
-        if (_show_greenCells) {
-            _map_module_nicho.set_colorCellsDecilMap(data_decil, decil)
-            _return_map = true;
-        }
-        else {
-            _show_greenCells = true
-        }
+        // if (_show_greenCells) {
+        //     _map_module_nicho.set_colorCellsDecilMap(data_decil, decil)
+        //     _return_map = true;
+        // }
+        // else {
+        //     _show_greenCells = true
+        // }
         
-        data_freq_decil_tbl.forEach(function (specie, index) {
-            // console.log(specie)
+        // data_freq_decil_tbl.forEach(function (specie, index) {
+        //     // console.log(specie)
             
 
-            // Necesario cuando se realiza validación, debido al promedio que se realiza en nj
-            var occ = Math.ceil(specie.nj)
-            occ = occ < specie.njd ? (occ+1) : occ;
+        //     // Necesario cuando se realiza validación, debido al promedio que se realiza en nj
+        //     var occ = Math.ceil(specie.nj)
+        //     occ = occ < specie.njd ? (occ+1) : occ;
             
-            var occ_decil = specie.njd
-            var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%"
-            var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
+        //     var occ_decil = specie.njd
+        //     var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%"
+        //     var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
             
-            // console.log("specie.name: " + specie.name + " length_decil: " + length_decil + " occ: " + occ + " occ_decil: " + occ_decil + " per_decil: " + per_decil + " occ_perdecile: " + occ_perdecile)
+        //     // console.log("specie.name: " + specie.name + " length_decil: " + length_decil + " occ: " + occ + " occ_decil: " + occ_decil + " per_decil: " + per_decil + " occ_perdecile: " + occ_perdecile)
                 
 
-            var value_abio = "";
-            if (specie.name.indexOf("bio0") !== -1) {
-                var arg_values = specie.name.split(" ")
-                var bio = arg_values[0]
-                var range = arg_values[1].split(":")
-                value_abio = _iTrans.prop("a_item_" + bio) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
-            } 
-            else {
-                value_abio = specie.name
-            }
+        //     var value_abio = "";
+        //     if (specie.name.indexOf("bio0") !== -1) {
+        //         var arg_values = specie.name.split(" ")
+        //         var bio = arg_values[0]
+        //         var range = arg_values[1].split(":")
+        //         value_abio = _iTrans.prop("a_item_" + bio) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
+        //     } 
+        //     else {
+        //         value_abio = specie.name
+        //     }
 
             
-            if($("#chkValidation").is(':checked') == true){
-                decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: "-", occ_perdecile: "-"});
-            }
-            else{
-                decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil, occ_perdecile: occ_perdecile});
-            }
+        //     if($("#chkValidation").is(':checked') == true){
+        //         decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: "-", occ_perdecile: "-"});
+        //     }
+        //     else{
+        //         decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil, occ_perdecile: occ_perdecile});
+        //     }
 
             
 
-        });
+        // });
 
         // _VERBOSE ? console.log(decil_list) : _VERBOSE;
-        _table_module_eps.createDecilList(decil_list);
+        _table_module_eps.createDecilList(counts);
 
 
     }
@@ -1591,6 +1610,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         request.with_data_score_cell = false;
         request.with_data_freq_cell = false;
         request.with_data_score_decil = false;
+        // request.decil_selected = request.decil_selected ? request.decil_selected : child.request.decil_selected
 
         // se realiza un analisis del contenido y se concatena
         if (!request.excluded_cells)

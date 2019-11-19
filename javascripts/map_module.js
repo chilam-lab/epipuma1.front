@@ -887,7 +887,15 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 console.log("celda objetivo")
                 // grid_map.features[i].properties.stroke = 'rgba(0,255,255,1)';
                 // grid_map.features[i].properties.stroke = 'rgba(152,78,173,1)';
-                grid_map.features[i].properties.stroke = 'rgba(247,129,191,1)';
+                // grid_map.features[i].properties.stroke = 'rgba(247,129,191,1)';
+
+                // grid_map.features[i].properties.stroke = 'rgba(152,78,163,1)';
+                // grid_map.features[i].properties.stroke = 'rgba(77,175,74,1)';
+                // grid_map.features[i].properties.stroke = 'rgba(255,127,0,1)';
+
+                grid_map.features[i].properties.stroke = 'rgba(0,0,0,0.6)';
+                
+
 
             }
             else{
@@ -1134,7 +1142,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         // borde de la malla
         
-        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        // ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        ctx.strokeStyle = 'rgba(255,255,255,0)';
+
         // ctx.strokeStyle = 'rgba(255,0,0,0)';
         // ctx.strokeStyle = 'grey'; // hace malla visible
 
