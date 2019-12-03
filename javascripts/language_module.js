@@ -385,7 +385,7 @@ var language_module = (function (verbose) {
             $("#MeanMonthlyPETofWettestQuartermmmonth").text($.i18n.prop("MeanMonthlyPETofWettestQuartermmmonth"));
             $("#CompensatedThermicityIndexC").text($.i18n.prop("CompensatedThermicityIndexC"));
             $("#TerrainRoughnessIndex").text($.i18n.prop("TerrainRoughnessIndex"));
-            $("#SAGA-GISTopographicWetnessIndex").text($.i18n.prop("SAGA-GISTopographicWetnessIndex"));
+            $("#SAGAGISTopographicWetnessIndex").text($.i18n.prop("SAGAGISTopographicWetnessIndex"));
             $("#MaximumSlopeinElevations").text($.i18n.prop("MaximumSlopeinElevations"));
             $("#Aspect").text($.i18n.prop("Aspect"));
             $("#CompoundTopographicIndexCTIlnFAtanslope").text($.i18n.prop("CompoundTopographicIndexCTIlnFAtanslope"));
