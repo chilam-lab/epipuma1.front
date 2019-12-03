@@ -77,12 +77,20 @@ var table_module = (function(verbose) {
 
             list_elements.forEach(function(d) {
 
+                // console.log(d)
+
                 var value_abio = "";
-                if (d.species.indexOf("bio0") !== -1) {
-                    var arg_values = d.species.split(" ")
-                    var bio = arg_values[0]
-                    var range = arg_values[1].split(":")
-                    value_abio = _iTrans.prop("a_item_" + bio) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
+                if (d.species.indexOf("|") !== -1) {
+
+
+                    var arg_values = d.species.split("|")
+                    var lb = arg_values[0].replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                    var tag = arg_values[1]
+
+                    
+                    var range = tag.split(":")
+
+                    value_abio = _iTrans.prop(lb) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
                 } 
                 else {
                     value_abio = d.species
