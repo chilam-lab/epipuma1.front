@@ -339,12 +339,18 @@ var variable_module = (function (verbose, url_zacatuche) {
                         } 
                         else {
                             
+
+                            // console.log(data[i])
+                            // eliminacaraacteres especiales y espacios en blanco
+                            var lb = data[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
                             
-//                            console.log("label: " + _iTrans.prop("a_item_" + data[i].layer))
-                            
+                            // console.log(lb)
+                            // console.log(_iTrans.prop(lb))
+
                             newNode = {
                                 id: (data[i].layer).replace(" ", ""),
-                                text: raster_type !== 0  ? _iTrans.prop("a_item_" + data[i].layer) : data[i].label,
+                                // text: raster_type !== 0  ? _iTrans.prop("a_item_" + data[i].layer) : data[i].label,
+                                text: raster_type !== 0  ? _iTrans.prop(lb) : data[i].label,
                                 icon: "plugins/jstree/images/dna.png",
                                 attr: {"bid": data[i].layer, "parent": data[i].fuente, "level": level_vartree, "type": data[i].type},
                                 state: {'opened': false},
