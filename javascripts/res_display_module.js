@@ -1138,12 +1138,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var total_eps_scr = [];
                 var total_score_cell = [];
                 var percentage_avg = [];
+                var decil_cells = []
 
                 // CONCATENA LAS DIFERENTES PETICIONES SOLICITADAS AL SERVIDOR, EN CASO DE VALIDACION LOS VALORES POR PETICIÓN YA VIENEN PROMEDIADOS
                 _REQUESTS_DONE.forEach(function (item, index) {
                     total_eps_scr = total_eps_scr.concat(item.data)
                     total_score_cell = total_score_cell.concat(item.data_score_cell);
                     percentage_avg = percentage_avg.concat(item.percentage_avg);
+                    decil_cells = decil_cells.concat(item.decil_cells);
                 });
 //                console.log(total_eps_scr);
 //                console.log(total_score_cell);
@@ -1250,10 +1252,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var data_score_cell = resp.data_score_cell
 
-                            var percentage_avg = []
-                            percentage_avg = resp.percentage_avg
+                            var percentage_avg = resp.percentage_avg
+
+                            var decil_cells = resp.decil_cells
+
+                            
 
                             // console.log("total_counts: " + total_counts.length)
+                            console.log(decil_cells)
+
                             console.log(percentage_avg)
                             
                             console.log(validation_data)
@@ -1270,7 +1277,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
-                            loadDecilDataTable(_default_decil, "Total", true, percentage_avg);
+                            loadDecilDataTable(_default_decil, "Total", true, percentage_avg, decil_cells);
 
                         }
 
@@ -1295,7 +1302,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                 
-                    loadDecilDataTable(_default_decil, "Total", true, percentage_avg);
+                    loadDecilDataTable(_default_decil, "Total", true, percentage_avg, decil_cells);
 
                     $('#chartdiv_score_decil').loading('stop');
 
@@ -1358,11 +1365,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
     // function loadDecilDataTable(decil = 10, name = "Total", first_loaded = true, counts = []) {
-    function loadDecilDataTable(decil, name, first_loaded, percentage_avg) {
+    function loadDecilDataTable(decil, name, first_loaded, percentage_avg, decil_cells) {
 
         _VERBOSE ? console.log("loadDecilDataTable") : _VERBOSE;
 
         $('#div_example').loading({
+            stoppable: true
+        });
+
+        $('#map').loading({
             stoppable: true
         });
 
@@ -1443,9 +1454,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     $("#map_next").css('visibility', 'visible');
                     $("#map_next").show("slow");
 
+
+                    // activeDecilOccurrences(decil_cells, decil)
+
                     createTableDecil(percentage_avg, decil);
 
                     $('#div_example').loading('stop');
+                    $('#map').loading('stop');
                 }
                 else{
 
@@ -1468,7 +1483,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var percentage_avg = resp.percentage_avg;
 
+                            var decil_cells = resp.decil_cells;                            
+
                             console.log(percentage_avg)
+
+                            console.log(decil_cells)
+
+                            activeDecilOccurrences(decil_cells, decil)
 
                             createTableDecil(percentage_avg, decil)
 
@@ -1480,7 +1501,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     })
                     .catch(err => {
                         console.error(err);
+                        
                         $('#div_example').loading('stop');
+                        $('#map').loading('stop');
                     });
 
 
@@ -1500,86 +1523,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var decil_list = [];
 
-        console.log(counts)
-        // console.log("counts: " + counts.length)
-
-        // // return;
-
-
-        // // NOTA: 
-        // // El algoritmo obtiene las celdas de la presencia de las especies que estan relacionadas al análisis configurado, 
-        // // MAS NO!, el conjunto de todas las celdas que compone la malla. 
-        // var result = _utils_module.processDataForScoreCellTable(counts)
-        // var data_score_cell = result.array
-        // // comentado para pruebas
-        // // var total_length = result.total_length
-        // var total_length = data_score_cell.length
-
-
-        // console.log(data_score_cell)
-        // // console.log("data_score_cell: " + data_score_cell.length)
-        // console.log("total_length: " + total_length)
-
-        // var data_result = _utils_module.processDataForScoreDecilTable(data_score_cell, decil);
-        
-        // var data_freq_decil_tbl = data_result.tbl_freq_decil
-        // var data_decil = data_result.decil_array
-        // // console.log(data_decil)
-
-        // // Se modifica la cantidad total de celdas por decil para que salga de manera correcta el porcentaje por decil
-        // var length_decil = data_result.length_decil
-        // // comentado para pruebas
-        // // length_decil = Math.floor(total_length/_NUM_DECILES)
-        // console.log("length_decil: " + length_decil)
-
-
-        // if (_show_greenCells) {
-        //     _map_module_nicho.set_colorCellsDecilMap(data_decil, decil)
-        //     _return_map = true;
-        // }
-        // else {
-        //     _show_greenCells = true
-        // }
-        
-        // data_freq_decil_tbl.forEach(function (specie, index) {
-        //     // console.log(specie)
-            
-
-        //     // Necesario cuando se realiza validación, debido al promedio que se realiza en nj
-        //     var occ = Math.ceil(specie.nj)
-        //     occ = occ < specie.njd ? (occ+1) : occ;
-            
-        //     var occ_decil = specie.njd
-        //     var per_decil = parseFloat(occ_decil / occ * 100).toFixed(2) + "%"
-        //     var occ_perdecile = parseFloat(occ_decil / length_decil * 100).toFixed(2) + "%";
-            
-        //     // console.log("specie.name: " + specie.name + " length_decil: " + length_decil + " occ: " + occ + " occ_decil: " + occ_decil + " per_decil: " + per_decil + " occ_perdecile: " + occ_perdecile)
-                
-
-        //     var value_abio = "";
-        //     if (specie.name.indexOf("bio0") !== -1) {
-        //         var arg_values = specie.name.split(" ")
-        //         var bio = arg_values[0]
-        //         var range = arg_values[1].split(":")
-        //         value_abio = _iTrans.prop("a_item_" + bio) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
-        //     } 
-        //     else {
-        //         value_abio = specie.name
-        //     }
-
-            
-        //     if($("#chkValidation").is(':checked') == true){
-        //         decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: "-", occ_perdecile: "-"});
-        //     }
-        //     else{
-        //         decil_list.push({decil: specie.decile, species: value_abio, epsilons: specie.epsilon, scores: specie.score, occ: per_decil, occ_perdecile: occ_perdecile});
-        //     }
-
-            
-
-        // });
-
-        // _VERBOSE ? console.log(decil_list) : _VERBOSE;
+        // console.log(counts)
         _table_module_eps.createDecilList(counts);
 
 
@@ -1833,6 +1777,20 @@ var res_display_module = (function (verbose, url_zacatuche) {
         $("#hist_next").css('visibility', 'visible');
         $("#hist_next").show("slow");
 
+
+    }
+
+    function activeDecilOccurrences(decil_cells, decil){
+
+        _VERBOSE ? console.log("activeDecilOccurrences") : _VERBOSE;
+
+        _map_module_nicho.updateDecilLayer(decil)
+
+        _map_module_nicho.setDecilCells(decil_cells);
+
+        _map_module_nicho.colorizeDecileFeatures();
+
+        $('#map').loading('stop');
 
     }
 
@@ -3060,7 +3018,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         setHistogramModule: setHistogramModule,
         loadDecilDataTable: loadDecilDataTable,
         set_taxones: set_taxones,
-        _configureStyleMap: _configureStyleMap
+        // _configureStyleMap: _configureStyleMap
+        activeDecilOccurrences: activeDecilOccurrences
     }
 
 
