@@ -89,8 +89,11 @@ var table_module = (function(verbose) {
 
                     
                     var range = tag.split(":")
+                    // var min = (parseFloat(range[0]) * d.coeficiente).toFixed(3) + " " + d.unidad
+                    // var max = (parseFloat(range[1]) * d.coeficiente).toFixed(3) + " " + d.unidad
 
-                    value_abio = _iTrans.prop(lb) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
+                    value = _iTrans.prop(lb) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                    // value_abio = _iTrans.prop(lb) + " (" + min  + " : " + max +")"
                 } 
                 else {
                     value_abio = d.species

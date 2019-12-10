@@ -1639,80 +1639,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
     }
 
 
-//     function _generateCounts(counts_data) {
-
-//         _VERBOSE ? console.log("_generateCounts") : _VERBOSE;
-//         _VERBOSE ? console.log(counts_data) : _VERBOSE;
-
-//         despliegaLoadings();
-
-// //        if (!_RUN_ON_SERVER) {
-// //            counts_data["with_data_freq"] = false;
-// //            counts_data["with_data_score_cell"] = false;
-// //            counts_data["with_data_freq_cell"] = false;
-// //            counts_data["with_data_score_decil"] = false;
-// //        }
-
-//         var milliseconds = new Date().getTime();
-
-//         $.ajax({
-//             url: _url_zacatuche + "/niche/countsTaxonsGroup",
-//             type: 'post',
-//             idtiem: milliseconds,
-//             dataType: "json",
-//             data: counts_data,
-//             success: function (respuesta) {
-// //                console.log(respuesta);
-//                 if (respuesta.ok) {
-//                     var counts = respuesta.data;
-//                     _createTableEpSc(counts);
-
-// //                    if (_RUN_ON_SERVER) {
-// //
-// //                        _createHistEpScr_Especie(respuesta.data_freq);
-// //                        _createHistScore_Celda(respuesta.data_freq_cell);
-// //                        _configureStyleMap(respuesta.data_score_cell);
-// //
-// //                    } else {
-
-//                     var data_freq = _utils_module.processDataForFreqSpecie(counts);
-//                     _createHistEpScr_Especie(data_freq);
-
-//                     _current_data_score_cell = _utils_module.processDataForScoreCell(counts);
-//                     _configureStyleMap();
-
-//                     var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
-//                     _createHistScore_Celda(data_freq_cell);
-
-// //                    }
-
-
-
-//                 } else {
-//                     // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
-//                 }
-
-//             },
-//             error: function (jqXHR, textStatus, errorThrown) {
-
-//                 console.log(errorThrown);
-//                 console.log(jqXHR);
-
-//                 _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
-//                 _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
-// //                TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
-
-
-
-// //                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_tblsp'), "error");
-
-//             }
-
-//         });
-
-//     }
-
-
     /**
      * Éste método envía el conjunto de parámetros al módulo table para generar la tabla de resultados de épsilon y score en el análisis de nicho ecológico.
      *
@@ -1738,12 +1664,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
             if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
                 // var arg_values = d.especievalidabusqueda.split(" ")
 
+                console.log(d)
+
                 var range = d.tag.split(":")
                 var label = d.label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
 
-                // var value = _iTrans.prop("a_item_" + d.layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                // var min = (parseFloat(range[0]) * d.coeficiente).toFixed(3) + " " + d.unidad
+                // var max = (parseFloat(range[1]) * d.coeficiente).toFixed(3) + " " + d.unidad
 
+                var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                // var value = _iTrans.prop(label) + " (" + max + " : " + max + ") "
+                
                 item_list.push(value)
 
             } else {
