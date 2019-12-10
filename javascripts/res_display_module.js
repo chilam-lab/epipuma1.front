@@ -1989,6 +1989,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#FlowAccumulations").text($.i18n.prop("FlowAccumulations"));
             $("#DigitalelevationmodelGTOPO30").text($.i18n.prop("DigitalelevationmodelGTOPO30"));
 
+            $("#num_records").text($.i18n.prop("num_records"));
+            $("#score_celda").text($.i18n.prop("score_celda"));
+
 
             // $("#a_item_bio00_" + item).text($.i18n.prop('a_item_bio00'));
             // $("#a_item_bio001_" + item).text($.i18n.prop('a_item_bio001'));

@@ -2673,6 +2673,19 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             .text(function (d) {
                 return parseFloat(d).toFixed(2);
             })
+
+        key.append("text")
+            .attr("id", "num_records")
+            .attr("y", 100)
+            .attr("x", 135)
+            .attr("dy", ".71em")
+            .style("font-size", "10px")
+            .style("text-anchor", "end")
+            .text(_iTrans.prop('num_records'));
+
+
+
+
             
     }
 
@@ -2716,17 +2729,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             .attr("stroke", "gray")
             .attr("transform", "rotate(270)");
 
-        // // console.log(values_array)
-        // var delta = Math.abs(values_array[0] - values_array[1])
-        // values_array.unshift(values_array[0] - delta); 
-        // // console.log(values_array)
-        // values_array.push(values_array[values_array.length-1]+delta)
-        // console.log(values_array)
-        // console.log(colors_array)
-        // console.log("length values: " + values_array.length)
-        // console.log("length colors: " + colors_array.length)
-
-
+        
         var texts = key.selectAll(".rect")
             .data(values_array)
             .enter()
@@ -2748,6 +2751,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             .text(function (d) {
                 return parseFloat(d).toFixed(2);
             })
+
+
+        key.append("text")
+            .attr("id", "score_celda")
+            .attr("y", 150)
+            .attr("x", 70)
+            .attr("dy", ".71em")
+            .style("font-size", "10px")
+            .style("text-anchor", "end")
+            .text(_iTrans.prop('score_celda'));
             
     }
 
