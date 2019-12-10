@@ -84,13 +84,26 @@ var table_module = (function(verbose) {
 
 
                     var arg_values = d.species.split("|")
+
+                    // console.log(arg_values)
+
                     var lb = arg_values[0].replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
                     var tag = arg_values[1]
+                    var unidad = arg_values[2]
+                    var coeficiente = arg_values[3]
 
+                    // console.log(lb)
+                    // console.log(tag)
+                    // console.log("unidad: " + coeficiente)
+                    // console.log("coeficiente: " + coeficiente)
                     
                     var range = tag.split(":")
 
-                    value_abio = _iTrans.prop(lb) + " (" + parseFloat(range[0]).toFixed(2)  + " : " + parseFloat(range[1]).toFixed(2) +")"
+                    var min = (parseFloat(range[0]) * coeficiente).toFixed(3) + " " + unidad
+                    var max = (parseFloat(range[1]) * coeficiente).toFixed(3) + " " + unidad
+
+                    // value = _iTrans.prop(lb) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                    value_abio = _iTrans.prop(lb) + " (" + min  + " : " + max +")"
                 } 
                 else {
                     value_abio = d.species

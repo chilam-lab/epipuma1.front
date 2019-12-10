@@ -1639,80 +1639,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
     }
 
 
-//     function _generateCounts(counts_data) {
-
-//         _VERBOSE ? console.log("_generateCounts") : _VERBOSE;
-//         _VERBOSE ? console.log(counts_data) : _VERBOSE;
-
-//         despliegaLoadings();
-
-// //        if (!_RUN_ON_SERVER) {
-// //            counts_data["with_data_freq"] = false;
-// //            counts_data["with_data_score_cell"] = false;
-// //            counts_data["with_data_freq_cell"] = false;
-// //            counts_data["with_data_score_decil"] = false;
-// //        }
-
-//         var milliseconds = new Date().getTime();
-
-//         $.ajax({
-//             url: _url_zacatuche + "/niche/countsTaxonsGroup",
-//             type: 'post',
-//             idtiem: milliseconds,
-//             dataType: "json",
-//             data: counts_data,
-//             success: function (respuesta) {
-// //                console.log(respuesta);
-//                 if (respuesta.ok) {
-//                     var counts = respuesta.data;
-//                     _createTableEpSc(counts);
-
-// //                    if (_RUN_ON_SERVER) {
-// //
-// //                        _createHistEpScr_Especie(respuesta.data_freq);
-// //                        _createHistScore_Celda(respuesta.data_freq_cell);
-// //                        _configureStyleMap(respuesta.data_score_cell);
-// //
-// //                    } else {
-
-//                     var data_freq = _utils_module.processDataForFreqSpecie(counts);
-//                     _createHistEpScr_Especie(data_freq);
-
-//                     _current_data_score_cell = _utils_module.processDataForScoreCell(counts);
-//                     _configureStyleMap();
-
-//                     var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
-//                     _createHistScore_Celda(data_freq_cell);
-
-// //                    }
-
-
-
-//                 } else {
-//                     // TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
-//                 }
-
-//             },
-//             error: function (jqXHR, textStatus, errorThrown) {
-
-//                 console.log(errorThrown);
-//                 console.log(jqXHR);
-
-//                 _VERBOSE ? console.log("error _generateCounts: " + textStatus) : _VERBOSE;
-//                 _VERBOSE ? console.log("error jqXHR: " + jqXHR) : _VERBOSE;
-// //                TODO: Agregar mensaje de error para los conteos y desplegarlo con toast
-
-
-
-// //                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_tblsp'), "error");
-
-//             }
-
-//         });
-
-//     }
-
-
     /**
      * Éste método envía el conjunto de parámetros al módulo table para generar la tabla de resultados de épsilon y score en el análisis de nicho ecológico.
      *
@@ -1738,12 +1664,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
             if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
                 // var arg_values = d.especievalidabusqueda.split(" ")
 
+                console.log(d)
+
                 var range = d.tag.split(":")
                 var label = d.label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
 
-                // var value = _iTrans.prop("a_item_" + d.layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                var min = (parseFloat(range[0]) * d.coeficiente).toFixed(3) + " " + d.unidad
+                var max = (parseFloat(range[1]) * d.coeficiente).toFixed(3) + " " + d.unidad
 
+                // var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                var value = _iTrans.prop(label) + " (" + max + " : " + max + ") "
+                
                 item_list.push(value)
 
             } else {
@@ -1993,103 +1924,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#score_celda").text($.i18n.prop("score_celda"));
 
 
-            // $("#a_item_bio00_" + item).text($.i18n.prop('a_item_bio00'));
-            // $("#a_item_bio001_" + item).text($.i18n.prop('a_item_bio001'));
-            // $("#a_item_bio002_" + item).text($.i18n.prop('a_item_bio002'));
-            // $("#a_item_bio003_" + item).text($.i18n.prop('a_item_bio003'));
-            // $("#a_item_bio004_" + item).text($.i18n.prop('a_item_bio004'));
-            // $("#a_item_bio005_" + item).text($.i18n.prop('a_item_bio005'));
-            // $("#a_item_bio006_" + item).text($.i18n.prop('a_item_bio006'));
-            // $("#a_item_bio007_" + item).text($.i18n.prop('a_item_bio007'));
-            // $("#a_item_bio008_" + item).text($.i18n.prop('a_item_bio008'));
-            // $("#a_item_bio009_" + item).text($.i18n.prop('a_item_bio009'));
-            // $("#a_item_bio010_" + item).text($.i18n.prop('a_item_bio010'));
-            // $("#a_item_bio011_" + item).text($.i18n.prop('a_item_bio011'));
-            // $("#a_item_bio012_" + item).text($.i18n.prop('a_item_bio012'));
-            // $("#a_item_bio013_" + item).text($.i18n.prop('a_item_bio013'));
-            // $("#a_item_bio014_" + item).text($.i18n.prop('a_item_bio014'));
-            // $("#a_item_bio015_" + item).text($.i18n.prop('a_item_bio015'));
-            // $("#a_item_bio016_" + item).text($.i18n.prop('a_item_bio016'));
-            // $("#a_item_bio017_" + item).text($.i18n.prop('a_item_bio017'));
-            // $("#a_item_bio018_" + item).text($.i18n.prop('a_item_bio018'));
-            // $("#a_item_bio019_" + item).text($.i18n.prop('a_item_bio019'));
-            // $("#a_item_bio020_" + item).text($.i18n.prop('a_item_bio020'));
-            // $("#a_item_bio021_" + item).text($.i18n.prop('a_item_bio021'));
-            // $("#a_item_bio022_" + item).text($.i18n.prop('a_item_bio022'));
-            // $("#a_item_bio023_" + item).text($.i18n.prop('a_item_bio023'));
-            // $("#a_item_bio024_" + item).text($.i18n.prop('a_item_bio024'));
-            // $("#a_item_bio025_" + item).text($.i18n.prop('a_item_bio025'));
-            // $("#a_item_bio026_" + item).text($.i18n.prop('a_item_bio026'));
-            // $("#a_item_bio027_" + item).text($.i18n.prop('a_item_bio027'));
-            // $("#a_item_bio028_" + item).text($.i18n.prop('a_item_bio028'));
-            // $("#a_item_bio029_" + item).text($.i18n.prop('a_item_bio029'));
-            // $("#a_item_bio030_" + item).text($.i18n.prop('a_item_bio030'));
-            // $("#a_item_bio031_" + item).text($.i18n.prop('a_item_bio031'));
-            // $("#a_item_bio032_" + item).text($.i18n.prop('a_item_bio032'));
-            // $("#a_item_bio033_" + item).text($.i18n.prop('a_item_bio033'));
-            // $("#a_item_bio034_" + item).text($.i18n.prop('a_item_bio034'));
-            // $("#a_item_bio035_" + item).text($.i18n.prop('a_item_bio035'));
-            // $("#a_item_bio036_" + item).text($.i18n.prop('a_item_bio036'));
-            // $("#a_item_bio037_" + item).text($.i18n.prop('a_item_bio037'));
-            // $("#a_item_bio038_" + item).text($.i18n.prop('a_item_bio038'));
-            // $("#a_item_bio039_" + item).text($.i18n.prop('a_item_bio039'));
-            // $("#a_item_bio040_" + item).text($.i18n.prop('a_item_bio040'));
-            // $("#a_item_bio041_" + item).text($.i18n.prop('a_item_bio041'));
-            // $("#a_item_bio042_" + item).text($.i18n.prop('a_item_bio042'));
-            // $("#a_item_bio043_" + item).text($.i18n.prop('a_item_bio043'));
-            // $("#a_item_bio044_" + item).text($.i18n.prop('a_item_bio044'));
-            // $("#a_item_bio045_" + item).text($.i18n.prop('a_item_bio045'));
-            // $("#a_item_bio046_" + item).text($.i18n.prop('a_item_bio046'));
-            // $("#a_item_bio047_" + item).text($.i18n.prop('a_item_bio047'));
-            // $("#a_item_bio048_" + item).text($.i18n.prop('a_item_bio048'));
-            // $("#a_item_bio049_" + item).text($.i18n.prop('a_item_bio049'));
-            // $("#a_item_bio050_" + item).text($.i18n.prop('a_item_bio050'));
-            // $("#a_item_bio051_" + item).text($.i18n.prop('a_item_bio051'));
-            // $("#a_item_bio052_" + item).text($.i18n.prop('a_item_bio052'));
-            // $("#a_item_bio053_" + item).text($.i18n.prop('a_item_bio053'));
-            // $("#a_item_bio054_" + item).text($.i18n.prop('a_item_bio054'));
-            // $("#a_item_bio055_" + item).text($.i18n.prop('a_item_bio055'));
-            // $("#a_item_bio056_" + item).text($.i18n.prop('a_item_bio056'));
-            // $("#a_item_bio057_" + item).text($.i18n.prop('a_item_bio057'));
-            // $("#a_item_bio058_" + item).text($.i18n.prop('a_item_bio058'));
-            // $("#a_item_bio059_" + item).text($.i18n.prop('a_item_bio059'));
-            // $("#a_item_bio060_" + item).text($.i18n.prop('a_item_bio060'));
-            // $("#a_item_bio061_" + item).text($.i18n.prop('a_item_bio061'));
-            // $("#a_item_bio062_" + item).text($.i18n.prop('a_item_bio062'));
-            // $("#a_item_bio063_" + item).text($.i18n.prop('a_item_bio063'));
-            // $("#a_item_bio064_" + item).text($.i18n.prop('a_item_bio064'));
-            // $("#a_item_bio065_" + item).text($.i18n.prop('a_item_bio065'));
-            // $("#a_item_bio066_" + item).text($.i18n.prop('a_item_bio066'));
-            // $("#a_item_bio067_" + item).text($.i18n.prop('a_item_bio067'));
-            // $("#a_item_bio068_" + item).text($.i18n.prop('a_item_bio068'));
-            // $("#a_item_bio069_" + item).text($.i18n.prop('a_item_bio069'));
-            // $("#a_item_bio070_" + item).text($.i18n.prop('a_item_bio070'));
-            // $("#a_item_bio071_" + item).text($.i18n.prop('a_item_bio071'));
-            // $("#a_item_bio072_" + item).text($.i18n.prop('a_item_bio072'));
-            // $("#a_item_bio073_" + item).text($.i18n.prop('a_item_bio073'));
-            // $("#a_item_bio074_" + item).text($.i18n.prop('a_item_bio074'));
-            // $("#a_item_bio075_" + item).text($.i18n.prop('a_item_bio075'));
-            // $("#a_item_bio076_" + item).text($.i18n.prop('a_item_bio076'));
-            // $("#a_item_bio077_" + item).text($.i18n.prop('a_item_bio077'));
-            // $("#a_item_bio078_" + item).text($.i18n.prop('a_item_bio078'));
-            // $("#a_item_bio079_" + item).text($.i18n.prop('a_item_bio079'));
-            // $("#a_item_bio080_" + item).text($.i18n.prop('a_item_bio080'));
-            // $("#a_item_bio081_" + item).text($.i18n.prop('a_item_bio081'));
-            // $("#a_item_bio082_" + item).text($.i18n.prop('a_item_bio082'));
-            // $("#a_item_bio083_" + item).text($.i18n.prop('a_item_bio083'));
-            // $("#a_item_bio084_" + item).text($.i18n.prop('a_item_bio084'));
-            // $("#a_item_bio085_" + item).text($.i18n.prop('a_item_bio085'));
-            // $("#a_item_bio086_" + item).text($.i18n.prop('a_item_bio086'));
-            // $("#a_item_bio087_" + item).text($.i18n.prop('a_item_bio087'));
-            // $("#a_item_bio088_" + item).text($.i18n.prop('a_item_bio088'));
-            // $("#a_item_bio089_" + item).text($.i18n.prop('a_item_bio089'));
-            // $("#a_item_bio090_" + item).text($.i18n.prop('a_item_bio090'));
-            // $("#a_item_bio091_" + item).text($.i18n.prop('a_item_bio091'));
-            // $("#a_item_bio092_" + item).text($.i18n.prop('a_item_bio092'));
-
             $("#hist_record").text($.i18n.prop('lb_reg_fecha')  + ": ");
-
-
 
             $("#lb_des_modal_csv").text($.i18n.prop('lb_des_modal_csv'));
             $("#email_address").attr("placeholder", $.i18n.prop('email_address'));

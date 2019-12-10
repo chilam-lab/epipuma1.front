@@ -295,30 +295,11 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                         if (level_vartree > 2) {
 
+                            // console.log(data[i])
+
                             tag = String(data[i].tag).split(":")
                             min = (parseFloat(tag[0]) * data[i].coeficiente).toFixed(3) + " " + data[i].unidad
                             max = (parseFloat(tag[1]) * data[i].coeficiente).toFixed(3) + " " + data[i].unidad
-
-
-                            // if (data[i].type === 1 || data[i].type === 2) {
-
-                            //     if (data[i].label.indexOf("Precipita") === -1) {
-                            //         tag = String(data[i].tag).split(":")
-                            //         // min = parseInt(tag[0].split(".")[0]) / 10 + " ºC";
-                            //         // max = parseInt(tag[1].split(".")[0]) / 10 + " ºC";
-                            //         min = parseInt(tag[0].split(".")[0]) + " ºC";
-                            //         max = parseInt(tag[1].split(".")[0]) + " ºC";
-                            //     } else {
-                            //         tag = String(data[i].tag).split(":")
-                            //         min = parseInt(tag[0].split(".")[0]) + " mm";
-                            //         max = parseInt(tag[1].split(".")[0]) + " mm";
-                            //     }
-
-                            // } else {
-                            //     tag = String(data[i].tag).split(":")                                
-                            //     min = parseFloat(tag[0]).toFixed(3);
-                            //     max = parseFloat(tag[1]).toFixed(3);
-                            // }
 
                             var idNode = "";
                             if ($("#" + data[i].bid).length > 0) {
