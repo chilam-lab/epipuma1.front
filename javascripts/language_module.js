@@ -392,6 +392,10 @@ var language_module = (function (verbose) {
             $("#FlowDirection").text($.i18n.prop("FlowDirection"));
             $("#FlowAccumulations").text($.i18n.prop("FlowAccumulations"));
             $("#DigitalelevationmodelGTOPO30").text($.i18n.prop("DigitalelevationmodelGTOPO30"));
+
+            $("#num_records").text($.i18n.prop("num_records"));
+            $("#score_celda").text($.i18n.prop("score_celda"));
+            
             
 
             // $("#a_item_bio00").text($.i18n.prop('a_item_bio00'));
