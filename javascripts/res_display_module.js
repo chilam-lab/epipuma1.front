@@ -868,7 +868,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "with_data_score_cell": true,
             "with_data_freq": true,
             "with_data_freq_cell":true,
-            "with_data_score_decil": false,
+            "with_data_score_decil": true,
             "excluded_cells": _map_module_nicho.getExcludedCells(),
             "target_name": "targetGroup",
             "iterations": val_process ? undefined : 1 // si es indefinido toma las iteraciones del servidor
@@ -896,7 +896,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "with_data_score_cell": true,
             "with_data_freq": true,
             "with_data_freq_cell":true,
-            "with_data_score_decil": false,
+            "with_data_score_decil": true,
             "excluded_cells": _map_module_nicho.getExcludedCells(),
             "target_name": "targetGroup",
             "iterations": val_process ? undefined : 1 // si es indefinido toma las iteraciones del servidor
@@ -1445,6 +1445,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 
                 request["decil_selected"] = decil
+                request["with_data_score_decil"] = true;
 
                 console.log(request);
 
