@@ -1196,7 +1196,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function _drawingOnCanvas(canvasOverlay, params) {
 
-        console.log("_drawingOnCanvas")
+        // console.log("_drawingOnCanvas")
 
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
@@ -1291,7 +1291,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function _drawingTargetOnCanvas(canvasOverlay, params) {
 
-        console.log("_drawingTargetOnCanvas")
+        // console.log("_drawingTargetOnCanvas")
 
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
@@ -1386,7 +1386,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function _drawingDecilOnCanvas(canvasOverlay, params) {
 
-        console.log("_drawingDecilOnCanvas")
+        // console.log("_drawingDecilOnCanvas")
 
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
