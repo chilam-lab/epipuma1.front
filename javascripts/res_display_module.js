@@ -1230,6 +1230,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     _cdata = jQuery.extend(true, {}, total_request);
 
                     total_request.with_data_score_cell = true
+                    total_request.with_data_score_decil = true
                     total_request.decil_selected = _default_decil
 
                     fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
