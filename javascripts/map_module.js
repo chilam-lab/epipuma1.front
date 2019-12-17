@@ -1842,17 +1842,29 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         var rango_fechas = $("#sliderFecha").slider("values");
-        if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
-            rango_fechas = undefined;
-        }
-        else{
-            _lin_inf = rango_fechas ? rango_fechas[0] : undefined;
-            _lin_sup = rango_fechas ? rango_fechas[1] : undefined;
-        }
+
+        console.log(rango_fechas)
+
+        // if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+        //     rango_fechas = undefined;
+        // }
+        // else{
+        //     _lin_inf = rango_fechas ? rango_fechas[0] : undefined;
+        //     _lin_sup = rango_fechas ? rango_fechas[1] : undefined;
+        // }
+
+        _lin_inf = rango_fechas[0]
+        _lin_sup = rango_fechas[1]
+
+        console.log("_lin_inf: " + _lin_inf)
+        console.log("_lin_sup: " + _lin_sup)
 
         
         _sin_fecha = $("#chkFecha").is(':checked') ? true : false;
         _con_fosil = $("#chkFosil").is(':checked') ? true : false;
+
+        console.log("_sin_fecha: " + _sin_fecha)
+        console.log("_con_fosil: " + _con_fosil)
 
         $('#tuto_mapa_occ').loading({
             stoppable: true
@@ -1861,12 +1873,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         //limpia el mapa antes de generar un nuevo análisis
         // clearMapOcc()
 
-
-        $.ajax({
-               url: _url_zacatuche + "/niche/especie/getGridSpeciesTaxon",
-               type: 'post',
-               dataType: "json",
-               data: {
+        var data = {
                    "name": "k",
                    "target_taxons": taxones,
                    "idtime": milliseconds,
@@ -1876,112 +1883,273 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                    "sfosil": _con_fosil,
                    "grid_res": grid_res,
                    "region": region
-               },
-               beforeSend: function (xhr) {
-                   xhr.setRequestHeader('X-Test-Header', 'test-value');
-                   xhr.setRequestHeader("Accept", "text/json");
-                   changeRegionView(region);
-               },
-               success: function (resp) {
+               }
 
-                   $('#tuto_mapa_occ').loading('stop');
-                   $("#specie_next").css('visibility', 'visible');
-                   $("#specie_next").show("slow");
-
-                   // inicializa variables para eliminar celdas
-                   _DELETE_STATE_CELLS = false;
-                   _excludedcells = []
-                    $("#deletePointsButton").css("backgroundColor", "#fff");
+        fetch(_url_zacatuche + "/niche/especie/getGridSpeciesTaxon", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(resp => resp.json())
+        .then(resp => {
 
 
-                   _data_sp_occ = resp.data
-                   // asigna una referencia global para tener el resultado de la útima petición
-                   // _data_sp_occ = data_sp
+           $('#tuto_mapa_occ').loading('stop');
+           $("#specie_next").css('visibility', 'visible');
+           $("#specie_next").show("slow");
 
-                   var num_cell_occ = resp.data.length
-                   var num_occ = 0
+           // inicializa variables para eliminar celdas
+           _DELETE_STATE_CELLS = false;
+           _excludedcells = []
+            $("#deletePointsButton").css("backgroundColor", "#fff");
 
-                   _data_sp_occ.forEach(function(item){
-                       num_occ += parseInt(item["occ"])
-                   })
-                   
-                   console.log(_data_sp_occ)
-                   console.log("num_cell_occ: " + num_cell_occ)
-                   console.log("num_occ: " + num_occ)
 
-                   // rellena cuadro de resumen
-                   _fillSpeciesData(num_occ, num_cell_occ);
+           _data_sp_occ = resp.data
+           // asigna una referencia global para tener el resultado de la útima petición
+           // _data_sp_occ = data_sp
 
-                   
-                    // manda mensaje cuando no hay registro de especies en celdas
-                    if (num_cell_occ === 0) {
-                       _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
-                       $("#specie_next").css('visibility', 'hidden');
-                       
-                       //TODO: agregar texto en ingles
-                       _toastr.info("La especie no tiene registros");
-                       // _clearFieldsSP();
-                       return;
+           var num_cell_occ = resp.data.length
+           var num_occ = 0
+
+           _data_sp_occ.forEach(function(item){
+               num_occ += parseInt(item["occ"])
+           })
+           
+           console.log(_data_sp_occ)
+           console.log("num_cell_occ: " + num_cell_occ)
+           console.log("num_occ: " + num_occ)
+
+           // rellena cuadro de resumen
+           _fillSpeciesData(num_occ, num_cell_occ);
+
+           
+            // manda mensaje cuando no hay registro de especies en celdas
+            if (num_cell_occ === 0) {
+               _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
+               $("#specie_next").css('visibility', 'hidden');
+               
+               //TODO: agregar texto en ingles
+               _toastr.info("La especie no tiene registros");
+               // _clearFieldsSP();
+               return;
+            }
+
+            colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+
+            clearAllLayers();
+            
+            if (_tipo_modulo === _MODULO_NICHO) {
+
+
+                var data = {
+                       "target_taxons": taxones,
+                       "liminf": _lin_inf,
+                       "limsup": _lin_sup,
+                       "sfecha": _sin_fecha,
+                       "sfosil": _con_fosil,
+                       "grid_res": grid_res,
+                       "region": region
+                   }
+
+                fetch(_url_zacatuche + "/niche/especie/getCountByYear", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(resp => resp.json())
+                .then(resp => {
+
+                    if(resp.ok == true){
+
+                       var data = resp.data
+                       // console.log(data)
+
+                       _histogram_module.createBarChartFecha(data);
+
                     }
 
-                    
+                })
+                .catch(err => {
 
-                    colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
-
-                    clearAllLayers();
-
-
-                    
-                    
-                    if (_tipo_modulo === _MODULO_NICHO) {
-
-                        $.ajax({
-                           url: _url_zacatuche + "/niche/especie/getCountByYear",
-                           type: 'post',
-                           dataType: "json",
-                           data: {
-                               "target_taxons": taxones,
-                               "liminf": _lin_inf,
-                               "limsup": _lin_sup,
-                               "sfecha": _sin_fecha,
-                               "sfosil": _con_fosil,
-                               "grid_res": grid_res,
-                               "region": region
-                           },
-                           success: function (resp) {
-
-                               if(resp.ok == true){
-
-                                   var data = resp.data
-                                   // console.log(data)
-
-                                   _histogram_module.createBarChartFecha(data);
-
-                               }
-
-                           },
-                           error: function (jqXHR, textStatus, errorThrown) {
-                               _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-                               _VERBOSE ? console.log(errorThrown) : _VERBOSE;
-                               _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
-                           }
-
-                        });
-                       
-                    }
-
-
-               },
-               error: function (jqXHR, textStatus, errorThrown) {
                    _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
                    _VERBOSE ? console.log(errorThrown) : _VERBOSE;
                    _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+                   
+                });
 
-                   $('#tuto_mapa_occ').loading('stop');
-                   $("#specie_next").css('visibility', 'hidden');
-               }
 
-           });
+                // $.ajax({
+                //    url: _url_zacatuche + "/niche/especie/getCountByYear",
+                //    type: 'post',
+                //    dataType: "json",
+                //    data: {
+                //        "target_taxons": taxones,
+                //        "liminf": _lin_inf,
+                //        "limsup": _lin_sup,
+                //        "sfecha": _sin_fecha,
+                //        "sfosil": _con_fosil,
+                //        "grid_res": grid_res,
+                //        "region": region
+                //    },
+                //    success: function (resp) {
+
+                //        if(resp.ok == true){
+
+                //            var data = resp.data
+                //            // console.log(data)
+
+                //            _histogram_module.createBarChartFecha(data);
+
+                //        }
+
+                //    },
+                //    error: function (jqXHR, textStatus, errorThrown) {
+                //        _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                //        _VERBOSE ? console.log(errorThrown) : _VERBOSE;
+                //        _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+                //    }
+
+                // });
+               
+            }
+
+        })
+        .catch(err => {
+            
+           _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+           _VERBOSE ? console.log(errorThrown) : _VERBOSE;
+           _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+
+           $('#tuto_mapa_occ').loading('stop');
+           $("#specie_next").css('visibility', 'hidden');
+
+        });
+
+
+        // $.ajax({
+        //        url: _url_zacatuche + "/niche/especie/getGridSpeciesTaxon",
+        //        type: 'post',
+        //        dataType: "json",
+        //        data: {
+        //            "name": "k",
+        //            "target_taxons": taxones,
+        //            "idtime": milliseconds,
+        //            "liminf": _lin_inf,
+        //            "limsup": _lin_sup,
+        //            "sfecha": _sin_fecha,
+        //            "sfosil": _con_fosil,
+        //            "grid_res": grid_res,
+        //            "region": region
+        //        },
+        //        beforeSend: function (xhr) {
+        //            xhr.setRequestHeader('X-Test-Header', 'test-value');
+        //            xhr.setRequestHeader("Accept", "text/json");
+        //            changeRegionView(region);
+        //        },
+        //        success: function (resp) {
+
+        //            $('#tuto_mapa_occ').loading('stop');
+        //            $("#specie_next").css('visibility', 'visible');
+        //            $("#specie_next").show("slow");
+
+        //            // inicializa variables para eliminar celdas
+        //            _DELETE_STATE_CELLS = false;
+        //            _excludedcells = []
+        //             $("#deletePointsButton").css("backgroundColor", "#fff");
+
+
+        //            _data_sp_occ = resp.data
+        //            // asigna una referencia global para tener el resultado de la útima petición
+        //            // _data_sp_occ = data_sp
+
+        //            var num_cell_occ = resp.data.length
+        //            var num_occ = 0
+
+        //            _data_sp_occ.forEach(function(item){
+        //                num_occ += parseInt(item["occ"])
+        //            })
+                   
+        //            console.log(_data_sp_occ)
+        //            console.log("num_cell_occ: " + num_cell_occ)
+        //            console.log("num_occ: " + num_occ)
+
+        //            // rellena cuadro de resumen
+        //            _fillSpeciesData(num_occ, num_cell_occ);
+
+                   
+        //             // manda mensaje cuando no hay registro de especies en celdas
+        //             if (num_cell_occ === 0) {
+        //                _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
+        //                $("#specie_next").css('visibility', 'hidden');
+                       
+        //                //TODO: agregar texto en ingles
+        //                _toastr.info("La especie no tiene registros");
+        //                // _clearFieldsSP();
+        //                return;
+        //             }
+
+                    
+
+        //             colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+
+        //             clearAllLayers();
+
+
+                    
+                    
+        //             if (_tipo_modulo === _MODULO_NICHO) {
+
+        //                 $.ajax({
+        //                    url: _url_zacatuche + "/niche/especie/getCountByYear",
+        //                    type: 'post',
+        //                    dataType: "json",
+        //                    data: {
+        //                        "target_taxons": taxones,
+        //                        "liminf": _lin_inf,
+        //                        "limsup": _lin_sup,
+        //                        "sfecha": _sin_fecha,
+        //                        "sfosil": _con_fosil,
+        //                        "grid_res": grid_res,
+        //                        "region": region
+        //                    },
+        //                    success: function (resp) {
+
+        //                        if(resp.ok == true){
+
+        //                            var data = resp.data
+        //                            // console.log(data)
+
+        //                            _histogram_module.createBarChartFecha(data);
+
+        //                        }
+
+        //                    },
+        //                    error: function (jqXHR, textStatus, errorThrown) {
+        //                        _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+        //                        _VERBOSE ? console.log(errorThrown) : _VERBOSE;
+        //                        _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+        //                    }
+
+        //                 });
+                       
+        //             }
+
+
+        //        },
+        //        error: function (jqXHR, textStatus, errorThrown) {
+        //            _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+        //            _VERBOSE ? console.log(errorThrown) : _VERBOSE;
+        //            _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+
+        //            $('#tuto_mapa_occ').loading('stop');
+        //            $("#specie_next").css('visibility', 'hidden');
+        //        }
+
+        //    });
 
 
 
