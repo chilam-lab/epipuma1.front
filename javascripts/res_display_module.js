@@ -2649,6 +2649,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         if (json_data.hasbio === false && json_data.hasraster === false && json_data.apriori === undefined && json_data.mapa_prob === undefined) {
             _VERBOSE ? console.log("No data") : _VERBOSE
+            $('#map').loading('stop');
             return "";
         }
 
