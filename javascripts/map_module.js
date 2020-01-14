@@ -1870,20 +1870,33 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             stoppable: true
         });
 
+        if (_tipo_modulo === _MODULO_NICHO) {
+
+            console.log("entra!!!")
+
+            $('#hist_fecha_container').loading({
+                stoppable: true
+            });
+
+        }
+
+        
+
         //limpia el mapa antes de generar un nuevo análisis
         // clearMapOcc()
 
         var data = {
-                   "name": "k",
-                   "target_taxons": taxones,
-                   "idtime": milliseconds,
-                   "liminf": _lin_inf,
-                   "limsup": _lin_sup,
-                   "sfecha": _sin_fecha,
-                   "sfosil": _con_fosil,
-                   "grid_res": grid_res,
-                   "region": region
-               }
+           "name": "k",
+           "target_taxons": taxones,
+           "idtime": milliseconds,
+           "liminf": _lin_inf,
+           "limsup": _lin_sup,
+           "sfecha": _sin_fecha,
+           "sfosil": _con_fosil,
+           "grid_res": grid_res,
+           "region": region
+        }
+
 
         fetch(_url_zacatuche + "/niche/especie/getGridSpeciesTaxon", {
             method: "POST",
@@ -1953,6 +1966,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                        "region": region
                    }
 
+
+                // $('#hist_fecha_container').loading({
+                //     stoppable: true
+                // });
+
                 fetch(_url_zacatuche + "/niche/especie/getCountByYear", {
                     method: "POST",
                     body: JSON.stringify(data),
@@ -1966,7 +1984,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     if(resp.ok == true){
 
                        var data = resp.data
-                       // console.log(data)
+                       console.log(data)
+
+                       $('#hist_fecha_container').loading('stop');
 
                        _histogram_module.createBarChartFecha(data);
 
@@ -1991,6 +2011,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
            _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
 
            $('#tuto_mapa_occ').loading('stop');
+           $('#hist_fecha_container').loading('stop');
            $("#specie_next").css('visibility', 'hidden');
 
         });

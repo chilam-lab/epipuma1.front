@@ -765,11 +765,15 @@ var histogram_module = (function (verbose) {
 
         var colectas = [];
         var reg_sfecha = 0;
+        var reg_fosil = 0;
 
         $.each(data, function (index, item) {
 
-            if (item.aniocolecta === 9999) {
+            if (item.aniocolecta === 9999 && item.isfosil === 0) {
                 reg_sfecha = parseInt(item.occ)
+            }
+            else if (item.aniocolecta === 9999 && item.isfosil === 1) {
+                reg_fosil = parseInt(item.occ)
             }
             else{
                 colectas.push({
@@ -930,6 +934,27 @@ var histogram_module = (function (verbose) {
             .style("font-size", "10px")
             .style("text-anchor", "end")
             .text(reg_sfecha);
+
+
+        svg.append("text")
+            .attr("id", "hist_record_fosil")
+            .attr("y", 75)
+            .attr("x", 270)
+            .attr("dy", ".71em")
+            .style("font-size", "10px")
+            .style("text-anchor", "end")
+            // .text(_iTrans.prop('lb_reg_fecha') + ": ");
+            .text("fosiles: ");
+
+
+        svg.append("text")
+            .attr("id", "hist_record_number_fosil")
+            .attr("y", 75)
+            .attr("x", 290)
+            .attr("dy", ".71em")
+            .style("font-size", "10px")
+            .style("text-anchor", "end")
+            .text(reg_fosil);
 
 
 
