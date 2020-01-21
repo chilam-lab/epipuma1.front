@@ -548,10 +548,15 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
                         name_sp = d.generovalido + " " + d.especieepiteto
                     }
                     else{
+                        // console.log(d)
+
+                        var label = d.label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+
                         var range = d.tag.split(":")
-                        var inf = parseFloat(range[0]).toFixed(2)
-                        var sup = parseFloat(range[1]).toFixed(2)
-                        name_sp = _iTrans.prop("a_item_" + d.layer) + " " + inf + ":" + sup
+                        var inf = parseFloat(range[0]).toFixed(2) * parseFloat(d.coeficiente)
+                        var sup = parseFloat(range[1]).toFixed(2) * parseFloat(d.coeficiente)
+
+                        name_sp = _iTrans.prop(label) + " " + inf + " " + d.unidad + " : " + sup + " " + d.unidad
                     }
 
                     div_tip.html(
