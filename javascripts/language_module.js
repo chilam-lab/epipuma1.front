@@ -1217,7 +1217,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p16'),
-                            content: $.i18n.prop('label_esp_p17') + '<br><img style="width:100%" alt="Responsive image" src="images/img_reg.png">'
+                            content: $.i18n.prop('label_esp_p17') + '<br><img style="width:100%" alt="Responsive image" src="images/img_reg2.png">'
                         }
                     },
                     {
