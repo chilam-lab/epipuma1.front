@@ -540,10 +540,16 @@ var table_module = (function(verbose) {
                         name_s =  _json.nodes[val.source].generovalido + " " + _json.nodes[val.source].especieepiteto
                     }
                     else{
-                        var infimo = _json.nodes[val.source].tag.split(':')[0];
-                        var supremo = _json.nodes[val.source].tag.split(':')[1];
 
-                        name_s = _iTrans.prop("a_item_" + _json.nodes[val.source].layer) + " (" + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2) + ")";
+
+                        var label = _json.nodes[val.source].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                        // console.log(_json.nodes[val.source])
+
+                        var infimo = parseFloat(_json.nodes[val.source].tag.split(':')[0]) * parseFloat(_json.nodes[val.source].coeficiente)  + " " + _json.nodes[val.source].unidad;
+                        var supremo = parseFloat(_json.nodes[val.source].tag.split(':')[1]) * parseFloat(_json.nodes[val.source].coeficiente)  + " " + _json.nodes[val.source].unidad;
+
+                        name_s = _iTrans.prop(label) + " (" + parseFloat(infimo).toFixed(2) + " " + _json.nodes[val.source].unidad + " : " + parseFloat(supremo).toFixed(2) + " " + _json.nodes[val.source].unidad +  ")";
+
                     }
 
                     if(_json.nodes[val.target] === undefined)
@@ -553,10 +559,15 @@ var table_module = (function(verbose) {
                         name_t = _json.nodes[val.target].generovalido + " " + _json.nodes[val.target].especieepiteto
                     }
                     else{
-                        var infimo = _json.nodes[val.target].tag.split(':')[0];
-                        var supremo = _json.nodes[val.target].tag.split(':')[1];
 
-                        name_t = _iTrans.prop("a_item_" + _json.nodes[val.target].layer) + " (" + parseFloat(infimo).toFixed(2) + ":" + parseFloat(supremo).toFixed(2) + ")";
+                        var label = _json.nodes[val.target].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                        // console.log(_json.nodes[val.target])
+
+                        var infimo = parseFloat(_json.nodes[val.target].tag.split(':')[0]) * parseFloat(_json.nodes[val.target].coeficiente);
+                        var supremo = parseFloat(_json.nodes[val.target].tag.split(':')[1]) * parseFloat(_json.nodes[val.target].coeficiente);
+
+                        name_t = _iTrans.prop(label) + " (" + parseFloat(infimo).toFixed(2) + " " + _json.nodes[val.target].unidad + " : " + parseFloat(supremo).toFixed(2) + " " + _json.nodes[val.target].unidad +  ")";
+
                     }
 
                     item_list.push(name_s);
