@@ -1412,3 +1412,12 @@ button.link-comunidad {
     visibility: visible;
     opacity: 1;
 }
+
+
+.margin-bottom-15{
+    margin-bottom: 15px !important;
+}
+
+.margin-bottom-30: {
+    margin-bottom: 30px !important;
+}

@@ -4,92 +4,95 @@
  *
  * @namespace res_display_net_module
  */
-var res_display_net_module = (function (verbose, url_zacatuche) {
+ var res_display_net_module = (function (verbose, url_zacatuche) {
 
-    var _url_zacatuche = url_zacatuche;
+     var _url_zacatuche = url_zacatuche;
 
-    var _VERBOSE = verbose;
-    
-    var _TYPE_BIO = 0;
+     var _VERBOSE = verbose;
 
-    var _variable_module_net, _language_module_net, _map_module_net, _net_module, _histogram_module_net, _table_module_net, _utils_module;
-    var _footprint_region;
+     var _TYPE_BIO = 0;
 
-    var iTrans;
+     var _variable_module_net, _language_module_net, _map_module_net, _net_module, _histogram_module_net, _table_module_net, _utils_module;
+     var _footprint_region;
 
-    var _subgroups;
-    var _subgroups_s;
-    var _subgroups_t;
+     var iTrans;
 
-    var _idFilterGroup;
-    var _min_occ;
-    var _grid_res;
+     var _subgroups;
+     var _subgroups_s;
+     var _subgroups_t;
 
-    var _toastr = toastr;
+     var _idFilterGroup;
+     var _min_occ;
+     var _grid_res;
+     var _fossil;
+     var _rangofechas;
+     var _chkfecha;
 
-    var _associativeArray, _arrayLinks, _json_nodes;
+     var _toastr = toastr;
 
-    var _TEST;
+     var _associativeArray, _arrayLinks, _json_nodes;
 
-    var _first_map = true;
+     var _TEST;
 
-    var _tbl_net = false;
+     var _first_map = true;
 
-    var _ids_componentes_var;
+     var _tbl_net = false;
 
-    var _graph_component, _hist_component, _list_component;
+     var _ids_componentes_var;
 
-    var _legend_groups = [];
+     var _graph_component, _hist_component, _list_component;
 
-    var _reino_campos = {
-        "reino": "reinovalido",
-        "kingdom": "reinovalido",
-        "phylum": "phylumdivisionvalido",
-        "clase": "clasevalida",
-        "class": "clasevalida",
-        "orden": "ordenvalido",
-        "order": "ordenvalido",
-        "familia": "familiavalida",
-        "family": "familiavalida",
-        "genero": "generovalido",
-        "género": "generovalido",
-        "genus": "generovalido",
-        "especie": "especievalidabusqueda",
-        "species": "especievalidabusqueda"
-    };
+     var _legend_groups = [];
 
-    var map_abio = new Map()
-    map_abio.set(1, "type");
-    map_abio.set(2, "layer");
-    map_abio.set(3, "bid");
+     var _reino_campos = {
+         "reino": "reinovalido",
+         "kingdom": "reinovalido",
+         "phylum": "phylumdivisionvalido",
+         "clase": "clasevalida",
+         "class": "clasevalida",
+         "orden": "ordenvalido",
+         "order": "ordenvalido",
+         "familia": "familiavalida",
+         "family": "familiavalida",
+         "genero": "generovalido",
+         "género": "generovalido",
+         "genus": "generovalido",
+         "especie": "especievalidabusqueda",
+         "species": "especievalidabusqueda"
+     };
 
-    var map_taxon = new Map()
-    map_taxon.set("reino", "kingdom");
-    map_taxon.set("kingdom", "kingdom");
-    map_taxon.set("phylum", "phylum");
-    map_taxon.set("clase", "class");
-    map_taxon.set("class", "class");
-    map_taxon.set("orden", "order");
-    map_taxon.set("order", "order");
-    map_taxon.set("familia", "family");
-    map_taxon.set("family", "family");
-    map_taxon.set("genero", "genus");
-    map_taxon.set("género", "genus");
-    map_taxon.set("genus", "genus");
-    map_taxon.set("especie", "species");
-    map_taxon.set("species", "species");
+     var map_abio = new Map()
+     map_abio.set(1, "type");
+     map_abio.set(2, "layer");
+     map_abio.set(3, "bid");
 
-    var group_level_biotic = "species";
-    var group_level_abiotic = "bid";
+     var map_taxon = new Map()
+     map_taxon.set("reino", "kingdom");
+     map_taxon.set("kingdom", "kingdom");
+     map_taxon.set("phylum", "phylum");
+     map_taxon.set("clase", "class");
+     map_taxon.set("class", "class");
+     map_taxon.set("orden", "order");
+     map_taxon.set("order", "order");
+     map_taxon.set("familia", "family");
+     map_taxon.set("family", "family");
+     map_taxon.set("genero", "genus");
+     map_taxon.set("género", "genus");
+     map_taxon.set("genus", "genus");
+     map_taxon.set("especie", "species");
+     map_taxon.set("species", "species");
 
-    var map_link_dbtaxon = new Map()
-    map_link_dbtaxon.set("reinovalido", "kingdom");
-    map_link_dbtaxon.set("phylumdivisionvalido", "phylum");
-    map_link_dbtaxon.set("clasevalida", "class");
-    map_link_dbtaxon.set("ordenvalido", "order");
-    map_link_dbtaxon.set("familiavalida", "family");
-    map_link_dbtaxon.set("generovalido", "genus");
-    map_link_dbtaxon.set("especieepiteto", "species");
+     var group_level_biotic = "species";
+     var group_level_abiotic = "bid";
+
+     var map_link_dbtaxon = new Map()
+     map_link_dbtaxon.set("reinovalido", "kingdom");
+     map_link_dbtaxon.set("phylumdivisionvalido", "phylum");
+     map_link_dbtaxon.set("clasevalida", "class");
+     map_link_dbtaxon.set("ordenvalido", "order");
+     map_link_dbtaxon.set("familiavalida", "family");
+     map_link_dbtaxon.set("generovalido", "genus");
+     map_link_dbtaxon.set("especieepiteto", "species");
 
 
 
@@ -108,9 +111,9 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {integer} tipo_modulo - Identificador de la plataforma que se esta utilizando 0 - nicho ecológico y 1 comunidad ecológica
      * @param {boolean} test - Bandera para trabajar con en modo de prueba o modo desarrollo. El modo prueba utiliza archivos locales para generar el análisis de comunidad ecológica
      */
-    function _initilizeElementsForDisplay(variable_module, language_module, map_module, ids_comp_variables, tipo_modulo, test) {
+     function _initilizeElementsForDisplay(variable_module, language_module, map_module, ids_comp_variables, tipo_modulo, test) {
 
-        _VERBOSE ? console.log("_initilizeElementsForDisplay") : _VERBOSE;
+         _VERBOSE ? console.log("_initilizeElementsForDisplay") : _VERBOSE;
 
         // para realizar pruebas de red sin realizar selección de variables
         _TEST = test;
@@ -164,9 +167,9 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
             this.href = "data:text/csv;charset=UTF-8," + encodedUri;
 
 //            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(net_info)], {type: 'text/csv;charset=utf-8;'}));
-            $("#modalMail").modal("hide");
+$("#modalMail").modal("hide");
 
-        });
+});
 
 
 
@@ -182,7 +185,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                 // console.log(this);
 
                 if(id_selected !== this.id){
-                    
+
                     var div_parent = $("#"+this.id).parent().parent()
                     div_parent.removeClass("filter_container")
                     div_parent.find("input:text").prop('disabled',true)
@@ -227,10 +230,10 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {integer} tipo_modulo - Identificador de la plataforma que se esta utilizando 0 - nicho ecológico y 1 comunidad ecológica
      * @param {boolean} test - Bandera para trabajar con en modo de prueba o modo desarrollo. El modo prueba utiliza archivos locales para generar el análisis de comunidad ecológica
      */
-    function startResNetDisplay(variable_module, language_module, map_module, ids_comp_variables, tipo_modulo, test) {
-        _VERBOSE ? console.log("startResNetDisplay") : _VERBOSE;
-        _initilizeElementsForDisplay(variable_module, language_module, map_module, ids_comp_variables, tipo_modulo, test);
-    }
+     function startResNetDisplay(variable_module, language_module, map_module, ids_comp_variables, tipo_modulo, test) {
+         _VERBOSE ? console.log("startResNetDisplay") : _VERBOSE;
+         _initilizeElementsForDisplay(variable_module, language_module, map_module, ids_comp_variables, tipo_modulo, test);
+     }
 
 
     // no se utiliza
@@ -254,18 +257,18 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {array} var_sel_array - Array con los grupos de variables seleccionados
      * @param {integer} grp_type - Identificador de la variable seleccionada
      */
-    function getFilters(var_sel_array, grp_type) {
+     function getFilters(var_sel_array, grp_type) {
 
-        _VERBOSE ? console.log("getFilters") : _VERBOSE;
+         _VERBOSE ? console.log("getFilters") : _VERBOSE;
 
-        _subgroups = var_sel_array;
-        var filters = [];
-        var side = grp_type;
+         _subgroups = var_sel_array;
+         var filters = [];
+         var side = grp_type;
 
-        _subgroups.forEach(function (grupo) {
+         _subgroups.forEach(function (grupo) {
 
-            _VERBOSE ? console.log(grupo) : _VERBOSE;
-            _idFilterGroup++;
+             _VERBOSE ? console.log(grupo) : _VERBOSE;
+             _idFilterGroup++;
 
             // se añade titulo para labels
             _legend_groups.push({"side": side, "tipo": grupo.type, "label": grupo.title, "idgrp": _idFilterGroup});
@@ -292,24 +295,24 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
 //                    _VERBOSE ? console.log(_reino_campos[temp_item_field]) : _VERBOSE;
 
-                   _VERBOSE ? console.log(temp_item_field) : _VERBOSE;
-                   _VERBOSE ? console.log(temp_item_value) : _VERBOSE;
-                   _VERBOSE ? console.log(temp_item_parent) : _VERBOSE;
+_VERBOSE ? console.log(temp_item_field) : _VERBOSE;
+_VERBOSE ? console.log(temp_item_value) : _VERBOSE;
+_VERBOSE ? console.log(temp_item_parent) : _VERBOSE;
 
-                    filters.push({
-                        'biotic': true,
-                        'level': group_level_biotic,
-                        'rank': map_taxon.get(temp_item_field),
-                        'value': temp_item_value,
-                        'type': itemGroup.type,
+filters.push({
+    'biotic': true,
+    'level': group_level_biotic,
+    'rank': map_taxon.get(temp_item_field),
+    'value': temp_item_value,
+    'type': itemGroup.type,
                         // 'field': _reino_campos[temp_item_field],
                         // 'parent': temp_item_parent,
                         "fGroupId": _idFilterGroup,
                         "grp": grp_type
                                 // 'level' : parseInt(itemGroup.level)
-                    });
+                            });
 
-                }
+}
                 // raster: bioclim, topo, elevacion y pendiente
                 else {
                     // if the type is not equal to 4 the item contains the parameter level
@@ -334,11 +337,11 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
         });
 
-        _VERBOSE ? console.log(filters) : _VERBOSE;
+         _VERBOSE ? console.log(filters) : _VERBOSE;
 
-        return filters;
+         return filters;
 
-    }
+     }
 
 
     /**
@@ -352,147 +355,110 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {array} t_filters - Array con los grupos de variables seleccionados en target
      * @param {integer} min_occ - Número mínimo de ocurrencias de una variable en nj necesarias para ser considerada en el análisis de comunidad ecológica
      */
-    function createLinkNodes(s_filters, t_filters, min_occ, grid_res_val, footprint_region) {
+     function createLinkNodes(s_filters, t_filters, min_occ, grid_res_val, footprint_region, rango_fechas, chkFecha, chkFosil) {
 
-        _VERBOSE ? console.log("createLinkNodes") : _VERBOSE;
+         _VERBOSE ? console.log("createLinkNodes") : _VERBOSE;
 
         // obtinene e numero minimo de interaciones entre las especies
         _min_occ = min_occ;
         _grid_res = grid_res_val;
         _footprint_region = footprint_region;
 
-        var hasBiosSource = false;
-        var hasRasterSource = false;
+        _fossil = chkFosil;
+        _rangofechas = rango_fechas;
+        _chkfecha = chkFecha;
 
-        var hasBiosTarget = false;
-        var hasRasterTarget = false;
+        var lin_inf = _rangofechas ? _rangofechas[0] : undefined;
+        var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
+        
 
-        if (_TEST) {
+        if (s_filters.length === 0 || t_filters.length === 0) {
 
-            _VERBOSE ? console.log("Testing...") : _VERBOSE;
-
-//            d3.json("/javascripts/nodes_test.json", function (error, json_file) {
-//                _json_nodes = json_file;
-//
-//                d3.json("/javascripts/links_test.json", function (error, json_temp) {
-//                    _arrayLinks = json_temp;
-//                    _createGraph(_arrayLinks, s_filters, t_filters);
-//
-//                });
-//
-//            });
-
-        } else {
-
-            if (s_filters.length === 0 || t_filters.length === 0) {
-
-                _toastr.warning(_iTrans.prop('lb_sin_filtros'));
-
-                return;
-
-            }
-
-            for (var i = 0; i < s_filters.length; i++) {
-                if (s_filters[i].type === _TYPE_BIO) {
-                    hasBiosSource = true;
-                } else {
-                    hasRasterSource = true;
-                }
-            }
-
-            for (var i = 0; i < t_filters.length; i++) {
-                if (t_filters[i].type === _TYPE_BIO) {
-                    hasBiosTarget = true;
-                } else {
-                    hasRasterTarget = true;
-                }
-            }
-
-
-//            var milliseconds = new Date().getTime();
-
-            d3.json(_url_zacatuche + "/niche/getTaxonsGroupNodes")
-                    .header("Content-Type", "application/json")
-                    .post(
-                            JSON.stringify({
-                                // qtype: "getNodes",
-                                source: s_filters,
-                                target: t_filters,
-                                // hasbiosource: hasBiosSource,
-                                // hasrastersource: hasRasterSource,
-                                // hasbiotarget: hasBiosTarget,
-                                // hasrastertarget: hasRasterTarget,
-                                min_occ: _min_occ,
-                                grid_res: _grid_res,
-                                footprint_region: _footprint_region
-
-                            }),
-                            function (error, resp) {
-
-                                if (error) {
-                                    console.log(error);
-                                    throw error;
-                                }
-
-                                var json = resp.data;
-
-                                console.log(json);
-
-                                _createNodeDictionary(json, s_filters, t_filters);
-
-
-                                // it ensures that the dictionary of nodes is created before the link list is recived.
-                                d3.json(_url_zacatuche + "/niche/getTaxonsGroupEdges")
-                                        .header("Content-Type", "application/json")
-                                        .post(
-                                                JSON.stringify({
-                                                    // qtype: "getEdges",
-                                                    source: s_filters,
-                                                    target: t_filters,
-                                                    // hasbiosource: hasBiosSource,
-                                                    // hasrastersource: hasRasterSource,
-                                                    // hasbiotarget: hasBiosTarget,
-                                                    // hasrastertarget: hasRasterTarget,
-                                                    // ep_th: 0.0,
-                                                    min_occ: _min_occ,
-                                                    grid_res: _grid_res,
-                                                    footprint_region: _footprint_region
-
-                                                }),
-                                                function (error, resp) {
-
-                                                    if (error)
-                                                        throw error;
-
-                                                    var json = resp.data;
-
-                                                    console.log(json)
-
-                                                    _createLinkDictionary(json);
-
-                                                    console.log(_associativeArray)
-
-                                                    console.log(_arrayLinks);
-
-                                                    // if(_arrayLinks.length > 10000){
-                                                    //   _toastr.warning("Numero de aristas exceden memoria del explorador, intente un relación mas pequeña");
-                                                    //   return;
-                                                    // }
-
-                                                    // max_eps = d3.max(_arrayLinks.map(function (d) {
-                                                    //     return d.value;
-                                                    // }));
-                                                    // min_eps = d3.min(_arrayLinks.map(function (d) {
-                                                    //     return d.value;
-                                                    // }));
-
-                                                    _createGraph(_arrayLinks, s_filters, t_filters);
-
-                                                });
-
-                            });
+            _toastr.warning(_iTrans.prop('lb_sin_filtros'));
+            return;
 
         }
+
+
+        d3.json(_url_zacatuche + "/niche/getTaxonsGroupNodes")
+        .header("Content-Type", "application/json")
+        .post(
+            JSON.stringify({
+                source: s_filters,
+                target: t_filters,
+                min_occ: _min_occ,
+                grid_res: _grid_res,
+                footprint_region: _footprint_region,
+                fosil: chkFosil,
+                date: chkFecha,
+                lim_inf: lin_inf,
+                lim_sup: lin_sup
+
+            }),
+            function (error, resp) {
+
+                if (error) {
+                    console.log(error);
+                    throw error;
+                }
+
+                var json = resp.data;
+
+                console.log(json);
+
+                _createNodeDictionary(json, s_filters, t_filters);
+
+
+                // it ensures that the dictionary of nodes is created before the link list is recived.
+                d3.json(_url_zacatuche + "/niche/getTaxonsGroupEdges")
+                .header("Content-Type", "application/json")
+                .post(
+                    JSON.stringify({
+                        source: s_filters,
+                        target: t_filters,
+                        min_occ: _min_occ,
+                        grid_res: _grid_res,
+                        footprint_region: _footprint_region,
+                        fosil: chkFosil,
+                        date: chkFecha,
+                        lim_inf: lin_inf,
+                        lim_sup: lin_sup
+
+                    }),
+                    function (error, resp) {
+
+                        if (error)
+                            throw error;
+
+                        var json = resp.data;
+
+                        console.log(json)
+
+                        _createLinkDictionary(json);
+
+                        console.log(_associativeArray)
+
+                        console.log(_arrayLinks);
+
+                        // if(_arrayLinks.length > 10000){
+                        //   _toastr.warning("Numero de aristas exceden memoria del explorador, intente un relación mas pequeña");
+                        //   return;
+                        // }
+
+                        // max_eps = d3.max(_arrayLinks.map(function (d) {
+                        //     return d.value;
+                        // }));
+                        // min_eps = d3.min(_arrayLinks.map(function (d) {
+                        //     return d.value;
+                        // }));
+
+                        _createGraph(_arrayLinks, s_filters, t_filters);
+
+                    });
+
+        });
+
+        
 
     }
 
@@ -509,17 +475,17 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {array} s_filters - Array con los grupos de variables seleccionados en source
      * @param {array} t_filters - Array con los grupos de variables seleccionados en target
      */
-    function _createNodeDictionary(json, s_filters, t_filters) {
+     function _createNodeDictionary(json, s_filters, t_filters) {
 
-        _VERBOSE ? console.log("_createNodeDictionary") : _VERBOSE;
+         _VERBOSE ? console.log("_createNodeDictionary") : _VERBOSE;
 
-        _associativeArray = {};
+         _associativeArray = {};
 
-        var map_node = d3.map([]);
+         var map_node = d3.map([]);
 
-        $.each(json, function (i, item) {
+         $.each(json, function (i, item) {
 
-            var idsp = _utils_module.hashCode(
+             var idsp = _utils_module.hashCode(
                 //item.reinovalido +
               //item.phylumdivisionvalido + 
               //item.clasevalida + 
@@ -567,10 +533,10 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * 
      * @param {array} json_file - Array con el conjunto de enlaces que intervienen en el análisis de comunidad ecológica
      */
-    function _createLinkDictionary(json_file) {
+     function _createLinkDictionary(json_file) {
 
-        _VERBOSE ? console.log("_createLinkDictionary") : _VERBOSE;
-        _arrayLinks = [];
+         _VERBOSE ? console.log("_createLinkDictionary") : _VERBOSE;
+         _arrayLinks = [];
 
         // replacing node id with the index of the node array
         $.each(json_file, function (i, item) {
@@ -638,12 +604,12 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {array} s_filters - Array con los grupos de variables seleccionados en source
      * @param {array} t_filters - Array con los grupos de variables seleccionados en target
      */
-    function _createGraph(arrayTemp, s_filters, t_filters) {
+     function _createGraph(arrayTemp, s_filters, t_filters) {
 
-        _VERBOSE ? console.log("_createGraph") : _VERBOSE;
+         _VERBOSE ? console.log("_createGraph") : _VERBOSE;
 
-        $("#graph").empty();
-        $("#hist").empty();
+         $("#graph").empty();
+         $("#hist").empty();
 
         // document.getElementById("tbl_hist_comunidad").style.display = "inline";
         // document.getElementById("map_panel").style.display = "inline";
@@ -715,21 +681,21 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * 
      * @param {array} json - Array con los nodos y enlaces resultantes del análisis de comunidad ecológica
      */
-    function _configFilters(json) {
+     function _configFilters(json) {
 
-        _VERBOSE ? console.log("_configFilters") : _VERBOSE;
+         _VERBOSE ? console.log("_configFilters") : _VERBOSE;
 
-        self.hist_load = false
+         self.hist_load = false
 
-        self.max_num_link = self.MAX_LINKS
+         self.max_num_link = self.MAX_LINKS
 
-        self.nestByR = d3.nest().key(function (d) {
-            return d.value
-        });
+         self.nestByR = d3.nest().key(function (d) {
+             return d.value
+         });
 
-        self.epsilon_beans = d3.range(1, self.NUM_BEANS, 1);
+         self.epsilon_beans = d3.range(1, self.NUM_BEANS, 1);
 
-        self.ep_th = 2.0;
+         self.ep_th = 2.0;
 
         // console.log(json.links);
         // console.log(json.links.length);
@@ -843,15 +809,15 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @memberof! res_display_net_module
      * 
      */
-    self.renderAll = function () {
+     self.renderAll = function () {
 
-        _VERBOSE ? console.log("renderAll") : _VERBOSE;
+         _VERBOSE ? console.log("renderAll") : _VERBOSE;
 
-        _graph_component.each(_render);
-        _hist_component.each(_render);
-        _list_component.each(_render);
+         _graph_component.each(_render);
+         _hist_component.each(_render);
+         _list_component.each(_render);
 
-    }
+     }
 
 
     /**
@@ -863,12 +829,12 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * 
      * @param {object} method - Método que es necesario para regenerar la información de cada módulo
      */
-    function _render(method) {
+     function _render(method) {
 
-        _VERBOSE ? console.log("_render") : _VERBOSE;
-        d3.select(this).call(method);
+         _VERBOSE ? console.log("_render") : _VERBOSE;
+         d3.select(this).call(method);
 
-    }
+     }
 
     /**
      * Éste método asigna un índice a cada conjunto de variables seleccionado, tanto en source como en target.
@@ -881,14 +847,14 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @param {array} s_filters - Array con los grupos de variables seleccionados en source
      * @param {array} t_filters - Array con los grupos de variables seleccionados en target
      */
-    function _getColorFilterGroups(json, s_filters, t_filters) {
+     function _getColorFilterGroups(json, s_filters, t_filters) {
 
-        _VERBOSE ? console.log("_getColorFilterGroups") : _VERBOSE;
+         _VERBOSE ? console.log("_getColorFilterGroups") : _VERBOSE;
 
-        var filters = s_filters.concat(t_filters);
-        _VERBOSE ? console.log(filters) : _VERBOSE;
+         var filters = s_filters.concat(t_filters);
+         _VERBOSE ? console.log(filters) : _VERBOSE;
 
-        _VERBOSE ? console.log(json) : _VERBOSE;
+         _VERBOSE ? console.log(json) : _VERBOSE;
        // _VERBOSE ? console.log(s_filters) : _VERBOSE;
        _VERBOSE ? console.log(filters) : _VERBOSE;
 
@@ -899,15 +865,15 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
        // console.log(map_link_dbtaxon.values())
 
 
-        $.each(filters, function (i, item) {
+       $.each(filters, function (i, item) {
 
-            
-            $.each(json, function (j, item) {
 
-                switch (filters[i].rank) {
+           $.each(json, function (j, item) {
 
-                    case map_link_dbtaxon.get("reinovalido"):
-                        if (json[j].reinovalido == filters[i].value) {
+               switch (filters[i].rank) {
+
+                   case map_link_dbtaxon.get("reinovalido"):
+                   if (json[j].reinovalido == filters[i].value) {
                             // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
                                 // json[j].stage = 6;
@@ -917,7 +883,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                             // }
                         }
                         break;
-                    case map_link_dbtaxon.get("phylumdivisionvalido"):
+                        case map_link_dbtaxon.get("phylumdivisionvalido"):
                         if (json[j].phylumdivisionvalido == filters[i].value) {
                             // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
@@ -928,7 +894,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                             // }
                         }
                         break;
-                    case map_link_dbtaxon.get("clasevalida"):
+                        case map_link_dbtaxon.get("clasevalida"):
 
                         if (json[j].clasevalida == filters[i].value) {
                             // if (!json[j].group) {
@@ -940,7 +906,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                             // }
                         }
                         break;
-                    case map_link_dbtaxon.get("ordenvalido"):
+                        case map_link_dbtaxon.get("ordenvalido"):
                         if (json[j].ordenvalido == filters[i].value) {
                             // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
@@ -951,7 +917,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                             // }
                         }
                         break;
-                    case map_link_dbtaxon.get("familiavalida"):
+                        case map_link_dbtaxon.get("familiavalida"):
                         if (json[j].familiavalida == filters[i].value) {
                             // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
@@ -962,7 +928,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                             // }
                         }
                         break;
-                    case map_link_dbtaxon.get("generovalido"):
+                        case map_link_dbtaxon.get("generovalido"):
                         if (json[j].generovalido == filters[i].value) {
 
                             // if (!json[j].group) {
@@ -975,12 +941,12 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                         }
                         break;
 
-                    case map_link_dbtaxon.get("especieepiteto"):
+                        case map_link_dbtaxon.get("especieepiteto"):
 
                          //console.log("*** Entro!!!")
 
 //                            if (json[j].label.split(" ")[1] == filters[i].value) {
-                        if ((json[j].generovalido + " " + json[j].especieepiteto) == filters[i].value) {
+    if ((json[j].generovalido + " " + json[j].especieepiteto) == filters[i].value) {
                             // if (!json[j].group) {
                                 json[j].group = filters[i].fGroupId;
                                 // json[j].stage = 0;
@@ -991,7 +957,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                         }
                         break;
 
-                    case "type":
+                        case "type":
                         if (parseInt(json[j].type) == filters[i].value) {
 
                             // _VERBOSE ? console.log(json_nodes[j].reinovalido) : _VERBOSE;
@@ -1003,7 +969,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                         
                         break;
 
-                    case "layer":
+                        case "layer":
                         if (json[j].layer == filters[i].value) {
 
                             // if (!json[j].group) {
@@ -1018,7 +984,7 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
                         // json[j].group = filters[i].fGroupId;
                         break;
 
-                    case "bid":
+                        case "bid":
                         if (json[j].bid == filters[i].value) {
 
                             // if (!json[j].group) {
@@ -1036,13 +1002,13 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
 
 
 
-                }
+                    }
 
-            });
+                });
 
-        });
+});
 
-    }
+}
 
 
     /**
@@ -1053,74 +1019,74 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @memberof! res_display_net_module
      * 
      */
-    function updateLabels() {
+     function updateLabels() {
 
-        _VERBOSE ? console.log("updateLabels display net") : _VERBOSE;
+         _VERBOSE ? console.log("updateLabels display net") : _VERBOSE;
 
-        _ids_componentes_var.forEach(function (item, index) {
+         _ids_componentes_var.forEach(function (item, index) {
 
-            $("#btn_variable_" + item).text($.i18n.prop('btn_variable') + " ");
-            $("#btn_variable_" + item).append('<span class="caret"></span>');
+             $("#btn_variable_" + item).text($.i18n.prop('btn_variable') + " ");
+             $("#btn_variable_" + item).append('<span class="caret"></span>');
 
-            $("#btn_variable_bioclim_" + item).text($.i18n.prop('btn_variable_bioclim') + " ");
-            $("#btn_variable_bioclim_" + item).append('<span class="caret"></span>');
+             $("#btn_variable_bioclim_" + item).text($.i18n.prop('btn_variable_bioclim') + " ");
+             $("#btn_variable_bioclim_" + item).append('<span class="caret"></span>');
 
-            $("#btn_topo_" + item).text($.i18n.prop('btn_topo') + " ");
-            $("#btn_topo_" + item).append('<span class="caret"></span>');
+             $("#btn_topo_" + item).text($.i18n.prop('btn_topo') + " ");
+             $("#btn_topo_" + item).append('<span class="caret"></span>');
 
-            $("#a_taxon_" + item).text($.i18n.prop('a_taxon'));
-            $("#a_clima_" + item).text($.i18n.prop('a_clima'));
-            $("#a_topo_" + item).text($.i18n.prop('a_topo'));
+             $("#a_taxon_" + item).text($.i18n.prop('a_taxon'));
+             $("#a_clima_" + item).text($.i18n.prop('a_clima'));
+             $("#a_topo_" + item).text($.i18n.prop('a_topo'));
 
 
-            $("#a_item_reino_" + item).text($.i18n.prop('a_item_reino'));
-            $("#a_item_phylum_" + item).text($.i18n.prop('a_item_phylum'));
-            $("#a_item_clase_" + item).text($.i18n.prop('a_item_clase'));
-            $("#a_item_orden_" + item).text($.i18n.prop('a_item_orden'));
-            $("#a_item_familia_" + item).text($.i18n.prop('a_item_familia'));
-            $("#a_item_genero_" + item).text($.i18n.prop('a_item_genero'));
+             $("#a_item_reino_" + item).text($.i18n.prop('a_item_reino'));
+             $("#a_item_phylum_" + item).text($.i18n.prop('a_item_phylum'));
+             $("#a_item_clase_" + item).text($.i18n.prop('a_item_clase'));
+             $("#a_item_orden_" + item).text($.i18n.prop('a_item_orden'));
+             $("#a_item_familia_" + item).text($.i18n.prop('a_item_familia'));
+             $("#a_item_genero_" + item).text($.i18n.prop('a_item_genero'));
 
-            $("#btn_variable_bioclim_time_" + item).text($.i18n.prop('btn_variable_bioclim_time') + " ");
-            $("#btn_variable_bioclim_time_" + item).append('<span class="caret"></span>');
+             $("#btn_variable_bioclim_time_" + item).text($.i18n.prop('btn_variable_bioclim_time') + " ");
+             $("#btn_variable_bioclim_time_" + item).append('<span class="caret"></span>');
 
-            $("#a_item_bio00_" + item).text($.i18n.prop('a_item_bio00'));
-            $("#a_item_bio01_" + item).text($.i18n.prop('a_item_bio01'));
-            $("#a_item_bio02_" + item).text($.i18n.prop('a_item_bio02'));
-            $("#a_item_bio03_" + item).text($.i18n.prop('a_item_bio03'));
-            $("#a_item_bio04_" + item).text($.i18n.prop('a_item_bio04'));
-            $("#a_item_bio05_" + item).text($.i18n.prop('a_item_bio05'));
-            $("#a_item_bio06_" + item).text($.i18n.prop('a_item_bio06'));
-            $("#a_item_bio07_" + item).text($.i18n.prop('a_item_bio07'));
-            $("#a_item_bio08_" + item).text($.i18n.prop('a_item_bio08'));
-            $("#a_item_bio09_" + item).text($.i18n.prop('a_item_bio09'));
-            $("#a_item_bio10_" + item).text($.i18n.prop('a_item_bio10'));
-            $("#a_item_bio11_" + item).text($.i18n.prop('a_item_bio11'));
-            $("#a_item_bio12_" + item).text($.i18n.prop('a_item_bio12'));
-            $("#a_item_bio13_" + item).text($.i18n.prop('a_item_bio13'));
-            $("#a_item_bio14_" + item).text($.i18n.prop('a_item_bio14'));
-            $("#a_item_bio15_" + item).text($.i18n.prop('a_item_bio15'));
-            $("#a_item_bio16_" + item).text($.i18n.prop('a_item_bio16'));
-            $("#a_item_bio17_" + item).text($.i18n.prop('a_item_bio17'));
-            $("#a_item_bio18_" + item).text($.i18n.prop('a_item_bio18'));
-            $("#a_item_bio19_" + item).text($.i18n.prop('a_item_bio19'));
+             $("#a_item_bio00_" + item).text($.i18n.prop('a_item_bio00'));
+             $("#a_item_bio01_" + item).text($.i18n.prop('a_item_bio01'));
+             $("#a_item_bio02_" + item).text($.i18n.prop('a_item_bio02'));
+             $("#a_item_bio03_" + item).text($.i18n.prop('a_item_bio03'));
+             $("#a_item_bio04_" + item).text($.i18n.prop('a_item_bio04'));
+             $("#a_item_bio05_" + item).text($.i18n.prop('a_item_bio05'));
+             $("#a_item_bio06_" + item).text($.i18n.prop('a_item_bio06'));
+             $("#a_item_bio07_" + item).text($.i18n.prop('a_item_bio07'));
+             $("#a_item_bio08_" + item).text($.i18n.prop('a_item_bio08'));
+             $("#a_item_bio09_" + item).text($.i18n.prop('a_item_bio09'));
+             $("#a_item_bio10_" + item).text($.i18n.prop('a_item_bio10'));
+             $("#a_item_bio11_" + item).text($.i18n.prop('a_item_bio11'));
+             $("#a_item_bio12_" + item).text($.i18n.prop('a_item_bio12'));
+             $("#a_item_bio13_" + item).text($.i18n.prop('a_item_bio13'));
+             $("#a_item_bio14_" + item).text($.i18n.prop('a_item_bio14'));
+             $("#a_item_bio15_" + item).text($.i18n.prop('a_item_bio15'));
+             $("#a_item_bio16_" + item).text($.i18n.prop('a_item_bio16'));
+             $("#a_item_bio17_" + item).text($.i18n.prop('a_item_bio17'));
+             $("#a_item_bio18_" + item).text($.i18n.prop('a_item_bio18'));
+             $("#a_item_bio19_" + item).text($.i18n.prop('a_item_bio19'));
 
-        })
+         })
 
-        $("#yaxis_net").text($.i18n.prop('lb_frecuencia'));
+         $("#yaxis_net").text($.i18n.prop('lb_frecuencia'));
 
-        $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
+         $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
 
-        $("#pararRed").attr("title", $.i18n.prop('lb_detener_net'));
-        $("#center_view_btn").attr("title", $.i18n.prop('lb_centrar_net'));
-        $("#input_text_search").attr("placeholder", $.i18n.prop('lb_buscar_sp'));
-        $("#export_btn").attr("title", $.i18n.prop('lb_exportar_net'));
+         $("#pararRed").attr("title", $.i18n.prop('lb_detener_net'));
+         $("#center_view_btn").attr("title", $.i18n.prop('lb_centrar_net'));
+         $("#input_text_search").attr("placeholder", $.i18n.prop('lb_buscar_sp'));
+         $("#export_btn").attr("title", $.i18n.prop('lb_exportar_net'));
 
-        $("#info_text_net").text($.i18n.prop('lb_info_net'));
-        $("#info_text_slider").text($.i18n.prop('lb_info_slider'));
-        $("#lb_info_slider_left").text($.i18n.prop('lb_info_slider_left'));
-        $("#lb_info_slider_right").text($.i18n.prop('lb_info_slider_right'));
-        
-        $("#title_barnet").text($.i18n.prop('titulo_hist_eps'));
+         $("#info_text_net").text($.i18n.prop('lb_info_net'));
+         $("#info_text_slider").text($.i18n.prop('lb_info_slider'));
+         $("#lb_info_slider_left").text($.i18n.prop('lb_info_slider_left'));
+         $("#lb_info_slider_right").text($.i18n.prop('lb_info_slider_right'));
+
+         $("#title_barnet").text($.i18n.prop('titulo_hist_eps'));
 
         // $("#lb_epsilon_hist_net").text($.i18n.prop('lb_epsilon_hist_net'));
         // $("#lb_epsilon_lizq_hist_net").text($.i18n.prop('lb_epsilon_lizq_hist_net'));
@@ -1153,22 +1119,22 @@ var res_display_net_module = (function (verbose, url_zacatuche) {
      * @memberof! res_display_module
      * 
      */
-    function callDisplayProcess(val_process) {
+     function callDisplayProcess(val_process) {
 
-        console.log("callDisplayProcess COMUNIDAD");
-        _net_module.showSpecieOcc();
-    }
+         console.log("callDisplayProcess COMUNIDAD");
+         _net_module.showSpecieOcc();
+     }
 
 
 
-    return{
-        startResNetDisplay: startResNetDisplay,
-        getFilters: getFilters,
-        createLinkNodes: createLinkNodes,
-        renderAll: renderAll,
-        updateLabels: updateLabels,
-        callDisplayProcess: callDisplayProcess,
-        cleanLegendGroups: cleanLegendGroups
-    }
+     return{
+         startResNetDisplay: startResNetDisplay,
+         getFilters: getFilters,
+         createLinkNodes: createLinkNodes,
+         renderAll: renderAll,
+         updateLabels: updateLabels,
+         callDisplayProcess: callDisplayProcess,
+         cleanLegendGroups: cleanLegendGroups
+     }
 
-});
+ });

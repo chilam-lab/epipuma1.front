@@ -69,6 +69,98 @@ var module_net = (function () {
             "progressBar": true
         };
 
+
+        $(function () {
+
+            var year = parseInt(new Date().getFullYear());
+            // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
+            year = Math.round(year / 10) * 10;
+
+            $("#sliderFecha").slider({
+                range: true,
+                min: 1500,
+                max: year,
+                step: 10,
+                values: [1500, year],
+                change: function (event, ui) {
+
+//                    _VERBOSE ? console.log(ui.values) : _VERBOSE;
+
+                    var value = ui.values[1];
+                    if (value == year) {
+                        value = _iTrans.prop('val_actual');
+                    }
+
+                    $("#labelFecha").text(_iTrans.prop('labelFecha', ui.values[0], value));
+
+                    _regenMessage();
+
+
+                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_rango_fecha', ui.values[0], value), "info");
+
+                    if (ui.values[0] !== 1500 || ui.values[1] !== year) {
+                        $("#chkFecha").prop('checked', false);
+                        $("#lb_sfecha").text(_iTrans.prop('lb_no'));
+                    } else {
+                        $("#chkFecha").prop('checked', true);
+                        $("#lb_sfecha").text(_iTrans.prop('lb_si'));
+                    }
+
+
+
+                }
+            });
+
+        });
+
+
+        $("#chkFosil").click(function (event) {
+
+            var $this = $(this);
+
+            if ($this.is(':checked')) {
+
+                $("#labelFosil").text("Si");
+
+                // _regenMessage();
+                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_fosil_act'), "info");
+
+            } else {
+
+                $("#labelFosil").text("No");
+
+                // _regenMessage();
+
+                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_fosil_des'), "info");
+
+            }
+
+        });
+
+
+        // checkbox que se activa cuando se desea tomar en cuanta un minimo de ocurrencias
+        $("#chkFecha").click(function (event) {
+
+            var $this = $(this);
+
+            if ($this.is(':checked')) {
+                $("#sliderFecha").slider("enable");
+                $("#lb_sfecha").text(_iTrans.prop('lb_si'));
+
+                // _regenMessage();
+                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_chkfecha'), "info");
+
+            } else {
+
+                $("#lb_sfecha").text(_iTrans.prop('lb_no'));
+
+                // _regenMessage();
+                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_chkfecha_des'), "info");
+
+            }
+
+        });
+
         $("#generaRed").click(function (e) {
 
             _VERBOSE ? console.log("generaRed") : _VERBOSE;
@@ -88,7 +180,25 @@ var module_net = (function () {
             var grid_res_val = $("#grid_resolution").val();
             console.log("grid_resolution: " + grid_res_val);
 
-            _res_display_module_net.createLinkNodes(s_filters, t_filters, min_occ, grid_res_val, footprint_region);
+
+            var fossil = $("#chkFosil").is(':checked');
+            var rango_fechas = $("#sliderFecha").slider("values");
+
+            console.log(rango_fechas)
+
+            if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+                rango_fechas = undefined;
+            }
+
+            var chkFecha = $("#chkFecha").is(':checked');
+
+            console.log("fossil: " + fossil)
+            console.log(rango_fechas)
+            console.log("chkFecha: " + chkFecha)
+
+
+
+            _res_display_module_net.createLinkNodes(s_filters, t_filters, min_occ, grid_res_val, footprint_region, rango_fechas, chkFecha, fossil);
 
             $("#show_gen").css('visibility', 'visible');
 
@@ -100,20 +210,6 @@ var module_net = (function () {
 
         $("#btn_tutorial").click(function () {
             window.open(_url_front + "/docs/tutorial.pdf");
-        });
-
-
-        $(function () {
-
-            $("#sliderFecha").slider({
-                range: true,
-                min: 0,
-                max: 10,
-                step: 1,
-                values: [0, 10],
-                disabled: true 
-            });
-
         });
 
 

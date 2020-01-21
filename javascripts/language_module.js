@@ -569,6 +569,16 @@ var language_module = (function (verbose) {
             $("#tbl_net_eps").children("p").text($.i18n.prop('lb_msg_epsilon'));
 
 
+            $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
+            $("#lb_sfecha").text($.i18n.prop('lb_si'));
+            $("#labelFosil").text($.i18n.prop('lb_si'));
+
+
+            $("#lb_fosil").text($.i18n.prop('lb_fosil') + ":");
+            $("#lb_reg_fecha").text($.i18n.prop('lb_reg_fecha') + ":");
+            $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha') + ":");
+
+
             _confLiveTutorialNet();
 
         }
