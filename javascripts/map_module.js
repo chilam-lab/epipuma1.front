@@ -626,15 +626,19 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             $('#toolbar .hamburger').on('click', function () {
                 $(this).parent().toggleClass('open');
             });
+
+            // $('#toolbar2 .hamburger').on('click', function () {
+            //     $(this).parent().toggleClass('open');
+            // });
         }
 
 
     }
 
-    function updateDecilLayer(decil){
+    function updateDecilLayer(deciles){
 
         _layer_control.removeLayer(_tileDecilLayer)
-        _layer_control.addOverlay(_tileDecilLayer, "Decile " + decil)
+        _layer_control.addOverlay(_tileDecilLayer, "Deciles " + deciles.toString())
 
     }
 
@@ -2740,7 +2744,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         $("#escala_color").empty();
         $("#map_text").empty();
 
-        var w = 140, h = 300;
+        var w = 80, h = 160;
 
         var key = d3.select("#escala_color").append("svg")
                 .attr("width", w)
@@ -2753,7 +2757,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             .append("rect")
             .attr("y", 10)
             .attr("height", 40)
-            .attr("x", (d,i)=>-300 + i*15)
+            .attr("x", (d,i)=>-160 + i*15)
             .attr("width", 16)
             .attr("fill", (d,i)=>colors_array[i])
             .attr("stroke", "gray")
@@ -2771,7 +2775,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 return 65
             })
             .attr("y", function (d,i) {
-                return (300 - ((i+1)*15))+3
+                return (160 - ((i+1)*15))+3
             })
             // .attr("x", (d,i)=>-300 + (i+1)*15)
             // .attr("y", function (d,i) {
@@ -2785,8 +2789,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         key.append("text")
             .attr("id", "score_celda")
-            .attr("y", 150)
-            .attr("x", 70)
+            .attr("y", 10)
+            .attr("x", 75)
             .attr("dy", ".71em")
             .style("font-size", "10px")
             .style("text-anchor", "end")

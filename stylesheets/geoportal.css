@@ -121,7 +121,7 @@ section{
     /*display: table;
     margin: 0 auto;*/
 
-    z-index: 5;
+    /*z-index: 5;*/
 
 }
     
@@ -234,6 +234,15 @@ section{
     right: 10;
     margin-top: 10px;
     /*display: none;*/
+    z-index: 1000;
+}
+
+
+.link_shape_map {
+    position: absolute;
+    bottom: 20;
+    right: 10;
+    margin-top: 0px;
     z-index: 1000;
 }
 
@@ -1636,12 +1645,11 @@ button.glyphicon-remove:before {
 
 #escala_color{
     z-index: 5000;
-    width: 6%;
-    height: 300px;
-    top: 70px;
+    width: 80px;
+    height: 160px;
+    top: 100px;
+    left: 10px;
     text-align: right;
-    /*margin-left: : 40;*/
-    /*margin-right: 100px;*/
 }
 
 #map_text {
@@ -1803,30 +1811,12 @@ button.glyphicon-remove:before {
 
 
 
-/*.page {
-  float: left;
-  width: 100vw;
-  height: 100vh;
-}
 
-.docScroller {
-  overflow-x: hidden;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  scroll-snap-points-y: repeat(100%);
-  scroll-snap-type: mandatory;
-  scroll-snap-destination: 100% 0%;
-}*/
-
-
-#mapwrap {
+#mapwrap, #mapwrap2 {
     width: 100%;
     /*height: 400px;*/
     /*height: 90%;*/
-    border: 1px solid #333;
+    /*border: 1px solid #333;*/
     position: relative;
     overflow: hidden;
 }
@@ -1849,12 +1839,36 @@ button.glyphicon-remove:before {
     border-color: #3B6A93;
 }
 
+#toolbar2 {
+    font-family: 'Poppins', sans-serif;
+    background: rgba(255, 255, 255, 1);
+    opacity: .6;
+    width: 200px;
+    height: 300px;
+    position: absolute;
+    right: -200px;
+    z-index: 1;
+    transition: .5s right;
+    padding: 20px;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #3B6A93;
+    top: 150px;
+}
+
 #toolbar.open {
     left: 0;
     opacity: .95;
 }
 
-#toolbar .hamburger {
+#toolbar2.open {
+    right: 0;
+    opacity: .95;
+}
+
+
+#toolbar .hamburger{
     height: 100px;
     width: 25px;
     background: #3B6A93;
@@ -1866,7 +1880,25 @@ button.glyphicon-remove:before {
     border-bottom-right-radius: 3px;
     border: 1px solid #3B6A93;
     cursor: pointer;
+    z-index: 9999;
 }
+
+#toolbar2 .hamburger {
+    height: 100px;
+    width: 25px;
+    background: #3B6A93;
+    box-shadow: 1px 0 2px rgba(0, 0, 0, .3);
+    position: absolute;
+    left: -25px;
+    top: 40%;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border: 1px solid #3B6A93;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+
 
 .hamburger span {
     color: #fff;
@@ -1877,26 +1909,44 @@ button.glyphicon-remove:before {
     left: -21px;
 }
 
-#tourstops {
+#toolbar2 .hamburger span {
+    color: #fff;
+    display: inline-block;
+    position: relative;
+    transform: rotate(90deg);
+    top: 39px;
+    left: -13px;
+}
+
+#tourstops{
     overflow-y: scroll;
     max-height: 95vh;
 }
 
-#toolbar ul {
+#tourstops2 {
+    overflow-y: scroll;
+    height: 250px;
+}
+
+#toolbar ul, #toolbar2 ul {
     margin: 0;
     padding: 0;
 }
 
-#toolbar li {
+#toolbar li, #toolbar2 li {
     list-style-type: none;
     border-bottom: 1px solid #ccc;
     padding: 6px 3px;
     cursor: pointer;
 }
 
-#toolbar li:hover {
+#toolbar li:hover, #toolbar2 li:hover {
     color: #666;
 }
+
+
+
+
 
 .notify-icon span{
     display: inline-block;
@@ -2177,4 +2227,10 @@ display: none;
 
 .text-sm{
     font-size: 12px !important;
+}
+
+.btn_decil_cp{
+    margin-top: -49px !important;
+    margin-left: 40px !important;
+    border-radius: 4px;
 }
