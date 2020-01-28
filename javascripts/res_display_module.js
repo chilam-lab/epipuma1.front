@@ -402,6 +402,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _table_module_eps.setLanguageModule(_language_module_nicho);
         _histogram_module_nicho.setTableModule(_table_module_eps);
         _histogram_module_nicho.setLanguageModule(_language_module_nicho);
+        _histogram_module_nicho.setToastModule(_module_toast);
 
 
         // si otro proceso de validación es necesario para otro modulo este debe ser instanciado en pede_nicho
@@ -1969,6 +1970,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // $("#csv_request").attr("title", $.i18n.prop('lb_descarga_tbl'));
         $("#deletePointsButton").attr("title", $.i18n.prop('lb_borra_puntos'));
+
+        $("#btn_decil").prop("value", $.i18n.prop('btn_decil'));
 
 
 

@@ -407,6 +407,9 @@ var language_module = (function (verbose) {
             $("#get_esc_ep").text($.i18n.prop('get_esc_ep'));
             $("#tuto_res").text($.i18n.prop('tuto_res'));
 
+            $("#btn_decil").prop("value", $.i18n.prop('btn_decil'));
+
+
             $("#lb_resultados").text($.i18n.prop('lb_resultados'));
 
             $("#send_email_csv").text($.i18n.prop('send_email_csv'));

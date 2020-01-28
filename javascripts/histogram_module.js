@@ -8,7 +8,7 @@
 var histogram_module = (function (verbose) {
 
     var _VERBOSE = verbose;
-    var _table_module_decil, _language_module_nicho, _display_module_nicho;
+    var _table_module_decil, _language_module_nicho, _display_module_nicho, _toast_module;
     var _highlight_color = "#48D7D5";
     var _iTrans;
     var _NUM_DECIL = 10;
@@ -45,6 +45,20 @@ var histogram_module = (function (verbose) {
     function setLanguageModule(languageModule) {
         _language_module_nicho = languageModule;
         _iTrans = _language_module_nicho.getI18();
+    }
+
+
+    /**
+     * Método setter del módulo de mensajes.
+     *
+     * @function setLanguageModule
+     * @public
+     * @memberof! toast_module
+     * 
+     * @param {object} toast_module - Módulo de mensajes.
+     */
+    function setToastModule(toast_module) {
+        _toast_module = toast_module
     }
 
     /**
@@ -108,7 +122,7 @@ var histogram_module = (function (verbose) {
             .html(function (d) {
                 
                 // console.log(d);
-                var var_group_label = "<strong>" + d + "</strong><br/>Selecciona <strong>deciles y grupos</strong>,<br/>después da clic en <strong>calcular</strong><br/>para visualizarlos en el mapa";
+                var var_group_label = _iTrans.prop('tip_grupodecil', d);
                 return  var_group_label;
 
             });
@@ -127,8 +141,8 @@ var histogram_module = (function (verbose) {
             .offset([-10, 0])
             .html(function (d) {
                 
-                console.log(d);
-                var var_group_label = "<strong>Decil " + d + "</strong><br/>Selecciona <strong>deciles y grupos</strong>,<br/>después da clic en <strong>calcular</strong><br/>para visualizarlos en el mapa";
+                // console.log(d);
+                var var_group_label = _iTrans.prop('tip_grupodecil_2', d);
                 return  var_group_label;
 
             });
@@ -281,7 +295,7 @@ var histogram_module = (function (verbose) {
             .attr("type", "button")
             .attr("y", 0)
             .attr("x", 0)
-            .attr("value", "Calcular")
+            .attr("value", _iTrans.prop('btn_decil'))
             .on("click",function(d,i) {
 
                 console.log("calculando valores")
@@ -306,7 +320,8 @@ var histogram_module = (function (verbose) {
 
                 // TODO: validar que exista almenos un decil y un grupo seleccionado
                 if(deciles.length == 0 || grupos == 0){
-                    console.log("sin grupos o deciles seleccioandos")
+                    console.log("Sin grupos o deciles seleccionados")
+                    _toast_module.showToast_BottomCenter(_iTrans.prop('no_decilgrupo'), "warning");
                     return
                 }
 
@@ -2434,7 +2449,8 @@ var histogram_module = (function (verbose) {
         createBarChart: createBarChart,
         createBarChartNet: createBarChartNet,
         createBarChartFecha: createBarChartFecha,
-        setDisplayModule: setDisplayModule
+        setDisplayModule: setDisplayModule,
+        setToastModule: setToastModule
     }
 
 
