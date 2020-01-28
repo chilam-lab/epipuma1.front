@@ -174,7 +174,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _decil_values_tbl = [];
     var _decil_data_requests = [];
     var _currentNameView = "";
-    var _currentDecil = 0;
+    var _currentDecil = [];
 
     function getValidationTable() {
         return _idtemptable;
@@ -1103,7 +1103,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var data_request = jQuery.extend(true, {}, decildata);
 
         // console.log(data_request)
-        data_request["decil_selected"] = _default_decil
+        data_request["decil_selected"] = [_default_decil]
 
 
         // decildata["with_data_freq"] = false;
@@ -1138,7 +1138,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var total_eps_scr = [];
                 var total_score_cell = [];
                 var percentage_avg = [];
-                var decil_cells = []
+                var decil_cells = [];
 
                 // CONCATENA LAS DIFERENTES PETICIONES SOLICITADAS AL SERVIDOR, EN CASO DE VALIDACION LOS VALORES POR PETICIÓN YA VIENEN PROMEDIADOS
                 _REQUESTS_DONE.forEach(function (item, index) {
@@ -1231,7 +1231,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     total_request.with_data_score_cell = true
                     total_request.with_data_score_decil = true
-                    total_request.decil_selected = _default_decil
+                    total_request.decil_selected = [_default_decil]
 
                     fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
                         method: "POST",
@@ -1278,7 +1278,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
-                            loadDecilDataTable(_default_decil, "Total", true, percentage_avg, decil_cells);
+                            loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
 
                         }
 
@@ -1303,7 +1303,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                 
-                    loadDecilDataTable(_default_decil, "Total", true, percentage_avg, decil_cells);
+                    loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
 
                     $('#chartdiv_score_decil').loading('stop');
 
@@ -1366,7 +1366,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
     // function loadDecilDataTable(decil = 10, name = "Total", first_loaded = true, counts = []) {
-    function loadDecilDataTable(decil, name, first_loaded, percentage_avg, decil_cells) {
+    function loadDecilDataTable(deciles, name, first_loaded, percentage_avg, decil_cells) {
 
         _VERBOSE ? console.log("loadDecilDataTable") : _VERBOSE;
 
@@ -1416,24 +1416,42 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
            // console.log(value);
            // console.log("_currentNameView: " + _currentNameView);
-           // console.log("_currentDecil: " + _currentDecil);
-           // console.log("value.name: " + value.name);
-           // console.log("name: " + name);
-//            console.log(_currentNameView !== name);
+           
+           console.log("value.name: " + value.name);
+           console.log("name: " + name);
+           console.log(_currentNameView !== name);
 //            console.log(_currentDecil !== decil);
 
+
             
+            console.log(_currentDecil);
+            console.log(deciles);
+
+            
+            // if (first_loaded ||
+            //         (value.name === name && (_currentNameView !== name || _currentDecil !== decil)) ||
+            //         (name === "Total" && (_currentNameView !== name || _currentDecil !== decil))
+            //         ) {
+
+            
+            // var difer_array = deciles.length === _currentDecil.length && deciles.sort().every(function(value, index) { return value === _currentDecil.sort()[index]}) === false
+            var difer_array = (JSON.stringify(_currentDecil) === JSON.stringify(deciles)) === false;
+            // var difer_array = _currentDecil.length === deciles.length && _currentDecil.sort().every(function(value, index) { return value === deciles.sort()[index]}) === false
+
+            console.log( "difer_array: " + difer_array )
+
+
             if (first_loaded ||
-                    (value.name === name && (_currentNameView !== name || _currentDecil !== decil)) ||
-                    (name === "Total" && (_currentNameView !== name || _currentDecil !== decil))
+                    (value.name === name && (_currentNameView !== name ||  difer_array  ) ) ||
+                    (name === "Total" && (_currentNameView !== name ||  difer_array ) )
                     ) {
 
-               // console.log("Actualiza tabla");
+               console.log("Actualiza tabla");
                // console.log("name: " + name);
-               // console.log("decil: " + decil);
+               // console.log("deciles: " + deciles);
 
                 _currentNameView = name;
-                _currentDecil = decil;
+                _currentDecil = deciles;
 
                 if (name !== "Total") {
                     $.each(value.children, function (i, child) {
@@ -1445,7 +1463,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
 
                 
-                request["decil_selected"] = decil
+                request["decil_selected"] = deciles
                 request["with_data_score_decil"] = true;
 
                 console.log(request);
@@ -1459,7 +1477,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     // activeDecilOccurrences(decil_cells, decil)
 
-                    createTableDecil(percentage_avg, decil);
+                    createTableDecil(percentage_avg);
 
                     $('#div_example').loading('stop');
                     $('#map').loading('stop');
@@ -1491,9 +1509,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             console.log(decil_cells)
 
-                            activeDecilOccurrences(decil_cells, decil)
+                            activeDecilOccurrences(decil_cells, deciles)
 
-                            createTableDecil(percentage_avg, decil)
+                            createTableDecil(percentage_avg)
 
                         }
                         
@@ -1519,7 +1537,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function createTableDecil(counts, decil){
+    function createTableDecil(counts){
 
         _VERBOSE ? console.log("createTableDecil") : _VERBOSE;
 
@@ -1713,11 +1731,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function activeDecilOccurrences(decil_cells, decil){
+    function activeDecilOccurrences(decil_cells, deciles){
 
         _VERBOSE ? console.log("activeDecilOccurrences") : _VERBOSE;
 
-        _map_module_nicho.updateDecilLayer(decil)
+        _map_module_nicho.updateDecilLayer(deciles)
 
         _map_module_nicho.setDecilCells(decil_cells);
 

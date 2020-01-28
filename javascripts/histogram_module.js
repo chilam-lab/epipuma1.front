@@ -99,6 +99,45 @@ var histogram_module = (function (verbose) {
         
         return tip;
     }
+
+    function addTooltipBarRectLegend(svg){
+
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function (d) {
+                
+                // console.log(d);
+                var var_group_label = "<strong>" + d + "</strong><br/>Selecciona <strong>deciles y grupos</strong>,<br/>después da clic en <strong>calcular</strong><br/>para visualizarlos en el mapa";
+                return  var_group_label;
+
+            });
+
+        svg.call(tip);
+        
+        return tip;
+
+    }
+
+
+    function addTooltipChkRectLegend(svg){
+
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function (d) {
+                
+                console.log(d);
+                var var_group_label = "<strong>Decil " + d + "</strong><br/>Selecciona <strong>deciles y grupos</strong>,<br/>después da clic en <strong>calcular</strong><br/>para visualizarlos en el mapa";
+                return  var_group_label;
+
+            });
+
+        svg.call(tip);
+        
+        return tip;
+
+    }
     
     
     function groupDataByAtributte(json_decil){
@@ -183,7 +222,7 @@ var histogram_module = (function (verbose) {
         var length_names = 0;
         
         _VERBOSE ? console.log(json_decil) : _VERBOSE;
-        
+
 
         for (value_decil_ready = 0; value_decil_ready < _NUM_DECIL; value_decil_ready++) {
             try {
@@ -234,6 +273,50 @@ var histogram_module = (function (verbose) {
                 .style("text-anchor", "end")
                 .text(_iTrans.prop('titulo_hist_score_decil'));
 
+
+        d3.select("#chartdiv_score_decil")
+            .append("input")
+            .attr("id", "btn_decil")
+            .attr("class", "btn btn-primary btn_decil_cp")
+            .attr("type", "button")
+            .attr("y", 0)
+            .attr("x", 0)
+            .attr("value", "Calcular")
+            .on("click",function(d,i) {
+
+                console.log("calculando valores")
+                // console.log(d)
+
+                var deciles = [], grupos = []
+
+                d3.selectAll(".lbdecil_chk .tick .selected")
+                .each(function (d, i) {
+                    // console.log(d)
+                    deciles.push(d)
+                })
+
+                d3.selectAll(".rect_legend.selected")
+                .each(function (d, i) {
+                    // console.log(d)
+                    grupos.push(d)
+                })
+
+                console.log(deciles)
+                console.log(grupos[0])
+
+                // TODO: validar que exista almenos un decil y un grupo seleccionado
+                if(deciles.length == 0 || grupos == 0){
+                    console.log("sin grupos o deciles seleccioandos")
+                    return
+                }
+
+
+                // _display_module_nicho.loadDecilDataTable(d.decil, d.name, false, [], []);
+                _display_module_nicho.loadDecilDataTable(deciles, grupos[0], false, [], []);
+
+            })
+            
+
         
         var tip = addTooltipBarChart(svg);
         
@@ -245,7 +328,28 @@ var histogram_module = (function (verbose) {
         
 //        _VERBOSE ? console.log(nameMap) : _VERBOSE;
 
-//        _VERBOSE ? console.log(ageNames) : _VERBOSE;
+       _VERBOSE ? console.log(ageNames) : _VERBOSE;
+
+       $("#grupos_deciles").empty();
+
+       ageNames.forEach(function (item, index){
+
+           console.log(item)
+
+           $("#grupos_deciles").append(
+                   '<div class="col-md-12">'+
+                        '<div class="col-md-2 margin-top-five">'+
+                            '<h5 class="summary_lb">'+ item +'</h5>'+
+                        '</div>'+
+                        '<div class="col-md-4 margin-top-five">'+
+                            '<input id="gpodecil_'+ index +'" class="checkbox_item" type="checkbox" />'+
+                        '</div>'+
+                    '</div>');
+
+
+       })
+
+
         
         // CREADO DATA VERTICAL.
         // NOTA: LOS DATOS ANTES DE ESTE PUNTO ESTAN ALMACENADOS POR GRUPO DE VARIABLES, PARA GENERAR EL HISTOGRAMA
@@ -387,16 +491,63 @@ var histogram_module = (function (verbose) {
 
         // CREACIÓN DE EJES DEL HISTOGRAMA
         svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + translate_axis + ")")
-                .call(xAxis)
-                .append("text")
-                .attr("id", idComponent.xaxis)
-                .attr("y", margin.bottom - 10)
-                .attr("x", width / 2)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text(_iTrans.prop('lb_xaxis_decil'));
+            .attr("class", "x axis lbdecil_chk")
+            .attr("transform", "translate(0," + translate_axis + ")")
+            .call(xAxis)
+            .append("text")
+            .attr("id", idComponent.xaxis)
+            .attr("y", margin.bottom - 10)
+            .attr("x", width / 2)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text(_iTrans.prop('lb_xaxis_decil'))
+
+
+        var tip_chk_legend = addTooltipChkRectLegend(svg)
+
+        d3.selectAll(".lbdecil_chk .tick")
+            .append("rect")
+            .attr("y", 105)
+            .attr("x", function(d){
+                // console.log(d)
+                return -5;  
+            })
+            .attr("width", 10)
+            .attr("height", 10)
+            .style("fill", "white")
+            .style("stroke", 1)
+            .style("stroke", "black")
+            .on("click",function(d,i) {
+
+                d3.select(this).classed("selected", d3.select(this).classed("selected") ? false : true);
+
+                if(d3.select(this).classed("selected")){
+                    d3.select(this)
+                    .style("fill", "black")   
+                }
+                else{
+                    d3.select(this)
+                    .style("fill", "white")
+                     
+                }
+
+            })
+            .on('mouseover', function (d) {
+                // console.log(d)
+                // console.log(d3.select(this))
+
+                tip_chk_legend.show(d);
+
+            })
+            .on('mouseout', function (d) {
+                // console.log(d)
+                // console.log(d3.select(this))
+
+                tip_chk_legend.hide(d);
+
+            })
+         
+
 
         svg.append("g")
                 .attr("class", "y axis")
@@ -491,58 +642,64 @@ var histogram_module = (function (verbose) {
                     
                     console.log(d);
 
-                    state.selectAll("rect.bar").each(function (bar, i) {
-                        d3.select(this).style("stroke", "none");
-                    });
-                    d3.select(this).style("stroke", "black");
-                    d3.select(this).style("stroke-width", 3);
+                    // state.selectAll("rect.bar").each(function (bar, i) {
+                    //     d3.select(this).style("stroke", "none");
+                    // });
+                    // d3.select(this).style("stroke", "black");
+                    // d3.select(this).style("stroke-width", 3);
                     
-                    // _display_module_nicho._configureStyleMap();
-                    // _display_module_nicho.activeDecilOccurrences()
-                    _display_module_nicho.loadDecilDataTable(d.decil, d.name, false, [], []);
+                    // _display_module_nicho.loadDecilDataTable(d.decil, d.name, false, [], []);
                     
                 });
 
 
-        // CREACION DE LEYENDA INFOERIOR DEL HISTOGRAMA
+
+
+
+
+        // CREACION DE LEYENDA INFERIOR DEL HISTOGRAMA
+
+        var tip_legend = addTooltipBarRectLegend(svg)
+
+
         var yTextPadding = -5;
 
         state.selectAll(".rect")
-                .data(function (d) {
-                    return d.value;
-                })
-                .enter()
-                .append("text")
-                .style("font-size", "8px")
-                .attr("text-anchor", "middle")
-                .attr("fill", "black")
-                .attr("x", function (d) {
-                    return x1(d.name) + 10;
-                })
-                .attr("y", function (d) {
+            .data(function (d) {
+                return d.value;
+            })
+            .enter()
+            .append("text")
+            .style("font-size", "8px")
+            .attr("text-anchor", "middle")
+            .attr("fill", "black")
+            .attr("x", function (d) {
+                return x1(d.name) + 10;
+            })
+            .attr("y", function (d) {
 
-                    if (d.decil_nulo)
-                        return y(0) + yTextPadding;
-                    
-                    // locate the bars in the chart correctly when there are negative values.
-                    if (NEG_DECIL === -1) {
-                        return y(totalmax_avg) + yTextPadding;
-                    } 
-                    else if (NEG_DECIL === 0) {
-                        return y(Math.max(0, d.avg)) + yTextPadding;
-                    } 
-                    else {
-                        return y(d.avg) + yTextPadding;
-                    }
+                if (d.decil_nulo)
+                    return y(0) + yTextPadding;
+                
+                // locate the bars in the chart correctly when there are negative values.
+                if (NEG_DECIL === -1) {
+                    return y(totalmax_avg) + yTextPadding;
+                } 
+                else if (NEG_DECIL === 0) {
+                    return y(Math.max(0, d.avg)) + yTextPadding;
+                } 
+                else {
+                    return y(d.avg) + yTextPadding;
+                }
 
-                })
-                .text(function (d) {
-                    // // console.log(d);
-                    // if( parseFloat(d.value.p) == 0.0)
-                    // 	return "";
-                    // else
-                    return d.avg;
-                });
+            })
+            .text(function (d) {
+                // console.log(d);
+                // if( parseFloat(d.value.p) == 0.0)
+                // 	return "";
+                // else
+                return d.avg;
+            });
 
 
 
@@ -554,68 +711,110 @@ var histogram_module = (function (verbose) {
                     return "translate(0," + (height + 20) + ")";
                 });
 
-        legend.append("rect")
-                .attr("x", function (d, i) {
-                    return (width - 18) - (i * 130);
-                })
-                .attr("y", 3)
-                .attr("width", 20)
-                .attr("height", 20)
-                .style("fill", function (d, i) {
-//                    if (d.recall_nulo) {
-//                        return "black";
-//                    } 
-//                    else {
-//                        console.log(d)
-//                        console.log(color(d))
-                        return color(d);
-//                    }
+        // var hoverColor= "#0000ff";
 
-                })
-                .style("opacity", 0.7);
+        legend.append("rect")
+            .attr("x", function (d, i) {
+                return (width - 18) - (i * 130);
+            })
+            .attr("class", "rect_legend")
+            .attr("y", 3)
+            .attr("width", 20)
+            .attr("height", 20)
+            .style("fill", function (d, i) {
+                return color(d);
+            })
+            .style("opacity", 0.7)
+            .on("click",function(d,i) {
+
+                d3.selectAll(".rect_legend")
+                    .each(function(d){
+                        
+                        d3.select(this)
+                            .attr("class", "rect_legend")
+                            .style("stroke-width", 0)  
+                    })
+                    
+
+                d3.select(this)
+                    .attr("class", "rect_legend selected")
+                    .style("stroke", "black")
+                    .style("stroke-width", 2)
+                    .style("opacity",0.7)
+                    .style("fill",function (d, i) {
+                        return color(d);
+                    });
+
+            })
+            .on('mouseover', function (d) {
+                // console.log(d)
+                // console.log(d3.select(this))
+
+                tip_legend.show(d);
+
+                d3.select(this)
+                    .style("opacity",0.2)
+                    .style("fill", "#0000ff");
+
+            })
+            .on('mouseout', function (d) {
+                // console.log(d)
+                // console.log(d3.select(this))
+
+                tip_legend.hide(d);
+
+                d3.select(this)
+                    .style("opacity",0.7)
+                    .style("fill",function (d, i) {
+                        return color(d);
+                    });
+
+            })
+
 
         legend.append("text")
-                .attr("x", function (d, i) {
-                    return (width - 24) - (i * 130);
-                })
-                .attr("y", 9)
-                .attr("dy", ".35em")
-                .style("text-anchor", "end")
-                .text(function (d) {
-//                    console.log(d)
-                    return d;
-                });
-
+            .attr("class", "legend")
+            .attr("x", function (d, i) {
+                return (width - 24) - (i * 130);
+            })
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .text(function (d) {
+               // console.log(d)
+                return d;
+            })
+            
 
 
 
        // Despliega grafica de resultados de validación
        // if ($("#chkValidation").is(':checked')) {
 
-           var tip_recall = d3.tip()
-                   .attr('class', 'd3-tip')
-                   .offset([-10, 0])
-                   .html(function (d) {
+        var tip_recall = d3.tip()
+               .attr('class', 'd3-tip')
+               .offset([-10, 0])
+               .html(function (d) {
 
-                       // console.log(d)
-                       var fn_lb, tp_lb, null_lb
-                       if ($("#chkValidation").is(':checked')) {
-                           fn_lb = _iTrans.prop('lb_fn_avg')
-                           tp_lb = _iTrans.prop('lb_vp_avg')
-                           null_lb = _iTrans.prop('lb_nulos_avg')
-                       }
-                       else{
-                            fn_lb = _iTrans.prop('lb_fn')
-                            tp_lb = _iTrans.prop('lb_vp')
-                            null_lb = _iTrans.prop('lb_nulos')   
-                       }
+                   // console.log(d)
+                   var fn_lb, tp_lb, null_lb
+                   if ($("#chkValidation").is(':checked')) {
+                       fn_lb = _iTrans.prop('lb_fn_avg')
+                       tp_lb = _iTrans.prop('lb_vp_avg')
+                       null_lb = _iTrans.prop('lb_nulos_avg')
+                   }
+                   else{
+                        fn_lb = _iTrans.prop('lb_fn')
+                        tp_lb = _iTrans.prop('lb_vp')
+                        null_lb = _iTrans.prop('lb_nulos')   
+                   }
 
-                       recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
-                               "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
-                               "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>" +
-                               "<strong>" + null_lb + ":</strong> <span >" + parseFloat(d.recall_nulo).toFixed(2) + "</span><br/>"
-                       return  recall_values;
-                   });
+                   recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
+                           "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
+                           "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>" +
+                           "<strong>" + null_lb + ":</strong> <span >" + parseFloat(d.recall_nulo).toFixed(2) + "</span><br/>"
+                   return  recall_values;
+               });
 
            svg.call(tip_recall);
 
