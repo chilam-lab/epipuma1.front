@@ -484,6 +484,8 @@ var language_module = (function (verbose) {
             _confLiveTutorialNiche();
             _confLiveTutorialResultsNiche();
 
+            _confLiveDemoNiche();
+
 
         } else if (_tipo_modulo === 1) {
 
@@ -999,6 +1001,161 @@ var language_module = (function (verbose) {
 
 
         });
+
+
+    }
+
+
+    function _confLiveDemoNiche() {
+
+        _VERBOSE ? console.log("_confLiveDemoNiche") : _VERBOSE;
+
+        $('#btn_demo.display-marker').on('click', function () {
+
+            _VERBOSE ? console.log("btn_tuto_steps") : _VERBOSE;
+
+
+
+            $.ptJs({
+                autoStart: true,
+                continueEnable: true,
+                templateData: {
+                    content: '',
+                    title: $.i18n.prop('label_esp_p1'),
+                    'button-start': $.i18n.prop('button_start'),
+                    'button-next': $.i18n.prop('button_next'),
+                    'button-previous': $.i18n.prop('button_previous'),
+                    'button-restart': $.i18n.prop('button_restart'),
+                    'button-continue': $.i18n.prop('button_continue'),
+                    'button-end': $.i18n.prop('button_end')
+                },
+                steps: [
+                    {
+                        el: document,
+                        modal: true,
+                        templateData: {
+                            title: "Caso de Uso",
+                            content: "Este demo es generado para llevar a cabo un caso de uso. Encontraremos el nicho ecológico de Lince Rojo dentro del grupo de los Mamiferos."
+                        }
+                    },
+                    {
+                        el: '#tuto_region',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: "Selecciona una región",
+                            content: "Vamos a seleccionar como región el país de México, esto acotara nuestro análisis solo a esta región."
+                        }
+                    },
+                    {
+                        el: '#tuto_resolution',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: "Selecciona la resolución",
+                            content: "El sistema SPECIES trabaja con diferentes resoluciones para definir coocurrencias, en este caso de uso usaremos la resolución de 16km."
+                        }
+                    },
+                    {
+                        el: '#var_target',
+                        position: {
+                            location: 'rm-c'
+                        },
+                        templateData: {
+                            title: "Seleciona la especie objetivo",
+                            content: "En este caso de uso usaremos al <b>Lince Rojo</b>. SPECIES trabaja con nombres científicos, por tanto, el nombre cientifico del Lince Rojo es <b>Lynx rufus</b>. <br/>Seleciona como nivel taxonómico <b>Especie</b> y después comienza a escribir <b>'Lynx rufus'</b>. El buscador desplegará las especies que se encuentren en la base de datos, selecciona en cuanto sea visible la opción de <b>Lynx rufus<b>."
+                        }
+                    },
+                    {
+                        el: '#treeVariable_target',
+                        position: {
+                            location: 'rm-c'
+                        },
+                        templateData: {
+                            title: "Árbol de resultados.",
+                            content: "Una vez que la especie es seleccionada, se desplegará un árbol taxonómico. En este caso, como utilizamos el último nivel taxonómico solo obtendremos una opción. <b>Activa la casilla</b>."
+                        }
+                    },
+                    {
+                        el: '#add_group_target',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: "Agrega la especie objetivo",
+                            content: "Una vez activada la casilla, debemos dar clic en el botón con el <b>icono más</b> para que nuestra especie objetivo sea configurada en nuestro análisis."
+                        }
+                    }, 
+                    {
+                        el: '#tuto_fil_fecha',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: "Filtro de fechas",
+                            content: "Este parámetro nos sirve para <b>acotar por fecha las ocurrencias de nuestra especie objetivo</b>. Dejaremos este parámetro sin alteraciones para obtener todas  las ocurrencias del <b>Lince Rojo</b>."
+                        }
+                    },
+                    {
+                        el: '#tuto_reg_fecha',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: "Filtro de registros sin fecha",
+                            content: "Dentro de SPECIES existen registros de especies que no tienen fecha. Vamos a dejarlo activado para obtener todas las ocurrencias de la especie objetivo."
+                        }
+                    },
+                    {
+                        el: '#tuto_reg_fosil',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: "Filtro de registros fósiles",
+                            content: "Dentro de SPECIES también existen registros fósiles. De igual forma, vamos a dejarlo activo para no reducir el número de ocurrencias registradas."
+                        }
+                    },
+                    {
+                        el: '#reload_map',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: "Visualizar registros",
+                            content: "Da clic en este botón para visualizar en el mapa las ocurrencias que acabamos de configurar."
+                        }
+                    },
+                    {
+                        el: '#tuto_mapa_occ',
+                        position: {
+                            location: 'lt'
+                        },
+                        templateData: {
+                            title: "Mapa de ocurrencias",
+                            content: "En este mapa, se observan las <b>ocurrencias del Lince rojo</b>. El mapa esta dividido en celdas con la resolución configurada, <b>16km</b> en este caso. Por tanto, observaremos <b>celdas coloreadas de 16km x 16km</b> donde existe <b>al menos una</b> presencia del Lince."
+                        }
+                    },
+
+                    // {
+                    //     el: '#tuto_histo_reg',
+                    //     position: {
+                    //         location: 'rm-t'
+                    //     },
+                    //     templateData: {
+                    //         title: "Histograma de registros",
+                    //         content: "Este es un histograma para conocer la distribución de ocurrencias de la especie por año. <b>No se realiza configuración en este elemento</b>."
+                    //     }
+                    // },                    
+
+                ]
+
+            })
+
+
+        })
 
 
     }
