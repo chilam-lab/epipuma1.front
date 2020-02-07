@@ -2403,7 +2403,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {float} lat - Latitud del punto sleccionado por el usuario
      * @param {float} long - Longitud del punto sleccionado por el usuario
      */
-    function showGetFeatureInfo(lat, long) {
+    function showGetFeatureInfo(lat, long, taxones, region) {
 
         _VERBOSE ? console.log("showGetFeatureInfo") : _VERBOSE;
 
@@ -2411,7 +2411,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
             stoppable: true
         });
 
-        var singleCellData = _cdata;
+        var singleCellData = {};
+        
+        $.each(_TREE_GENERATED.groups, function (i, grupo) {
+            $.each(grupo.children, function (j, child) {
+
+                var temp_child = jQuery.extend(true, {}, child);
+                singleCellData = mergeRequest(singleCellData, temp_child);
+            });
+        });
 
         var milliseconds = new Date().getTime();
         singleCellData['latitud'] = lat;
@@ -2423,9 +2431,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
         singleCellData["with_data_score_cell"] = false;
         singleCellData["with_data_freq_cell"] = false;
         singleCellData["with_data_score_decil"] = false;
+        singleCellData["iterations"] = 1;
+        singleCellData["region"] = region;
 
-        console.log(singleCellData)
-
+        
         var milliseconds = new Date().getTime();
 
         fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
