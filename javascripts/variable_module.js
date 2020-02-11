@@ -422,6 +422,7 @@ var variable_module = (function (verbose, url_zacatuche) {
 
         // div que alamcena el cuerpo de los tabs
         var tab_content = $('<div/>')
+                .attr('id', "tab_content_" + id)
                 .addClass('tab-content')
                 .appendTo(nav_selection);
 

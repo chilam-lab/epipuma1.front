@@ -1034,8 +1034,8 @@ var language_module = (function (verbose) {
                         el: document,
                         modal: true,
                         templateData: {
-                            title: "Caso de Uso",
-                            content: "Este demo es generado para llevar a cabo un caso de uso. Encontraremos el nicho ecológico de Lince Rojo dentro del grupo de los Mamiferos."
+                            title: $.i18n.prop('caso_uso'),
+                            content: $.i18n.prop('demo_intro')
                         }
                     },
                     {
@@ -1044,8 +1044,8 @@ var language_module = (function (verbose) {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: "Selecciona una región",
-                            content: "Vamos a seleccionar como región el país de México, esto acotara nuestro análisis solo a esta región."
+                            title: $.i18n.prop('label_esp_p54'),
+                            content: $.i18n.prop('demo_intro_region')
                         }
                     },
                     {
@@ -1054,8 +1054,8 @@ var language_module = (function (verbose) {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: "Selecciona la resolución",
-                            content: "El sistema SPECIES trabaja con diferentes resoluciones para definir coocurrencias, en este caso de uso usaremos la resolución de 16km."
+                            title: $.i18n.prop('label_esp_p5'),
+                            content: $.i18n.prop('demo_intro_resolucion')
                         }
                     },
                     {
@@ -1064,8 +1064,8 @@ var language_module = (function (verbose) {
                             location: 'rm-c'
                         },
                         templateData: {
-                            title: "Seleciona la especie objetivo",
-                            content: "En este caso de uso usaremos al <b>Lince Rojo</b>. SPECIES trabaja con nombres científicos, por tanto, el nombre cientifico del Lince Rojo es <b>Lynx rufus</b>. <br/>Seleciona como nivel taxonómico <b>Especie</b> y después comienza a escribir <b>'Lynx rufus'</b>. El buscador desplegará las especies que se encuentren en la base de datos, selecciona en cuanto sea visible la opción de <b>Lynx rufus<b>."
+                            title: $.i18n.prop('demo_title_specie'),
+                            content: $.i18n.prop('demo_intro_specie')
                         }
                     },
                     {
@@ -1074,8 +1074,8 @@ var language_module = (function (verbose) {
                             location: 'rm-c'
                         },
                         templateData: {
-                            title: "Árbol de resultados.",
-                            content: "Una vez que la especie es seleccionada, se desplegará un árbol taxonómico. En este caso, como utilizamos el último nivel taxonómico solo obtendremos una opción. <b>Activa la casilla</b>."
+                            title: $.i18n.prop('demo_title_tree'),
+                            content: $.i18n.prop('demo_intro_tree')
                         }
                     },
                     {
@@ -1084,8 +1084,8 @@ var language_module = (function (verbose) {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: "Agrega la especie objetivo",
-                            content: "Una vez activada la casilla, debemos dar clic en el botón con el <b>icono más</b> para que nuestra especie objetivo sea configurada en nuestro análisis."
+                            title: $.i18n.prop('demo_title_addsp'),
+                            content: $.i18n.prop('demo_intro_addsp') 
                         }
                     }, 
                     {
@@ -1094,8 +1094,8 @@ var language_module = (function (verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: "Filtro de fechas",
-                            content: "Este parámetro nos sirve para <b>acotar por fecha las ocurrencias de nuestra especie objetivo</b>. Dejaremos este parámetro sin alteraciones para obtener todas  las ocurrencias del <b>Lince Rojo</b>."
+                            title: $.i18n.prop('demo_title_rfecha'),
+                            content: $.i18n.prop('demo_intro_rfecha')
                         }
                     },
                     {
@@ -1104,8 +1104,8 @@ var language_module = (function (verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: "Filtro de registros sin fecha",
-                            content: "Dentro de SPECIES existen registros de especies que no tienen fecha. Vamos a dejarlo activado para obtener todas las ocurrencias de la especie objetivo."
+                            title: $.i18n.prop('demo_title_sfecha'),
+                            content: $.i18n.prop('demo_intro_sfecha')
                         }
                     },
                     {
@@ -1114,8 +1114,8 @@ var language_module = (function (verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: "Filtro de registros fósiles",
-                            content: "Dentro de SPECIES también existen registros fósiles. De igual forma, vamos a dejarlo activo para no reducir el número de ocurrencias registradas."
+                            title: $.i18n.prop('demo_title_fosil'),
+                            content: $.i18n.prop('demo_intro_fosil')
                         }
                     },
                     {
@@ -1124,31 +1124,227 @@ var language_module = (function (verbose) {
                             location: 'rm-t'
                         },
                         templateData: {
-                            title: "Visualizar registros",
-                            content: "Da clic en este botón para visualizar en el mapa las ocurrencias que acabamos de configurar."
+                            title: $.i18n.prop('demo_title_ressp'),
+                            content: $.i18n.prop('demo_intro_ressp')
                         }
                     },
                     {
                         el: '#tuto_mapa_occ',
                         position: {
-                            location: 'lt'
+                            location: 'lm'
                         },
                         templateData: {
-                            title: "Mapa de ocurrencias",
-                            content: "En este mapa, se observan las <b>ocurrencias del Lince rojo</b>. El mapa esta dividido en celdas con la resolución configurada, <b>16km</b> en este caso. Por tanto, observaremos <b>celdas coloreadas de 16km x 16km</b> donde existe <b>al menos una</b> presencia del Lince."
+                            title: $.i18n.prop('demo_title_mapaocc'),
+                            content: $.i18n.prop('demo_intro_mapaocc')
+                        }
+                    },
+                    {
+                        el: '#tuto_mapa_occ',
+                        position: {
+                            location: 'lm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapacell'),
+                            content: $.i18n.prop('demo_intro_mapacell')
+                        }
+                    },
+                    {
+                        el: '#tuto_mapa_occ',
+                        position: {
+                            location: 'lm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_celldel'),
+                            content: $.i18n.prop('demo_intro_celldel')
+                        }
+                    },
+                    {
+                        el: '#tuto_histo_reg',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p13'),
+                            content: $.i18n.prop('label_esp_p46')
+                        }
+                    }, 
+
+                    {
+                        el: '#tuto_variables',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_covars'),
+                            content: $.i18n.prop('demo_intro_covars')
                         }
                     },
 
-                    // {
-                    //     el: '#tuto_histo_reg',
-                    //     position: {
-                    //         location: 'rm-t'
-                    //     },
-                    //     templateData: {
-                    //         title: "Histograma de registros",
-                    //         content: "Este es un histograma para conocer la distribución de ocurrencias de la especie por año. <b>No se realiza configuración en este elemento</b>."
-                    //     }
-                    // },                    
+
+                    {
+                        el: '#tuto_nav_tabs_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_navs'),
+                            content: $.i18n.prop('demo_intro_navs')
+                        }
+                    },
+
+
+
+                    {
+                        el: '#tab_content_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_groups'),
+                            content: $.i18n.prop('demo_intro_groups')
+                        }
+                    },
+
+
+                    {
+                        el: '#treeVariable_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p24'),
+                            content: $.i18n.prop('label_esp_p25')
+                        }
+                    },  
+
+
+                    {
+                        el: '#add_group_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p26'),
+                            content: $.i18n.prop('label_esp_p27')
+                        }
+                    },
+                    {
+                        el: '#clean_var_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p28'),
+                            content: $.i18n.prop('label_esp_p29')
+                        }
+                    },
+
+                    {
+                        el: '#treeAddedPanel_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p30'),
+                            content: $.i18n.prop('label_esp_p31')
+                        }
+                    },
+
+
+
+                    {
+                        el: '#tuto_params',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_analisis'),
+                            content: $.i18n.prop('demo_intro_analisis')
+                        }
+                    },
+                   {
+                       el: '#tuto_val',
+                       position: {
+                           location: 'lm-b'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('demo_title_val'),
+                           content: $.i18n.prop('demo_intro_val')
+                       }
+                   },
+                    {
+                        el: '#tuto_min_occ',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_min'),
+                            content: $.i18n.prop('demo_intro_min')
+                        }
+                    },
+                   {
+                       el: '#tuto_apriori',
+                       position: {
+                           location: 'lm-t'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('demo_title_apri'),
+                           content: $.i18n.prop('demo_intro_apri')
+                       }
+                   },
+                   {
+                       el: '#tuto_map_prob',
+                       position: {
+                           location: 'lm-t'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('demo_title_prob'),
+                           content: $.i18n.prop('demo_intro_prob')
+                       }
+                   },
+                    {
+                        el: '#get_esc_ep',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_btnres'),
+                            content: $.i18n.prop('demo_intro_btnres')
+                        }
+                    }, 
+
+                    {
+                        el: '#map',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapres'),
+                            content: $.i18n.prop('demo_intro_mapres')
+                        }
+                    },    
+
+                    {
+                        el: '#map',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapresa'),
+                            content: $.i18n.prop('demo_intro_mapresa')
+                        }
+                    },    
+
+                    {
+                        el: '#map',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapresb'),
+                            content: $.i18n.prop('demo_intro_mapresb')
+                        }
+                    },                 
 
                 ]
 
@@ -1175,6 +1371,7 @@ var language_module = (function (verbose) {
 //            console.log($("#a_raster_fuente").parent().hasClass("active"));
 
             var item_tab, item_tree, group_btn, clean_btn;
+
             if ($("#a_taxon_fuente").parent().hasClass("active")) {
                 item_tab = {
                     el: '#tuto_taxon_sp_fuente',
