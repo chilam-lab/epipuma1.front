@@ -1705,7 +1705,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var max = (parseFloat(range[1]) * d.coeficiente).toFixed(3) + " " + d.unidad
 
                 // var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                var value = _iTrans.prop(label) + " (" + max + " : " + max + ") "
+                var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
                 
                 item_list.push(value)
 

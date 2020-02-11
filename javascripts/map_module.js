@@ -1999,7 +1999,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 })
                 .catch(err => {
 
-                   _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                   // _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
                    _VERBOSE ? console.log(errorThrown) : _VERBOSE;
                    _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
                    
@@ -2010,7 +2010,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         })
         .catch(err => {
             
-           _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+           // _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
            _VERBOSE ? console.log(errorThrown) : _VERBOSE;
            _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
 
@@ -2183,7 +2183,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                },
                error: function (jqXHR, textStatus, errorThrown) {
-                   _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                   // _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
                    _VERBOSE ? console.log(errorThrown) : _VERBOSE;
                    _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
 
