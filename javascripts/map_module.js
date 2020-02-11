@@ -777,7 +777,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     console.log(e.latlng.lat + ", " + e.latlng.lng);
 
                     if (_tipo_modulo === _MODULO_NICHO) {
-                        _display_module.showGetFeatureInfo(e.latlng.lat, e.latlng.lng);
+                        _display_module.showGetFeatureInfo(e.latlng.lat, e.latlng.lng, _taxones, _REGION_SELECTED);
                     }
 
                 });
