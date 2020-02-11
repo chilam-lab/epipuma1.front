@@ -179,8 +179,11 @@ var utils_module = (function (verbose) {
         return data_freq;
     }
 
-    function reduceScoreCell(data) {
 
+
+    // TODO: Tomar en cuenta cuando se ejecuta el proceso con apriori o prob
+    // Esta sumando cada uno de los analisis que ya lo contienen
+    function reduceScoreCell(data, val_apriori = 0, numr = 1) {
 
         var cross_cells = crossfilter(data)
 
@@ -192,13 +195,14 @@ var utils_module = (function (verbose) {
         var groupByCell = cells_dimension.group().reduceSum(function (d) {
             return d.tscore;
         });
+
         var map_cell = groupByCell.top(Infinity);
         
         var cell_score_array = [];
         for (var i = 0; i < map_cell.length; i++) {
 
             const entry = map_cell[i];
-            var tscore = parseFloat(entry["value"])
+            var tscore = parseFloat(entry["value"]) - (val_apriori*(numr-1))
             var gridid = entry["key"]
             
             cell_score_array.push({gridid: gridid, tscore: parseFloat(tscore.toFixed(3))})

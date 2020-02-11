@@ -2478,7 +2478,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             // console.log("min_scr: " + min_scr)
             // console.log("max_scr: " + max_scr)
-            // console.log("deviation: " + deviation)
+            console.log("deviation: " + deviation)
             // console.log("mean: " + mean)
             // console.log(ss.jenks(json.map(function(d) { return +d.tscore; }), (colors.length-2)))
 
@@ -2551,7 +2551,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             arr_range_deviations = d3.range(4).map(function(d) {return mean + (d * -deviation) })
             arr_range_deviations.reverse()
             arr_range_deviations = arr_range_deviations.concat(d3.range(1,5).map(function(d) {return mean + (d * deviation) })) 
-            // console.log(arr_range_deviations)
+            
+            console.log(arr_range_deviations)
             // console.log(colors)
 
 

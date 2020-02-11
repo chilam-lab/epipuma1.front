@@ -484,6 +484,8 @@ var language_module = (function (verbose) {
             _confLiveTutorialNiche();
             _confLiveTutorialResultsNiche();
 
+            _confLiveDemoNiche();
+
 
         } else if (_tipo_modulo === 1) {
 
@@ -1004,6 +1006,357 @@ var language_module = (function (verbose) {
     }
 
 
+    function _confLiveDemoNiche() {
+
+        _VERBOSE ? console.log("_confLiveDemoNiche") : _VERBOSE;
+
+        $('#btn_demo.display-marker').on('click', function () {
+
+            _VERBOSE ? console.log("btn_tuto_steps") : _VERBOSE;
+
+
+
+            $.ptJs({
+                autoStart: true,
+                continueEnable: true,
+                templateData: {
+                    content: '',
+                    title: $.i18n.prop('label_esp_p1'),
+                    'button-start': $.i18n.prop('button_start'),
+                    'button-next': $.i18n.prop('button_next'),
+                    'button-previous': $.i18n.prop('button_previous'),
+                    'button-restart': $.i18n.prop('button_restart'),
+                    'button-continue': $.i18n.prop('button_continue'),
+                    'button-end': $.i18n.prop('button_end')
+                },
+                steps: [
+                    {
+                        el: document,
+                        modal: true,
+                        templateData: {
+                            title: $.i18n.prop('caso_uso'),
+                            content: $.i18n.prop('demo_intro')
+                        }
+                    },
+                    {
+                        el: '#tuto_region',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p54'),
+                            content: $.i18n.prop('demo_intro_region')
+                        }
+                    },
+                    {
+                        el: '#tuto_resolution',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p5'),
+                            content: $.i18n.prop('demo_intro_resolucion')
+                        }
+                    },
+                    {
+                        el: '#var_target',
+                        position: {
+                            location: 'rm-c'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_specie'),
+                            content: $.i18n.prop('demo_intro_specie')
+                        }
+                    },
+                    {
+                        el: '#treeVariable_target',
+                        position: {
+                            location: 'rm-c'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_tree'),
+                            content: $.i18n.prop('demo_intro_tree')
+                        }
+                    },
+                    {
+                        el: '#add_group_target',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_addsp'),
+                            content: $.i18n.prop('demo_intro_addsp') 
+                        }
+                    }, 
+                    {
+                        el: '#tuto_fil_fecha',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_rfecha'),
+                            content: $.i18n.prop('demo_intro_rfecha')
+                        }
+                    },
+                    {
+                        el: '#tuto_reg_fecha',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_sfecha'),
+                            content: $.i18n.prop('demo_intro_sfecha')
+                        }
+                    },
+                    {
+                        el: '#tuto_reg_fosil',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_fosil'),
+                            content: $.i18n.prop('demo_intro_fosil')
+                        }
+                    },
+                    {
+                        el: '#reload_map',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_ressp'),
+                            content: $.i18n.prop('demo_intro_ressp')
+                        }
+                    },
+                    {
+                        el: '#tuto_mapa_occ',
+                        position: {
+                            location: 'lm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapaocc'),
+                            content: $.i18n.prop('demo_intro_mapaocc')
+                        }
+                    },
+                    {
+                        el: '#tuto_mapa_occ',
+                        position: {
+                            location: 'lm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapacell'),
+                            content: $.i18n.prop('demo_intro_mapacell')
+                        }
+                    },
+                    {
+                        el: '#tuto_mapa_occ',
+                        position: {
+                            location: 'lm'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_celldel'),
+                            content: $.i18n.prop('demo_intro_celldel')
+                        }
+                    },
+                    {
+                        el: '#tuto_histo_reg',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p13'),
+                            content: $.i18n.prop('label_esp_p46')
+                        }
+                    }, 
+
+                    {
+                        el: '#tuto_variables',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_covars'),
+                            content: $.i18n.prop('demo_intro_covars')
+                        }
+                    },
+
+
+                    {
+                        el: '#tuto_nav_tabs_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_navs'),
+                            content: $.i18n.prop('demo_intro_navs')
+                        }
+                    },
+
+
+
+                    {
+                        el: '#tab_content_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_groups'),
+                            content: $.i18n.prop('demo_intro_groups')
+                        }
+                    },
+
+
+                    {
+                        el: '#treeVariable_fuente',
+                        position: {
+                            location: 'rm-b'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p24'),
+                            content: $.i18n.prop('label_esp_p25')
+                        }
+                    },  
+
+
+                    {
+                        el: '#add_group_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p26'),
+                            content: $.i18n.prop('label_esp_p27')
+                        }
+                    },
+                    {
+                        el: '#clean_var_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p28'),
+                            content: $.i18n.prop('label_esp_p29')
+                        }
+                    },
+
+                    {
+                        el: '#treeAddedPanel_fuente',
+                        position: {
+                            location: 'rm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('label_esp_p30'),
+                            content: $.i18n.prop('label_esp_p31')
+                        }
+                    },
+
+
+
+                    {
+                        el: '#tuto_params',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_analisis'),
+                            content: $.i18n.prop('demo_intro_analisis')
+                        }
+                    },
+                   {
+                       el: '#tuto_val',
+                       position: {
+                           location: 'lm-b'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('demo_title_val'),
+                           content: $.i18n.prop('demo_intro_val')
+                       }
+                   },
+                    {
+                        el: '#tuto_min_occ',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_min'),
+                            content: $.i18n.prop('demo_intro_min')
+                        }
+                    },
+                   {
+                       el: '#tuto_apriori',
+                       position: {
+                           location: 'lm-t'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('demo_title_apri'),
+                           content: $.i18n.prop('demo_intro_apri')
+                       }
+                   },
+                   {
+                       el: '#tuto_map_prob',
+                       position: {
+                           location: 'lm-t'
+                       },
+                       templateData: {
+                           title: $.i18n.prop('demo_title_prob'),
+                           content: $.i18n.prop('demo_intro_prob')
+                       }
+                   },
+                    {
+                        el: '#get_esc_ep',
+                        position: {
+                            location: 'lm-t'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_btnres'),
+                            content: $.i18n.prop('demo_intro_btnres')
+                        }
+                    }, 
+
+                    {
+                        el: '#map',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapres'),
+                            content: $.i18n.prop('demo_intro_mapres')
+                        }
+                    },    
+
+                    {
+                        el: '#map',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapresa'),
+                            content: $.i18n.prop('demo_intro_mapresa')
+                        }
+                    },    
+
+                    {
+                        el: '#map',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('demo_title_mapresb'),
+                            content: $.i18n.prop('demo_intro_mapresb')
+                        }
+                    },                 
+
+                ]
+
+            })
+
+
+        })
+
+
+    }
+
+
 
     function _confLiveTutorialNiche() {
 
@@ -1018,6 +1371,7 @@ var language_module = (function (verbose) {
 //            console.log($("#a_raster_fuente").parent().hasClass("active"));
 
             var item_tab, item_tree, group_btn, clean_btn;
+
             if ($("#a_taxon_fuente").parent().hasClass("active")) {
                 item_tab = {
                     el: '#tuto_taxon_sp_fuente',

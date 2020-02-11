@@ -1148,8 +1148,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     percentage_avg = percentage_avg.concat(item.percentage_avg);
                     decil_cells = decil_cells.concat(item.decil_cells);
                 });
-//                console.log(total_eps_scr);
-//                console.log(total_score_cell);
+               console.log(total_eps_scr);
+               // console.log(total_score_cell);
 
                 // PETICION EN SERVER, SUMATORIA EN CLIENTE - getGeoRel - Tabla General
                 _createTableEpSc(total_eps_scr);
@@ -1161,7 +1161,18 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
                 // PROCESO EJECUTADO DEL LADO DEL SERVIDOR, SUMA EN CLIENTE - getScoreCell - Mapa
-                _current_data_score_cell = _utils_module.reduceScoreCell(total_score_cell);
+                // TODO: Esta sumando varias veces el apriori!!
+                var numr = _REQUESTS_MADE.length
+                var apriori = $("#chkApriori").is(':checked') ? true : false;
+                var val_apriori = 0
+                
+                if(apriori){
+                    var val_apriori = parseFloat(Math.log(total_eps_scr[0].ni / (total_eps_scr[0].n- total_eps_scr[0].ni))) 
+                    console.log("val_apriori: " + val_apriori);    
+                    console.log("numr: " + numr);   
+                }
+                
+                _current_data_score_cell = _utils_module.reduceScoreCell(total_score_cell, val_apriori, numr);
                 _configureStyleMap();
 
 
