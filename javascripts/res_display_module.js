@@ -1984,6 +1984,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         $("#btn_decil").prop("value", $.i18n.prop('btn_decil'));
 
+        // $("#btn_demo").text($.i18n.prop('caso_uso'));
+
 
 
     }
