@@ -478,12 +478,12 @@ var language_module = (function (verbose) {
 
             $("#btn_tuto_steps_result").text($.i18n.prop('btn_tuto_steps_result'));
 
-                        
+            $("#btn_demo").text($.i18n.prop('caso_uso'));
+
             
 
             _confLiveTutorialNiche();
             _confLiveTutorialResultsNiche();
-
             _confLiveDemoNiche();
 
 
@@ -1213,7 +1213,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p24'),
-                            content: $.i18n.prop('label_esp_p25')
+                            content: $.i18n.prop('demo_intro_tree2')
                         }
                     },  
 
@@ -1228,16 +1228,16 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p27')
                         }
                     },
-                    {
-                        el: '#clean_var_fuente',
-                        position: {
-                            location: 'rm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p28'),
-                            content: $.i18n.prop('label_esp_p29')
-                        }
-                    },
+                    // {
+                    //     el: '#clean_var_fuente',
+                    //     position: {
+                    //         location: 'rm-t'
+                    //     },
+                    //     templateData: {
+                    //         title: $.i18n.prop('label_esp_p28'),
+                    //         content: $.i18n.prop('label_esp_p29')
+                    //     }
+                    // },
 
                     {
                         el: '#treeAddedPanel_fuente',
