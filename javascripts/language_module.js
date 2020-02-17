@@ -10,6 +10,7 @@ var language_module = (function (verbose) {
     var _language_selected;
     var _language_label_selected;
     var _first_load;
+    var _demo_config = demo_config_en
 
     var _map_module,
             _variable_module,
@@ -74,6 +75,15 @@ var language_module = (function (verbose) {
             _language_label_selected = e.target.getAttribute("label");
 
             config.language = _language_selected;
+            
+            if(_language_selected === "es_ES"){
+                _demo_config = demo_config_es
+            }
+            else{
+                _demo_config = demo_config_en   
+            }
+
+
 
             // localStorage.language = _language_selected;
 
@@ -1035,7 +1045,7 @@ var language_module = (function (verbose) {
                         modal: true,
                         templateData: {
                             title: $.i18n.prop('caso_uso'),
-                            content: $.i18n.prop('demo_intro')
+                            content: $.i18n.prop('demo_intro', _demo_config.target_name, _demo_config.bio_covars_name)
                         }
                     },
                     {
@@ -1045,7 +1055,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p54'),
-                            content: $.i18n.prop('demo_intro_region')
+                            content: $.i18n.prop('demo_intro_region', _demo_config.region_name)
                         }
                     },
                     {
@@ -1055,7 +1065,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p5'),
-                            content: $.i18n.prop('demo_intro_resolucion')
+                            content: $.i18n.prop('demo_intro_resolucion', _demo_config.resolution)
                         }
                     },
                     {
