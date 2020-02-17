@@ -655,44 +655,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_loadD3GridMX") : _VERBOSE;
 
-        
-        // _VERBOSE ? console.log("_REGION_SELECTED: " + _REGION_SELECTED) : _VERBOSE;
-        // _VERBOSE ? console.log("region_selected: " + region_selected) : _VERBOSE;
-
-        // Deja la malla cuando ya existe previemente y no se cambia la resolución
-        // if (_grid_map !== undefined && _grid_res === grid_res && _REGION_SELECTED === region_selected) {
-        //     _VERBOSE ? console.log("Se mantiene resolución") : _VERBOSE;
-        //     // _display_module.callDisplayProcess(val_process);
-        //     return;
-
-        // } else {
-
-        //     // Se elimina evento cuando la malla es reemplazada. Evita la acumulación de eventos
-        //     _VERBOSE ? console.log("Carga de malla") : _VERBOSE;
-        //     map.off('click');
-
-        // }
-
-
-        // if(_grid_map_occ === undefined || _grid_res !== grid_res || _REGION_SELECTED !== region){
-        //     console.log("_grid_map_occ sin valor asignado o cambio en malla")
-        //     // console.log(_grid_map_occ)
-            
-        //     map.off('click');
-        //     map_sp.off('click');
-
-        //     _grid_res = grid_res
-        //     _REGION_SELECTED = region
-        //     _taxones = taxones
-
-        //     loadD3GridMX(val_process, grid_res, region, taxones)
-        //     return
-        // }
-
-
-
-
-
         _taxones = taxones
 
         $('#map').loading({
@@ -810,7 +772,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                             // console.log("_lin_sup: " + _lin_sup)
                             // console.log("_sin_fecha: " + _sin_fecha)
                             // console.log("_con_fosil: " + _con_fosil)
-                            // console.log(_taxones)
+                            console.log(_taxones)
                             console.log("_DELETE_STATE_CELLS: " + _DELETE_STATE_CELLS)
 
                             _display_module.showGetFeatureInfoOccCell(e.latlng.lat, e.latlng.lng, _taxones, _lin_inf, _lin_sup, _sin_fecha, _con_fosil, _grid_res, _REGION_SELECTED, _DELETE_STATE_CELLS );
@@ -1805,7 +1767,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         console.log("grid_res: " + grid_res)
         console.log("_REGION_SELECTED: " + _REGION_SELECTED)
         console.log("region: " + region)
-        // console.log("_taxones: " + _taxones)
+        
+        _taxones = taxones
+
+        console.log(_taxones)
 
 
         if(_grid_map_occ === undefined || _grid_map === undefined || _grid_res !== grid_res || _REGION_SELECTED !== region){
@@ -1820,9 +1785,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             _grid_res = grid_res
             _REGION_SELECTED = region
-            _taxones = taxones
 
-            loadD3GridMX(val_process, grid_res, region, taxones)
+            loadD3GridMX(val_process, grid_res, region, _taxones)
             return
         }
         else{

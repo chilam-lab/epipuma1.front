@@ -388,7 +388,7 @@ var module_nicho = (function () {
 
             })
 
-            // console.log(_taxones);
+            console.log(_taxones);
 
             var val_process = $("#chkValidation").is(':checked');
             var grid_res = $("#grid_resolution").val();
