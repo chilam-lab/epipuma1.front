@@ -314,8 +314,6 @@ var module_nicho = (function () {
             }, 2000);
 
             _cleanTutorialButtons();
-//            $("#specie_next").hide("slow");
-
         });
 
         $("#params_next").click(function () {
@@ -728,22 +726,8 @@ var module_nicho = (function () {
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
         console.log("Region : " + region);
-
-        // var spid = sp_data.spid;
-//        var discardedPoints = map_dPoints;
-//        var computed_discarded_cells = d3.map([]); // considerar arregle de celdas descartadas
-//        var allowedPoints = d3.map([]); // considerar arregle de puntos permitidos
         var idreg = ["Estados"]; // Módulo por desarrollar
-        // var type_time = 0;
-        // var num_items = 0;
-
-        //TODO: Enlazar array de subgroups_target a componente de variables
-        // ******
-
-
-        // $("#nom_sp").val(sp_data.label);
-        // _map_module_nicho.set_specieTarget(sp_data);
-
+        
         if (chkFec) {
             $("#chkFecha").prop('checked', true);
             $("#lb_sfecha").text(_iTrans.prop('lb_si'));
@@ -805,9 +789,6 @@ var module_nicho = (function () {
 
         $('#footprint_region_select option[value=' + region + ']').attr('selected', 'selected');
 
-        // console.log(map_dPoints.values());
-
-
         console.log(subgroups_target)
         console.log(subgroups)
 
@@ -830,76 +811,33 @@ var module_nicho = (function () {
                 temp_item["title"] = grupo.title;
                 temp_item["nivel"] = parseInt(sp_grupo.level); //0:root, 1:reino, etc...
                 _taxones.push(temp_item);
+
             })
 
         })
 
         console.log(_taxones)
 
-        
-        // var footprint_region = parseInt($("#footprint_region_select").val());
-
         _map_module_nicho.loadD3GridMX(chkVal, gridRes, region, _taxones);        
-
-        // _map_module_nicho.busca_especie_grupo(_taxones, d3.map([]), region)
 
         _componente_fuente.addUIItem(subgroups.slice());
         
-
-        // if (chkFec !== undefined || rango_fechas !== undefined) {
-
-        //     console.log("filtros");
-        //     // console.log(map_dPoints.values());
-
-        //     _map_module_nicho.busca_especie_filtros(rango_fechas, chkFec, chkFosil, map_dPoints, region);
-        // } else {
-        //     console.log("busca");
-            // console.log(map_dPoints.values());
-
-            // _map_module_nicho.busca_especie(map_dPoints, region, spid);
-        // }
-
-
-
-
-        // _res_display_module_nicho.set_spid(spid);
         _res_display_module_nicho.set_idReg(idreg);
-
-
-        
+  
         _componente_fuente.setVarSelArray(subgroups);
-
         
         _componente_target.addUIItem(subgroups_target.slice());
-        
 
         _res_display_module_nicho.set_subGroups(subgroups);
-        // _res_display_module_nicho.set_typeBioclim(type_time);
 
 
-        if (subgroups.length > 0) {
-            // asegura que si el grupo de variables seleccionado tiene mas de un grupo taxonomico agregue el total
-            // subgroups.forEach(function (grupo) {
-            //     if (grupo.value.length > 1) {
-            //         grupo.value.forEach(function (item) {
-            //             num_items++;
-            //         });
-            //     }
-            // });
-            // // asegura que si existe mas de un grupo de variables, se calcule el total  de todos los grupos
-            // if (subgroups.length > 1) {
-            //     num_items++;
-            // }
-        } else {
+        if (subgroups.length == 0) {
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
-            return;
+        } 
+        else {
+            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_link'), "info");
         }
-
-//        _res_display_module_nicho.set_discardedPoints(discardedPoints);
-//        _res_display_module_nicho.set_discardedCellFilter(computed_discarded_cells);
-//        _res_display_module_nicho.set_allowedCells(allowedPoints);
-
-        _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_link'), "info");
+        
 
     }
 
@@ -909,6 +847,8 @@ var module_nicho = (function () {
 
         _VERBOSE ? console.log("get_esc_ep") : _VERBOSE;
         var num_items = 0, spid, idreg, subgroups, sp_target;
+
+        $("#specie_next").css('visibility', 'hidden');
 
         $("#show_gen").css('visibility', 'visible');
         $("#btn_tuto_steps_result").css('visibility', 'visible');
