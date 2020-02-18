@@ -1136,6 +1136,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
             // todas las peticiones han sido realizadas
             if (_REQUESTS_NUMBER === 0) {
 
+                // confirma la desaparición del boton anterior de seguimiento
+                $("#specie_next").css('visibility', 'hidden');
+
                 var total_eps_scr = [];
                 var total_score_cell = [];
                 var percentage_avg = [];

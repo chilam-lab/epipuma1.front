@@ -58,51 +58,6 @@
     <link rel="stylesheet" href="plugins/multiselect/css/bootstrap-multiselect.css" type="text/css"/>
 
 
-
-
-
-
-
-        <!-- <link rel="stylesheet" href="bs_css/animate.css" />
-        <link rel="stylesheet" href="bs_css/bootstrap.css" />
-        <link rel="stylesheet" href="bs_css/et-line-icons.css" />
-        <link rel="stylesheet" href="bs_css/font-awesome.min.css" />
-        <link rel="stylesheet" href="bs_css/extralayers.css" />
-        <link rel="stylesheet" href="bs_css/settings.css" />
-        <link rel="stylesheet" href="bs_css/magnific-popup.css" />
-        <link rel="stylesheet" href="bs_css/owl.carousel.css" />
-        <link rel="stylesheet" href="bs_css/owl.transitions.css" />
-        <link rel="stylesheet" href="bs_css/full-slider.css" />
-        <link rel="stylesheet" href="bs_css/text-effect.css" />
-        <link rel="stylesheet" href="bs_css/menu-hamburger.css" />
-        <link rel="stylesheet" href="bs_css/style.css" />
-        <link rel="stylesheet" href="bs_css/responsive.css" /> -->
-        <!--[if IE]>
-            <link rel="stylesheet" href="bs_css/style-ie.css" />
-        <![endif]-->
-        <!--[if IE]>
-            <script src="js/html5shiv.js"></script>
-        <![endif]-->
-
-
-
-
-
-        <style>
-        body {
-                /*padding: 0;
-                margin: 0;*/
-            }
-
-            html, body, #map {
-                height: 95%;
-                /*font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;*/
-            }
-            .dataTables_scrollHead {
-              overflow: unset !important;
-          }
-      </style>
-
       <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
       <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
 
@@ -139,11 +94,7 @@
       <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
 
 
-      <!--<script type="text/javascript" src="examples.js"></script>-->
-
-
-
-
+     
 
       <script>
         (function (i, s, o, g, r, a, m) {
@@ -189,49 +140,43 @@
                 var hash = location.hash.replace(/^#/, '');
 //                console.log(hash);
 
-if (hash) {
+                if (hash) {
 
-//                    console.log("enlace");
-var match = $.routeMatches(hash);
+                    var match = $.routeMatches(hash);
 
-//                    console.log(match);
+                    if (match) {
+                        var template = $(match.route.template);
 
-if (match) {
-    var template = $(match.route.template);
-
-    if (template.length) {
-        var text = match.route.callback.apply(match.route.callback, match.args);
+                        if (template.length) {
+                            var text = match.route.callback.apply(match.route.callback, match.args);
                             // template.text(text);
                             // console.log(template);
                             _json_config = JSON.parse(text)
-
 
                         }
 
                     }
 
+                } 
 
-
-                } else {
-//                    console.log("inicio");
-}
-
-})
+            })
 
 
 
-</script>
-<script>
-  // Initialize tooltip component
-  $(function() {
-    $('[data-toggle="tooltip"]').tooltip()
-})
+        </script>
 
-  // Initialize popover component
-  $(function() {
-    $('[data-toggle="popover"]').popover()
-})
-</script>
+        <script>
+          // Initialize tooltip component
+            $(function() {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+
+          // Initialize popover component
+            $(function() {
+                $('[data-toggle="popover"]').popover()
+            })
+
+        </script>
 
 
 <!--Plugins-->
@@ -350,75 +295,7 @@ if (match) {
                                                     
                                                 </div>
 
-                                                <div id="var_target" class="row ">
-
-                            <!-- <div class="col-md-9 col-sm-12 col-xs-12 pd-no-rside">
-
-                                <label id="lb_sp_list"></label>
-
-                                <div id="tuto_taxon_sp_target" class="input-group dropdown_group">
-                                    <div class="input-group-btn">
-                                        <button id="btn_variable_target" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-primary dropdown-toggle">Taxon <span class="caret"></span>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <li>
-                                                <a id="a_item_reino_target" parent-field="reinovalido" data-field="phylumdivisionvalido" level-field="2" class="biotica">Kingdom</a>
-                                            </li>
-                                            <li>
-                                                <a id="a_item_phylum_target" parent-field="phylumdivisionvalido" data-field="clasevalida" level-field="3" class="biotica">Phylum</a>
-                                            </li>
-                                            <li>
-                                                <a id="a_item_clase_target" parent-field="clasevalida" data-field="ordenvalido" level-field="4" class="biotica">Class</a>
-                                            </li>
-                                            <li>
-                                                <a id="a_item_orden_target" parent-field="ordenvalido" data-field="familiavalida" level-field="5" class="biotica">Order</a>
-                                            </li>
-                                            <li><a id="a_item_familia_target" parent-field="familiavalida" data-field="generovalido" level-field="6" class="biotica">Family</a></li>
-                                            <li>
-                                                <a id="a_item_genero_target" parent-field="generovalido" data-field="especievalidabusqueda" level-field="7" class="biotica">Genus</a>
-                                            </li>
-                                        </div>
-                                    </div>
-                                    <input id="text_variable_target" type="text" aria-label="..." disabled="" class="form-control ui-autocomplete-input" autocomplete="off">
-                                </div>
-
-                                <div id="spContainer" class="col-xs-12 pd-no-sides">
-                                </div>
-
-                                comentado
-                                 <div class="col-md-10 col-sm-10 col-xs-10 pd-no-sides">
-                                    <div id="tuto_autocomplete" class="input-group text-input ">
-                                            <input id="nom_sp" type="text" class="form-control " />    
-                                            <span id="lb_example" class="input-group-addon" id="basic-addon1">
-                                            </span>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-sm-2 col-xs-2 pd-no-sides">
-                                    <input id="btnSchSp" class="btn btn-primary" type="button" />
-                                </div>
-                                
-                                
-
-                                <div class="col-xs-12 pd-no-sides">
-                                         <select id="nom_sp_multiple" multiple="multiple " class="col-xs-12" ></select>   
-
-                                </div>
-
-                                <div id="spContainer" class="col-xs-12 pd-no-sides">
-                                </div> 
-                                comentado
-
-                            </div>
-
-                            <div class="col-md-3 col-sm-12 col-xs-12 pd-no-lside">
-
-                                <div id="spRigthContainer" class="pd-no-sides">
-
-                                </div>
-                                
-                            </div> -->
-
-                        </div>
+                        <div id="var_target" class="row "></div>
                         
                         
 
@@ -767,139 +644,7 @@ if (match) {
                         </div>
 
 
-                        <div id="mapwrap2" >
-
-                            <!-- <div id="toolbar2" class="open">
-                                
-                                <div class="hamburger">
-                                    <span id="tlt_resumen">Deciles</span>
-                                </div>
-                                
-                                <div id="tourstops2">
-
-                                    <h2 id="hd_resumen2">Deciles</h2>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">10</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil10" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">9</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">8</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">7</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">6</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">5</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">4</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">3</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">2</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-2 margin-top-five">
-                                            <h5 class="summary_lb">1</h5>
-                                        </div>
-                                        <div class="col-md-4 margin-top-five">
-                                            <input id="decil9" class="checkbox_item" type="checkbox" />
-                                        </div>
-                                        
-                                    </div>
-
-
-                                    <h2 id="hd_resumen2">Grupos</h2>
-
-                                    <div id="grupos_deciles">
-                                        
-                                    </div>
-
-
-                                </div>
-                            </div> -->
-
+                        <!-- <div id="mapwrap2" > -->
 
                             <div id="map" class="margin-top-15 box_shadow" >
 
@@ -916,7 +661,7 @@ if (match) {
                                 <div id="map_text"></div>
                             </div>
                             
-                        </div>
+                        <!-- </div> -->
 
                         
 
@@ -996,6 +741,7 @@ if (match) {
 
 
                 </div>
+
 
                 <!-- Modals -->
                 <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

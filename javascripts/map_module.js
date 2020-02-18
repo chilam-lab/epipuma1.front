@@ -793,9 +793,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 }
 
-                // busca_especie_grupo(taxones, region_selected, val_process, grid_res)
-
-                // _display_module.callDisplayProcess(val_process);
 
             },
             error: function (requestObject, error, errorThrown) {
@@ -1757,8 +1754,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {array} taxones - Array con taxones seleccionados
      */
 
-     // TODO: REVISA RPOR QUE ESTA CAMBIANDO LA RESOLUCIÍN DE LA MALLA!!!
-    function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = 16) {
+     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = 16) {
 
         _VERBOSE ? console.log("busca_especie_grupo") : _VERBOSE;
 
@@ -1878,8 +1874,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
            $('#tuto_mapa_occ').loading('stop');
-           $("#specie_next").css('visibility', 'visible');
-           $("#specie_next").show("slow");
+           
 
            // inicializa variables para eliminar celdas
            _DELETE_STATE_CELLS = false;
@@ -1909,13 +1904,15 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             // manda mensaje cuando no hay registro de especies en celdas
             if (num_cell_occ === 0) {
                _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
-               $("#specie_next").css('visibility', 'hidden');
-               
-               //TODO: agregar texto en ingles
-               _toastr.info("La especie no tiene registros");
-               // _clearFieldsSP();
+               _toastr.info($.i18n.prop('lb_norecords'));
                return;
             }
+
+
+            // Se activa boton de siguiente paso
+            $("#specie_next").css('visibility', 'visible');
+            $("#specie_next").show("slow");
+
 
             colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
 
@@ -2082,9 +2079,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                    // manda mensaje cuando no hay registro de especies en celdas
                    if (data_sp.length === 0) {
                        _VERBOSE ? console.log("No hay registros de especie") : _VERBOSE;
+                       
                        $("#specie_next").css('visibility', 'hidden');
-    //                    TODO: Hacer internacionalización del label
-                       _toastr.info("La especie no tiene registros");
+                       _toastr.info($.i18n.prop('lb_norecords'));
                        _clearFieldsSP();
 
                        return;
