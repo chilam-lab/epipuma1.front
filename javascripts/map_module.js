@@ -575,10 +575,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         //     return 'Map tiles by <a href="https://carto.com/attribution">Carto</a>, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL.';
         // };
 
-        _OSMSP_layer = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
-        _OSMSP_layer.getAttribution = function () {
-                return '&copy; <a href="http://www.thunderforest.com/landscape">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        };
+        // _OSMSP_layer = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
+        // _OSMSP_layer.getAttribution = function () {
+        //         return '&copy; <a href="http://www.thunderforest.com/landscape">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        // };
+
+        _OSMSP_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png');
+
 
 
         
@@ -1093,7 +1096,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         }));
         console.log("max_occ: " + max_occ)
 
-        var color_escale = colorbrewer.RdPu[9]
+        // var color_escale = colorbrewer.RdPu[9]
+        var color_escale = colorbrewer.YlOrRd[5]
+        // var color_escale = colorbrewer.OrRd[5]
+        // var color_escale = colorbrewer.PuBuGn[5]
+        
         console.log(color_escale)
 
         var scale_color_function = d3.scale.quantile()
@@ -1120,6 +1127,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 else{
                     grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
                 }
+
+
+                grid_array.features[i].properties.stroke = 'rgba(0,0,0,0.4)';
                 
 
             } else {
@@ -1127,6 +1137,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
                 grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
                 grid_array.features[i].properties.score = null;
+
+                grid_array.features[i].properties.stroke = 'rgba(0,0,0,0)';
 
 
             }
@@ -1474,7 +1486,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         // borde de la malla
         // se agrega borde de la malla
-        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        // ctx.strokeStyle = 'rgba(0,0,0,0)';
         // ctx.strokeStyle = 'rgba(255,0,0,0)';
         // ctx.strokeStyle = 'grey'; // hace malla visible
 
@@ -1485,6 +1497,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             // background de la celda
             ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(0,0,0,0)';
+            ctx.strokeStyle = feature.tags.stroke ? feature.tags.stroke : 'rgba(0,0,0,0)';
+
+
             ctx.beginPath();
 
             for (var j = 0; j < feature.geometry.length; j++) {
