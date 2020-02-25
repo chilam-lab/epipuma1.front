@@ -12,6 +12,10 @@ var module_nicho = (function () {
     var _REGION_SELECTED;
     var _REGION_TEXT_SELECTED;
 
+    // actualizar este arreglo si cambian los ids de las secciones
+    var _SCROLL_SECTIONS = ["section0","section1","map","myScrollableBlockEpsilonDecil","histcontainer_row"];
+    var _SCROLL_INDEX = 0;
+
 
     var _tipo_modulo = MOD_NICHO;
 
@@ -294,51 +298,90 @@ var module_nicho = (function () {
             window.open(_url_front + "/docs/tutorial.pdf");
         });
 
-        $("#btn_steps").click(function () {
-            $('.sliderPop').show();
-            $('.ct-sliderPop-container').addClass('open');
-            $('.sliderPop').addClass('flexslider');
-            $('.sliderPop .ct-sliderPop-container').addClass('slides');
-
-            $('.sliderPop').flexslider({
-                selector: '.ct-sliderPop-container > .ct-sliderPop',
-                slideshow: false,
-                controlNav: false,
-                controlsContainer: '.ct-sliderPop-container'
-            });
-        });
+        _SCROLL_INDEX = 0;
 
         $("#specie_next").click(function () {
-            $('html, body').animate({
-                scrollTop: $("#section1").offset().top - 40
-            }, 2000);
 
-            _cleanTutorialButtons();
+            if(_SCROLL_INDEX >= _SCROLL_SECTIONS.length-1)
+                return;
+
+            _SCROLL_INDEX = _SCROLL_INDEX + 1;
+
+            // console.log(_SCROLL_SECTIONS[_SCROLL_INDEX]) 
+            
+            $('html, body').animate({
+                scrollTop: $("#"+_SCROLL_SECTIONS[_SCROLL_INDEX]).offset().top - 40
+            }, 1000);
+
+            
+
         });
 
-        $("#params_next").click(function () {
-            $('html, body').animate({
-                scrollTop: $("#map").offset().top - 40
-            }, 2000);
 
-            $("#params_next").hide("slow");
+        $("#specie_before").click(function () {
+
+            if(_SCROLL_INDEX == 0)
+                return;
+
+            _SCROLL_INDEX = _SCROLL_INDEX - 1;
+
+            // console.log(_SCROLL_SECTIONS[_SCROLL_INDEX]) 
+            
+            $('html, body').animate({
+                scrollTop: $("#"+_SCROLL_SECTIONS[_SCROLL_INDEX]).offset().top - 40
+            }, 1000);
+
+            
+
         });
 
-        $("#map_next").click(function () {
-            $('html, body').animate({
-                scrollTop: $("#myScrollableBlockEpsilonDecil").offset().top - 40
-            }, 2000);
 
-            $("#map_next").hide("slow");
-        });
 
-        $("#hist_next").click(function () {
-            $('html, body').animate({
-                scrollTop: $("#histcontainer_row").offset().top - 40
-            }, 2000);
+        // $("#btn_steps").click(function () {
+        //     $('.sliderPop').show();
+        //     $('.ct-sliderPop-container').addClass('open');
+        //     $('.sliderPop').addClass('flexslider');
+        //     $('.sliderPop .ct-sliderPop-container').addClass('slides');
 
-            $("#hist_next").hide("slow");
-        });
+        //     $('.sliderPop').flexslider({
+        //         selector: '.ct-sliderPop-container > .ct-sliderPop',
+        //         slideshow: false,
+        //         controlNav: false,
+        //         controlsContainer: '.ct-sliderPop-container'
+        //     });
+        // });
+
+        // $("#specie_next").click(function () {
+        //     $('html, body').animate({
+        //         scrollTop: $("#section1").offset().top - 40
+        //     }, 2000);
+
+        //     _cleanTutorialButtons();
+        // });
+
+        // $("#params_next").click(function () {
+        //     $('html, body').animate({
+        //         scrollTop: $("#map").offset().top - 40
+        //     }, 2000);
+
+        //     $("#params_next").hide("slow");
+        // });
+
+        // $("#map_next").click(function () {
+        //     $('html, body').animate({
+        //         scrollTop: $("#myScrollableBlockEpsilonDecil").offset().top - 40
+        //     }, 2000);
+
+        //     $("#map_next").hide("slow");
+        // });
+
+        // $("#hist_next").click(function () {
+        //     $('html, body').animate({
+        //         scrollTop: $("#histcontainer_row").offset().top - 40
+        //     }, 2000);
+
+        //     $("#hist_next").hide("slow");
+        // });
 
 
         $('.ct-sliderPop-close').on('click', function () {
@@ -471,7 +514,7 @@ var module_nicho = (function () {
 
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_values'), "warning");
             $("#reload_map").addClass('btn-success').removeClass('btn-primary');
-            _cleanTutorialButtons();
+            // _cleanTutorialButtons();
 
         }
 
@@ -479,10 +522,10 @@ var module_nicho = (function () {
 
     function _cleanTutorialButtons() {
 
-        $("#specie_next").hide("slow");
-        $("#params_next").hide("slow");
-        $("#map_next").hide("slow");
-        $("#hist_next").hide("slow");
+        // $("#specie_next").hide("slow");
+        // $("#params_next").hide("slow");
+        // $("#map_next").hide("slow");
+        // $("#hist_next").hide("slow");
 
     }
 
@@ -848,12 +891,12 @@ var module_nicho = (function () {
         _VERBOSE ? console.log("get_esc_ep") : _VERBOSE;
         var num_items = 0, spid, idreg, subgroups, sp_target;
 
-        $("#specie_next").css('visibility', 'hidden');
+        // $("#specie_next").css('visibility', 'hidden');
 
         $("#show_gen").css('visibility', 'visible');
         $("#btn_tuto_steps_result").css('visibility', 'visible');
 
-        _cleanTutorialButtons();
+        // _cleanTutorialButtons();
 
         
         if (_taxones.length === 0) {
@@ -913,9 +956,9 @@ var module_nicho = (function () {
             $("#show_gen").css('visibility', 'hidden');
             $("#btn_tuto_steps_result").css('visibility', 'hidden');
             $("#tuto_res").css('visibility', 'hidden');
-            $("#params_next").css('visibility', 'hidden');
+            // $("#params_next").css('visibility', 'hidden');
 
-            _cleanTutorialButtons();
+            // _cleanTutorialButtons();
 
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
             return;
