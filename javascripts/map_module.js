@@ -877,17 +877,38 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("colorizeDecileFeatures") : _VERBOSE;
 
-        // console.log(_decil_cells)
+        
+        var cells_map = _decil_cells.map(function(d){ return d.cell})
+        var score_map = _decil_cells.map(function(d){ return d.score})
+
+        var min_score = d3.min(score_map)  
+        var max_score = d3.max(score_map)  
+
+        // var verdes = colorbrewer.Greens[3]
+        // var verdes = ["#41ab5d","#238b45","#006d2c"]
+        var verdes = ["#74c476","#238b45","#00441b"]
+
+        var scale_color_function = d3.scale.quantile()
+            .domain([min_score, max_score])
+            .range(verdes)
+
+        // console.log(cells_map)
+        // console.log(score_map)
 
         for (var i = 0; i < grid_map.features.length; i++) {
 
 
             // verifica si en la celda tiene presencia de la especie objetivo
-            if(_decil_cells.indexOf(grid_map.features[i].properties.gridid) !== -1){
+            var index = cells_map.indexOf(grid_map.features[i].properties.gridid)
+            if(index !== -1){
+
+                // console.log(scale_color_function(score_map[index]))
 
                 // console.log("celda objetivo")
                 // grid_map.features[i].properties.color = 'rgba(17,227,217,0.6)'; cyan
-                grid_map.features[i].properties.color = 'rgba(96,247,20,0.6)';
+                // grid_map.features[i].properties.color = 'rgba(96,247,20,0.6)';
+                grid_map.features[i].properties.color = scale_color_function(score_map[index]);
+                
                 
             }
             else{
