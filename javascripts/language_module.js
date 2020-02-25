@@ -494,7 +494,7 @@ var language_module = (function (verbose) {
 
             _confLiveTutorialNiche();
             _confLiveTutorialResultsNiche();
-            _confLiveDemoNiche();
+            // _confLiveDemoNiche();
 
 
         } else if (_tipo_modulo === 1) {
