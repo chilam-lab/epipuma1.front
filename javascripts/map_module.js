@@ -876,17 +876,19 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         
         var cells_map = _decil_cells.map(function(d){ return d.cell})
-        var score_map = _decil_cells.map(function(d){ return d.score})
+        var decile_map = _decil_cells.map(function(d){ return d.decile})
 
-        var min_score = d3.min(score_map)  
-        var max_score = d3.max(score_map)  
+        // var min_score = d3.min(score_map)  
+        // var max_score = d3.max(score_map)  
 
-        // var verdes = colorbrewer.Greens[3]
+        // var verdes = colorbrewer.Greens[9]
         // var verdes = ["#41ab5d","#238b45","#006d2c"]
-        var verdes = ["#74c476","#238b45","#00441b"]
+        // var verdes = ["#74c476","#238b45","#00441b"]
+        var verdes = ["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#006228","#00441b"];
+        // var verdes = colorbrewer.BrBG[10];
 
         var scale_color_function = d3.scale.quantile()
-            .domain([min_score, max_score])
+            .domain(d3.range(1,11))
             .range(verdes)
 
         // console.log(cells_map)
@@ -899,12 +901,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             var index = cells_map.indexOf(grid_map.features[i].properties.gridid)
             if(index !== -1){
 
-                // console.log(scale_color_function(score_map[index]))
+                console.log(scale_color_function(decile_map[index]))
 
                 // console.log("celda objetivo")
                 // grid_map.features[i].properties.color = 'rgba(17,227,217,0.6)'; cyan
                 // grid_map.features[i].properties.color = 'rgba(96,247,20,0.6)';
-                grid_map.features[i].properties.color = scale_color_function(score_map[index]);
+                grid_map.features[i].properties.color = scale_color_function(decile_map[index]);
+                grid_map.features[i].properties.stroke = 'rgba(0,0,0,0.3)';
                 
                 
             }
@@ -912,6 +915,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 // console.log("no match")
                 grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
+                grid_map.features[i].properties.stroke = 'rgba(0,0,0,0)';
 
             }
                 
@@ -960,7 +964,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 // grid_map.features[i].properties.stroke = 'rgba(77,175,74,1)';
                 // grid_map.features[i].properties.stroke = 'rgba(255,127,0,1)';
 
-                grid_map.features[i].properties.stroke = 'rgba(0,0,0,0.6)';
+                grid_map.features[i].properties.stroke = 'rgba(255,0,0,0.6)';
                 
 
 
