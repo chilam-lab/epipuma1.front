@@ -1137,7 +1137,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             if (_REQUESTS_NUMBER === 0) {
 
                 // confirma la desaparición del boton anterior de seguimiento
-                $("#specie_next").css('visibility', 'hidden');
+                // $("#specie_next").css('visibility', 'hidden');
 
                 var total_eps_scr = [];
                 var total_score_cell = [];
@@ -1486,8 +1486,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 if(first_loaded){
 
-                    $("#map_next").css('visibility', 'visible');
-                    $("#map_next").show("slow");
+                    // $("#map_next").css('visibility', 'visible');
+                    // $("#map_next").show("slow");
 
 
                     // activeDecilOccurrences(decil_cells, decil)
@@ -1509,8 +1509,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     .then(resp => resp.json())
                     .then(resp => {
 
-                        $("#map_next").css('visibility', 'visible');
-                        $("#map_next").show("slow");
+                        // $("#map_next").css('visibility', 'visible');
+                        // $("#map_next").show("slow");
 
                         if (resp.ok) {
 
@@ -1616,10 +1616,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             })
         }
 
-        console.log(request.covariables)
-
-
-
         if (!request.target_taxons)
             request.target_taxons = child.request.target_taxons;
         else{
@@ -1634,6 +1630,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
             })
         }
+
+
+
+        // request.covariables.forEach(function(item,index){
+        //     item.name = "Total"
+        // })
+
+        console.log(request.covariables)
+
 
         // request.val_process = request.val_process ? request.val_process : child.request.val_process;
         // request.level_req = child.request.level_req;
@@ -1740,8 +1745,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         $('#treeAddedPanel').loading('stop');
 
-        $("#hist_next").css('visibility', 'visible');
-        $("#hist_next").show("slow");
+        // $("#hist_next").css('visibility', 'visible');
+        // $("#hist_next").show("slow");
 
 
     }
@@ -1795,8 +1800,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _map_module_nicho.colorizeFeatures(grid_map_color);
         _map_module_nicho.colorizeTargetFeatures();
 
-        $("#params_next").css('visibility', 'visible');
-        $("#params_next").show("slow");
+        // $("#params_next").css('visibility', 'visible');
+        // $("#params_next").show("slow");
 
         if (_first_analysis) {
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inica_mapa'), "info");

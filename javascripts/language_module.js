@@ -476,7 +476,7 @@ var language_module = (function (verbose) {
             
             
 
-            $("#specie_next").text($.i18n.prop('label_next'));
+            // $("#specie_next").text($.i18n.prop('label_next'));
 
             $("#params_next").text($.i18n.prop('params_next'));
             $("#map_next").text($.i18n.prop('map_next'));
