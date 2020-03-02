@@ -1066,7 +1066,44 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("colorizeFeaturesNet") : _VERBOSE;
 
-//        console.log(_grid_map);
+       // console.log(arg_gridid);
+       // console.log(arg_count);
+       // console.log(breaks);
+
+       // var tonos = colorbrewer.YlOrRd[9];
+
+       var min_occ = d3.min(arg_count);
+       var max_occ = d3.max(arg_count);
+       var range_labels = [];
+       var tonos = [];
+
+
+       console.log("min_occ: " + min_occ);
+       console.log("max_occ: " + max_occ);
+       console.log(range_labels);
+
+
+       if(max_occ <= 9){
+           tonos = jQuery.extend(true, [], colorbrewer.YlOrRd[9])
+           tonos = tonos.reverse().slice(0,max_occ)
+           tonos.reverse()
+
+           range_labels = d3.range(1,max_occ+1);
+       }
+       else{
+           tonos = colorbrewer.YlOrRd[9];
+
+           var delta = max_occ / tonos.length
+           d3.range(0,tonos.length).forEach(function(item, index){
+               if(index!=0)
+                   range_labels.push(parseFloat(index * delta).toFixed(2))
+           }) 
+
+           
+       }       
+
+       console.log(tonos)
+       console.log(range_labels)
 
 
         for (var i = 0; i < _grid_map.features.length; i++) {
@@ -1090,6 +1127,15 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _tileLayer.redraw();
         // _tileLayerSP.redraw();
+
+
+        // if (!_first_loaded) {
+            var values_occ = d3.range(1,11)
+            var pos_center_lb = (max_occ <= 9) // calcula la posición del label, si es centrado por cuadro o en el cambio de color
+            _cargaPaletaColorNet(tonos, range_labels, pos_center_lb)    
+        // }
+
+
 
     }
 
@@ -2785,13 +2831,84 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         key.append("text")
-            .attr("id", "lb_decil_leyend")
+            .attr("id", "lb_decil_legend")
             .attr("y", 0)
             .attr("x", 45)
             .attr("dy", ".71em")
             .style("font-size", "10px")
             .style("text-anchor", "end")
-            .text(_iTrans.prop('lb_decil_leyend'));
+            .text(_iTrans.prop('lb_decil_legend'));
+
+
+
+            
+    }
+
+
+
+    /**
+     * Éste método obtiene la escala de colores para la coloración del mapa
+     *
+     * @function _cargaPaletaColor
+     * @private
+     * @memberof! map_module
+     * 
+     * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
+     */
+    function _cargaPaletaColorNet(colors_array, values_array, center_lb = true) {
+
+        _VERBOSE ? console.log("_cargaPaletaColorNet") : _VERBOSE;
+
+        $("#escala_color_net").empty();
+
+        var w = 110, h = 170;
+
+        var key = d3.select("#escala_color_net").append("svg")
+                .attr("width", w)
+                .attr("height", h)
+
+        var rects = key.selectAll(".rects")
+            .data(colors_array)
+            .enter()
+            .append("rect")
+            .attr("y", 10)
+            .attr("height", 40)
+            .attr("x", (d,i)=>-170 + i*15)
+            .attr("width", 16)
+            .attr("fill", (d,i)=>colors_array[i])
+            .attr("stroke", "gray")
+            .attr("transform", "rotate(270)");
+
+        
+        var texts = key.selectAll(".rect")
+            .data(values_array)
+            .enter()
+            .append("text")
+            .style("font-size", "8px")
+            .attr("text-anchor", "middle")
+            .attr("fill", "black")
+            .attr("x", function(d,i){
+                return 65
+            })
+            .attr("y", function (d,i) {
+                if(center_lb)
+                    return (170 - ((i+1)*15))+10
+                else
+                    return (170 - ((i+1)*15))+3
+            })
+            .text(function (d) {
+                return parseFloat(d).toFixed(2);
+            })
+
+
+        key.append("text")
+            .attr("id", "lb_net_legend")
+            .attr("y", 170 - ((colors_array.length+1)*15) )
+            .attr("x", 100)
+            .attr("dy", ".71em")
+            .style("font-size", "10px")
+            .style("text-anchor", "end")
+            .text(_iTrans.prop('lb_net_legend'));
 
 
 

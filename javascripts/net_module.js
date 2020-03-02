@@ -1535,6 +1535,11 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
                 _VERBOSE ? console.log(link_color(max_eps)) : _VERBOSE;
 
 
+
+                // var dom = link_color.domain();
+                // var l = (dom[1] - dom[0])/link_color.range().length;
+                // var breaks = d3.range(0, link_color.range().length).map(function(i) { return i * l; });
+
                 _map_module_net.colorizeFeaturesNet(arg_gridid, arg_count, link_color);
 
             },

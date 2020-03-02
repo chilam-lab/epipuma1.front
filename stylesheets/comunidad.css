@@ -1421,3 +1421,21 @@ button.link-comunidad {
 .margin-bottom-30: {
     margin-bottom: 30px !important;
 }
+
+
+.link_shape_map{
+    position: absolute;
+    bottom: 20;
+    right: 10;
+    margin-top: 0px;
+    z-index: 1000;
+}
+
+#escala_color_net{
+    z-index: 5000;
+    width: 80px;
+    height: 160px;
+    top: 100px;
+    left: 10px;
+    text-align: right;
+}
