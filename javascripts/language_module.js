@@ -406,7 +406,7 @@ var language_module = (function (verbose) {
             $("#num_records").text($.i18n.prop("num_records"));
             $("#score_celda").text($.i18n.prop("score_celda"));
 
-            $("#lb_decil_leyend").text($.i18n.prop("lb_decil_leyend"));
+            $("#lb_decil_legend").text($.i18n.prop("lb_decil_legend"));
             
 
             $("#hist_record").text($.i18n.prop('lb_reg_fecha') + ": ");
@@ -594,6 +594,8 @@ var language_module = (function (verbose) {
             $("#lb_fosil").text($.i18n.prop('lb_fosil') + ":");
             $("#lb_reg_fecha").text($.i18n.prop('lb_reg_fecha') + ":");
             $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha') + ":");
+
+            $("#lb_net_legend").text($.i18n.prop("lb_net_legend"));
 
 
             _confLiveTutorialNet();
