@@ -926,6 +926,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         tileLayer.redraw();
 
+        if (!_first_loaded) {
+            var values_occ = d3.range(1,11)
+            _cargaPaletaColorDecil(verdes, values_occ)    
+        }
+        
+
     }
 
 
@@ -2719,6 +2725,73 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             .style("text-anchor", "end")
             .text(_iTrans.prop('num_records'));
 
+
+
+
+            
+    }
+
+
+    /**
+     * Éste método obtiene la escala de colores para la coloración del mapa
+     *
+     * @function _cargaPaletaColor
+     * @private
+     * @memberof! map_module
+     * 
+     * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
+     */
+    function _cargaPaletaColorDecil(colors_array, values_array) {
+
+        _VERBOSE ? console.log("_cargaPaletaColorDecil") : _VERBOSE;
+
+        $("#escala_color_decil").empty();
+
+        var w = 80, h = 170;
+
+        var key = d3.select("#escala_color_decil").append("svg")
+                .attr("width", w)
+                .attr("height", h)
+
+        var rects = key.selectAll(".rects")
+            .data(colors_array)
+            .enter()
+            .append("rect")
+            .attr("y", 10)
+            .attr("height", 40)
+            .attr("x", (d,i)=>-170 + i*15)
+            .attr("width", 16)
+            .attr("fill", (d,i)=>colors_array[i])
+            .attr("stroke", "gray")
+            .attr("transform", "rotate(270)");
+
+        
+        var texts = key.selectAll(".rect")
+            .data(values_array)
+            .enter()
+            .append("text")
+            .style("font-size", "8px")
+            .attr("text-anchor", "middle")
+            .attr("fill", "black")
+            .attr("x", function(d,i){
+                return 65
+            })
+            .attr("y", function (d,i) {
+                return (170 - ((i+1)*15))+10
+            })
+            .text(function (d) {
+                return parseFloat(d).toFixed(2);
+            })
+
+
+        key.append("text")
+            .attr("id", "lb_decil_leyend")
+            .attr("y", 0)
+            .attr("x", 45)
+            .attr("dy", ".71em")
+            .style("font-size", "10px")
+            .style("text-anchor", "end")
+            .text(_iTrans.prop('lb_decil_leyend'));
 
 
 

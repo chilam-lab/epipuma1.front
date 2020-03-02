@@ -405,6 +405,8 @@ var language_module = (function (verbose) {
 
             $("#num_records").text($.i18n.prop("num_records"));
             $("#score_celda").text($.i18n.prop("score_celda"));
+
+            $("#lb_decil_leyend").text($.i18n.prop("lb_decil_leyend"));
             
 
             $("#hist_record").text($.i18n.prop('lb_reg_fecha') + ": ");
