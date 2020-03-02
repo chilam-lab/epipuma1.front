@@ -260,7 +260,8 @@ var language_module = (function (verbose) {
 
             $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha') + ":");
 
-            $("#reload_map").text($.i18n.prop('see_species'));
+            $("#reload_map").text($.i18n.prop('see_species') + "  ");
+            $("#reload_map").append(" <i class='fa fa-arrow-right'></i>");
 
             $("#tab_resumen").text($.i18n.prop('tab_resumen'));
             $("#tab_variables").text($.i18n.prop('tab_variables'));
@@ -439,6 +440,9 @@ var language_module = (function (verbose) {
             $("#lb_des_modal_csv").text($.i18n.prop('lb_des_modal_csv'));
             $("#email_address").attr("placeholder", $.i18n.prop('email_address'));
             $("#email_address_shp").attr("placeholder", $.i18n.prop('email_address_shp'));
+
+
+            
 
 
             if(_table_module){
