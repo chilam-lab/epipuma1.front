@@ -40,7 +40,8 @@
     <!-- <link rel="stylesheet" href="plugins/markercluster/dist/screen.css" /> -->
 
 
-    <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/flexslider.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="plugins/popupSlider/popup-slider.css">
 
@@ -58,45 +59,45 @@
     <link rel="stylesheet" href="plugins/multiselect/css/bootstrap-multiselect.css" type="text/css"/>
 
 
-      <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-      <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
 
-      <!--<script type="text/javascript" src="plugins/jsonc/jsonc.min.js"></script>-->
+    <!--<script type="text/javascript" src="plugins/jsonc/jsonc.min.js"></script>-->
 
-      <script type="text/javascript" src="plugins/router/cbsplit.js"></script>
-      <script type="text/javascript" src="plugins/router/jquery.ba-hashchange.js"></script>
-      <script type="text/javascript" src="plugins/router/jquery.router.js"></script>
-
-
-      <!--<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>-->
-      <!-- // <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
-
-      <script src="plugins/jquery-ui/jquery-ui.js"></script>
-
-      <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-      <script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-
-      <script src="http://d3js.org/d3.v3.min.js"></script>
-      <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
-
-      <script src="plugins/d3-tip/index.js"></script>
-      <!-- // <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
+    <script type="text/javascript" src="plugins/router/cbsplit.js"></script>
+    <script type="text/javascript" src="plugins/router/jquery.ba-hashchange.js"></script>
+    <script type="text/javascript" src="plugins/router/jquery.router.js"></script>
 
 
-      <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <!--<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>-->
+    <!-- // <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 
-      <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
-      <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
-      <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
-      <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-      <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-      <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="plugins/jquery-ui/jquery-ui.js"></script>
+
+    <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+
+    <script src="plugins/d3-tip/index.js"></script>
+    <!-- // <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
 
 
-     
+    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
-      <script>
+    <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+
+
+
+
+    <script>
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
             i[r] = i[r] || function () {
@@ -140,15 +141,15 @@
                 var hash = location.hash.replace(/^#/, '');
 //                console.log(hash);
 
-                if (hash) {
+if (hash) {
 
-                    var match = $.routeMatches(hash);
+    var match = $.routeMatches(hash);
 
-                    if (match) {
-                        var template = $(match.route.template);
+    if (match) {
+        var template = $(match.route.template);
 
-                        if (template.length) {
-                            var text = match.route.callback.apply(match.route.callback, match.args);
+        if (template.length) {
+            var text = match.route.callback.apply(match.route.callback, match.args);
                             // template.text(text);
                             // console.log(template);
                             _json_config = JSON.parse(text)
@@ -167,22 +168,22 @@
 
         <script>
           // Initialize tooltip component
-            $(function() {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
+          $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
           // Initialize popover component
-            $(function() {
-                $('[data-toggle="popover"]').popover()
-            })
+          $(function() {
+            $('[data-toggle="popover"]').popover()
+        })
 
-        </script>
+    </script>
 
 
-<!--Plugins-->
+    <!--Plugins-->
 
-<!-- <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.css' rel='stylesheet' /> -->
-<!-- <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css' rel='stylesheet' /> -->
+    <!-- <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.css' rel='stylesheet' /> -->
+    <!-- <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css' rel='stylesheet' /> -->
 
 
         <!-- <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
@@ -247,77 +248,64 @@
 
                 </div>
 
-
-                <!--                <div class="">
-                                    <button id="tutorial" type="button" class="btn btn-light"></button>
-                                </div>-->
-
-                </header>
+            </header>
 
 
-                <div class="btn_nav_continer">
+            <div class="btn_nav_continer">
 
-                     
+                <button id="specie_before" class="btn btn-primary glyphicon glyphicon-chevron-up" type="button" ></button>
 
-                    <button id="specie_before" class="btn btn-primary glyphicon glyphicon-chevron-up" type="button" ></button>
+                <button id="specie_next" class="btn btn-primary glyphicon glyphicon-chevron-down" type="button" ></button>
 
-                    <button id="specie_next" class="btn btn-primary glyphicon glyphicon-chevron-down" type="button" ></button>
-
-                    
-
-                </div>
+            </div>
 
 
-               
 
-                            <!-- <section> -->
+            <div id="section0" class="row-fluid margin-top-10 container_100p">
 
-                                <div id="section0" class="row-fluid row_panel margin-top-10 section page">
+                <div class="col-md-5 margin-top-30 padding-sides-zero container_95p">
 
-                                    <div class="col-md-5 margin-top-30 padding-sides-zero">
+                    <div id="sp_section" class="col-md-12 margin-top-15 box_shadow container_95p display-marker">
 
-                                        <div id="sp_section" class="col-md-12 margin-top-15 box_shadow height95 display-marker">
+                        <!-- <h2 id="lb_especie" class="sidebar-header-species no-mg-top"></h2> -->
 
-                                            <h2 id="lb_especie" class="sidebar-header-species no-mg-top"></h2>
+                        <!-- No eliminar, utilizado para enlace de regeneración! -->
+                        <div id="result"></div>
 
-                                            <!-- No eliminar, utilizado para enlace de regeneración! -->
-                                            <div id="result"></div>
 
-                                            <div class="row ">
-                                                
-                                                <div id="tuto_region"  class="col-md-6 col-sm-12 col-xs-12">
-                                                    <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
-                                                        <label class="text-sm" id="footprint_region" ></label>
-                                                        <select id="footprint_region_select" class="form-control" >
-                                                        </select>
-                                                        <!--</div>-->
-                                                    </div>
+                        <div class="row pd-top20 container_15p" >
 
-                                                    <div id="tuto_resolution"  class="col-md-6 col-sm-12 col-xs-12">
+                            <div id="tuto_region"  class="col-md-6 col-sm-12 col-xs-12">
+                            <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
+                                <label class="text-sm" id="footprint_region" ></label>
+                                <select id="footprint_region_select" class="form-control" >
+                                </select>
+                                <!--</div>-->
+                            </div>
 
-                                                        <div class="form-group">
-                                                            <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
-                                                            <select class="form-control" id="grid_resolution">
-                                                                <option value="8">8 km</option>
-                                                                <option selected="selected" value="16">16 km</option>
-                                                                <option value="32">32 km</option>
-                                                                <option value="64">64 km</option>
-                                                            </select>
-                                                        </div> 
+                            <div id="tuto_resolution"  class="col-md-6 col-sm-12 col-xs-12">
 
-                                                    </div>
-                                                    
-                                                </div>
+                                <div class="form-group">
+                                    <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
+                                    <select class="form-control" id="grid_resolution">
+                                        <option value="8">8 km</option>
+                                        <option selected="selected" value="16">16 km</option>
+                                        <option value="32">32 km</option>
+                                        <option value="64">64 km</option>
+                                    </select>
+                                </div> 
 
+                            </div>
+
+                        </div>
+
+                        <!-- container de 40% seteado en componete -->
                         <div id="var_target" class="row "></div>
-                        
-                        
 
-                        <div class="row ">
-
+                        <div class="row container_15p">
 
                             <div id="tuto_fil_fecha" class="col-md-4 col-sm-12 col-xs-12">
-                                
+
                                 <div class="col-md-1 col-sm-1 col-xs-1 margin-top-five">
                                     <div class="ttip">
                                         <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -339,7 +327,7 @@
                             </div>
 
                             <div id="tuto_reg_fecha" class="col-md-5 col-sm-12 col-xs-12">
-                                
+
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 margin-top-five">
                                     <div class="ttip">
                                         <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -385,9 +373,19 @@
 
                         </div>
 
+                        <div class="row container_5p pd-top5">
+
+                            <div class="col-md-12 text-center  margin-top-five">
+                                <button id="reload_map" class="btn btn-success" type="button">
+                                </button>
+                            </div>
+                            
+
+                        </div>
 
 
-                        <div class="row ">
+
+                        <div class="row container_20p pd-top20">
 
                             <div id="tuto_histo_reg" class="col-md-12">
                                 <div id="hist_fecha_container" class="fecha_container">
@@ -395,16 +393,10 @@
                                 </div>
                             </div>
 
-                            
-
-
-                            <!-- <button id="specie_next" class="btn btn-success btn-sig " type="button" 
-                            style="visibility: hidden"
-                            >Siguiente</button> -->
 
                         </div>
 
-
+                        
 
                     </div>
 
@@ -412,7 +404,7 @@
                 </div>
 
 
-                <div class="col-md-7 margin-top-15 ">
+                <div class="col-md-7 margin-top-15 padding-sides-zero container_95p">
 
                     <div id="tuto_mapa_occ" class="col-md-12 margin-top-15 padding-sides-zero ">
 
@@ -462,7 +454,7 @@
                             </div>
 
                             <div id="map2" class="  box_shadow ">
-                                
+
                                 <div id="escala_color_occ" class="link_shape pull-right">         
                                 </div>   
 
@@ -474,30 +466,28 @@
 
                 </div>
 
-                <div class="col-md-12 text-center  margin-top-five">
-                    <button style="margin-top: -15px;" id="reload_map" class="btn btn-primary" type="button"></button>
-                </div>
+                
 
             </div>
 
 
-            <div id="section1" class="row-fluid margin-top-15 section page" >
-                
+            <div id="section1" class="row-fluid margin-top-15 container_100p" >
+
                 <div id="tuto_variables" class="col-md-9 margin-top-15 " style="padding-left: 0px">
 
-                    <div class="col-md-12 box_shadow padding-sides-zero height85" id="variables"></div>
+                    <div class="col-md-12 box_shadow padding-sides-zero container_85p" id="variables"></div>
 
                 </div>
 
 
                 <div id="tuto_params" class="col-md-3 margin-top-15 box_shadow height85 padding-sides-zero">
 
-                    <div class="col-md-12 ">
+                    <div class="col-md-12 container_100p">
 
-                        <h2 id="lb_params_variables" class="sidebar-header-species">Parámetros</h2>
+                        <h2 id="lb_params_variables" class="sidebar-header-species"></h2>
 
-                        <div id="tuto_val" class="row">
-                            
+                        <div id="tuto_val" class="row container_15p">
+
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -518,8 +508,8 @@
                             </div>
                         </div>
 
-                        <div id="tuto_min_occ" class="row">
-                            
+                        <div id="tuto_min_occ" class="row container_15p">
+
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -535,7 +525,7 @@
                             </div>
 
                             <div class="col-md-5 margin-top-five pull-left">
-                                
+
                                 <input id="chkMinOcc" class="checkbox_item pull-left" type="checkbox" checked="true"/>
 
                                 <input id="occ_number" class="occ_number  " type="number" min="1" value="5">
@@ -543,8 +533,8 @@
 
                         </div>
 
-                        <div id="tuto_apriori" class="row">
-                            
+                        <div id="tuto_apriori" class="row container_15p">
+
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -560,7 +550,7 @@
                             </div>
 
                             <div class="col-md-5 margin-top-five pull-left">
-                                
+
                                 <label class="label_item pull-left" id="lb_do_apriori" type="label"></label>
 
                                 <input id="chkApriori" class="checkbox_item pull-left" type="checkbox" />
@@ -568,8 +558,8 @@
                             </div>
                         </div>
 
-                        <div id="tuto_map_prob" class="row">
-                            
+                        <div id="tuto_map_prob" class="row container_15p">
+
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
@@ -585,7 +575,7 @@
                             </div>
 
                             <div class="col-md-5 margin-top-five pull-left">
-                                
+
                                 <label class="label_item pull-left" id="lb_mapa_prob" type="label"></label>
                                 <input id="chkMapaProb" class="checkbox_item pull-left" type="checkbox" />
 
@@ -605,7 +595,7 @@
                     <div class=" col-md-5 col-centered " >
 
                         <!--<div class="col-md-12 margin-top-15">-->
-                            <button id="get_esc_ep" class="btn btn-primary " type="button" ></button>
+                            <button id="get_esc_ep" class="btn btn-success " type="button" ></button>
                             <button id="show_gen" class="btn btn-primary margin-left-two" 
                             type="button" title="" 
                             style="visibility: hidden" 
@@ -680,11 +670,11 @@
                                 <div id="map_text"></div>
                             </div>
                             
-                        <!-- </div> -->
+                            <!-- </div> -->
 
-                        
 
-                    </div>
+
+                        </div>
 
 
 
@@ -701,7 +691,7 @@
                         <div class="col-md-12 margin-top-15">
 
                             <div id="myScrollableBlockEpsilonDecil" class="row-fluid myScrollableBlockEpsilonDecil margin-top-15 box_shadow bg-card">
-                                
+
                                 <button id="btn_msg_hist_decil" type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist pull-right' onclick="$('#modalInfo').modal()" >
                                 </button>
 

@@ -404,6 +404,7 @@ var module_nicho = (function () {
 
             if(groupDatasetTotal.length == 0){
                 console.log("No species selected");
+                _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
                 return;
             }
 
@@ -875,7 +876,7 @@ var module_nicho = (function () {
 
 
         if (subgroups.length == 0) {
-            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "error");
+            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_variable'), "warning");
         } 
         else {
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_gen_link'), "info");

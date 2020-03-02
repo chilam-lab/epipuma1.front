@@ -372,7 +372,7 @@ var variable_module = (function (verbose, url_zacatuche) {
         
 
         // div contenedor del cuerpo de la sección grupo de variables, puede ser del 80% de la altura de la página o de 300px en su tamaño reducido
-        var container_height = reduced_height ? "reduced_var_container" : "var_container"
+        var container_height = reduced_height ? "container_40p" : "container_80p"
         var var_container = $('<div/>')
                 .addClass('col-md-12 col-sm-12 col-xs-12 ' + container_height)
                 .appendTo($("#" + parent));
