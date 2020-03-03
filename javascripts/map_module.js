@@ -887,7 +887,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         // var verdes = colorbrewer.Greens[9]
         // var verdes = ["#41ab5d","#238b45","#006d2c"]
         // var verdes = ["#74c476","#238b45","#00441b"]
-        var verdes = ["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#006228","#00441b"];
+        // var verdes = ["#f7fcf5","#e5f5e0","#c7e9c0","#a1d99b","#74c476","#41ab5d","#238b45","#006d2c","#006228","#00441b"];
+        var verdes = ["#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#238443","#006837","#004529"]
         // var verdes = colorbrewer.BrBG[10];
 
         var scale_color_function = d3.scale.quantile()

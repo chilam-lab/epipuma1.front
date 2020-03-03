@@ -2738,9 +2738,21 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     // var arg_values = json_data.groups[i].name.split(" ")
                     // var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
                     // table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
+                    
+                    // TODO: corregir id por label
+
+                    // var range = d.tag.split(":")
                     var range = json_data.groups[i].tag.split(":")
-                    var layer = _iTrans.prop("a_item_" + json_data.groups[i].layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                    table_rt += "<tr><td>" + layer + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
+                    var label = json_data.groups[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+
+                    var min = (parseFloat(range[0]) * json_data.groups[i].coeficiente).toFixed(3) + " " + json_data.groups[i].unidad
+                    var max = (parseFloat(range[1]) * json_data.groups[i].coeficiente).toFixed(3) + " " + json_data.groups[i].unidad
+
+                    // var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                    var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
+                    
+                    // var layer = _iTrans.prop("a_item_" + json_data.groups[i].layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                    table_rt += "<tr><td>" + value + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
 
                 }
 
