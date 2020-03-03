@@ -486,56 +486,74 @@ if (hash) {
 
                         <h2 id="lb_params_variables" class="sidebar-header-species"></h2>
 
-                        <div id="tuto_val" class="row container_15p">
+                        <div id="tuto_val" class="row container_15p ">
 
-                            <div class="col-md-1 margin-top-15">
-                                <div class="ttip">
-                                    <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
-                                    <div class="ttext">
-                                        <h5></h5>
-                                        <p></p>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-sides-zero">
+
+                                <div class="col-md-1 margin-top-15">
+                                    <div class="ttip">
+                                        <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
+                                        <div class="ttext">
+                                            <h5></h5>
+                                            <p></p>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-5 margin-top-five">
+                                    <h5 id="lb_validacion"></h5>
+                                </div>
+
+                                <div class="col-md-5 margin-top-five pull-left ">
+                                    <label class="label_item " id="labelValidation" type="label"></label>
+                                    <input id="chkValidation" class="checkbox_item " type="checkbox"/>
+                                </div>                                
+                                
                             </div>
 
-                            <div class="col-md-5 margin-top-five">
-                                <h5 id="lb_validacion"></h5>
-                            </div>
-
-                            <div class="col-md-5 margin-top-five pull-left ">
-                                <label class="label_item " id="labelValidation" type="label"></label>
-                                <input id="chkValidation" class="checkbox_item " type="checkbox"/>
-                            </div>
+                            
                         </div>
+
 
                         <div id="tuto_min_occ" class="row container_15p">
 
-                            <div class="col-md-1 margin-top-15">
-                                <div class="ttip">
-                                    <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
-                                    <div class="ttext">
-                                        <h5></h5>
-                                        <p></p>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-sides-zero">
+
+                                <div class="col-md-1 margin-top-15">
+                                    <div class="ttip">
+                                        <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
+                                        <div class="ttext">
+                                            <h5></h5>
+                                            <p></p>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-5 margin-top-five">
+                                    <h5 id="lb_occ_min"></h5>
+                                </div>
+
+                                <div class="col-md-5 margin-top-five pull-left">
+
+                                    <input id="chkMinOcc" class="checkbox_item pull-left" type="checkbox" checked="true"/>
+
+                                    <input id="occ_number" class="occ_number  " type="number" min="1" value="5">
+                                </div>                                
+                                
                             </div>
 
-                            <div class="col-md-5 margin-top-five">
-                                <h5 id="lb_occ_min"></h5>
-                            </div>
+                            
 
-                            <div class="col-md-5 margin-top-five pull-left">
-
-                                <input id="chkMinOcc" class="checkbox_item pull-left" type="checkbox" checked="true"/>
-
-                                <input id="occ_number" class="occ_number  " type="number" min="1" value="5">
-                            </div>
+                            
 
                         </div>
 
                         <div id="tuto_apriori" class="row container_15p">
 
-                            <div class="col-md-1 margin-top-15">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-sides-zero">
+
+                              <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
                                     <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
                                     <div class="ttext">
@@ -555,10 +573,18 @@ if (hash) {
 
                                 <input id="chkApriori" class="checkbox_item pull-left" type="checkbox" />
 
+                            </div>                                
+                                
                             </div>
+
+                            
+
+                          
                         </div>
 
                         <div id="tuto_map_prob" class="row container_15p">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-sides-zero">
 
                             <div class="col-md-1 margin-top-15">
                                 <div class="ttip">
@@ -579,7 +605,11 @@ if (hash) {
                                 <label class="label_item pull-left" id="lb_mapa_prob" type="label"></label>
                                 <input id="chkMapaProb" class="checkbox_item pull-left" type="checkbox" />
 
+                            </div>                                
+                                
                             </div>
+
+                            
                         </div>
 
                     </div>
@@ -594,26 +624,19 @@ if (hash) {
 
                     <div class=" col-md-5 col-centered " >
 
-                        <!--<div class="col-md-12 margin-top-15">-->
-                            <button id="get_esc_ep" class="btn btn-success " type="button" ></button>
-                            <button id="show_gen" class="btn btn-primary margin-left-two" 
-                            type="button" title="" 
-                            style="visibility: hidden" 
-                            ></button>                        
-                            <button id="btn_tuto_steps_result" type="button" title="" class="btn btn-warning  display-marker " style="visibility: hidden" ></button>
-
-                        </div>
-
+                        <button id="get_esc_ep" class="btn btn-success " type="button" ></button>
+                        <button id="show_gen" class="btn btn-primary margin-left-two" 
+                        type="button" title="" 
+                        style="visibility: hidden" 
+                        ></button>                        
+                        <button id="btn_tuto_steps_result" type="button" title="" class="btn btn-warning  display-marker " style="visibility: hidden" ></button>
 
                     </div>
 
 
-                    <!-- <button id="params_next" class="btn btn-success btn-sig-left" type="button" 
-                    style="visibility: hidden"
-                    ></button> -->
-                    <!---->
-
                 </div>
+
+            </div>
 
 
 

@@ -2007,7 +2007,7 @@ button.glyphicon-remove:before {
 }
 
 #section0, #section1, #section2 {
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     scroll-behavior: smooth;   
 }
 
@@ -2415,5 +2415,32 @@ display: none;
 }
 
 
+.mg-top5{
+    margin-top: 5px;
+}
+
+.mg-top10{
+    margin-top: 10px;
+}
+
+.mg-top20{
+    margin-top: 20px;
+}
+
+.mg-top30{
+    margin-top: 30px;
+}
+
+.mg-top40{
+    margin-top: 40px;
+}
+
+.mg-top50{
+    margin-top: 50px;
+}
+
+.mg-top60{
+    margin-top: 60px;
+}
 
 
