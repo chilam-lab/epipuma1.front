@@ -2309,6 +2309,35 @@ display: none;
 }
 
 
+.pd-bottom5{
+    padding-bottom: 5px;
+}
+
+.pd-bottom10{
+    padding-bottom: 10px;
+}
+
+.pd-bottom20{
+    padding-bottom: 20px;
+}
+
+.pd-bottom30{
+    padding-bottom: 30px;
+}
+
+.pd-bottom40{
+    padding-bottom: 40px;
+}
+
+.pd-bottom50{
+    padding-bottom: 50px;
+}
+
+.pd-bottom60{
+    padding-bottom: 60px;
+}
+
+
 .container_5p{
     height: 5% !important;
 }
