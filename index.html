@@ -10,6 +10,10 @@
         <link rel="stylesheet" type="text/css" href="stylesheets/index.css">
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/flexslider.min.css" rel="stylesheet">
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
         <link rel="stylesheet" type="text/css" href="plugins/popupSlider/popup-slider.css">
 
 
@@ -39,6 +43,8 @@
 
         </script>
 
+
+
     </head>
 
 
@@ -46,12 +52,33 @@
 
         <div class="container">
 
-            <header id="main-header" class="hidden-xs">
+
+            <div class="pull-right">
+
+                <div class=" dropdown_group ">
+
+                    <div class="input-group-btn ">
+
+                        <button id="btn_idioma" type="button" class="btn btn-default dropdown-toggle language_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+
+                        <ul class="dropdown-menu dropdown_idioma">
+                            <li><a id="a_espanol" class="idioma " value="es_ES" label="Español ">Español </a></li>
+                            <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+           <!--  <header id="main-header" class="hidden-xs">
 
 
                 <div class="row">
 
-                    <!--Agregar biblioteca de boostrap de pagina modelo-->
                     <div class="col-md-6">
                     </div>
 
@@ -83,86 +110,145 @@
 
                         </div>
 
-                        <div class="col-md-1 margin-top-15">
-                            <!-- <button id="btn_tutorial" type="button" title="Ver Tutorial" class="btn btn-primary glyphicon glyphicon-book glyphicon-head pull-right"></button> -->
-                        </div>
-
-                        <!--                        <div class="col-md-1 margin-top-15">
-                                                    <button id="btn_steps" type="button" title="Ver Pasos" class="btn btn-primary glyphicon glyphicon-info-sign glyphicon-head pull-right"></button>
-                                                </div>-->
 
                     </div>
 
                 </div>
 
-            </header>
+            </header> -->
 
 
-            <div class="row-container div-header"> 
+            <div class="row-container "> 
                 <h2 class="header-explorador" id="lb_title_index" ></h2>
-                <!--<h3 id="lb_title_qs" class="heading-desc"></h3>-->
             </div>
 
-            <div class="row">
+            <hr class="home_line">
 
-                <div class="col-md-2 margin-top-ten ">
+
+            <section class="pd-top40">
+                
+                
+                <div class="row">
+                    
+                    <div class="col-lg-12">
+                        
+                        <p id="intro_species_nicho" class="txt-welcome"></p>
+
+                    </div>
+
+
                 </div>
 
 
-                <div  class="col-md-4 margin-top-ten ">
+                <div class="row">
+                    
+                    <div class="col-lg-12">
 
+                        <h1>Análisis de nicho ecológico</h1>
+                        
+                        <p class="txt-welcome">Si deseas realizar un análisis de nicho ecológico basta con seguir los siguientes pasos:</p>
 
-                    <div class="col-md-offset-1 col-md-11 text-center">
-                        <!--<h3>Nicho ecológico</h3>-->
-                        <div id="link_modelo_nicho" class="left-section">
-                        </div>
                     </div>
 
-                    <a id="div_rel_nicho">
-                        <div class="box_item col-md-offset-1 col-md-11">
-                            <div  class="col-md-12 box_nicho" >
-                            </div>
+                </div>
+
+                <div class="row pd-top60 text-center center">
+                    
+                    <div class="col-lg-4 ">
+                        <div class="step shadow">
+                            <i class='fa fa-bug'></i>
                         </div>
+                        <p class="pd-top10 txt-step">1. SELECCIONAR TU GRUPO OBJETIVO</p>
+                    </div>
+
+                    <div class="col-lg-4 ">
+                        <div class="step shadow">
+                            <i class='fa fa-globe'></i>
+                        </div>
+                        <p class="pd-top10 txt-step">2. ESCOGER TUS COVARIABLES</p>
+                    </div>
+
+                    <div class="col-lg-4 ">
+                        <div class="step shadow">
+                            <i class='fa fa-bar-chart'></i>
+                        </div>
+                        <p class="pd-top10 txt-step">3. ANALIZAR TUS RESULTADOS</p>
+                    </div>
+                    
+                </div>
+
+
+                <div class="row pd-top40">
+                    
+                    <div class="col-lg-12 text-center">
+                        
+                        <a id="link_nicho" class="btn btn-default" href="">
+                            Ir a análisis de nicho
+                        <i class='fa fa-arrow-right'></i>
                     </a>
 
-                    <div class="col-md-offset-1 col-md-11 text-center">
-                        <h4 id="lb_ini_nicho" class="heading-desc-low"></h4>
                     </div>
 
                 </div>
 
+                
 
 
+               <div class="row pd-top60">
+                    
+                    <div class="col-lg-12">
 
+                        <h1>Redes de inferencia</h1>
+                        
+                        <p class="txt-welcome">Si deseas construir redes de inferencia sigue los siguientes pasos:</p>
 
-                <div  class="col-md-4 margin-top-ten">
-
-
-                    <div class="col-md-11 text-center">
-                        <!--<h3>Comunidad ecológica</h3>-->
-                        <div id="link_modelo_comunidad" class="left-section" >
-                        </div>
                     </div>
 
+                </div>
 
-                    <a id="div_rel_com">
-                        <div class="box_item col-md-11">
-                            <div class="col-md-12 box_net">
+            </section>
 
-                            </div>
+
+
+            <div class="row pd-top60 text-center center">
+                    
+                    <div class="col-lg-4 ">
+                        <div class="step shadow">
+                            <i class='fa fa-bug'></i>
                         </div>
+                        <p class="pd-top10 txt-step">1. SELECCIONAR GRUPO FUENTE</p>
+                    </div>
+
+                    <div class="col-lg-4 ">
+                        <div class="step shadow">
+                            <i class='fa fa-bug'></i>
+                        </div>
+                        <p class="pd-top10 txt-step">2. SELECCIONAR GRUPO DESTINO</p>
+                    </div>
+
+                    <div class="col-lg-4 ">
+                        <div class="step shadow">
+                            <i class='fa fa-bar-chart'></i>
+                        </div>
+                        <p class="pd-top10 txt-step">3. ANALIZAR TUS RESULTADOS</p>
+                    </div>
+                    
+                </div>
+
+
+                <div class="row pd-top40 pd-bottom40">
+                    
+                    <div class="col-lg-12 text-center">
+                        
+                        <a id="link_redes" class="btn btn-default" href="">
+                            Ir a redes de inferencia
+                        <i class='fa fa-arrow-right'></i>
                     </a>
 
-
-                    <div class="col-md-11 text-center">
-                        <h4 id="lb_ini_net" class="heading-desc-low"></h4>
                     </div>
 
                 </div>
 
-
-
-            </div>
 
         </div>
 
@@ -209,65 +295,6 @@
 
 
 
-        <div class="sliderPop" style="display:none;">
-            <div class="ct-sliderPop-container">
-                <div class="ct-sliderPop ct-sliderPop-slide1 open">
-                    <div class="inner">
-                        <i class="fa fa-code" aria-hidden="true"></i>
-                        <h1>Code</h1>
-                        <div class="map-white-border"></div>
-                        <h2>Programming Not Required</h2>
-                        <p>WebCorpCo enables marketers to manage their entire stack in one place without needing the ability to program as all code is automatically written by webcorpco.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
-                </div>
-                <div class="ct-sliderPop ct-sliderPop-slide2">
-                    <div class="inner">
-                        <i class="fa fa-paint-brush" aria-hidden="true"></i>
-                        <h1>Design</h1>
-                        <div class="map-white-border"></div>
-                        <h2>A Touch of Detail</h2>
-                        <p>With a team of award-winning designers behind every possible design and layout, you are sure to find success in our automated design process.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
-                </div>
-                <div class="ct-sliderPop ct-sliderPop-slide3">
-                    <div class="inner">
-                        <i class="fa fa-users" aria-hidden="true"></i>
-                        <h1>Marketing</h1>
-                        <div class="map-white-border"></div>
-                        <h2>Marketing in Alignment</h2>
-                        <p>There is no 'one size fits all' approach to marketing. Every business is unique, customers are unique, and your marketing should be as well.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
-                </div>
-                <div class="ct-sliderPop ct-sliderPop-slide1">
-                    <div class="inner">
-                        <i class="fa fa-life-ring" aria-hidden="true"></i>
-                        <h1>Support</h1>
-                        <div class="map-white-border"></div>
-                        <h2>Available 24/7</h2>
-                        <p>WebCorpCo offers state of the art support and training to enable users to make the most out of the platform and learn all of the functionality under the hood.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
-                </div>
-                <div class="ct-sliderPop ct-sliderPop-slide2">
-                    <div class="inner">
-                        <i class="fa fa-university" aria-hidden="true"></i>
-                        <h1>Training</h1>
-                        <div class="map-white-border"></div>
-                        <h2>Take Control Yourself</h2>
-                        <p>Training can be "as requested" although there are regular webinars, code tutorials, and training courses offered for free on our website.</p>
-                        <a class="ct-newsletter-close ct-sliderPop-close" href="#">
-                            <img alt="close" src="https://www.solodev.com/assets/popup-slider/popup-close.png"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
 

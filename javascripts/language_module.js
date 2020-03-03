@@ -641,6 +641,8 @@ var language_module = (function (verbose) {
 
             $("#btn_redirect").text($.i18n.prop('btn_redirect'));
 
+            $("#intro_species_nicho").text($.i18n.prop('intro_species_nicho'));
+
 
 
 

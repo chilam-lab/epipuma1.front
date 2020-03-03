@@ -35,10 +35,10 @@ var module_index = (function() {
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
 
 
-        $("#div_rel_nicho").attr('href',_url_nicho);
-        $("#div_rel_com").attr('href',_url_comunidad);
-        $("#link_modelo_nicho").append("<a href=\"" + _url_nicho + "\"  id=\"a_modelo_nicho\"  >" + _iTrans.prop("a_modelo_nicho") + "</a>");
-        $("#link_modelo_comunidad").append("<a href=\"" + _url_comunidad + "\" id=\"a_modelo_comunidad\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
+        // $("#div_rel_nicho").attr('href',_url_nicho);
+        // $("#div_rel_com").attr('href',_url_comunidad);
+        // $("#link_modelo_nicho").append("<a href=\"" + _url_nicho + "\"  id=\"a_modelo_nicho\"  >" + _iTrans.prop("a_modelo_nicho") + "</a>");
+        // $("#link_modelo_comunidad").append("<a href=\"" + _url_comunidad + "\" id=\"a_modelo_comunidad\" \">" + _iTrans.prop("a_modelo_comunidad") + "</a>");
         
         _toastr.options = {
             "debug": false,
@@ -52,25 +52,30 @@ var module_index = (function() {
             "progressBar": true
         };
 
+        $("#link_nicho").prop("href",_url_nicho)
+        $("#link_redes").prop("href",_url_comunidad)
+
         // obtien el parametro link-id para redireccionar segun el enalce selecicoando
-        $("a[data-toggle=modal]").click(function() {
-            _VERBOSE ? console.log("entro") : _VERBOSE;
-            _link_val = "";
-            _VERBOSE ? console.log($(this).attr("link-id")) : _VERBOSE;
-            _link_val = $(this).attr("link-id");
-        });
+        // $("a[data-toggle=modal]").click(function() {
+        //     _VERBOSE ? console.log("entro") : _VERBOSE;
+        //     _link_val = "";
+        //     _VERBOSE ? console.log($(this).attr("link-id")) : _VERBOSE;
+        //     _link_val = $(this).attr("link-id");
+        // });
 
-        $("#btn_redirect").click(function() {
+        // $("#btn_redirect").click(function() {
 
-            _VERBOSE ? console.log("btn_redirect") : _VERBOSE;
-            _VERBOSE ? console.log(_link_val) : _VERBOSE;
-            window.location.replace(_link_val);
+        //     _VERBOSE ? console.log("btn_redirect") : _VERBOSE;
+        //     _VERBOSE ? console.log(_link_val) : _VERBOSE;
+        //     window.location.replace(_link_val);
 
-        });
+        // });
+
+
+
 
         $("#send_email_login").click(function() {
             _VERBOSE ? console.log("send_email_login") : _VERBOSE;
-//            _VERBOSE ? console.log(_link_val) : _VERBOSE;
             _VERBOSE ? console.log("valido: " + $("#email_address")[0].validity["valid"]) : _VERBOSE;
 
             var regexp = /^(([A-Za-z]+[\-\']?)*([A-Za-z]+)?\s)+([A-Za-z]+[\-\']?)*([A-Za-z]+)?$/;
@@ -153,6 +158,8 @@ var module_index = (function() {
                 _toastr.error(_iTrans.prop("invalid_user"));
             }
         });
+
+
 
 
         $("#btn_tutorial").click(function() {
