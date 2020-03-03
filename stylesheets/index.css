@@ -8,16 +8,17 @@ body {
 
 html, body {
     height: 100%;
-    font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+    /*font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;*/
+    font-family: 'Poppins', sans-serif;
 }
 
 .txt-welcome{
-    font: 14pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font: 14pt 'Poppins', sans-serif;
     line-height: 25pt;
 }
 
 .txt-step{
-    font: 12pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font: 12pt 'Poppins', sans-serif;
     line-height: 24pt;   
 }
 
