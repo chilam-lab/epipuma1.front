@@ -644,7 +644,44 @@ var language_module = (function (verbose) {
             $("#intro_species_nicho").text($.i18n.prop('intro_species_nicho'));
 
 
+            $("#tl_nicho").text($.i18n.prop('tl_nicho'));
+            $("#tl_comunidad").text($.i18n.prop('tl_comunidad'));
+            $("#des_nicho").text($.i18n.prop('des_nicho'));
+            $("#des_comunidad").text($.i18n.prop('des_comunidad'));
+            $("#des_data").text($.i18n.prop('des_data'));
+            $("#nicho_step1").text($.i18n.prop('nicho_step1'));
 
+            $("#nicho_step1").text($.i18n.prop('nicho_step1'));
+            $("#nicho_step2").text($.i18n.prop('nicho_step2'));
+            $("#nicho_step3").text($.i18n.prop('nicho_step3'));
+            
+            $("#link_nicho").text($.i18n.prop('link_nicho'));
+            $("#link_nicho").append(" <i class='fa fa-arrow-right'></i>");
+
+            $("#link_redes").text($.i18n.prop('link_redes'));
+            $("#link_redes").append(" <i class='fa fa-arrow-right'></i>");
+
+
+            $("#comun_step1").text($.i18n.prop('comun_step1'));
+            $("#comun_step2").text($.i18n.prop('comun_step2'));
+            $("#comun_step3").text($.i18n.prop('comun_step3'));
+
+            $("#tl_datos").text($.i18n.prop('tl_datos'));
+            $("#hd_source").text($.i18n.prop('hd_source'));
+            $("#hd_region").text($.i18n.prop('hd_region'));
+
+            $("#hd_type").text($.i18n.prop('hd_type'));
+            $("#hd_url").text($.i18n.prop('hd_url'));
+            $("#hd_cite").text($.i18n.prop('hd_cite'));
+
+            $("#firsttime_nicho").text($.i18n.prop('firsttime_nicho'));
+            $("#firsttime_comu").text($.i18n.prop('firsttime_comu'));
+
+            $("#hd_resource").text($.i18n.prop('hd_resource'));
+            $("#dh_desc").text($.i18n.prop('dh_desc'));
+
+            $("#tl_project").text($.i18n.prop('tl_project'));
+            $("#des_project").text($.i18n.prop('des_project'));
 
 
         }
