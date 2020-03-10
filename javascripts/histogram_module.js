@@ -1508,6 +1508,7 @@ var histogram_module = (function (verbose) {
         // })
 
 
+
         $("#ep_izq").on("change", function(e){
 
             console.log("cahnge izq")
@@ -2044,6 +2045,32 @@ var histogram_module = (function (verbose) {
                         .text(function(d) {
                             return d
                         });
+
+
+                    // Segmento de código para costruir el sombreado del histograma y sus parametros al lanzar un nuevo análisis
+                    var eps_izq = parseFloat(display_obj.hist_min_eps)
+                    var eps_der = parseFloat(display_obj.net_limit_eps)
+
+                    chart.drawBrush(eps_izq, eps_der)
+
+                    $("#ep_izq").val(eps_izq)
+                    $("#ep_der").val(eps_der)
+                    
+                    var aizq = 0
+                    var ader = 0
+
+                    display_obj.links.forEach(function (item){
+                        var item_eps = parseFloat(item.value)
+                        if(item_eps < eps_izq && item_eps > display_obj.hist_min_eps)
+                            aizq++
+                        if(item_eps > eps_der && item_eps < display_obj.hist_max_eps)
+                            ader++
+                    })
+
+                    $("#ari_izq").val(aizq)
+                    $("#ari_der").val(ader)
+                    $("#arip_izq").val(parseFloat(aizq/num_links*100).toFixed(2))
+                    $("#arip_der").val(parseFloat(ader/num_links*100).toFixed(2))
 
 
                 }

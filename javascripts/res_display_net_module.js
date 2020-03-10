@@ -713,15 +713,15 @@ filters.push({
         //     return parseFloat(b.value) - parseFloat(a.value) ;
         // });
 
-        var min_eps = d3.min(json.links.map(function (d) {
-            return parseFloat(d.value);
-        }));
-        var max_eps = d3.max(json.links.map(function (d) {
-            return parseFloat(d.value);
-        }));
+        // var min_eps = d3.min(json.links.map(function (d) {
+        //     return parseFloat(d.value);
+        // }));
+        // var max_eps = d3.max(json.links.map(function (d) {
+        //     return parseFloat(d.value);
+        // }));
 
-        console.log("json.links min_eps: " + min_eps);
-        console.log("json.links max_eps: " + max_eps);
+        // console.log("json.links min_eps: " + min_eps);
+        // console.log("json.links max_eps: " + max_eps);
 
 
         // filtrando los enlaces no significativos
@@ -754,6 +754,9 @@ filters.push({
 
         console.log("newlinks min_eps: " + min_eps);
         console.log("newlinks max_eps: " + max_eps);
+
+        self.net_limit_eps = 0
+        // self.net_max_eps = 0
 
 
 

@@ -809,6 +809,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
                 epsilonBySource.sort(_compare_desc)
 
+                console.log(epsilonBySource);
                 console.log("epsilonBySource: " + epsilonBySource.length);
 
 
@@ -859,12 +860,12 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
 
                 _VERBOSE ? console.log("json_temp: " + json_temp.length) : _VERBOSE;
 
+                // obtiene el limite minimo del conjunto obtenido, para descartar lso valores seleccionados
+                display_obj.net_limit_eps = d3.min(json_temp.map(function(d) {return parseFloat(d.value) }));
+                // display_obj.net_max_eps = d3.max(json_temp.map(function(d) {return parseFloat(d.value) }));
 
-
-
-                // obtiene el max y min de los enalces selecioandos
-                // var min_eps = d3.min(json_temp.map(function(d) {return parseFloat(d.value) }));
-                // var max_eps = d3.max(json_temp.map(function(d) {return parseFloat(d.value) }));
+                _VERBOSE ? console.log("net_limit_eps: " + display_obj.net_limit_eps) : _VERBOSE;
+                // _VERBOSE ? console.log("net_max_eps: " + display_obj.net_max_eps) : _VERBOSE;
 
 
                 // TODO: Enlazar al histograma para que se depsliegue el brush cuando hace la primera carga
