@@ -1,76 +1,76 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>SPECIES | CONABIO - UNAM-C3</title>
+<head>
+    <meta charset="utf-8">
+    <title>SPECIES | CONABIO - UNAM-C3</title>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="stylesheets/smoothness/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="stylesheets/toastr.css">
-        <link rel="stylesheet" type="text/css" href="stylesheets/index.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="stylesheets/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/toastr.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/index.css">
 
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/flexslider.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.5.0/flexslider.min.css" rel="stylesheet">
 
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-
-        <link rel="stylesheet" type="text/css" href="plugins/popupSlider/popup-slider.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 
-
-        <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script src="plugins/jquery-ui/jquery-ui.js"></script>
-        
-        
-        <link href="https://fonts.googleapis.com/css?family=Poppins|Raleway:500" rel="stylesheet"> 
-
-
-        <script>
-            (function(i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function() {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-                a = s.createElement(o),
-                        m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
-            ga('create', 'UA-83773501-1', 'auto');
-            ga('send', 'pageview');
-
-        </script>
+    <link rel="stylesheet" type="text/css" href="plugins/popupSlider/popup-slider.css">
 
 
 
-    </head>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="plugins/jquery-ui/jquery-ui.js"></script>
 
 
-    <body>
-
-        <div class="container">
+    <link href="https://fonts.googleapis.com/css?family=Poppins|Raleway:500" rel="stylesheet"> 
 
 
-            <div class="pull-right">
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-                <div class=" dropdown_group ">
+        ga('create', 'UA-83773501-1', 'auto');
+        ga('send', 'pageview');
 
-                    <div class="input-group-btn ">
+    </script>
 
-                        <button id="btn_idioma" type="button" class="btn btn-default dropdown-toggle language_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
 
-                        <ul class="dropdown-menu dropdown_idioma">
-                            <li><a id="a_espanol" class="idioma " value="es_ES" label="Español ">Español </a></li>
-                            <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
-                        </ul>
 
-                    </div>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+
+        <div class="pull-right">
+
+            <div class=" dropdown_group ">
+
+                <div class="input-group-btn ">
+
+                    <button id="btn_idioma" type="button" class="btn btn-default dropdown-toggle language_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="es_ES" >Idioma <span class="caret"></span></button>
+
+                    <ul class="dropdown-menu dropdown_idioma">
+                        <li><a id="a_espanol" class="idioma " value="es_ES" label="Español ">Español </a></li>
+                        <li><a id="a_ingles" class="idioma" value="en_EN" label="Ingles ">Ingles </a></li>
+                    </ul>
 
                 </div>
 
             </div>
+
+        </div>
 
 
 
@@ -126,12 +126,12 @@
 
 
             <section class="pd-top40">
-                
-                
+
+
                 <div class="row">
-                    
+
                     <div class="col-lg-12">
-                        
+
                         <p id="intro_species_nicho" class="txt-welcome"></p>
 
                     </div>
@@ -141,116 +141,357 @@
 
 
                 <div class="row">
-                    
+
                     <div class="col-lg-12">
 
-                        <h1>Análisis de nicho ecológico</h1>
+                        <h1 id="tl_nicho">Análisis de nicho ecológico</h1>
                         
-                        <p class="txt-welcome">Si deseas realizar un análisis de nicho ecológico basta con seguir los siguientes pasos:</p>
+                        <p id="des_nicho" class="txt-welcome">Si deseas realizar un análisis de nicho ecológico basta con seguir los siguientes pasos:</p>
 
                     </div>
 
                 </div>
 
                 <div class="row pd-top60 text-center center">
-                    
+
                     <div class="col-lg-4 ">
                         <div class="step shadow">
                             <i class='fa fa-bug'></i>
                         </div>
-                        <p class="pd-top10 txt-step">1. SELECCIONAR TU GRUPO OBJETIVO</p>
+                        <p id="nicho_step1" class="pd-top10 txt-step">1. SELECCIONAR TU GRUPO OBJETIVO</p>
                     </div>
 
                     <div class="col-lg-4 ">
                         <div class="step shadow">
                             <i class='fa fa-globe'></i>
                         </div>
-                        <p class="pd-top10 txt-step">2. ESCOGER TUS COVARIABLES</p>
+                        <p id="nicho_step2" class="pd-top10 txt-step">2. ESCOGER TUS COVARIABLES</p>
                     </div>
 
                     <div class="col-lg-4 ">
                         <div class="step shadow">
                             <i class='fa fa-bar-chart'></i>
                         </div>
-                        <p class="pd-top10 txt-step">3. ANALIZAR TUS RESULTADOS</p>
+                        <p id="nicho_step3" class="pd-top10 txt-step">3. ANALIZAR TUS RESULTADOS</p>
                     </div>
                     
                 </div>
 
 
                 <div class="row pd-top40">
-                    
+
                     <div class="col-lg-12 text-center">
-                        
+
                         <a id="link_nicho" class="btn btn-default" href="">
                             Ir a análisis de nicho
-                        <i class='fa fa-arrow-right'></i>
-                    </a>
+                            <i class='fa fa-arrow-right'></i>
+                        </a>
+
+
+                        <p id="firsttime_nicho" class="pd-top10">Si es la primera vez que utilizas la plataforma, te recomendamos dar clic en el botón <br/> de <b>casos de uso</b> o el botón de <b>tutorial </b>que te orientara paso a paso como utilizar <b>SPECIES</b>.</p>
 
                     </div>
 
-                </div>
 
-                
-
-
-               <div class="row pd-top60">
-                    
-                    <div class="col-lg-12">
-
-                        <h1>Redes de inferencia</h1>
-                        
-                        <p class="txt-welcome">Si deseas construir redes de inferencia sigue los siguientes pasos:</p>
-
-                    </div>
 
                 </div>
 
             </section>
 
 
+            <section class="pd-top60">
 
-            <div class="row pd-top60 text-center center">
-                    
+                <div class="row ">
+
+                    <div class="col-lg-12">
+
+                        <h1 id="tl_comunidad">Redes de inferencia</h1>
+                        
+                        <p id="des_comunidad" class="txt-welcome">Si deseas construir redes de inferencia sigue los siguientes pasos:</p>
+
+                    </div>
+
+                </div>
+
+                <div class="row pd-top60 text-center center">
+
                     <div class="col-lg-4 ">
                         <div class="step shadow">
                             <i class='fa fa-bug'></i>
                         </div>
-                        <p class="pd-top10 txt-step">1. SELECCIONAR GRUPO FUENTE</p>
+                        <p id="comun_step1" class="pd-top10 txt-step">1. SELECCIONAR GRUPO FUENTE</p>
                     </div>
 
                     <div class="col-lg-4 ">
                         <div class="step shadow">
                             <i class='fa fa-bug'></i>
                         </div>
-                        <p class="pd-top10 txt-step">2. SELECCIONAR GRUPO DESTINO</p>
+                        <p id="comun_step2" class="pd-top10 txt-step">2. SELECCIONAR GRUPO DESTINO</p>
                     </div>
 
                     <div class="col-lg-4 ">
                         <div class="step shadow">
                             <i class='fa fa-bar-chart'></i>
                         </div>
-                        <p class="pd-top10 txt-step">3. ANALIZAR TUS RESULTADOS</p>
+                        <p id="comun_step3" class="pd-top10 txt-step">3. ANALIZAR TUS RESULTADOS</p>
                     </div>
                     
                 </div>
 
 
                 <div class="row pd-top40 pd-bottom40">
-                    
+
                     <div class="col-lg-12 text-center">
-                        
+
                         <a id="link_redes" class="btn btn-default" href="">
                             Ir a redes de inferencia
-                        <i class='fa fa-arrow-right'></i>
-                    </a>
+                            <i class='fa fa-arrow-right'></i>
+                        </a>
+
+                        <p id="firsttime_comu" class="pd-top10">Si es la primera vez que utilizas la plataforma, te recomendamos dar clic en el botón <br/> de <b>casos de uso</b> o el botón de <b>tutorial </b>que te orientara paso a paso como utilizar <b>SPECIES</b>.</p>
 
                     </div>
 
                 </div>
 
 
-        </div>
+        </section>
+
+
+
+
+        <section class="pd-top60">
+
+            <div class="row ">
+
+                <div class="col-lg-12">
+
+                    <h1 id="tl_project">Recursos del Proyecto</h1>
+
+                    <p id="des_project" class="txt-welcome">La información relacionada al proyecto SPECIES se lista a continuación:</p>
+
+                </div>
+
+            </div>
+
+            <div class="row pd-top40 ">
+
+                <table>
+
+
+                    <tr>
+                        <th id="hd_resource">Recurso</th>
+                        <th id="dh_desc">Descripción</th>
+                        <th id="hd_url">URL</th>
+                    </tr>
+
+                      <tr>
+
+                        <td>API</td>
+                        <td>SPECIES cuenta con una API para ser utilizada sin necesidad del Cliente Web</td>
+                        <td><a href="http://species.conabio.gob.mx/api/v1/niche" target="_blank">http://species.conabio.gob.mx/api/v1/niche</a></td>
+
+                    </tr>
+
+                  <tr>
+
+                        <td>Publicación</td>
+                        <td>SPECIES: A PLATFORM FOR THE EXPLORATION OF ECOLOGICAL DATA</td>
+                        <td><a href="https://onlinelibrary.wiley.com/doi/full/10.1002/ece3.4800" target="_blank">https://onlinelibrary.wiley.com/doi/full/10.1002/ece3.4800</a></td>
+
+                    </tr>
+
+
+                    <!-- 
+                        SPECIES: Supporting big-data-driven research
+                        https://biss.pensoft.net/article/36095/ -->
+
+                    
+                    <tr>
+
+                        <td>Cliente Web</td>
+                        <td>Código con el cual se compone el cliente de SPECIES</td>
+                        <td><a href="https://bitbucket.org/conabio_c3/species-front/src/master/" target="_blank">https://bitbucket.org/conabio_c3/species-front/src/master/</a></td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Middleware</td>
+                        <td>Código con el cual se compone el middleware de SPECIES</td>
+                        <td><a href="https://bitbucket.org/conabio_c3/snib-middleware/src/master/" target="_blank">https://bitbucket.org/conabio_c3/snib-middleware/src/master/</a></td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Base de Datos</td>
+                        <td>Scripts con los cuales se reconstruye la base de datos de SPECIES</td>
+                        <td><a href="https://bitbucket.org/conabio_c3/speciesdbbuild/src/master/" target="_blank">https://bitbucket.org/conabio_c3/speciesdbbuild/src/master/</a></td>
+
+                    </tr>
+
+
+
+                  
+                    
+
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+        <section class="pd-top60">
+
+            <div class="row ">
+
+                <div class="col-lg-12">
+
+                    <h1 id="tl_datos">Datos</h1>
+
+                    <p id="des_data" class="txt-welcome">Los datos con los que trabaja SPECIES se citan a continuación:</p>
+
+                </div>
+
+            </div>
+
+            <div class="row pd-top40 ">
+
+                <table>
+
+
+                    <tr>
+                        <th id="hd_source">Fuente</th>
+                        <th id="hd_region">Región</th>
+                        <th id="hd_type">Tipo</th>
+                        <th id="hd_url">URL</th>
+                        <th id="hd_cite">Cita</th>
+                    </tr>
+                    
+                    <tr>
+
+                        <td>GBIF</td>
+                        <td>Colombia</td>
+                        <td>Species occurrence records</td>
+                        <td><a href="https://doi.org/10.15468/dl.menapb" target="_blank">https://doi.org/10.15468/dl.menapb</a></td>
+                        <td>GBIF.org (12 June 2018) GBIF Occurrence Download https://doi.org/10.15468/dl.menapb</td>
+
+
+                    </tr>
+
+                    <tr>
+
+                        <td>SNIB</td>
+                        <td>Mexico</td>
+                        <td>Species occurrence records</td>
+                        <td><a href="http://www.snib.mx/ejemplares/descarga/porversion.php" target="_blank">http://www.snib.mx/ejemplares/descarga/porversion.php</a></td>
+                        <td>CONABIO. 2018. Sistema Nacional de Información sobre Biodiversidad. Registros de ejemplares. Comisión Nacional para el Conocimiento y Uso de la Biodiversidad. Ciudad de México, México
+
+                        </tr>
+
+                        <tr>
+
+                            <td>GBIF</td>
+                            <td>Continental USA</td>
+                            <td>Species occurrence records</td>
+                            <td><a href="https://doi.org/10.15468/dl.iixcqe" target="_blank">https://doi.org/10.15468/dl.iixcqe</a></td>
+                            <td>GBIF.org (07 May 2018) GBIF Occurrence Download https://doi.org/10.15468/dl.iixcqe</td>
+                            
+
+                        </tr>
+
+
+
+                        <tr>
+
+                            <td>ENVIREM</td>
+                            <td>Global</td>
+                            <td>Climatic / Topographic</td>
+                            <td><a href="https://deepblue.lib.umich.edu/data/concern/data_sets/gt54kn05f" target="_blank">https://deepblue.lib.umich.edu/data/concern/data_sets/gt54kn05f</a></td>
+                            <td>Title P.O., Bemmels J.B. 2018. ENVIREM: an expanded set of bioclimatic and topographic variables increases flexibility and improves performance of ecological niche modeling. Ecography. 41:291â€“307</td>
+                            
+
+                        </tr>
+
+
+
+                        <tr>
+
+                            <td>Climond</td>
+                            <td>Global</td>
+                            <td>Climatic</td>
+                            <td><a href="https://www.climond.org/" target="_blank">https://www.climond.org/</a></td>
+                            <td>Kriticos, D.J., Webber, B.L., Leriche, A., Ota, N., Macadam, I., Bathols, J. & Scott, J.K. (2012) CliMond: global high resolution historical and future scenario climate surfaces for bioclimatic modelling. Methods in Ecology & Evolution 3: 53-64. DOI: 10.1111/j.2041-210X.2011.00134.x</td>
+                            
+
+                        </tr>
+
+
+                        <tr>
+
+                         <td>USGS GTOPO30</td>
+                         <td>Global</td>
+                         <td>Topographic</td>
+                         <td><a href="https://rda.ucar.edu/datasets/ds758.0/" target="_blank">https://rda.ucar.edu/datasets/ds758.0/</a></td>
+                         <td>Earth Resources Observation and Science Center/U.S. Geological Survey/U.S. Department of the Interior. 1997. USGS 30 ARC-second Global Elevation Data, GTOPO30. Research Data Archive at the National Center for Atmospheric Research, Computational and Information Systems Laboratory. https://doi.org/10.5065/A1Z4-EE71 Accessed  dd mmm yyyy</td>
+
+
+                     </tr>
+
+
+                     <tr>
+
+                        <td>HYDRO1K</td>
+                        <td>Global</td>
+                        <td>Topographic</td>
+                        <td><a href="https://lta.cr.usgs.gov/HYDRO1K" target="_blank">https://lta.cr.usgs.gov/HYDRO1K</a></td>
+                        <td>U.S. Geological Survey Earth Resources Observation and Science (EROS) Center, HYDRO1k Elevation Derivative Database. Sioux Falls, South Dakota. LP DAAC </td>
+                        
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>GBIF</td>
+                        <td>Central America</td>
+                        <td>Species occurrence records</td>
+                        <td><a href="https://doi.org/10.15468/dl.r3kg3r" target="_blank">https://doi.org/10.15468/dl.r3kg3r</a></td>
+                        <td>GBIF.org (20 August 2019) GBIF Occurrence Download https://doi.org/10.15468/dl.r3kg3r</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Worldclim</td>
+                        <td>Global</td>
+                        <td>Climatic</td>
+                        <td><a href="http://worldclim.org/version2" target="_blank">http://worldclim.org/version2</a></td>
+                        <td>Fick, S.E. and R.J. Hijmans, 2017. Worldclim 2: New 1-km spatial resolution climate surfaces for global land areas. International Journal of Climatology.</td> 
+
+                    </tr>
+
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -311,8 +552,8 @@
 
         <script type="text/javascript" src="javascripts/config.js"></script>
         <script type="text/javascript" src="javascripts/demo-config.js"></script>
-        
+
         <script type="text/javascript" src="javascripts/index.js"></script>
 
     </body>
-</html>
+    </html>
