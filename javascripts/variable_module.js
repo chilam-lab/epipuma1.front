@@ -474,6 +474,9 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                 $.each(sp_items, function (i) {
 
+                    console.log(sp_items[i])
+                    console.log(_iTrans.prop(sp_items[i]))
+
                     // establece el nivel taxonomico inicial del buscador. Donde 0 es reino.
                     if(start_level > i)
                         return true;
