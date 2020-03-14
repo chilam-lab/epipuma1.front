@@ -215,7 +215,7 @@ if (hash) {
                         <div class="col-md-9 col-sm-12 col-xs-12 margin-top-15 ">
                             <button id="btn_tuto_steps" type="button" title="" class="btn btn-warning  display-marker "></button>
                             <!-- <button id="btn_tutorial" type="button" title="" class="btn btn-warning "></button> -->
-                            <button id="btn_demo" type="button" title="" class="btn btn-warning display-marker"></button>
+                            <button id="btn_demo" type="button" title="" class="btn btn-warning display-marker" data-toggle="modal" data-target="#modalDemo"></button>
 
                             <button id="nicho_link" type="button" class="btn btn-primary "></button>
                             <button id="tuto_res" class="btn btn-warning display-marker" type="button" 
@@ -776,6 +776,54 @@ if (hash) {
 
 
                 <!-- Modals -->
+
+                <div class="modal fade mymodaldemo" id="modalDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+                    <div class="modal-dialog" role="document">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                                <h4 id="" class="modal-title" id="myModalLabel">Casos de Uso</h4>
+
+                            </div>
+
+
+                            <div id="" class="modal-body">
+
+                                
+                                <p>Selecciona un caso de uso:</p>
+
+                                <!-- Generar dinámicamente -->
+                                <ul id="list_demo_cases">
+                                   
+                                    <!-- <li><input class="btn btn-default" type="button" name="" value="Lince vs Mammalia"></li>
+                                    <br/> -->
+                                    <!-- <li><input class="btn btn-default" type="button" name="" value="Panthera vs Mammalia"></li> -->
+                                <ul>
+
+                                
+
+
+                            </div>
+
+
+
+                            <div class="modal-footer">
+                                <button id="cancel_email_csv" type="button" class="btn btn-primary" data-dismiss="modal"></button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
                 <div class="modal fade mymodals" id="modalMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 
                     <div class="modal-dialog" role="document">

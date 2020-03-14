@@ -511,6 +511,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         });
 
+        
+
+
+        // $('#btn_demo').on('click', function () {
+
+        //     _VERBOSE ? console.log("btn_demo") : _VERBOSE;
+
+        //     console.log("click")
+
+            
+
+        // })
+
     }
 
     /**
@@ -1992,7 +2005,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         $("#btn_decil").prop("value", $.i18n.prop('btn_decil'));
 
-        // $("#btn_demo").text($.i18n.prop('caso_uso'));
+        $("#btn_demo").text($.i18n.prop('caso_uso'));
 
 
 

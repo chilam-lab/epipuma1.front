@@ -10,7 +10,7 @@ var language_module = (function (verbose) {
     var _language_selected;
     var _language_label_selected;
     var _first_load;
-    var _demo_config = demo_config_en
+    var _demo_config = demos.demos_en
 
     var _map_module,
             _variable_module,
@@ -22,6 +22,41 @@ var language_module = (function (verbose) {
 
     var _VERBOSE = verbose;
 
+    
+    function setDemoUseCase(demo_config){
+        _demo_config = demo_config
+    }
+
+    function _configDemoCases(demo_config = _demo_config){
+
+        _VERBOSE ? console.log("_configDemoCases") : _VERBOSE;
+
+        $("#list_demo_cases").empty();
+
+        demo_config.forEach(function(demo,index){
+
+            $("#list_demo_cases")
+                .append('<li><button id="demo_'+index+'" class="btn btn-default btn-demo" type="button" >'+demo.title_demo+'</button></li><br/>');
+
+        })
+
+    }
+
+    $("body").on('click','.btn-demo',function(){
+        
+        _VERBOSE ? console.log("prueba") : _VERBOSE;
+        console.log(this.id);
+
+        var index = this.id.split("_")[1];
+        console.log("index: " + index);
+
+        $('#modalDemo').modal('hide');
+
+        _confLiveDemoNiche(index)
+
+    });
+
+     
 
     /**
      * Éste método inicializa las variables necesarias para el proceso de internacionalización y realiza la carga de los archivos de idiomas.
@@ -75,13 +110,18 @@ var language_module = (function (verbose) {
             _language_label_selected = e.target.getAttribute("label");
 
             config.language = _language_selected;
+
+            _demo_config = {}
             
             if(_language_selected === "es_ES"){
-                _demo_config = demo_config_es
+                _demo_config = demos.demos_es
             }
             else{
-                _demo_config = demo_config_en   
+                _demo_config = demos.demos_en
             }
+
+            console.log(_demo_config)
+            _configDemoCases(_demo_config)
 
 
 
@@ -109,6 +149,8 @@ var language_module = (function (verbose) {
 
             e.preventDefault();
         });
+
+        _configDemoCases();
 
     }
 
@@ -503,7 +545,7 @@ var language_module = (function (verbose) {
 
             _confLiveTutorialNiche();
             _confLiveTutorialResultsNiche();
-            _confLiveDemoNiche();
+            // _confLiveDemoNiche();
 
 
         } else if (_tipo_modulo === 1) {
@@ -1066,11 +1108,19 @@ var language_module = (function (verbose) {
     }
 
 
-    function _confLiveDemoNiche() {
+    function _confLiveDemoNiche(index) {
 
         _VERBOSE ? console.log("_confLiveDemoNiche") : _VERBOSE;
 
-        $('#btn_demo.display-marker').on('click', function () {
+        
+        console.log(index)
+        console.log(_demo_config)
+        console.log(_demo_config[index])
+
+        var demo_params = _demo_config[index];        
+
+
+        // $('#btn_demo.display-marker').on('click', function () {
 
             _VERBOSE ? console.log("btn_tuto_steps") : _VERBOSE;
 
@@ -1095,7 +1145,7 @@ var language_module = (function (verbose) {
                         modal: true,
                         templateData: {
                             title: $.i18n.prop('caso_uso'),
-                            content: $.i18n.prop('demo_intro', _demo_config.target_name, _demo_config.bio_covars_name)
+                            content: $.i18n.prop('demo_intro', demo_params.target_name, demo_params.bio_covars_name)
                         }
                     },
                     {
@@ -1105,7 +1155,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p54'),
-                            content: $.i18n.prop('demo_intro_region', _demo_config.region_name)
+                            content: $.i18n.prop('demo_intro_region', demo_params.region_name)
                         }
                     },
                     {
@@ -1115,7 +1165,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p5'),
-                            content: $.i18n.prop('demo_intro_resolucion', _demo_config.resolution)
+                            content: $.i18n.prop('demo_intro_resolucion', demo_params.resolution)
                         }
                     },
                     {
@@ -1125,7 +1175,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('demo_title_specie'),
-                            content: $.i18n.prop('demo_intro_specie')
+                            content: $.i18n.prop('demo_intro_specie', demo_params.target_name, demo_params.target_sp)
                         }
                     },
                     {
@@ -1155,7 +1205,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('demo_title_rfecha'),
-                            content: $.i18n.prop('demo_intro_rfecha')
+                            content: $.i18n.prop('demo_intro_rfecha', demo_params.target_name)
                         }
                     },
                     {
@@ -1195,7 +1245,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('demo_title_mapaocc'),
-                            content: $.i18n.prop('demo_intro_mapaocc')
+                            content: $.i18n.prop('demo_intro_mapaocc', demo_params.target_name, demo_params.resolution)
                         }
                     },
                     {
@@ -1261,7 +1311,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('demo_title_groups'),
-                            content: $.i18n.prop('demo_intro_groups')
+                            content: $.i18n.prop('demo_intro_groups', demo_params.bio_covars)
                         }
                     },
 
@@ -1273,7 +1323,7 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('label_esp_p24'),
-                            content: $.i18n.prop('demo_intro_tree2')
+                            content: $.i18n.prop('demo_intro_tree2', demo_params.bio_covars, demo_params.bio_covars_name)
                         }
                     },  
 
@@ -1373,16 +1423,8 @@ var language_module = (function (verbose) {
                         }
                     }, 
 
-                    {
-                        el: '#map',
-                        position: {
-                            location: 'lm-b-r'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('demo_title_mapres'),
-                            content: $.i18n.prop('demo_intro_mapres')
-                        }
-                    },    
+
+                    // comienza proyección de resultados
 
                     {
                         el: '#map',
@@ -1390,28 +1432,90 @@ var language_module = (function (verbose) {
                             location: 'lm-b-r'
                         },
                         templateData: {
-                            title: $.i18n.prop('demo_title_mapresa'),
-                            content: $.i18n.prop('demo_intro_mapresa')
+                            title: $.i18n.prop('rmapa_title'),
+                            content: $.i18n.prop('rmapa_descp', demo_params.rmapa)
                         }
                     },    
 
+
                     {
-                        el: '#map',
+                        el: '#chartdiv_score_decil',
                         position: {
                             location: 'lm-b-r'
                         },
                         templateData: {
-                            title: $.i18n.prop('demo_title_mapresb'),
-                            content: $.i18n.prop('demo_intro_mapresb')
+                            title: $.i18n.prop('rhist_decil_title'),
+                            content: $.i18n.prop('rhist_decil_descp', demo_params.rhist_decil)
                         }
-                    },                 
+                    },
+
+
+                    {
+                        el: '#div_example',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('rtabla_decil_title'),
+                            content: $.i18n.prop('rtabla_decil_descp', demo_params.rtabla_decil)
+                        }
+                    },  
+
+
+                    {
+                        el: '#hst_esp_eps',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('rhist_freeps_title'),
+                            content: $.i18n.prop('rhist_freeps_descp', demo_params.rhist_freeps)
+                        }
+                    },  
+
+
+                    {
+                        el: '#hst_esp_scr',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('rhist_frescr_title'),
+                            content: $.i18n.prop('rhist_frescr_descp', demo_params.rhist_frescr)
+                        }
+                    }, 
+
+                    {
+                        el: '#hst_cld_scr',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('rhist_celdascr_title'),
+                            content: $.i18n.prop('rhist_celdascr_descp', demo_params.rhist_celdascr)
+                        }
+                    },  
+
+                    {
+                        el: '#treeAddedPanel',
+                        position: {
+                            location: 'lm-b-r'
+                        },
+                        templateData: {
+                            title: $.i18n.prop('rtabla_epsscr_title'),
+                            content: $.i18n.prop('rtabla_epsscr_descp', demo_params.rtabla_epsscr)
+                        }
+                    },   
+
+
+                                  
 
                 ]
 
             })
 
 
-        })
+        // })
 
 
     }
@@ -1878,7 +1982,7 @@ var language_module = (function (verbose) {
         startLanguageModule: startLanguageModule,
         getI18: getI18,
         addModuleForLanguage: addModuleForLanguage,
-        setTableModule: setTableModule
-
+        setTableModule: setTableModule,
+        setDemoUseCase: setDemoUseCase
     }
 });

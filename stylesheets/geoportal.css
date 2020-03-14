@@ -965,6 +965,12 @@ h3{
     outline: none;
 }
 
+.mymodaldemo {
+    top:20%;
+    /*left:35%;*/
+    outline: none;
+}
+
 
 
 .resizeFull{
