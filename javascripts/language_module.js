@@ -1112,7 +1112,6 @@ var language_module = (function (verbose) {
 
         _VERBOSE ? console.log("_confLiveDemoNiche") : _VERBOSE;
 
-        
         console.log(index)
         console.log(_demo_config)
         console.log(_demo_config[index])
@@ -1122,7 +1121,7 @@ var language_module = (function (verbose) {
 
         // $('#btn_demo.display-marker').on('click', function () {
 
-            _VERBOSE ? console.log("btn_tuto_steps") : _VERBOSE;
+            // _VERBOSE ? console.log("btn_tuto_steps") : _VERBOSE;
 
 
 
@@ -1277,8 +1276,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('label_esp_p13'),
                             content: $.i18n.prop('label_esp_p46')
                         }
-                    }, 
-
+                    },
                     {
                         el: '#tuto_variables',
                         position: {
@@ -1289,8 +1287,6 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('demo_intro_covars')
                         }
                     },
-
-
                     {
                         el: '#tuto_nav_tabs_fuente',
                         position: {
@@ -1338,16 +1334,6 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p27')
                         }
                     },
-                    // {
-                    //     el: '#clean_var_fuente',
-                    //     position: {
-                    //         location: 'rm-t'
-                    //     },
-                    //     templateData: {
-                    //         title: $.i18n.prop('label_esp_p28'),
-                    //         content: $.i18n.prop('label_esp_p29')
-                    //     }
-                    // },
 
                     {
                         el: '#treeAddedPanel_fuente',
@@ -1372,6 +1358,7 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('demo_intro_analisis')
                         }
                     },
+
                    {
                        el: '#tuto_val',
                        position: {
@@ -1382,6 +1369,7 @@ var language_module = (function (verbose) {
                            content: $.i18n.prop('demo_intro_val')
                        }
                    },
+
                     {
                         el: '#tuto_min_occ',
                         position: {
@@ -1402,6 +1390,7 @@ var language_module = (function (verbose) {
                            content: $.i18n.prop('demo_intro_apri')
                        }
                    },
+
                    {
                        el: '#tuto_map_prob',
                        position: {
@@ -1506,9 +1495,6 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('rtabla_epsscr_descp', demo_params.rtabla_epsscr)
                         }
                     },   
-
-
-                                  
 
                 ]
 

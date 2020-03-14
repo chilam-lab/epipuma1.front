@@ -674,42 +674,16 @@ section{
     /*overflow: auto; */
     border-style: solid;
     border-width: 1px;
-    /*float: left;*/
-
     border-color: #3B6A93;
     height: 100%;
 
-    /*border-radius: 5px;*/
-    /*text-align: left;*/
-
-    /*margin-top: -30px;
-    float: left;
-    clear: none;*/
-
-    /*width: 33%;*/
-    /*margin-left: 3px;*/
-    /*height: 45% !important;*/
-
-    /*padding-top: 20px;*/
-    /*margin: auto;*/
 }
 
 .myScrollableBlockEpsilonDecil{
-    /*overflow: auto; */
     border-style: solid;
     border-color: #3B6A93;
     border-width: 1px;
-    /*border-radius: 5px;*/
-    /*margin-top: -10px;*/
-    /*margin-bottom: 20px;*/
-    /*text-align: left;*/
-    /*float: left;*/
-    /*clear: none;*/
-    /*width: 100%;*/
-    /*height: 45% !important;*/
     height: 320px;
-    /*padding: 5px;*/
-    /*margin: auto;*/
 }
 
 /*.myScrollableBlockEpsilon.table_resume{
@@ -2013,7 +1987,7 @@ button.glyphicon-remove:before {
 }
 
 #section0, #section1, #section2 {
-    /*overflow-y: scroll;*/
+    overflow-y: scroll;
     scroll-behavior: smooth;   
 }
 
@@ -2265,17 +2239,14 @@ display: none;
 }
 
 .btn_nav_continer button{
-    /*border-radius: 0px;*/
     border-radius: 50%;
 }
 
 .glyphicon.glyphicon-chevron-up, .glyphicon.glyphicon-chevron-down {
     font-size: 20px;
-    /*padding-top: 0px;
-    padding-bottom: 0px;
-    padding-left: 4px;
-    padding-right: 4px;*/
 }
+
+
 
 .pd-top5{
     padding-top: 5px;
@@ -2415,9 +2386,9 @@ display: none;
     height: 100% !important;
 }
 
+
 #reload_map{
     border-right: 2px;
-    /*padding: 5px;*/
 }
 
 
@@ -2450,3 +2421,8 @@ display: none;
 }
 
 
+.w13{
+    /*float: left;*/
+    display:inline-block;
+    width: 33% !important;
+}
