@@ -511,6 +511,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         });
 
+        
+
 
         // $('#btn_demo').on('click', function () {
 
