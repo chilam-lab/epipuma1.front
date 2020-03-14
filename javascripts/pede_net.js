@@ -15,6 +15,11 @@ var module_net = (function () {
     var _REGION_TEXT_SELECTED;
     var _MODULO = "comunidad"
     var _taxones = []
+
+    // actualizar este arreglo si cambian los ids de las secciones
+    var _SCROLL_SECTIONS = ["section0","hist_comunidad","tbl_comunidad","tbl_container"];
+    var _SCROLL_INDEX = 0;
+
     
     var _tipo_modulo = MOD_COMUNIDAD;
     
@@ -299,15 +304,51 @@ var module_net = (function () {
 
         });
 
+
+
+        _SCROLL_INDEX = 0;
+
+        $("#specie_next").click(function () {
+
+            if(_SCROLL_INDEX >= _SCROLL_SECTIONS.length-1)
+                return;
+
+            _SCROLL_INDEX = _SCROLL_INDEX + 1;
+
+            // console.log(_SCROLL_SECTIONS[_SCROLL_INDEX]) 
+            
+            $('html, body').animate({
+                scrollTop: $("#"+_SCROLL_SECTIONS[_SCROLL_INDEX]).offset().top - 40
+            }, 1000);
+
+            
+
+        });
+
+
+        $("#specie_before").click(function () {
+
+            if(_SCROLL_INDEX == 0)
+                return;
+
+            _SCROLL_INDEX = _SCROLL_INDEX - 1;
+
+            // console.log(_SCROLL_SECTIONS[_SCROLL_INDEX]) 
+            
+            $('html, body').animate({
+                scrollTop: $("#"+_SCROLL_SECTIONS[_SCROLL_INDEX]).offset().top - 40
+            }, 1000);
+
+            
+
+        });
+
+
+
         // document.getElementById("tbl_hist_comunidad").style.display = "none";
-
         // document.getElementById("map_panel").style.display = "none";
-
         // document.getElementById("hist_map_comunidad").style.display = "none";
-
-
         // document.getElementById("graph_map_comunidad").style.display = "none";
-
 
         _genLinkURL();
 //        _loadCountrySelect();

@@ -1578,3 +1578,21 @@ button.link-comunidad {
 .container_100p{
     height: 100% !important;
 }
+
+
+.btn_nav_continer{
+    position: fixed;
+    bottom: 120px !important;
+    right: 30px !important; 
+    z-index: 99999 !important;
+    width: 40px;
+    height: 40px;
+}
+
+.btn_nav_continer button{
+    border-radius: 50%;
+}
+
+.glyphicon.glyphicon-chevron-up, .glyphicon.glyphicon-chevron-down {
+    font-size: 20px;
+}
