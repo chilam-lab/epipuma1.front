@@ -917,7 +917,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             var index = cells_map.indexOf(grid_map.features[i].properties.gridid)
             if(index !== -1){
 
-                console.log(scale_color_function(decile_map[index]))
+                // console.log(scale_color_function(decile_map[index]))
 
                 // console.log("celda objetivo")
                 // grid_map.features[i].properties.color = 'rgba(17,227,217,0.6)'; cyan
