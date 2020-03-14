@@ -814,6 +814,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         }
 
 
+        
         _map_module_nicho.clearMap();
 
 

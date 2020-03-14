@@ -827,6 +827,18 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     function clearMap() {
 
         _VERBOSE ? console.log("clearMap") : _VERBOSE;
+
+        // console.log(_tileLayer)
+        console.log(map.hasLayer(_tileLayer))
+        
+        if(!map.hasLayer(_tileLayer)){
+            addMapLayer(_tileLayer, "Result")
+        }
+
+        if(!map.hasLayer(_tileLayerSpecies)){
+            addMapLayer(_tileLayerSpecies, "Target")
+        }
+
         
         // Variable para highlight 
         _highlight_obj = {"cells": [], "decil": null};
