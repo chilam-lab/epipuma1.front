@@ -648,6 +648,7 @@ filters.push({
 
         _histogram_module_net = histogram_module(_VERBOSE);
         _histogram_module_net.setLanguageModule(_language_module_net);
+        _histogram_module_net.setToastModule(_toastr);
         _histogram_module_net.startHistogramModule();
         _hist_component = _histogram_module_net.createBarChartNet(json, this);
 
