@@ -20,6 +20,7 @@
      var _subgroups;
      var _subgroups_s;
      var _subgroups_t;
+     var _datanodeselectedconf;
 
      var _idFilterGroup;
      var _min_occ;
@@ -637,7 +638,7 @@ filters.push({
 
         _configFilters(json);
 
-        _net_module = net_module(_VERBOSE, _url_zacatuche, _map_module_net, _utils_module);
+        _net_module = net_module(_VERBOSE, _url_zacatuche, _map_module_net, _utils_module, self);
         _net_module.startNet(_language_module_net, s_filters, t_filters);
         _net_module.setLanguageModule(_language_module_net);
         _net_module.setLanguageModule(_language_module_net);
@@ -802,6 +803,155 @@ filters.push({
         self.chart = null
 
     }
+
+
+   
+
+
+
+    /**
+     * Éste método realiza la petición al servidor cuando una celda es seleccionada por el usuario y obtiene el valor de score que se encuentran dentro de la celda en conjunto con el módulo mapa.
+     *
+     * @function showGetFeatureInfo
+     * @public
+     * @memberof! res_display_module
+     * 
+     * @param {float} lat - Latitud del punto sleccionado por el usuario
+     * @param {float} long - Longitud del punto sleccionado por el usuario
+     */
+    function showGetFeatureInfo(lat, long, taxones, region, sdata = {}) {
+
+        _VERBOSE ? console.log("showGetFeatureInfo redes") : _VERBOSE;
+
+        $('#map').loading({
+            stoppable: true
+        });
+
+        console.log(lat)
+        console.log(long)
+        console.log(sdata)
+
+        sdata["lat"] = lat
+        sdata["long"] = long
+        sdata["cellselected"] = true
+
+         $.ajax({
+            url: _url_zacatuche + "/niche/especie/getGroupCountGrididByCell",
+            type: 'post',
+            data: sdata,
+            success: function(resp) {
+
+                $('#map').loading('stop');
+
+                var data = resp.data;                
+                _VERBOSE ? console.log(data) : _VERBOSE;
+
+                if (data.length == 0)
+                    return;
+
+                var htmltable = _createTableFromData(data[0]);
+                _map_module_net.showPopUp(htmltable, [lat, long]);
+
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                _VERBOSE ? console.log("error configureStyleMap: " + textStatus) : _VERBOSE;
+                // deleteStyle();
+                $('#map').loading('stop');
+            }
+
+        });
+
+    }
+
+
+
+    /**
+     * El método genera un HTML para desplegar la tabla que contiene los resultados de la petición hecha por showGetFeatureInfo.
+     *
+     * @function _createTableFromData
+     * @private
+     * @memberof! res_display__net_module
+     * 
+     * @param {json} json_data - Json con el valor resultante de la celda seleccionada
+     */
+    function _createTableFromData(json_data) {
+
+        _VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
+        _VERBOSE ? console.log(json_data) : _VERBOSE
+
+
+        var gridid = json_data.gridid
+        var num_riqueza = parseInt(json_data.num_riqueza)
+        var species = json_data.sp_riqueza
+
+        console.log(gridid)
+        console.log(num_riqueza)
+        console.log(species)
+
+        
+        var htmltable = "<div class='myScrollableBlockPopup mywidth'>";
+        var table_sp = "";
+        var title_total = _iTrans.prop("num_var_riq", num_riqueza);
+        var title_popup = _iTrans.prop("lb_riqueza");
+
+        
+        htmltable += "<div class='panel-primary'>\
+                        <div class='panel-heading no-padding header-title-cell'>\
+                            <h3 class='h3-title-cell'>"+title_popup+"</h3>\
+                        </div>\
+                        <table class='table table-striped'>\
+                            <thead>\
+                                <tr>\
+                                    <th>" + title_total + "</th>\
+                                </tr>\
+                            </thead>\
+                            <tbody>";
+
+        for (i = 0; i < species.length; i++) {
+
+            var sp_gen_label = species[i].split("|")[0]
+            var sp_epi_tag = species[i].split("|")[1]
+            var tipo = species[i].split("|")[2]
+
+            console.log("sp_gen_label: " + sp_gen_label)
+            console.log("sp_epi_tag: " + sp_epi_tag)
+            console.log("tipo: " + tipo)
+
+            if (tipo === "bio") {
+
+                htmltable += "<tr><td>" + sp_gen_label + " " + sp_epi_tag + "</td></tr>";
+
+            }
+            else{
+
+                var coeficiente = parseFloat(species[i].split("|")[3])
+                var unidad = species[i].split("|")[4]
+
+                var range = sp_epi_tag.split(":")
+                var label = sp_gen_label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+
+                var min = (parseFloat(range[0]) * coeficiente).toFixed(3) + " " + unidad
+                var max = (parseFloat(range[1]) * coeficiente).toFixed(3) + " " + unidad
+
+                var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
+                
+                htmltable += "<tr><td>" + value + "</td></tr>";
+
+
+            }
+
+        }
+
+        htmltable += "</tbody></table></div>";
+        htmltable += "</div>"; // cierra div myScrollableBlockPopup
+
+        return htmltable;
+
+    }
+
+
+
 
 
 
@@ -1138,7 +1288,8 @@ filters.push({
          renderAll: renderAll,
          updateLabels: updateLabels,
          callDisplayProcess: callDisplayProcess,
-         cleanLegendGroups: cleanLegendGroups
+         cleanLegendGroups: cleanLegendGroups,
+         showGetFeatureInfo: showGetFeatureInfo
      }
 
  });

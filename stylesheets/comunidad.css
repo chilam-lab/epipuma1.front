@@ -1596,3 +1596,17 @@ button.link-comunidad {
 .glyphicon.glyphicon-chevron-up, .glyphicon.glyphicon-chevron-down {
     font-size: 20px;
 }
+
+.myScrollableBlockPopup{
+    /*padding: 5px 5px;*/ 
+    overflow: auto; 
+    height:300px;
+    /*width: 300px;*/
+    border-style: solid;
+    border-color: #3B6A93;
+    border-radius: 5px;
+}
+
+.mywidth{
+    width: 230px !important;
+}

@@ -2438,7 +2438,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {float} lat - Latitud del punto sleccionado por el usuario
      * @param {float} long - Longitud del punto sleccionado por el usuario
      */
-    function showGetFeatureInfo(lat, long, taxones, region) {
+    function showGetFeatureInfo(lat, long, taxones, region, sdata = {}) {
 
         _VERBOSE ? console.log("showGetFeatureInfo") : _VERBOSE;
 
