@@ -290,7 +290,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         var default_son = level_vartree < max_level ? [{text: "cargando..."}] : [];
 
                         var tag = "", min = "", max = "";
-
+			var ttext = "";
                         var newNode = {};
 
                         if (level_vartree > 2) {
@@ -308,9 +308,15 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 idNode = data[i].bid;
                             }
 
+			   if(String(data[i].tag).split(":").length > 1){
+                                ttext = min + " : " + max;
+                            }else{
+                                ttext = data[i].tag;
+                            }
+
                             newNode = {
                                 id: idNode,
-                                text: min + " : " + max,
+                                text: ttext,
                                 icon: "plugins/jstree/images/dna.png",
                                 attr: {"bid": data[i].bid, "parent": data[i].layer, "level": level_vartree, "type": data[i].type},
                                 state: {'opened': false},

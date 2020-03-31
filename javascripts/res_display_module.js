@@ -1715,7 +1715,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             var item_list = [];
 
             // las variables climáticas no cuentan con reino, phylum, clase, etc
-            if (d.reinovalido === "" && d.phylumdivisionvalido === "") {
+            if (d.reinovalido === "" && d.phylumdivisionvalido === "" && d.especieepiteto === "") {
                 // var arg_values = d.especievalidabusqueda.split(" ")
 
                 console.log(d)
@@ -1727,8 +1727,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var max = (parseFloat(range[1]) * d.coeficiente).toFixed(3) + " " + d.unidad
 
                 // var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
                 
+                
+		if(d.tag.split(":").length > 1){
+                    var value = _iTrans.prop(label) + " (" + min + " : " + max + ") ";
+                }else {
+                    var value = _iTrans.prop(label) + ' (' +  d.tag + ')'; 
+                }
+
+
                 item_list.push(value)
 
             } else {
@@ -2438,7 +2445,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {float} lat - Latitud del punto sleccionado por el usuario
      * @param {float} long - Longitud del punto sleccionado por el usuario
      */
-    function showGetFeatureInfo(lat, long, taxones, region, sdata = {}) {
+    function showGetFeatureInfo(lat, long, taxones, region) {
 
         _VERBOSE ? console.log("showGetFeatureInfo") : _VERBOSE;
 

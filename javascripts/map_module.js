@@ -11,8 +11,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     var _VERBOSE = verbose;
     var _first_loaded = true;
 
-    var _datanodeselectedconf;
-
     var _grid_d3;
     var _grid_map, _grid_map_target, _grid_map_occ = undefined;
     var _grid_res = undefined;
@@ -686,6 +684,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             },
             success: function (json) {
 
+               // console.log(json);
+
                 // Asegura que el grid este cargado antes de realizar una generacion por enlace
                 $("#loadData").prop("disabled", false);
                 $('#map').loading('stop');
@@ -697,47 +697,58 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 _grid_res = grid_res;
                 _first_loaded = true;
 
+
                 _pad = 0;
                 colorizeFeatures([], _grid_map, _tileLayer);
                 _tileIndex = geojsonvt(_grid_map, _tileOptions);
                 _tileLayer.redraw();                
 
-                // se inicializa para que pase validación de regeneración de malla en redes
-                _grid_map_occ = {}
 
                 if (_tipo_modulo === _MODULO_NICHO) {
 
-                    _grid_map_occ = jQuery.extend(true, {}, json) // se genera un clon del gridmap                    
+                    _grid_map_occ = jQuery.extend(true, {}, json) // se genera un clon del gridmap
                     _grid_map_target = jQuery.extend(true, {}, json) // se genera un clon del gridmap
                     _grid_map_decil = jQuery.extend(true, {}, json) // se genera un clon del gridmap
 
                     // console.log(_grid_map_occ);
                     // console.log(_grid_map_target);
 
+                    
+
                     colorizeDecileFeatures(_grid_map_decil, _tileDecilLayer);
                     _tileIndexDecil = geojsonvt(_grid_map_decil, _tileOptions);
                     _tileDecilLayer.redraw();
 
+
                     colorizeTargetFeatures(_grid_map_target, _tileLayerSpecies);
                     _tileIndexSpecies = geojsonvt(_grid_map_target, _tileOptions);
                     _tileLayerSpecies.redraw();
+                    
 
                     colorizeFeatures([], _grid_map_occ, _tileLayerSP);
                     _tileIndexSP = geojsonvt(_grid_map_occ, _tileOptions);
                     _tileLayerSP.redraw();
 
 
-                    // agrega listener para generar pop en celda en mapa de resultados
-                    map.on('click', function (e) {
+                }
+
+                _first_loaded = false;
+
+
+
+                // agrega listener para generar pop en celda
+                map.on('click', function (e) {
                     
-                        console.log(e.latlng.lat + ", " + e.latlng.lng);
+                    console.log(e.latlng.lat + ", " + e.latlng.lng);
 
+                    if (_tipo_modulo === _MODULO_NICHO) {
                         _display_module.showGetFeatureInfo(e.latlng.lat, e.latlng.lng, _taxones, _REGION_SELECTED);
+                    }
 
-                    });
+                });
 
+                if (_tipo_modulo === _MODULO_NICHO) {
 
-                    // agrega listener para generar pop en celda en mapa de abundancia
                     map_sp.on('click', function (e) {
                     
                         console.log(e.latlng.lat + ", " + e.latlng.lng);
@@ -777,23 +788,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     busca_especie_grupo(taxones, region_selected, val_process, grid_res)
 
                 }
-                // para redes
                 else{
 
-                    // agrega listener para generar pop en celda en mapa de riqueza
-                    map.on('click', function (e){
-                    
-                        console.log(e.latlng.lat + ", " + e.latlng.lng);
-                        _display_module.showGetFeatureInfo(e.latlng.lat, e.latlng.lng, _taxones, _REGION_SELECTED, _datanodeselectedconf);
-
-
-                    });
 
                     _display_module.callDisplayProcess(val_process)
 
-                }
 
-                _first_loaded = false;
+                }
 
 
             },
@@ -809,14 +810,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             }
 
         });
-
-    }
-
-
-    function setNodeSelectedConf(datanodeselectedconf){
-
-        _VERBOSE ? console.log("setNodeSelectedConf") : _VERBOSE;
-        _datanodeselectedconf = datanodeselectedconf;
 
     }
 
@@ -3434,8 +3427,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         getExcludedCells: getExcludedCells,
         setDecilCells: setDecilCells,
         colorizeDecileFeatures: colorizeDecileFeatures,
-        updateDecilLayer: updateDecilLayer,
-        setNodeSelectedConf: setNodeSelectedConf
+        updateDecilLayer: updateDecilLayer
     }
 
 });
