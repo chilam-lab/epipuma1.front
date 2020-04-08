@@ -831,17 +831,23 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                     var current_node = $('#jstree_variables_species_' + id).jstree(true).get_node($("#root"));
 
-//                    console.log(current_node);
+                   // console.log(current_node);
 
                     for (i = 0; i < data.length; i++) {
 
                         var idNode = "";
+                        // console.log(data[i].name)
+                        
+                        var namesp = data[i].name.replace(/ /g,"").replace(/\%/g,"").replace(/\)/g,"").replace(/\(/g,"").replace(/\./g,"")
+                        // console.log(namesp)
 
-                        if ($("#" + data[i].name).length > 0) {
-                            idNode = data[i].name + "_" + Math.floor((Math.random() * 1000) + 1)
+                        if ($("#" + namesp).length > 0) {
+                            idNode = namesp + "_" + Math.floor((Math.random() * 1000) + 1)
                         } else {
-                            idNode = data[i].name;
+                            idNode = namesp;
                         }
+
+                        // console.log("idNode: " + idNode)
 
                         var default_son = self.level_vartree < 8 ? [{text: "cargando..."}] : [];
                         var label_taxon = self.level_vartree < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
@@ -948,7 +954,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         if ($("#" + data[i].id).length > 0) {
                             // _VERBOSE ? console.log("id_existente") : _VERBOSE;
 
-                            idNode = data[i].id + "_" + Math.floor((Math.random() * 1000) + 1)
+                            idNode = data[i].id.replace(" ","") + "_" + Math.floor((Math.random() * 1000) + 1)
                         } else {
                             // ._VERBOSE ? console.log("nuevo_id") : _VERBOSE;
 

@@ -877,7 +877,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "date": sin_fecha,
             // "val_process": val_process,
             "idtabla": idtabla,
-            "grid_resolution": parseInt(_grid_res),
+            // "grid_resolution": parseInt(_grid_res),
+            "grid_resolution": _grid_res,
             "region": _footprint_region,
             "get_grid_species": false,
             "with_data_score_cell": true,
@@ -905,7 +906,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "date": sin_fecha,
             // "val_process": val_process,
             "idtabla": idtabla,
-            "grid_resolution": parseInt(_grid_res),
+            // "grid_resolution": parseInt(_grid_res),
+            "grid_resolution": _grid_res,
             "region": _footprint_region,
             "get_grid_species": false,
             "with_data_score_cell": true,
@@ -1117,7 +1119,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var data_request = jQuery.extend(true, {}, decildata);
 
-        // console.log(data_request)
+        console.log(data_request)
         data_request["decil_selected"] = [_default_decil]
 
 
@@ -1138,6 +1140,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
         .then(respuesta => {
 
             console.log(respuesta)
+
+            if(!respuesta.ok){
+                // TODO: mandar mensaje de error
+                _module_toast.showToast_BottomCenter("Error al ejecutar el análisis", "error");
+                $('#chartdiv_score_decil').loading('stop');
+                return
+            }
 
             _REQUESTS_NUMBER = _REQUESTS_NUMBER - 1;
 
@@ -1166,7 +1175,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     decil_cells = decil_cells.concat(item.decil_cells);
                 });
                console.log(total_eps_scr);
-               // console.log(total_score_cell);
+               console.log(total_score_cell);
 
                 // PETICION EN SERVER, SUMATORIA EN CLIENTE - getGeoRel - Tabla General
                 _createTableEpSc(total_eps_scr);
@@ -1815,8 +1824,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
         //     grid_map_color = _map_module_nicho.createDecilColor(_current_data_score_cell, _mapa_prob);    
         // }
         // else{
+            // console.log(_current_data_score_cell)
             grid_map_color = _map_module_nicho.createRankColor(_current_data_score_cell, _mapa_prob, map_type);
         // }
+
+        console.log(grid_map_color)
         
         _map_module_nicho.colorizeFeatures(grid_map_color);
         _map_module_nicho.colorizeTargetFeatures();

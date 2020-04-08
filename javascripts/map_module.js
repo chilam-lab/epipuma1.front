@@ -1020,8 +1020,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("colorizeFeatures") : _VERBOSE;
 
-        // console.log(grid_map_color)
-        // console.log(grid_map)
+        console.log(grid_map_color)
+        console.log(grid_map)
 
         if (_first_loaded) {
             _VERBOSE ? console.log("first loaded") : _VERBOSE;
@@ -1040,6 +1040,16 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             for (var i = 0; i < grid_map.features.length; i++) {
 
                 if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
+
+                    // if(grid_map.features[i].properties.gridid == 9){
+                    //     console.log("es DF")
+                        console.log("** gridid: " + grid_map.features[i].properties.gridid)    
+                    // }
+                    // else{
+                    //     console.log("no es DF")
+                    //      console.log(grid_map.features[i].properties.gridid)       
+                    // }
+                    
 
                     grid_map.features[i].properties.opacity = 1;
                     grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color;  //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
@@ -2041,35 +2051,38 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 //     stoppable: true
                 // });
 
-                fetch(_url_zacatuche + "/niche/especie/getCountByYear", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-                .then(resp => resp.json())
-                .then(resp => {
+                // Histograma de años de la especie. Se comenta para analisis de covid19
+                // TODO: Hacerlo en fechas mensuales y diarias
 
-                    if(resp.ok == true){
+                // fetch(_url_zacatuche + "/niche/especie/getCountByYear", {
+                //     method: "POST",
+                //     body: JSON.stringify(data),
+                //     headers: {
+                //         "Content-Type": "application/json"
+                //     }
+                // })
+                // .then(resp => resp.json())
+                // .then(resp => {
 
-                       var data = resp.data
-                       console.log(data)
+                //     if(resp.ok == true){
 
-                       $('#hist_fecha_container').loading('stop');
+                //        var data = resp.data
+                //        console.log(data)
 
-                       _histogram_module.createBarChartFecha(data);
+                //        $('#hist_fecha_container').loading('stop');
 
-                    }
+                //        _histogram_module.createBarChartFecha(data);
 
-                })
-                .catch(err => {
+                //     }
 
-                   // _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-                   _VERBOSE ? console.log(errorThrown) : _VERBOSE;
-                   _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+                // })
+                // .catch(err => {
+
+                //    // _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
+                //    _VERBOSE ? console.log(errorThrown) : _VERBOSE;
+                //    _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
                    
-                });
+                // });
                
             }
 
@@ -2510,6 +2523,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("createRankColor") : _VERBOSE;
 
+        console.log(json)
+
         // console.log("map_type: " + map_type)
 
         var equal_range_sections = 9;
@@ -2542,8 +2557,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             var mean = d3.mean(arr_scores)
             var breaks = ss.jenks(json.map(function(d) { return +d.tscore; }), (colors.length-2))
 
-            // console.log("min_scr: " + min_scr)
-            // console.log("max_scr: " + max_scr)
+            console.log("min_scr: " + min_scr)
+            console.log("max_scr: " + max_scr)
             console.log("deviation: " + deviation)
             // console.log("mean: " + mean)
             // console.log(ss.jenks(json.map(function(d) { return +d.tscore; }), (colors.length-2)))
@@ -2619,7 +2634,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             arr_range_deviations = arr_range_deviations.concat(d3.range(1,5).map(function(d) {return mean + (d * deviation) })) 
             
             console.log(arr_range_deviations)
-            // console.log(colors)
+            console.log(colors)
 
 
             scales.range = d3.scale.threshold()
