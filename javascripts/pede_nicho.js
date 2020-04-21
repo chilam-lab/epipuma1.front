@@ -620,7 +620,7 @@ var module_nicho = (function () {
             var loadeddata = true;
 
             // se ejecuta función para cargar las mallas
-            _map_module_nicho.busca_especie_grupo([], footprint_region, val_process, grid_res, loadeddata);
+            _map_module_nicho.busca_especie_grupo([], footprint_region, val_process, grid_res, loadeddata, _datafile_loaded);
 
 
         });
