@@ -558,6 +558,10 @@ section{
     border-radius: 5px;
 }
 
+.minHeigthScroll{
+    height:220px !important;
+}
+
 .leaflet-popup-content{
     margin: 3px 3px;
     line-height: 1.4;
@@ -945,7 +949,28 @@ h3{
     outline: none;
 }
 
+.mymodalloaddata {
+    top:5%;
+    /*height: 400px;*/
+    /*left:35%;*/
+    outline: none;
+}
 
+.footer-pd{
+    padding-bottom: 12px !important;
+    padding-right: 30px !important;
+}
+
+#tbl_spload > tbody > tr:first-child > td {
+    color: white;
+    font-weight: bold;
+    background-color: #0674e1;
+}
+
+
+.wrapper_table{
+
+}
 
 .resizeFull{
     width: 99%;

@@ -303,6 +303,11 @@ var table_module = (function(verbose) {
 
         // var data_list = rawdata.data;    
         _data_list_eps = rawdata ? rawdata.data : _data_list_eps
+
+
+        console.log(_data_list_eps);
+
+        
         
         if (_tbl != false) {
             // $('#tdisplay').dataTable().fnClearTable();

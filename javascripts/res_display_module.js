@@ -543,9 +543,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} chkFosil - Bandera que indica si serán tomados en cuenta los registros fósiles para realizar un análisis de nicho ecológico
      * @param {interger} grid_res - Valor con el cual se realizan los calculos para la resolución de la malla
      */
-    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res, footprint_region) {
+    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res, footprint_region, loadeddata = false, target_points = []) {
 
         _VERBOSE ? console.log("refreshData") : _VERBOSE;
+
+        console.log("loadeddata: " + loadeddata)
 
         _slider_value = slider_value;
 
@@ -561,8 +563,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _chkfecha = chkFecha;
 
         var discardedGridids = [];
-
-
         
 
         _REQUESTS = num_items + _subgroups.length;
@@ -583,11 +583,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // Se realiza la carga de la malla antes de iniciar el análisis de nicho
         // _map_module_nicho.loadD3GridMX(val_process, grid_res, _footprint_region);
-        callDisplayProcess(val_process)
+        callDisplayProcess(val_process, loadeddata, target_points)
 
 
     }
-
 
 
     /**
@@ -598,7 +597,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @memberof! res_display_module
      * 
      */
-    function callDisplayProcess(val_process) {
+    function callDisplayProcess(val_process, loadeddata, target_points) {
 
         _VERBOSE ? console.log("callDisplayProcess NICHO") : _VERBOSE;
 
@@ -632,8 +631,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             
             
             // _confDataRequest(_spid, _idreg, val_process);
-            _confDataRequest(taxon_values, _idreg, val_process);
-            _panelGeneration();
+            _confDataRequest(taxon_values, _idreg, val_process, "", target_points);
+            _panelGeneration("", loadeddata);
 //            _generateCounts(_countsdata);
 
         }
@@ -838,7 +837,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {integer} num_items - Número de grupos de variables seleccionado
      * @param {boolean} val_process - Bandera que indica si será ejecutado el proceso de validación
      */
-    function _confDataRequest(taxones, idreg, val_process, tabla) {
+    function _confDataRequest(taxones, idreg, val_process, tabla, target_points = []) {
 
         _VERBOSE ? console.log("_confDataRequest") : _VERBOSE;
 
@@ -865,8 +864,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // verbo: getFreqCelda // seleccion de celda
         var milliseconds = new Date().getTime();
+
         _cdata = {
             "target_taxons": taxones,
+            "target_points": target_points,
             "idtime": milliseconds,
             "apriori": apriori,
             "mapa_prob": mapap,
@@ -895,6 +896,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _decil_data = {
             "target_taxons": taxones,
+            "target_points": target_points,
             "idtime": milliseconds,
             "apriori": apriori,
             "mapa_prob": mapap,
@@ -933,7 +935,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * 
      * @param {array} discardedGridids - Array con los ids de celda que son descartados cuando existe proceso de validación
      */
-    function _panelGeneration(idtemptable) {
+    function _panelGeneration(idtemptable, loadeddata) {
 
         _VERBOSE ? console.log("_panelGeneration") : _VERBOSE;
         idtemptable = idtemptable || "";
@@ -1087,8 +1089,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _REQUESTS_MADE.forEach(function (item, index) {
 
             // console.log(item);
-
-            _createScore_Decil(item);
+            _createScore_Decil(item, loadeddata);
 
         });
 
@@ -1107,7 +1108,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} hasChildren - Bandera que indica si la configuración enviada es un conjunto de las variables seleccionadas o es una variable del grupo
      * @param {boolean} isTotal - Bandera que indica si la configuración enviada es el total de los conjuntos de las variables seleccionadas 
      */
-    function _createScore_Decil(decildata) {
+    function _createScore_Decil(decildata, loadeddata) {
 
         _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
 
@@ -1126,8 +1127,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // decildata["with_data_freq_cell"] = false;
         // decildata["with_data_score_decil"] = false;
 
+        var verbo = loadeddata ? "countsTaxonsGroupGivenPoints"  : "countsTaxonsGroup"
+        console.log("verbo: " + verbo);
+
         // cambiando peticiones ajax por promesas y fetch api
-        fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
+        fetch(_url_zacatuche + "/niche/" + verbo, {
             method: "POST",
             body: JSON.stringify(data_request),
             headers: {

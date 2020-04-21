@@ -656,7 +656,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      */
-    function loadD3GridMX(val_process, grid_res, region_selected, taxones = []) {
+    function loadD3GridMX(val_process, grid_res, region_selected, taxones = [], loadeddata = false) {
 
         _VERBOSE ? console.log("_loadD3GridMX") : _VERBOSE;
 
@@ -774,7 +774,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     });
 
                     // metodo del módulo de NICHO para cargar las especies
-                    busca_especie_grupo(taxones, region_selected, val_process, grid_res)
+                    busca_especie_grupo(taxones, region_selected, val_process, grid_res, loadeddata)
 
                 }
                 // para redes
@@ -1866,7 +1866,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {array} taxones - Array con taxones seleccionados
      */
 
-     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = 16) {
+     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = 16, loadeddata = false) {
 
         _VERBOSE ? console.log("busca_especie_grupo") : _VERBOSE;
 
@@ -1875,6 +1875,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         console.log("grid_res: " + grid_res)
         console.log("_REGION_SELECTED: " + _REGION_SELECTED)
         console.log("region: " + region)
+        console.log("loadeddata: " + loadeddata)
         
         _taxones = taxones
 
@@ -1894,7 +1895,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             _grid_res = grid_res
             _REGION_SELECTED = region
 
-            loadD3GridMX(val_process, grid_res, region, _taxones)
+            loadD3GridMX(val_process, grid_res, region, _taxones, loadeddata)
             return
         }
         else{
@@ -1946,18 +1947,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             stoppable: true
         });
 
-        if (_tipo_modulo === _MODULO_NICHO) {
-
-            console.log("entra!!!")
-
-            $('#hist_fecha_container').loading({
-                stoppable: true
-            });
-
-        }
-
         
-
         //limpia el mapa antes de generar un nuevo análisis
         // clearMapOcc()
 
@@ -2026,12 +2016,15 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             $("#specie_next").show("slow");
 
 
-            colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
-
+            colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ);
             clearAllLayers();
-            
-            if (_tipo_modulo === _MODULO_NICHO) {
 
+            
+            if (_tipo_modulo === _MODULO_NICHO && loadeddata === false) {
+
+                $('#hist_fecha_container').loading({
+                    stoppable: true
+                });
 
                 var data = {
                        "target_taxons": taxones,
@@ -2094,6 +2087,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         });
 
     }
+
+
+
+    
 
     /**
      * Éste método obtiene las ocurrencias de una especie seleccionada en el análisis de nicho ecológico.
