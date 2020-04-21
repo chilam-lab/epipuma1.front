@@ -1252,13 +1252,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var total_request = {time: new Date().getTime()};
 
                     $.each(_TREE_GENERATED.groups, function (i, grupo) {
+                        
                         $.each(grupo.children, function (j, child) {
 
+                            console.log(child)
+
                             var temp_child = jQuery.extend(true, {}, child);
-                            total_request = mergeRequest(total_request, temp_child);
+                            total_request = mergeRequest(total_request, temp_child, loadeddata);
 
                         });
                     });
+
+                    console.log(total_request)
+                    console.log(verbo)
 
                     _cdata = jQuery.extend(true, {}, total_request);
 
@@ -1266,7 +1272,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     total_request.with_data_score_decil = true
                     total_request.decil_selected = [_default_decil]
 
-                    fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
+
+
+                    fetch(_url_zacatuche + "/niche/" + verbo, {
                         method: "POST",
                         body: JSON.stringify(total_request),
                         headers: {
@@ -1311,7 +1319,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
-                            loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
+                            loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells, loadeddata);
 
                         }
 
@@ -1336,7 +1344,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                 
-                    loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
+                    loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells, loadeddata);
 
                     $('#chartdiv_score_decil').loading('stop');
 
@@ -1399,7 +1407,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
     // function loadDecilDataTable(decil = 10, name = "Total", first_loaded = true, counts = []) {
-    function loadDecilDataTable(deciles, name, first_loaded, percentage_avg, decil_cells) {
+    function loadDecilDataTable(deciles, name, first_loaded, percentage_avg, decil_cells, loadeddata = false) {
 
         _VERBOSE ? console.log("loadDecilDataTable") : _VERBOSE;
 
@@ -1431,7 +1439,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 $.each(grupo.children, function (j, child) {
 
                     var temp_child = jQuery.extend(true, {}, child);
-                    total_request = mergeRequest(total_request, temp_child);
+                    total_request = mergeRequest(total_request, temp_child, loadeddata);
 
                 });
             });
@@ -1489,7 +1497,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 if (name !== "Total") {
                     $.each(value.children, function (i, child) {
                         var temp_child = jQuery.extend(true, {}, child);
-                        request = mergeRequest(request, temp_child);
+                        request = mergeRequest(request, temp_child, loadeddata);
                     });
                 } else {
                     request = total_request;
@@ -1517,7 +1525,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
                 else{
 
-                    fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
+                    var verbo = loadeddata ? "countsTaxonsGroupGivenPoints"  : "countsTaxonsGroup"
+                    console.log("verbo: " + verbo);
+
+                    fetch(_url_zacatuche + "/niche/" + verbo, {
                         method: "POST",
                         body: JSON.stringify(request),
                         headers: {
@@ -1582,7 +1593,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function mergeRequest(request = {}, child = []){
+    function mergeRequest(request = {}, child = [], loadeddata = false){
 
         _VERBOSE ? console.log("mergeRequest") : _VERBOSE;
         console.log(request);
@@ -1607,6 +1618,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         request.with_data_score_cell = false;
         request.with_data_freq_cell = false;
         request.with_data_score_decil = false;
+
+        request.target_points = child.request.target_points;
         // request.decil_selected = request.decil_selected ? request.decil_selected : child.request.decil_selected
 
         // se realiza un analisis del contenido y se concatena
