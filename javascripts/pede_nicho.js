@@ -474,8 +474,11 @@ var module_nicho = (function () {
             }
 
             data_link.min_occ = $("#chkMinOcc").is(':checked') === true ? parseInt($("#occ_number").val()) : 0;
-            data_link.grid_res = parseInt($("#grid_resolution").val());
-            data_link.footprint_region = parseInt($("#footprint_region_select").val());
+            
+            // Se comenta para cambio a covid19
+            // data_link.grid_res = parseInt($("#grid_resolution").val());
+            data_link.grid_res = $("#grid_resolution").val();
+            data_link.footprint_region = $("#footprint_region_select").val();
 
             data_link.discardedFilterids = _map_module_nicho.get_discardedPoints().values().map(function (value) {
                 return value.feature.properties.gridid
@@ -625,8 +628,10 @@ var module_nicho = (function () {
 
                 var maxFec = _json_config.maxFec ? parseInt(_json_config.maxFec) : undefined;
 
-                var gridRes = _json_config.gridRes ? parseInt(_json_config.gridRes) : 16;
-//                console.log("gridRes: " + gridRes);
+                // var gridRes = _json_config.gridRes ? parseInt(_json_config.gridRes) : 16;
+                var gridRes = _json_config.gridRes ? _json_config.gridRes : "state";
+               
+               console.log("gridRes: " + gridRes);
 
                 var region = _json_config.region ? parseInt(_json_config.region) : 1;
 
@@ -861,6 +866,7 @@ var module_nicho = (function () {
         })
 
         console.log(_taxones)
+        console.log(gridRes)
 
         _map_module_nicho.loadD3GridMX(chkVal, gridRes, region, _taxones);        
 
@@ -984,6 +990,7 @@ var module_nicho = (function () {
             var footprint_region = parseInt($("#footprint_region_select").val());
 
             console.log("grid_res: " + grid_res);
+            console.log("footprint_region: " + footprint_region);
 
             var fossil = $("#chkFosil").is(':checked');
             var rango_fechas = $("#sliderFecha").slider("values");

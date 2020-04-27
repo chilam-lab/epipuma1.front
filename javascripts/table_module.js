@@ -82,7 +82,7 @@ var table_module = (function(verbose) {
                 var value_abio = "";
                 if (d.species.indexOf("|") !== -1) {
 
-
+		   console.log(d);
                     var arg_values = d.species.split("|")
 
                     // console.log(arg_values)
@@ -103,7 +103,18 @@ var table_module = (function(verbose) {
                     var max = (parseFloat(range[1]) * coeficiente).toFixed(3) + " " + unidad
 
                     // value = _iTrans.prop(lb) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                    value_abio = _iTrans.prop(lb) + " (" + min  + " : " + max +")"
+                    
+		   if(range.length > 1){
+                        value_abio = _iTrans.prop(lb) + " (" + min  + " : " + max +")";
+                    }else{
+                        value_abio = _iTrans.prop(lb) + ' (' + tag + ')';
+
+			if(tag === ''){
+				//value_abio = d.species;
+				value_abio = '';
+			}
+
+                    }
                 } 
                 else {
                     value_abio = d.species
@@ -548,7 +559,11 @@ var table_module = (function(verbose) {
                         var infimo = parseFloat(_json.nodes[val.source].tag.split(':')[0]) * parseFloat(_json.nodes[val.source].coeficiente)  + " " + _json.nodes[val.source].unidad;
                         var supremo = parseFloat(_json.nodes[val.source].tag.split(':')[1]) * parseFloat(_json.nodes[val.source].coeficiente)  + " " + _json.nodes[val.source].unidad;
 
-                        name_s = _iTrans.prop(label) + " (" + parseFloat(infimo).toFixed(2) + " " + _json.nodes[val.source].unidad + " : " + parseFloat(supremo).toFixed(2) + " " + _json.nodes[val.source].unidad +  ")";
+                        if(_json.nodes[val.source].tag.split(':').length > 1){
+                            name_s = _iTrans.prop(label) + " (" + parseFloat(infimo).toFixed(2) + " " + _json.nodes[val.source].unidad + " : " + parseFloat(supremo).toFixed(2) + " " + _json.nodes[val.source].unidad +  ")";
+                        }else{
+                            name_s = _json.nodes[val.source].tag;
+                        }
 
                     }
 
@@ -566,7 +581,13 @@ var table_module = (function(verbose) {
                         var infimo = parseFloat(_json.nodes[val.target].tag.split(':')[0]) * parseFloat(_json.nodes[val.target].coeficiente);
                         var supremo = parseFloat(_json.nodes[val.target].tag.split(':')[1]) * parseFloat(_json.nodes[val.target].coeficiente);
 
-                        name_t = _iTrans.prop(label) + " (" + parseFloat(infimo).toFixed(2) + " " + _json.nodes[val.target].unidad + " : " + parseFloat(supremo).toFixed(2) + " " + _json.nodes[val.target].unidad +  ")";
+                        if(_json.nodes[val.target].tag.split(':').length > 1){
+
+                            name_t = _iTrans.prop(label) + " (" + parseFloat(infimo).toFixed(2) + " " + _json.nodes[val.target].unidad + " : " + parseFloat(supremo).toFixed(2) + " " + _json.nodes[val.target].unidad +  ")";
+
+                        }else{
+                            name_t = _json.nodes[val.target].tag;
+                        }
 
                     }
 
