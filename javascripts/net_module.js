@@ -4,17 +4,13 @@
  *
  * @namespace net_module
  */
-var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module, display_module) {
+var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module) {
 
     var _url_zacatuche = url_zacatuche;
 
     var _map_module_net = map_module_net;
 
     var _utils_module = utils_module
-
-    var _display_module = display_module
-
-    console.log(_display_module)
 
 
     var _VERBOSE = verbose;
@@ -1500,10 +1496,6 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module,
         $('#map').loading({
             stoppable: true
         });
-
-        
-        // guarda objeto de la ultima configuración con la que se genero el mapa
-        _map_module_net.setNodeSelectedConf(sdata);
 
         $.ajax({
             // url: _url_zacatuche + "/niche/especie/getCountGridid",

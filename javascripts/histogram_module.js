@@ -321,7 +321,7 @@ var histogram_module = (function (verbose) {
                 // TODO: validar que exista almenos un decil y un grupo seleccionado
                 if(deciles.length == 0 || grupos == 0){
                     console.log("Sin grupos o deciles seleccionados")
-                    _toast_module.warning(_iTrans.prop('no_decilgrupo'));
+                    _toast_module.showToast_BottomCenter(_iTrans.prop('no_decilgrupo'), "warning");
                     return
                 }
 
@@ -1522,20 +1522,6 @@ var histogram_module = (function (verbose) {
                 var value = $("#ep_izq").val()
                 var aizq = 0
 
-                
-                console.log("value: " + value)
-                // el valor metido no puede ser mayor al número de links totales
-                if(parseFloat(value) < min_eps){
-                    
-                    value = min_eps;
-                    $("#ep_izq").val(value);
-                    _toast_module.warning(_iTrans.prop('emin_link_value',value));
-                    
-                }
-
-
-                
-
                 display_obj.links.forEach(function (item){
                     var item_eps = parseFloat(item.value)
                     
@@ -1570,16 +1556,6 @@ var histogram_module = (function (verbose) {
                 var value = $("#ep_der").val()
                 var ader = 0
 
-                console.log("value: " + value)
-                // el valor metido no puede ser mayor al número de links totales
-                if(parseFloat(value) > max_eps){
-                    
-                    value = max_eps;
-                    $("#ep_der").val(value);
-                    _toast_module.warning(_iTrans.prop('emax_link_value',value));
-                    
-                }
-
                 display_obj.links.forEach(function (item){
                     var item_eps = parseFloat(item.value)
                     
@@ -1611,21 +1587,10 @@ var histogram_module = (function (verbose) {
             if($("#ari_izq").is(":valid")){
 
                 var value = $("#ari_izq").val()
-                var value_der = $("#ari_der").val()
 
-                console.log("value: " + value)
-                console.log("value_der: " + value_der)
+                // console.log(value)
 
-                // el valor metido no puede ser mayor al número de links totales
-                if((parseFloat(value) + parseFloat(value_der)) > num_links){
-                    
-                    value = num_links-value_der;
-                    $("#ari_izq").val(value);
-                    _toast_module.warning(_iTrans.prop('max_link_value',value));
-                    
-                }
-                // el valor insertado es cero,
-                else if(parseFloat(value) === 0){
+                if(parseFloat(value) === 0){
                     $("#ep_izq").val(min_eps)
                     $("#arip_izq").val(0)
                     chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
@@ -1671,32 +1636,17 @@ var histogram_module = (function (verbose) {
             if($("#ari_der").is(":valid")){
 
                 var value = $("#ari_der").val()
-                var value_izq = $("#ari_izq").val()
 
-                console.log("value: " + value)
-                console.log("value_izq: " + value_izq)
+                console.log(value)
 
-                // el valor metido no puede ser mayor al número de links totales
-                if((parseFloat(value) + parseFloat(value_izq)) > num_links){
-                    
-                    value = num_links-value_izq;
-                    $("#ari_der").val(value);
-                    _toast_module.warning(_iTrans.prop('max_link_value',value));
-                    
-                }
-                // el valor insertado es cero,
-                else if(parseFloat(value) === 0){
+                if(parseFloat(value) === 0){
                     $("#ep_der").val(max_eps)
                     $("#arip_der").val(0)
-
                     chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
                     return
                 }
 
-                var porcentaje = value/num_links*100;
-                // console.log("porcentaje: " + porcentaje)
-
-                $("#arip_der").val(parseFloat(porcentaje).toFixed(2))
+                $("#arip_der").val(parseFloat(value/num_links*100).toFixed(2))
 
                 var eps_der = 0
                 var count_der = 0
@@ -1732,24 +1682,9 @@ var histogram_module = (function (verbose) {
 
             if($("#arip_izq").is(":valid")){
 
-                var maxpercetage = 100
-
                 var value = parseFloat($("#arip_izq").val())
-                var value_der = $("#arip_der").val()
 
-                console.log("value: " + value)
-                console.log("value_der: " + value_der)
-
-                // el valor metido no puede ser mayor al número de links totales
-                if((parseFloat(value) + parseFloat(value_der)) > maxpercetage){
-                    
-                    value = maxpercetage-value_der;
-                    $("#arip_izq").val(value);
-                    _toast_module.warning(_iTrans.prop('maxp_link_value',value));
-                    
-                }
-                // el valor insertado es cero,
-                else if(value === 0){
+                if(value === 0){
                     $("#ep_izq").val(min_eps)
                     $("#ari_izq").val(0)
                     chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
@@ -1793,24 +1728,10 @@ var histogram_module = (function (verbose) {
 
             if($("#arip_der").is(":valid")){
 
-                var maxpercetage = 100
-
                 var value = parseFloat($("#arip_der").val()) 
-                var value_izq = $("#arip_izq").val()
 
-                console.log("value: " + value)
-                console.log("value_izq: " + value_izq)
-
-                // el valor metido no puede ser mayor al número de links totales
-                if((parseFloat(value) + parseFloat(value_izq)) > maxpercetage){
-                    
-                    value = maxpercetage-value_izq;
-                    $("#arip_der").val(value);
-                    _toast_module.warning(_iTrans.prop('maxp_link_value',value));
-                    
-                }
-                // el valor insertado es cero,
-                else if(value === 0){
+                
+                if(value === 0){
                     $("#ep_der").val(max_eps)
                     $("#ari_der").val(0)
                     chart.drawBrush(parseFloat($("#ep_izq").val()), parseFloat($("#ep_der").val()))
