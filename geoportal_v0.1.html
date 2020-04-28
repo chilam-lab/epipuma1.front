@@ -58,6 +58,9 @@
 
         <link rel="stylesheet" href="plugins/multiselect/css/bootstrap-multiselect.css" type="text/css"/>
 
+        <link rel="stylesheet" href="plugins/datetimepicker/jquery.datetimepicker.min.css" type="text/css"/>
+
+
 
         <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
@@ -311,14 +314,35 @@
                                 <div class="col-md-8 col-sm-10 col-xs-10">
                                     <label class="text-sm" id="lb_range_fecha" for="sliderFecha"></label>
                                 </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
+
+
+                                <div class="row">
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            Inicio:
+                                            <input id="date_timepicker_start" type="text" value="" style="width: 100px;">
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            Fin:
+                                            <input id="date_timepicker_end" type="text" value="" style="width: 100px;">
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+
+
+                                <!-- <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="slider_item_fecha" id="sliderFecha"></div>
                                     <label class="label_item text-sm" id="labelFecha" type="label"></label>
-                                </div>
+                                </div> -->
 
                             </div>
 
-                            <div id="tuto_reg_fecha" class="col-md-6 col-sm-12 col-xs-12">
+                            <!-- <div id="tuto_reg_fecha" class="col-md-6 col-sm-12 col-xs-12">
 
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 margin-top-five">
                                     <div class="ttip">
@@ -339,7 +363,7 @@
                                     <label class="label_item text-sm" id="lb_sfecha" type="label"></label>
                                 </div>
 
-                            </div>
+                            </div> -->
 
                             <!-- <div id="tuto_reg_fosil" class="col-md-3 col-sm-12 col-xs-12">
                                 <div class="col-md-1 col-sm-1 col-xs-1 margin-top-five">
@@ -373,10 +397,9 @@
                             </div>
 
                             <!-- label carga datos -->
-                            <div class="col-md-12 text-center  margin-top-five">
+                            <!-- <div class="col-md-12 text-center  margin-top-five">
                                 <a href="#" data-toggle="modal" data-target="#modalloaddata">¡También puedes cargar tus datos!</a>
-                                <!-- <button id="btn_csv" type="button" title="" class="btn btn-warning display-marker" data-toggle="modal" data-target="#modalloaddata"></button> -->
-                            </div>
+                            </div> -->
 
 
                         </div>
@@ -1096,6 +1119,8 @@
                 <script type="text/javascript" src="plugins/RequireJS/js/RequireJS.js"></script>
 
                 <script type="text/javascript" src="plugins/multiselect/js/bootstrap-multiselect.js"></script>
+
+                <script src="plugins/datetimepicker/jquery.datetimepicker.full.min.js"></script>
 
 
 

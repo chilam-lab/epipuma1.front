@@ -62,8 +62,6 @@ var module_nicho = (function () {
 
     var _taxones = [];
 
-    var _datafile_loaded = [];
-
 
 
     /**
@@ -81,48 +79,46 @@ var module_nicho = (function () {
         $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
 
 
-        $(function () {
+//         $(function () {
 
-            var year = parseInt(new Date().getFullYear());
-            // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
-            year = Math.round(year / 10) * 10;
+//             var year = parseInt(new Date().getFullYear());
+//             // obtnego el proximo numero divisible entre 10. 2016 -> 2020; 2017 -> 2020; 2021 -> 2030
+//             year = Math.round(year / 10) * 10;
 
-            $("#sliderFecha").slider({
-                range: true,
-                min: 1500,
-                max: year,
-                step: 10,
-                values: [1500, year],
-                change: function (event, ui) {
+//             $("#sliderFecha").slider({
+//                 range: true,
+//                 min: 1500,
+//                 max: year,
+//                 step: 10,
+//                 values: [1500, year],
+//                 change: function (event, ui) {
 
-//                    _VERBOSE ? console.log(ui.values) : _VERBOSE;
+// //                    _VERBOSE ? console.log(ui.values) : _VERBOSE;
 
-                    var value = ui.values[1];
-                    if (value == year) {
-                        value = _iTrans.prop('val_actual');
-                    }
+//                     var value = ui.values[1];
+//                     if (value == year) {
+//                         value = _iTrans.prop('val_actual');
+//                     }
 
-                    $("#labelFecha").text(_iTrans.prop('labelFecha', ui.values[0], value));
+//                     $("#labelFecha").text(_iTrans.prop('labelFecha', ui.values[0], value));
 
-                    _regenMessage();
-
-
-                    _module_toast.showToast_BottomCenter(_iTrans.prop('lb_rango_fecha', ui.values[0], value), "info");
-
-                    if (ui.values[0] !== 1500 || ui.values[1] !== year) {
-                        $("#chkFecha").prop('checked', false);
-                        $("#lb_sfecha").text(_iTrans.prop('lb_no'));
-                    } else {
-                        $("#chkFecha").prop('checked', true);
-                        $("#lb_sfecha").text(_iTrans.prop('lb_si'));
-                    }
+//                     _regenMessage();
 
 
+//                     _module_toast.showToast_BottomCenter(_iTrans.prop('lb_rango_fecha', ui.values[0], value), "info");
 
-                }
-            });
+//                     if (ui.values[0] !== 1500 || ui.values[1] !== year) {
+//                         $("#chkFecha").prop('checked', false);
+//                         $("#lb_sfecha").text(_iTrans.prop('lb_no'));
+//                     } else {
+//                         $("#chkFecha").prop('checked', true);
+//                         $("#lb_sfecha").text(_iTrans.prop('lb_si'));
+//                     }
 
-        });
+//                 }
+//             });
+
+//         });
 
 
         function forceNumeric() {
@@ -210,6 +206,7 @@ var module_nicho = (function () {
 
             if ($this.is(':checked')) {
                 $("#sliderFecha").slider("enable");
+
                 $("#lb_sfecha").text(_iTrans.prop('lb_si'));
 
                 _regenMessage();
@@ -287,9 +284,9 @@ var module_nicho = (function () {
         $("#chkFecha").prop('disabled', false);
 
 
-        $("#sliderFecha").slider({
-            disabled: false
-        });
+        // $("#sliderFecha").slider({
+        //     disabled: false
+        // });
 
 
         $("#nicho_link").click(function () {
@@ -466,7 +463,9 @@ var module_nicho = (function () {
             data_link.apriori = $("#chkApriori").is(':checked');
             data_link.sfecha = $("#chkFecha").is(':checked');
 
+            
             var rango_fechas = $("#sliderFecha").slider("values");
+
             if (rango_fechas[0] !== $("#sliderFecha").slider("option", "min") || rango_fechas[1] !== $("#sliderFecha").slider("option", "max")) {
                 data_link.lim_inf = rango_fechas[0];
                 data_link.lim_sup = rango_fechas[1];
@@ -474,6 +473,8 @@ var module_nicho = (function () {
                 data_link.lim_inf = undefined;
                 data_link.lim_sup = undefined;
             }
+
+
 
             data_link.min_occ = $("#chkMinOcc").is(':checked') === true ? parseInt($("#occ_number").val()) : 0;
             
@@ -503,7 +504,6 @@ var module_nicho = (function () {
         });
 
 
-
         $('#modalRegenera').on('shown.bs.modal', function (e) {
 
             $('#modalRegenera input[type="text"]')[0].select();
@@ -511,126 +511,37 @@ var module_nicho = (function () {
         });
 
 
-        var _exist_tblload = false;
-
-        $('#csv_load').change(function(e){
-
-            console.log("selecciona archivo");
-
-            console.log("_exist_tblload: " + _exist_tblload)
-            
-            if(_exist_tblload){
-                console.log("clean table")
-                // $('#tbl_spload').dataTable().fnDestroy();    
-                $('#wrapper').empty();
-            }
-
-
-            var reader = new FileReader();
-            reader.readAsArrayBuffer(e.target.files[0]);
-            
-            reader.onload = function(e) {
-
-                console.log("carga archivo")
-                _exist_tblload = true;
-
-                var data = new Uint8Array(reader.result);
-                var wb = XLSX.read(data,{type:'array'});
-                var htmlstr = XLSX.write(wb,{sheet:"especies", type:'binary',bookType:'html'});
-
-                console.log(htmlstr)
-
-                $('#wrapper')[0].innerHTML += htmlstr;
-                // console.log($("#wrapper table"));
-
-                var raw_table = $("#wrapper table");
-                console.log(raw_table);
-                raw_table.attr("id","tbl_spload");
-                raw_table.prop("id","tbl_spload")                    
-
-                // $('#tbl_spload').DataTable({
-                //     language: {
-                //         "sEmptyTable": _iTrans.prop('sEmptyTable'), 
-                //         "info": _iTrans.prop('info'),
-                //         "search": _iTrans.prop('search') + " ",
-                //         "zeroRecords": _iTrans.prop('zeroRecords'),
-                //         "infoEmpty": _iTrans.prop('infoEmpty'),
-                //         "infoFiltered": _iTrans.prop('infoFiltered')
-                //     }
-                // });
-
-                
-            }
+        jQuery(function(){
+         jQuery('#date_timepicker_start').datetimepicker({
+          scrollInput : false,
+          format:'Y-m-d',
+          onShow:function( ct ){
+           this.setOptions({
+            maxDate:jQuery('#date_timepicker_end').val()?jQuery('#date_timepicker_end').val():false
+           })
+          },
+          timepicker:false
+         });
+         jQuery('#date_timepicker_end').datetimepicker({
+          scrollInput : false,
+          format:'Y-m-d',
+          onShow:function( ct ){
+           this.setOptions({
+            minDate:jQuery('#date_timepicker_start').val()?jQuery('#date_timepicker_start').val():false
+           })
+          },
+          timepicker:false
+         });
         });
 
 
-        $("#muestra_puntos").click(function () {
-
-            _VERBOSE ? console.log("muestra_puntos") : _VERBOSE;
-
-            $("#modalloaddata").modal("hide");
-
-            _datafile_loaded = [];
-
-            $("#tbl_spload tbody tr").each(function(i) {
-
-                if(i == 0) return true; // primer registro son titulos en el excel
-                
-                var x = $(this);
-                var cells = x.find('td');
-
-                var temp = {}
-                $(cells).each(function(index, td) {
-
-                    var cell_val = $(this).text();
-                    console.log(cell_val);
-
-                    switch (index) {
-                        case 0:
-                            temp.id = cell_val
-                            break;
-                        case 1:
-                            temp.anio = cell_val
-                            break;
-                        case 2:
-                            temp.fosil = cell_val
-                            break;
-                        case 3:
-                            temp.latitud = cell_val
-                            break;
-                        case 4:
-                            temp.longitud = cell_val
-                            break;
-                        default:
-                            break;
-                    }
-                }); 
-
-                _datafile_loaded.push(temp);
-
-            });
-
-            console.log(_datafile_loaded);
-
-            // TODO: 
-            // - Generación de histograma fechas
-            // - Conexión con verbo de meustra de puntos
-            $("#get_esc_dataloaded").css('visibility', 'visible');
-
-            var val_process = $("#chkValidation").is(':checked');
-            var grid_res = $("#grid_resolution").val();
-            var footprint_region = parseInt($("#footprint_region_select").val());
-            var loadeddata = true;
-
-            // se ejecuta función para cargar las mallas
-            _map_module_nicho.busca_especie_grupo([], footprint_region, val_process, grid_res, loadeddata, _datafile_loaded);
 
 
-        });
+        $('#date_timepicker_start').val("")
+        $('#date_timepicker_end').val("")
 
 //        _confLiveTutorial();
         _genLinkURL();
-
     }
 
 
@@ -1014,28 +925,10 @@ var module_nicho = (function () {
     }
 
 
-    $("#get_esc_dataloaded").click(function () {
-
-        _VERBOSE ? console.log("get_esc_dataloaded") : _VERBOSE;
-
-        var loadeddata = true;
-        startNicheAnalisis(loadeddata);
-
-    })
-
-
     // se ejecutan los modulos necesarios para iniciar el proceso de obteción de epsilon y score y visualización de tablas, histogramas y mapa
     $("#get_esc_ep").click(function () {
 
         _VERBOSE ? console.log("get_esc_ep") : _VERBOSE;
-        startNicheAnalisis();
-
-
-    });
-
-    function startNicheAnalisis(loadeddata = false){
-
-
         var num_items = 0, spid, idreg, subgroups, sp_target;
 
         // $("#specie_next").css('visibility', 'hidden');
@@ -1046,7 +939,7 @@ var module_nicho = (function () {
         // _cleanTutorialButtons();
 
         
-        if (_taxones.length === 0 && loadeddata == false) {
+        if (_taxones.length === 0) {
             // no se ha seleccionado especie objetivo
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_error_especie'), "error");
             return;
@@ -1133,26 +1026,43 @@ var module_nicho = (function () {
             console.log("footprint_region: " + footprint_region);
 
             var fossil = $("#chkFosil").is(':checked');
-            var rango_fechas = $("#sliderFecha").slider("values");
+            
+            var liminf = $("#date_timepicker_start").val();
+            var limsup = $("#date_timepicker_end").val();
 
-            if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+            console.log("liminf: " + liminf)
+            console.log("limsup: " + limsup)
+
+            var rango_fechas = []
+            if (liminf == "" ||  limsup == "") {
                 rango_fechas = undefined;
             }
+            else{
+                rango_fechas.push(liminf)
+                rango_fechas.push(limsup)
+            }
+
+            // var rango_fechas = $("#sliderFecha").slider("values");
+            // if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
+            //     rango_fechas = undefined;
+            // }
 
             var chkFecha = $("#chkFecha").is(':checked');
 
 //            slider_value = val_process ? $("#sliderValidation").slider("value") : 0;
             var slider_value = val_process ? true : false;
 
+
+
+
             // Falta agregar la condición makesense. 
             // Cuando se realiza una consulta por region seleccioanda se verica que la especie objetivo se encuentre dentro de esta area
-            _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha, fossil, grid_res, footprint_region, loadeddata, _datafile_loaded);
+            _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha, fossil, grid_res, footprint_region);
 
         }
 
 
-
-    }
+    });
 
 
     /**

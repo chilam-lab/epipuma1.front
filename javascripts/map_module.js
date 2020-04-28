@@ -654,7 +654,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @memberof! map_module
      * 
      */
-    function loadD3GridMX(val_process, grid_res, region_selected, taxones = [], loadeddata = false, target_points = []) {
+    function loadD3GridMX(val_process, grid_res, region_selected, taxones = []) {
 
         _VERBOSE ? console.log("_loadD3GridMX") : _VERBOSE;
 
@@ -785,7 +785,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     });
 
                     // metodo del módulo de NICHO para cargar las especies
-                    busca_especie_grupo(taxones, region_selected, val_process, grid_res, loadeddata, target_points)
+                    busca_especie_grupo(taxones, region_selected, val_process, grid_res)
 
                 }
                 else{
@@ -1043,7 +1043,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                     // if(grid_map.features[i].properties.gridid == 9){
                     //     console.log("es DF")
-                        console.log("** gridid: " + grid_map.features[i].properties.gridid)    
+                        // console.log("** gridid: " + grid_map.features[i].properties.gridid)    
                     // }
                     // else{
                     //     console.log("no es DF")
@@ -1299,9 +1299,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         var features = tile.features;
 
         // borde de la malla
-        
-        // ctx.strokeStyle = 'rgba(0,0,0,0.1)';
-        ctx.strokeStyle = 'rgba(255,255,255,0)';
+        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        // ctx.strokeStyle = 'rgba(255,255,255,0)';
 
         // ctx.strokeStyle = 'rgba(255,0,0,0)';
         // ctx.strokeStyle = 'grey'; // hace malla visible
@@ -1869,7 +1868,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {array} taxones - Array con taxones seleccionados
      */
 
-     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = 16, loadeddata = false, target_points = []) {
+     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = 16) {
 
         _VERBOSE ? console.log("busca_especie_grupo") : _VERBOSE;
 
@@ -1878,8 +1877,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         console.log("grid_res: " + grid_res)
         console.log("_REGION_SELECTED: " + _REGION_SELECTED)
         console.log("region: " + region)
-        console.log("loadeddata: " + loadeddata)
-        console.log(target_points)
         
         _taxones = taxones
 
@@ -1899,7 +1896,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             _grid_res = grid_res
             _REGION_SELECTED = region
 
-            loadD3GridMX(val_process, grid_res, region, _taxones, loadeddata, target_points)
+            loadD3GridMX(val_process, grid_res, region, _taxones)
             return
         }
         else{
@@ -1922,20 +1919,27 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         // console.log("footprint_region: " + footprint_region);
 
 
-        var rango_fechas = $("#sliderFecha").slider("values");
+        var liminf = $("#date_timepicker_start").val();
+        var limsup = $("#date_timepicker_end").val();
 
+        // console.log("liminf: " + liminf)
+        // console.log("limsup: " + limsup)
+
+        var rango_fechas = []
+        if (liminf == "" ||  limsup == "") {
+            rango_fechas = undefined;
+        }
+        else{
+            rango_fechas.push(liminf)
+            rango_fechas.push(limsup)
+        }
+        // var rango_fechas = $("#sliderFecha").slider("values");
         console.log(rango_fechas)
 
-        // if (rango_fechas[0] == $("#sliderFecha").slider("option", "min") && rango_fechas[1] == $("#sliderFecha").slider("option", "max")) {
-        //     rango_fechas = undefined;
-        // }
-        // else{
-        //     _lin_inf = rango_fechas ? rango_fechas[0] : undefined;
-        //     _lin_sup = rango_fechas ? rango_fechas[1] : undefined;
-        // }
+        
+        _lin_inf = rango_fechas ? rango_fechas[0] : undefined
+        _lin_sup = rango_fechas ? rango_fechas[1] : undefined
 
-        _lin_inf = rango_fechas[0]
-        _lin_sup = rango_fechas[1]
 
         console.log("_lin_inf: " + _lin_inf)
         console.log("_lin_sup: " + _lin_sup)
@@ -1951,53 +1955,35 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             stoppable: true
         });
 
+        if (_tipo_modulo === _MODULO_NICHO) {
+
+            console.log("entra!!!")
+
+            $('#hist_fecha_container').loading({
+                stoppable: true
+            });
+
+        }
+
         
+
         //limpia el mapa antes de generar un nuevo análisis
         // clearMapOcc()
 
-
-        var verbo = "";
-
-        if(loadeddata){
-
-            verbo =  "getGridGivenPoints" 
-
-            var data = {
-               "target_points" : target_points,
-               "idtime": milliseconds,
-               "lim_inf": _lin_inf,
-               "lim_sup": _lin_sup,
-               "date": _sin_fecha,
-               "fosil": _con_fosil,
-               "grid_resolution": grid_res,
-               "region": region
-            }
-
-        }
-        else{
-
-            verbo =  "getGridSpeciesTaxon"
-
-            var data = {
-               "name": "k",
-               "target_taxons": taxones,
-               "idtime": milliseconds,
-               "liminf": _lin_inf,
-               "limsup": _lin_sup,
-               "sfecha": _sin_fecha,
-               "sfosil": _con_fosil,
-               "grid_res": grid_res,
-               "region": region
-            }
-
+        var data = {
+           "name": "k",
+           "target_taxons": taxones,
+           "idtime": milliseconds,
+           "liminf": _lin_inf,
+           "limsup": _lin_sup,
+           "sfecha": _sin_fecha,
+           "sfosil": _con_fosil,
+           "grid_res": grid_res,
+           "region": region
         }
 
-        
 
-
-
-
-        fetch(_url_zacatuche + "/niche/especie/" + verbo, {
+        fetch(_url_zacatuche + "/niche/especie/getGridSpeciesTaxon", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -2049,15 +2035,12 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             $("#specie_next").show("slow");
 
 
-            colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ);
+            colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+
             clearAllLayers();
-
             
-            if (_tipo_modulo === _MODULO_NICHO && loadeddata === false) {
+            if (_tipo_modulo === _MODULO_NICHO) {
 
-                $('#hist_fecha_container').loading({
-                    stoppable: true
-                });
 
                 var data = {
                        "target_taxons": taxones,
@@ -2123,10 +2106,6 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         });
 
     }
-
-
-
-    
 
     /**
      * Éste método obtiene las ocurrencias de una especie seleccionada en el análisis de nicho ecológico.
