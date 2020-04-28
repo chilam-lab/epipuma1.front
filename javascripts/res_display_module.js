@@ -543,11 +543,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} chkFosil - Bandera que indica si serán tomados en cuenta los registros fósiles para realizar un análisis de nicho ecológico
      * @param {interger} grid_res - Valor con el cual se realizan los calculos para la resolución de la malla
      */
-    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res, footprint_region, loadeddata = false, target_points = []) {
+    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res, footprint_region) {
 
         _VERBOSE ? console.log("refreshData") : _VERBOSE;
-
-        console.log("loadeddata: " + loadeddata)
 
         _slider_value = slider_value;
 
@@ -563,6 +561,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _chkfecha = chkFecha;
 
         var discardedGridids = [];
+
+
         
 
         _REQUESTS = num_items + _subgroups.length;
@@ -583,10 +583,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // Se realiza la carga de la malla antes de iniciar el análisis de nicho
         // _map_module_nicho.loadD3GridMX(val_process, grid_res, _footprint_region);
-        callDisplayProcess(val_process, loadeddata, target_points)
+        callDisplayProcess(val_process)
 
 
     }
+
 
 
     /**
@@ -597,7 +598,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @memberof! res_display_module
      * 
      */
-    function callDisplayProcess(val_process, loadeddata, target_points) {
+    function callDisplayProcess(val_process) {
 
         _VERBOSE ? console.log("callDisplayProcess NICHO") : _VERBOSE;
 
@@ -631,8 +632,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             
             
             // _confDataRequest(_spid, _idreg, val_process);
-            _confDataRequest(taxon_values, _idreg, val_process, "", target_points);
-            _panelGeneration("", loadeddata);
+            _confDataRequest(taxon_values, _idreg, val_process);
+            _panelGeneration();
 //            _generateCounts(_countsdata);
 
         }
@@ -837,7 +838,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {integer} num_items - Número de grupos de variables seleccionado
      * @param {boolean} val_process - Bandera que indica si será ejecutado el proceso de validación
      */
-    function _confDataRequest(taxones, idreg, val_process, tabla, target_points = []) {
+    function _confDataRequest(taxones, idreg, val_process, tabla) {
 
         _VERBOSE ? console.log("_confDataRequest") : _VERBOSE;
 
@@ -864,10 +865,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // verbo: getFreqCelda // seleccion de celda
         var milliseconds = new Date().getTime();
-
         _cdata = {
             "target_taxons": taxones,
-            "target_points": target_points,
             "idtime": milliseconds,
             "apriori": apriori,
             "mapa_prob": mapap,
@@ -897,7 +896,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _decil_data = {
             "target_taxons": taxones,
-            "target_points": target_points,
             "idtime": milliseconds,
             "apriori": apriori,
             "mapa_prob": mapap,
@@ -937,7 +935,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * 
      * @param {array} discardedGridids - Array con los ids de celda que son descartados cuando existe proceso de validación
      */
-    function _panelGeneration(idtemptable, loadeddata) {
+    function _panelGeneration(idtemptable) {
 
         _VERBOSE ? console.log("_panelGeneration") : _VERBOSE;
         idtemptable = idtemptable || "";
@@ -1091,7 +1089,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _REQUESTS_MADE.forEach(function (item, index) {
 
             // console.log(item);
-            _createScore_Decil(item, loadeddata);
+
+            _createScore_Decil(item);
 
         });
 
@@ -1110,7 +1109,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} hasChildren - Bandera que indica si la configuración enviada es un conjunto de las variables seleccionadas o es una variable del grupo
      * @param {boolean} isTotal - Bandera que indica si la configuración enviada es el total de los conjuntos de las variables seleccionadas 
      */
-    function _createScore_Decil(decildata, loadeddata) {
+    function _createScore_Decil(decildata) {
 
         _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
 
@@ -1129,11 +1128,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // decildata["with_data_freq_cell"] = false;
         // decildata["with_data_score_decil"] = false;
 
-        var verbo = loadeddata ? "countsTaxonsGroupGivenPoints"  : "countsTaxonsGroup"
-        console.log("verbo: " + verbo);
-
         // cambiando peticiones ajax por promesas y fetch api
-        fetch(_url_zacatuche + "/niche/" + verbo, {
+        fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
             method: "POST",
             body: JSON.stringify(data_request),
             headers: {
@@ -1261,19 +1257,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var total_request = {time: new Date().getTime()};
 
                     $.each(_TREE_GENERATED.groups, function (i, grupo) {
-                        
                         $.each(grupo.children, function (j, child) {
 
-                            console.log(child)
-
                             var temp_child = jQuery.extend(true, {}, child);
-                            total_request = mergeRequest(total_request, temp_child, loadeddata);
+                            total_request = mergeRequest(total_request, temp_child);
 
                         });
                     });
-
-                    console.log(total_request)
-                    console.log(verbo)
 
                     _cdata = jQuery.extend(true, {}, total_request);
 
@@ -1281,9 +1271,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     total_request.with_data_score_decil = true
                     total_request.decil_selected = [_default_decil]
 
-
-
-                    fetch(_url_zacatuche + "/niche/" + verbo, {
+                    fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
                         method: "POST",
                         body: JSON.stringify(total_request),
                         headers: {
@@ -1328,7 +1316,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
-                            loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells, loadeddata);
+                            loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
 
                         }
 
@@ -1353,7 +1341,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                 
-                    loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells, loadeddata);
+                    loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
 
                     $('#chartdiv_score_decil').loading('stop');
 
@@ -1416,7 +1404,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
     // function loadDecilDataTable(decil = 10, name = "Total", first_loaded = true, counts = []) {
-    function loadDecilDataTable(deciles, name, first_loaded, percentage_avg, decil_cells, loadeddata = false) {
+    function loadDecilDataTable(deciles, name, first_loaded, percentage_avg, decil_cells) {
 
         _VERBOSE ? console.log("loadDecilDataTable") : _VERBOSE;
 
@@ -1448,7 +1436,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 $.each(grupo.children, function (j, child) {
 
                     var temp_child = jQuery.extend(true, {}, child);
-                    total_request = mergeRequest(total_request, temp_child, loadeddata);
+                    total_request = mergeRequest(total_request, temp_child);
 
                 });
             });
@@ -1506,7 +1494,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 if (name !== "Total") {
                     $.each(value.children, function (i, child) {
                         var temp_child = jQuery.extend(true, {}, child);
-                        request = mergeRequest(request, temp_child, loadeddata);
+                        request = mergeRequest(request, temp_child);
                     });
                 } else {
                     request = total_request;
@@ -1534,10 +1522,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
                 else{
 
-                    var verbo = loadeddata ? "countsTaxonsGroupGivenPoints"  : "countsTaxonsGroup"
-                    console.log("verbo: " + verbo);
-
-                    fetch(_url_zacatuche + "/niche/" + verbo, {
+                    fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
                         method: "POST",
                         body: JSON.stringify(request),
                         headers: {
@@ -1602,7 +1587,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function mergeRequest(request = {}, child = [], loadeddata = false){
+    function mergeRequest(request = {}, child = []){
 
         _VERBOSE ? console.log("mergeRequest") : _VERBOSE;
         console.log(request);
@@ -1627,8 +1612,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
         request.with_data_score_cell = false;
         request.with_data_freq_cell = false;
         request.with_data_score_decil = false;
-
-        request.target_points = child.request.target_points;
         // request.decil_selected = request.decil_selected ? request.decil_selected : child.request.decil_selected
 
         // se realiza un analisis del contenido y se concatena

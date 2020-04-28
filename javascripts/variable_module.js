@@ -378,7 +378,7 @@ var variable_module = (function (verbose, url_zacatuche) {
         
 
         // div contenedor del cuerpo de la sección grupo de variables, puede ser del 80% de la altura de la página o de 300px en su tamaño reducido
-        var container_height = reduced_height ? "container_40p" : "container_80p"
+        var container_height = reduced_height ? "container_60p" : "container_80p"
         var var_container = $('<div/>')
                 .addClass('col-md-12 col-sm-12 col-xs-12 ' + container_height)
                 .appendTo($("#" + parent));
@@ -802,14 +802,14 @@ var variable_module = (function (verbose, url_zacatuche) {
             // se incrementa level para  asignar el nivel adecuado a los hijos de la raiz
             // la funcion es llamda dos veces, por tantro se decidio utilizar el arreglo + 1, en lufar de utilzar la variable global "level_vartree"
             self.level_vartree = parseInt(self.varfilter_selected[2]) + 1;
-           _VERBOSE ? console.log(self.level_vartree) : _VERBOSE;
+           _VERBOSE ? console.log("level_vartree: " + self.level_vartree) : _VERBOSE;
 
            if(parseInt(self.level_vartree) > 8){
                return;
            }
 
-//            _VERBOSE ? console.log(self.field_vartree) : _VERBOSE;
-//            _VERBOSE ? console.log(self.value_vartree) : _VERBOSE;
+           _VERBOSE ? console.log(self.field_vartree) : _VERBOSE;
+           _VERBOSE ? console.log(self.value_vartree) : _VERBOSE;
             
             _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
 //            console.log("REGION_SELECTED: " + _REGION_SELECTED);
@@ -831,14 +831,15 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                     var current_node = $('#jstree_variables_species_' + id).jstree(true).get_node($("#root"));
 
-                   // console.log(current_node);
+                   console.log(current_node);
+
 
                     for (i = 0; i < data.length; i++) {
 
                         var idNode = "";
                         // console.log(data[i].name)
                         
-                        var namesp = data[i].name.replace(/ /g,"").replace(/\%/g,"").replace(/\)/g,"").replace(/\(/g,"").replace(/\./g,"")
+                        var namesp = data[i].name.replace(/ /g,"").replace(/\%/g,"").replace(/\)/g,"").replace(/\(/g,"").replace(/\./g,"").replace(/,/g,"")
                         // console.log(namesp)
 
                         if ($("#" + namesp).length > 0) {
@@ -847,7 +848,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                             idNode = namesp;
                         }
 
-                        // console.log("idNode: " + idNode)
+                        console.log("idNode: " + idNode)
 
                         var default_son = self.level_vartree < 8 ? [{text: "cargando..."}] : [];
                         var label_taxon = self.level_vartree < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
@@ -887,15 +888,16 @@ var variable_module = (function (verbose, url_zacatuche) {
             _VERBOSE ? console.log(d.node.original.attr.nivel) : _VERBOSE;
             _VERBOSE ? console.log(d.node.children) : _VERBOSE;
 
-            if (d.node.children.length > 1)
+            if (d.node.children.length > 1){
+                console.log("No se encontraron datos debajo de este nivel")
                 return;
-
+            }
+            
             var next_field = "";
             var next_nivel = 0;
             var parent_field = "";
 
             $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
-
 
             if (d.node.original.attr.nivel == 2) {
                 parent_field = "reinovalido"
@@ -928,7 +930,14 @@ var variable_module = (function (verbose, url_zacatuche) {
             }
 
             _VERBOSE ? console.log(d.node.id) : _VERBOSE
-            _VERBOSE ? console.log(d.node.text.split(" ")[0]) : _VERBOSE
+            _VERBOSE ? console.log(d.node.text) : _VERBOSE
+            
+            var text_val = d.node.text
+            var regex = / \(spp: \d*\)/gi;
+            
+            // elimina el (spp: N) del valir para realizar la busqueda de manera correcta
+            var label_value = text_val.replace(regex, '');
+            _VERBOSE ? console.log(label_value) : _VERBOSE       
             
             _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
 //            console.log("REGION_SELECTED: " + _REGION_SELECTED);
@@ -940,16 +949,22 @@ var variable_module = (function (verbose, url_zacatuche) {
                 data: {
                     "field": next_field,
                     "parentfield": parent_field,
-                    "parentitem": d.node.text.split(" ")[0],
+                    // "parentitem": d.node.text.split(" ")[0],
+                    "parentitem": label_value,
                     "footprint_region": _REGION_SELECTED
                 },
                 success: function (resp) {
 
                     data = resp.data;
 
+
+
                     for (i = 0; i < data.length; i++) {
 
                         var idNode = "";
+                        var name_variable = data[i].name
+
+                        console.log("name_variable: " + name_variable)
 
                         if ($("#" + data[i].id).length > 0) {
                             // _VERBOSE ? console.log("id_existente") : _VERBOSE;
