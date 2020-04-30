@@ -339,6 +339,7 @@ section{
     color: #ffffff;
     /*border-width: 1px;*/
     border-radius: 5px;
+    width: 400px;
     /*border-style: solid;*/
     /*border-color: #318B4C;*/
 }
@@ -558,6 +559,16 @@ section{
     border-radius: 5px;
 }
 
+.myScrollableBlockPopupCovid{
+    /*padding: 5px 5px;*/ 
+    overflow: auto; 
+    height:300px;
+    width: 400px;
+    border-style: solid;
+    border-color: #3B6A93;
+    border-radius: 5px;
+}
+
 .minHeigthScroll{
     height:220px !important;
 }
@@ -565,6 +576,7 @@ section{
 .leaflet-popup-content{
     margin: 3px 3px;
     line-height: 1.4;
+    width: 400px !important;
 }
 
 
@@ -2101,6 +2113,10 @@ button.glyphicon-remove:before {
 
 .mywidth{
     width: 230px !important;
+}
+
+.mywidth_covid{
+    width: 400px !important;
 }
 
 #btn_map_type{

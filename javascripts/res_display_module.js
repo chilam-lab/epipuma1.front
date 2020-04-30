@@ -2668,26 +2668,33 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         //TODO: falta nombre de especie en la petición
         
-        htmltable = '<div class="myScrollableBlockPopup mywidth">'+
+        htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">'+
             '<div class="panel-primary">'+
                 '<div class="panel-heading no-padding header-title-cell">'+
-                    '<h3 class="h3-title-cell">Celda '+ json_data[0].gridid + '</h3>'+
+                    '<h3 class="h3-title-cell">'+ json_data[0].entidad + '</h3>'+
                 '</div>'+
                 '<table class="table table-striped">'+
                    '<thead>'+
                         '<tr>'+
                             '<th>Nombre</th>'+
-                            '<th>Año Colecta</th>'+                                 
-                            '<th>Info</th>'+                                 
+                            '<th>Edad</th>'+
+                            '<th>Genero</th>'+
+                            '<th>Fecha Colecta</th>'+                                 
+                            // '<th>Info</th>'+                                 
                         '</tr>'+
                     '</thead>'+              
                     '<tbody>';
 
             json_data.forEach(function (item, index) {
+                
+                var gen = item.genero === "M" ? "Masculino" : "Femenino"
+
                 htmltable +='<tr>'+
                             '<td>' + item.species + '</td>'+
-                            '<td>' + item.aniocolecta + '</td>'+                                 
-                            '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
+                            '<td>' + item.edad + '</td>'+
+                            '<td>' + gen + '</td>'+
+                            '<td>' + item.fechacolecta + '</td>'+                               
+                            // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
                         '</tr>';
             })
 
