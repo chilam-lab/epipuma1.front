@@ -218,7 +218,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 "children": default_son
                             };
 
-//                            console.log(newNode);
+                            console.log("nodes-loadTreeVarRaster ");
+                            console.log(newNode);
                             $('#jstree_variables_bioclim_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
                         }
 
@@ -545,7 +546,9 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                                         response($.map(resp.data, function (item) {
 
-//                                            _VERBOSE ? console.log(item) : _VERBOSE;
+                                            _VERBOSE ? console.log(item) : _VERBOSE;
+                                            console.log(self.varfilter_selected[1]);
+
 
                                             return{
                                                 label: item[self.varfilter_selected[1]],
@@ -565,6 +568,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 // }
                             },
                             select: function (event, ui) {
+
+                                console.log(ui);
 
                                 $('#jstree_variables_species_' + id).jstree("destroy").empty();
                                 $('#jstree_variables_species_' + id).on('open_node.jstree', self.getTreeVar);
@@ -804,8 +809,14 @@ var variable_module = (function (verbose, url_zacatuche) {
             self.level_vartree = parseInt(self.varfilter_selected[2]) + 1;
            _VERBOSE ? console.log("level_vartree: " + self.level_vartree) : _VERBOSE;
 
+           console.log(self.varfilter_selected);
+
+           var field_r = self.field_vartree;
+           var parentfield_r = self.parent_field_vartree;
+
            if(parseInt(self.level_vartree) > 8){
-               return;
+               field_r = 'especievalidabusqueda';
+               parentfield_r = '';
            }
 
            _VERBOSE ? console.log(self.field_vartree) : _VERBOSE;
@@ -820,8 +831,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                 dataType: "json",
                 type: "post",
                 data: {
-                    "field": self.field_vartree,
-                    "parentfield": self.parent_field_vartree,
+                    "field": field_r,
+                    "parentfield": parentfield_r,
                     "parentitem": self.value_vartree,
                     "footprint_region": _REGION_SELECTED
                 },
@@ -830,48 +841,85 @@ var variable_module = (function (verbose, url_zacatuche) {
                     data = resp.data;
 
                     var current_node = $('#jstree_variables_species_' + id).jstree(true).get_node($("#root"));
+                    //current_node.prop('title', );
+                    $('ul').tooltip('hide');
+                    $('li').tooltip('hide');
+                    $('li').removeAttr("title");
+                    $('li').removeAttr("data-original-title");
+                    $('#jstree_variables_species_' + id).removeAttr("data-original-title");
+                    $('#jstree_variables_species_' + id).removeAttr("title");
+                    
+                    if(field_r !== 'especievalidabusqueda'){
 
-                   console.log(current_node);
+                        for (i = 0; i < data.length; i++) {
+
+                            var idNode = "";
+                            // console.log(data[i].name)
+                            
+                            var namesp = data[i].name.replace(/ /g,"").replace(/\%/g,"").replace(/\)/g,"").replace(/\(/g,"").replace(/\./g,"").replace(/,/g,"")
+                            // console.log(namesp)
+
+                            if ($("#" + namesp).length > 0) {
+                                idNode = namesp + "_" + Math.floor((Math.random() * 1000) + 1)
+                            } else {
+                                idNode = namesp;
+                            }
+
+                            console.log("idNode: " + idNode)
+
+                            var default_son = self.level_vartree < 8 ? [{text: "cargando..."}] : [];
+                            var label_taxon = self.level_vartree < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
+                            // label_taxon = self.level_vartree == 8 ? self.value_vartree + " " + label_taxon : label_taxon;
 
 
-                    for (i = 0; i < data.length; i++) {
+                            // _VERBOSE ? console.log(self.parent_field_vartree) : _VERBOSE;
+                            // _VERBOSE ? console.log(data[i].name) : _VERBOSE;
 
-                        var idNode = "";
-                        // console.log(data[i].name)
-                        
-                        var namesp = data[i].name.replace(/ /g,"").replace(/\%/g,"").replace(/\)/g,"").replace(/\(/g,"").replace(/\./g,"").replace(/,/g,"")
-                        // console.log(namesp)
+                            var newNode = {
+                                id: idNode,
+                                text: label_taxon, //data[i].name + " (spp: " + data[i].spp + ")", 
+                                icon: "plugins/jstree/images/dna.png",
+                                attr: {
+                                        "nivel": self.level_vartree, 
+                                        "type": _TYPE_TAXON
+                                        },
+                                state: {'opened': false},
+                                "children": default_son
+                            };
 
-                        if ($("#" + namesp).length > 0) {
-                            idNode = namesp + "_" + Math.floor((Math.random() * 1000) + 1)
-                        } else {
-                            idNode = namesp;
+
+                            if(data[i].description+'' !== 'undefined'){
+                                newNode['li_attr'] = {"title": data[i].description + ' ' + data[i].name.split(' ')[1]};
+                            }
+
+
+
+                            $('#jstree_variables_species_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
+
                         }
 
-                        console.log("idNode: " + idNode)
 
-                        var default_son = self.level_vartree < 8 ? [{text: "cargando..."}] : [];
-                        var label_taxon = self.level_vartree < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
-                        // label_taxon = self.level_vartree == 8 ? self.value_vartree + " " + label_taxon : label_taxon;
+                    }
+                    
+                    $("#jstree_variables_species_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
 
+                    var description_complement = '';
 
-                        // _VERBOSE ? console.log(self.parent_field_vartree) : _VERBOSE;
-                        // _VERBOSE ? console.log(data[i].name) : _VERBOSE;
+                    if(data[0].name.split(' ').length > 1 && field_r === 'especievalidabusqueda'){
 
-                        var newNode = {
-                            id: idNode,
-                            text: label_taxon, //data[i].name + " (spp: " + data[i].spp + ")", 
-                            icon: "plugins/jstree/images/dna.png",
-                            attr: {"nivel": self.level_vartree, "type": _TYPE_TAXON},
-                            state: {'opened': false},
-                            "children": default_son
-                        };
-
-                        $('#jstree_variables_species_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
+                        description_complement += data[0].name.split(' ')[1];
 
                     }
 
-                    $("#jstree_variables_species_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
+                    if(data[0].description+'' !== 'undefined'){
+
+                        $("#jstree_variables_species_" + id).prop('title', data[0].description + ' ' + description_complement);
+                        $("#jstree_variables_species_" + id).prop('data-original-title', data[0].description + ' ' + description_complement);
+                        $("#jstree_variables_species_" + id).tooltip();
+                        $('li').tooltip();
+                        $('ul').tooltip();
+
+                    }
 
                 }
 
@@ -924,6 +972,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                 next_field = "especieepiteto";
                 next_nivel = 8;
             } else {
+                $('#jstree_variables_species_' + id).tooltip('hide');
                 $("#jstree_variables_species_" + id).jstree(true).delete_node(d.node.children[0]);
                 $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/images/dna.png");
                 return;
@@ -957,7 +1006,12 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                     data = resp.data;
 
-
+                    $('ul').tooltip('hide');
+                    $('li').tooltip('hide');
+                    $('li').removeAttr("title");
+                    $('li').removeAttr("data-original-title");
+                    $('#jstree_variables_species_' + id).removeAttr("data-original-title");
+                    $('#jstree_variables_species_' + id).removeAttr("title");
 
                     for (i = 0; i < data.length; i++) {
 
@@ -988,12 +1042,21 @@ var variable_module = (function (verbose, url_zacatuche) {
                             "children": default_son
                         };
 
+                        if(data[i].description+'' !== 'undefined'){
+                            newNode['li_attr'] = {"title": data[i].description + ' ' + data[i].name.split(' ')[1]};
+                        }
+
                         $('#jstree_variables_species_' + id).jstree("create_node", d.node, newNode, 'last', false, false);
 
                     }
 
                     $("#jstree_variables_species_" + id).jstree(true).delete_node(d.node.children[0]);
                     $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/images/dna.png");
+                    $("#jstree_variables_species_" + id).prop('title', data[0].description);
+                    $("#jstree_variables_species_" + id).tooltip();
+
+                    $('li').tooltip();
+                    $('ul').tooltip();
 
                 }
             });
