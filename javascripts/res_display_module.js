@@ -2730,7 +2730,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log(json_data) : _VERBOSE
 
-        var htmltable = "<div class='myScrollableBlockPopup mywidth'>";
+        var htmltable = "<div class='myScrollableBlockPopup mywidth_covid'>";
         var table_sp = "";
         var table_rt = "";
         var title_total;
