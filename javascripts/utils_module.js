@@ -209,7 +209,7 @@ var utils_module = (function (verbose) {
 
         }
         
-//        console.log(cell_score_array);
+       console.log(cell_score_array);
         
         return cell_score_array;
 
