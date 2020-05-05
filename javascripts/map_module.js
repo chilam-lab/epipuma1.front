@@ -1041,13 +1041,18 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
 
-                    // if(grid_map.features[i].properties.gridid == 9){
-                    //     console.log("es DF")
-                        // console.log("** gridid: " + grid_map.features[i].properties.gridid)    
-                    // }
+                    if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
+                        || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
+                        
+                        console.log("es mun 268")
+                        console.log("** gridid: " + grid_map.features[i].properties.gridid) 
+                        console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+
+                    }
                     // else{
-                    //     console.log("no es DF")
+                    //     console.log("no es mun")
                     //      console.log(grid_map.features[i].properties.gridid)       
+                    //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
                     // }
                     
 
