@@ -123,7 +123,13 @@ var table_module = (function(verbose) {
                 
                 var item_list = [];
                 item_list.push(d.decil)
-                item_list.push(value_abio)
+
+                if(d.description === '') {
+                    item_list.push(value_abio)
+                }else{
+                    item_list.push(d.description + ' '+ d.species.split(' ')[1])
+                }
+
                 item_list.push(d.epsilon)
                 item_list.push(d.score)
                 item_list.push(d.occ)
