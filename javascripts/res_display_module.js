@@ -1748,7 +1748,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 item_list.push(value)
 
             } else {
-                item_list.push(d.generovalido + " " +d.especieepiteto + " " + d.nombreinfra)
+                //item_list.push(d.generovalido + " " +d.especieepiteto + " " + d.nombreinfra)
+
+                item_list.push(d.description + ' ' + d.especieepiteto)
             }
 
             // var namesp = d.reinovalido === "" ? d.type +" "+ d.layer : 
