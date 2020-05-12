@@ -240,7 +240,9 @@ var variable_module = (function (verbose, url_zacatuche) {
             if(!abio_tab) return;
 
             _VERBOSE ? console.log("self.getTreeVarRaster") : _VERBOSE;
-//            _VERBOSE ? console.log(d) : _VERBOSE;
+            _VERBOSE ? console.log(d) : _VERBOSE;
+            _VERBOSE ? console.log(d.node) : _VERBOSE;
+
 //            _VERBOSE ? console.log("length: " + d.node.children.length) : _VERBOSE;
 //            _VERBOSE ? console.log("indexOf: " + d.node.children[0].indexOf("bio") === 0) : _VERBOSE;
 
@@ -257,7 +259,12 @@ var variable_module = (function (verbose, url_zacatuche) {
             $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
             _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
 
-//            console.log("current_id: " + current_id);
+           
+           current_id = current_id.replace(/#/g,'').replace(/\(/g,'').replace(/\)/g,'')
+           console.log("current_id: " + current_id);
+           // console.log("id: " + id);
+
+
 //            console.log("level_vartree: " + level_vartree);
 //            console.log("raster_type: " + raster_type);
 //            console.log("parent_name: " + parent_name);
@@ -291,7 +298,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         var default_son = level_vartree < max_level ? [{text: "cargando..."}] : [];
 
                         var tag = "", min = "", max = "";
-			var ttext = "";
+		                var ttext = "";
                         var newNode = {};
 
                         if (level_vartree > 2) {
@@ -309,7 +316,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 idNode = data[i].bid;
                             }
 
-			   if(String(data[i].tag).split(":").length > 1){
+			            if(String(data[i].tag).split(":").length > 1){
                                 ttext = min + " : " + max;
                             }else{
                                 ttext = data[i].tag;
@@ -327,12 +334,11 @@ var variable_module = (function (verbose, url_zacatuche) {
                         } 
                         else {
                             
-
-                            // console.log(data[i])
+                            console.log(data[i].label)
                             // eliminacaraacteres especiales y espacios en blanco
-                            var lb = data[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                            var lb = data[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'').replace(/#/g,'')
                             
-                            // console.log(lb)
+                            
                             // console.log(_iTrans.prop(lb))
 
                             newNode = {
@@ -345,13 +351,17 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 "children": default_son
                             };
 
-                        }                        
-                            
+
+
+                        }   
+
+
                         $('#jstree_variables_bioclim_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
+
                         
                     }
-                    
 
+                    
                     $("#jstree_variables_bioclim_" + id).jstree(true).delete_node(d.node.children[0]);
                     $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(current_node.id, "./plugins/jstree/images/dna.png");
 
