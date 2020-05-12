@@ -289,6 +289,7 @@ var language_module = (function (verbose) {
 
             $("#lb_construccion").text($.i18n.prop('lb_construccion'));
             $("#lb_validacion").text($.i18n.prop('lb_validacion') + ":");
+            $("#lb_validacion_temp").text($.i18n.prop('lb_validacion_temp') + ":");
 
 
             $("#lb_apriori").text($.i18n.prop('lb_apriori') + ":");
@@ -318,6 +319,8 @@ var language_module = (function (verbose) {
 
 
             $("#labelValidation").text($.i18n.prop('lb_no'));
+            $("#labelValidationTemp").text($.i18n.prop('lb_no'));
+
             $("#lb_sfecha").text($.i18n.prop('lb_si'));
             $("#labelFosil").text($.i18n.prop('lb_si'));
 

@@ -543,7 +543,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} chkFosil - Bandera que indica si serán tomados en cuenta los registros fósiles para realizar un análisis de nicho ecológico
      * @param {interger} grid_res - Valor con el cual se realizan los calculos para la resolución de la malla
      */
-    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res, footprint_region) {
+    function refreshData(num_items, val_process, slider_value, min_occ_process, mapa_prob, rango_fechas, chkFecha, chkFosil, grid_res, footprint_region, val_process_temp) {
 
         _VERBOSE ? console.log("refreshData") : _VERBOSE;
 
@@ -583,7 +583,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // Se realiza la carga de la malla antes de iniciar el análisis de nicho
         // _map_module_nicho.loadD3GridMX(val_process, grid_res, _footprint_region);
-        callDisplayProcess(val_process)
+        callDisplayProcess(val_process, val_process_temp)
 
 
     }
@@ -598,7 +598,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @memberof! res_display_module
      * 
      */
-    function callDisplayProcess(val_process) {
+    function callDisplayProcess(val_process, val_process_temp = false) {
 
         _VERBOSE ? console.log("callDisplayProcess NICHO") : _VERBOSE;
 
@@ -619,9 +619,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log(taxon_values) : _VERBOSE;
 
-        if (val_process) {
+        if(val_process_temp){
 
-            _VERBOSE ? console.log("VALIDACIÓN: ON") : _VERBOSE;
+            _VERBOSE ? console.log("VALIDACIÓN TEMPORAL: ON") : _VERBOSE;
+
+            _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'), "warning");
+            
+            _confDataRequest(taxon_values, _idreg, val_process, [], val_process_temp);
+            _panelGeneration("", val_process_temp);
+
+        }
+        else if (val_process) {
+
+            _VERBOSE ? console.log("VALIDACIÓN ESPACIAL: ON") : _VERBOSE;
 
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'), "warning");
             _initializeValidationTables(val_process, taxon_values);
@@ -633,7 +643,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             
             // _confDataRequest(_spid, _idreg, val_process);
             _confDataRequest(taxon_values, _idreg, val_process);
-            _panelGeneration();
+            _panelGeneration("", val_process_temp);
 //            _generateCounts(_countsdata);
 
         }
@@ -838,7 +848,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {integer} num_items - Número de grupos de variables seleccionado
      * @param {boolean} val_process - Bandera que indica si será ejecutado el proceso de validación
      */
-    function _confDataRequest(taxones, idreg, val_process, tabla) {
+    function _confDataRequest(taxones, idreg, val_process, tabla = "", val_process_temp = false) {
 
         _VERBOSE ? console.log("_confDataRequest") : _VERBOSE;
 
@@ -857,6 +867,22 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
         var sin_fecha = $("#chkFecha").is(':checked') ? true : false;
 
+        var lim_inf_valtemp = undefined;
+        var lim_inf_valtemp = undefined;
+
+        if(val_process_temp){
+            console.log("Entra");
+
+            var lim_inf_valtemp = $("#date_timepicker_start_val").val();
+            var lim_sup_valtemp = $("#date_timepicker_end_val").val();
+        }
+
+        console.log("lim_inf_valtemp: " + lim_inf_valtemp);
+        console.log("lim_sup_valtemp: " + lim_sup_valtemp);
+        
+
+
+
         var existsDiscardedFilter = false;
         if (lin_inf !== undefined || lin_sup !== undefined || !sin_fecha)
             existsDiscardedFilter = true;
@@ -872,6 +898,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "mapa_prob": mapap,
             "min_cells": min_occ,
             "fosil": fossil,
+            "lim_inf_validation": lim_inf_valtemp,
+            "lim_sup_validation": lim_sup_valtemp,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "date": sin_fecha,
@@ -901,6 +929,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "mapa_prob": mapap,
             "min_cells": min_occ,
             "fosil": fossil,
+            "lim_inf_validation": lim_inf_valtemp,
+            "lim_sup_validation": lim_sup_valtemp,
             "lim_inf": lin_inf,
             "lim_sup": lin_sup,
             "date": sin_fecha,
@@ -935,7 +965,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * 
      * @param {array} discardedGridids - Array con los ids de celda que son descartados cuando existe proceso de validación
      */
-    function _panelGeneration(idtemptable) {
+    function _panelGeneration(idtemptable = "", val_process_temp = false) {
 
         _VERBOSE ? console.log("_panelGeneration") : _VERBOSE;
         idtemptable = idtemptable || "";
@@ -1090,7 +1120,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             // console.log(item);
 
-            _createScore_Decil(item);
+            _createScore_Decil(item, val_process_temp);
 
         });
 
@@ -1109,7 +1139,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} hasChildren - Bandera que indica si la configuración enviada es un conjunto de las variables seleccionadas o es una variable del grupo
      * @param {boolean} isTotal - Bandera que indica si la configuración enviada es el total de los conjuntos de las variables seleccionadas 
      */
-    function _createScore_Decil(decildata) {
+    function _createScore_Decil(decildata, val_process_temp = false) {
 
         _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
 
@@ -1128,8 +1158,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // decildata["with_data_freq_cell"] = false;
         // decildata["with_data_score_decil"] = false;
 
+        var  verbo = val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
+
         // cambiando peticiones ajax por promesas y fetch api
-        fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
+        fetch(_url_zacatuche + "/niche/" + verbo, {
             method: "POST",
             body: JSON.stringify(data_request),
             headers: {
@@ -1170,9 +1202,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 // CONCATENA LAS DIFERENTES PETICIONES SOLICITADAS AL SERVIDOR, EN CASO DE VALIDACION LOS VALORES POR PETICIÓN YA VIENEN PROMEDIADOS
                 _REQUESTS_DONE.forEach(function (item, index) {
                     total_eps_scr = total_eps_scr.concat(item.data)
+                    
                     total_score_cell = total_score_cell.concat(item.data_score_cell);
                     percentage_avg = percentage_avg.concat(item.percentage_avg);
                     decil_cells = decil_cells.concat(item.decil_cells);
+
                 });
                console.log(total_eps_scr);
                console.log(total_score_cell);
@@ -1183,7 +1217,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqSpecie - Histogramas por especie
                 var data_freq = _utils_module.processDataForFreqSpecie(total_eps_scr);
-                _createHistEpScr_Especie(data_freq);
+                _createHistEpScr_Especie(data_freq); // OK
 
 
                 // PROCESO EJECUTADO DEL LADO DEL SERVIDOR, SUMA EN CLIENTE - getScoreCell - Mapa
@@ -1271,7 +1305,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     total_request.with_data_score_decil = true
                     total_request.decil_selected = [_default_decil]
 
-                    fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
+                    verbo = val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
+
+                    fetch(_url_zacatuche + "/niche/" + verbo, {
                         method: "POST",
                         body: JSON.stringify(total_request),
                         headers: {
@@ -1366,8 +1402,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _TREE_GENERATED.groups.forEach(function (group_item, index) {
 
-           console.log(group_item);
-           console.log(data_request);
+           // console.log(group_item);
+           // console.log(data_request);
 
             if (group_item.groupid === data_request.covariables[0].group_item) {
 

@@ -131,6 +131,34 @@ var module_nicho = (function () {
 
 
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
+        $("#chkValidationTemp").click(function (event) {
+
+            console.log("cambia validacion temporal");
+
+            var $this = $(this);
+
+            if ($this.is(':checked')) {
+
+                $("#labelValidationTemp").text("Si");
+
+                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_act'), "info");
+                $("#date_timepicker_start_val").removeAttr('disabled');
+                $("#date_timepicker_end_val").removeAttr('disabled');
+
+            } else {
+
+                $("#labelValidationTemp").text("No");
+                
+                _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_des'), "info");
+                $("#date_timepicker_start_val").attr("disabled","disabled")
+                $("#date_timepicker_end_val").attr("disabled","disabled")
+
+            }
+
+        });
+
+
+        // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
         $("#chkValidation").click(function (event) {
 
             console.log("cambia validacion");
@@ -432,12 +460,14 @@ var module_nicho = (function () {
             console.log(_taxones);
 
             var val_process = $("#chkValidation").is(':checked');
+            var val_process_temp = $("#chkValidationTemp").is(':checked');
+            
             var grid_res = $("#grid_resolution").val();
             var footprint_region = parseInt($("#footprint_region_select").val());
 
             // _map_module_nicho.loadD3GridMX(val_process, grid_res, footprint_region, _taxones);
 
-            _map_module_nicho.busca_especie_grupo(_taxones, footprint_region, val_process, grid_res);
+            _map_module_nicho.busca_especie_grupo(_taxones, footprint_region, val_process, grid_res, val_process_temp);
 
         });
 
@@ -457,6 +487,7 @@ var module_nicho = (function () {
             data_link.sfilters = subgroups_target;
 
             data_link.val_process = $("#chkValidation").is(":checked");
+            data_link.val_process_temp = $("#chkValidationTemp").is(":checked");
             data_link.idtabla = data_link.val_process === true ? _res_display_module_nicho.getValidationTable() : "no_table";
             data_link.mapa_prob = $("#chkMapaProb").is(":checked");
             data_link.fossil = $("#chkFosil").is(":checked");
@@ -534,11 +565,38 @@ var module_nicho = (function () {
          });
         });
 
-
-
-
         $('#date_timepicker_start').val("")
         $('#date_timepicker_end').val("")
+
+
+        jQuery(function(){
+         jQuery('#date_timepicker_start_val').datetimepicker({
+          scrollInput : false,
+          format:'Y-m-d',
+          onShow:function( ct ){
+           this.setOptions({
+            maxDate:jQuery('#date_timepicker_end_val').val()?jQuery('#date_timepicker_end_val').val():false
+           })
+          },
+          timepicker:false
+         });
+         jQuery('#date_timepicker_end_val').datetimepicker({
+          scrollInput : false,
+          format:'Y-m-d',
+          onShow:function( ct ){
+           this.setOptions({
+            minDate:jQuery('#date_timepicker_start_val').val()?jQuery('#date_timepicker_start_val').val():false
+           })
+          },
+          timepicker:false
+         });
+        });
+
+        $('#date_timepicker_start_val').val("")
+        $('#date_timepicker_end_val').val("")
+
+
+
 
 //        _confLiveTutorial();
         _genLinkURL();
@@ -647,6 +705,8 @@ var module_nicho = (function () {
 
                 var chkVal = _json_config.chkVal ? _json_config.chkVal === "true" : false;
 
+                var chkValTemp = _json_config.chkValTemp ? _json_config.chkValTemp === "true" : false;
+
                 var chkPrb = _json_config.chkPrb ? _json_config.chkPrb === "true" : false;
 
                 var chkFosil = _json_config.chkFosil ? _json_config.chkFosil === "true" : false;
@@ -694,7 +754,7 @@ var module_nicho = (function () {
                     filters.push(JSON.parse(_json_config["tfilters[" + i + "]"]));
                 }
 
-                _procesaValoresEnlace(sfilters, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints);
+                _procesaValoresEnlace(sfilters, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints, chkValTemp);
                 $("#show_gen").css('visibility', 'hidden');
 
 
@@ -803,7 +863,7 @@ var module_nicho = (function () {
      * @param {array} rango_fechas - Rango de fecha para realizar los cálculos
      * @param {integer} gridRes - Resolución de la malla para ser considerado en los cálculos
      */
-    function _procesaValoresEnlace(subgroups_target, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints) {
+    function _procesaValoresEnlace(subgroups_target, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints, chkValTemp) {
 
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
@@ -824,6 +884,14 @@ var module_nicho = (function () {
         } else {
             $("#chkValidation").prop('checked', false);
             $("#labelValidation").text(_iTrans.prop('lb_no'));
+        }
+
+        if (chkValTemp) {
+            $("#chkValidationTemp").prop('checked', true);
+            $("#labelValidationTemp").text(_iTrans.prop('lb_si'));
+        } else {
+            $("#chkValidationTemp").prop('checked', false);
+            $("#labelValidationTemp").text(_iTrans.prop('lb_no'));
         }
 
         if (chkPrb) {
@@ -1017,6 +1085,7 @@ var module_nicho = (function () {
 
 
             var val_process = $("#chkValidation").is(':checked');
+            var val_process_temp = $("#chkValidationTemp").is(':checked');
             var min_occ = $("#chkMinOcc").is(':checked');
             var mapa_prob = $("#chkMapaProb").is(':checked');
             var grid_res = $("#grid_resolution").val();
@@ -1057,7 +1126,7 @@ var module_nicho = (function () {
 
             // Falta agregar la condición makesense. 
             // Cuando se realiza una consulta por region seleccioanda se verica que la especie objetivo se encuentre dentro de esta area
-            _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha, fossil, grid_res, footprint_region);
+            _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha, fossil, grid_res, footprint_region, val_process_temp);
 
         }
 
