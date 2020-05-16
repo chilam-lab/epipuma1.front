@@ -1184,7 +1184,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             // PROCESANDO PETICIONES INDIVIDUALES
             var data_response = jQuery.extend(true, [], respuesta.data);
-            processSingleResponse(data_response, data_request, respuesta.validation_data);
+            var validation_data = val_process_temp ? respuesta.time_validation  : respuesta.validation_data
+
+            processSingleResponse(data_response, data_request, validation_data);
 
             _REQUESTS_DONE.push(respuesta);
 
@@ -1198,6 +1200,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var total_score_cell = [];
                 var percentage_avg = [];
                 var decil_cells = [];
+                var time_validacion_decil = [];
 
                 // CONCATENA LAS DIFERENTES PETICIONES SOLICITADAS AL SERVIDOR, EN CASO DE VALIDACION LOS VALORES POR PETICIÓN YA VIENEN PROMEDIADOS
                 _REQUESTS_DONE.forEach(function (item, index) {
@@ -1206,10 +1209,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     total_score_cell = total_score_cell.concat(item.data_score_cell);
                     percentage_avg = percentage_avg.concat(item.percentage_avg);
                     decil_cells = decil_cells.concat(item.decil_cells);
+                    time_validacion_decil = time_validacion_decil.concat(item.time_validation) // revisar si es necesario
 
                 });
                console.log(total_eps_scr);
                console.log(total_score_cell);
+               console.log(percentage_avg);
+               console.log(decil_cells);
+               console.log(time_validacion_decil);
 
                 // PETICION EN SERVER, SUMATORIA EN CLIENTE - getGeoRel - Tabla General
                 _createTableEpSc(total_eps_scr);
@@ -1221,7 +1228,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
                 // PROCESO EJECUTADO DEL LADO DEL SERVIDOR, SUMA EN CLIENTE - getScoreCell - Mapa
-                // TODO: Esta sumando varias veces el apriori!!
+                // Obtiene calculo de apriori, para restarlo en lso resultados para evitar dobles, triples, etc adiciones de apriori a los datos
                 var numr = _REQUESTS_MADE.length
                 var apriori = $("#chkApriori").is(':checked') ? true : false;
                 var val_apriori = 0
@@ -1240,9 +1247,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
                 _createHistScore_Celda(data_freq_cell);
 
-                // console.log(_TREE_GENERATED);
+                
 
-                // return;
+                console.log(_TREE_GENERATED);
+                // console.log(_TREE_GENERATED.groups);
 
                 var score_cell_byanalysis = [];
                 var names_byanalysis = [];
@@ -1258,6 +1266,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     group.children.forEach(function (child) {
 
+                        console.log(child);
+
                         score_cell_bygroup = score_cell_bygroup.concat(child.response);
                         score_cell_byanalysis = score_cell_byanalysis.concat(child.response);
                         validation_data_bygroup = validation_data_bygroup.concat(child.validation_data);
@@ -1267,6 +1277,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     });
 
                     console.log(score_cell_bygroup)
+                    console.log(validation_data_bygroup)
 
                     var data_cell_bygroup = _utils_module.reduceScoreCell(score_cell_bygroup);
                     
@@ -1373,7 +1384,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
                 else{
 
-                    // console.log(_RESULTS_TODISPLAY)
+                    console.log(_RESULTS_TODISPLAY)
 
                     _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                 
