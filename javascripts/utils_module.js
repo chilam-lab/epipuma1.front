@@ -614,6 +614,12 @@ var utils_module = (function (verbose) {
               item.fn = item.fn + add.fn
               item.nulo = item.nulo + add.nulo
               item.recall = item.recall + add.recall
+
+
+              item.vvp += add.vvp
+              item.vfn = item.vfn + add.vfn
+              // item.nulo = item.nulo + add.nulo
+              item.vrecall = item.vrecall + add.vrecall
               
               return item
             },
@@ -625,6 +631,11 @@ var utils_module = (function (verbose) {
               item.nulo = item.nulo - remove.nulo
               item.recall = item.recall - remove.recall
 
+              item.vvp -= remove.vvp
+              item.vfn = item.fn - remove.vfn
+              // item.vnulo = item.nulo - remove.nulo
+              item.vrecall = item.vrecall - remove.vrecall
+
               return item
             },
             function(){
@@ -633,7 +644,11 @@ var utils_module = (function (verbose) {
                 vp: 0,
                 fn: 0,
                 nulo: 0,
-                recall: 0
+                recall: 0,
+                vvp: 0,
+                vfn: 0,
+                // nulo: 0,
+                vrecall: 0
               }
             }
           )
@@ -650,7 +665,11 @@ var utils_module = (function (verbose) {
                 vp: parseFloat((entry["value"].vp / entry["value"].count).toFixed(2)),
                 fn: parseFloat((entry["value"].fn / entry["value"].count).toFixed(2)),
                 nulo: parseFloat((entry["value"].nulo / entry["value"].count).toFixed(2)),
-                recall: parseFloat((entry["value"].recall / entry["value"].count).toFixed(2))
+                recall: parseFloat((entry["value"].recall / entry["value"].count).toFixed(2)),
+                vvp: parseFloat((entry["value"].vvp / entry["value"].count).toFixed(2)),
+                vfn: parseFloat((entry["value"].vfn / entry["value"].count).toFixed(2)),
+                // nulo: parseFloat((entry["value"].nulo / entry["value"].count).toFixed(2)),
+                vrecall: parseFloat((entry["value"].vrecall / entry["value"].count).toFixed(2))
                 
               })
           }

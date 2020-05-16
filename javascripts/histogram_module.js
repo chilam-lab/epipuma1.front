@@ -812,27 +812,36 @@ var histogram_module = (function (verbose) {
                .html(function (d) {
 
                    // console.log(d)
-                   var fn_lb, tp_lb, null_lb
+                   var fn_lb, tp_lb, null_lb, recall_values;
+
                    if ($("#chkValidation").is(':checked')) {
+
                        fn_lb = _iTrans.prop('lb_fn_avg')
                        tp_lb = _iTrans.prop('lb_vp_avg')
                        null_lb = _iTrans.prop('lb_nulos_avg')
-                   }
-                   else{
-                        fn_lb = _iTrans.prop('lb_fn')
-                        tp_lb = _iTrans.prop('lb_vp')
-                        null_lb = _iTrans.prop('lb_nulos')   
-                   }
 
-                   recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
+                       recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
                            "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
                            "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>" +
                            "<strong>" + null_lb + ":</strong> <span >" + parseFloat(d.recall_nulo).toFixed(2) + "</span><br/>"
+
+                   }
+                   else{
+
+                        fn_lb = _iTrans.prop('lb_fn')
+                        tp_lb = _iTrans.prop('lb_vp')
+
+                        recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
+                           "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
+                           "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>"
+                           
+                   }
+
+                   
                    return  recall_values;
                });
 
            svg.call(tip_recall);
-
 
            var y_right = d3.scale.linear()
                    .range([translate_axis, 0]);
@@ -866,14 +875,32 @@ var histogram_module = (function (verbose) {
 
                 $.each(item.deciles, function (index, decil) {
 
-                    var item_decil = {
-                       "group_name": item.gpo_name,
-                       "recall": decil.recall,
-                       "vp": decil.vp,
-                       "fn": decil.fn,
-                       "decil": decil.decil,
-                       "recall_nulo": decil.nulo
+                    var item_decil = {}
+
+                    if($("#chkValidationTemp").is(':checked')){
+
+                        item_decil = {
+                            "group_name": item.gpo_name,
+                            "recall": decil.vrecall,
+                            "vp": decil.vvp,
+                            "fn": decil.vfn,
+                            "decil": decil.decil
+                            // "recall_nulo": decil.nulo
+                        }
+
                     }
+                    else{
+
+                        item_decil = {
+                            "group_name": item.gpo_name,
+                            "recall": decil.recall,
+                            "vp": decil.vp,
+                            "fn": decil.fn,
+                            "decil": decil.decil,
+                            "recall_nulo": decil.nulo
+                        }
+
+                    }                       
 
                     item_recall.push(item_decil);
 
