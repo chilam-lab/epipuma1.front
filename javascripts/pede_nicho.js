@@ -492,18 +492,23 @@ var module_nicho = (function () {
             data_link.mapa_prob = $("#chkMapaProb").is(":checked");
             data_link.fossil = $("#chkFosil").is(":checked");
             data_link.apriori = $("#chkApriori").is(':checked');
-            data_link.sfecha = $("#chkFecha").is(':checked');
-
+            // data_link.sfecha = $("#chkFecha").is(':checked');
             
-            var rango_fechas = $("#sliderFecha").slider("values");
+            // var rango_fechas = $("#sliderFecha").slider("values");
 
-            if (rango_fechas[0] !== $("#sliderFecha").slider("option", "min") || rango_fechas[1] !== $("#sliderFecha").slider("option", "max")) {
-                data_link.lim_inf = rango_fechas[0];
-                data_link.lim_sup = rango_fechas[1];
-            } else {
-                data_link.lim_inf = undefined;
-                data_link.lim_sup = undefined;
-            }
+            // if (rango_fechas[0] !== $("#sliderFecha").slider("option", "min") || rango_fechas[1] !== $("#sliderFecha").slider("option", "max")) {
+            //     data_link.lim_inf = rango_fechas[0];
+            //     data_link.lim_sup = rango_fechas[1];
+            // } else {
+            //     data_link.lim_inf = undefined;
+            //     data_link.lim_sup = undefined;
+            // }
+
+            data_link.lim_inf = $("#date_timepicker_start").val()
+            data_link.lim_sup = $("#date_timepicker_end").val()
+
+            data_link.lim_inf_valtemp = $("#date_timepicker_start_val").val()            
+            data_link.lim_sup_valtemp = $("#date_timepicker_end_val").val()
 
 
 
@@ -705,6 +710,8 @@ var module_nicho = (function () {
 
                 var chkVal = _json_config.chkVal ? _json_config.chkVal === "true" : false;
 
+                var chkVal = _json_config.chkVal ? _json_config.chkVal === "true" : false;
+
                 var chkValTemp = _json_config.chkValTemp ? _json_config.chkValTemp === "true" : false;
 
                 var chkPrb = _json_config.chkPrb ? _json_config.chkPrb === "true" : false;
@@ -717,9 +724,15 @@ var module_nicho = (function () {
 
                 var chkOcc = _json_config.chkOcc ? parseInt(_json_config.chkOcc) : undefined;
 
-                var minFec = _json_config.minFec ? parseInt(_json_config.minFec) : undefined;
+                var minFec = _json_config.minFec ? _json_config.minFec : undefined;
 
-                var maxFec = _json_config.maxFec ? parseInt(_json_config.maxFec) : undefined;
+                var maxFec = _json_config.maxFec ? _json_config.maxFec : undefined;
+
+                var minFecVal = _json_config.minFecVal ? _json_config.minFecVal : undefined;
+
+                var maxFecVal = _json_config.maxFecVal ? _json_config.maxFecVal : undefined;
+
+
 
                 // var gridRes = _json_config.gridRes ? parseInt(_json_config.gridRes) : 16;
                 var gridRes = _json_config.gridRes ? _json_config.gridRes : "state";
@@ -728,7 +741,7 @@ var module_nicho = (function () {
 
                 var region = _json_config.region ? parseInt(_json_config.region) : 1;
 
-                var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
+                // var rango_fechas = minFec != undefined && maxFec != undefined ? [minFec, maxFec] : undefined;
 
                 // recover deleted items
                 var num_dpoints = parseInt(_json_config.num_dpoints);
@@ -754,7 +767,8 @@ var module_nicho = (function () {
                     filters.push(JSON.parse(_json_config["tfilters[" + i + "]"]));
                 }
 
-                _procesaValoresEnlace(sfilters, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints, chkValTemp);
+                // _procesaValoresEnlace(sfilters, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints, chkValTemp);
+                _procesaValoresEnlace(sfilters, filters, chkVal, chkPrb, chkApr, chkFec, chkOcc, minFec, maxFec, minFecVal, maxFecVal, chkFosil, gridRes, region, map_dPoints, chkValTemp);
                 $("#show_gen").css('visibility', 'hidden');
 
 
@@ -863,7 +877,8 @@ var module_nicho = (function () {
      * @param {array} rango_fechas - Rango de fecha para realizar los cálculos
      * @param {integer} gridRes - Resolución de la malla para ser considerado en los cálculos
      */
-    function _procesaValoresEnlace(subgroups_target, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints, chkValTemp) {
+    // function _procesaValoresEnlace(subgroups_target, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, rango_fechas, chkFosil, gridRes, region, map_dPoints, chkValTemp) {
+    function _procesaValoresEnlace(subgroups_target, subgroups, chkVal, chkPrb, chkApr, chkFec, chkOcc, minFec, maxFec, minFecVal, maxFecVal, chkFosil, gridRes, region, map_dPoints, chkValTemp) {
 
         _VERBOSE ? console.log("_procesaValoresEnlace") : _VERBOSE;
 
@@ -930,10 +945,17 @@ var module_nicho = (function () {
             $("#occ_number").val(chkOcc);
         }
 
-        if (rango_fechas !== undefined) {
-            $("#sliderFecha").slider('values', 0, rango_fechas[0]);
-            $("#sliderFecha").slider('values', 1, rango_fechas[1]);
-        }
+        // if (rango_fechas !== undefined) {
+        //     $("#sliderFecha").slider('values', 0, rango_fechas[0]);
+        //     $("#sliderFecha").slider('values', 1, rango_fechas[1]);
+        // }
+
+        $("#date_timepicker_start").val(minFec);
+        $("#date_timepicker_end").val(maxFec);
+
+        $("#date_timepicker_start_val").val(minFecVal);
+        $("#date_timepicker_end_val").val(maxFecVal);
+
 
         $('#grid_resolution option[value=' + gridRes + ']').attr('selected', 'selected');
 
@@ -1207,7 +1229,8 @@ var module_nicho = (function () {
         var ids_comp_variables = ['fuente', 'target'];
         _componente_fuente = _variable_module_nicho.createSelectorComponent("variables", ids_comp_variables[0], "lb_panel_variables");
 
-        _componente_target = _variable_module_nicho.createSelectorComponent("var_target", ids_comp_variables[1], "", false, true, true, 4);
+        // _componente_target = _variable_module_nicho.createSelectorComponent("var_target", ids_comp_variables[1], "", false, true, true, 4);
+        _componente_target = _variable_module_nicho.createSelectorComponent("var_target", ids_comp_variables[1], "", false, true, true);
 
         // enlazando los modulos que tienen interacción en los procesos
         _res_display_module_nicho.startResDisplay(_map_module_nicho, _histogram_module_nicho, _table_module, _language_module_nicho, ids_comp_variables);

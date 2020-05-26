@@ -2546,9 +2546,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         var equal_range_colors = jQuery.extend(true, [], colorbrewer.Blues[equal_range_sections])
+
+        
+
         equal_range_colors = equal_range_colors.reverse()
         equal_range_colors = equal_range_colors.concat(jQuery.extend(true, [], colorbrewer.Reds[equal_range_sections]))
-        // console.log(equal_range_colors)
+        
+
+        console.log(equal_range_colors)
 
         
         if (!mapa_prob) {
@@ -2571,7 +2576,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             console.log("min_scr: " + min_scr)
             console.log("max_scr: " + max_scr)
             console.log("deviation: " + deviation)
-            // console.log("mean: " + mean)
+            console.log("mean: " + mean)
             // console.log(ss.jenks(json.map(function(d) { return +d.tscore; }), (colors.length-2)))
 
             
@@ -2613,10 +2618,19 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 .domain([min_scr, 0])
                 .range(d3.range(equal_range_sections));
 
+                console.log(scale_test.quantiles())
+
                 equal_range_values = scale_test.quantiles()
                 var inverse_temp = jQuery.extend(true, [], equal_range_values)
+
+                console.log(equal_range_values)
+
                 inverse_temp = inverse_temp.map(function(d) {return -d})
+
+                console.log(inverse_temp)
+
                 equal_range_values = equal_range_values.concat([0].concat(inverse_temp.reverse()))
+                // equal_range_colors = jQuery.extend(true, [], colorbrewer.Blues[equal_range_sections]); 
                 
             }
             // positivo absoluto es mayor que negativo absoluto
@@ -2629,12 +2643,17 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 equal_range_values = scale_test.quantiles()
                 var inverse_temp = jQuery.extend(true, [], equal_range_values)
+
+                console.log(equal_range_values)
+
                 inverse_temp = inverse_temp.map(function(d) {return -d})
                 equal_range_values = inverse_temp.reverse().concat([0].concat(equal_range_values))   
 
             }
-            // console.log(equal_range_values)
-            // console.log(equal_range_colors)
+
+            console.log("********values")
+            console.log(equal_range_values)
+            console.log(equal_range_colors)
                 
 
             
@@ -2975,7 +2994,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         $("#escala_color").empty();
         $("#map_text").empty();
 
-        var w = 80, h = 160;
+        var w = 80, h = 300;
 
         var key = d3.select("#escala_color").append("svg")
                 .attr("width", w)
@@ -2988,7 +3007,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             .append("rect")
             .attr("y", 10)
             .attr("height", 40)
-            .attr("x", (d,i)=>-160 + i*15)
+            .attr("x", (d,i)=>-300 + i*15)
             .attr("width", 16)
             .attr("fill", (d,i)=>colors_array[i])
             .attr("stroke", "gray")
@@ -3006,7 +3025,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                 return 65
             })
             .attr("y", function (d,i) {
-                return (160 - ((i+1)*15))+3
+                return (300 - ((i+1)*15))+3
             })
             // .attr("x", (d,i)=>-300 + (i+1)*15)
             // .attr("y", function (d,i) {
