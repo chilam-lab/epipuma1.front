@@ -10,7 +10,8 @@ var table_module = (function(verbose) {
     var _VERBOSE = verbose;
     var _tbl_decil = false,
             _tbl = false,
-            _tbl_net = false;
+            _tbl_net = false,
+            _tbl_mun = false;
     var _language_module;
     var _iTrans;
     var _json, _display_obj;
@@ -481,6 +482,142 @@ var table_module = (function(verbose) {
     }
 
 
+
+    /**
+     * Éste método ...
+     *
+     * @function createListMun
+     * @public
+     * @memberof! table_module
+     * 
+     */
+    function createListMun(data) {
+
+        _VERBOSE ? console.log("createListMun") : _VERBOSE;
+
+        if (_tbl_mun == true) {
+            $('#tbl_munlist').dataTable().fnDestroy();
+        }
+
+        // var temp_data = data.slice(0, 10)
+        // console.log(temp_data)
+
+        $('#tbl_munlist').DataTable({
+            "dom": 'Bfrtip',
+            "info": true,
+            "bSort": true,
+            "aoColumnDefs": [{
+                    "bSortable": false,
+                    "aTargets": []
+                }],
+            "bLengthChange": false,
+            "bPaginate": true, // Pagination True
+            "processing": true, // Pagination True
+            "iDisplayLength": 10,
+            "searching": true,
+            "scrollY": "300px",
+            "scrollCollapse": true,
+            "paging": false,
+            data: data,
+            "scrollX": true,
+            fixedColumns:{
+                leftColumns: 2
+            },
+            columns: [
+                // {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext" id="tbl_net_src" style="left: 25%"><h5>' + _iTrans.prop('lb_fuente_tbl') + '</h5><p>' + _iTrans.prop('lb_msg_source') + '</p></div><span>' + _iTrans.prop('lb_fuente_tbl') + '</span></div>'},
+                {title: 'Estado'},
+                {title: 'Municipio'},
+                {title: 'Score'},
+                {title: 'Score Positivo'},
+                {title: 'Score Negativo'},
+                {title: 'riesgo'},
+
+                {title: 'Mejor P1 nombre'},
+                {title: 'Mejor P1 valor'},
+                {title: 'Mejor P2 nombre'},
+                {title: 'Mejor P2 valor'},
+                {title: 'Mejor P3 nombre'},
+                {title: 'Mejor P3 valor'},
+                {title: 'Mejor P4 nombre'},
+                {title: 'Mejor P4 valor'},
+                {title: 'Mejor P5 nombre'},
+                {title: 'Mejor P5 valor'},
+
+                {title: 'Peor P1 nombre'},
+                {title: 'Peor P1 valor'},
+                {title: 'Peor P2 nombre'},
+                {title: 'Peor P2 valor'},
+                {title: 'Peor P3 nombre'},
+                {title: 'Peor P3 valor'},
+                {title: 'Peor P4 nombre'},
+                {title: 'Peor P4 valor'},
+                {title: 'Peor P5 nombre'},
+                {title: 'Peor P5 valor'}
+            ],
+            buttons: [
+                { 
+                    extend: 'copy',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'csv',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'excel',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+                { 
+                    extend: 'print',
+                    exportOptions: {
+                        format: { 
+                            header: function ( data, column, row ) 
+                              {
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                              }
+                         }
+                    }
+                },
+            ],
+            language: {
+                "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                "info": _iTrans.prop('info'),
+                "search": _iTrans.prop('search') + " ",
+                "zeroRecords": _iTrans.prop('zeroRecords'),
+                "infoEmpty": _iTrans.prop('infoEmpty'),
+                "infoFiltered": _iTrans.prop('infoFiltered')
+            }
+        });
+
+        _tbl_mun = true;
+
+        
+    }
+
+
+
+
     /**
      * Clase que genera instancias de tipo tabla para la interacción con el módulo de histograma y el modulo de red utilizando el controlador de comunidad ecológica.
      *
@@ -617,6 +754,7 @@ var table_module = (function(verbose) {
             // })
 
             console.log("data_list.length: " + data_list.length)
+            console.log(data_list)
 
 
 
@@ -742,6 +880,7 @@ var table_module = (function(verbose) {
         addImageEpsilon: addImageEpsilon,
         clearEspList: clearEspList,
         clearDecilList: clearDecilList,
+        createListMun: createListMun
         // getTblEps: getTblEps
     }
 
