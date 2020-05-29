@@ -1201,6 +1201,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 var percentage_avg = [];
                 var decil_cells = [];
                 var time_validacion_decil = [];
+                var cell_summary = []
+
 
                 // CONCATENA LAS DIFERENTES PETICIONES SOLICITADAS AL SERVIDOR, EN CASO DE VALIDACION LOS VALORES POR PETICIÓN YA VIENEN PROMEDIADOS
                 _REQUESTS_DONE.forEach(function (item, index) {
@@ -1210,6 +1212,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     percentage_avg = percentage_avg.concat(item.percentage_avg);
                     decil_cells = decil_cells.concat(item.decil_cells);
                     time_validacion_decil = time_validacion_decil.concat(item.time_validation) // revisar si es necesario
+                    cell_summary = cell_summary.concat(item.cell_summary);
 
                 });
                console.log(total_eps_scr);
@@ -1217,6 +1220,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                console.log(percentage_avg);
                console.log(decil_cells);
                console.log(time_validacion_decil);
+               console.log(cell_summary);
 
                 // PETICION EN SERVER, SUMATORIA EN CLIENTE - getGeoRel - Tabla General
                 _createTableEpSc(total_eps_scr);
@@ -1261,7 +1265,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     var score_cell_bygroup = [];
                     var names_bygroup = [];
                     var validation_data_bygroup = []
-
+                    
                     names_byanalysis.push(group.name);
 
                     group.children.forEach(function (child) {
@@ -1271,7 +1275,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         score_cell_bygroup = score_cell_bygroup.concat(child.response);
                         score_cell_byanalysis = score_cell_byanalysis.concat(child.response);
                         validation_data_bygroup = validation_data_bygroup.concat(child.validation_data);
-                        
+
                         names_bygroup.push(child.value);
 
                     });
@@ -1342,16 +1346,27 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var decil_cells = resp.decil_cells
 
+                            // sobre escribe el resultado en caso de ser total
+                            cell_summary = resp.cell_summary
+
                             
 
                             // console.log("total_counts: " + total_counts.length)
                             console.log(decil_cells)
-
                             console.log(percentage_avg)
-                            
                             console.log(validation_data)
-
                             console.log(data_score_cell)
+                            console.log(cell_summary)
+
+                            if(val_process_temp){
+                                $("#div_munlist").show();
+                                processTableMun(cell_summary);    
+                            }
+                            else{
+                                $("#div_munlist").hide();
+                            }
+                            
+
 
                             var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_score_cell), gpo_name: "Total", names: names_byanalysis, deciles: validation_data};
 
@@ -1386,6 +1401,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     console.log(_RESULTS_TODISPLAY)
 
+                    if(val_process_temp){
+                        $("#div_munlist").show();
+                        processTableMun(cell_summary);    
+                    }
+                    else{
+                        $("#div_munlist").hide();
+                    }
+
                     _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
                 
                     loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
@@ -1404,6 +1427,142 @@ var res_display_module = (function (verbose, url_zacatuche) {
             console.error(err);
             $('#chartdiv_score_decil').loading('stop');
         });
+
+    }
+
+
+    function processTableMun(cell_summary){
+
+        console.log("processTableMun")
+
+        var array_column = []
+        var gridres_column = ""
+
+        var gridids = cell_summary.map(function (d) {
+            return parseInt(d.gridid);
+        });
+
+        var map_result = d3.map([]);
+        cell_summary.forEach(function (item, index) {
+            map_result.set(parseInt(item.gridid), item)
+        })
+
+        if(_grid_res === "mun"){
+            array_column = ["NOM_MUN","NOM_ENT"]
+        }
+        else{
+            array_column = ["NOM_ENT"]
+        }
+        gridres_column = "gridid_"+_grid_res+"km"
+        
+        var data = {
+            "grid_resolution": _grid_res,
+            "columns": array_column,
+            "gridids":gridids
+        }
+
+        console.log(gridids);
+        console.log("_grid_res: " + _grid_res);
+        console.log("gridres_column: " + gridres_column);
+        console.log(map_result);
+        console.log(data);
+
+        fetch(_url_zacatuche + "/niche/especie/getColumnsGrid", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(resp => resp.json())
+            .then(resp => { 
+
+                console.log(resp.data)
+                var  area_names = resp.data
+
+                area_names.forEach(function (item, index) {
+
+                    var gridid = parseInt(item[gridres_column])
+                    
+                    console.log(item["NOM_ENT"])
+
+                    var item_res = map_result.get(gridid);
+                    item_res.nom_state = (item["NOM_ENT"] === undefined) ? "N/A" : item["NOM_ENT"]
+                    item_res.nom_mun = (item["NOM_MUN"] === undefined) ? "N/A" : item["NOM_MUN"]
+                    
+                    item_res.b1_name = item_res.best_predictor_1[0]
+                    item_res.b1_value = item_res.best_predictor_1[1]
+                    item_res.b2_name = item_res.best_predictor_2[0]
+                    item_res.b2_value = item_res.best_predictor_2[1]
+                    item_res.b3_name = item_res.best_predictor_3[0]
+                    item_res.b3_value = item_res.best_predictor_3[1]
+                    item_res.b4_name = item_res.best_predictor_4[0]
+                    item_res.b4_value = item_res.best_predictor_4[1]
+                    item_res.b5_name = item_res.best_predictor_5[0]
+                    item_res.b5_value = item_res.best_predictor_5[1]
+
+                    item_res.w1_name = item_res.worst_predictor_1[0]
+                    item_res.w1_value = item_res.worst_predictor_1[1]
+                    item_res.w2_name = item_res.worst_predictor_2[0]
+                    item_res.w2_value = item_res.worst_predictor_2[1]
+                    item_res.w3_name = item_res.worst_predictor_3[0]
+                    item_res.w3_value = item_res.worst_predictor_3[1]
+                    item_res.w4_name = item_res.worst_predictor_4[0]
+                    item_res.w4_value = item_res.worst_predictor_4[1]
+                    item_res.w5_name = item_res.worst_predictor_5[0]
+                    item_res.w5_value = item_res.worst_predictor_5[1]
+                })
+
+                var data_list = []
+                
+                map_result.values().forEach(function (item, index) {
+
+                    var row_temp = []
+                    
+                    row_temp.push(item.nom_state)
+                    row_temp.push(item.nom_mun)
+                    row_temp.push(parseFloat(item.score).toFixed(2))
+                    row_temp.push(parseFloat(item.positive_score).toFixed(2))
+                    row_temp.push(parseFloat(item.negative_score).toFixed(2))
+                    row_temp.push(item.grupo_riesgo)
+
+                    row_temp.push(item.b1_name)
+                    row_temp.push(item.b1_value)
+                    row_temp.push(item.b2_name)
+                    row_temp.push(item.b2_value)
+                    row_temp.push(item.b3_name)
+                    row_temp.push(item.b3_value)
+                    row_temp.push(item.b4_name)
+                    row_temp.push(item.b4_value)
+                    row_temp.push(item.b5_name)
+                    row_temp.push(item.b5_value)
+
+                    row_temp.push(item.w1_name)
+                    row_temp.push(item.w1_value)
+                    row_temp.push(item.w2_name)
+                    row_temp.push(item.w2_value)
+                    row_temp.push(item.w3_name)
+                    row_temp.push(item.w3_value)
+                    row_temp.push(item.w4_name)
+                    row_temp.push(item.w4_value)
+                    row_temp.push(item.w5_name)
+                    row_temp.push(item.w5_value)
+
+                    data_list.push(row_temp)
+                });
+
+                console.log(data_list)
+                _table_module_eps.createListMun(data_list);
+
+
+            })
+        .catch(err => {
+            console.error(err);
+            $('#chartdiv_score_decil').loading('stop');
+        });
+
+
+
 
     }
 
