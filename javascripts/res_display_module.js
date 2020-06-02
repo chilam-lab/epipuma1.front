@@ -21,6 +21,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _show_greenCells = false;
     var _return_map = false;
 
+    var _val_process_temp = false;
+    var _val_process = false;
+
     var _subgroups, _spid, _idreg, _type_time, _taxones;
 
     var _validation_module_all,
@@ -28,6 +31,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _language_module_nicho,
         _module_toast,
         _utils_module;
+
+    var _REQUESTS_MADE = [];
+    var _REQUESTS_NUMBER = 0;
+    var _REQUESTS_DONE = [];
+    var _TREE_GENERATED = {};
+    var _RESULTS_TODISPLAY = [];
 
 
     var _allowedPoints = d3.map([]),
@@ -555,6 +564,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _fossil = chkFosil;
         _grid_res = grid_res;
         _footprint_region = footprint_region;
+        _val_process_temp = val_process_temp;
+        _val_process = val_process;
 
 
         _rangofechas = rango_fechas;
@@ -583,7 +594,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // Se realiza la carga de la malla antes de iniciar el análisis de nicho
         // _map_module_nicho.loadD3GridMX(val_process, grid_res, _footprint_region);
-        callDisplayProcess(val_process, val_process_temp)
+        callDisplayProcess(_val_process, _val_process_temp)
 
 
     }
@@ -618,18 +629,20 @@ var res_display_module = (function (verbose, url_zacatuche) {
         })
 
         _VERBOSE ? console.log(taxon_values) : _VERBOSE;
+        _VERBOSE ? console.log("_val_process_temp: " + _val_process_temp) : _VERBOSE;
+        _VERBOSE ? console.log("_val_process: " + _val_process) : _VERBOSE;
 
-        if(val_process_temp){
+        if(_val_process_temp){
 
             _VERBOSE ? console.log("VALIDACIÓN TEMPORAL: ON") : _VERBOSE;
 
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'), "warning");
             
-            _confDataRequest(taxon_values, _idreg, val_process, [], val_process_temp);
-            _panelGeneration("", val_process_temp);
+            _confDataRequest(taxon_values, _idreg, val_process);
+            _panelGeneration("");
 
         }
-        else if (val_process) {
+        else if (_val_process) {
 
             _VERBOSE ? console.log("VALIDACIÓN ESPACIAL: ON") : _VERBOSE;
 
@@ -643,7 +656,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             
             // _confDataRequest(_spid, _idreg, val_process);
             _confDataRequest(taxon_values, _idreg, val_process);
-            _panelGeneration("", val_process_temp);
+            _panelGeneration("");
 //            _generateCounts(_countsdata);
 
         }
@@ -692,34 +705,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _panelGeneration(_idtemptable);
                 // _generateCounts(_countsdata);
 
-//                _createTableEpSc(_tdata, _idtemptable, val_process);
-//                _createHistEpScr_Especie(_ddata);
-//                _createHistScore_Celda(_cdata);
-//                _configureStyleMap(_sdata);
-
-
-//              Servicio de prueba del store
-// 
-//                $.ajax({
-//                    url: _url_zacatuche + "/niche/especie",
-//                    type: 'post',
-//                    data: {
-//                        qtype: 'processValidationTables',
-//                        idtable: idtemptable
-//                    },
-//                    dataType: "json",
-//                    success: function(resp) {
-//
-//                        console.log("proceso");
-//                        console.log(resp);
-//
-//                    },
-//                    error: function(jqXHR, textStatus, errorThrown) {
-//                        _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-//
-//                    }
-//                });
-
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
@@ -747,7 +732,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
             url: _url_zacatuche + "/niche/especie/deleteValidationTables",
             type: 'post',
             data: {
-//                qtype: 'deleteValidationTables',
                 idtable: _idtemptable
             },
             dataType: "json",
@@ -785,9 +769,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _requestReturned = _requestReturned - 1;
         if (_requestReturned === 0) {
-
-//            _deleteValidationTables(idtemptable);
-
+            //            _deleteValidationTables(idtemptable);
         }
 
     }
@@ -848,7 +830,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {integer} num_items - Número de grupos de variables seleccionado
      * @param {boolean} val_process - Bandera que indica si será ejecutado el proceso de validación
      */
-    function _confDataRequest(taxones, idreg, val_process, tabla = "", val_process_temp = false) {
+    function _confDataRequest(taxones, idreg, val_process, tabla = "") {
 
         _VERBOSE ? console.log("_confDataRequest") : _VERBOSE;
 
@@ -870,8 +852,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var lim_inf_valtemp = undefined;
         var lim_inf_valtemp = undefined;
 
-        if(val_process_temp){
-            console.log("Entra");
+        if(_val_process_temp){
+            
+            console.log("Limites para validacion tamporal");
 
             var lim_inf_valtemp = $("#date_timepicker_start_val").val();
             var lim_sup_valtemp = $("#date_timepicker_end_val").val();
@@ -880,8 +863,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
         console.log("lim_inf_valtemp: " + lim_inf_valtemp);
         console.log("lim_sup_valtemp: " + lim_sup_valtemp);
         
-
-
 
         var existsDiscardedFilter = false;
         if (lin_inf !== undefined || lin_sup !== undefined || !sin_fecha)
@@ -951,11 +932,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    var _REQUESTS_MADE = [];
-    var _REQUESTS_NUMBER = 0;
-    var _REQUESTS_DONE = [];
-    var _TREE_GENERATED = {};
-    var _RESULTS_TODISPLAY = [];
+    
     /**
      * Éste método configura las celdas del mapa que deben ser descartadas en los procesos de validación y eliminación de puntos para el análisis de nicho ecoógico. Además realiza las peticiones al servidor de forma seccionada para el cálculo de valores por decil.
      *
@@ -965,7 +942,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * 
      * @param {array} discardedGridids - Array con los ids de celda que son descartados cuando existe proceso de validación
      */
-    function _panelGeneration(idtemptable = "", val_process_temp = false) {
+    function _panelGeneration(idtemptable = "") {
 
         _VERBOSE ? console.log("_panelGeneration") : _VERBOSE;
         idtemptable = idtemptable || "";
@@ -1119,8 +1096,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _REQUESTS_MADE.forEach(function (item, index) {
 
             // console.log(item);
-
-            _createScore_Decil(item, val_process_temp);
+            _createScore_Decil(item);
 
         });
 
@@ -1139,7 +1115,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {boolean} hasChildren - Bandera que indica si la configuración enviada es un conjunto de las variables seleccionadas o es una variable del grupo
      * @param {boolean} isTotal - Bandera que indica si la configuración enviada es el total de los conjuntos de las variables seleccionadas 
      */
-    function _createScore_Decil(decildata, val_process_temp = false) {
+    function _createScore_Decil(decildata) {
 
         _VERBOSE ? console.log("_createScore_Decil") : _VERBOSE;
 
@@ -1158,7 +1134,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // decildata["with_data_freq_cell"] = false;
         // decildata["with_data_score_decil"] = false;
 
-        var  verbo = val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
+        var  verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
 
         // cambiando peticiones ajax por promesas y fetch api
         fetch(_url_zacatuche + "/niche/" + verbo, {
@@ -1184,7 +1160,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             // PROCESANDO PETICIONES INDIVIDUALES
             var data_response = jQuery.extend(true, [], respuesta.data);
-            var validation_data = val_process_temp ? respuesta.time_validation  : respuesta.validation_data
+            var validation_data = _val_process_temp ? respuesta.time_validation  : respuesta.validation_data
 
             processSingleResponse(data_response, data_request, validation_data);
 
@@ -1320,7 +1296,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     total_request.with_data_score_decil = true
                     total_request.decil_selected = [_default_decil]
 
-                    verbo = val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
+                    verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
 
                     fetch(_url_zacatuche + "/niche/" + verbo, {
                         method: "POST",
@@ -1358,7 +1334,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             console.log(data_score_cell)
                             console.log(cell_summary)
 
-                            if(val_process_temp){
+                            if(_val_process_temp){
                                 $("#div_munlist").show();
                                 processTableMun(cell_summary);    
                             }
@@ -1401,7 +1377,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     console.log(_RESULTS_TODISPLAY)
 
-                    if(val_process_temp){
+                    if(_val_process_temp){
                         $("#div_munlist").show();
                         processTableMun(cell_summary);    
                     }
@@ -2699,7 +2675,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
         
         var milliseconds = new Date().getTime();
 
-        fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
+        // var val_process_temp = $("#chkValidationTemp").is(':checked');
+        console.log("_val_process_temp: " + _val_process_temp)
+
+        var verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
+
+        console.log("verbo: " + verbo)
+
+        fetch(_url_zacatuche + "/niche/" + verbo, {
             method: "POST",
             body: JSON.stringify(singleCellData),
             headers: {
@@ -2715,12 +2698,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 _VERBOSE ? console.log(data) : _VERBOSE;
 
-                // if (data.groups.length > 0) {
-                    var htmltable = _createTableFromData(data);
-                    if (htmltable === "")
-                        return;
-                    _map_module_nicho.showPopUp(htmltable, [lat, long]);
-                // }
+                var htmltable = _createTableFromData(data);
+                if (htmltable === "")
+                    return;
+                _map_module_nicho.showPopUp(htmltable, [lat, long]);
+
+                // tablas para seleccion de celda
+                _table_module_eps.createTblSp("tbl_sp_selected");
+                _table_module_eps.createTblSp("tbl_sp_selected_sp");
+                _table_module_eps.createTblSp("tbl_sp_selected_rt");
 
             }
 
@@ -2932,9 +2918,18 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
 
         // descending order in json array by score
-        json_data.groups.sort(function(a, b) {
-            return parseFloat(b.score) - parseFloat(a.score) ;
-        });
+        console.log("_val_process_temp: " + _val_process_temp)
+
+        if(_val_process_temp){
+            json_data.sort(function(a, b) {
+                return parseFloat(b.score) - parseFloat(a.score) ;
+            });
+        }
+        else{
+            json_data.groups.sort(function(a, b) {
+                return parseFloat(b.score) - parseFloat(a.score) ;
+            });
+        }
 
         _VERBOSE ? console.log(json_data) : _VERBOSE
 
@@ -2944,26 +2939,39 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var title_total;
         var total_celda;
 
-//        console.log(json_data.apriori)
-//        console.log(json_data.apriori === undefined)
 
-        if (json_data.hasbio === false && json_data.hasraster === false && json_data.apriori === undefined && json_data.mapa_prob === undefined) {
-            _VERBOSE ? console.log("No data") : _VERBOSE
-            $('#map').loading('stop');
-            return "";
-        }
+        if(_val_process_temp){
 
-        if (json_data.hasbio) {
 
-            table_sp += "<div class='panel-primary'><div class='panel-heading no-padding header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table class='table table-striped'>"
-            // + "<thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"+
-            + "<tbody>";
+            if(json_data.length == 0){
+                _VERBOSE ? console.log("No data") : _VERBOSE    
+            }
 
-            for (i = 0; i < json_data.groups.length; i++) {
 
-                if (json_data.groups[i].tipo === "bio") {
+            table_sp += "<div class='panel-primary'>"
+                        + "<div class='panel-heading no-padding header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div>"
+                        + "<table id='tbl_sp_selected'>"
+                        + "<thead><tr><th>Nombre</th><th>Score</th></tr></thead>"
+                        + "<tbody>";
 
-                    table_sp += "<tr><td>" + json_data.groups[i].generovalido + " " + json_data.groups[i].especieepiteto + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
+            for (i = 0; i < json_data.length; i++) {
+
+                if (json_data[i].icat === "") {
+
+                    table_sp += "<tr><td>" + json_data[i].generovalido + " " + json_data[i].especieepiteto + "</td><td>" + parseFloat(json_data[i].score).toFixed(2) + "</td></tr>";
+
+                }
+                else{
+
+                    var range = json_data[i].tag.split(":")
+                    var label = json_data[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+
+                    var min = (parseFloat(range[0]) * json_data[i].coeficiente).toFixed(3) + " " + json_data[i].unidad
+                    var max = (parseFloat(range[1]) * json_data[i].coeficiente).toFixed(3) + " " + json_data[i].unidad
+
+                    var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
+                    
+                    table_sp += "<tr><td>" + value + "</td><td>" + parseFloat(json_data[i].score).toFixed(2) + "</td></tr>";
 
                 }
 
@@ -2971,157 +2979,216 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             table_sp += "</tbody></table></div>";
 
+            // TODO: Enviar el total de la celda
+
+            // title_total = $.i18n.prop('lb_pp_st');
+            // total_celda = parseFloat(json_data.tscore).toFixed(2);
+            // htmltable += "<div class='panel-primary'>\
+            //                     <div class='panel-heading no-padding header-title-cell'>\
+            //                         <h3 class='h3-title-cell'>Total</h3>\
+            //                     </div>\
+            //                     <table class='table table-striped'>\
+            //                         <thead>\
+            //                             <tr>\
+            //                                 <th>" + title_total + "</th>\
+            //                                 <th>" + total_celda + "</th>\
+            //                             </tr>"
+            //                         "</thead>\
+            //                     <tbody>";
+            // htmltable += "</tbody></table></div>";
+
+
+            htmltable += table_sp;
+            htmltable += "</div>"; // cierra div myScrollableBlockPopup
+
+
         }
+        else if(_val_process_temp == false){
 
-        if (json_data.hasraster) {
 
-            table_rt += "<div class='panel-primary'><div class='panel-heading panel-head header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table class='table table-striped'>" 
-            // + "<thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"
-            + "<tbody>"
+            if (json_data.hasbio === false && json_data.hasraster === false && json_data.apriori === undefined && json_data.mapa_prob === undefined) {
+                _VERBOSE ? console.log("No data") : _VERBOSE
+                $('#map').loading('stop');
+                return "";
+            }
 
-            for (var i = 0; i < json_data.groups.length; i++) {
 
-                if (json_data.groups[i].tipo === "raster") {
+            if (json_data.hasbio) {
 
-                    // var arg_values = json_data.groups[i].name.split(" ")
-                    // var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
-                    // table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
-                    
-                    // TODO: corregir id por label
+                table_sp += "<div class='panel-primary'><div class='panel-heading no-padding header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table id='tbl_sp_selected_sp' class=''>"
+                            + "<thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"+
+                            + "<tbody>";
 
-                    // var range = d.tag.split(":")
-                    var range = json_data.groups[i].tag.split(":")
-                    var label = json_data.groups[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                for (i = 0; i < json_data.groups.length; i++) {
 
-                    var min = (parseFloat(range[0]) * json_data.groups[i].coeficiente).toFixed(3) + " " + json_data.groups[i].unidad
-                    var max = (parseFloat(range[1]) * json_data.groups[i].coeficiente).toFixed(3) + " " + json_data.groups[i].unidad
+                    if (json_data.groups[i].tipo === "bio") {
 
-                    // var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                    var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
-                    
-                    // var layer = _iTrans.prop("a_item_" + json_data.groups[i].layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                    table_rt += "<tr><td>" + value + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
+                        table_sp += "<tr><td>" + json_data.groups[i].generovalido + " " + json_data.groups[i].especieepiteto + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
+
+                    }
 
                 }
 
+                table_sp += "</tbody></table></div>";
+
             }
 
-            table_rt += "</tbody></table></div>";
-        }
 
-        if (json_data.mapa_prob !== undefined) {
+            if (json_data.hasraster) {
 
-            console.log("mapa_prob");
+                table_rt += "<div class='panel-primary'><div class='panel-heading panel-head header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table id='tbl_sp_selected_rt' class='table table-striped'>" 
+                        + "<thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"
+                        + "<tbody>";
 
-            var title_total = $.i18n.prop('lb_pp_probpre');
-            var prob = parseFloat(json_data.mapa_prob) === 100.00 ? 99.99 : parseFloat(json_data.mapa_prob);
-            prob = parseFloat(prob) === 0.00 ? 0.01 : parseFloat(prob);
-            // console.log(prob);
-            var total_celda = parseFloat(prob).toFixed(2) + "%";
+                for (var i = 0; i < json_data.groups.length; i++) {
 
-            htmltable += "<div class='panel-primary'>\n\
-                                <div class='panel-heading no-padding header-title-cell'>\n\
-                                <h3 class='h3-title-cell'>Total</h3>\n\
-                                </div>\n\
-                                <table class='table table-striped'>\n\
-                                <thead>\n\
-                                    <tr>\n\
-                                    <th>" + title_total + "</th>\n\
-                                    <th>" + total_celda + "</th>\n\
-                                    </tr>";
+                    if (json_data.groups[i].tipo === "raster") {
 
-        } else if (json_data.apriori !== undefined) {
+                        // var arg_values = json_data.groups[i].name.split(" ")
+                        // var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
+                        // table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
+                        
+                        // TODO: corregir id por label
 
-            console.log("Apriori");
+                        // var range = d.tag.split(":")
+                        var range = json_data.groups[i].tag.split(":")
+                        var label = json_data.groups[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
 
-            var title_score = $.i18n.prop('lb_pp_sp');
-            var parcial_score = parseFloat(json_data.tscore).toFixed(2);
+                        var min = (parseFloat(range[0]) * json_data.groups[i].coeficiente).toFixed(3) + " " + json_data.groups[i].unidad
+                        var max = (parseFloat(range[1]) * json_data.groups[i].coeficiente).toFixed(3) + " " + json_data.groups[i].unidad
 
-            var title_apriori = "Apriori";
-            var total_apriori = parseFloat(json_data.apriori).toFixed(2);
+                        // var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                        var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
+                        
+                        // var layer = _iTrans.prop("a_item_" + json_data.groups[i].layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
+                        table_rt += "<tr><td>" + value + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
 
-            var title_total = $.i18n.prop('lb_pp_st');
-            var total_celda = parseFloat(json_data.tscore + json_data.apriori).toFixed(2);
+                    }
+
+                }
+
+                table_rt += "</tbody></table></div>";
+            }
 
 
-            htmltable += "<div class='panel-primary'>\n\
-                                <div class='panel-heading no-padding header-title-cell'>\n\
+            if (json_data.mapa_prob !== undefined) {
+
+                console.log("mapa_prob");
+
+                var title_total = $.i18n.prop('lb_pp_probpre');
+                var prob = parseFloat(json_data.mapa_prob) === 100.00 ? 99.99 : parseFloat(json_data.mapa_prob);
+                prob = parseFloat(prob) === 0.00 ? 0.01 : parseFloat(prob);
+                // console.log(prob);
+                var total_celda = parseFloat(prob).toFixed(2) + "%";
+
+                htmltable += "<div class='panel-primary'>\n\
+                                    <div class='panel-heading no-padding header-title-cell'>\n\
                                     <h3 class='h3-title-cell'>Total</h3>\n\
-                                </div>\n\
-                                <table class='table table-striped'>\n\
-                                <thead>";
-
-            if (json_data.hasbio === false && json_data.hasraster === false) {
-                htmltable += "<tr>\n\
-                                    <th>" + title_apriori + "</th>\n\
-                                    <th>" + total_apriori + "</th>\n\
-                                </tr>";
-            } else {
-                htmltable += "<tr>\n\
-                                    <th>" + title_total + "</th>\n\
-                                    <th>" + total_celda + "</th>\n\
-                                </tr>\n\
-                                <tr>\n\
-                                    <th>" + title_score + "</th>\n\
-                                    <th>" + parcial_score + "</th>\n\
-                                </tr>\n\
-                                <tr>\n\
-                                    <th>" + title_apriori + "</th>\n\
-                                    <th>" + total_apriori + "</th>\n\
-                                </tr>";
-            }
-
-
-
-        } else {
-            title_total = $.i18n.prop('lb_pp_st');
-            total_celda = parseFloat(json_data.tscore).toFixed(2);
-
-            htmltable += "<div class='panel-primary'>\
-                                <div class='panel-heading no-padding header-title-cell'>\
-                                    <h3 class='h3-title-cell'>Total</h3>\
-                                </div>\
-                                <table class='table table-striped'>\
-                                    <thead>\
-                                        <tr>\
-                                            <th>" + title_total + "</th>\
-                                            <th>" + total_celda + "</th>\
+                                    </div>\n\
+                                    <table class='table table-striped'>\n\
+                                    <thead>\n\
+                                        <tr>\n\
+                                        <th>" + title_total + "</th>\n\
+                                        <th>" + total_celda + "</th>\n\
                                         </tr>";
 
+            } 
+            else if (json_data.apriori !== undefined) {
+
+                console.log("Apriori");
+
+                var title_score = $.i18n.prop('lb_pp_sp');
+                var parcial_score = parseFloat(json_data.tscore).toFixed(2);
+
+                var title_apriori = "Apriori";
+                var total_apriori = parseFloat(json_data.apriori).toFixed(2);
+
+                var title_total = $.i18n.prop('lb_pp_st');
+                var total_celda = parseFloat(json_data.tscore + json_data.apriori).toFixed(2);
+
+
+                htmltable += "<div class='panel-primary'>\n\
+                                    <div class='panel-heading no-padding header-title-cell'>\n\
+                                        <h3 class='h3-title-cell'>Total</h3>\n\
+                                    </div>\n\
+                                    <table class='table table-striped'>\n\
+                                    <thead>";
+
+                if (json_data.hasbio === false && json_data.hasraster === false) {
+                    htmltable += "<tr>\n\
+                                        <th>" + title_apriori + "</th>\n\
+                                        <th>" + total_apriori + "</th>\n\
+                                    </tr>";
+                } else {
+                    htmltable += "<tr>\n\
+                                        <th>" + title_total + "</th>\n\
+                                        <th>" + total_celda + "</th>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <th>" + title_score + "</th>\n\
+                                        <th>" + parcial_score + "</th>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <th>" + title_apriori + "</th>\n\
+                                        <th>" + total_apriori + "</th>\n\
+                                    </tr>";
+                }
+
+
+
+            } 
+            else {
+
+                title_total = $.i18n.prop('lb_pp_st');
+                total_celda = parseFloat(json_data.tscore).toFixed(2);
+
+                htmltable += "<div class='panel-primary'>\
+                                    <div class='panel-heading no-padding header-title-cell'>\
+                                        <h3 class='h3-title-cell'>Total</h3>\
+                                    </div>\
+                                    <table class='table table-striped'>\
+                                        <thead>\
+                                            <tr>\
+                                                <th>" + title_total + "</th>\
+                                                <th>" + total_celda + "</th>\
+                                            </tr>";
+
+            }
+
+
+            // if (json_data.hasbio !== false || json_data.hasraster !== false) {
+            //     htmltable += 
+            //                 "<tr>\
+            //                     <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
+            //                     <th>" + json_data.bios + "</th>\
+            //                 </tr>\
+            //                 <tr>\
+            //                     <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
+            //                     <th>" + json_data.raster + "</th>\
+            //                 </tr>\
+            //                 <tr>\
+            //                     <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
+            //                     <th>" + json_data.positives + "</th>\
+            //                 </tr>\
+            //                 <tr>\
+            //                     <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
+            //                     <th>" + json_data.negatives + "</th>\
+            //                 </tr>"
+            // }
+
+            htmltable += "</thead>\
+                    <tbody>";
+
+            htmltable += "</tbody></table></div>";
+
+            htmltable += json_data.hasbio ? table_sp : "";
+            htmltable += json_data.hasraster ? table_rt : "";
+
+            htmltable += "</div>"; // cierra div myScrollableBlockPopup
+
         }
-
-
-        if (json_data.hasbio !== false || json_data.hasraster !== false) {
-            htmltable += "<tr>\
-                            <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
-                            <th>" + json_data.bios + "</th>\
-                        </tr>\
-                        <tr>\
-                            <th>" + $.i18n.prop('lb_pp_rabio') + "</th>\
-                            <th>" + json_data.raster + "</th>\
-                        </tr>\
-                        <tr>\
-                            <th>" + $.i18n.prop('lb_pp_pos') + "</th>\
-                            <th>" + json_data.positives + "</th>\
-                        </tr>\
-                        <tr>\
-                            <th>" + $.i18n.prop('lb_pp_neg') + "</th>\
-                            <th>" + json_data.negatives + "</th>\
-                        </tr>"
-        }
-
-        htmltable += "</thead>\
-                <tbody>";
-
-
-
-        htmltable += "</tbody></table></div>";
-
-        htmltable += json_data.hasbio ? table_sp : "";
-        htmltable += json_data.hasraster ? table_rt : "";
-
-        htmltable += "</div>"; // cierra div myScrollableBlockPopup
-
+        
+       
         return htmltable;
 
     }
