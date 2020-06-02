@@ -434,17 +434,17 @@ var histogram_module = (function (verbose) {
 
         // TODO: analizar cuando son solo positovos, solo negativos o combinación
         // solo negativos
-        if (totalmax_avg < 0 && totalmin_avg < 0) {
-            NEG_DECIL = -1;
-        }
-        // combinado
-        else if (totalmin_avg < 0) {
-            NEG_DECIL = 0;
-        }
-        // solo positivos
-        else {
-            NEG_DECIL = 1;
-        }
+        // if (totalmax_avg < 0 && totalmin_avg < 0) {
+        //     NEG_DECIL = -1;
+        // }
+        // // combinado
+        // else if (totalmin_avg < 0) {
+        //     NEG_DECIL = 0;
+        // }
+        // // solo positivos
+        // else {
+        //     NEG_DECIL = 1;
+        // }
 
         // NOTA: En d3 el max de -0.12 y -0.86 es "-0.86", obtiene el minimo de los negativos
         var maxmin_avg = d3.max(json_decil.map(function (d, index) {
