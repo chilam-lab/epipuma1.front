@@ -475,8 +475,7 @@ var table_module = (function(verbose) {
         _json = json;
         _VERBOSE ? console.log(_json.links) : _VERBOSE;
 
-        
-
+       
         return list_component;
 
     }
@@ -612,6 +611,104 @@ var table_module = (function(verbose) {
 
         _tbl_mun = true;
 
+        
+    }
+
+
+
+    /**
+     * Éste método ...
+     *
+     * @function createListMun
+     * @public
+     * @memberof! table_module
+     * 
+     */
+    function createTblSp(idTbl) {
+
+        _VERBOSE ? console.log("createTblSp") : _VERBOSE;
+
+        console.log("id: " + idTbl);
+
+        if ($('#'+idTbl) === undefined) {
+            console.log("Tabla no existe");
+            return;
+        }
+
+        $('#'+idTbl).DataTable(
+            {
+                "dom": 'Bfrtip',
+                "info": true,
+                "bSort": true,
+                "aoColumnDefs": [{
+                        "bSortable": false,
+                        "aTargets": []
+                    }],
+                "bLengthChange": false,
+                "bPaginate": true, // Pagination True
+                "processing": true, // Pagination True
+                "iDisplayLength": 10,
+                "searching": true,
+                "scrollY": "300px",
+                "scrollCollapse": true,
+                "paging": false,
+                "scrollX": false,
+                buttons: [
+                    { 
+                        extend: 'copy',
+                        exportOptions: {
+                            format: { 
+                                header: function ( data, column, row ) 
+                                  {
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                  }
+                             }
+                        }
+                    },
+                    { 
+                        extend: 'csv',
+                        exportOptions: {
+                            format: { 
+                                header: function ( data, column, row ) 
+                                  {
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                  }
+                             }
+                        }
+                    },
+                    { 
+                        extend: 'excel',
+                        exportOptions: {
+                            format: { 
+                                header: function ( data, column, row ) 
+                                  {
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                  }
+                             }
+                        }
+                    },
+                    { 
+                        extend: 'print',
+                        exportOptions: {
+                            format: { 
+                                header: function ( data, column, row ) 
+                                  {
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                  }
+                             }
+                        }
+                    },
+                ],
+                language: {
+                    "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                    "info": _iTrans.prop('info'),
+                    "search": _iTrans.prop('search') + " ",
+                    "zeroRecords": _iTrans.prop('zeroRecords'),
+                    "infoEmpty": _iTrans.prop('infoEmpty'),
+                    "infoFiltered": _iTrans.prop('infoFiltered')
+                }
+            }
+        );
         
     }
 
@@ -880,7 +977,8 @@ var table_module = (function(verbose) {
         addImageEpsilon: addImageEpsilon,
         clearEspList: clearEspList,
         clearDecilList: clearDecilList,
-        createListMun: createListMun
+        createListMun: createListMun,
+        createTblSp: createTblSp
         // getTblEps: getTblEps
     }
 
