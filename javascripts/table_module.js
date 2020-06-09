@@ -551,7 +551,10 @@ var table_module = (function(verbose) {
                 {title: 'Peor P4 nombre'},
                 {title: 'Peor P4 valor'},
                 {title: 'Peor P5 nombre'},
-                {title: 'Peor P5 valor'}
+                {title: 'Peor P5 valor'},
+
+                {title: 'Entrenamiento'},
+                {title: 'Validación'}
             ],
             buttons: [
                 { 
