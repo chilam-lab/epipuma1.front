@@ -1487,6 +1487,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     item_res.w4_value = item_res.worst_predictor_4[1]
                     item_res.w5_name = item_res.worst_predictor_5[0]
                     item_res.w5_value = item_res.worst_predictor_5[1]
+
+                    item_res.train = item_res.training_period
+                    item_res.validation = item_res.validation_period
+                    
                 })
 
                 var data_list = []
@@ -1523,6 +1527,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     row_temp.push(item.w4_value)
                     row_temp.push(item.w5_name)
                     row_temp.push(item.w5_value)
+
+                    row_temp.push(item.train)
+                    row_temp.push(item.validation)
 
                     data_list.push(row_temp)
                 });
