@@ -2702,10 +2702,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
             if (respuesta.ok) {
 
                 var data = respuesta.data;
+                var info_cell = respuesta.info_cell
 
                 _VERBOSE ? console.log(data) : _VERBOSE;
 
-                var htmltable = _createTableFromData(data);
+                var htmltable = _createTableFromData(data, info_cell);
                 if (htmltable === "")
                     return;
                 _map_module_nicho.showPopUp(htmltable, [lat, long]);
@@ -2920,9 +2921,18 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * 
      * @param {json} json_data - Json con el valor resultante de la celda seleccionada
      */
-    function _createTableFromData(json_data) {
+    function _createTableFromData(json_data, info_cell) {
 
         _VERBOSE ? console.log("_createTableFromData") : _VERBOSE;
+
+        console.log(info_cell)
+        console.log(info_cell[0].nom_mun)
+
+        var info_celda = info_cell[0].nom_ent
+        info_celda += info_cell[0].nom_mun != undefined && info_cell[0].nom_mun != ""  ? ", " + info_cell[0].nom_mun : ""
+
+        console.log(info_celda)
+
 
         // descending order in json array by score
         console.log("_val_process_temp: " + _val_process_temp)
@@ -2990,21 +3000,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             // title_total = $.i18n.prop('lb_pp_st');
             // total_celda = parseFloat(json_data.tscore).toFixed(2);
-            // htmltable += "<div class='panel-primary'>\
-            //                     <div class='panel-heading no-padding header-title-cell'>\
-            //                         <h3 class='h3-title-cell'>Total</h3>\
-            //                     </div>\
-            //                     <table class='table table-striped'>\
-            //                         <thead>\
-            //                             <tr>\
-            //                                 <th>" + title_total + "</th>\
-            //                                 <th>" + total_celda + "</th>\
-            //                             </tr>"
-            //                         "</thead>\
-            //                     <tbody>";
-            // htmltable += "</tbody></table></div>";
 
-
+            htmltable += "<div class='panel-primary'>\
+                                <div class='panel-heading no-padding header-title-cell'>\
+                                    <h3 class='h3-title-cell'>" + info_celda + "</h3>\
+                                </div></div>"
             htmltable += table_sp;
             htmltable += "</div>"; // cierra div myScrollableBlockPopup
 
@@ -3151,7 +3151,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 htmltable += "<div class='panel-primary'>\
                                     <div class='panel-heading no-padding header-title-cell'>\
-                                        <h3 class='h3-title-cell'>Total</h3>\
+                                        <h3 class='h3-title-cell'>" + info_celda + "</h3>\
                                     </div>\
                                     <table class='table table-striped'>\
                                         <thead>\
