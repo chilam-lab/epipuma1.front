@@ -154,12 +154,12 @@ var variable_module = (function (verbose, url_zacatuche) {
             var level_root = 0;
             var level_vartree = 1;
             
-//            console.log("val: " + $("#footprint_region_select").val());
-//            console.log("_REGION_SELECTED: " + _REGION_SELECTED);
+           console.log("val: " + $("#footprint_region_select").val());
+           console.log("_REGION_SELECTED: " + _REGION_SELECTED);
             
             
-            _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
-//            console.log("REGION_SELECTED: " + _REGION_SELECTED);
+            _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+           console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getRasterVariables",
@@ -257,7 +257,7 @@ var variable_module = (function (verbose, url_zacatuche) {
             var max_level = 3;
 
             $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
-            _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+            _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
 
            
            current_id = current_id.replace(/#/g,'').replace(/\(/g,'').replace(/\)/g,'')
@@ -537,10 +537,10 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .autocomplete({
                             source: function (request, response) {
 
-//                                _VERBOSE ? console.log(self) : _VERBOSE;
+                               _VERBOSE ? console.log($("#footprint_region_select").val()) : _VERBOSE;
                                 
-                                _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
-//                                console.log("REGION_SELECTED: " + _REGION_SELECTED);
+                                _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+                               console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
                                 $.ajax({
                                     url: _url_zacatuche + "/niche/especie/getEntList",
@@ -832,8 +832,8 @@ var variable_module = (function (verbose, url_zacatuche) {
            _VERBOSE ? console.log(self.field_vartree) : _VERBOSE;
            _VERBOSE ? console.log(self.value_vartree) : _VERBOSE;
             
-            _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
-//            console.log("REGION_SELECTED: " + _REGION_SELECTED);
+            _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+           console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
 
             $.ajax({
@@ -998,8 +998,8 @@ var variable_module = (function (verbose, url_zacatuche) {
             var label_value = text_val.replace(regex, '');
             _VERBOSE ? console.log(label_value) : _VERBOSE       
             
-            _REGION_SELECTED = $("#footprint_region_select").val() !== null ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
-//            console.log("REGION_SELECTED: " + _REGION_SELECTED);
+            _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+           console.log("REGION_SELECTED: " + _REGION_SELECTED);
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getVariables",

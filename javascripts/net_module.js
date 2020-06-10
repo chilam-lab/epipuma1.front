@@ -29,6 +29,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
     
     var _nodes_selected;
     var _nodes;
+    var _REGION_SELECTED = 1
 
 
 
@@ -1424,7 +1425,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
         var val_process = false;
         // Actualemnte no existe cambio de resolución en comunidad
         var grid_res = parseInt($("#grid_resolution").val());
-        var footprint_region = parseInt($("#footprint_region_select").val());
+        var footprint_region = _REGION_SELECTED //parseInt($("#footprint_region_select").val());
         
         _map_module_net.busca_especie_grupo([], footprint_region, val_process, grid_res);
 
@@ -1448,7 +1449,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
         _VERBOSE ? console.log("showSpecieOcc") : _VERBOSE;
 
         var nodes = [];
-        var footprint_region = parseInt($("#footprint_region_select").val());
+        var footprint_region = _REGION_SELECTED // parseInt($("#footprint_region_select").val());
         var grid_res = parseInt($("#grid_resolution").val());
 
 
