@@ -38,6 +38,7 @@ var variable_module = (function (verbose, url_zacatuche) {
     var _available_variables = [];
     
     var _REGION_SELECTED = 1;
+    var _GRID_RES = "state";
 
     // var map_taxon = new Map()
     // map_taxon.set("reino", "kingdom");
@@ -159,7 +160,10 @@ var variable_module = (function (verbose, url_zacatuche) {
             
             
             _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
-           console.log("REGION_SELECTED: " + _REGION_SELECTED);
+            _GRID_RES = $("#grid_resolution").val();
+
+            console.log("REGION_SELECTED: " + _REGION_SELECTED);
+            console.log("_GRID_RES: " + _GRID_RES);
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getRasterVariables",
@@ -167,7 +171,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                 type: "post",
                 data: {
                     "footprint_region": _REGION_SELECTED,
-                    "level": level_root
+                    "level": level_root,
+                    "grid_res": _GRID_RES
                 },
                 success: function (resp) {
 
@@ -258,6 +263,10 @@ var variable_module = (function (verbose, url_zacatuche) {
 
             $("#jstree_variables_bioclim_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
             _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+            _GRID_RES = $("#grid_resolution").val();
+
+            console.log("REGION_SELECTED: " + _REGION_SELECTED);
+            console.log("_GRID_RES: " + _GRID_RES);
 
            
            current_id = current_id.replace(/#/g,'').replace(/\(/g,'').replace(/\)/g,'')
@@ -278,7 +287,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                     "level": level_vartree,
                     "field": current_id,
                     "type": raster_type,
-                    "region": _REGION_SELECTED
+                    "region": _REGION_SELECTED,
+                    "grid_res": _GRID_RES
                 },
                 success: function (resp) {
 
@@ -540,7 +550,10 @@ var variable_module = (function (verbose, url_zacatuche) {
                                _VERBOSE ? console.log($("#footprint_region_select").val()) : _VERBOSE;
                                 
                                 _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
-                               console.log("REGION_SELECTED: " + _REGION_SELECTED);
+                                _GRID_RES = $("#grid_resolution").val();
+
+                                console.log("REGION_SELECTED: " + _REGION_SELECTED);
+                                console.log("_GRID_RES: " + _GRID_RES);
 
                                 $.ajax({
                                     url: _url_zacatuche + "/niche/especie/getEntList",
@@ -550,7 +563,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                                         searchStr: request.term,
                                         nivel: self.varfilter_selected[1],
                                         source: 0, // source para saber si viene de objetivo o el target
-                                        footprint_region: _REGION_SELECTED
+                                        footprint_region: _REGION_SELECTED,
+                                        grid_res: _GRID_RES
                                     },
                                     success: function (resp) {
 
@@ -832,9 +846,11 @@ var variable_module = (function (verbose, url_zacatuche) {
            _VERBOSE ? console.log(self.field_vartree) : _VERBOSE;
            _VERBOSE ? console.log(self.value_vartree) : _VERBOSE;
             
-            _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
-           console.log("REGION_SELECTED: " + _REGION_SELECTED);
+           _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+           _GRID_RES = $("#grid_resolution").val();
 
+           console.log("REGION_SELECTED: " + _REGION_SELECTED);
+           console.log("_GRID_RES: " + _GRID_RES);
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getVariables",
@@ -844,7 +860,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                     "field": field_r,
                     "parentfield": parentfield_r,
                     "parentitem": self.value_vartree,
-                    "footprint_region": _REGION_SELECTED
+                    "footprint_region": _REGION_SELECTED,
+                    "grid_res": _GRID_RES
                 },
                 success: function (resp) {
 
@@ -999,7 +1016,10 @@ var variable_module = (function (verbose, url_zacatuche) {
             _VERBOSE ? console.log(label_value) : _VERBOSE       
             
             _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
-           console.log("REGION_SELECTED: " + _REGION_SELECTED);
+            _GRID_RES = $("#grid_resolution").val();
+
+            console.log("REGION_SELECTED: " + _REGION_SELECTED);
+            console.log("_GRID_RES: " + _GRID_RES);
 
             $.ajax({
                 url: _url_zacatuche + "/niche/especie/getVariables",
@@ -1010,7 +1030,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                     "parentfield": parent_field,
                     // "parentitem": d.node.text.split(" ")[0],
                     "parentitem": label_value,
-                    "footprint_region": _REGION_SELECTED
+                    "footprint_region": _REGION_SELECTED,
+                    "grid_res": _GRID_RES
                 },
                 success: function (resp) {
 
