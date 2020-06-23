@@ -12,7 +12,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     var _first_loaded = true;
 
     var _grid_d3;
-    var _grid_map, _grid_map_target, _grid_map_occ = undefined;
+    var _grid_map, _grid_map_target, _grid_map_occ, _grid_map_state_mun = undefined;
     var _grid_res = undefined;
     var _data_sp_occ, _scale_color_function_occ = undefined;
     var _excludedcells = [];
@@ -344,7 +344,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
     // ******************************************************************* geojson-vt
-    var _tileIndex, _tileIndexSP, _tileIndexSpecies, _tileIndexDecil;
+    var _tileIndex, _tileIndexSP, _tileIndexSpecies, _tileIndexDecil, _tileIndexStateMun;
     
     var _tileOptions = {
         maxZoom: 20, // max zoom to preserve detail on
@@ -357,7 +357,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         indexMaxPoints: 100000, // max number of points per tile in the index
     };
 
-    var _tileLayer, _tileLayerSP, _tileLayerSpecies, _tileDecilLayer;
+    var _tileLayer, _tileLayerSP, _tileLayerSpecies, _tileDecilLayer, _tileLayerStateMun;
     var _pad;
 
     function whenClicked(e) {
@@ -456,6 +456,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         _tileIndex = geojsonvt([], _tileOptions);
         _tileIndexSpecies = geojsonvt([], _tileOptions);
         _tileIndexDecil = geojsonvt([], _tileOptions);
+        _tileIndexStateMun = geojsonvt([], _tileOptions);
         
         _tileLayer = L.canvasTiles()
                 .params({
@@ -464,6 +465,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     onEachFeature: onEachFeature
                 })
                 .drawing(_drawingOnCanvas);
+
+        _tileLayerStateMun = L.canvasTiles()
+                .params({
+                    debug: false,
+                    padding: 5,
+                    onEachFeature: onEachFeature
+                })
+                .drawing(_drawingOnCanvasStateMun);
 
         _tileLayerSpecies = L.canvasTiles()
                 .params({
@@ -515,7 +524,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     _OSM_layer, // capa con mapa base
                     _tileLayer, // capa de resultados del análisis
                     _tileLayerSpecies, // capa de celdas donde tien presencia la especie objetivo
-                    _tileDecilLayer // capa de prensencia de especies por decil
+                    _tileDecilLayer, // capa de prensencia de especies por decil
+                    _tileLayerStateMun // capa de staods y municipios
                 ]
             })
 
@@ -646,6 +656,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
     }
 
 
+    function updateStateMunLayer(deciles){
+
+        _layer_control.removeLayer(_tileLayerStateMun)
+        _layer_control.addOverlay(_tileLayerStateMun, "State/Mun")
+
+    }
+
+
     /**
      * Realiza la petición de la malla al servidor
      *
@@ -684,7 +702,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             },
             success: function (json) {
 
-               // console.log(json);
+               console.log(json);
 
                 // Asegura que el grid este cargado antes de realizar una generacion por enlace
                 $("#loadData").prop("disabled", false);
@@ -709,6 +727,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     _grid_map_occ = jQuery.extend(true, {}, json) // se genera un clon del gridmap
                     _grid_map_target = jQuery.extend(true, {}, json) // se genera un clon del gridmap
                     _grid_map_decil = jQuery.extend(true, {}, json) // se genera un clon del gridmap
+                    _grid_map_state_mun = jQuery.extend(true, {}, json) // se genera un clon del gridmap
 
                     // console.log(_grid_map_occ);
                     // console.log(_grid_map_target);
@@ -728,6 +747,11 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     colorizeFeatures([], _grid_map_occ, _tileLayerSP);
                     _tileIndexSP = geojsonvt(_grid_map_occ, _tileOptions);
                     _tileLayerSP.redraw();
+
+
+                    colorizeFeaturesSelectedStateMun([], _grid_map_state_mun, _tileLayerStateMun);
+                    _tileIndexStateMun = geojsonvt(_grid_map_state_mun, _tileOptions);
+                    _tileLayerStateMun.redraw();
 
 
                 }
@@ -975,7 +999,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
 
             // verifica si en la celda tiene presencia de la especie objetivo
-            if(gridid_occ.indexOf(grid_map.features[i].properties.gridid) !== -1){
+            if(gridid_occ.indexOf( grid_map.features[i].properties.gridid) !== -1){
 
                 console.log("celda objetivo")
                 // grid_map.features[i].properties.stroke = 'rgba(0,255,255,1)';
@@ -1041,14 +1065,14 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
 
-                    if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
-                        || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
+                    // if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
+                    //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
                         
-                        console.log("es mun 268")
-                        console.log("** gridid: " + grid_map.features[i].properties.gridid) 
-                        console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+                    //     console.log("es mun 268")
+                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
+                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
 
-                    }
+                    // }
                     // else{
                     //     console.log("no es mun")
                     //      console.log(grid_map.features[i].properties.gridid)       
@@ -1066,6 +1090,68 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
                     grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
                     // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
                     grid_map.features[i].properties.score = null;
+                    // _grid_map.features[i].properties.opacity = 0;
+                }
+
+                
+            }
+
+        }
+
+        tileLayer.redraw();
+        
+    }
+
+
+
+
+
+    
+    function colorizeFeaturesSelectedStateMun(grid_map_color, grid_map = _grid_map_state_mun, tileLayer = _tileLayerStateMun) {
+
+        _VERBOSE ? console.log("colorizeFeaturesSelectedStateMun") : _VERBOSE;
+
+        console.log(grid_map_color)
+        // console.log(grid_map)
+
+        if (_first_loaded) {
+            _VERBOSE ? console.log("first loaded") : _VERBOSE;
+
+            for (var i = 0; i < grid_map.features.length; i++) {
+                
+                grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
+                // grid_map.features[i].properties.score = null;
+                
+            }
+
+        } else {
+
+
+            for (var i = 0; i < grid_map.features.length; i++) {
+
+                // if(parseInt(grid_map.features[i].properties.gridid) == 7){
+
+                //     console.log("existe!!!!")
+
+                // }
+
+                if (grid_map_color.indexOf(parseInt(grid_map.features[i].properties.gridid)) != -1) {
+
+                    console.log("entra!!!!")
+                    console.log(parseInt(grid_map.features[i].properties.gridid))
+
+                    // grid_map.features[i].properties.opacity = 1;
+                    grid_map.features[i].properties.stroke = 'rgba(0,255,0,0.6)';
+                    // grid_map.features[i].properties.color = 'rgba(255,0,0,0)' //grid_map_color.get(grid_map.features[i].properties.gridid).color;  //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                    // grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
+                    
+                    
+                } else {
+
+                    grid_map.features[i].properties.stroke = 'rgba(0,0,0,0)';
+                    // grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
+                    // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                    // grid_map.features[i].properties.score = null;
                     // _grid_map.features[i].properties.opacity = 0;
                 }
 
@@ -1321,6 +1407,99 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
             // background de la celda
             ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(0,0,0,0)';
             // ctx.strokeStyle = feature.tags.stroke ? feature.tags.stroke : 'rgba(0,0,0,0.1)';
+
+            // Aun no se encuentra una propiedad para hacer el borde de la celda mas ancho
+            // ctx["stroke-width"] = 5;
+
+            ctx.beginPath();
+
+            for (var j = 0; j < feature.geometry.length; j++) {
+                var geom = feature.geometry[j];
+
+                if (type === 1) {
+                    ctx.arc(geom[0] * ratio + _pad, geom[1] * ratio + _pad, 2, 0, 2 * Math.PI, false);
+                    continue;
+                }
+
+                for (var k = 0; k < geom.length; k++) {
+                    var p = geom[k];
+                    var extent = 4096;
+
+                    var x = p[0] / extent * 256;
+                    var y = p[1] / extent * 256;
+                    if (k)
+                        ctx.lineTo(x + _pad, y + _pad);
+                    else
+                        ctx.moveTo(x + _pad, y + _pad);
+                }
+            }
+
+            if (type === 3 || type === 1) {
+                ctx.fill('evenodd');
+            }
+
+            ctx.stroke();
+        }
+
+    }
+
+
+    /**
+     * Crea y configura la malla embebida en la capa del mapa.
+     *
+     * @function _drawingOnCanvas
+     * @private
+     * @memberof! map_module
+     * 
+     * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
+     * @param {json} params - Json con los parámetros para configurar la malla
+     */
+    function _drawingOnCanvasStateMun(canvasOverlay, params) {
+
+        console.log("_drawingOnCanvasStateMun")
+
+        var bounds = params.bounds;
+        params.tilePoint.z = params.zoom,
+                elemLeft = params.canvas.offsetLeft,
+                elemTop = params.canvas.offsetTop;
+
+        var ctx = params.canvas.getContext('2d');
+        ctx.globalCompositeOperation = 'source-over';
+
+        ctx.canvas.addEventListener('click', function (event) {
+
+            var x = event.pageX - elemLeft,
+                    y = event.pageY - elemTop;
+
+        }, false);
+
+
+        var tile = _tileIndexStateMun.getTile(params.tilePoint.z, params.tilePoint.x, params.tilePoint.y);
+        if (!tile) {
+            return;
+        }
+
+        ctx.clearRect(0, 0, params.canvas.width, params.canvas.height);
+
+        var features = tile.features;
+
+        // borde de la malla
+        
+        // ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        // ctx.strokeStyle = 'rgba(255,0,0,0)';
+        // ctx.strokeStyle = 'grey'; // hace malla visible
+
+
+        for (var i = 0; i < features.length; i++) {
+            var feature = features[i],
+                    type = feature.type;
+
+            // if(i == 0)      
+            //     console.log(feature)
+
+            // background de la celda
+            ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(0,0,0,0)';
+            ctx.strokeStyle = feature.tags.stroke ? feature.tags.stroke : 'rgba(0,0,0,0)';
 
             // Aun no se encuentra una propiedad para hacer el borde de la celda mas ancho
             // ctx["stroke-width"] = 5;
@@ -3472,7 +3651,9 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         getExcludedCells: getExcludedCells,
         setDecilCells: setDecilCells,
         colorizeDecileFeatures: colorizeDecileFeatures,
-        updateDecilLayer: updateDecilLayer
+        updateDecilLayer: updateDecilLayer,
+        colorizeFeaturesSelectedStateMun: colorizeFeaturesSelectedStateMun,
+        updateStateMunLayer: updateStateMunLayer
     }
 
 });
