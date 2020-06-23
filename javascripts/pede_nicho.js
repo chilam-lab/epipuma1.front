@@ -547,6 +547,64 @@ var module_nicho = (function () {
         });
 
 
+        
+        $( "#area_search" )
+            .autocomplete({
+                source: function (request, response) {
+
+                    console.log("source")
+
+                    _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+                    _GRID_RES = $("#grid_resolution").val();
+
+                    console.log("REGION_SELECTED: " + _REGION_SELECTED);
+                    console.log("_GRID_RES: " + _GRID_RES);
+                    console.log("Term: " + request.term);
+
+                    $.ajax({
+                        url: _url_api + "/niche/especie/getStateMunList",
+                        dataType: "json",
+                        type: "post",
+                        data: {
+                            searchStr: request.term,
+                            footprint_region: _REGION_SELECTED,
+                            grid_res: _GRID_RES
+                        },
+                        success: function (resp) {
+
+                            response($.map(resp.data, function (item) {
+
+                                _VERBOSE ? console.log(item) : _VERBOSE;
+                                var value = _GRID_RES == "mun" ? item.entidad + " " + item.municipio  :  item.entidad 
+                                
+                                return{
+                                    label: value,
+                                    id: item.gridid
+                                };
+
+                            }));
+                        }
+
+                    });
+
+                },
+                minLength: 2,
+                change: function (event, ui) {
+                    // console.log("change")
+                },
+                select: function (event, ui) {
+                    console.log(ui.item);
+                    console.log(ui.item.id);
+                    // console.log(parseInt(ui.id));
+
+                    _map_module_nicho.updateStateMunLayer()
+                    _map_module_nicho.colorizeFeaturesSelectedStateMun([parseInt(ui.item.id)])
+                }
+
+            })
+
+
+
         jQuery(function(){
          jQuery('#date_timepicker_start').datetimepicker({
           scrollInput : false,
