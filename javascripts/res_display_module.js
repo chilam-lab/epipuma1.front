@@ -1328,11 +1328,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             
 
                             // console.log("total_counts: " + total_counts.length)
-                            console.log(decil_cells)
-                            console.log(percentage_avg)
-                            console.log(validation_data)
+                            // console.log(decil_cells)
+                            // console.log(percentage_avg)
+                            // console.log(validation_data)
                             console.log(data_score_cell)
-                            console.log(cell_summary)
+                            // console.log(cell_summary)
 
                             if(_val_process_temp){
                                 $("#div_munlist").show();
@@ -1346,11 +1346,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_score_cell), gpo_name: "Total", names: names_byanalysis, deciles: validation_data};
 
-                            // console.log(data_decil_byanalysis)
+                            console.log(data_decil_byanalysis)
 
                             _RESULTS_TODISPLAY.push(data_decil_byanalysis);
 
-                            // console.log(_RESULTS_TODISPLAY)
+                            console.log(_RESULTS_TODISPLAY)
 
                             _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
@@ -1453,14 +1453,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
             .then(resp => resp.json())
             .then(resp => { 
 
-                console.log(resp.data)
+                // console.log(resp.data)
                 var  area_names = resp.data
 
                 area_names.forEach(function (item, index) {
 
                     var gridid = parseInt(item[gridres_column])
                     
-                    console.log(item["NOM_ENT"])
+                    // console.log(item["NOM_ENT"])
 
                     var item_res = map_result.get(gridid);
                     item_res.nom_state = (item["NOM_ENT"] === undefined) ? "N/A" : item["NOM_ENT"]
@@ -1490,6 +1490,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     item_res.train = item_res.training_period
                     item_res.validation = item_res.validation_period
+
+                    item_res.first_period = item_res.first_period
                     
                 })
 
@@ -1530,6 +1532,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     row_temp.push(item.train)
                     row_temp.push(item.validation)
+
+                    row_temp.push(item.first_period)
 
                     data_list.push(row_temp)
                 });
