@@ -984,7 +984,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         if(_data_sp_occ !== undefined){
 
             gridid_occ = _data_sp_occ.map(function (d) {
-                return d.gridid;
+                return parseInt(d.gridid);
             })
 
         }
@@ -993,13 +993,13 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         }
 
         console.log(gridid_occ)
-        console.log(_grid_map_target)
+        // console.log(_grid_map_target)
 
         for (var i = 0; i < grid_map.features.length; i++) {
 
 
             // verifica si en la celda tiene presencia de la especie objetivo
-            if(gridid_occ.indexOf( grid_map.features[i].properties.gridid) !== -1){
+            if(gridid_occ.indexOf(parseInt(grid_map.features[i].properties.gridid)) !== -1){
 
                 console.log("celda objetivo")
                 // grid_map.features[i].properties.stroke = 'rgba(0,255,255,1)';
@@ -1137,8 +1137,8 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
                 if (grid_map_color.indexOf(parseInt(grid_map.features[i].properties.gridid)) != -1) {
 
-                    console.log("entra!!!!")
-                    console.log(parseInt(grid_map.features[i].properties.gridid))
+                    // console.log("entra!!!!")
+                    // console.log(parseInt(grid_map.features[i].properties.gridid))
 
                     // grid_map.features[i].properties.opacity = 1;
                     grid_map.features[i].properties.stroke = 'rgba(0,255,0,0.6)';
@@ -1456,7 +1456,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function _drawingOnCanvasStateMun(canvasOverlay, params) {
 
-        console.log("_drawingOnCanvasStateMun")
+        // console.log("_drawingOnCanvasStateMun")
 
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,

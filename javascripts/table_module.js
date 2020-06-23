@@ -554,7 +554,8 @@ var table_module = (function(verbose) {
                 {title: 'Peor P5 valor'},
 
                 {title: 'Entrenamiento'},
-                {title: 'Validación'}
+                {title: 'Validación'},
+                {title: 'Primer Periodo'}
             ],
             buttons: [
                 { 
