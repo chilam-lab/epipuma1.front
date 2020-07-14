@@ -1314,7 +1314,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             var total_counts = resp.data;
 
-                            var validation_data = resp.validation_data
+                            var validation_data = _val_process_temp ? resp.time_validation  : resp.validation_data
+
+                            // var validation_data = resp.validation_data
 
                             var data_score_cell = resp.data_score_cell
 
@@ -1324,13 +1326,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                             // sobre escribe el resultado en caso de ser total
                             cell_summary = resp.cell_summary
-
                             
 
                             // console.log("total_counts: " + total_counts.length)
                             // console.log(decil_cells)
                             // console.log(percentage_avg)
-                            // console.log(validation_data)
+                            console.log(validation_data)
                             console.log(data_score_cell)
                             // console.log(cell_summary)
 
@@ -1341,7 +1342,6 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             else{
                                 $("#div_munlist").hide();
                             }
-                            
 
 
                             var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_score_cell), gpo_name: "Total", names: names_byanalysis, deciles: validation_data};
