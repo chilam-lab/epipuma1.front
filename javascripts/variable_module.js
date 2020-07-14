@@ -210,8 +210,8 @@ var variable_module = (function (verbose, url_zacatuche) {
 
                         for (var i = 0; i < data.length; i++) {
 
-//                            console.log(data[i]);
-                            var idNode = (data[i].fuente).replace(/ /g, '');
+                           // console.log(data[i]);
+                            var idNode = (data[i].fuente).replace(/ /g, '').replace(/\./g, '').replace(/\(/g, '').replace(/\)/g, '');
                             var default_son = level_vartree < 2 ? [{text: "cargando..."}] : [];
 
                             var newNode = {
@@ -223,8 +223,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                                 "children": default_son
                             };
 
-                            console.log("nodes-loadTreeVarRaster ");
-                            console.log(newNode);
+                            // console.log("nodes-loadTreeVarRaster ");
+                            // console.log(newNode);
                             $('#jstree_variables_bioclim_' + id).jstree("create_node", current_node, newNode, 'last', false, false);
                         }
 
@@ -254,10 +254,14 @@ var variable_module = (function (verbose, url_zacatuche) {
             if (d.node.children.length > 1 || d.node.children[0].indexOf("bio") === 0)
                 return;
 
+            console.log(d.node.original.attr);
+
             var level_vartree = d.node.original.attr.level;
             var raster_type = d.node.original.attr.type;
             var current_id = d.node.original.attr.bid;
             var parent_name = d.node.original.attr.parent;
+
+            console.log("current_id 0: " + current_id);
 
             var max_level = 3;
 
@@ -295,6 +299,8 @@ var variable_module = (function (verbose, url_zacatuche) {
                     var data = resp.data;
 
                     console.log(data)
+
+                    console.log($("#" + current_id));
 
                     var current_node = $('#jstree_variables_bioclim_' + id).jstree(true).get_node($("#" + current_id));
                     _VERBOSE ? console.log(current_node) : _VERBOSE;
