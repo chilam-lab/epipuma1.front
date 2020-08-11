@@ -1427,7 +1427,7 @@ var net_module = (function(verbose, url_zacatuche, map_module_net, utils_module)
         var grid_res = $("#grid_resolution").val();
         var footprint_region = _REGION_SELECTED //parseInt($("#footprint_region_select").val());
         
-        _map_module_net.busca_especie_grupo([], footprint_region, val_process, grid_res);
+        _map_module_net.busca_especie_grupo([], footprint_region, val_process, grid_res, "redes");
 
         // function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = 16) {
 

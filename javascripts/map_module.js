@@ -2055,7 +2055,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {array} taxones - Array con taxones seleccionados
      */
 
-     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = "state") {
+     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = "state", fuente = "nicho") {
 
         _VERBOSE ? console.log("busca_especie_grupo") : _VERBOSE;
 
@@ -2070,7 +2070,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
         console.log(_taxones)
 
 
-        if(_grid_map_occ === undefined || _grid_map === undefined || _grid_res !== grid_res || _REGION_SELECTED !== region){
+        if((_grid_map_occ === undefined && fuente === "nicho") || _grid_map === undefined || _grid_res !== grid_res || _REGION_SELECTED !== region){
             
             console.log("Carga de Malla (nueva o cambio de resolución)")
             

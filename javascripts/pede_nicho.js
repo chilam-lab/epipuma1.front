@@ -467,7 +467,7 @@ var module_nicho = (function () {
 
             // _map_module_nicho.loadD3GridMX(val_process, grid_res, footprint_region, _taxones);
 
-            _map_module_nicho.busca_especie_grupo(_taxones, footprint_region, val_process, grid_res, val_process_temp);
+            _map_module_nicho.busca_especie_grupo(_taxones, footprint_region, val_process, grid_res);
 
         });
 
