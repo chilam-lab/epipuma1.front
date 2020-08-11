@@ -1182,7 +1182,10 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
        // console.log(arg_gridid);
        // console.log(arg_count);
-       // console.log(breaks);
+       // console.log(link_color_brewer);
+       // console.log(_grid_map);
+
+       var arg_gridid = arg_gridid.map(function(d){ return parseInt(d) })
 
        // var tonos = colorbrewer.YlOrRd[9];
 
@@ -2052,7 +2055,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {array} taxones - Array con taxones seleccionados
      */
 
-     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = 16) {
+     function busca_especie_grupo(taxones, region = 1, val_process = false, grid_res = "state") {
 
         _VERBOSE ? console.log("busca_especie_grupo") : _VERBOSE;
 
@@ -2082,6 +2085,7 @@ var map_module = (function (url_geoserver, workspace, verbose, url_zacatuche) {
 
             loadD3GridMX(val_process, grid_res, region, _taxones)
             return
+            
         }
         else{
 

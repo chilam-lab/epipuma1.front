@@ -15,6 +15,7 @@ var module_net = (function () {
     var _REGION_TEXT_SELECTED;
     var _MODULO = "comunidad"
     var _taxones = []
+    var _default_region = 1
 
     // actualizar este arreglo si cambian los ids de las secciones
     var _SCROLL_SECTIONS = ["section0","hist_comunidad","tbl_comunidad","tbl_container"];
@@ -180,7 +181,9 @@ var module_net = (function () {
 
             var s_filters = _res_display_module_net.getFilters(_componente_fuente.getVarSelArray(), TIPO_FUENTE);
             var t_filters = _res_display_module_net.getFilters(_componente_sumidero.getVarSelArray(), TIPO_SUMIDERO);
-            var footprint_region = parseInt($("#footprint_region_select").val());
+            // var footprint_region = parseInt($("#footprint_region_select").val());
+            var footprint_region = _default_region;
+            
 
             var grid_res_val = $("#grid_resolution").val();
             console.log("grid_resolution: " + grid_res_val);
@@ -238,9 +241,9 @@ var module_net = (function () {
 
             data_link.min_occ = parseInt($("#occ_number").val());
 
-            data_link.grid_res = parseInt($("#grid_resolution").val());
+            data_link.grid_res = $("#grid_resolution").val();
 
-            data_link.footprint_region = parseInt($("#footprint_region_select").val());
+            data_link.footprint_region = _default_region // parseInt($("#footprint_region_select").val());
 
             data_link.num_sfilters = subgroups_source.length;
 

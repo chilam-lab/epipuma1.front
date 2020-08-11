@@ -695,9 +695,10 @@ filters.push({
 
          self.epsilon_beans = d3.range(1, self.NUM_BEANS, 1);
 
-         self.ep_th = 2.0;
+         // Se redefine ep_th para no descartar gran cantidad de valores no significativos
+         self.ep_th = 1.0;
 
-        // console.log(json.links);
+        console.log(json.links);
         // console.log(json.links.length);
         // console.log("min_eps: " + min_eps);
         // console.log("max_eps: " + max_eps);
@@ -735,7 +736,7 @@ filters.push({
         })
 
 
-        // console.log(newlinks);
+        console.log(newlinks);
         console.log("newlinks: " + newlinks.length);
         console.log("no_mean_lenght: " + no_mean_lenght);
 
