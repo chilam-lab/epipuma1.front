@@ -289,7 +289,8 @@ var language_module = (function (verbose) {
 
             $("#lb_construccion").text($.i18n.prop('lb_construccion'));
             $("#lb_validacion").text($.i18n.prop('lb_validacion') + ":");
-            $("#lb_validacion_temp").text($.i18n.prop('lb_validacion_temp') + ":");
+            // $("#lb_validacion_temp").text($.i18n.prop('lb_validacion_temp') + ":");
+            $("#lb_validacion_temp").text("Periodo de Validación")
 
 
             $("#lb_apriori").text($.i18n.prop('lb_apriori') + ":");
@@ -331,6 +332,7 @@ var language_module = (function (verbose) {
             $("#lb_seccion_tools").text($.i18n.prop('lb_seccion_tools'));
             $("#lb_tools_ayuda").text($.i18n.prop('lb_tools_ayuda'));
             $("#lb_panel_variables").text($.i18n.prop('lb_panel_variables'));
+
             $("#a_taxon_fuente").text($.i18n.prop('a_taxon'));
             $("#a_raster_fuente").text($.i18n.prop('a_raster'));
             $("#a_topo_fuente").text($.i18n.prop('a_topo'));
