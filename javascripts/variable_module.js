@@ -669,7 +669,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-plus pull-left no-mg-top')
                         .click(function (e) {
-
+                            self.arrayVarSelected = JSON.parse(sessionStorage.getItem("selectedData"));
                             self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
                             $('#jstree_variables_species_' + id).jstree("destroy").empty();
                             $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);

@@ -109,7 +109,7 @@ var reino_campos = {
     "clase": "clasevalida",
     "orden": "ordenvalido",
     "familia": "familiavalida",
-    "genero": "generovalido",
+    "genero": "generovalido2",
     "especie": "epitetovalido"
 };
 
