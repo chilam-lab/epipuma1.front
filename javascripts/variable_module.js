@@ -671,6 +671,11 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .click(function (e) {
                             self.arrayVarSelected = JSON.parse(sessionStorage.getItem("selectedData"));
                             self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+                            if(self.arrayVarSelected.length == 0){
+                                return;
+
+                        }
+                        else{
                             $('#jstree_variables_species_' + id).jstree("destroy").empty();
                             $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
                             $("#jstree_variables_species_" + id).off('changed.jstree', self.getChangeTreeVar);
@@ -678,6 +683,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                             $("#text_variable" + "_" + id).val("");
 
                             e.preventDefault();
+                        }
                         })
                         .appendTo(tab_pane);
 
@@ -686,7 +692,14 @@ var variable_module = (function (verbose, url_zacatuche) {
                         .attr('type', 'button')
                         .addClass('btn btn-primary glyphicon glyphicon-trash pull-left no-mg-top')
                         .click(function (e) {
+                            self.arrayVarSelected = JSON.parse(sessionStorage.getItem("selectedData"));
+                            self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+                            
+                            if(self.arrayVarSelected.length == 0){
+                                return;
 
+                        }
+                    else{
                             $("#text_variable" + "_" + id).val("");
                             $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
                             $("#jstree_variables_species_" + id).off('changed.jstree', self.getChangeTreeVar);
@@ -697,6 +710,7 @@ var variable_module = (function (verbose, url_zacatuche) {
                             self.cleanVariables('jstree_variables_species_' + id, 'treeAddedPanel_' + id, _TYPE_BIO);
 
                             e.preventDefault();
+                        }
                         })
                         .appendTo(tab_pane);
 

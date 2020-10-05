@@ -77,12 +77,13 @@ var module_nicho = (function () {
     function _initializeComponents() {
 
         _VERBOSE ? console.log("_initializeComponents") : _VERBOSE;
-        self.arrayVarSelected;
+        self.arrayVarSelected = [];
+        sessionStorage.setItem("selectedData", JSON.stringify(self.arrayVarSelected));
 
         $("#lb_do_apriori").text(_iTrans.prop('lb_no'));
         $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
         // CAMBIOS EPIPUMA 
-        
+
 
         const getCovidMetaData = () => {
             var _url_zacatuche = "http://covid19.c3.unam.mx/api/";
@@ -497,6 +498,25 @@ var module_nicho = (function () {
 
         getCovidMetaData();
         getCovidData();
+        $("#add_group_target").click(function(){
+            if(self.arrayVarSelected.length == 0){
+            console.log("No species selected");
+            _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
+            return;
+            }
+        })
+        $("#clean_var_target").click(function(){
+            if(self.arrayVarSelected.length == 0){
+            console.log("No species selected");
+            _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
+            return;
+            }
+        })
+
+
+        
+        
+        ///
 
 
         function forceNumeric() {
