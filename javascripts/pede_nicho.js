@@ -500,38 +500,43 @@ var module_nicho = (function() {
 
 
         var count = 0;
-        sessionStorage.setItem("contador_moodificadores", count)
         getCovidMetaData();
         getCovidData();
         var list_modifiers = [];
         var flag_modifiers = false;
         setTimeout(function() {
             $(".jstree-anchor").click(function() {
-                if (sessionStorage.getItem("contador_moodificadores") > 0) {
-                    $(".modifiers_covid").css("visibility", "hidden");
-                }
-                count++;
-                sessionStorage.setItem("contador_moodificadores", count)
-                $(".grupo1").prop('checked', false);
-                let covar = $(this)[0].innerText;
-                sessionStorage.setItem("covar", covar);
-                if (covar == "COVID-19") {
-                    return;
-                }
-                try {
-                    document.getElementById("modifiers_covid").hidden = false;
-                    if (covar == "COVID-19 CONFIRMADO") {
-                        document.getElementById("prevalence").hidden = false;
-                    } else {
-                        document.getElementById("prevalence").hidden = true;
+                let clase = $(this).attr("class");
+                console.log("CLAASAE:", clase)
+                if ((clase == "jstree-anchor jstree-hovered jstree-clicked") || (clase == "jstree-anchor jstree-clicked") || (clase == "jstree-anchor jstree-clicked jstree-hovered")) {
+                    document.getElementById("modifiers_covid").hidden = true;
+                    count++;
+
+                } else if ((clase == "jstree-anchor jstree-hovered")) {
+                    count--;
+                    $(".grupo1").prop('checked', false);
+                    let covar = $(this)[0].innerText;
+                    sessionStorage.setItem("covar", covar);
+                    if (covar == "COVID-19") {
+                        return;
                     }
-                } catch (error) {
-                    console.log("Modificadores ya han sido ocultados")
+                    try {
+                        document.getElementById("modifiers_covid").hidden = false;
+                        if (covar == "COVID-19 CONFIRMADO") {
+                            document.getElementById("prevalence").hidden = false;
+                        } else {
+                            document.getElementById("prevalence").hidden = true;
+                        }
+                    } catch (error) {
+                        console.log("Modificadores ya han sido ocultados")
 
+                    }
                 }
-
+                if (count <= -2) {
+                    document.getElementById("modifiers_covid").hidden = true;
+                }
             })
-        }, 1000)
+        }, 500)
 
         $(".grupo1").click(function() {
             if (flag_modifiers) {
@@ -552,20 +557,23 @@ var module_nicho = (function() {
             }
             let covar2 = $(this)[0].value;
             list_modifiers.push([covar, covar2]);
-            $(".grupo1").css("visibility", "hidden");
         })
 
         $(".modifiers_covid").click(function() {
             if (flag_modifiers) {
                 _module_toast.showToast_BottomCenter(_iTrans.prop('Solo puedes escoger una covariable con modificador'), "warning");
-                $(".modifiers_covid").css("visibility", "hidden");
+                document.getElementById("modifiers_covid").hidden = true;
                 return
             }
         })
 
 
         $("#add_group_target").click(function() {
-
+            if (self.arrayVarSelected.length == 0) {
+                console.log("No species selected");
+                _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
+                return;
+            }
             //Manejo del arbol de variables
             let variables_seleccionadas = JSON.parse(sessionStorage.getItem("selectedData"));
             let covars_list = ["COVID-19 CONFIRMADO", "COVID-19 FALLECIDO", "COVID-19 NEGATIVO", "COVID-19 SOSPECHOSO"];
@@ -582,7 +590,7 @@ var module_nicho = (function() {
             }
             //Manejo de Modificadores
             //Eliminar grupo modificadores
-            $(".modifiers_covid").css("visibility", "hidden");
+            document.getElementById("modifiers_covid").hidden = true;
             if (flag_modifiers) {
                 let obj_fix = {}
                 sessionStorage.setItem("modifiers_flag", "true");
@@ -609,31 +617,23 @@ var module_nicho = (function() {
                         text_switch = "Casos";
                         break;
                 }
-                let dict_modificadores = [{ "prevalence": "Prevalencia" },
-                    { "cases": "Casos" }
-                ]
+
                 let modifier_text = "Modificador: " +
                     text_switch
                 $(".cell_item")[0].innerText = original_text + " >> " + modifier_text
 
             }
-
+        })
+        $("#clean_var_target").click(function() {
+            flag_modifiers = false;
+            sessionStorage.setItem("modifiers_flag", false);
+            list_modifiers.length = 0;
             if (self.arrayVarSelected.length == 0) {
                 console.log("No species selected");
                 _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
                 return;
             }
         })
-        $("#clean_var_target").click(function() {
-                // document.getElementById("modifiers_covid").hidden = true;
-                list_modifiers.length = 0;
-                if (self.arrayVarSelected.length == 0) {
-                    console.log("No species selected");
-                    _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
-                    return;
-                }
-            })
-            //Manejando incidencia, prevalencia y casos
 
 
 

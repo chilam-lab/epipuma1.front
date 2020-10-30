@@ -1586,35 +1586,45 @@ var variable_module = (function(verbose, url_zacatuche) {
                 $(".jstree-icon").click()
                 $(".jstree-icon").click()
                 $(".jstree-icon").click()
-
                 var count = 0;
-                sessionStorage.setItem("contador_moodificadores", count)
+                var flag_modifiers = false;
+                let covar = sessionStorage.getItem("covar");
+                let mod_flag = JSON.stringify(sessionStorage.getItem("modifiers_flag"));
+                if ((covar == "COVID-19") || ((mod_flag == '"true"'))) {
+                    $(".jstree-icon").click()
+                }
+
+
                 setTimeout(function() {
                     $(".jstree-anchor").click(function() {
-                        if (sessionStorage.getItem("contador_moodificadores") > 0) {
-                            $(".modifiers_covid").css("visibility", "hidden");
-                            return
-                        }
-                        count++;
-                        sessionStorage.setItem("contador_moodificadores", count)
-                        $(".grupo1").prop('checked', false);
-                        let covar = $(this)[0].innerText;
-                        sessionStorage.setItem("covar", covar);
-                        if (covar == "COVID-19") {
-                            return;
-                        }
-                        try {
-                            $(".modifiers_covid").css("visibility", "visible");
-                            if (covar == "COVID-19 CONFIRMADO") {
-                                document.getElementById("prevalence").hidden = false;
-                            } else {
-                                document.getElementById("prevalence").hidden = true;
+                        let clase = $(this).attr("class");
+                        if ((clase == "jstree-anchor jstree-hovered jstree-clicked") || (clase == "jstree-anchor jstree-clicked") || (clase == "jstree-anchor jstree-clicked jstree-hovered")) {
+                            document.getElementById("modifiers_covid").hidden = true;
+                            count++;
+
+                        } else if ((clase == "jstree-anchor jstree-hovered")) {
+                            count--;
+                            $(".grupo1").prop('checked', false);
+                            let covar = $(this)[0].innerText;
+                            sessionStorage.setItem("covar", covar);
+                            if (covar == "COVID-19") {
+                                return;
                             }
-                        } catch (error) {
-                            console.log("Modificadores ya han sido ocultados")
+                            try {
+                                document.getElementById("modifiers_covid").hidden = false;
+                                if (covar == "COVID-19 CONFIRMADO") {
+                                    document.getElementById("prevalence").hidden = false;
+                                } else {
+                                    document.getElementById("prevalence").hidden = true;
+                                }
+                            } catch (error) {
+                                console.log("Modificadores ya han sido ocultados")
 
+                            }
                         }
-
+                        if (count <= -2) {
+                            document.getElementById("modifiers_covid").hidden = true;
+                        }
                     })
                 }, 500)
                 $(".grupo1").click(function() {
@@ -1642,7 +1652,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                 $(".modifiers_covid").click(function() {
                     if (flag_modifiers) {
                         _module_toast.showToast_BottomCenter(_iTrans.prop('Solo puedes escoger una covariable con modificador'), "warning");
-                        $(".modifiers_covid").css("visibility", "hidden");
+                        document.getElementById("modifiers_covid").hidden = true;
                         return
                     }
                 })
