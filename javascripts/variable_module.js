@@ -353,6 +353,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             console.log(data[i].label)
                                 // eliminacaraacteres especiales y espacios en blanco
                             var lb = data[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g, '').replace(/#/g, '')
+                                // var lb = data[i].label
 
 
                             // console.log(_iTrans.prop(lb))
@@ -552,6 +553,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .addClass('form-control')
                     .autocomplete({
                         source: function(request, response) {
+                            console.log(response);
 
                             _VERBOSE ? console.log($("#footprint_region_select").val()) : _VERBOSE;
 
@@ -669,20 +671,25 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr('type', 'button')
                     .addClass('btn btn-primary glyphicon glyphicon-plus pull-left no-mg-top')
                     .click(function(e) {
-                        self.arrayVarSelected = JSON.parse(sessionStorage.getItem("selectedData"));
-                        self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
-                        if (self.arrayVarSelected.length == 0) {
-                            return;
-
+                        let flag_covars = JSON.stringify(sessionStorage.getItem("covar")).length;
+                        console.log(JSON.stringify(sessionStorage.getItem("covar")))
+                        console.log(flag_covars)
+                        if (flag_covars > 2) {
+                            let var_array = JSON.parse(sessionStorage.getItem("selectedData"));
+                            self.addOtherGroup('jstree_variables_species_' + id, var_array, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
                         } else {
-                            // $('#jstree_variables_species_' + id).jstree("destroy").empty();
-                            $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
-                            $("#jstree_variables_species_" + id).off('changed.jstree', self.getChangeTreeVar);
-                            $("#jstree_variables_species_" + id).off('ready.jstree', self.loadNodes);
-                            $("#text_variable" + "_" + id).val("");
-
-                            e.preventDefault();
+                            self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
                         }
+
+
+                        // $('#jstree_variables_species_' + id).jstree("destroy").empty();
+                        $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
+                        $("#jstree_variables_species_" + id).off('changed.jstree', self.getChangeTreeVar);
+                        $("#jstree_variables_species_" + id).off('ready.jstree', self.loadNodes);
+                        $("#text_variable" + "_" + id).val("");
+
+                        e.preventDefault();
+
                     })
                     .appendTo(tab_pane);
 
@@ -1233,7 +1240,7 @@ var variable_module = (function(verbose, url_zacatuche) {
         self.existsGroup = function(arraySelected) {
 
             _VERBOSE ? console.log("self.existsGroup") : _VERBOSE;
-
+            console.log(arraySelected)
             var arg_labels = arraySelected.map(function(d) {
                 _VERBOSE ? console.log(d) : _VERBOSE;
                 return d.label.split(" ")[0];
@@ -1382,9 +1389,12 @@ var variable_module = (function(verbose, url_zacatuche) {
             //            console.log(gpoName);
             //            console.log(idDivContainer);
             //            console.log(typeVar);
-
-            if (arraySelected.length === 0)
+            let flag_covar_selected = sessionStorage.getItem("flag_target_added")
+            console.log(flag_covar_selected)
+            if ((arraySelected.length === 0) && (flag_covar_selected == "true")) {
+                console.log("meeem")
                 return;
+            }
 
             // var nivel_reino = self.isKingdomLevel(arraySelected);
             // if (nivel_reino) {
