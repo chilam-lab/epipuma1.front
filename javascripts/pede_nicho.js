@@ -91,6 +91,8 @@ var module_nicho = (function() {
         sessionStorage.setItem("modifiers", "");
         sessionStorage.setItem("covar", "");
         sessionStorage.setItem("flag_target_added", "false")
+        sessionStorage.setItem("count_anlys", 0)
+
 
         // Definicion Fuciones
 
@@ -695,6 +697,10 @@ var module_nicho = (function() {
             flag_modifiers = false;
             sessionStorage.setItem("modifiers_flag", false);
             list_modifiers.length = 0;
+            let count = sessionStorage.getItem("count_anlys");
+            if (count == 1) {
+                location.reload();
+            }
             if (self.arrayVarSelected.length == 0) {
                 console.log("No species selected");
                 _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
@@ -704,6 +710,10 @@ var module_nicho = (function() {
         $("#reload_map").click(function() {
             sessionStorage.setItem("covar", "")
         })
+        $("#get_esc_ep").click(function() {
+            sessionStorage.setItem("count_anlys", 1)
+        })
+
 
         /// Acaban cambios EpiPuma
 
