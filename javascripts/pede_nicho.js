@@ -629,7 +629,7 @@ var module_nicho = (function() {
             })
             $(".jstree-anchor")[1].click()
 
-        }, 800)
+        }, 1500)
 
 
         // Boton Agregar

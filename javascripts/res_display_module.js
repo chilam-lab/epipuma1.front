@@ -1,10 +1,9 @@
-
 /**
  * Controlador de los módulos utilizados en nicho ecológico.
  *
  * @namespace res_display_module
  */
-var res_display_module = (function (verbose, url_zacatuche) {
+var res_display_module = (function(verbose, url_zacatuche) {
 
     var _url_zacatuche = url_zacatuche;
 
@@ -40,16 +39,17 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
     var _allowedPoints = d3.map([]),
-            _discardedPoints = d3.map([]);
-    var        _discardedPointsFilter = d3.map([]),
-            _computed_discarded_cells = d3.map([]),
-            _computed_occ_cells = d3.map([]);
+        _discardedPoints = d3.map([]);
+    var _discardedPointsFilter = d3.map([]),
+        _computed_discarded_cells = d3.map([]),
+        _computed_occ_cells = d3.map([]);
 
     var _cell_set = d3.map([]);
     var _dataChartValSet = [];
 
     var _REQUESTS, _ITER_REQUESTS,
-            _ITER = 0, _NUM_ITERATIONS = 5;
+        _ITER = 0,
+        _NUM_ITERATIONS = 5;
 
     var _min_occ_process, _mapa_prob, _fossil, _grid_res, _footprint_region;
 
@@ -60,20 +60,22 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _NUM_DECILES = 10;
 
     var _countsdata,
-            _cdata,
-            _sdata,
-            _tdata,
-            _ddata,
-            _decil_data,
-            _total_data_decil,
-            _decil_group_data;
+        _cdata,
+        _sdata,
+        _tdata,
+        _ddata,
+        _decil_data,
+        _total_data_decil,
+        _decil_group_data;
 
 
     var _default_decil = 10
 
     // var _toastr = toastr;
 
-    var _fathers = [], _sons = [], _totals = [];
+    var _fathers = [],
+        _sons = [],
+        _totals = [];
 
     var _reino_campos = {
         "reino": "reinovalido",
@@ -121,12 +123,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
     var _tbl_eps = false;
 
     var _histogram_module_nicho,
-            _table_module_eps;
+        _table_module_eps;
 
     var _ID_STYLE_GENERATED;
 
-    var _gridids_collection = [], _total_set_length = 0,
-            _training_set_size = 0, _test_set_size = 0;
+    var _gridids_collection = [],
+        _total_set_length = 0,
+        _training_set_size = 0,
+        _test_set_size = 0;
 
     var _slider_value, _sp_gridids;
 
@@ -420,7 +424,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _validation_module_all.set_histogram_module(_histogram_module_nicho);
 
 
-        $('ul.dropdown-menu li a.map_type').click(function (e) {
+        $('ul.dropdown-menu li a.map_type').click(function(e) {
 
             _VERBOSE ? console.log("change map") : _VERBOSE;
 
@@ -438,19 +442,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _configureStyleMap();
 
             if (_return_map) {
-              _map_module_nicho.set_colorCellsDecilMap();
+                _map_module_nicho.set_colorCellsDecilMap();
             }
-            
+
             e.preventDefault();
         });
 
-        $('#return_map').click(function () {
-          _configureStyleMap();
-          _return_map = false;
-          document.getElementById("return_map").style.display = "none";
+        $('#return_map').click(function() {
+            _configureStyleMap();
+            _return_map = false;
+            document.getElementById("return_map").style.display = "none";
         });
 
-        $("#send_email_csv").click(function (e) {
+        $("#send_email_csv").click(function(e) {
 
             // _VERBOSE ? console.log($("#email_address")) : _VERBOSE;
             _VERBOSE ? console.log($("#email_address")[0].validity["valid"]) : _VERBOSE;
@@ -466,7 +470,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     url: _url_zacatuche,
                     type: 'post',
                     data: _tdata,
-                    success: function (d) {
+                    success: function(d) {
 
                         _VERBOSE ? console.log(d) : _VERBOSE;
                         $('#modalMail').modal('hide');
@@ -474,7 +478,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         _module_toast.showToast_BottomCenter(_iTrans.prop('lb_correo_enviado'), "success");
 
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
 
                         _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
                         $('#modalMail').modal('hide');
@@ -492,35 +496,35 @@ var res_display_module = (function (verbose, url_zacatuche) {
         });
 
 
-        $("#map_download").click(function (e) {
+        $("#map_download").click(function(e) {
 
             _VERBOSE ? console.log("map_download") : _VERBOSE;
 
             var grid = _map_module_nicho.getGridMap2Export();
 
-//            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
-            this.href = (window.URL ? URL : webkitURL).createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
+            //            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(grid)], {type: 'application/json'}));
+            this.href = (window.URL ? URL : webkitURL).createObjectURL(new Blob([JSON.stringify(grid)], { type: 'application/json' }));
 
-//            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(grid));
+            //            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(grid));
 
             $("#modalMailShape").modal("hide");
 
         });
 
-        $("#sp_download").click(function (e) {
+        $("#sp_download").click(function(e) {
 
             _VERBOSE ? console.log("sp_download") : _VERBOSE;
 
             var sp_occ = _map_module_nicho.getSP2Export();
 
-            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(sp_occ)], {type: 'application/json'}));
-//            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(sp_occ));
+            this.href = window.URL.createObjectURL(new Blob([JSON.stringify(sp_occ)], { type: 'application/json' }));
+            //            this.href = "data:application/json;charset=UTF-8," + encodeURIComponent(JSON.stringify(sp_occ));
 
             $("#modalMailShape").modal("hide");
 
         });
 
-        
+
 
 
         // $('#btn_demo').on('click', function () {
@@ -529,7 +533,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         //     console.log("click")
 
-            
+
 
         // })
 
@@ -574,13 +578,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var discardedGridids = [];
 
 
-        
+
 
         _REQUESTS = num_items + _subgroups.length;
         _ITER_REQUESTS = _REQUESTS;
-//        _VERBOSE ? console.log("Peticiones al servidor: " + _REQUESTS) : _VERBOSE;
+        //        _VERBOSE ? console.log("Peticiones al servidor: " + _REQUESTS) : _VERBOSE;
 
-//        document.getElementById("tbl_hist").style.display = "inline";
+        //        document.getElementById("tbl_hist").style.display = "inline";
         _cleanPanel();
         _first_analysis = true;
         _show_greenCells = false;
@@ -617,7 +621,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var taxon_values = [];
 
-        _taxones.forEach(function (taxon, index) {
+        _taxones.forEach(function(taxon, index) {
 
             console.log(taxon)
 
@@ -632,17 +636,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log("_val_process_temp: " + _val_process_temp) : _VERBOSE;
         _VERBOSE ? console.log("_val_process: " + _val_process) : _VERBOSE;
 
-        if(_val_process_temp){
+        if (_val_process_temp) {
 
             _VERBOSE ? console.log("VALIDACIÓN TEMPORAL: ON") : _VERBOSE;
 
             _module_toast.showToast_BottomCenter(_iTrans.prop('lb_inicio_validacion'), "warning");
-            
+
             _confDataRequest(taxon_values, _idreg, val_process);
             _panelGeneration("");
 
-        }
-        else if (_val_process) {
+        } else if (_val_process) {
 
             _VERBOSE ? console.log("VALIDACIÓN ESPACIAL: ON") : _VERBOSE;
 
@@ -652,12 +655,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         } else {
 
             _VERBOSE ? console.log("VALIDACIÓN: OFF") : _VERBOSE;
-            
-            
+
+
             // _confDataRequest(_spid, _idreg, val_process);
             _confDataRequest(taxon_values, _idreg, val_process);
             _panelGeneration("");
-//            _generateCounts(_countsdata);
+            //            _generateCounts(_countsdata);
 
         }
     }
@@ -680,7 +683,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         _VERBOSE ? console.log("_initializeValidationTables") : _VERBOSE;
 
         _VERBOSE ? console.log("grid_res: " + _grid_res) : _VERBOSE;
-        
+
 
         $.ajax({
             url: _url_zacatuche + "/niche/especie/getGroupValidationTables",
@@ -693,7 +696,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 footprint_region: _footprint_region
             },
             dataType: "json",
-            success: function (resp) {
+            success: function(resp) {
 
                 console.log(resp)
 
@@ -706,7 +709,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 // _generateCounts(_countsdata);
 
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
 
             }
@@ -735,7 +738,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 idtable: _idtemptable
             },
             dataType: "json",
-            success: function (resp) {
+            success: function(resp) {
 
                 console.log("delete");
                 console.log(resp);
@@ -743,7 +746,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 _idtemptable = "";
 
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 _VERBOSE ? console.log("textStatus: " + textStatus) : _VERBOSE;
                 _VERBOSE ? console.log("errorThrown: " + errorThrown) : _VERBOSE;
 
@@ -806,7 +809,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         }
 
 
-        
+
         _map_module_nicho.clearMap();
 
 
@@ -839,11 +842,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // var idtabla = tabla || "no_table";
         var apriori = $("#chkApriori").is(':checked') ? true : false;
         var mapap = $("#chkMapaProb").is(':checked') ? true : false;
-//        _mapa_prob ? "mapa_prob" : undefined;
+        //        _mapa_prob ? "mapa_prob" : undefined;
 
         var fossil = $("#chkFosil").is(':checked') ? true : false;
         var min_occ = _min_occ_process ? parseInt($("#occ_number").val()) : 1;
-        
+
 
         var lin_inf = _rangofechas ? _rangofechas[0] : undefined;
         var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
@@ -852,8 +855,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var lim_inf_valtemp = undefined;
         var lim_inf_valtemp = undefined;
 
-        if(_val_process_temp){
-            
+        if (_val_process_temp) {
+
             console.log("Limites para validacion tamporal");
 
             var lim_inf_valtemp = $("#date_timepicker_start_val").val();
@@ -862,7 +865,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         console.log("lim_inf_valtemp: " + lim_inf_valtemp);
         console.log("lim_sup_valtemp: " + lim_sup_valtemp);
-        
+
 
         var existsDiscardedFilter = false;
         if (lin_inf !== undefined || lin_sup !== undefined || !sin_fecha)
@@ -892,7 +895,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "get_grid_species": false,
             "with_data_score_cell": true,
             "with_data_freq": true,
-            "with_data_freq_cell":true,
+            "with_data_freq_cell": true,
             "with_data_score_decil": true,
             "excluded_cells": _map_module_nicho.getExcludedCells(),
             "target_name": "targetGroup",
@@ -901,7 +904,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // verbo: getScoreDecil
         milliseconds = new Date().getTime();
-        
+
 
         _decil_data = {
             "target_taxons": taxones,
@@ -923,7 +926,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             "get_grid_species": false,
             "with_data_score_cell": true,
             "with_data_freq": true,
-            "with_data_freq_cell":true,
+            "with_data_freq_cell": true,
             "with_data_score_decil": true,
             "excluded_cells": _map_module_nicho.getExcludedCells(),
             "target_name": "targetGroup",
@@ -932,7 +935,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    
+
     /**
      * Éste método configura las celdas del mapa que deben ser descartadas en los procesos de validación y eliminación de puntos para el análisis de nicho ecoógico. Además realiza las peticiones al servidor de forma seccionada para el cálculo de valores por decil.
      *
@@ -960,12 +963,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var hasBios = false;
         var hasRaster = false;
-//        var active_time = undefined;
+        //        var active_time = undefined;
 
-//        if (_type_time === 1) {
-//            _VERBOSE ? console.log("2050 activado") : _VERBOSE;
-//            active_time = true;
-//        }
+        //        if (_type_time === 1) {
+        //            _VERBOSE ? console.log("2050 activado") : _VERBOSE;
+        //            active_time = true;
+        //        }
 
 
         var hasTotal = false;
@@ -977,18 +980,18 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log(_subgroups) : _VERBOSE;
 
-        _subgroups.forEach(function (grupo, index) {
+        _subgroups.forEach(function(grupo, index) {
 
             if (!_TREE_GENERATED.groups) {
-                _TREE_GENERATED.groups = [{index: (index + 1), name: grupo.title}];
+                _TREE_GENERATED.groups = [{ index: (index + 1), name: grupo.title }];
             } else {
-                _TREE_GENERATED.groups.push({index: (index + 1), name: grupo.title});
+                _TREE_GENERATED.groups.push({ index: (index + 1), name: grupo.title });
             }
 
-//            _VERBOSE ? console.log(_TREE_GENERATED) : _VERBOSE;
+            //            _VERBOSE ? console.log(_TREE_GENERATED) : _VERBOSE;
 
-//            var filterby_group = [];
-           _VERBOSE ? console.log(grupo) : _VERBOSE;
+            //            var filterby_group = [];
+            _VERBOSE ? console.log(grupo) : _VERBOSE;
 
             var hasChildren = false;
             if (grupo.value.length > 1) {
@@ -1000,7 +1003,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             temp_group.groupid = grupo.groupid;
 
 
-            grupo.value.forEach(function (item) {
+            grupo.value.forEach(function(item) {
 
                 // if item is type 1 is a json and if 0 is a string
                 var itemGroup = item;
@@ -1055,7 +1058,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                 // console.log(merge_vars)
 
-                single_filter["name"] = grupo.title.replace(/ /g,'')
+                single_filter["name"] = grupo.title.replace(/ /g, '')
                 single_filter["biotic"] = hasBios ? true : false;
                 single_filter["merge_vars"] = merge_vars;
                 single_filter["group_item"] = grupo.groupid
@@ -1093,7 +1096,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // return;
 
-        _REQUESTS_MADE.forEach(function (item, index) {
+        _REQUESTS_MADE.forEach(function(item, index) {
 
             // console.log(item);
             _createScore_Decil(item);
@@ -1134,307 +1137,314 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // decildata["with_data_freq_cell"] = false;
         // decildata["with_data_score_decil"] = false;
 
-        var  verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
-
-        // cambiando peticiones ajax por promesas y fetch api
-        fetch(_url_zacatuche + "/niche/" + verbo, {
-            method: "POST",
-            body: JSON.stringify(data_request),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        .then(resp => resp.json())
-        .then(respuesta => {
-
-            console.log(respuesta)
-
-            if(!respuesta.ok){
-                // TODO: mandar mensaje de error
-                _module_toast.showToast_BottomCenter("Error al ejecutar el análisis", "error");
-                $('#chartdiv_score_decil').loading('stop');
-                return
-            }
-
-            _REQUESTS_NUMBER = _REQUESTS_NUMBER - 1;
-
-            // PROCESANDO PETICIONES INDIVIDUALES
-            var data_response = jQuery.extend(true, [], respuesta.data);
-            var validation_data = _val_process_temp ? respuesta.time_validation  : respuesta.validation_data
-
-            processSingleResponse(data_response, data_request, validation_data);
-
-            _REQUESTS_DONE.push(respuesta);
-
-            // todas las peticiones han sido realizadas
-            if (_REQUESTS_NUMBER === 0) {
-
-                // confirma la desaparición del boton anterior de seguimiento
-                // $("#specie_next").css('visibility', 'hidden');
-
-                var total_eps_scr = [];
-                var total_score_cell = [];
-                var percentage_avg = [];
-                var decil_cells = [];
-                var time_validacion_decil = [];
-                var cell_summary = []
+        var verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
+        var modifiers_flag_verb = sessionStorage.getItem("modifiers_flag");
+        var url = _url_zacatuche + "/niche/" + verbo
 
 
-                // CONCATENA LAS DIFERENTES PETICIONES SOLICITADAS AL SERVIDOR, EN CASO DE VALIDACION LOS VALORES POR PETICIÓN YA VIENEN PROMEDIADOS
-                _REQUESTS_DONE.forEach(function (item, index) {
-                    total_eps_scr = total_eps_scr.concat(item.data)
-                    
-                    total_score_cell = total_score_cell.concat(item.data_score_cell);
-                    percentage_avg = percentage_avg.concat(item.percentage_avg);
-                    decil_cells = decil_cells.concat(item.decil_cells);
-                    time_validacion_decil = time_validacion_decil.concat(item.time_validation) // revisar si es necesario
-                    cell_summary = cell_summary.concat(item.cell_summary);
-
-                });
-               console.log(total_eps_scr);
-               console.log(total_score_cell);
-               console.log(percentage_avg);
-               console.log(decil_cells);
-               console.log(time_validacion_decil);
-               console.log(cell_summary);
-
-                // PETICION EN SERVER, SUMATORIA EN CLIENTE - getGeoRel - Tabla General
-                _createTableEpSc(total_eps_scr);
 
 
-                // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqSpecie - Histogramas por especie
-                var data_freq = _utils_module.processDataForFreqSpecie(total_eps_scr);
-                _createHistEpScr_Especie(data_freq); // OK
+        if (modifiers_flag_verb == "true") {
+            var verbo = "generateTarget";
+            var url = _url_zacatuche + "/dev/niche/" + verbo
 
-
-                // PROCESO EJECUTADO DEL LADO DEL SERVIDOR, SUMA EN CLIENTE - getScoreCell - Mapa
-                // Obtiene calculo de apriori, para restarlo en lso resultados para evitar dobles, triples, etc adiciones de apriori a los datos
-                var numr = _REQUESTS_MADE.length
-                var apriori = $("#chkApriori").is(':checked') ? true : false;
-                var val_apriori = 0
-                
-                if(apriori){
-                    var val_apriori = parseFloat(Math.log(total_eps_scr[0].ni / (total_eps_scr[0].n- total_eps_scr[0].ni))) 
-                    console.log("val_apriori: " + val_apriori);    
-                    console.log("numr: " + numr);   
+        }
+        alert(url)
+            // cambiando peticiones ajax por promesas y fetch api
+        fetch(url, {
+                method: "POST",
+                body: JSON.stringify(data_request),
+                headers: {
+                    "Content-Type": "application/json"
                 }
-                
-                _current_data_score_cell = _utils_module.reduceScoreCell(total_score_cell, val_apriori, numr);
-                _configureStyleMap();
+            })
+            .then(resp => resp.json())
+            .then(respuesta => {
+
+                console.log(respuesta)
+
+                if (!respuesta.ok) {
+                    // TODO: mandar mensaje de error
+                    _module_toast.showToast_BottomCenter("Error al ejecutar el análisis", "error");
+                    $('#chartdiv_score_decil').loading('stop');
+                    return
+                }
+
+                _REQUESTS_NUMBER = _REQUESTS_NUMBER - 1;
+
+                // PROCESANDO PETICIONES INDIVIDUALES
+                var data_response = jQuery.extend(true, [], respuesta.data);
+                var validation_data = _val_process_temp ? respuesta.time_validation : respuesta.validation_data
+
+                processSingleResponse(data_response, data_request, validation_data);
+
+                _REQUESTS_DONE.push(respuesta);
+
+                // todas las peticiones han sido realizadas
+                if (_REQUESTS_NUMBER === 0) {
+
+                    // confirma la desaparición del boton anterior de seguimiento
+                    // $("#specie_next").css('visibility', 'hidden');
+
+                    var total_eps_scr = [];
+                    var total_score_cell = [];
+                    var percentage_avg = [];
+                    var decil_cells = [];
+                    var time_validacion_decil = [];
+                    var cell_summary = []
 
 
-                // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqCell - Histograma por celda
-                var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
-                _createHistScore_Celda(data_freq_cell);
+                    // CONCATENA LAS DIFERENTES PETICIONES SOLICITADAS AL SERVIDOR, EN CASO DE VALIDACION LOS VALORES POR PETICIÓN YA VIENEN PROMEDIADOS
+                    _REQUESTS_DONE.forEach(function(item, index) {
+                        total_eps_scr = total_eps_scr.concat(item.data)
 
-                
-
-                console.log(_TREE_GENERATED);
-                // console.log(_TREE_GENERATED.groups);
-
-                var score_cell_byanalysis = [];
-                var names_byanalysis = [];
-                var decil_total_results = []
-
-                _TREE_GENERATED.groups.forEach(function (group) {
-
-                    var score_cell_bygroup = [];
-                    var names_bygroup = [];
-                    var validation_data_bygroup = []
-                    
-                    names_byanalysis.push(group.name);
-
-                    group.children.forEach(function (child) {
-
-                        console.log(child);
-
-                        score_cell_bygroup = score_cell_bygroup.concat(child.response);
-                        score_cell_byanalysis = score_cell_byanalysis.concat(child.response);
-                        validation_data_bygroup = validation_data_bygroup.concat(child.validation_data);
-
-                        names_bygroup.push(child.value);
+                        total_score_cell = total_score_cell.concat(item.data_score_cell);
+                        percentage_avg = percentage_avg.concat(item.percentage_avg);
+                        decil_cells = decil_cells.concat(item.decil_cells);
+                        time_validacion_decil = time_validacion_decil.concat(item.time_validation) // revisar si es necesario
+                        cell_summary = cell_summary.concat(item.cell_summary);
 
                     });
+                    console.log(total_eps_scr);
+                    console.log(total_score_cell);
+                    console.log(percentage_avg);
+                    console.log(decil_cells);
+                    console.log(time_validacion_decil);
+                    console.log(cell_summary);
 
-                    console.log(score_cell_bygroup)
-                    console.log(validation_data_bygroup)
-
-                    var data_cell_bygroup = _utils_module.reduceScoreCell(score_cell_bygroup);
-                    
-                    // obtiene el promedio de las variables de un grupo
-                    var data_reduce_decilgroup = _utils_module.reduceDecilGroups(validation_data_bygroup);
-                    
-                    // agrega resultado por grupo a arraeglo de grupos
-                    decil_total_results = decil_total_results.concat(data_reduce_decilgroup)
-
-                    var data_decil_bygroup = {data: _utils_module.processDataForScoreDecil(data_cell_bygroup), gpo_name: group.name, names: names_bygroup, deciles: data_reduce_decilgroup};
-
-                    _RESULTS_TODISPLAY.push(data_decil_bygroup);
-
-                });
+                    // PETICION EN SERVER, SUMATORIA EN CLIENTE - getGeoRel - Tabla General
+                    _createTableEpSc(total_eps_scr);
 
 
+                    // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqSpecie - Histogramas por especie
+                    var data_freq = _utils_module.processDataForFreqSpecie(total_eps_scr);
+                    _createHistEpScr_Especie(data_freq); // OK
 
-                if (_TREE_GENERATED.hasTotal) {
+
+                    // PROCESO EJECUTADO DEL LADO DEL SERVIDOR, SUMA EN CLIENTE - getScoreCell - Mapa
+                    // Obtiene calculo de apriori, para restarlo en lso resultados para evitar dobles, triples, etc adiciones de apriori a los datos
+                    var numr = _REQUESTS_MADE.length
+                    var apriori = $("#chkApriori").is(':checked') ? true : false;
+                    var val_apriori = 0
+
+                    if (apriori) {
+                        var val_apriori = parseFloat(Math.log(total_eps_scr[0].ni / (total_eps_scr[0].n - total_eps_scr[0].ni)))
+                        console.log("val_apriori: " + val_apriori);
+                        console.log("numr: " + numr);
+                    }
+
+                    _current_data_score_cell = _utils_module.reduceScoreCell(total_score_cell, val_apriori, numr);
+                    _configureStyleMap();
 
 
-                    //TODO: se tiene que realizar la petición del análisis completo y agregar 
-                    var total_request = {time: new Date().getTime()};
+                    // PROCESO EJECUTADO DEL LADO DEL CLIENTE - getFreqCell - Histograma por celda
+                    var data_freq_cell = _utils_module.processDataForFreqCell(_current_data_score_cell);
+                    _createHistScore_Celda(data_freq_cell);
 
-                    $.each(_TREE_GENERATED.groups, function (i, grupo) {
-                        $.each(grupo.children, function (j, child) {
 
-                            var temp_child = jQuery.extend(true, {}, child);
-                            total_request = mergeRequest(total_request, temp_child);
+
+                    console.log(_TREE_GENERATED);
+                    // console.log(_TREE_GENERATED.groups);
+
+                    var score_cell_byanalysis = [];
+                    var names_byanalysis = [];
+                    var decil_total_results = []
+
+                    _TREE_GENERATED.groups.forEach(function(group) {
+
+                        var score_cell_bygroup = [];
+                        var names_bygroup = [];
+                        var validation_data_bygroup = []
+
+                        names_byanalysis.push(group.name);
+
+                        group.children.forEach(function(child) {
+
+                            console.log(child);
+
+                            score_cell_bygroup = score_cell_bygroup.concat(child.response);
+                            score_cell_byanalysis = score_cell_byanalysis.concat(child.response);
+                            validation_data_bygroup = validation_data_bygroup.concat(child.validation_data);
+
+                            names_bygroup.push(child.value);
 
                         });
-                    });
 
-                    _cdata = jQuery.extend(true, {}, total_request);
+                        console.log(score_cell_bygroup)
+                        console.log(validation_data_bygroup)
 
-                    total_request.with_data_score_cell = true
-                    total_request.with_data_score_decil = true
-                    total_request.decil_selected = [_default_decil]
+                        var data_cell_bygroup = _utils_module.reduceScoreCell(score_cell_bygroup);
 
-                    verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
+                        // obtiene el promedio de las variables de un grupo
+                        var data_reduce_decilgroup = _utils_module.reduceDecilGroups(validation_data_bygroup);
 
-                    fetch(_url_zacatuche + "/niche/" + verbo, {
-                        method: "POST",
-                        body: JSON.stringify(total_request),
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    })
-                    .then(resp => resp.json())
-                    .then(resp => {
+                        // agrega resultado por grupo a arraeglo de grupos
+                        decil_total_results = decil_total_results.concat(data_reduce_decilgroup)
 
-                        if (resp.ok) {
+                        var data_decil_bygroup = { data: _utils_module.processDataForScoreDecil(data_cell_bygroup), gpo_name: group.name, names: names_bygroup, deciles: data_reduce_decilgroup };
 
-                            _VERBOSE ? console.log("_TREE_GENERATED.hasTotal resp.ok") : _VERBOSE;
-
-                            var total_counts = resp.data;
-
-                            var validation_data = _val_process_temp ? resp.time_validation  : resp.validation_data
-
-                            // var validation_data = resp.validation_data
-
-                            var data_score_cell = resp.data_score_cell
-
-                            var percentage_avg = resp.percentage_avg
-
-                            var decil_cells = resp.decil_cells
-
-                            // sobre escribe el resultado en caso de ser total
-                            cell_summary = resp.cell_summary
-                            
-
-                            // console.log("total_counts: " + total_counts.length)
-                            // console.log(decil_cells)
-                            // console.log(percentage_avg)
-                            console.log(validation_data)
-                            console.log(data_score_cell)
-                            // console.log(cell_summary)
-
-                            if(_val_process_temp){
-                                $("#div_munlist").show();
-                                processTableMun(cell_summary);    
-                            }
-                            else{
-                                $("#div_munlist").hide();
-                            }
-
-
-                            var data_decil_byanalysis = {data: _utils_module.processDataForScoreDecil(data_score_cell), gpo_name: "Total", names: names_byanalysis, deciles: validation_data};
-
-                            console.log(data_decil_byanalysis)
-
-                            _RESULTS_TODISPLAY.push(data_decil_byanalysis);
-
-                            console.log(_RESULTS_TODISPLAY)
-
-                            _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
-
-                            loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
-
-                        }
-
-
-                        $('#chartdiv_score_decil').loading('stop');
-
-
-                    })
-                    .catch(err => {
-                        
-                        console.error(err);
-
-                        $('#chartdiv_score_decil').loading('stop');
+                        _RESULTS_TODISPLAY.push(data_decil_bygroup);
 
                     });
 
 
-                }
-                else{
 
-                    console.log(_RESULTS_TODISPLAY)
+                    if (_TREE_GENERATED.hasTotal) {
 
-                    if(_val_process_temp){
-                        $("#div_munlist").show();
-                        processTableMun(cell_summary);    
+
+                        //TODO: se tiene que realizar la petición del análisis completo y agregar 
+                        var total_request = { time: new Date().getTime() };
+
+                        $.each(_TREE_GENERATED.groups, function(i, grupo) {
+                            $.each(grupo.children, function(j, child) {
+
+                                var temp_child = jQuery.extend(true, {}, child);
+                                total_request = mergeRequest(total_request, temp_child);
+
+                            });
+                        });
+
+                        _cdata = jQuery.extend(true, {}, total_request);
+
+                        total_request.with_data_score_cell = true
+                        total_request.with_data_score_decil = true
+                        total_request.decil_selected = [_default_decil]
+
+                        verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
+
+                        fetch(_url_zacatuche + "/niche/" + verbo, {
+                                method: "POST",
+                                body: JSON.stringify(total_request),
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            .then(resp => resp.json())
+                            .then(resp => {
+
+                                if (resp.ok) {
+
+                                    _VERBOSE ? console.log("_TREE_GENERATED.hasTotal resp.ok") : _VERBOSE;
+
+                                    var total_counts = resp.data;
+
+                                    var validation_data = _val_process_temp ? resp.time_validation : resp.validation_data
+
+                                    // var validation_data = resp.validation_data
+
+                                    var data_score_cell = resp.data_score_cell
+
+                                    var percentage_avg = resp.percentage_avg
+
+                                    var decil_cells = resp.decil_cells
+
+                                    // sobre escribe el resultado en caso de ser total
+                                    cell_summary = resp.cell_summary
+
+
+                                    // console.log("total_counts: " + total_counts.length)
+                                    // console.log(decil_cells)
+                                    // console.log(percentage_avg)
+                                    console.log(validation_data)
+                                    console.log(data_score_cell)
+                                        // console.log(cell_summary)
+
+                                    if (_val_process_temp) {
+                                        $("#div_munlist").show();
+                                        processTableMun(cell_summary);
+                                    } else {
+                                        $("#div_munlist").hide();
+                                    }
+
+
+                                    var data_decil_byanalysis = { data: _utils_module.processDataForScoreDecil(data_score_cell), gpo_name: "Total", names: names_byanalysis, deciles: validation_data };
+
+                                    console.log(data_decil_byanalysis)
+
+                                    _RESULTS_TODISPLAY.push(data_decil_byanalysis);
+
+                                    console.log(_RESULTS_TODISPLAY)
+
+                                    _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
+
+                                    loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
+
+                                }
+
+
+                                $('#chartdiv_score_decil').loading('stop');
+
+
+                            })
+                            .catch(err => {
+
+                                console.error(err);
+
+                                $('#chartdiv_score_decil').loading('stop');
+
+                            });
+
+
+                    } else {
+
+                        console.log(_RESULTS_TODISPLAY)
+
+                        if (_val_process_temp) {
+                            $("#div_munlist").show();
+                            processTableMun(cell_summary);
+                        } else {
+                            $("#div_munlist").hide();
+                        }
+
+                        _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
+
+                        loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
+
+                        $('#chartdiv_score_decil').loading('stop');
+
                     }
-                    else{
-                        $("#div_munlist").hide();
-                    }
 
-                    _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
-                
-                    loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
 
-                    $('#chartdiv_score_decil').loading('stop');
+
 
                 }
 
-               
-                
-
-            }
-
-        })
-        .catch(err => {
-            console.error(err);
-            $('#chartdiv_score_decil').loading('stop');
-        });
+            })
+            .catch(err => {
+                console.error(err);
+                $('#chartdiv_score_decil').loading('stop');
+            });
 
     }
 
 
-    function processTableMun(cell_summary){
+    function processTableMun(cell_summary) {
 
         console.log("processTableMun")
 
         var array_column = []
         var gridres_column = ""
 
-        var gridids = cell_summary.map(function (d) {
+        var gridids = cell_summary.map(function(d) {
             return parseInt(d.gridid);
         });
 
         var map_result = d3.map([]);
-        cell_summary.forEach(function (item, index) {
+        cell_summary.forEach(function(item, index) {
             map_result.set(parseInt(item.gridid), item)
         })
 
-        if(_grid_res === "mun"){
-            array_column = ["NOM_MUN","NOM_ENT"]
-        }
-        else{
+        if (_grid_res === "mun") {
+            array_column = ["NOM_MUN", "NOM_ENT"]
+        } else {
             array_column = ["NOM_ENT"]
         }
-        gridres_column = "gridid_"+_grid_res+"km"
-        
+        gridres_column = "gridid_" + _grid_res + "km"
+
         var data = {
             "grid_resolution": _grid_res,
             "columns": array_column,
-            "gridids":gridids
+            "gridids": gridids
         }
 
         console.log(gridids);
@@ -1451,21 +1461,21 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 }
             })
             .then(resp => resp.json())
-            .then(resp => { 
+            .then(resp => {
 
                 // console.log(resp.data)
-                var  area_names = resp.data
+                var area_names = resp.data
 
-                area_names.forEach(function (item, index) {
+                area_names.forEach(function(item, index) {
 
                     var gridid = parseInt(item[gridres_column])
-                    
+
                     // console.log(item["NOM_ENT"])
 
                     var item_res = map_result.get(gridid);
                     item_res.nom_state = (item["NOM_ENT"] === undefined) ? "N/A" : item["NOM_ENT"]
                     item_res.nom_mun = (item["NOM_MUN"] === undefined) ? "N/A" : item["NOM_MUN"]
-                    
+
                     item_res.b1_name = item_res.best_predictor_1[0]
                     item_res.b1_value = item_res.best_predictor_1[1]
                     item_res.b2_name = item_res.best_predictor_2[0]
@@ -1492,15 +1502,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     item_res.validation = item_res.validation_period
 
                     item_res.first_period = item_res.first_period
-                    
+
                 })
 
                 var data_list = []
-                
-                map_result.values().forEach(function (item, index) {
+
+                map_result.values().forEach(function(item, index) {
 
                     var row_temp = []
-                    
+
                     row_temp.push(item.nom_state)
                     row_temp.push(item.nom_mun)
                     row_temp.push(parseFloat(item.score).toFixed(2))
@@ -1543,10 +1553,10 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
             })
-        .catch(err => {
-            console.error(err);
-            $('#chartdiv_score_decil').loading('stop');
-        });
+            .catch(err => {
+                console.error(err);
+                $('#chartdiv_score_decil').loading('stop');
+            });
 
 
 
@@ -1557,14 +1567,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("processSingleResponse") : _VERBOSE;
 
-        _TREE_GENERATED.groups.forEach(function (group_item, index) {
+        _TREE_GENERATED.groups.forEach(function(group_item, index) {
 
-           // console.log(group_item);
-           // console.log(data_request);
+            // console.log(group_item);
+            // console.log(data_request);
 
             if (group_item.groupid === data_request.covariables[0].group_item) {
 
-                group_item.children.forEach(function (child, index) {
+                group_item.children.forEach(function(child, index) {
 
                     if (child.value === data_request.covariables[0].merge_vars[0].value) {
 
@@ -1576,10 +1586,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             // var title_valor = _utils_module.processTitleGroup(data_request.groupid, data_request.covariables);
                             // child.title_valor = title_valor;
 
-                            child.title_valor = JSON.stringify({'title': 'Grupo Bio ' + data_request.groupid,
-                                                    'type': 0,
-                                                    'group_item': data_request.covariables[0].group_item,
-                                                    'is_parent': true});
+                            child.title_valor = JSON.stringify({
+                                'title': 'Grupo Bio ' + data_request.groupid,
+                                'type': 0,
+                                'group_item': data_request.covariables[0].group_item,
+                                'is_parent': true
+                            });
 
                             child.request = data_request;
                         }
@@ -1614,19 +1626,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // console.log(counts)
 
 
-       // console.log(_TREE_GENERATED);
-       // console.log("tbl_request: " + tbl_request);
-       // console.log("name: " + name);
-       // console.log("decil: " + decil);
-       // console.log("first_loaded: " + first_loaded);
+        // console.log(_TREE_GENERATED);
+        // console.log("tbl_request: " + tbl_request);
+        // console.log("name: " + name);
+        // console.log("decil: " + decil);
+        // console.log("first_loaded: " + first_loaded);
 
 
         // obteniendo request total
-        var total_request = {time: new Date().getTime()};
+        var total_request = { time: new Date().getTime() };
 
         if (name === "Total") {
-            $.each(_TREE_GENERATED.groups, function (i, grupo) {
-                $.each(grupo.children, function (j, child) {
+            $.each(_TREE_GENERATED.groups, function(i, grupo) {
+                $.each(grupo.children, function(j, child) {
 
                     var temp_child = jQuery.extend(true, {}, child);
                     total_request = mergeRequest(total_request, temp_child);
@@ -1641,51 +1653,51 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         //TODO: optimizar metodo:
         // esta mandando varias peticiones cada que se seleccioan una barra
-        $.each(_TREE_GENERATED.groups, function (index, value) {
+        $.each(_TREE_GENERATED.groups, function(index, value) {
 
             var request = {};
 
-           // console.log(value);
-           // console.log("_currentNameView: " + _currentNameView);
-           
-           console.log("value.name: " + value.name);
-           console.log("name: " + name);
-           console.log(_currentNameView !== name);
-//            console.log(_currentDecil !== decil);
+            // console.log(value);
+            // console.log("_currentNameView: " + _currentNameView);
+
+            console.log("value.name: " + value.name);
+            console.log("name: " + name);
+            console.log(_currentNameView !== name);
+            //            console.log(_currentDecil !== decil);
 
 
-            
+
             console.log(_currentDecil);
             console.log(deciles);
 
-            
+
             // if (first_loaded ||
             //         (value.name === name && (_currentNameView !== name || _currentDecil !== decil)) ||
             //         (name === "Total" && (_currentNameView !== name || _currentDecil !== decil))
             //         ) {
 
-            
+
             // var difer_array = deciles.length === _currentDecil.length && deciles.sort().every(function(value, index) { return value === _currentDecil.sort()[index]}) === false
             var difer_array = (JSON.stringify(_currentDecil) === JSON.stringify(deciles)) === false;
             // var difer_array = _currentDecil.length === deciles.length && _currentDecil.sort().every(function(value, index) { return value === deciles.sort()[index]}) === false
 
-            console.log( "difer_array: " + difer_array )
+            console.log("difer_array: " + difer_array)
 
 
             if (first_loaded ||
-                    (value.name === name && (_currentNameView !== name ||  difer_array  ) ) ||
-                    (name === "Total" && (_currentNameView !== name ||  difer_array ) )
-                    ) {
+                (value.name === name && (_currentNameView !== name || difer_array)) ||
+                (name === "Total" && (_currentNameView !== name || difer_array))
+            ) {
 
-               console.log("Actualiza tabla");
-               // console.log("name: " + name);
-               // console.log("deciles: " + deciles);
+                console.log("Actualiza tabla");
+                // console.log("name: " + name);
+                // console.log("deciles: " + deciles);
 
                 _currentNameView = name;
                 _currentDecil = deciles;
 
                 if (name !== "Total") {
-                    $.each(value.children, function (i, child) {
+                    $.each(value.children, function(i, child) {
                         var temp_child = jQuery.extend(true, {}, child);
                         request = mergeRequest(request, temp_child);
                     });
@@ -1693,14 +1705,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
                     request = total_request;
                 }
 
-                
+
                 request["decil_selected"] = deciles
                 request["with_data_score_decil"] = true;
 
                 console.log(request);
 
 
-                if(first_loaded){
+                if (first_loaded) {
 
                     // $("#map_next").css('visibility', 'visible');
                     // $("#map_next").show("slow");
@@ -1712,50 +1724,49 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     $('#div_example').loading('stop');
                     $('#map').loading('stop');
-                }
-                else{
+                } else {
 
                     fetch(_url_zacatuche + "/niche/countsTaxonsGroup", {
-                        method: "POST",
-                        body: JSON.stringify(request),
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    })
-                    .then(resp => resp.json())
-                    .then(resp => {
+                            method: "POST",
+                            body: JSON.stringify(request),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        .then(resp => resp.json())
+                        .then(resp => {
 
-                        // $("#map_next").css('visibility', 'visible');
-                        // $("#map_next").show("slow");
+                            // $("#map_next").css('visibility', 'visible');
+                            // $("#map_next").show("slow");
 
-                        if (resp.ok) {
+                            if (resp.ok) {
 
-                            _VERBOSE ? console.log("loadDecilDataTable resp.ok") : _VERBOSE;
+                                _VERBOSE ? console.log("loadDecilDataTable resp.ok") : _VERBOSE;
 
-                            var percentage_avg = resp.percentage_avg;
+                                var percentage_avg = resp.percentage_avg;
 
-                            var decil_cells = resp.decil_cells;                            
+                                var decil_cells = resp.decil_cells;
 
-                            console.log(percentage_avg)
+                                console.log(percentage_avg)
 
-                            console.log(decil_cells)
+                                console.log(decil_cells)
 
-                            activeDecilOccurrences(decil_cells, deciles)
+                                activeDecilOccurrences(decil_cells, deciles)
 
-                            createTableDecil(percentage_avg)
+                                createTableDecil(percentage_avg)
 
-                        }
-                        
-                        $('#div_example').loading('stop');
+                            }
+
+                            $('#div_example').loading('stop');
 
 
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        
-                        $('#div_example').loading('stop');
-                        $('#map').loading('stop');
-                    });
+                        })
+                        .catch(err => {
+                            console.error(err);
+
+                            $('#div_example').loading('stop');
+                            $('#map').loading('stop');
+                        });
 
 
                 }
@@ -1768,7 +1779,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function createTableDecil(counts){
+    function createTableDecil(counts) {
 
         _VERBOSE ? console.log("createTableDecil") : _VERBOSE;
 
@@ -1780,13 +1791,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function mergeRequest(request = {}, child = []){
+    function mergeRequest(request = {}, child = []) {
 
         _VERBOSE ? console.log("mergeRequest") : _VERBOSE;
         console.log(request);
         console.log(child);
 
-        
+
 
         // este conjunto de parámetros no importa que sean sobreescritos en cada iteración por que no cambian en la petición global
         request.grid_resolution = child.request.grid_resolution;
@@ -1816,15 +1827,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         if (!request.covariables)
             request.covariables = child.request.covariables;
-        else{
-            child.request.covariables.forEach(function(item,index){
+        else {
+            child.request.covariables.forEach(function(item, index) {
 
-                var name_request = request.covariables.map(function (d) {return d.name;});
-                
-                if(name_request.indexOf(item.name) === -1){
+                var name_request = request.covariables.map(function(d) { return d.name; });
+
+                if (name_request.indexOf(item.name) === -1) {
                     request.covariables.push(item);
-                }
-                else{
+                } else {
                     var index = name_request.indexOf(item.name)
                     var merge_vars = request.covariables[index].merge_vars;
                     merge_vars.push(item.merge_vars[0]);
@@ -1834,14 +1844,14 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         if (!request.target_taxons)
             request.target_taxons = child.request.target_taxons;
-        else{
-            
-            child.request.target_taxons.forEach(function(item,index){
+        else {
 
-                var values_request = request.target_taxons.map(function (d) {return d.value;})
-                var taxons_request = request.target_taxons.map(function (d) {return d.taxon_rank;})
+            child.request.target_taxons.forEach(function(item, index) {
 
-                if(values_request.indexOf(item.value) === -1 && taxons_request.indexOf(item.taxon_rank) === -1 ){
+                var values_request = request.target_taxons.map(function(d) { return d.value; })
+                var taxons_request = request.target_taxons.map(function(d) { return d.taxon_rank; })
+
+                if (values_request.indexOf(item.value) === -1 && taxons_request.indexOf(item.taxon_rank) === -1) {
                     request.target_taxons.push(item)
                 }
             })
@@ -1858,7 +1868,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // request.val_process = request.val_process ? request.val_process : child.request.val_process;
         // request.level_req = child.request.level_req;
-        
+
 
         return request;
 
@@ -1887,11 +1897,11 @@ var res_display_module = (function (verbose, url_zacatuche) {
         $('#map').loading({
             stoppable: true
         });
-        
+
         $('#div_example').loading({
             stoppable: true
         });
-        
+
     }
 
 
@@ -1913,7 +1923,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         var data_list = [];
 
-        data.forEach(function (d) {
+        data.forEach(function(d) {
             var item_list = [];
 
             // las variables climáticas no cuentan con reino, phylum, clase, etc
@@ -1923,18 +1933,18 @@ var res_display_module = (function (verbose, url_zacatuche) {
                 console.log(d)
 
                 var range = d.tag.split(":")
-                var label = d.label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                var label = d.label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g, '')
 
                 var min = (parseFloat(range[0]) * d.coeficiente).toFixed(3) + " " + d.unidad
                 var max = (parseFloat(range[1]) * d.coeficiente).toFixed(3) + " " + d.unidad
 
                 // var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                
-                
-		if(d.tag.split(":").length > 1){
+
+
+                if (d.tag.split(":").length > 1) {
                     var value = _iTrans.prop(label) + " (" + min + " : " + max + ") ";
-                }else {
-                    var value = _iTrans.prop(label) + ' (' +  d.tag + ')'; 
+                } else {
+                    var value = _iTrans.prop(label) + ' (' + d.tag + ')';
                 }
 
 
@@ -1963,7 +1973,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             data_list.push(item_list)
         });
 
-        var json_arg = {data: data_list}
+        var json_arg = { data: data_list }
 
         _table_module_eps.createEspList(json_arg);
         _tbl_eps = true;
@@ -1976,7 +1986,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
     }
 
-    function activeDecilOccurrences(decil_cells, deciles){
+    function activeDecilOccurrences(decil_cells, deciles) {
 
         _VERBOSE ? console.log("activeDecilOccurrences") : _VERBOSE;
 
@@ -2004,9 +2014,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_configureStyleMap") : _VERBOSE;
 
-        
+
         _VERBOSE ? console.log(_current_data_score_cell) : _VERBOSE;
-        if (_current_data_score_cell === undefined){
+        if (_current_data_score_cell === undefined) {
             _VERBOSE ? console.log("No data to color the map") : _VERBOSE;
             return
         }
@@ -2019,12 +2029,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         //     grid_map_color = _map_module_nicho.createDecilColor(_current_data_score_cell, _mapa_prob);    
         // }
         // else{
-            // console.log(_current_data_score_cell)
-            grid_map_color = _map_module_nicho.createRankColor(_current_data_score_cell, _mapa_prob, map_type);
+        // console.log(_current_data_score_cell)
+        grid_map_color = _map_module_nicho.createRankColor(_current_data_score_cell, _mapa_prob, map_type);
         // }
 
         console.log(grid_map_color)
-        
+
         _map_module_nicho.colorizeFeatures(grid_map_color);
         _map_module_nicho.colorizeTargetFeatures();
 
@@ -2038,7 +2048,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             _first_analysis = false;
         }
         document.getElementById("dShape").style.display = "inline";
-        
+
         $('#map').loading('stop');
 
     }
@@ -2093,7 +2103,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _histogram_module_nicho.createBarChart(_id_charteps, data2_epsilon, _iTrans.prop('titulo_hist_eps'));
         _histogram_module_nicho.createBarChart(_id_chartscr, data2_score, _iTrans.prop('titulo_hist_score'));
-        
+
         $('#hst_esp_eps').loading('stop');
         $('#hst_esp_scr').loading('stop');
 
@@ -2114,7 +2124,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("updateLabels") : _VERBOSE;
 
-        _ids_componentes_var.forEach(function (item, index) {
+        _ids_componentes_var.forEach(function(item, index) {
 
             console.log(item)
 
@@ -2192,7 +2202,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             $("#score_celda").text($.i18n.prop("score_celda"));
 
 
-            $("#hist_record").text($.i18n.prop('lb_reg_fecha')  + ": ");
+            $("#hist_record").text($.i18n.prop('lb_reg_fecha') + ": ");
 
             $("#lb_des_modal_csv").text($.i18n.prop('lb_des_modal_csv'));
             $("#email_address").attr("placeholder", $.i18n.prop('email_address'));
@@ -2240,7 +2250,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         _VERBOSE ? console.log("_createHistScore_Celda") : _VERBOSE;
 
-        
+
         var data2_score = [];
         var totcount_score = 0;
         var Fi = []
@@ -2288,15 +2298,15 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
         // binding parents and sons
-        fathers.forEach(function (father) {
+        fathers.forEach(function(father) {
 
-            sons.forEach(function (son) {
+            sons.forEach(function(son) {
 
                 if (parseInt(father.item[0].title.type) === parseInt(son.item[0].title.type) && parseInt(father.item[0].title.group_item) === parseInt(son.item[0].title.group_item)) {
 
                     var son_index = 0;
 
-                    father.item.forEach(function (decil_item) {
+                    father.item.forEach(function(decil_item) {
 
 
                         // if there's no decil data in son, coninue for the next one
@@ -2306,21 +2316,21 @@ var res_display_module = (function (verbose, url_zacatuche) {
                             return;
 
                         if (!(decil_item.vp.s)) {
-                            decil_item.vp = {p: decil_item.vp, s: [son.item[son_index].vp]}
+                            decil_item.vp = { p: decil_item.vp, s: [son.item[son_index].vp] }
                         } else {
                             temp_s = decil_item.vp.s;
                             temp_s.push(son.item[son_index].vp);
                             decil_item.vp.s = temp_s;
                         }
                         if (!(decil_item.fn.s)) {
-                            decil_item.fn = {p: decil_item.fn, s: [son.item[son_index].fn]}
+                            decil_item.fn = { p: decil_item.fn, s: [son.item[son_index].fn] }
                         } else {
                             temp_s = decil_item.fn.s;
                             temp_s.push(son.item[son_index].fn);
                             decil_item.fn.s = temp_s;
                         }
                         if (!(decil_item.recall.s)) {
-                            decil_item.recall = {p: decil_item.recall, s: [son.item[son_index].recall]}
+                            decil_item.recall = { p: decil_item.recall, s: [son.item[son_index].recall] }
                         } else {
                             temp_s = decil_item.recall.s;
                             temp_s.push(son.item[son_index].recall);
@@ -2329,7 +2339,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
                         if (!(decil_item.avg.s)) {
-                            decil_item.avg = {p: decil_item.avg, s: [son.item[son_index].avg]}
+                            decil_item.avg = { p: decil_item.avg, s: [son.item[son_index].avg] }
                         } else {
                             temp_s = decil_item.avg.s;
                             temp_s.push(son.item[son_index].avg);
@@ -2338,7 +2348,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
                         if (!(decil_item.l_sup.s)) {
-                            decil_item.l_sup = {p: decil_item.l_sup, s: [son.item[son_index].l_sup]}
+                            decil_item.l_sup = { p: decil_item.l_sup, s: [son.item[son_index].l_sup] }
                         } else {
                             temp_s = decil_item.l_sup.s;
                             temp_s.push(son.item[son_index].l_sup);
@@ -2347,7 +2357,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
                         if (!(decil_item.l_inf.s)) {
-                            decil_item.l_inf = {p: decil_item.l_inf, s: [son.item[son_index].l_inf]}
+                            decil_item.l_inf = { p: decil_item.l_inf, s: [son.item[son_index].l_inf] }
                         } else {
                             temp_s = decil_item.l_inf.s;
                             temp_s.push(son.item[son_index].l_inf);
@@ -2357,7 +2367,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                         if (!(decil_item.title.title.s)) {
                             console.log("no existe s")
-                            decil_item.title.title = {p: decil_item.title.title, s: [son.item[son_index].title.title]}
+                            decil_item.title.title = { p: decil_item.title.title, s: [son.item[son_index].title.title] }
                         } else {
                             console.log("existe s")
                             temp_s = decil_item.title.title.s;
@@ -2375,8 +2385,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         });
 
-//        _VERBOSE ? console.log(fathers) : _VERBOSE;
-//        _VERBOSE ? console.log(fathers[0].item.length) : _VERBOSE;
+        //        _VERBOSE ? console.log(fathers) : _VERBOSE;
+        //        _VERBOSE ? console.log(fathers[0].item.length) : _VERBOSE;
 
         // binding parents by decil
 
@@ -2386,13 +2396,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // se asignan siempre 10 deciles y depsues se valida si existe
         for (j = _NUM_DECILES; j > 0; j--) {
-            data_chart.push({"decil": String(j)});
+            data_chart.push({ "decil": String(j) });
         }
 
-        fathers.forEach(function (row, index) {
+        fathers.forEach(function(row, index) {
 
             // _VERBOSE ? console.log(item) : _VERBOSE;
-            row.item.forEach(function (decil, index) {
+            row.item.forEach(function(decil, index) {
 
 
                 for (j = 0; j < _NUM_DECILES; j++) {
@@ -2469,7 +2479,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         });
 
-//        _VERBOSE ? console.log(data_chart) : _VERBOSE;
+        //        _VERBOSE ? console.log(data_chart) : _VERBOSE;
 
         return data_chart;
 
@@ -2494,94 +2504,94 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             _VERBOSE ? console.log("Add totals") : _VERBOSE;
 
-            data_chart.forEach(function (decil_item, index) {
+            data_chart.forEach(function(decil_item, index) {
 
                 _VERBOSE ? console.log("total") : _VERBOSE
-//                decil_total[index].arraynames = decil_total[index].arraynames //_deleteRepetedElements(decil_total[index].arraynames);
+                    //                decil_total[index].arraynames = decil_total[index].arraynames //_deleteRepetedElements(decil_total[index].arraynames);
 
                 names = [];
-                decil_item.names.forEach(function (names_item, index) {
+                decil_item.names.forEach(function(names_item, index) {
                     names.push(names_item.p);
                 });
                 temp = decil_item['names'];
-                temp.push({p: "Total", s: names});
+                temp.push({ p: "Total", s: names });
                 decil_item['names'] = temp;
 
 
-//                gridids = [];
-//                decil_item.gridids.forEach(function(gridids_item, index) {
-//                    gridids.push(gridids_item.p);
-//                });
-//                temp = decil_item['gridids'];
-//                temp.push({p: decil_total[index].gridids, s: gridids});
-//                decil_item['gridids'] = temp;
+                //                gridids = [];
+                //                decil_item.gridids.forEach(function(gridids_item, index) {
+                //                    gridids.push(gridids_item.p);
+                //                });
+                //                temp = decil_item['gridids'];
+                //                temp.push({p: decil_total[index].gridids, s: gridids});
+                //                decil_item['gridids'] = temp;
 
                 vp = [];
-                decil_item.vp.forEach(function (values_item, index) {
+                decil_item.vp.forEach(function(values_item, index) {
                     vp.push(values_item.p);
                 });
                 temp = decil_item['vp'];
-                temp.push({p: decil_total[index].vp, s: vp});
+                temp.push({ p: decil_total[index].vp, s: vp });
                 decil_item['vp'] = temp;
 
                 fn = [];
-                decil_item.fn.forEach(function (values_item, index) {
+                decil_item.fn.forEach(function(values_item, index) {
                     fn.push(values_item.p);
                 });
                 temp = decil_item['fn'];
-                temp.push({p: decil_total[index].fn, s: fn});
+                temp.push({ p: decil_total[index].fn, s: fn });
                 decil_item['fn'] = temp;
 
                 recall = [];
-                decil_item.recall.forEach(function (values_item, index) {
+                decil_item.recall.forEach(function(values_item, index) {
                     recall.push(values_item.p);
                 });
                 temp = decil_item['recall'];
-                temp.push({p: decil_total[index].recall, s: recall});
+                temp.push({ p: decil_total[index].recall, s: recall });
                 decil_item['recall'] = temp;
 
 
 
                 values = [];
-                decil_item.values.forEach(function (values_item, index) {
+                decil_item.values.forEach(function(values_item, index) {
                     values.push(values_item.p);
                 });
                 temp = decil_item['values'];
-                temp.push({p: decil_total[index].avg, s: values});
+                temp.push({ p: decil_total[index].avg, s: values });
                 decil_item['values'] = temp;
 
 
 
                 lsups = [];
-                decil_item.lsup.forEach(function (lsup_item, index) {
+                decil_item.lsup.forEach(function(lsup_item, index) {
                     lsups.push(lsup_item.p);
                 });
                 temp = decil_item['lsup'];
-                temp.push({p: decil_total[index].l_sup, s: lsups});
+                temp.push({ p: decil_total[index].l_sup, s: lsups });
                 decil_item['lsup'] = temp;
 
                 linfs = [];
-                decil_item.linf.forEach(function (linf_item, index) {
+                decil_item.linf.forEach(function(linf_item, index) {
                     linfs.push(linf_item.p);
                 });
                 temp = decil_item['linf'];
-                temp.push({p: decil_total[index].l_inf, s: linfs});
+                temp.push({ p: decil_total[index].l_inf, s: linfs });
                 decil_item['linf'] = temp;
 
 
-//                species = [];
-//                decil_item.species.forEach(function (species_item, index) {
-////                    console.log(species_item);
-//                    species.push(species_item.p);
-//                });
-//                temp = decil_item['species'];
-//                var json_arraynames = decil_total[index].arraynames[0].replace("{", "").replace("}", "").split(",");
-////                console.log(json_arraynames);
-//                var p_item = json_arraynames.sort();
-////                console.log(p_item);
-//
-//                temp.push({p: p_item, s: species});
-//                decil_item['species'] = temp;
+                //                species = [];
+                //                decil_item.species.forEach(function (species_item, index) {
+                ////                    console.log(species_item);
+                //                    species.push(species_item.p);
+                //                });
+                //                temp = decil_item['species'];
+                //                var json_arraynames = decil_total[index].arraynames[0].replace("{", "").replace("}", "").split(",");
+                ////                console.log(json_arraynames);
+                //                var p_item = json_arraynames.sort();
+                ////                console.log(p_item);
+                //
+                //                temp.push({p: p_item, s: species});
+                //                decil_item['species'] = temp;
 
             });
 
@@ -2608,12 +2618,12 @@ var res_display_module = (function (verbose, url_zacatuche) {
         array_values = [];
         newTempStr = [];
 
-        arraynames.forEach(function (d) {
+        arraynames.forEach(function(d) {
             values = String(d).split(",");
             Array.prototype.push.apply(array_values, values);
         });
 
-        array_values.forEach(function (d) {
+        array_values.forEach(function(d) {
 
             if (uniqueValues.has(d) != true) {
                 uniqueValues.set(d, 1);
@@ -2625,7 +2635,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         });
 
 
-        uniqueValues.forEach(function (k, v) {
+        uniqueValues.forEach(function(k, v) {
 
             arg = k.split("|");
             v_temp = parseInt(arg[arg.length - 1]);
@@ -2661,9 +2671,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
         });
 
         var singleCellData = {};
-        
-        $.each(_TREE_GENERATED.groups, function (i, grupo) {
-            $.each(grupo.children, function (j, child) {
+
+        $.each(_TREE_GENERATED.groups, function(i, grupo) {
+            $.each(grupo.children, function(j, child) {
 
                 var temp_child = jQuery.extend(true, {}, child);
                 singleCellData = mergeRequest(singleCellData, temp_child);
@@ -2683,54 +2693,54 @@ var res_display_module = (function (verbose, url_zacatuche) {
         singleCellData["iterations"] = 1;
         singleCellData["region"] = region;
 
-        
+
         var milliseconds = new Date().getTime();
 
         // var val_process_temp = $("#chkValidationTemp").is(':checked');
         console.log("_val_process_temp: " + _val_process_temp)
 
-        var verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"        
+        var verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
 
         console.log("verbo: " + verbo)
 
         fetch(_url_zacatuche + "/niche/" + verbo, {
-            method: "POST",
-            body: JSON.stringify(singleCellData),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        .then(resp => resp.json())
-        .then(respuesta => {
+                method: "POST",
+                body: JSON.stringify(singleCellData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(resp => resp.json())
+            .then(respuesta => {
 
-            if (respuesta.ok) {
+                if (respuesta.ok) {
 
-                var data = respuesta.data;
-                var info_cell = respuesta.info_cell
+                    var data = respuesta.data;
+                    var info_cell = respuesta.info_cell
 
-                _VERBOSE ? console.log(data) : _VERBOSE;
+                    _VERBOSE ? console.log(data) : _VERBOSE;
 
-                var htmltable = _createTableFromData(data, info_cell);
-                if (htmltable === "")
-                    return;
-                _map_module_nicho.showPopUp(htmltable, [lat, long]);
+                    var htmltable = _createTableFromData(data, info_cell);
+                    if (htmltable === "")
+                        return;
+                    _map_module_nicho.showPopUp(htmltable, [lat, long]);
 
-                // tablas para seleccion de celda
-                _table_module_eps.createTblSp("tbl_sp_selected");
-                _table_module_eps.createTblSp("tbl_sp_selected_sp");
-                _table_module_eps.createTblSp("tbl_sp_selected_rt");
+                    // tablas para seleccion de celda
+                    _table_module_eps.createTblSp("tbl_sp_selected");
+                    _table_module_eps.createTblSp("tbl_sp_selected_sp");
+                    _table_module_eps.createTblSp("tbl_sp_selected_rt");
 
-            }
-
-
-            $('#map').loading('stop');
+                }
 
 
-        })
-        .catch(err => {
-            $('#map').loading('stop');
-            _VERBOSE ? console.log("error: " + err) : _VERBOSE;
-        });
+                $('#map').loading('stop');
+
+
+            })
+            .catch(err => {
+                $('#map').loading('stop');
+                _VERBOSE ? console.log("error: " + err) : _VERBOSE;
+            });
 
     }
 
@@ -2745,7 +2755,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
      * @param {float} lat - Latitud del punto sleccionado por el usuario
      * @param {float} long - Longitud del punto sleccionado por el usuario
      */
-    function showGetFeatureInfoOccCell(lat, long, _taxones, lin_inf, lin_sup, sin_fecha, con_fosil, grid_res, region, isdeletecell ) {
+    function showGetFeatureInfoOccCell(lat, long, _taxones, lin_inf, lin_sup, sin_fecha, con_fosil, grid_res, region, isdeletecell) {
 
         _VERBOSE ? console.log("showGetFeatureInfoOccCell") : _VERBOSE;
 
@@ -2776,92 +2786,91 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
         // console.log(data_body_request)
 
-        if(isdeletecell){
+        if (isdeletecell) {
 
             fetch(_url_zacatuche + "/niche/especie/getIDCellFromCoordinates", {
-                method: "POST",
-                body: JSON.stringify(data_body_request),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(resp => resp.json())
-            .then(respuesta => {
+                    method: "POST",
+                    body: JSON.stringify(data_body_request),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(resp => resp.json())
+                .then(respuesta => {
 
-                if (respuesta.ok) {
+                    if (respuesta.ok) {
 
-                    var data = respuesta.data;
+                        var data = respuesta.data;
 
-                    _VERBOSE ? console.log(data) : _VERBOSE;
+                        _VERBOSE ? console.log(data) : _VERBOSE;
 
-                    if (data.length > 0) {
+                        if (data.length > 0) {
 
-                        var item = data[0]
-                        var gridid = item["gridid_"+grid_res+"km"]
+                            var item = data[0]
+                            var gridid = item["gridid_" + grid_res + "km"]
 
-                        // console.log("gridid: " + gridid)
+                            // console.log("gridid: " + gridid)
 
-                        _map_module_nicho.deleteCellFromOccGrid(gridid)
-                        
+                            _map_module_nicho.deleteCellFromOccGrid(gridid)
+
+                        }
+
                     }
 
-                }
-
-                $('#map2').loading('stop');
+                    $('#map2').loading('stop');
 
 
-            })
-            .catch(err => {
-                $('#map2').loading('stop');
-                _VERBOSE ? console.log("error: " + err) : _VERBOSE;
-            });
+                })
+                .catch(err => {
+                    $('#map2').loading('stop');
+                    _VERBOSE ? console.log("error: " + err) : _VERBOSE;
+                });
 
 
-        }
-        else{
+        } else {
 
             fetch(_url_zacatuche + "/niche/especie/getCellOcurrences", {
-                method: "POST",
-                body: JSON.stringify(data_body_request),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(resp => resp.json())
-            .then(respuesta => {
+                    method: "POST",
+                    body: JSON.stringify(data_body_request),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(resp => resp.json())
+                .then(respuesta => {
 
-                if (respuesta.ok) {
+                    if (respuesta.ok) {
 
-                    var data = respuesta.data;
+                        var data = respuesta.data;
 
-                    _VERBOSE ? console.log(data) : _VERBOSE;
+                        _VERBOSE ? console.log(data) : _VERBOSE;
 
-                    if (data.length > 0) {
+                        if (data.length > 0) {
 
-                        var htmltable = _createOccTableFromData(data);
-                        if (htmltable === "")
-                            return;
-                        _map_module_nicho.showPopUp(htmltable, [lat, long], true);
-                                            
+                            var htmltable = _createOccTableFromData(data);
+                            if (htmltable === "")
+                                return;
+                            _map_module_nicho.showPopUp(htmltable, [lat, long], true);
+
+
+                        }
 
                     }
 
-                }
-
-                $('#map2').loading('stop');
+                    $('#map2').loading('stop');
 
 
-            })
-            .catch(err => {
-                $('#map2').loading('stop');
-                _VERBOSE ? console.log("error: " + err) : _VERBOSE;
-            });
+                })
+                .catch(err => {
+                    $('#map2').loading('stop');
+                    _VERBOSE ? console.log("error: " + err) : _VERBOSE;
+                });
 
 
         }
-        
-        
-        
+
+
+
 
     }
 
@@ -2873,41 +2882,41 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var table_sp = "";
 
         //TODO: falta nombre de especie en la petición
-        
-        htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">'+
-            '<div class="panel-primary">'+
-                '<div class="panel-heading no-padding header-title-cell">'+
-                    '<h3 class="h3-title-cell">'+ json_data[0].entidad + '</h3>'+
-                '</div>'+
-                '<table class="table table-striped">'+
-                   '<thead>'+
-                        '<tr>'+
-                            '<th>Nombre</th>'+
-                            '<th>Edad</th>'+
-                            '<th>Genero</th>'+
-                            '<th>Fecha Colecta</th>'+                                 
-                            // '<th>Info</th>'+                                 
-                        '</tr>'+
-                    '</thead>'+              
-                    '<tbody>';
 
-            json_data.forEach(function (item, index) {
-                
-                var gen = item.genero === "M" ? "Masculino" : "Femenino"
+        htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+            '<div class="panel-primary">' +
+            '<div class="panel-heading no-padding header-title-cell">' +
+            '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+            '</div>' +
+            '<table class="table table-striped">' +
+            '<thead>' +
+            '<tr>' +
+            '<th>Nombre</th>' +
+            '<th>Edad</th>' +
+            '<th>Genero</th>' +
+            '<th>Fecha Colecta</th>' +
+            // '<th>Info</th>'+                                 
+            '</tr>' +
+            '</thead>' +
+            '<tbody>';
 
-                htmltable +='<tr>'+
-                            '<td>' + item.species + '</td>'+
-                            '<td>' + item.edad + '</td>'+
-                            '<td>' + gen + '</td>'+
-                            '<td>' + item.fechacolecta + '</td>'+                               
-                            // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
-                        '</tr>';
-            })
+        json_data.forEach(function(item, index) {
 
-        htmltable += '</tbody>'+
-                '</table>'+
-            '</div>'+
-        '</div>';
+            var gen = item.genero === "M" ? "Masculino" : "Femenino"
+
+            htmltable += '<tr>' +
+                '<td>' + item.species + '</td>' +
+                '<td>' + item.edad + '</td>' +
+                '<td>' + gen + '</td>' +
+                '<td>' + item.fechacolecta + '</td>' +
+                // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
+                '</tr>';
+        })
+
+        htmltable += '</tbody>' +
+            '</table>' +
+            '</div>' +
+            '</div>';
 
         // console.log(htmltable)
 
@@ -2933,7 +2942,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
         console.log(info_cell[0].nom_mun)
 
         var info_celda = info_cell[0].nom_ent
-        info_celda += info_cell[0].nom_mun != undefined && info_cell[0].nom_mun != ""  ? ", " + info_cell[0].nom_mun : ""
+        info_celda += info_cell[0].nom_mun != undefined && info_cell[0].nom_mun != "" ? ", " + info_cell[0].nom_mun : ""
 
         console.log(info_celda)
 
@@ -2941,14 +2950,13 @@ var res_display_module = (function (verbose, url_zacatuche) {
         // descending order in json array by score
         console.log("_val_process_temp: " + _val_process_temp)
 
-        if(_val_process_temp){
+        if (_val_process_temp) {
             json_data.sort(function(a, b) {
-                return parseFloat(b.score) - parseFloat(a.score) ;
+                return parseFloat(b.score) - parseFloat(a.score);
             });
-        }
-        else{
+        } else {
             json_data.groups.sort(function(a, b) {
-                return parseFloat(b.score) - parseFloat(a.score) ;
+                return parseFloat(b.score) - parseFloat(a.score);
             });
         }
 
@@ -2961,19 +2969,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
         var total_celda;
 
 
-        if(_val_process_temp){
+        if (_val_process_temp) {
 
 
-            if(json_data.length == 0){
-                _VERBOSE ? console.log("No data") : _VERBOSE    
+            if (json_data.length == 0) {
+                _VERBOSE ? console.log("No data") : _VERBOSE
             }
 
 
-            table_sp += "<div class='panel-primary'>"
-                        + "<div class='panel-heading no-padding header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div>"
-                        + "<table id='tbl_sp_selected'>"
-                        + "<thead><tr><th>Nombre</th><th>Score</th></tr></thead>"
-                        + "<tbody>";
+            table_sp += "<div class='panel-primary'>" +
+                "<div class='panel-heading no-padding header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div>" +
+                "<table id='tbl_sp_selected'>" +
+                "<thead><tr><th>Nombre</th><th>Score</th></tr></thead>" +
+                "<tbody>";
 
             for (i = 0; i < json_data.length; i++) {
 
@@ -2981,17 +2989,16 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
                     table_sp += "<tr><td>" + json_data[i].generovalido + " " + json_data[i].especieepiteto + "</td><td>" + parseFloat(json_data[i].score).toFixed(2) + "</td></tr>";
 
-                }
-                else{
+                } else {
 
                     var range = json_data[i].tag.split(":")
-                    var label = json_data[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                    var label = json_data[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g, '')
 
                     var min = (parseFloat(range[0]) * json_data[i].coeficiente).toFixed(3) + " " + json_data[i].unidad
                     var max = (parseFloat(range[1]) * json_data[i].coeficiente).toFixed(3) + " " + json_data[i].unidad
 
                     var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
-                    
+
                     table_sp += "<tr><td>" + value + "</td><td>" + parseFloat(json_data[i].score).toFixed(2) + "</td></tr>";
 
                 }
@@ -3013,8 +3020,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
             htmltable += "</div>"; // cierra div myScrollableBlockPopup
 
 
-        }
-        else if(_val_process_temp == false){
+        } else if (_val_process_temp == false) {
 
 
             if (json_data.hasbio === false && json_data.hasraster === false && json_data.apriori === undefined && json_data.mapa_prob === undefined) {
@@ -3026,9 +3032,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             if (json_data.hasbio) {
 
-                table_sp += "<div class='panel-primary'><div class='panel-heading no-padding header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table id='tbl_sp_selected_sp' class=''>"
-                            + "<thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"+
-                            + "<tbody>";
+                table_sp += "<div class='panel-primary'><div class='panel-heading no-padding header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo') + "</h3></div><table id='tbl_sp_selected_sp' class=''>" +
+                    "<thead><tr><th>" + _iTrans.prop('tip_tbl_esp') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>" +
+                    +"<tbody>";
 
                 for (i = 0; i < json_data.groups.length; i++) {
 
@@ -3047,9 +3053,9 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
             if (json_data.hasraster) {
 
-                table_rt += "<div class='panel-primary'><div class='panel-heading panel-head header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table id='tbl_sp_selected_rt' class='table table-striped'>" 
-                        + "<thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>"
-                        + "<tbody>";
+                table_rt += "<div class='panel-primary'><div class='panel-heading panel-head header-title-cell'><h3>" + _iTrans.prop('tip_tbl_titulo_clima') + "</h3></div><table id='tbl_sp_selected_rt' class='table table-striped'>" +
+                    "<thead><tr><th>" + _iTrans.prop('tip_tbl_bioclim') + "</th><th>" + _iTrans.prop('tip_tbl_score') + "</th></tr></thead>" +
+                    "<tbody>";
 
                 for (var i = 0; i < json_data.groups.length; i++) {
 
@@ -3058,19 +3064,19 @@ var res_display_module = (function (verbose, url_zacatuche) {
                         // var arg_values = json_data.groups[i].name.split(" ")
                         // var value_abio = arg_values.length === 1 ? _iTrans.prop("a_item_" + arg_values[0]) : _iTrans.prop("a_item_" + arg_values[0]) + " " + arg_values[1] + " : " + arg_values[2]
                         // table_rt += "<tr><td>" + value_abio + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
-                        
+
                         // TODO: corregir id por label
 
                         // var range = d.tag.split(":")
                         var range = json_data.groups[i].tag.split(":")
-                        var label = json_data.groups[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g,'')
+                        var label = json_data.groups[i].label.replace(/[^a-zA-Z0-9]/g, "").replace(/ /g, '')
 
                         var min = (parseFloat(range[0]) * json_data.groups[i].coeficiente).toFixed(3) + " " + json_data.groups[i].unidad
                         var max = (parseFloat(range[1]) * json_data.groups[i].coeficiente).toFixed(3) + " " + json_data.groups[i].unidad
 
                         // var value = _iTrans.prop(label) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
                         var value = _iTrans.prop(label) + " (" + min + " : " + max + ") "
-                        
+
                         // var layer = _iTrans.prop("a_item_" + json_data.groups[i].layer) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
                         table_rt += "<tr><td>" + value + "</td><td>" + parseFloat(json_data.groups[i].score).toFixed(2) + "</td></tr>";
 
@@ -3103,8 +3109,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
                                         <th>" + total_celda + "</th>\n\
                                         </tr>";
 
-            } 
-            else if (json_data.apriori !== undefined) {
+            } else if (json_data.apriori !== undefined) {
 
                 console.log("Apriori");
 
@@ -3147,8 +3152,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
 
 
 
-            } 
-            else {
+            } else {
 
                 title_total = $.i18n.prop('lb_pp_st');
                 total_celda = parseFloat(json_data.tscore).toFixed(2);
@@ -3198,8 +3202,8 @@ var res_display_module = (function (verbose, url_zacatuche) {
             htmltable += "</div>"; // cierra div myScrollableBlockPopup
 
         }
-        
-       
+
+
         return htmltable;
 
     }
@@ -3226,7 +3230,7 @@ var res_display_module = (function (verbose, url_zacatuche) {
     }
 
     // Añadir los miembros públicos
-    return{
+    return {
         startResDisplay: startResDisplay,
         refreshData: refreshData,
         set_idReg: set_idReg,
