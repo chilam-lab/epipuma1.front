@@ -537,9 +537,9 @@ var module_nicho = (function() {
             let textnode = document.createTextNode("Modificadores de Target");
             node.appendChild(textnode);
             node.appendChild(b);
-            generateInput(node, "incidence", " Incidencia");
-            generateInput(node, "prevalence", " Prevalencia");
-            generateInput(node, "cases", " Casos");
+            generateInput(node, "incidence", " 10% Municipios con Mayor Incidencia");
+            generateInput(node, "prevalence", " 10% Municipios con Mayor Prevalencia");
+            generateInput(node, "cases", " 10% Municipios con Mayor Número de Casos");
             document.getElementById("treeVariable_target").appendChild(node);
         }
 
@@ -674,13 +674,13 @@ var module_nicho = (function() {
                     console.log(texto2)
                     switch (texto2) {
                         case "prevalence":
-                            text_switch = "10% Municipios con Mayor Prevalencia";
+                            text_switch = "Prevalencia";
                             break;
                         case "incidence":
-                            text_switch = "10% Municipios con Mayor Incidencia";
+                            text_switch = "Incidencia";
                             break;
                         default:
-                            text_switch = "10% Municipios con Mayor Número de Casos";
+                            text_switch = "Casos";
                             break;
                     }
 
