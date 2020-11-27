@@ -674,13 +674,13 @@ var module_nicho = (function() {
                     console.log(texto2)
                     switch (texto2) {
                         case "prevalence":
-                            text_switch = "Prevalencia";
+                            text_switch = "10% Municipios con Mayor Prevalencia";
                             break;
                         case "incidence":
-                            text_switch = "Incidencia";
+                            text_switch = "10% Municipios con Mayor Incidencia";
                             break;
                         default:
-                            text_switch = "Casos";
+                            text_switch = "10% Municipios con Mayor Número de Casos";
                             break;
                     }
 
