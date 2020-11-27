@@ -495,7 +495,7 @@ var module_nicho = (function() {
             });
         }
         const generateInput = (node, value, text) => {
-            if (value == "prevalence") {
+            if ((value == "prevalence") || (value == "lethality") || (value == "negativity")) {
                 let d = document.createElement("div");
                 d.setAttribute("id", value);
                 let i = document.createElement("input");
@@ -540,6 +540,8 @@ var module_nicho = (function() {
             generateInput(node, "incidence", " 10% Municipios con Mayor Incidencia");
             generateInput(node, "prevalence", " 10% Municipios con Mayor Prevalencia");
             generateInput(node, "cases", " 10% Municipios con Mayor Número de Casos");
+            generateInput(node, "lethality", " 10% Municipios con Mayor Letalidad");
+            generateInput(node, "negativity", " 10% Municipios con Menor Positividad");
             document.getElementById("treeVariable_target").appendChild(node);
         }
 
@@ -616,6 +618,14 @@ var module_nicho = (function() {
                         let covar_checked = $(".jstree-clicked")[0].innerText;
                         console.log(covar_checked)
                         $(".grupo1").prop('checked', false);
+                        document.getElementById("lethality").hidden = true;
+                        document.getElementById("negativity").hidden = true;
+                        if (covar_checked == "COVID-19 FALLECIDO") {
+                            document.getElementById("lethality").hidden = false;
+                        }
+                        if (covar_checked == "COVID-19 NEGATIVO") {
+                            document.getElementById("negativity").hidden = false;
+                        }
                         if (covar_checked == "COVID-19 CONFIRMADO") {
                             document.getElementById("prevalence").hidden = false;
                         } else {
@@ -678,6 +688,12 @@ var module_nicho = (function() {
                             break;
                         case "incidence":
                             text_switch = "Incidencia";
+                            break;
+                        case "lethality":
+                            text_switch = "Letalidad";
+                            break;
+                        case "negativity":
+                            text_switch = "Negatividad";
                             break;
                         default:
                             text_switch = "Casos";
