@@ -135,7 +135,7 @@ var module_nicho = (function() {
                     $(".jstree-anchor").click(function() {
                         dinamica_menu_modificadores();
                     })
-                    console.log("MODIFIERS2");
+                    console.log("MODIFIERS_2");
 
                     return;
                 }
