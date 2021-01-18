@@ -131,7 +131,12 @@ var module_nicho = (function() {
                 _VERBOSE ? console.log(d.node.children) : _VERBOSE;
 
                 if (d.node.children.length > 1) {
-                    console.log("No se encontraron datos debajo de este nivel")
+                    console.log("No se encontraron datos debajo de este nivel");
+                    $(".jstree-anchor").click(function() {
+                        dinamica_menu_modificadores();
+                    })
+                    console.log("MODIFIERS2");
+
                     return;
                 }
 
@@ -495,38 +500,74 @@ var module_nicho = (function() {
             });
         }
         const generateInput = (node, value, text) => {
-            if ((value == "prevalence") || (value == "lethality") || (value == "negativity")) {
-                let d = document.createElement("div");
-                d.setAttribute("id", value);
-                let i = document.createElement("input");
-                i.setAttribute("type", "radio");
-                i.setAttribute("class", "grupo1");
-                i.setAttribute("name", "grupo1");
-                i.setAttribute("value", value);
-                let l = document.createElement("label");
-                let textnode = document.createTextNode(text);
-                l.appendChild(textnode);
-                l.setAttribute("style", "margin-left: 2%");
-                d.appendChild(i);
-                d.appendChild(l);
-                node.appendChild(d);
-            } else {
-                let b = document.createElement("br");
-                let i = document.createElement("input");
-                i.setAttribute("type", "radio");
-                i.setAttribute("class", "grupo1");
-                i.setAttribute("name", "grupo1");
-                i.setAttribute("value", value);
-                let l = document.createElement("label");
-                let textnode = document.createTextNode(text);
-                l.appendChild(textnode);
-                l.setAttribute("style", "margin-left: 2%")
-                node.appendChild(i);
-                node.appendChild(l);
-                node.appendChild(b);
-            }
+                if ((value == "prevalence") || (value == "lethality") || (value == "negativity")) {
+                    let d = document.createElement("div");
+                    d.setAttribute("id", value);
+                    let i = document.createElement("input");
+                    i.setAttribute("type", "radio");
+                    i.setAttribute("class", "grupo1");
+                    i.setAttribute("name", "grupo1");
+                    i.setAttribute("value", value);
+                    let l = document.createElement("label");
+                    let textnode = document.createTextNode(text);
+                    l.appendChild(textnode);
+                    l.setAttribute("style", "margin-left: 2%");
+                    d.appendChild(i);
+                    d.appendChild(l);
+                    node.appendChild(d);
+                } else {
+                    let b = document.createElement("br");
+                    let i = document.createElement("input");
+                    i.setAttribute("type", "radio");
+                    i.setAttribute("class", "grupo1");
+                    i.setAttribute("name", "grupo1");
+                    i.setAttribute("value", value);
+                    let l = document.createElement("label");
+                    let textnode = document.createTextNode(text);
+                    l.appendChild(textnode);
+                    l.setAttribute("style", "margin-left: 2%")
+                    node.appendChild(i);
+                    node.appendChild(l);
+                    node.appendChild(b);
+                }
 
-        }
+            }
+            // INICIA DINAMICA MENU MODIFICADORES
+        const dinamica_menu_modificadores = () => {
+                let covar2 = $(this)[0].innerText;
+                if (covar2 == "COVID-19") {
+                    return;
+                }
+
+                setTimeout(function() {
+                    let number_checked = $(".jstree-clicked").length;
+                    let covar = $(this)[0].innerText;
+                    sessionStorage.setItem("covar", covar);
+                    if (number_checked == 1) {
+                        document.getElementById("modifiers_covid").hidden = false;
+                        let covar_checked = $(".jstree-clicked")[0].innerText;
+                        console.log(covar_checked)
+                        $(".grupo1").prop('checked', false);
+                        document.getElementById("lethality").hidden = true;
+                        document.getElementById("negativity").hidden = true;
+                        if (covar_checked == "COVID-19 FALLECIDO") {
+                            document.getElementById("lethality").hidden = false;
+                        }
+                        if (covar_checked == "COVID-19 NEGATIVO") {
+                            document.getElementById("negativity").hidden = false;
+                        }
+                        if (covar_checked == "COVID-19 CONFIRMADO") {
+                            document.getElementById("prevalence").hidden = false;
+                        } else {
+                            document.getElementById("prevalence").hidden = true;
+                        }
+                    } else {
+                        document.getElementById("modifiers_covid").hidden = true;
+                    }
+                }, 100)
+            }
+            // TERMINA DINAMICA MENU MODIFICADORES
+
         const generateModifiersMenu = () => {
             let node = document.createElement("div");
             let b = document.createElement("br");
@@ -604,37 +645,7 @@ var module_nicho = (function() {
                 })
                 // Dinamica Menu Modificadores
             $(".jstree-anchor").click(function() {
-                let covar2 = $(this)[0].innerText;
-                if (covar2 == "COVID-19") {
-                    return;
-                }
-                setTimeout(function() {
-                    let number_checked = $(".jstree-clicked").length;
-                    console.log(number_checked)
-                    let covar = $(this)[0].innerText;
-                    sessionStorage.setItem("covar", covar);
-                    if (number_checked == 1) {
-                        document.getElementById("modifiers_covid").hidden = false;
-                        let covar_checked = $(".jstree-clicked")[0].innerText;
-                        console.log(covar_checked)
-                        $(".grupo1").prop('checked', false);
-                        document.getElementById("lethality").hidden = true;
-                        document.getElementById("negativity").hidden = true;
-                        if (covar_checked == "COVID-19 FALLECIDO") {
-                            document.getElementById("lethality").hidden = false;
-                        }
-                        if (covar_checked == "COVID-19 NEGATIVO") {
-                            document.getElementById("negativity").hidden = false;
-                        }
-                        if (covar_checked == "COVID-19 CONFIRMADO") {
-                            document.getElementById("prevalence").hidden = false;
-                        } else {
-                            document.getElementById("prevalence").hidden = true;
-                        }
-                    } else {
-                        document.getElementById("modifiers_covid").hidden = true;
-                    }
-                }, 100)
+                dinamica_menu_modificadores();
 
             })
             $(".jstree-anchor")[1].click()
