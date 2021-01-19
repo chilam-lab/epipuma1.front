@@ -547,6 +547,45 @@ var module_nicho = (function() {
                         document.getElementById("modifiers_covid").hidden = false;
                         let covar_checked = $(".jstree-clicked")[0].innerText;
                         console.log(covar_checked)
+                            ///// SELECCION DE COVARIABLES FIJAS
+                        if (covar_checked == "Demográficos") {
+                            let data = [{
+                                label: "Demográficos",
+                                level: "Reino",
+                                numlevel: "2",
+                                type: 0
+                            }];
+                            parsed_data = JSON.stringify(data);
+                            sessionStorage.setItem("selectedData", parsed_data)
+                        } else if (covar_checked == "Pobreza") {
+                            let data = [{
+                                label: "Pobreza",
+                                level: "Reino",
+                                numlevel: "2",
+                                type: 0
+                            }];
+                            parsed_data = JSON.stringify(data);
+                            sessionStorage.setItem("selectedData", parsed_data)
+
+                        } else if (covar_checked == "Movilidad") {
+                            let data = [{
+                                label: "Movilidad",
+                                level: "Reino",
+                                numlevel: "2",
+                                type: 0
+                            }];
+                            parsed_data = JSON.stringify(data);
+                            sessionStorage.setItem("selectedData", parsed_data)
+                        } else if (covar_checked == "Vulnerabilidad") {
+                            let data = [{
+                                label: "Vulnerabilidad",
+                                level: "Género",
+                                numlevel: "7",
+                                type: 0
+                            }];
+                            parsed_data = JSON.stringify(data);
+                            sessionStorage.setItem("selectedData", parsed_data)
+                        }
                         $(".grupo1").prop('checked', false);
                         document.getElementById("lethality").hidden = true;
                         document.getElementById("negativity").hidden = true;
@@ -594,6 +633,10 @@ var module_nicho = (function() {
         $("#lb_range_fecha")[0].innerText = "Periodo de Entrenamiento";
         $("#lb_range_fecha").css("width", "10px");
         $("#lb_range_fecha").css("margin-bottom", "15px");
+        $("#btn_variable_fuente").remove()
+        $("#text_variable_fuente").remove()
+        $("#tuto_nav_tabs_fuente").css("margin-bottom", "4px");
+
         //Cambios Factores de Riesgo Covariables
         var data_target = {
             item: {
@@ -606,7 +649,247 @@ var module_nicho = (function() {
         //Escribiendo datos target fijos
         getCovidMetaData();
         getFixedData("target", data_target);
+        //////FIXED COVARS BIO///////
+        //Cambios Factores de Riesgo Covariables
+        var data_target = {
+            item: {
+                id: "COVID-19",
+                label: "COVID-19",
+                value: "COVID-19"
+            }
+        }
 
+        //Escribiendo datos target fijos
+        getCovidMetaData();
+        //CARGAR VARIABLES BIOLOGICAS FIJAS
+
+        setTimeout(function() {
+            // Generacion Covariables Fijas
+            var tree_reinos = [{
+                "text": "Grupos de Interes",
+                "id": "root_covar",
+                "attr": { "nivel": "root", "type": 0 },
+                'state': { 'opened': true },
+                "icon": "plugins/jstree/images/dna.png",
+            }];
+
+            self.covar_raiz = $('#jstree_variables_species_fuente').jstree({
+                'plugins': ["wholerow", "checkbox"],
+                'core': {
+                    'data': tree_reinos,
+                    'themes': {
+                        'name': 'proton',
+                        'responsive': true
+                    },
+                    'check_callback': true
+                }
+            });
+            var default_son = [{
+                text: "cargando..."
+            }]
+            $('#jstree_variables_species_fuente').on('open_node.jstree', function(e, d) {
+                let _url_zacatuche = "http://covid19.c3.unam.mx/api";
+                let id = "fuente"
+                _VERBOSE ? console.log("self.getTreeVar") : _VERBOSE;
+
+                _VERBOSE ? console.log(d.node.original.attr.nivel) : _VERBOSE;
+                _VERBOSE ? console.log(d.node.children) : _VERBOSE;
+
+                if (d.node.children.length > 1) {
+                    console.log("No se encontraron datos debajo de este nivel")
+                    return;
+                }
+
+                var next_field = "";
+                var next_nivel = 0;
+                var parent_field = "";
+
+                $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/dist/themes/default/throbber.gif");
+                console.log(d.node.original.attr.nivel);
+                if (d.node.original.attr.nivel == 2) {
+                    parent_field = "reinovalido"
+                    next_field = "phylumdivisionvalido";
+                    next_nivel = 3;
+                } else if (d.node.original.attr.nivel == 3) {
+                    parent_field = "phylumdivisionvalido"
+                    next_field = "clasevalida";
+                    next_nivel = 4;
+                } else if (d.node.original.attr.nivel == 4) {
+                    parent_field = "clasevalida"
+                    next_field = "ordenvalido";
+                    next_nivel = 5;
+                } else if (d.node.original.attr.nivel == 5) {
+                    parent_field = "ordenvalido"
+                    next_field = "familiavalida";
+                    next_nivel = 6;
+                } else if (d.node.original.attr.nivel == 6) {
+                    parent_field = "familiavalida"
+                    next_field = "generovalido";
+                    next_nivel = 7;
+                } else if (d.node.original.attr.nivel == 7) {
+                    parent_field = "generovalido"
+                    next_field = "especieepiteto";
+                    next_nivel = 8;
+                } else {
+                    $('#jstree_variables_species_' + id).tooltip('hide');
+                    $("#jstree_variables_species_" + id).jstree(true).delete_node(d.node.children[0]);
+                    $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/images/dna.png");
+                    return;
+                }
+
+                _VERBOSE ? console.log(d.node.id) : _VERBOSE
+                _VERBOSE ? console.log(d.node.text) : _VERBOSE
+
+                var text_val = d.node.text
+                var regex = / \(spp: \d*\)/gi;
+
+                // elimina el (spp: N) del valir para realizar la busqueda de manera correcta
+                var label_value = text_val.replace(regex, '');
+                _VERBOSE ? console.log(label_value) : _VERBOSE
+
+                _REGION_SELECTED = ($("#footprint_region_select").val() !== null && $("#footprint_region_select").val() !== undefined) ? parseInt($("#footprint_region_select").val()) : _REGION_SELECTED;
+                _GRID_RES = $("#grid_resolution").val();
+
+                console.log("REGION_SELECTED: " + _REGION_SELECTED);
+                console.log("_GRID_RES: " + _GRID_RES);
+
+                $.ajax({
+                    url: _url_zacatuche + "/niche/especie/getVariables",
+                    dataType: "json",
+                    type: "post",
+                    data: {
+                        "field": next_field,
+                        "parentfield": parent_field,
+                        // "parentitem": d.node.text.split(" ")[0],
+                        "parentitem": label_value,
+                        "footprint_region": _REGION_SELECTED,
+                        "grid_res": _GRID_RES
+                    },
+                    success: function(resp) {
+                        console.log(resp);
+                        data = resp.data;
+
+                        $('ul').tooltip('hide');
+                        $('li').tooltip('hide');
+                        $('li').removeAttr("title");
+                        $('li').removeAttr("data-original-title");
+                        $('#jstree_variables_species_' + id).removeAttr("data-original-title");
+                        $('#jstree_variables_species_' + id).removeAttr("title");
+
+                        for (i = 0; i < data.length; i++) {
+
+                            var idNode = "";
+                            var name_variable = data[i].name
+
+                            console.log("name_variable: " + name_variable)
+
+                            if ($("#" + data[i].id).length > 0) {
+                                // _VERBOSE ? console.log("id_existente") : _VERBOSE;
+
+                                idNode = data[i].id.replace(" ", "") + "_" + Math.floor((Math.random() * 1000) + 1)
+                            } else {
+                                // ._VERBOSE ? console.log("nuevo_id") : _VERBOSE;
+
+                                idNode = data[i].id;
+                            }
+
+                            var default_son = next_nivel < 8 ? [{ text: "cargando..." }] : [];
+                            var label_taxon = next_nivel < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
+
+                            var newNode = {
+                                id: idNode,
+                                text: label_taxon,
+                                icon: "plugins/jstree/images/dna.png",
+                                attr: { "nivel": next_nivel, "type": 0 },
+                                state: { 'opened': false },
+                                "children": default_son
+                            };
+
+                            if (data[i].description + '' !== 'undefined') {
+                                newNode['li_attr'] = { "title": data[i].description + ' ' + data[i].name.split(' ')[1] };
+                            }
+
+                            $('#jstree_variables_species_' + id).jstree("create_node", d.node, newNode, 'last', false, false);
+
+                        }
+
+                        $("#jstree_variables_species_" + id).jstree(true).delete_node(d.node.children[0]);
+                        $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/images/dna.png");
+                        $("#jstree_variables_species_" + id).prop('title', data[0].description);
+                        $("#jstree_variables_species_" + id).tooltip();
+
+                        $('li').tooltip();
+                        $('ul').tooltip();
+
+                    }
+                });
+
+
+            });
+
+            $("#jstree_variables_species_fuente").on('loaded.jstree', function() {
+                console.log("primerArbolCovar");
+                console.log($("#root_covar"));
+                var newNode = {
+                    id: "demograficos",
+                    text: "Demográficos",
+                    icon: "plugins/jstree/images/dna.png",
+                    attr: {
+                        "nivel": 2,
+                        "type": 0
+                    },
+                    state: { 'opened': false },
+                    "children": default_son
+                };
+                var newNode2 = {
+                    id: "pobreza",
+                    text: "Pobreza",
+                    icon: "plugins/jstree/images/dna.png",
+                    attr: {
+                        "nivel": 2,
+                        "type": 0
+                    },
+                    state: { 'opened': false },
+                    "children": default_son
+                };
+                var newNode3 = {
+                    id: "movilidad",
+                    text: "Movilidad",
+                    icon: "plugins/jstree/images/dna.png",
+                    attr: {
+                        "nivel": 2,
+                        "type": 0
+                    },
+                    state: { 'opened': false },
+                    "children": default_son
+                };
+                var newNode4 = {
+                    id: "vulnerabilidad",
+                    text: "Vulnerabilidad",
+                    icon: "plugins/jstree/images/dna.png",
+                    attr: {
+                        "nivel": 7,
+                        "type": 0
+                    },
+                    state: { 'opened': false },
+                    "children": default_son
+                };
+                var current_node = $('#jstree_variables_species_fuente').jstree(true).get_node($("#root_covar"));
+                console.log(current_node)
+                $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode, 'last', false, false);
+                $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode2, 'last', false, false);
+                $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode3, 'last', false, false);
+                $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode4, 'last', false, false);
+
+            });
+
+
+
+        }, 1000)
+
+        /////
+
+        ////////////////////////////
         setTimeout(function() {
             $(".jstree-anchor")[1].click()
 
@@ -655,69 +938,69 @@ var module_nicho = (function() {
 
         // Boton Agregar
         $("#add_group_target").click(function() {
-                sessionStorage.setItem("flag_target_added", "true")
-                if (self.arrayVarSelected.length == 0) {
-                    console.log("No species selected");
-                    _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
-                    return;
-                }
-                //Manejo del arbol de variables
-                let variables_seleccionadas = JSON.parse(sessionStorage.getItem("selectedData"));
-                let covars_list = ["COVID-19 CONFIRMADO", "COVID-19 FALLECIDO", "COVID-19 NEGATIVO", "COVID-19 SOSPECHOSO"];
-                if (variables_seleccionadas[0]["label"] == "COVID-19") {
-                    for (let index = 0; index < covars_list.length; index++) {
-                        let etiqueta = "#" + covars_list[index].replace(/\s/g, "");
-                        $(etiqueta).remove()
-                    }
-                }
-                for (let index = 0; index < variables_seleccionadas.length; index++) {
-                    let etiqueta = "#" + variables_seleccionadas[index]["label"].replace(/\s/g, "");
+            sessionStorage.setItem("flag_target_added", "true")
+            if (self.arrayVarSelected.length == 0) {
+                console.log("No species selected");
+                _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
+                return;
+            }
+            //Manejo del arbol de variables
+            let variables_seleccionadas = JSON.parse(sessionStorage.getItem("selectedData"));
+            let covars_list = ["COVID-19 CONFIRMADO", "COVID-19 FALLECIDO", "COVID-19 NEGATIVO", "COVID-19 SOSPECHOSO"];
+            if (variables_seleccionadas[0]["label"] == "COVID-19") {
+                for (let index = 0; index < covars_list.length; index++) {
+                    let etiqueta = "#" + covars_list[index].replace(/\s/g, "");
                     $(etiqueta).remove()
-
                 }
-                //Manejo de Modificadores
-                //Eliminar grupo modificadores
-                document.getElementById("modifiers_covid").hidden = true;
-                if (flag_modifiers) {
-                    let obj_fix = {}
-                    sessionStorage.setItem("modifiers_flag", "true");
-                    for (let index = 0; index < list_modifiers.length; index++) {
-                        obj_fix[list_modifiers[index][0]] = list_modifiers[index][1];
-                    }
-                    console.log(obj_fix)
-                    sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
-                    $(".row_var_item").click()
-                    let original_text = $(".cell_item")[0].innerText;
-                    let modifier_value = JSON.parse(sessionStorage.getItem("modifiers"));
-                    let texto = Object.values(modifier_value);
-                    let text_switch
-                    let texto2 = (texto[0])
-                    console.log(texto2)
-                    switch (texto2) {
-                        case "prevalence":
-                            text_switch = "Prevalencia";
-                            break;
-                        case "incidence":
-                            text_switch = "Incidencia";
-                            break;
-                        case "lethality":
-                            text_switch = "Letalidad";
-                            break;
-                        case "negativity":
-                            text_switch = "Negatividad";
-                            break;
-                        default:
-                            text_switch = "Casos";
-                            break;
-                    }
+            }
+            for (let index = 0; index < variables_seleccionadas.length; index++) {
+                let etiqueta = "#" + variables_seleccionadas[index]["label"].replace(/\s/g, "");
+                $(etiqueta).remove()
 
-                    let modifier_text = "Modificador: " +
-                        text_switch
-                    $(".cell_item")[0].innerText = original_text + " >> " + modifier_text
-
+            }
+            //Manejo de Modificadores
+            //Eliminar grupo modificadores
+            document.getElementById("modifiers_covid").hidden = true;
+            if (flag_modifiers) {
+                let obj_fix = {}
+                sessionStorage.setItem("modifiers_flag", "true");
+                for (let index = 0; index < list_modifiers.length; index++) {
+                    obj_fix[list_modifiers[index][0]] = list_modifiers[index][1];
                 }
-            })
-            // Boton Borrar
+                console.log(obj_fix)
+                sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
+                $(".row_var_item").click()
+                let original_text = $(".cell_item")[0].innerText;
+                let modifier_value = JSON.parse(sessionStorage.getItem("modifiers"));
+                let texto = Object.values(modifier_value);
+                let text_switch
+                let texto2 = (texto[0])
+                console.log(texto2)
+                switch (texto2) {
+                    case "prevalence":
+                        text_switch = "Prevalencia";
+                        break;
+                    case "incidence":
+                        text_switch = "Incidencia";
+                        break;
+                    case "lethality":
+                        text_switch = "Letalidad";
+                        break;
+                    case "negativity":
+                        text_switch = "Negatividad";
+                        break;
+                    default:
+                        text_switch = "Casos";
+                        break;
+                }
+
+                let modifier_text = "Modificador: " +
+                    text_switch
+                $(".cell_item")[0].innerText = original_text + " >> " + modifier_text
+
+            }
+        });
+        // Boton Borrar
         $("#clean_var_target").click(function() {
             getFixedData("target", data_target);
             sessionStorage.setItem("flag_target_added", "false")
@@ -733,14 +1016,24 @@ var module_nicho = (function() {
                 _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
                 return;
             }
-        })
+        });
         $("#reload_map").click(function() {
             sessionStorage.setItem("covar", "")
-        })
+        });
         $("#get_esc_ep").click(function() {
             sessionStorage.setItem("count_anlys", 1)
+        });
+        $("#add_group_fuente").click(function() {
+            sessionStorage.setItem("covar", "")
+                // let data = [{
+                //     label: "Demográficos",
+                //     level: "Reino",
+                //     numlevel: "2",
+                //     type: 0
+                // }];
+                // parsed_data = JSON.stringify(data);
+                // sessionStorage.setItem("selectedData", parsed_data)
         })
-
 
         /// Acaban cambios EpiPuma
 

@@ -672,14 +672,10 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .addClass('btn btn-primary glyphicon glyphicon-plus pull-left no-mg-top')
                     .click(function(e) {
                         let flag_covars = JSON.stringify(sessionStorage.getItem("covar")).length;
-                        console.log(JSON.stringify(sessionStorage.getItem("covar")))
-                        console.log(flag_covars)
-                        if (flag_covars > 2) {
-                            let var_array = JSON.parse(sessionStorage.getItem("selectedData"));
-                            self.addOtherGroup('jstree_variables_species_' + id, var_array, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
-                        } else {
-                            self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
-                        }
+
+                        let var_array = JSON.parse(sessionStorage.getItem("selectedData"));
+                        self.addOtherGroup('jstree_variables_species_' + id, var_array, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+
 
 
                         // $('#jstree_variables_species_' + id).jstree("destroy").empty();
@@ -1390,7 +1386,8 @@ var variable_module = (function(verbose, url_zacatuche) {
             //            console.log(idDivContainer);
             //            console.log(typeVar);
             let flag_covar_selected = sessionStorage.getItem("flag_target_added")
-            console.log(flag_covar_selected)
+            console.log(flag_covar_selected);
+            console.log(arraySelected);
             if ((arraySelected.length === 0) && (flag_covar_selected == "true")) {
                 console.log("meeem")
                 return;
