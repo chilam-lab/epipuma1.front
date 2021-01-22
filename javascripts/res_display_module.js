@@ -1150,7 +1150,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 //var url = _url_zacatuche + "/dev/niche/" + verbo
 
         }
-        // alert(url)
         // cambiando peticiones ajax por promesas y fetch api
         fetch(url, {
                 method: "POST",

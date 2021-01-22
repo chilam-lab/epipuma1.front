@@ -546,62 +546,294 @@ var module_nicho = (function() {
                     if (number_checked == 1) {
                         document.getElementById("modifiers_covid").hidden = false;
                         let covar_checked = $(".jstree-clicked")[0].innerText;
-                        console.log(covar_checked)
+                        let covars_list = ["Demográficos", "Pobreza", "Movilidad", "Vulnerabilidad"];
+                        if (covars_list.includes(covar_checked)) {
+                            document.getElementById("modifiers_covid").hidden = true;
                             ///// SELECCION DE COVARIABLES FIJAS
-                        if (covar_checked == "Demográficos") {
-                            let data = [{
-                                label: "Demográficos",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        } else if (covar_checked == "Pobreza") {
-                            let data = [{
-                                label: "Pobreza",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
+                            if (covar_checked == "Demográficos") {
+                                let data = [{
+                                    label: "Demográficos",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            } else if (covar_checked == "Pobreza") {
+                                let data = [{
+                                    label: "Pobreza",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
 
-                        } else if (covar_checked == "Movilidad") {
-                            let data = [{
-                                label: "Movilidad",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        } else if (covar_checked == "Vulnerabilidad") {
-                            let data = [{
-                                label: "Vulnerabilidad",
-                                level: "Género",
-                                numlevel: "7",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                        $(".grupo1").prop('checked', false);
-                        document.getElementById("lethality").hidden = true;
-                        document.getElementById("negativity").hidden = true;
-                        if (covar_checked == "COVID-19 FALLECIDO") {
-                            document.getElementById("lethality").hidden = false;
-                        }
-                        if (covar_checked == "COVID-19 NEGATIVO") {
-                            document.getElementById("negativity").hidden = false;
-                        }
-                        if (covar_checked == "COVID-19 CONFIRMADO") {
-                            document.getElementById("prevalence").hidden = false;
+                            } else if (covar_checked == "Movilidad") {
+                                let data = [{
+                                    label: "Movilidad",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            } else if (covar_checked == "Vulnerabilidad") {
+                                let data = [{
+                                    label: "Vulnerabilidad",
+                                    level: "Género",
+                                    numlevel: "7",
+                                    type: 0
+                                }];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
                         } else {
-                            document.getElementById("prevalence").hidden = true;
+                            $(".grupo1").prop('checked', false);
+                            document.getElementById("lethality").hidden = true;
+                            document.getElementById("negativity").hidden = true;
+                            if (covar_checked == "COVID-19 FALLECIDO") {
+                                document.getElementById("lethality").hidden = false;
+                            }
+                            if (covar_checked == "COVID-19 NEGATIVO") {
+                                document.getElementById("negativity").hidden = false;
+                            }
+                            if (covar_checked == "COVID-19 CONFIRMADO") {
+                                document.getElementById("prevalence").hidden = false;
+                            } else {
+                                document.getElementById("prevalence").hidden = true;
+                            }
                         }
+
+
                     } else {
                         document.getElementById("modifiers_covid").hidden = true;
+                        if ((number_checked == 2)) {
+                            let covar_checked = $(".jstree-clicked")[0].innerText;
+                            let covar_checked2 = $(".jstree-clicked")[1].innerText;
+
+                            /////1
+                            if ((covar_checked == "Demográficos") && (covar_checked2 == "Pobreza") || ((covar_checked == "Pobreza") && (covar_checked2 == "Demográficos"))) {
+                                let data = [{
+                                    label: "Demográficos",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Pobreza",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, ];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                            /////2
+                            if ((covar_checked == "Demográficos") && (covar_checked2 == "Vulnerabilidad") || ((covar_checked == "Vulnerabilidad") && (covar_checked2 == "Demográficos"))) {
+                                let data = [{
+                                    label: "Demográficos",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Vulnerabilidad",
+                                    level: "Género",
+                                    numlevel: "7",
+                                    type: 0
+                                }, ];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                            /////3
+                            if ((covar_checked == "Demográficos") && (covar_checked2 == "Movilidad") || ((covar_checked == "Movilidad") && (covar_checked2 == "Demográficos"))) {
+                                let data = [{
+                                    label: "Demográficos",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Movilidad",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, ];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                            /////4
+                            if ((covar_checked == "Pobreza") && (covar_checked2 == "Vulnerabilidad") || ((covar_checked == "Vulnerabilidad") && (covar_checked2 == "Pobreza"))) {
+                                let data = [{
+                                    label: "Vulnerabilidad",
+                                    level: "Género",
+                                    numlevel: "7",
+                                    type: 0
+                                }, {
+                                    label: "Pobreza",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, ];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                            /////5
+                            if ((covar_checked == "Pobreza") && (covar_checked2 == "Movilidad") || ((covar_checked == "Movilidad") && (covar_checked2 == "Pobreza"))) {
+                                let data = [{
+                                    label: "Movilidad",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Pobreza",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, ];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                            /////6
+                            if ((covar_checked == "Vulnerabilidad") && (covar_checked2 == "Movilidad") || ((covar_checked == "Movilidad") && (covar_checked2 == "Vulnerabilidad"))) {
+                                let data = [{
+                                    label: "Movilidad",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Vulnerabilidad",
+                                    level: "Género",
+                                    numlevel: "7",
+                                    type: 0
+                                }, ];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                        }
+                        if (number_checked == 3) {
+                            let covar_checked = $(".jstree-clicked")[0].innerText;
+                            let covar_checked2 = $(".jstree-clicked")[1].innerText;
+                            let covar_checked3 = $(".jstree-clicked")[2].innerText;
+                            ///1
+                            if ((covar_checked == "Demográficos") && (covar_checked2 == "Pobreza") && (covar_checked3 == "Vulnerabilidad") || (covar_checked == "Pobreza") && (covar_checked2 == "Demográficos") && (covar_checked3 == "Vulnerabilidad") && (covar_checked == "Demográficos") || (covar_checked2 == "Vulnerabilidad") && (covar_checked3 == "Pobreza")) {
+                                let data = [{
+                                    label: "Demográficos",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Pobreza",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Vulnerabilidad",
+                                    level: "Género",
+                                    numlevel: "7",
+                                    type: 0
+                                }];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                            ////2 
+                            if ((covar_checked == "Demográficos") && (covar_checked2 == "Pobreza") && (covar_checked3 == "Movilidad") || (covar_checked == "Pobreza") && (covar_checked2 == "Demográficos") && (covar_checked3 == "Movilidad") && (covar_checked == "Demográficos") || (covar_checked2 == "Movilidad") && (covar_checked3 == "Pobreza")) {
+                                let data = [{
+                                    label: "Demográficos",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Pobreza",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Movilidad",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                            ////3
+                            if ((covar_checked == "Demográficos") && (covar_checked2 == "Vulnerabilidad") && (covar_checked3 == "Movilidad") || (covar_checked == "Vulnerabilidad") && (covar_checked2 == "Demográficos") && (covar_checked3 == "Movilidad") || (covar_checked == "Demográficos") && (covar_checked2 == "Movilidad") && (covar_checked3 == "Vulnerabilidad")) {
+                                let data = [{
+                                    label: "Demográficos",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Vulnerabilidad",
+                                    level: "Género",
+                                    numlevel: "7",
+                                    type: 0
+                                }, {
+                                    label: "Movilidad",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                            //4
+                            if ((covar_checked == "Pobreza") && (covar_checked2 == "Vulnerabilidad") && (covar_checked3 == "Movilidad") || (covar_checked == "Vulnerabilidad") && (covar_checked2 == "Pobreza") && (covar_checked3 == "Movilidad") || (covar_checked == "Pobreza") && (covar_checked2 == "Movilidad") && (covar_checked3 == "Vulnerabilidad")) {
+                                let data = [{
+                                    label: "Pobreza",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }, {
+                                    label: "Vulnerabilidad",
+                                    level: "Género",
+                                    numlevel: "7",
+                                    type: 0
+                                }, {
+                                    label: "Movilidad",
+                                    level: "Reino",
+                                    numlevel: "2",
+                                    type: 0
+                                }];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+
+
+
+
+                        }
+                        if (number_checked == 5) {
+                            let covar_checked = $(".jstree-clicked")[0].innerText;
+
+                            if (covar_checked == "Grupos de Interes") {
+                                let data = [{
+                                        label: "Demográficos",
+                                        level: "Reino",
+                                        numlevel: "2",
+                                        type: 0
+                                    },
+                                    {
+                                        label: "Pobreza",
+                                        level: "Reino",
+                                        numlevel: "2",
+                                        type: 0
+                                    }, {
+                                        label: "Movilidad",
+                                        level: "Reino",
+                                        numlevel: "2",
+                                        type: 0
+                                    },
+                                    {
+                                        label: "Vulnerabilidad",
+                                        level: "Género",
+                                        numlevel: "7",
+                                        type: 0
+                                    }
+                                ];
+                                parsed_data = JSON.stringify(data);
+                                sessionStorage.setItem("selectedData", parsed_data)
+                            }
+                        }
                     }
                 }, 100)
             }
