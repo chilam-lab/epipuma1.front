@@ -856,6 +856,24 @@ var module_nicho = (function() {
             generateInput(node, "negativity", " 10% Municipios con Menor Positividad");
             document.getElementById("treeVariable_target").appendChild(node);
         }
+        const generatePredictiveDescriptiveToggleSwith = (clase, clase_texto, texto) => {
+            let lab = document.createElement("label");
+            lab.setAttribute("class", clase);
+            let inpt = document.createElement("input");
+            inpt.setAttribute("type", "checkbox");
+            inpt.setAttribute("id", "pred_des_control");
+            let sp = document.createElement("span");
+            sp.setAttribute("class", "slider round");
+            let p = document.createElement("p");
+            p.setAttribute("class", clase_texto);
+            let textnode = document.createTextNode(texto);
+            p.appendChild(textnode);
+            lab.appendChild(p);
+            lab.appendChild(inpt);
+            lab.appendChild(sp);
+            document.getElementById("tuto_fil_fecha").appendChild(lab);
+
+        }
 
 
         // Implementación Funciones
@@ -868,6 +886,51 @@ var module_nicho = (function() {
         $("#btn_variable_fuente").remove()
         $("#text_variable_fuente").remove()
         $("#tuto_nav_tabs_fuente").css("margin-bottom", "4px");
+
+        //PREDICTIVO/DESCRIPTIVO
+        $("#chkValidationTemp")[0].checked = false;
+        setTimeout(function() {
+            generatePredictiveDescriptiveToggleSwith("switch", "texto_switch", "Quiero Crear un Modelo Predictivo");
+            $(".switch").css("margin-top", "-35%");
+            $(".texto_switch").css("margin-left", "105%");
+            $(".texto_switch").css("width", "875%");
+
+            $("#pred_des_control").click(function() {
+
+                setTimeout(function() {
+                    let status = $("#pred_des_control")[0].checked;
+                    console.log(status);
+                    if (status == false) {
+                        $("#lb_range_fecha")[0].innerText = "Periodo de Entrenamiento";
+                        $("#tuto_val").css("visibility", "visible");
+                        if ($("#chkValidationTemp")[0].checked == true) {
+                            $("#chkValidationTemp").click();
+                            document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
+                            document.getElementById('date_timepicker_end_val').id = 'date_timepicker_end';
+                        }
+                        $(".col-lg-12").css("margin-top", "-1%");
+
+
+                    } else {
+                        $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
+                        $("#chkValidationTemp").click();
+                        $("#tuto_val").css("visibility", "hidden");
+                        document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
+                        document.getElementById('date_timepicker_end').id = 'date_timepicker_end_val';
+                        $(".col-lg-12").css("margin-top", "-40%");
+
+                    }
+
+                }, 500);
+
+
+            });
+
+
+
+        }, 1000)
+
+
 
         //Cambios Factores de Riesgo Covariables
         var data_target = {
