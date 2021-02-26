@@ -1152,7 +1152,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 if (day.length < 2)
                     day = '0' + day;
 
-                return [year, month, day].join('-');
+                return String([year, month, day].join('-'));
             }
             var verbo = "countsTaxonsGroupTimeValidation";
             var liminf = $("#date_timepicker_start_val")[0].value;
@@ -1162,8 +1162,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             mydate = mydate.setMonth(mydate.getMonth() - 1);
             mydate2 = mydate2.setMonth(mydate2.getMonth() - 1);
             console.log(data_request);
-            data_request["lim_inf"] = mydate;
-            data_request["lim_sup"] = mydate2;
+            data_request["lim_inf"] = formatDate(mydate);
+            data_request["lim_sup"] = formatDate(mydate2);
             console.log(data_request);
 
 
@@ -1175,8 +1175,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         if (modifiers_flag_verb == "true") {
             var verbo = "generateTarget";
-            //var url = _url_zacatuche + "/niche/" + verbo
-            var url = _url_zacatuche + "/dev/niche/" + verbo
+            var url = _url_zacatuche + "/niche/" + verbo
+                //var url = _url_zacatuche + "/dev/niche/" + verbo
 
         }
         // cambiando peticiones ajax por promesas y fetch api
