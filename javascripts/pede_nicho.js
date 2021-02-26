@@ -1016,6 +1016,11 @@ var module_nicho = (function() {
                             $("#chkValidationTemp").click();
                             document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
                             document.getElementById('date_timepicker_end_val').id = 'date_timepicker_end';
+                            setTimeout(function() {
+                                $("#date_timepicker_end").removeAttr("disabled");
+                                $("#date_timepicker_start").removeAttr("disabled");
+                            }, 550);
+
                         }
                         $(".col-lg-12").css("margin-top", "-1%");
 
@@ -1027,6 +1032,10 @@ var module_nicho = (function() {
                         document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
                         document.getElementById('date_timepicker_end').id = 'date_timepicker_end_val';
                         $(".col-lg-12").css("margin-top", "-40%");
+                        setTimeout(function() {
+                            $("#date_timepicker_end_val").removeAttr("disabled");
+                            $("#date_timepicker_start_val").removeAttr("disabled");
+                        }, 550);
 
                     }
 
