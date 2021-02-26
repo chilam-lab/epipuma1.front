@@ -2149,19 +2149,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         //limpia el mapa antes de generar un nuevo análisis
         // clearMapOcc()
 
-        var data = {
-            "name": "k",
-            "target_taxons": taxones,
-            "idtime": milliseconds,
-            "liminf": _lin_inf,
-            "limsup": _lin_sup,
-            "sfecha": _sin_fecha,
-            "sfosil": _con_fosil,
-            "grid_res": grid_res,
-            "region": region
-        }
-
         var flag_modifiers = sessionStorage.getItem("modifiers_flag");
+        var state_model = $("#chkValidationTemp")[0].checked;
+
+        if (state_model) {
+            var liminf = $("#date_timepicker_start_val")[0].value;
+            var limsup = $("#date_timepicker_end_val")[0].value;
+        } else {
+            var liminf = $("#date_timepicker_start")[0].value;
+            var limsup = $("#date_timepicker_end")[0].value;
+        }
         var url_mod;
 
         if (flag_modifiers == "true") {
@@ -2171,8 +2168,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             console.log("getGridGeneratedSpecies");
             console.log(modifier);
-            ///url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
-            url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
+            url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
+            //url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
 
             var data = {
                 "name": "k",
@@ -2184,11 +2181,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "sfosil": _con_fosil,
                 "grid_res": grid_res,
                 "region": region,
-                "modifier": modifier[0]
+                "modifier": modifier[0],
+                "liminf": liminf,
+                "limsup": limsup
+
             }
         } else {
-            console.log("getGridSpeciesTaxon")
+            console.log("getGridSpeciesTaxon");
             url_mod = _url_zacatuche + "niche/especie/getGridSpeciesTaxon";
+            var tar_var = taxones[0]["value"];
+            console.log(tar_var)
             var data = {
                 "name": "k",
                 "target_taxons": taxones,
@@ -2198,7 +2200,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "sfecha": _sin_fecha,
                 "sfosil": _con_fosil,
                 "grid_res": grid_res,
-                "region": region
+                "region": region,
+                "liminf": liminf,
+                "limsup": limsup
+
             }
 
         }

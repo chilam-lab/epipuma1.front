@@ -1139,6 +1139,35 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         var verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
         var modifiers_flag_verb = sessionStorage.getItem("modifiers_flag");
+        var state_model = $("#chkValidationTemp")[0].checked;
+        if (state_model) {
+            function formatDate(date) {
+                var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
+
+                if (month.length < 2)
+                    month = '0' + month;
+                if (day.length < 2)
+                    day = '0' + day;
+
+                return [year, month, day].join('-');
+            }
+            var verbo = "countsTaxonsGroupTimeValidation";
+            var liminf = $("#date_timepicker_start_val")[0].value;
+            var limsup = $("#date_timepicker_end_val")[0].value;
+            var mydate = new Date(liminf);
+            var mydate2 = new Date(limsup);
+            mydate = mydate.setMonth(mydate.getMonth() - 1);
+            mydate2 = mydate2.setMonth(mydate2.getMonth() - 1);
+            console.log(data_request);
+            data_request["lim_inf"] = mydate;
+            data_request["lim_sup"] = mydate2;
+            console.log(data_request);
+
+
+        }
         var url = _url_zacatuche + "/niche/" + verbo
 
 
@@ -1146,8 +1175,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         if (modifiers_flag_verb == "true") {
             var verbo = "generateTarget";
-            var url = _url_zacatuche + "/niche/" + verbo
-                //var url = _url_zacatuche + "/dev/niche/" + verbo
+            //var url = _url_zacatuche + "/niche/" + verbo
+            var url = _url_zacatuche + "/dev/niche/" + verbo
 
         }
         // cambiando peticiones ajax por promesas y fetch api
@@ -1311,6 +1340,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         total_request.decil_selected = [_default_decil]
 
                         verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
+
 
                         fetch(_url_zacatuche + "/niche/" + verbo, {
                                 method: "POST",

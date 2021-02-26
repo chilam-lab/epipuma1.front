@@ -133,7 +133,7 @@ var module_nicho = (function() {
                 if (d.node.children.length > 1) {
                     console.log("No se encontraron datos debajo de este nivel");
                     $(".jstree-anchor").click(function() {
-                        dinamica_menu_modificadores();
+                        //dinamica_menu_modificadores();
                     })
                     console.log("MODIFIERS_2");
 
@@ -538,7 +538,6 @@ var module_nicho = (function() {
                 if (covar2 == "COVID-19") {
                     return;
                 }
-
                 setTimeout(function() {
                     let number_checked = $(".jstree-clicked").length;
                     let covar = $(this)[0].innerText;
@@ -836,6 +835,7 @@ var module_nicho = (function() {
                         }
                     }
                 }, 100)
+
             }
             // TERMINA DINAMICA MENU MODIFICADORES
 
@@ -874,6 +874,107 @@ var module_nicho = (function() {
             document.getElementById("tuto_fil_fecha").appendChild(lab);
 
         }
+        const genrateDynamicButton = () => {
+            let button_flow = document.createElement("button");
+            button_flow.setAttribute("class", "btn btn-primary");
+            button_flow.setAttribute("id", "boton_seleccion_grupo");
+            button_flow.setAttribute("style", "width:80%;border-radius: 5px;font-size: 90%;margin-left:11%;margin-top:2%;margin-bottom:2%");
+            let textnode = document.createTextNode("Agregar Variable Objetivo");
+            button_flow.append(textnode);
+            document.getElementById("treeVariable_target").appendChild(button_flow);
+
+        }
+        const generateNewFlow = () => {
+            genrateDynamicButton();
+            let options = { 'COVID 19 Confirmado': "COVID 19 Confirmado", 'COVID 19 Fallecido': "COVID 19 Fallecido", 'COVID 19 Casos': "COVID 19 Casos" };
+            let options2 = { 'Sin Modificador': "Sin Modificador", 'Modificador 1': "Modificador 1", 'Modificador 2': "Modificador 2", 'Modificador 3': "Modificador 3" };
+            let options3 = { 'Mejoramiento': "Mejoramiento", 'Empeoramiento': "Empeoramiento" };
+            var steps = [{
+                    input: 'select',
+                    inputOptions: options,
+                    confirmButtonText: 'Next &rarr;',
+                    showCancelButton: true,
+                    title: 'Variable Objetivo',
+                    text: 'Seleccionar variable objetivo'
+                },
+                {
+                    input: 'select',
+                    inputOptions: options2,
+                    confirmButtonText: 'Next &rarr;',
+                    showCancelButton: true,
+                    title: 'Modificadores',
+                    text: 'Seleccionar modificadores de la variable objetivo'
+                },
+                {
+                    input: 'select',
+                    inputOptions: options3,
+                    confirmButtonText: 'Next &rarr;',
+                    showCancelButton: true,
+                    title: 'Enfoque',
+                    text: 'Seleccionar enfoque del modelo'
+                }
+            ];
+
+            setTimeout(function() {
+                $("#boton_seleccion_grupo").click(function() {
+                    Swal.mixin({
+                        input: 'text',
+                        confirmButtonText: 'Next &rarr;',
+                        showCancelButton: true,
+                        progressSteps: ['1', '2', '3']
+                    }).queue(steps).then((result) => {
+                        if (result.value) {
+                            const answers = JSON.stringify(result.value)
+                            Swal.fire({
+                                title: 'Modelo definido.',
+                                html: `
+                              Parámetros:
+                              <pre><code>${answers}</code></pre>
+                            `,
+                                confirmButtonText: 'Aceptar'
+                            });
+                            let answers2 = answers.substring(1, answers.length - 1);
+                            let answers_sep = answers2.split(",")
+                            let obj_var = answers_sep[0];
+                            if (obj_var == '"COVID 19 Confirmado"') {
+                                var selected_var = [{
+                                    label: "COVID-19 CONFIRMADO",
+                                    level: "Especie",
+                                    numlevel: 8,
+                                    parent: "COVID-19",
+                                    type: 0,
+                                }];
+                            } else if (obj_var == '"COVID 19 Fallecido"') {
+                                var selected_var = [{
+                                    label: "COVID-19 FALLECIDO",
+                                    level: "Especie",
+                                    numlevel: 8,
+                                    parent: "COVID-19",
+                                    type: 0,
+                                }];
+                            } else if (obj_var == '"COVID 19 Casos"') {
+                                var selected_var = [{
+                                    label: "COVID-19 CASOS",
+                                    level: "Especie",
+                                    numlevel: 8,
+                                    parent: "COVID-19",
+                                    type: 0,
+                                }];
+                            }
+
+                            sessionStorage.setItem("selectedData", JSON.stringify(selected_var));
+                            $("#add_group_target").css("visibility", "visible")
+                            $("#add_group_target").click();
+                            $("#add_group_target").css("visibility", "hidden")
+
+                        }
+                    })
+                })
+            }, 1000)
+
+
+        }
+
 
 
         // Implementación Funciones
@@ -886,6 +987,14 @@ var module_nicho = (function() {
         $("#btn_variable_fuente").remove()
         $("#text_variable_fuente").remove()
         $("#tuto_nav_tabs_fuente").css("margin-bottom", "4px");
+        $("#jstree_variables_species_target").remove();
+        $("#add_group_target").css("visibility", "hidden");
+
+        //////NEW FLOW
+        generateNewFlow();
+
+
+
 
         //PREDICTIVO/DESCRIPTIVO
         $("#chkValidationTemp")[0].checked = false;
@@ -925,41 +1034,35 @@ var module_nicho = (function() {
 
 
             });
-
-
-
         }, 1000)
 
-
-
         //Cambios Factores de Riesgo Covariables
-        var data_target = {
-            item: {
-                id: "COVID-19",
-                label: "COVID-19",
-                value: "COVID-19"
-            }
-        }
+        // var data_target = {
+        //     item: {
+        //         id: "COVID-19",
+        //         label: "COVID-19",
+        //         value: "COVID-19"
+        //     }
+        // }
 
-        //Escribiendo datos target fijos
-        getCovidMetaData();
-        getFixedData("target", data_target);
-        //////FIXED COVARS BIO///////
-        //Cambios Factores de Riesgo Covariables
-        var data_target = {
-            item: {
-                id: "COVID-19",
-                label: "COVID-19",
-                value: "COVID-19"
-            }
-        }
+        // //Escribiendo datos target fijos
+        // getCovidMetaData();
+        // getFixedData("target", data_target);
+        // //////FIXED COVARS BIO///////
+        // //Cambios Factores de Riesgo Covariables
+        // var data_target = {
+        //     item: {
+        //         id: "COVID-19",
+        //         label: "COVID-19",
+        //         value: "COVID-19"
+        //     }
+        // }
 
-        //Escribiendo datos target fijos
-        getCovidMetaData();
-        //CARGAR VARIABLES BIOLOGICAS FIJAS
+        // //Escribiendo datos target fijos
+        // getCovidMetaData();
 
+        // Generacion Covariables Fijas
         setTimeout(function() {
-            // Generacion Covariables Fijas
             var tree_reinos = [{
                 "text": "Grupos de Interes",
                 "id": "root_covar",
@@ -1236,7 +1339,7 @@ var module_nicho = (function() {
             sessionStorage.setItem("flag_target_added", "true")
             if (self.arrayVarSelected.length == 0) {
                 console.log("No species selected");
-                _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
+                //_module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
                 return;
             }
             //Manejo del arbol de variables
@@ -1320,14 +1423,7 @@ var module_nicho = (function() {
         });
         $("#add_group_fuente").click(function() {
             sessionStorage.setItem("covar", "")
-                // let data = [{
-                //     label: "Demográficos",
-                //     level: "Reino",
-                //     numlevel: "2",
-                //     type: 0
-                // }];
-                // parsed_data = JSON.stringify(data);
-                // sessionStorage.setItem("selectedData", parsed_data)
+
         })
 
         /// Acaban cambios EpiPuma
