@@ -974,39 +974,44 @@ var module_nicho = (function() {
 
 
         }
-        const demo_date = () => {
-            var monthsList = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-            var startDate = new Date("01-01-2020")
-            var nowDate = new Date()
 
-            var months = (startDate.getFullYear() - nowDate.getFullYear()) * 12;
-            months -= nowDate.getMonth() + 1;
-            months += startDate.getMonth();
-            months * -1;
-            ///////////////
-            function dateRange(startDate, endDate) {
-                var start = startDate.split('-');
-                var end = endDate.split('-');
-                var startYear = parseInt(start[0]);
-                var endYear = parseInt(end[0]);
-                var dates = [];
+        const dateRange = (startDate, endDate) => {
+            var start = startDate.split('-');
+            var end = endDate.split('-');
+            var startYear = parseInt(start[0]);
+            var endYear = parseInt(end[0]);
+            var dates = [];
+            var dates2 = []
 
-                for (var i = startYear; i <= endYear; i++) {
-                    var endMonth = i != endYear ? 11 : parseInt(end[1]) - 1;
-                    var startMon = i === startYear ? parseInt(start[1]) - 1 : 0;
-                    for (var j = startMon; j <= endMonth; j = j > 12 ? j % 12 || 11 : j + 1) {
-                        var month = j + 1;
-                        var displayMonth = month < 10 ? '0' + month : month;
-                        dates.push([i, displayMonth, '01'].join('-'));
-                    }
+            for (var i = startYear; i <= endYear; i++) {
+                var endMonth = i != endYear ? 11 : parseInt(end[1]) - 1;
+                var startMon = i === startYear ? parseInt(start[1]) - 1 : 0;
+                for (var j = startMon; j <= endMonth; j = j > 12 ? j % 12 || 11 : j + 1) {
+                    var month = j + 1;
+                    var displayMonth = month < 10 ? '0' + month : month;
+                    dates.push([i, displayMonth, '01'].join('-'));
                 }
-                return dates;
             }
-            console.log(dateRange("2020-01-01", "2021-03-01"))
+            for (let index = 0; index < dates.length; index++) {
+                a = dates[index].split("-");
+                b = a[0] + "-" + a[1]
+                dates2.push(b)
 
+            }
 
-            //////////////
+            return dates2;
         }
+        const addOptionsSelect = (id, fechas) => {
+            var select = document.getElementById(id);
+            for (let index = 0; index < fechas.length; index++) {
+                var opt = document.createElement('option');
+                opt.value = fechas[index];
+                opt.innerHTML = fechas[index];
+                select.appendChild(opt);
+            }
+        };
+
+
 
 
 
@@ -1026,7 +1031,10 @@ var module_nicho = (function() {
         //////NEW FLOW
         generateNewFlow();
         /// DATE  MONTHS ONLY
-        demo_date();
+        var fechas = dateRange("2020-01-01", "2021-03-01");
+        addOptionsSelect("date_timepicker_start", fechas);
+        addOptionsSelect("date_timepicker_end", fechas);
+
 
 
 
