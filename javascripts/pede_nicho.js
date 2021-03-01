@@ -974,6 +974,39 @@ var module_nicho = (function() {
 
 
         }
+        const demo_date = () => {
+            var monthsList = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            var startDate = new Date("01-01-2020")
+            var nowDate = new Date()
+
+            var months = (startDate.getFullYear() - nowDate.getFullYear()) * 12;
+            months -= nowDate.getMonth() + 1;
+            months += startDate.getMonth();
+            months * -1;
+            ///////////////
+            function dateRange(startDate, endDate) {
+                var start = startDate.split('-');
+                var end = endDate.split('-');
+                var startYear = parseInt(start[0]);
+                var endYear = parseInt(end[0]);
+                var dates = [];
+
+                for (var i = startYear; i <= endYear; i++) {
+                    var endMonth = i != endYear ? 11 : parseInt(end[1]) - 1;
+                    var startMon = i === startYear ? parseInt(start[1]) - 1 : 0;
+                    for (var j = startMon; j <= endMonth; j = j > 12 ? j % 12 || 11 : j + 1) {
+                        var month = j + 1;
+                        var displayMonth = month < 10 ? '0' + month : month;
+                        dates.push([i, displayMonth, '01'].join('-'));
+                    }
+                }
+                return dates;
+            }
+            console.log(dateRange("2020-01-01", "2021-03-01"))
+
+
+            //////////////
+        }
 
 
 
@@ -992,6 +1025,9 @@ var module_nicho = (function() {
 
         //////NEW FLOW
         generateNewFlow();
+        /// DATE  MONTHS ONLY
+        demo_date();
+
 
 
 
