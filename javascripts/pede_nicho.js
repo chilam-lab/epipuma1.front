@@ -1004,12 +1004,22 @@ var module_nicho = (function() {
             var select = document.getElementById(id);
             for (let index = 0; index < fechas.length; index++) {
                 var opt = document.createElement('option');
-                opt.value = fechas[index];
+                opt.value = fechas[index] + "-01";
                 opt.innerHTML = fechas[index];
                 select.appendChild(opt);
             }
+            $("#date_timepicker_start")[0].value = "";
+            $("#date_timepicker_end")[0].value = "";
         };
+        const validateDates = (date1, date2) => {
 
+            let a = new Date(date1);
+            let b = new Date(date2);
+            if (b < a) {
+                alert("Selecciona un periodo valido.");
+                $("#date_timepicker_end")[0].value = "";
+            }
+        }
 
 
 
@@ -1027,12 +1037,18 @@ var module_nicho = (function() {
         $("#jstree_variables_species_target").remove();
         $("#add_group_target").css("visibility", "hidden");
 
+
+
         //////NEW FLOW
         generateNewFlow();
         /// DATE  MONTHS ONLY
         var fechas = dateRange("2020-01-01", "2021-03-01");
         addOptionsSelect("date_timepicker_start", fechas);
         addOptionsSelect("date_timepicker_end", fechas);
+        $("#date_timepicker_end").change(function() {
+            validateDates($("#date_timepicker_start").val(), $("#date_timepicker_end").val())
+        })
+
 
 
 
