@@ -1004,21 +1004,22 @@ var module_nicho = (function() {
             var select = document.getElementById(id);
             for (let index = 0; index < fechas.length; index++) {
                 var opt = document.createElement('option');
-                opt.value = fechas[index] + "-01";
+                opt.value = fechas[index] + "-15";
                 opt.innerHTML = fechas[index];
                 select.appendChild(opt);
             }
             $("#date_timepicker_start")[0].value = "";
             $("#date_timepicker_end")[0].value = "";
         };
-        const validateDates = (date1, date2) => {
+        const validateDates = (firstDate, secondDate, idSelect) => {
 
-            let a = new Date(date1);
-            let b = new Date(date2);
-            if (b < a) {
+            let startDate = new Date(firstDate);
+            let endDate = new Date(secondDate);
+            if (endDate < startDate) {
                 alert("Selecciona un periodo valido.");
-                $("#date_timepicker_end")[0].value = "";
+                idSelect == "date_timepicker_end" ? $("#date_timepicker_end")[0].value = "" : $("#date_timepicker_end_val")[0].value = "";
             }
+
         }
 
 
@@ -1045,9 +1046,9 @@ var module_nicho = (function() {
         var fechas = dateRange("2020-01-01", "2021-03-01");
         addOptionsSelect("date_timepicker_start", fechas);
         addOptionsSelect("date_timepicker_end", fechas);
-        $("#date_timepicker_end").change(function() {
-            validateDates($("#date_timepicker_start").val(), $("#date_timepicker_end").val())
-        })
+
+
+
 
 
 
@@ -1099,10 +1100,24 @@ var module_nicho = (function() {
 
                     }
 
+
+                    if (!($("#chkValidationTemp")[0].checked)) {
+                        $("#date_timepicker_end").change(function() {
+                            validateDates($("#date_timepicker_start").val(), $("#date_timepicker_end").val(), "date_timepicker_end")
+                        });
+                    }
+                    if (($("#chkValidationTemp")[0].checked)) {
+                        $("#date_timepicker_end_val").change(function() {
+
+                            validateDates($("#date_timepicker_start_val").val(), $("#date_timepicker_end_val").val(), "date_timepicker_end_val")
+                        });
+                    }
+
                 }, 500);
 
 
             });
+
         }, 1000)
 
         //Cambios Factores de Riesgo Covariables
