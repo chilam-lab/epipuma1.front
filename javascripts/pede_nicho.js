@@ -1032,6 +1032,7 @@ var module_nicho = (function() {
         $("#tuto_fil_fecha").css("margin-left", "5%");
 
 
+
         //////NEW FLOW
         $("#chkValidationTemp")[0].checked = false;
         generateNewFlow();
@@ -1045,6 +1046,7 @@ var module_nicho = (function() {
             $(".switch").css("margin-top", "-35%");
             $(".texto_switch").css("margin-left", "105%");
             $(".texto_switch").css("width", "875%");
+            $("#tuto_val").remove();
             $("#pred_des_control").click(function() {
 
                 setTimeout(function() {
@@ -1052,7 +1054,6 @@ var module_nicho = (function() {
                     console.log(status);
                     if (status == false) {
                         $("#lb_range_fecha")[0].innerText = "Periodo de Entrenamiento";
-                        $("#tuto_val").css("visibility", "visible");
                         if ($("#chkValidationTemp")[0].checked == true) {
                             $("#chkValidationTemp").click();
                             document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
@@ -1067,7 +1068,6 @@ var module_nicho = (function() {
                     } else {
                         $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
                         $("#chkValidationTemp").click();
-                        $("#tuto_val").css("visibility", "hidden");
                         document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
                         $(".col-lg-12").css("margin-top", "-40%");
                         setTimeout(function() {
