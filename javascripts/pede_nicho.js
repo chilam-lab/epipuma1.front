@@ -857,6 +857,8 @@ var module_nicho = (function() {
             document.getElementById("treeVariable_target").appendChild(node);
         };
         const generatePredictiveDescriptiveToggleSwith = (clase, clase_texto, texto) => {
+            let div = document.createElement("div");
+            div.setAttribute("id", "id_toggle");
             let lab = document.createElement("label");
             lab.setAttribute("class", clase);
             let inpt = document.createElement("input");
@@ -871,7 +873,8 @@ var module_nicho = (function() {
             lab.appendChild(p);
             lab.appendChild(inpt);
             lab.appendChild(sp);
-            document.getElementById("tuto_fil_fecha").appendChild(lab);
+            div.appendChild(lab);
+            document.getElementById("tuto_fil_fecha").appendChild(div);
 
         };
         const genrateDynamicButton = () => {
@@ -886,7 +889,7 @@ var module_nicho = (function() {
         };
         const generateNewFlow = () => {
             genrateDynamicButton();
-            let options = { 'COVID 19 Confirmado': "COVID 19 Confirmado", 'COVID 19 Fallecido': "COVID 19 Fallecido", 'COVID 19 Casos': "COVID 19 Casos" };
+            let options = { 'COVID 19 Confirmado': "COVID 19 Confirmado", 'COVID 19 Fallecido': "COVID 19 Fallecido" };
             let options2 = { 'Sin Modificador': "Sin Modificador", 'Modificador 1': "Modificador 1", 'Modificador 2': "Modificador 2", 'Modificador 3': "Modificador 3" };
             let options3 = { 'Mejoramiento': "Mejoramiento", 'Empeoramiento': "Empeoramiento" };
             var steps = [{
@@ -1009,20 +1012,7 @@ var module_nicho = (function() {
                 select.appendChild(opt);
             }
             $("#date_timepicker_start")[0].value = "";
-            $("#date_timepicker_end")[0].value = "";
         };
-        const validateDates = (firstDate, secondDate, idSelect) => {
-
-            let startDate = new Date(firstDate);
-            let endDate = new Date(secondDate);
-            if (endDate < startDate) {
-                alert("Selecciona un periodo valido.");
-                idSelect == "date_timepicker_end" ? $("#date_timepicker_end")[0].value = "" : $("#date_timepicker_end_val")[0].value = "";
-            }
-
-        }
-
-
 
 
         // Implementación Funciones
@@ -1037,34 +1027,24 @@ var module_nicho = (function() {
         $("#tuto_nav_tabs_fuente").css("margin-bottom", "4px");
         $("#jstree_variables_species_target").remove();
         $("#add_group_target").css("visibility", "hidden");
-
+        $("#tuto_fil_fecha").css("position", "absolute");
+        $("#tuto_fil_fecha").css("top", "27%");
+        $("#tuto_fil_fecha").css("margin-left", "5%");
 
 
         //////NEW FLOW
+        $("#chkValidationTemp")[0].checked = false;
         generateNewFlow();
         /// DATE  MONTHS ONLY
         var fechas = dateRange("2020-01-01", "2021-03-01");
         addOptionsSelect("date_timepicker_start", fechas);
-        addOptionsSelect("date_timepicker_end", fechas);
-
-
-
-
-
-
-
-
-
-
 
         //PREDICTIVO/DESCRIPTIVO
-        $("#chkValidationTemp")[0].checked = false;
         setTimeout(function() {
             generatePredictiveDescriptiveToggleSwith("switch", "texto_switch", "Quiero Crear un Modelo Predictivo");
             $(".switch").css("margin-top", "-35%");
             $(".texto_switch").css("margin-left", "105%");
             $(".texto_switch").css("width", "875%");
-
             $("#pred_des_control").click(function() {
 
                 setTimeout(function() {
@@ -1076,9 +1056,7 @@ var module_nicho = (function() {
                         if ($("#chkValidationTemp")[0].checked == true) {
                             $("#chkValidationTemp").click();
                             document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
-                            document.getElementById('date_timepicker_end_val').id = 'date_timepicker_end';
                             setTimeout(function() {
-                                $("#date_timepicker_end").removeAttr("disabled");
                                 $("#date_timepicker_start").removeAttr("disabled");
                             }, 550);
 
@@ -1091,61 +1069,23 @@ var module_nicho = (function() {
                         $("#chkValidationTemp").click();
                         $("#tuto_val").css("visibility", "hidden");
                         document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
-                        document.getElementById('date_timepicker_end').id = 'date_timepicker_end_val';
                         $(".col-lg-12").css("margin-top", "-40%");
                         setTimeout(function() {
-                            $("#date_timepicker_end_val").removeAttr("disabled");
                             $("#date_timepicker_start_val").removeAttr("disabled");
                         }, 550);
 
                     }
 
 
-                    if (!($("#chkValidationTemp")[0].checked)) {
-                        $("#date_timepicker_end").change(function() {
-                            validateDates($("#date_timepicker_start").val(), $("#date_timepicker_end").val(), "date_timepicker_end")
-                        });
-                    }
-                    if (($("#chkValidationTemp")[0].checked)) {
-                        $("#date_timepicker_end_val").change(function() {
-
-                            validateDates($("#date_timepicker_start_val").val(), $("#date_timepicker_end_val").val(), "date_timepicker_end_val")
-                        });
-                    }
-
                 }, 500);
 
 
             });
-
+            //CSS
+            $("#id_toggle").css("position", "absolute");
+            $("#id_toggle").css("top", "400%");
         }, 1000)
 
-        //Cambios Factores de Riesgo Covariables
-        // var data_target = {
-        //     item: {
-        //         id: "COVID-19",
-        //         label: "COVID-19",
-        //         value: "COVID-19"
-        //     }
-        // }
-
-        // //Escribiendo datos target fijos
-        // getCovidMetaData();
-        // getFixedData("target", data_target);
-        // //////FIXED COVARS BIO///////
-        // //Cambios Factores de Riesgo Covariables
-        // var data_target = {
-        //     item: {
-        //         id: "COVID-19",
-        //         label: "COVID-19",
-        //         value: "COVID-19"
-        //     }
-        // }
-
-        // //Escribiendo datos target fijos
-        // getCovidMetaData();
-
-        // Generacion Covariables Fijas
         setTimeout(function() {
             var tree_reinos = [{
                 "text": "Grupos de Interes",
@@ -1535,7 +1475,6 @@ var module_nicho = (function() {
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_act'), "info");
                 $("#date_timepicker_start_val").removeAttr('disabled');
-                $("#date_timepicker_end_val").removeAttr('disabled');
 
             } else {
 
@@ -1543,7 +1482,6 @@ var module_nicho = (function() {
 
                 _module_toast.showToast_BottomCenter(_iTrans.prop('lb_status_validacion_des'), "info");
                 $("#date_timepicker_start_val").attr("disabled", "disabled")
-                $("#date_timepicker_end_val").attr("disabled", "disabled")
 
             }
 
@@ -1838,10 +1776,8 @@ var module_nicho = (function() {
             data_link.apriori = $("#chkApriori").is(':checked');
 
             data_link.lim_inf = $("#date_timepicker_start").val()
-            data_link.lim_sup = $("#date_timepicker_end").val()
 
             data_link.lim_inf_valtemp = $("#date_timepicker_start_val").val()
-            data_link.lim_sup_valtemp = $("#date_timepicker_end_val").val()
 
 
 
@@ -2282,16 +2218,10 @@ var module_nicho = (function() {
             $("#occ_number").val(chkOcc);
         }
 
-        // if (rango_fechas !== undefined) {
-        //     $("#sliderFecha").slider('values', 0, rango_fechas[0]);
-        //     $("#sliderFecha").slider('values', 1, rango_fechas[1]);
-        // }
 
         $("#date_timepicker_start").val(minFec);
-        $("#date_timepicker_end").val(maxFec);
 
         $("#date_timepicker_start_val").val(minFecVal);
-        $("#date_timepicker_end_val").val(maxFecVal);
 
 
         $('#grid_resolution option[value=' + gridRes + ']').attr('selected', 'selected');
@@ -2456,8 +2386,6 @@ var module_nicho = (function() {
             var fossil = $("#chkFosil").is(':checked');
 
             var liminf = $("#date_timepicker_start").val();
-            var limsup = $("#date_timepicker_end").val();
-
             console.log("liminf: " + liminf)
             console.log("limsup: " + limsup)
 
