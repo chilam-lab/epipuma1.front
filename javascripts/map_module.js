@@ -2097,13 +2097,19 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         // var footprint_region = $("#footprint_region_select").val() === undefined ? region : parseInt($("#footprint_region_select").val());
         // console.log("footprint_region: " + footprint_region);
+        if ($("#chkValidationTemp")[0].checked) {
+            var liminf_initial = $("#date_timepicker_start_val").val();
 
+        } else {
+            var liminf_initial = $("#date_timepicker_start").val();
+        }
+        var liminf_splited = liminf_initial.split("-");
+        var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+        var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-30";
 
-        var liminf = $("#date_timepicker_start").val();
-        var limsup = $("#date_timepicker_end").val();
+        console.log("liminf: " + liminf)
+        console.log("limsup: " + limsup)
 
-        // console.log("liminf: " + liminf)
-        // console.log("limsup: " + limsup)
 
         var rango_fechas = []
         if (liminf == "" || limsup == "") {
@@ -2153,12 +2159,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         var state_model = $("#chkValidationTemp")[0].checked;
 
         if (state_model) {
-            var liminf = $("#date_timepicker_start_val")[0].value;
-            var limsup = $("#date_timepicker_end_val")[0].value;
+            var liminf_initial = $("#date_timepicker_start_val").val();
+
         } else {
-            var liminf = $("#date_timepicker_start")[0].value;
-            var limsup = $("#date_timepicker_end")[0].value;
+            var liminf_initial = $("#date_timepicker_start").val();
         }
+        var liminf_splited = liminf_initial.split("-");
+        var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+        var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-30";
         var url_mod;
 
         if (flag_modifiers == "true") {
@@ -2168,8 +2176,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             console.log("getGridGeneratedSpecies");
             console.log(modifier);
-            //url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
-            url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
+            url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
+            //url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
 
             var data = {
                 "name": "k",
