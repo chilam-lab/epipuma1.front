@@ -1155,15 +1155,65 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 return String([year, month, day].join('-'));
             }
             var verbo = "countsTaxonsGroupTimeValidation";
-            var liminf = $("#date_timepicker_start_val")[0].value;
-            var limsup = $("#date_timepicker_end_val")[0].value;
-            var mydate = new Date(liminf);
-            var mydate2 = new Date(limsup);
-            mydate = mydate.setMonth(mydate.getMonth() - 1);
-            mydate2 = mydate2.setMonth(mydate2.getMonth() - 1);
-            console.log(data_request);
-            data_request["lim_inf"] = formatDate(mydate);
-            data_request["lim_sup"] = formatDate(mydate2);
+            if ($("#chkValidationTemp")[0].checked) {
+                var liminf_initial = $("#date_timepicker_start_val").val();
+
+            } else {
+                var liminf_initial = $("#date_timepicker_start").val();
+            }
+            var liminf_splited = liminf_initial.split("-");
+            var month = liminf_splited[1]
+            var endMonthDay = "";
+            switch (month) {
+                case "01":
+                    endMonthDay = "31";
+                    break;
+                case "02":
+                    endMonthDay = "28";
+                    break;
+                case "03":
+                    endMonthDay = "31";
+                    break;
+                case "05":
+                    endMonthDay = "31";
+                    break;
+                case "07":
+                    endMonthDay = "31";
+                    break;
+                case "08":
+                    endMonthDay = "31";
+                    break;
+                case "10":
+                    endMonthDay = "31";
+                    break;
+                case "12":
+                    endMonthDay = "31";
+                    break;
+
+                default:
+                    endMonthDay = "30";
+
+                    break;
+            }
+
+            var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+            var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+            var train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
+            console.log("liminf: " + liminf);
+            console.log("limsup: " + limsup);
+            if ($("#chkValidationTemp")[0].checked) {
+                mydate = liminf_splited[0] + "-" + train_month + "-01";
+                mydate2 = liminf_splited[0] + "-" + train_month + "-" + endMonthDay;
+                console.log(data_request);
+                data_request["lim_inf"] = mydate;
+                data_request["lim_sup"] = mydate2;
+                data_request["lim_inf_validation"] = liminf;
+                data_request["lim_sup_validation"] = limsup;
+            } else {
+                data_request["lim_inf"] = liminf;
+                data_request["lim_sup"] = limsup;
+            }
+
             console.log(data_request);
 
 
@@ -1175,8 +1225,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         if (modifiers_flag_verb == "true") {
             var verbo = "generateTarget";
-            var url = _url_zacatuche + "/niche/" + verbo
-                //var url = _url_zacatuche + "/dev/niche/" + verbo
+            //var url = _url_zacatuche + "/niche/" + verbo
+            var url = _url_zacatuche + "/dev/niche/" + verbo
 
         }
         // cambiando peticiones ajax por promesas y fetch api

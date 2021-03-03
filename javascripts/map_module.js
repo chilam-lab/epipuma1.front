@@ -2093,10 +2093,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         var milliseconds = new Date().getTime();
-        // var grid_res_val = $("#grid_resolution").val();
 
-        // var footprint_region = $("#footprint_region_select").val() === undefined ? region : parseInt($("#footprint_region_select").val());
-        // console.log("footprint_region: " + footprint_region);
         if ($("#chkValidationTemp")[0].checked) {
             var liminf_initial = $("#date_timepicker_start_val").val();
 
@@ -2104,8 +2101,42 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var liminf_initial = $("#date_timepicker_start").val();
         }
         var liminf_splited = liminf_initial.split("-");
+        var month = liminf_splited[1]
+        var endMonthDay = "";
+        switch (month) {
+            case "01":
+                endMonthDay = "31";
+                break;
+            case "02":
+                endMonthDay = "28";
+                break;
+            case "03":
+                endMonthDay = "31";
+                break;
+            case "05":
+                endMonthDay = "31";
+                break;
+            case "07":
+                endMonthDay = "31";
+                break;
+            case "08":
+                endMonthDay = "31";
+                break;
+            case "10":
+                endMonthDay = "31";
+                break;
+            case "12":
+                endMonthDay = "31";
+                break;
+
+            default:
+                endMonthDay = "30";
+
+                break;
+        }
+
         var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-        var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-30";
+        var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
 
         console.log("liminf: " + liminf)
         console.log("limsup: " + limsup)
@@ -2166,7 +2197,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         }
         var liminf_splited = liminf_initial.split("-");
         var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-        var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-30";
+        var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
         var url_mod;
 
         if (flag_modifiers == "true") {

@@ -2385,7 +2385,53 @@ var module_nicho = (function() {
 
             var fossil = $("#chkFosil").is(':checked');
 
-            var liminf = $("#date_timepicker_start").val();
+            var state_model = $("#chkValidationTemp")[0].checked;
+
+            if (state_model) {
+                var liminf_initial = $("#date_timepicker_start_val").val();
+
+            } else {
+                var liminf_initial = $("#date_timepicker_start").val();
+            }
+            var liminf_splited = liminf_initial.split("-");
+            var month = liminf_splited[1]
+            var endMonthDay = "";
+            switch (month) {
+                case "01":
+                    endMonthDay = "31";
+                    break;
+                case "02":
+                    endMonthDay = "28";
+                    break;
+                case "03":
+                    endMonthDay = "31";
+                    break;
+                case "05":
+                    endMonthDay = "31";
+                    break;
+                case "07":
+                    endMonthDay = "31";
+                    break;
+                case "08":
+                    endMonthDay = "31";
+                    break;
+                case "10":
+                    endMonthDay = "31";
+                    break;
+                case "12":
+                    endMonthDay = "31";
+                    break;
+
+                default:
+                    endMonthDay = "30";
+
+                    break;
+            }
+
+
+            var liminf_splited = liminf_initial.split("-");
+            var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+            var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
             console.log("liminf: " + liminf)
             console.log("limsup: " + limsup)
 
