@@ -2094,7 +2094,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         var milliseconds = new Date().getTime();
 
-        if ($("#chkValidationTemp")[0].checked) {
+        if ($("#pred_des_control")[0].checked) {
             var liminf_initial = $("#date_timepicker_start_val").val();
 
         } else {
@@ -2187,7 +2187,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         // clearMapOcc()
 
         var flag_modifiers = sessionStorage.getItem("modifiers_flag");
-        var state_model = $("#chkValidationTemp")[0].checked;
+        var state_model = $("#pred_des_control")[0].checked;
 
         if (state_model) {
             var liminf_initial = $("#date_timepicker_start_val").val();

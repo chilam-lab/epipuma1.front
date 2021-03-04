@@ -1139,7 +1139,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         var verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
         var modifiers_flag_verb = sessionStorage.getItem("modifiers_flag");
-        var state_model = $("#chkValidationTemp")[0].checked;
+        var state_model = $("#pred_des_control")[0].checked;
         if (state_model) {
             function formatDate(date) {
                 var d = new Date(date),
@@ -1155,7 +1155,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 return String([year, month, day].join('-'));
             }
             var verbo = "countsTaxonsGroupTimeValidation";
-            if ($("#chkValidationTemp")[0].checked) {
+            if ($("#pred_des_control")[0].checked) {
                 var liminf_initial = $("#date_timepicker_start_val").val();
 
             } else {
@@ -1201,7 +1201,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             var train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
             console.log("liminf: " + liminf);
             console.log("limsup: " + limsup);
-            if ($("#chkValidationTemp")[0].checked) {
+            if ($("#pred_des_control")[0].checked) {
                 mydate = liminf_splited[0] + "-" + train_month + "-01";
                 mydate2 = liminf_splited[0] + "-" + train_month + "-" + endMonthDay;
                 console.log(data_request);

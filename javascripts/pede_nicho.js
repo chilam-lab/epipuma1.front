@@ -1034,7 +1034,6 @@ var module_nicho = (function() {
 
 
         //////NEW FLOW
-        $("#chkValidationTemp")[0].checked = false;
         generateNewFlow();
         /// DATE  MONTHS ONLY
         var fechas = dateRange("2020-01-01", "2021-03-01");
@@ -1044,6 +1043,7 @@ var module_nicho = (function() {
         setTimeout(function() {
             generatePredictiveDescriptiveToggleSwith("switch", "texto_switch", "Quiero Crear un Modelo Predictivo");
             $(".switch").css("margin-top", "-35%");
+            $("#pred_des_control")[0].checked = false;
             $(".texto_switch").css("margin-left", "105%");
             $(".texto_switch").css("width", "875%");
             $("#tuto_val").remove();
@@ -1054,8 +1054,7 @@ var module_nicho = (function() {
                     console.log(status);
                     if (status == false) {
                         $("#lb_range_fecha")[0].innerText = "Periodo de Entrenamiento";
-                        if ($("#chkValidationTemp")[0].checked == true) {
-                            $("#chkValidationTemp").click();
+                        if ($("#pred_des_control")[0].checked == true) {
                             document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
                             setTimeout(function() {
                                 $("#date_timepicker_start").removeAttr("disabled");
@@ -1067,7 +1066,6 @@ var module_nicho = (function() {
 
                     } else {
                         $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
-                        $("#chkValidationTemp").click();
                         document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
                         $(".col-lg-12").css("margin-top", "-40%");
                         setTimeout(function() {
@@ -1463,7 +1461,7 @@ var module_nicho = (function() {
 
 
         // checkbox que se activa cuando se desea realizar el proceso de validación. (Proceso de validación todavia no implementado)
-        $("#chkValidationTemp").click(function(event) {
+        $("#pred_des_control").click(function(event) {
 
             console.log("cambia validacion temporal");
 
@@ -1742,7 +1740,7 @@ var module_nicho = (function() {
             console.log(_taxones);
 
             var val_process = $("#chkValidation").is(':checked');
-            var val_process_temp = $("#chkValidationTemp").is(':checked');
+            var val_process_temp = $("#pred_des_control").is(':checked');
 
             var grid_res = $("#grid_resolution").val();
             var footprint_region = parseInt($("#footprint_region_select").val());
@@ -1769,7 +1767,7 @@ var module_nicho = (function() {
             data_link.sfilters = subgroups_target;
 
             data_link.val_process = $("#chkValidation").is(":checked");
-            data_link.val_process_temp = $("#chkValidationTemp").is(":checked");
+            data_link.val_process_temp = $("#pred_des_control").is(":checked");
             data_link.idtabla = data_link.val_process === true ? _res_display_module_nicho.getValidationTable() : "no_table";
             data_link.mapa_prob = $("#chkMapaProb").is(":checked");
             data_link.fossil = $("#chkFosil").is(":checked");
@@ -2175,10 +2173,10 @@ var module_nicho = (function() {
         }
 
         if (chkValTemp) {
-            $("#chkValidationTemp").prop('checked', true);
+            $("#pred_des_control").prop('checked', true);
             $("#labelValidationTemp").text(_iTrans.prop('lb_si'));
         } else {
-            $("#chkValidationTemp").prop('checked', false);
+            $("#pred_des_control").prop('checked', false);
             $("#labelValidationTemp").text(_iTrans.prop('lb_no'));
         }
 
@@ -2374,7 +2372,7 @@ var module_nicho = (function() {
 
 
             var val_process = $("#chkValidation").is(':checked');
-            var val_process_temp = $("#chkValidationTemp").is(':checked');
+            var val_process_temp = $("#pred_des_control").is(':checked');
             var min_occ = $("#chkMinOcc").is(':checked');
             var mapa_prob = $("#chkMapaProb").is(':checked');
             var grid_res = $("#grid_resolution").val();
@@ -2385,7 +2383,7 @@ var module_nicho = (function() {
 
             var fossil = $("#chkFosil").is(':checked');
 
-            var state_model = $("#chkValidationTemp")[0].checked;
+            var state_model = $("#pred_des_control")[0].checked;
 
             if (state_model) {
                 var liminf_initial = $("#date_timepicker_start_val").val();
