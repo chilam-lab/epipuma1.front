@@ -1213,7 +1213,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 data_request["lim_inf"] = liminf;
                 data_request["lim_sup"] = limsup;
             }
-
+            data_request["period_config"] = ['*', '*', "'1'"];
             console.log(data_request);
 
 
@@ -1225,9 +1225,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         if (modifiers_flag_verb == "true") {
             var verbo = "generateTarget";
-            var url = _url_zacatuche + "/niche/" + verbo
-                //var url = _url_zacatuche + "/dev/niche/" + verbo
-
+            //var url = _url_zacatuche + "/niche/" + verbo;
+            var url = _url_zacatuche + "/dev/niche/" + verbo;
+            //data_request['period_config'] = ["*", "*", "'1'"];
         }
         // cambiando peticiones ajax por promesas y fetch api
         fetch(url, {

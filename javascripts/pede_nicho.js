@@ -96,25 +96,6 @@ var module_nicho = (function() {
 
         // Definicion Fuciones
 
-        const getCovidMetaData = () => {
-            var _url_zacatuche = "http://covid19.c3.unam.mx/api/";
-            $.ajax({
-                url: _url_zacatuche + "/niche/especie/getEntList",
-                dataType: "json",
-                type: "post",
-                data: {
-                    searchStr: "covid",
-                    nivel: "generovalido",
-                    source: 0, // source para saber si viene de objetivo o el target
-                    footprint_region: 1,
-                    grid_res: "mun"
-                },
-                success: function(resp) {
-                    console.log(resp);
-                }
-
-            });
-        }
         const getFixedData = (objetivo, data_target) => {
             let _url_zacatuche = "http://covid19.c3.unam.mx/api";
             let field_r = "especieepiteto";
@@ -534,11 +515,9 @@ var module_nicho = (function() {
         };
         // INICIA DINAMICA MENU MODIFICADORES
         const dinamica_menu_modificadores = () => {
-            let covar2 = $(this)[0].innerText;
-            if (covar2 == "COVID-19") {
-                return;
-            }
+            let addCovariableButton = $("#add_group_fuente").disabled = true;
             setTimeout(function() {
+                let addCovariableButton = $("#add_group_fuente").disabled = false;
                 let number_checked = $(".jstree-clicked").length;
                 let covar = $(this)[0].innerText;
                 sessionStorage.setItem("covar", covar);
@@ -588,25 +567,10 @@ var module_nicho = (function() {
                             parsed_data = JSON.stringify(data);
                             sessionStorage.setItem("selectedData", parsed_data)
                         }
-                    } else {
-                        $(".grupo1").prop('checked', false);
-                        document.getElementById("lethality").hidden = true;
-                        document.getElementById("negativity").hidden = true;
-                        if (covar_checked == "COVID-19 FALLECIDO") {
-                            document.getElementById("lethality").hidden = false;
-                        }
-                        if (covar_checked == "COVID-19 NEGATIVO") {
-                            document.getElementById("negativity").hidden = false;
-                        }
-                        if (covar_checked == "COVID-19 CONFIRMADO") {
-                            document.getElementById("prevalence").hidden = false;
-                        } else {
-                            document.getElementById("prevalence").hidden = true;
-                        }
                     }
 
-
                 } else {
+                    console.log("Entrando a mas de un modificador 😭")
                     document.getElementById("modifiers_covid").hidden = true;
                     if ((number_checked == 2)) {
                         let covar_checked = $(".jstree-clicked")[0].innerText;
@@ -627,7 +591,10 @@ var module_nicho = (function() {
                             }, ];
                             parsed_data = JSON.stringify(data);
                             sessionStorage.setItem("selectedData", parsed_data)
+                            console.log(parsed_data)
+                            console.log("*😂*")
                         }
+
                         /////2
                         if ((covar_checked == "Demográficos") && (covar_checked2 == "Vulnerabilidad") || ((covar_checked == "Vulnerabilidad") && (covar_checked2 == "Demográficos"))) {
                             let data = [{
@@ -835,7 +802,7 @@ var module_nicho = (function() {
                         }
                     }
                 }
-            }, 100)
+            }, 1000)
 
         };
         // TERMINA DINAMICA MENU MODIFICADORES
