@@ -859,8 +859,44 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             console.log("Limites para validacion tamporal");
 
-            var lim_inf_valtemp = $("#date_timepicker_start_val").val();
-            var lim_sup_valtemp = $("#date_timepicker_end_val").val();
+            var  selectedDate = $("#date_timepicker_start_val").val();
+            var liminf_splited = selectedDate.split("-");
+            var month = liminf_splited[1]
+            var endMonthDay = "";
+            switch (month) {
+                case "01":
+                    endMonthDay = "31";
+                    break;
+                case "02":
+                    endMonthDay = "28";
+                    break;
+                case "03":
+                    endMonthDay = "31";
+                    break;
+                case "05":
+                    endMonthDay = "31";
+                    break;
+                case "07":
+                    endMonthDay = "31";
+                    break;
+                case "08":
+                    endMonthDay = "31";
+                    break;
+                case "10":
+                    endMonthDay = "31";
+                    break;
+                case "12":
+                    endMonthDay = "31";
+                    break;
+
+                default:
+                    endMonthDay = "30";
+
+                    break;
+            }
+
+            lim_inf_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+            lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay; 
         }
 
         console.log("lim_inf_valtemp: " + lim_inf_valtemp);
