@@ -557,6 +557,7 @@ var module_nicho = (function() {
                                 type: 0
                             }];
                             parsed_data = JSON.stringify(data);
+                            console.log("test")
                             sessionStorage.setItem("selectedData", parsed_data)
                         } else if (covar_checked == "Pobreza") {
                             let data = [{
