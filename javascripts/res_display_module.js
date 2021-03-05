@@ -859,7 +859,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             console.log("Limites para validacion tamporal");
 
-            var  selectedDate = $("#date_timepicker_start_val").val();
+            var selectedDate = $("#date_timepicker_start_val").val();
             var liminf_splited = selectedDate.split("-");
             var month = liminf_splited[1]
             var endMonthDay = "";
@@ -896,15 +896,15 @@ var res_display_module = (function(verbose, url_zacatuche) {
             }
 
             lim_inf_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-            lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay; 
+            lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+        } else {
+            var lim_inf_valtemp = ""
+            var lim_sup_valtemp = ""
         }
-
-        console.log("lim_inf_valtemp: " + lim_inf_valtemp);
-        console.log("lim_sup_valtemp: " + lim_sup_valtemp);
 
 
         var existsDiscardedFilter = false;
-        if (lin_inf !== undefined || lin_sup !== undefined || !sin_fecha)
+        if (lim_inf_valtemp !== undefined || lim_sup_valtemp !== undefined || !sin_fecha)
             existsDiscardedFilter = true;
 
         // _VERBOSE ? console.log("lin_inf: " + lin_inf) : _VERBOSE;
@@ -1249,7 +1249,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 data_request["lim_inf"] = liminf;
                 data_request["lim_sup"] = limsup;
             }
-            data_request["period_config"] = ['*', '*', "'1'"];
+            data_request["period_config"] = ['*', '*', '1'];
             console.log(data_request);
 
 

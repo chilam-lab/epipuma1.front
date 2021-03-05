@@ -515,9 +515,7 @@ var module_nicho = (function() {
         };
         // INICIA DINAMICA MENU MODIFICADORES
         const dinamica_menu_modificadores = () => {
-            let addCovariableButton = $("#add_group_fuente").disabled = true;
             setTimeout(function() {
-                let addCovariableButton = $("#add_group_fuente").disabled = false;
                 let number_checked = $(".jstree-clicked").length;
                 let covar = $(this)[0].innerText;
                 sessionStorage.setItem("covar", covar);
@@ -998,6 +996,8 @@ var module_nicho = (function() {
         $("#tuto_fil_fecha").css("position", "absolute");
         $("#tuto_fil_fecha").css("top", "27%");
         $("#tuto_fil_fecha").css("margin-left", "5%");
+        //////Boton Basurero Target
+
 
 
 
