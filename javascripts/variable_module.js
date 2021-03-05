@@ -671,6 +671,12 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr('type', 'button')
                     .addClass('btn btn-primary glyphicon glyphicon-plus pull-left no-mg-top')
                     .click(function(e) {
+                        ////Restriccion Covars
+                        let number_checked = $(".jstree-clicked").length;
+                        if (number_checked > 1) {
+                            alert("Seleccione cada variable por separado.");
+                            return;
+                        }
                         let flag_covars = JSON.stringify(sessionStorage.getItem("covar")).length;
 
                         let var_array = JSON.parse(sessionStorage.getItem("selectedData"));
