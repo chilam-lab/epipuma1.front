@@ -852,6 +852,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
         var sin_fecha = $("#chkFecha").is(':checked') ? true : false;
 
+        let todayDate =  new Date();
+        let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
+        
         var lim_inf_valtemp = undefined;
         var lim_inf_valtemp = undefined;
 
@@ -860,43 +863,51 @@ var res_display_module = (function(verbose, url_zacatuche) {
             console.log("Limites para validacion tamporal");
 
             var selectedDate = $("#date_timepicker_start_val").val();
-            var liminf_splited = selectedDate.split("-");
-            var month = liminf_splited[1]
-            var endMonthDay = "";
-            switch (month) {
-                case "01":
-                    endMonthDay = "31";
-                    break;
-                case "02":
-                    endMonthDay = "28";
-                    break;
-                case "03":
-                    endMonthDay = "31";
-                    break;
-                case "05":
-                    endMonthDay = "31";
-                    break;
-                case "07":
-                    endMonthDay = "31";
-                    break;
-                case "08":
-                    endMonthDay = "31";
-                    break;
-                case "10":
-                    endMonthDay = "31";
-                    break;
-                case "12":
-                    endMonthDay = "31";
-                    break;
+            if(selectedDate == todayDateToNextThirtyDays){
+              var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() +30))
+              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
+              var lim_inf_valtemp = todayDateToNextThirtyDays;
+              var lim_sup_valtemp = parsedTodayDatePlusThirtyDays;
+    
+            } else { 
+              var liminf_splited = selectedDate.split("-");
+              var month = liminf_splited[1]
+              var endMonthDay = "";
+              switch (month) {
+                  case "01":
+                      endMonthDay = "31";
+                      break;
+                  case "02":
+                      endMonthDay = "28";
+                      break;
+                  case "03":
+                      endMonthDay = "31";
+                      break;
+                  case "05":
+                      endMonthDay = "31";
+                      break;
+                  case "07":
+                      endMonthDay = "31";
+                      break;
+                  case "08":
+                      endMonthDay = "31";
+                      break;
+                  case "10":
+                      endMonthDay = "31";
+                      break;
+                  case "12":
+                      endMonthDay = "31";
+                      break;
 
-                default:
-                    endMonthDay = "30";
+                  default:
+                      endMonthDay = "30";
 
-                    break;
+                      break;
+              }
+
+              lim_inf_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+              lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
             }
-
-            lim_inf_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-            lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
         } else {
             var lim_inf_valtemp = ""
             var lim_sup_valtemp = ""
@@ -1197,6 +1208,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
             } else {
                 var liminf_initial = $("#date_timepicker_start").val();
             }
+
+            
+
+
+
+
             var liminf_splited = liminf_initial.split("-");
             var month = liminf_splited[1]
             var endMonthDay = "";
