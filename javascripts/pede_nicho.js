@@ -973,10 +973,7 @@ var module_nicho = (function() {
             var select = document.getElementById(id);
             for (let index = 0; index < fechas.length; index++) {
               var opt = document.createElement('option');
-              console.log("😱"+parsedTodayDate.match(/....-../g)[0]);
               if(fechas[index] == parsedTodayDate.match(/....-../g)[0]){                  
-                console.log("La facha actual😱: "+ fechas[index])
-                console.log("Asi que si son iguales😱")
                 opt.value = fechas[index] + parsedTodayDate.match(/-../g)[0] ;
                 opt.innerHTML = "Siguientes 30 días";
                 select.appendChild(opt);
