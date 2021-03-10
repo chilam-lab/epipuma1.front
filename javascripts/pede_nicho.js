@@ -972,10 +972,20 @@ var module_nicho = (function() {
         const addOptionsSelect = (id, fechas) => {
             var select = document.getElementById(id);
             for (let index = 0; index < fechas.length; index++) {
-                var opt = document.createElement('option');
+              var opt = document.createElement('option');
+              console.log("😱"+parsedTodayDate.match(/....-../g)[0]);
+              if(fechas[index] == parsedTodayDate.match(/....-../g)[0]){                  
+                console.log("La facha actual😱: "+ fechas[index])
+                console.log("Asi que si son iguales😱")
+                opt.value = fechas[index] + parsedTodayDate.match(/-../g)[0] ;
+                opt.innerHTML = "Siguientes 30 días";
+                select.appendChild(opt);
+              } else {
+                console.log("La facha actual😱: "+ fechas[index])
                 opt.value = fechas[index] + "-15";
                 opt.innerHTML = fechas[index];
                 select.appendChild(opt);
+              }
             }
             $("#date_timepicker_start")[0].value = "";
         };
@@ -1005,7 +1015,7 @@ var module_nicho = (function() {
         generateNewFlow();
         /// DATE  MONTHS ONLY
         let todayDate =  new Date();
-        let parsedTodayDate = String(todayDate.getFullYear() + "-"+(Number(todayDate.getMonth()) < 10 ? "0" + todayDate.getMonth() : todayDate.getMonth()) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
+        let parsedTodayDate = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
         var fechas = dateRange("2020-01-01", parsedTodayDate);
         addOptionsSelect("date_timepicker_start", fechas);
 
