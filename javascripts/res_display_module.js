@@ -865,9 +865,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
             var selectedDate = $("#date_timepicker_start_val").val();
             if(selectedDate == todayDateToNextThirtyDays){
               var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() +30))
-              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
+              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth())) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()) : (todayDatePlusThirtyDays.getMonth())) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
               var lim_inf_valtemp = todayDateToNextThirtyDays;
               var lim_sup_valtemp = parsedTodayDatePlusThirtyDays;
+              console.log("liminf🤔: "+lim_inf_valtemp)
+              console.log("limsup🤔: "+lim_sup_valtemp )
     
             } else { 
               var liminf_splited = selectedDate.split("-");
@@ -1251,6 +1253,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
             var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+            console.log("liminf😄: "+liminf)
+              console.log("limsup😄: "+limsup )
             var train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
             console.log("liminf: " + liminf);
             console.log("limsup: " + limsup);
