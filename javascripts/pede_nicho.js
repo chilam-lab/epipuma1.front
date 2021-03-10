@@ -1004,7 +1004,9 @@ var module_nicho = (function() {
         //////NEW FLOW
         generateNewFlow();
         /// DATE  MONTHS ONLY
-        var fechas = dateRange("2020-01-01", "2021-03-01");
+        let todayDate =  new Date();
+        let parsedTodayDate = String(todayDate.getFullYear() + "-"+(Number(todayDate.getMonth()) < 10 ? "0" + todayDate.getMonth() : todayDate.getMonth()) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
+        var fechas = dateRange("2020-01-01", parsedTodayDate);
         addOptionsSelect("date_timepicker_start", fechas);
 
         //PREDICTIVO/DESCRIPTIVO
