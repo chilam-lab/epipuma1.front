@@ -2374,8 +2374,6 @@ var module_nicho = (function() {
               let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
               var liminf = todayDateToNextThirtyDays;
               var limsup = parsedTodayDatePlusThirtyDays;
-              console.log("liminf😭: "+liminf)
-              console.log("limsup😭: "+limsup )
     
             } else {
               var liminf_splited = liminf_initial.split("-");

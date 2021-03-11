@@ -868,8 +868,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
               let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
               var lim_inf_valtemp = todayDateToNextThirtyDays;
               var lim_sup_valtemp = parsedTodayDatePlusThirtyDays;
-              console.log("liminf🤔: "+lim_inf_valtemp)
-              console.log("limsup🤔: "+lim_sup_valtemp )
     
             } else { 
               var liminf_splited = selectedDate.split("-");
@@ -1223,55 +1221,49 @@ var res_display_module = (function(verbose, url_zacatuche) {
               var limsup = parsedTodayDatePlusThirtyDays;
               var yesterdayDateToThirtyDays = new Date(todayDate.setDate(todayDate.getDate() -31))
               var trainingStartTothirtyDays = new Date(todayDate.setDate(todayDate.getDate() -30))
-              console.log("liminfhekk😄: "+trainingStartTothirtyDays)
-              console.log("liminfhekk😄: "+yesterdayDateToThirtyDays)
               parsedYesterdayDateToThirtyDays = String(yesterdayDateToThirtyDays.getFullYear() + "-"+(Number((yesterdayDateToThirtyDays.getMonth()+1)) < 10 ? "0" + (yesterdayDateToThirtyDays.getMonth()+1) : (yesterdayDateToThirtyDays.getMonth()+1)) + "-"+ (Number(yesterdayDateToThirtyDays.getDate()) < 10 ? "0" + yesterdayDateToThirtyDays.getDate():yesterdayDateToThirtyDays.getDate()));
               parsedTrainingStartTothirtyDays = String(trainingStartTothirtyDays.getFullYear() + "-"+(Number((trainingStartTothirtyDays.getMonth()+1)) < 10 ? "0" + (trainingStartTothirtyDays.getMonth()+1) : (trainingStartTothirtyDays.getMonth()+1)) + "-"+ (Number(trainingStartTothirtyDays.getDate()) < 10 ? "0" + trainingStartTothirtyDays.getDate():trainingStartTothirtyDays.getDate()));
-              console.log("liminf😄: "+liminf)
-              console.log("limsup😄: "+limsup )
     
             } else {
 
-            var liminf_splited = liminf_initial.split("-");
-            var month = liminf_splited[1]
-            var endMonthDay = "";
-            switch (month) {
-                case "01":
-                    endMonthDay = "31";
-                    break;
-                case "02":
-                    endMonthDay = "28";
-                    break;
-                case "03":
-                    endMonthDay = "31";
-                    break;
-                case "05":
-                    endMonthDay = "31";
-                    break;
-                case "07":
-                    endMonthDay = "31";
-                    break;
-                case "08":
-                    endMonthDay = "31";
-                    break;
-                case "10":
-                    endMonthDay = "31";
-                    break;
-                case "12":
-                    endMonthDay = "31";
-                    break;
+              var liminf_splited = liminf_initial.split("-");
+              var month = liminf_splited[1]
+              var endMonthDay = "";
+              switch (month) {
+                  case "01":
+                      endMonthDay = "31";
+                      break;
+                  case "02":
+                      endMonthDay = "28";
+                      break;
+                  case "03":
+                      endMonthDay = "31";
+                      break;
+                  case "05":
+                      endMonthDay = "31";
+                      break;
+                  case "07":
+                      endMonthDay = "31";
+                      break;
+                  case "08":
+                      endMonthDay = "31";
+                      break;
+                  case "10":
+                      endMonthDay = "31";
+                      break;
+                  case "12":
+                      endMonthDay = "31";
+                      break;
 
-                default:
-                    endMonthDay = "30";
+                  default:
+                      endMonthDay = "30";
 
-                    break;
-            }
+                      break;
+              }
 
-            var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-            var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
-            console.log("liminf😄: "+liminf)
-              console.log("limsup😄: "+limsup )
-            train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
+              var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+              var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+              train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
             }
             console.log("liminf: " + liminf);
             console.log("limsup: " + limsup);

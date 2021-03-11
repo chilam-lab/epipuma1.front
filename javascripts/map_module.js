@@ -2099,20 +2099,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         
         if ($("#pred_des_control")[0].checked) {
             var liminf_initial = $("#date_timepicker_start_val").val();
-            console.log("val😱: "+liminf_initial)
 
         } else {
             var liminf_initial = $("#date_timepicker_start").val();
-            console.log("start😱: "+liminf_initial)
         }
         if(liminf_initial == todayDateToNextThirtyDays){
           var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() +30))
-          console.log("🙃: "+todayDatePlusThirtyDays)
           let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
           var liminf = todayDateToNextThirtyDays;
           var limsup = parsedTodayDatePlusThirtyDays;
-          console.log("liminf🙃: "+liminf)
-          console.log("limsup🙃: "+limsup )
 
         } else { 
           var liminf_splited = liminf_initial.split("-");
@@ -2152,11 +2147,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
           var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
           var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
-          console.log("Los limites inferiores 🤔: "+liminf)
-          console.log("Los limites superiores 🤔: "+limsup)
-          console.log("Estamos parseando las fechas y aqui deberias empezar");
-          console.log("😱😱😱");
-
           console.log("liminf: " + liminf)
           console.log("limsup: " + limsup)
         }
@@ -2219,8 +2209,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
           let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth())) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()) : (todayDatePlusThirtyDays.getMonth())) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
           var liminf = todayDateToNextThirtyDays;
           var limsup = parsedTodayDatePlusThirtyDays;
-          console.log("liminf😱: "+liminf)
-          console.log("limsup😱: "+limsup )
 
         } else{
           var liminf_splited = liminf_initial.split("-");
