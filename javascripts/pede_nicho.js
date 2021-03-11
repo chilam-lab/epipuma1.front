@@ -967,7 +967,7 @@ var module_nicho = (function() {
 
             }
 
-            return dates2;
+            return dates2.reverse();
         };
         const addOptionsSelect = (id, fechas) => {
             var select = document.getElementById(id);
