@@ -514,17 +514,15 @@ var module_nicho = (function() {
 
         };
         // INICIA DINAMICA MENU MODIFICADORES
-        const dinamica_menu_modificadores = () => {
+        const dinamica_menu_covariables = () => {
             setTimeout(function() {
                 let number_checked = $(".jstree-clicked").length;
-                let covar = $(this)[0].innerText;
-                sessionStorage.setItem("covar", covar);
+                //let covar = $(this)[0].innerText;
+                //sessionStorage.setItem("covar", covar);
                 if (number_checked == 1) {
-                    document.getElementById("modifiers_covid").hidden = false;
                     let covar_checked = $(".jstree-clicked")[0].innerText;
                     let covars_list = ["Demográficos", "Pobreza", "Movilidad", "Vulnerabilidad"];
                     if (covars_list.includes(covar_checked)) {
-                        document.getElementById("modifiers_covid").hidden = true;
                         ///// SELECCION DE COVARIABLES FIJAS
                         if (covar_checked == "Demográficos") {
                             let data = [{
@@ -568,8 +566,6 @@ var module_nicho = (function() {
                     }
 
                 } else {
-                    console.log("Entrando a mas de un modificador 😭")
-                    document.getElementById("modifiers_covid").hidden = true;
                     if ((number_checked == 2)) {
                         let covar_checked = $(".jstree-clicked")[0].innerText;
                         let covar_checked2 = $(".jstree-clicked")[1].innerText;
@@ -805,23 +801,6 @@ var module_nicho = (function() {
         };
         // TERMINA DINAMICA MENU MODIFICADORES
 
-        const generateModifiersMenu = () => {
-            let node = document.createElement("div");
-            let b = document.createElement("br");
-            node.setAttribute("class", "modifiers_covid");
-            node.setAttribute("id", "modifiers_covid");
-            node.setAttribute("hidden", true);
-            node.setAttribute("style", "background-color:aquamarine;width:80%;border-radius: 5px;font-size: 90%;margin-left:11%;margin-top:2%;margin-bottom:2%");
-            let textnode = document.createTextNode("Modificadores de Target");
-            node.appendChild(textnode);
-            node.appendChild(b);
-            generateInput(node, "incidence", " 10% Municipios con Mayor Incidencia");
-            generateInput(node, "prevalence", " 10% Municipios con Mayor Prevalencia");
-            generateInput(node, "cases", " 10% Municipios con Mayor Número de Casos");
-            generateInput(node, "lethality", " 10% Municipios con Mayor Letalidad");
-            generateInput(node, "negativity", " 10% Municipios con Menor Positividad");
-            document.getElementById("treeVariable_target").appendChild(node);
-        };
         const generatePredictiveDescriptiveToggleSwith = (clase, clase_texto, texto) => {
             let div = document.createElement("div");
             div.setAttribute("id", "id_toggle");
@@ -854,92 +833,159 @@ var module_nicho = (function() {
 
         };
         const generateNewFlow = () => {
-            genrateDynamicButton();
-            let options = { 'COVID 19 Confirmado': "COVID 19 Confirmado", 'COVID 19 Fallecido': "COVID 19 Fallecido" };
-            let options2 = { 'Sin Modificador': "Sin Modificador", 'Modificador 1': "Modificador 1", 'Modificador 2': "Modificador 2", 'Modificador 3': "Modificador 3" };
-            let options3 = { 'Mejoramiento': "Mejoramiento", 'Empeoramiento': "Empeoramiento" };
-            var steps = [{
-                    input: 'select',
-                    inputOptions: options,
-                    confirmButtonText: 'Next &rarr;',
-                    showCancelButton: true,
-                    title: 'Variable Objetivo',
-                    text: 'Seleccionar variable objetivo'
-                },
-                {
-                    input: 'select',
-                    inputOptions: options2,
-                    confirmButtonText: 'Next &rarr;',
-                    showCancelButton: true,
-                    title: 'Modificadores',
-                    text: 'Seleccionar modificadores de la variable objetivo'
-                },
-                {
-                    input: 'select',
-                    inputOptions: options3,
-                    confirmButtonText: 'Next &rarr;',
-                    showCancelButton: true,
-                    title: 'Enfoque',
-                    text: 'Seleccionar enfoque del modelo'
-                }
-            ];
-
-            setTimeout(function() {
-                $("#boton_seleccion_grupo").click(function() {
-                    Swal.mixin({
-                        input: 'text',
-                        confirmButtonText: 'Next &rarr;',
-                        showCancelButton: true,
-                        progressSteps: ['1', '2', '3']
-                    }).queue(steps).then((result) => {
-                        if (result.value) {
-                            const answers = JSON.stringify(result.value)
-                            Swal.fire({
-                                title: 'Modelo definido.',
-                                html: `
-                              Parámetros:
-                              <pre><code>${answers}</code></pre>
-                            `,
-                                confirmButtonText: 'Aceptar'
-                            });
-                            let answers2 = answers.substring(1, answers.length - 1);
-                            let answers_sep = answers2.split(",")
-                            let obj_var = answers_sep[0];
-                            if (obj_var == '"COVID 19 Confirmado"') {
-                                var selected_var = [{
-                                    label: "COVID-19 CONFIRMADO",
-                                    level: "Especie",
-                                    numlevel: 8,
-                                    parent: "COVID-19",
-                                    type: 0,
-                                }];
-                            } else if (obj_var == '"COVID 19 Fallecido"') {
-                                var selected_var = [{
-                                    label: "COVID-19 FALLECIDO",
-                                    level: "Especie",
-                                    numlevel: 8,
-                                    parent: "COVID-19",
-                                    type: 0,
-                                }];
-                            } else if (obj_var == '"COVID 19 Casos"') {
-                                var selected_var = [{
-                                    label: "COVID-19 CASOS",
-                                    level: "Especie",
-                                    numlevel: 8,
-                                    parent: "COVID-19",
-                                    type: 0,
-                                }];
-                            }
-
-                            sessionStorage.setItem("selectedData", JSON.stringify(selected_var));
-                            $("#add_group_target").css("visibility", "visible")
-                            $("#add_group_target").click();
-                            $("#add_group_target").css("visibility", "hidden")
-
+            document.getElementById("targetVariableSelectorId").hidden = false;
+            $("#modelSelect").change(function() {
+                document.getElementById("variableObjetivoSection").hidden = false;
+            })
+            $("#targetVariableSelect").change(function() {
+                let var_obj = $(this).val();
+                let data = {};
+                switch (var_obj) {
+                    case "COVID-19 Confirmado":
+                        data = {
+                            "target_taxons": [{
+                                "taxon_rank": "species",
+                                "value": "COVID-19 CONFIRMADO"
+                            }]
                         }
-                    })
-                })
-            }, 1000)
+                        break;
+                    case "COVID-19 Negativo":
+                        data = {
+                            "target_taxons": [
+
+                                {
+                                    "taxon_rank": "species",
+                                    "value": "COVID-19 FALLECIDO"
+                                }
+                            ]
+                        }
+                        break;
+                    case "COVID-19 Pruebas":
+                        data = {
+                            "target_taxons": [{
+                                    "taxon_rank": "species",
+                                    "value": "COVID-19 CONFIRMADO"
+                                },
+                                {
+                                    "taxon_rank": "species",
+                                    "value": "COVID-19 NEGATIVO"
+                                }
+                            ]
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+                console.log(data);
+                var _url_zacatuche = "http://covid19.c3.unam.mx/api/dev/"
+                $.ajax({
+                    url: _url_zacatuche + "/niche/especie/getModifiersByTarget",
+                    data: data,
+                    dataType: "json",
+                    type: "post",
+                    success: function(resp) {
+                        console.log(resp);
+                        let modif = resp["modifiers"];
+                        var select = document.getElementById("modifiersSelect");
+                        document.getElementById("modif_section").hidden = false;
+                        try {
+                            let actual_modifiers =
+                                $(".modif_opt").remove();
+                        } catch (error) {
+                            console.log("no mdifiers")
+                        }
+
+                        for (let index = 0; index < modif.length; index++) {
+                            console.log(modif[index]["label"])
+                            console.log(modif[index]["modifier"])
+                            var opt = document.createElement('option');
+                            opt.setAttribute("class", "modif_opt")
+                            opt.value = modif[index]["modifier"];
+                            opt.innerHTML = modif[index]["label"];
+                            select.appendChild(opt);
+                        }
+                        $("#modifiersSelect").click(function() {
+                            document.getElementById("enfoque_section").hidden = false;
+
+                        });
+
+
+                    }
+                });
+            })
+
+            $("#targetVariableButton").click(function() {
+                ///// SELECCION VARIABLES EN FLUJO NUEVO
+                let obj_var = $("#targetVariableSelect").val();
+                let modif = $("#modifiersSelect").val();
+                let enfoque = $("#enfoqueSelect").val();
+                let model = $("#modelSelect").val();
+                /////SELECCION  MODELO
+                if (model == 'Predictivo') {
+                    alert("Predictivo");
+                    $("#pred_des_control").click()
+                } else {
+                    console.log("Perfilado");
+                }
+                ///// SELECCION MODIFICADORES
+                if (modif == "Sin Modificador") {
+                    console.log("Sin Modificador")
+                } else {
+                    flag_modifiers = true;
+                    console.log(flag_modifiers);
+                    list_modifiers.push([modif]);
+                    alert("Modifiers");
+
+
+                }
+                if (obj_var == "COVID-19 Confirmado") {
+                    var selected_var = [{
+                        label: "COVID-19 CONFIRMADO",
+                        level: "Especie",
+                        numlevel: 8,
+                        parent: "COVID-19",
+                        type: 0,
+                    }];
+                } else if (obj_var == "COVID-19 Negativo") {
+                    var selected_var = [{
+                        label: "COVID-19 FALLECIDO",
+                        level: "Especie",
+                        numlevel: 8,
+                        parent: "COVID-19",
+                        type: 0,
+                    }];
+                } else if (obj_var == "COVID-19 Pruebas") {
+                    var selected_var = [{
+                            label: "COVID-19 CONFIRMADO",
+                            level: "Especie",
+                            numlevel: 8,
+                            parent: "COVID-19",
+                            type: 0,
+                        },
+                        {
+                            label: "COVID-19 NEGATIVO",
+                            level: "Especie",
+                            numlevel: 8,
+                            parent: "COVID-19",
+                            type: 0,
+                        }
+                    ];
+                };
+                ////PASANDO VARIABLES A SESSION STORAGE Y RESETEANDO ELEMENTOS
+                console.log(selected_var);
+                sessionStorage.setItem("selectedData", JSON.stringify(selected_var));
+                $("#add_group_target").css("visibility", "visible");
+                $("#add_group_target").click();
+                $("#add_group_target").css("visibility", "hidden");
+                document.getElementById("variableObjetivoSection").hidden = true;
+                document.getElementById("modif_section").hidden = true;
+                document.getElementById("enfoque_section").hidden = true;
+                document.getElementById("targetVariableSelectorId").hidden = true;
+            })
+
+
+
 
 
         };
@@ -985,8 +1031,6 @@ var module_nicho = (function() {
             }
             $("#date_timepicker_start")[0].value = "";
         };
-
-
         // Implementación Funciones
         //Cambios Gpos Interes Target
         $("#tuto_taxon_sp_target").remove();
@@ -1002,13 +1046,12 @@ var module_nicho = (function() {
         $("#tuto_fil_fecha").css("position", "absolute");
         $("#tuto_fil_fecha").css("top", "27%");
         $("#tuto_fil_fecha").css("margin-left", "5%");
-        //////Boton Basurero Target
-
-
-
 
         //////NEW FLOW
-        generateNewFlow();
+        genrateDynamicButton();
+        $("#boton_seleccion_grupo").click(function() {
+                generateNewFlow();
+            })
         /// DATE  MONTHS ONLY
         let todayDate =  new Date();
         let parsedTodayDate = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
@@ -1018,6 +1061,10 @@ var module_nicho = (function() {
         //PREDICTIVO/DESCRIPTIVO
         setTimeout(function() {
             generatePredictiveDescriptiveToggleSwith("switch", "texto_switch", "Quiero Crear un Modelo Predictivo");
+            ////NEW NEW FLOW
+            document.getElementsByClassName("slider round")[0].hidden = true;
+            $(".texto_switch").remove();
+            /////
             $(".switch").css("margin-top", "-35%");
             $("#pred_des_control")[0].checked = false;
             $(".texto_switch").css("margin-left", "105%");
@@ -1289,42 +1336,9 @@ var module_nicho = (function() {
         setTimeout(function() {
             $(".jstree-anchor")[1].click()
 
-            $("#btn_variable_fuente").click();
-            $("#a_item_reino_fuente").click();
-            //Creacion dinamica de menu de modificadores
-            generateModifiersMenu();
-            // Creacion Event Handlers del menu de modificadores
-            $(".grupo1").click(function() {
-                if (flag_modifiers) {
-                    _module_toast.showToast_BottomCenter(_iTrans.prop('Solo puedes escoger un moddificador'), "warning");
-                    return
-                }
-                flag_modifiers = true;
-                let covar = sessionStorage.getItem("covar");
-                let covars_list = ["COVID-19 CONFIRMADO", "COVID-19 FALLECIDO", "COVID-19 NEGATIVO", "COVID-19 SOSPECHOSO"]
-                let covar_index = covars_list.indexOf(covar);
-                if (covar_index > -1) {
-                    covars_list.splice(covar_index, 1);
-                }
-                console.log(covars_list)
-                for (let index = 0; index < covars_list.length; index++) {
-                    let etiqueta = "#" + covars_list[index].replace(/\s/g, "");
-                    $(etiqueta).remove()
-                }
-                let covar2 = $(this)[0].value;
-                list_modifiers.push([covar, covar2]);
-            })
-
-            $(".modifiers_covid").click(function() {
-                    if (flag_modifiers) {
-                        _module_toast.showToast_BottomCenter(_iTrans.prop('Solo puedes escoger una covariable con modificador'), "warning");
-                        document.getElementById("modifiers_covid").hidden = true;
-                        return
-                    }
-                })
-                // Dinamica Menu Modificadores
+            // Dinamica Menu Covariables
             $(".jstree-anchor").click(function() {
-                dinamica_menu_modificadores();
+                dinamica_menu_covariables();
 
             })
             $(".jstree-anchor")[1].click()
@@ -1333,13 +1347,8 @@ var module_nicho = (function() {
 
 
         // Boton Agregar
-        $("#add_group_target").click(function() {
-            sessionStorage.setItem("flag_target_added", "true")
-            if (self.arrayVarSelected.length == 0) {
-                console.log("No species selected");
-                //_module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
-                return;
-            }
+        $("#add_group_target").click(function() {;
+            sessionStorage.setItem("flag_target_added", "true");
             //Manejo del arbol de variables
             let variables_seleccionadas = JSON.parse(sessionStorage.getItem("selectedData"));
             let covars_list = ["COVID-19 CONFIRMADO", "COVID-19 FALLECIDO", "COVID-19 NEGATIVO", "COVID-19 SOSPECHOSO"];
@@ -1354,16 +1363,19 @@ var module_nicho = (function() {
                 $(etiqueta).remove()
 
             }
-            //Manejo de Modificadores
-            //Eliminar grupo modificadores
-            document.getElementById("modifiers_covid").hidden = true;
+            console.log(flag_modifiers)
+            alert("miau1")
+                //Manejo de Modificadores
+                //Eliminar grupo modificadores
             if (flag_modifiers) {
+                alert("miau2")
                 let obj_fix = {}
                 sessionStorage.setItem("modifiers_flag", "true");
                 for (let index = 0; index < list_modifiers.length; index++) {
-                    obj_fix[list_modifiers[index][0]] = list_modifiers[index][1];
+                    obj_fix[list_modifiers[index]] = list_modifiers[index][0];
                 }
                 console.log(obj_fix)
+                alert("miau3");
                 sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
                 $(".row_var_item").click()
                 let original_text = $(".cell_item")[0].innerText;
