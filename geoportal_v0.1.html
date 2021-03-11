@@ -264,9 +264,11 @@
                                 </select>
                             <!--</div>-->
                         </div>
-                        <div id="targetVariableSelectorId" class="targetVariableSelector" style="border: 1rem solid black; background-color:aquamarine;;position:absolute;z-index: 4;" hidden>
+                        <div id="targetVariableSelectorOverlay" class="dimmed" hidden>
+                        </div>
+                        <div id="targetVariableSelectorId" class="targetVariableSelector" hidden>
                             <div>
-                                <h5>Tipo de Modelo</h5>
+                                <h5>1. Tipo de Modelo</h5>
                                 <select name=" " id="modelSelect">
                                     <option selected disabled>Seleccione Tipo de Modelo</option>
                                     <option value="Perfilado">Perfilado</option>
@@ -274,7 +276,7 @@
                                 </select>
                             </div>
                             <div id="variableObjetivoSection" hidden>
-                                <h5>Variables Objetivo</h5>
+                                <h5>2. Variables Objetivo</h5>
                                 <select name=" " id="targetVariableSelect">
                                     <option selected disabled>Seleccione Variable Objetivo</option>
                                     <option value="COVID-19 Confirmado">COVID-19 Confirmado</option>
@@ -285,14 +287,14 @@
 
                             <br>
                             <div id="modif_section" hidden>
-                                <h5>Modificadores</h5>
+                                <h5>3. Modificadores</h5>
                                 <select name="" id="modifiersSelect">
                                     <option selected disabled>Seleccione Modificador</option>
                                     <option value="Sin Modificador">Sin Modificador</option>
                                 </select>
                             </div>
                             <div id="enfoque_section" hidden>
-                                <h5>Enfoque</h5>
+                                <h5>4. Enfoque</h5>
                                 <select name="" id="enfoqueSelect">
                                     <option selected disabled>Seleccione Enfoque</option>
                                     <option selected>Mejoramiento</option>

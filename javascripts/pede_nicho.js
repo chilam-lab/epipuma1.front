@@ -833,6 +833,7 @@ var module_nicho = (function() {
 
         };
         const generateNewFlow = () => {
+            document.getElementById("targetVariableSelectorOverlay").hidden = false;
             document.getElementById("targetVariableSelectorId").hidden = false;
             $("#modelSelect").change(function() {
                 document.getElementById("variableObjetivoSection").hidden = false;
@@ -923,7 +924,8 @@ var module_nicho = (function() {
                 let model = $("#modelSelect").val();
                 /////SELECCION  MODELO
                 if (model == 'Predictivo') {
-                    alert("Predictivo");
+                    _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
+
                     $("#pred_des_control").click()
                 } else {
                     console.log("Perfilado");
@@ -935,8 +937,7 @@ var module_nicho = (function() {
                     flag_modifiers = true;
                     console.log(flag_modifiers);
                     list_modifiers.push([modif]);
-                    alert("Modifiers");
-
+                    _module_toast.showToast_BottomCenter(_iTrans.prop('Modelo con Modificadores Seleccionado'), "info");
 
                 }
                 if (obj_var == "COVID-19 Confirmado") {
@@ -982,6 +983,7 @@ var module_nicho = (function() {
                 document.getElementById("modif_section").hidden = true;
                 document.getElementById("enfoque_section").hidden = true;
                 document.getElementById("targetVariableSelectorId").hidden = true;
+                document.getElementById("targetVariableSelectorOverlay").hidden = true;
             })
 
 
@@ -1018,16 +1020,16 @@ var module_nicho = (function() {
         const addOptionsSelect = (id, fechas) => {
             var select = document.getElementById(id);
             for (let index = 0; index < fechas.length; index++) {
-              var opt = document.createElement('option');
-              if(fechas[index] == parsedTodayDate.match(/....-../g)[0]){                  
-                opt.value = fechas[index] + parsedTodayDate.match(/-..$/g)[0] ;
-                opt.innerHTML = "Siguientes 30 días";
-                select.appendChild(opt);
-              } else {
-                opt.value = fechas[index] + "-15";
-                opt.innerHTML = fechas[index];
-                select.appendChild(opt);
-              }
+                var opt = document.createElement('option');
+                if (fechas[index] == parsedTodayDate.match(/....-../g)[0]) {
+                    opt.value = fechas[index] + parsedTodayDate.match(/-..$/g)[0];
+                    opt.innerHTML = "Siguientes 30 días";
+                    select.appendChild(opt);
+                } else {
+                    opt.value = fechas[index] + "-15";
+                    opt.innerHTML = fechas[index];
+                    select.appendChild(opt);
+                }
             }
             $("#date_timepicker_start")[0].value = "";
         };
@@ -1052,9 +1054,9 @@ var module_nicho = (function() {
         $("#boton_seleccion_grupo").click(function() {
                 generateNewFlow();
             })
-        /// DATE  MONTHS ONLY
-        let todayDate =  new Date();
-        let parsedTodayDate = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
+            /// DATE  MONTHS ONLY
+        let todayDate = new Date();
+        let parsedTodayDate = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
         var fechas = dateRange("2020-01-01", parsedTodayDate);
         addOptionsSelect("date_timepicker_start", fechas);
 
@@ -1364,18 +1366,15 @@ var module_nicho = (function() {
 
             }
             console.log(flag_modifiers)
-            alert("miau1")
                 //Manejo de Modificadores
                 //Eliminar grupo modificadores
             if (flag_modifiers) {
-                alert("miau2")
                 let obj_fix = {}
                 sessionStorage.setItem("modifiers_flag", "true");
                 for (let index = 0; index < list_modifiers.length; index++) {
                     obj_fix[list_modifiers[index]] = list_modifiers[index][0];
                 }
                 console.log(obj_fix)
-                alert("miau3");
                 sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
                 $(".row_var_item").click()
                 let original_text = $(".cell_item")[0].innerText;
@@ -2365,8 +2364,8 @@ var module_nicho = (function() {
             var mapa_prob = $("#chkMapaProb").is(':checked');
             var grid_res = $("#grid_resolution").val();
             var footprint_region = parseInt($("#footprint_region_select").val());
-            let todayDate =  new Date();
-            let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
+            let todayDate = new Date();
+            let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
 
             console.log("grid_res: " + grid_res);
             console.log("footprint_region: " + footprint_region);
@@ -2381,54 +2380,54 @@ var module_nicho = (function() {
             } else {
                 var liminf_initial = $("#date_timepicker_start").val();
             }
-            if(liminf_initial == todayDateToNextThirtyDays){
-              var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() +30))
-              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
-              var liminf = todayDateToNextThirtyDays;
-              var limsup = parsedTodayDatePlusThirtyDays;
-    
+            if (liminf_initial == todayDateToNextThirtyDays) {
+                var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() + 30))
+                let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-" + (Number((todayDatePlusThirtyDays.getMonth() + 1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth() + 1) : (todayDatePlusThirtyDays.getMonth() + 1)) + "-" + (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate() : todayDatePlusThirtyDays.getDate()));
+                var liminf = todayDateToNextThirtyDays;
+                var limsup = parsedTodayDatePlusThirtyDays;
+
             } else {
-              var liminf_splited = liminf_initial.split("-");
-              var month = liminf_splited[1]
-              var endMonthDay = "";
-              switch (month) {
-                  case "01":
-                      endMonthDay = "31";
-                      break;
-                  case "02":
-                      endMonthDay = "28";
-                      break;
-                  case "03":
-                      endMonthDay = "31";
-                      break;
-                  case "05":
-                      endMonthDay = "31";
-                      break;
-                  case "07":
-                      endMonthDay = "31";
-                      break;
-                  case "08":
-                      endMonthDay = "31";
-                      break;
-                  case "10":
-                      endMonthDay = "31";
-                      break;
-                  case "12":
-                      endMonthDay = "31";
-                      break;
+                var liminf_splited = liminf_initial.split("-");
+                var month = liminf_splited[1]
+                var endMonthDay = "";
+                switch (month) {
+                    case "01":
+                        endMonthDay = "31";
+                        break;
+                    case "02":
+                        endMonthDay = "28";
+                        break;
+                    case "03":
+                        endMonthDay = "31";
+                        break;
+                    case "05":
+                        endMonthDay = "31";
+                        break;
+                    case "07":
+                        endMonthDay = "31";
+                        break;
+                    case "08":
+                        endMonthDay = "31";
+                        break;
+                    case "10":
+                        endMonthDay = "31";
+                        break;
+                    case "12":
+                        endMonthDay = "31";
+                        break;
 
-                  default:
-                      endMonthDay = "30";
+                    default:
+                        endMonthDay = "30";
 
-                      break;
-              }
+                        break;
+                }
 
 
-              var liminf_splited = liminf_initial.split("-");
-              var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-              var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
-              console.log("liminf: " + liminf)
-              console.log("limsup: " + limsup)
+                var liminf_splited = liminf_initial.split("-");
+                var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+                var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+                console.log("liminf: " + liminf)
+                console.log("limsup: " + limsup)
             }
 
             var rango_fechas = []

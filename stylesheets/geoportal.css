@@ -2421,3 +2421,21 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+#targetVariableSelectorId {
+    background-color: aquamarine;
+    position: absolute;
+    z-index: 11;
+}
+
+.dimmed {
+    content: " ";
+    z-index: 10;
+    position: absolute;
+    height: 10000%;
+    width: 1000%;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
