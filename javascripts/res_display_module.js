@@ -1221,12 +1221,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
               let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
               var liminf = todayDateToNextThirtyDays;
               var limsup = parsedTodayDatePlusThirtyDays;
-              var trainingStartTothirtyDays = new Date(todayDate.setDate(todayDate.getDate() -31))
-              var yesterdayDateToThirtyDays = new Date(todayDate.setDate(todayDate.getDate() -1))
+              var yesterdayDateToThirtyDays = new Date(todayDate.setDate(todayDate.getDate() -31))
+              var trainingStartTothirtyDays = new Date(todayDate.setDate(todayDate.getDate() -30))
               console.log("liminfhekk😄: "+trainingStartTothirtyDays)
-              console.log("liminfhekk😄: "+trainingStartTothirtyDays)
-              parsedTrainingStartTothirtyDays = String(trainingStartTothirtyDays.getFullYear() + "-"+(Number((trainingStartTothirtyDays.getMonth()+1)) < 10 ? "0" + (trainingStartTothirtyDays.getMonth()+1) : (trainingStartTothirtyDays.getMonth()+1)) + "-"+ (Number(trainingStartTothirtyDays.getDate()) < 10 ? "0" + trainingStartTothirtyDays.getDate():trainingStartTothirtyDays.getDate()));
+              console.log("liminfhekk😄: "+yesterdayDateToThirtyDays)
               parsedYesterdayDateToThirtyDays = String(yesterdayDateToThirtyDays.getFullYear() + "-"+(Number((yesterdayDateToThirtyDays.getMonth()+1)) < 10 ? "0" + (yesterdayDateToThirtyDays.getMonth()+1) : (yesterdayDateToThirtyDays.getMonth()+1)) + "-"+ (Number(yesterdayDateToThirtyDays.getDate()) < 10 ? "0" + yesterdayDateToThirtyDays.getDate():yesterdayDateToThirtyDays.getDate()));
+              parsedTrainingStartTothirtyDays = String(trainingStartTothirtyDays.getFullYear() + "-"+(Number((trainingStartTothirtyDays.getMonth()+1)) < 10 ? "0" + (trainingStartTothirtyDays.getMonth()+1) : (trainingStartTothirtyDays.getMonth()+1)) + "-"+ (Number(trainingStartTothirtyDays.getDate()) < 10 ? "0" + trainingStartTothirtyDays.getDate():trainingStartTothirtyDays.getDate()));
               console.log("liminf😄: "+liminf)
               console.log("limsup😄: "+limsup )
     
