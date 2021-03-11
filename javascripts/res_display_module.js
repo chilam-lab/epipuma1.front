@@ -865,7 +865,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             var selectedDate = $("#date_timepicker_start_val").val();
             if(selectedDate == todayDateToNextThirtyDays){
               var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() +30))
-              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth())) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()) : (todayDatePlusThirtyDays.getMonth())) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
+              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
               var lim_inf_valtemp = todayDateToNextThirtyDays;
               var lim_sup_valtemp = parsedTodayDatePlusThirtyDays;
               console.log("liminf🤔: "+lim_inf_valtemp)
@@ -1189,6 +1189,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
         var modifiers_flag_verb = sessionStorage.getItem("modifiers_flag");
         var state_model = $("#pred_des_control")[0].checked;
+        var train_month = "";
+        let todayDate =  new Date();
+        let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
+        let parsedTrainingStartTothirtyDays = ""
+        let parsedYesterdayDateToThirtyDays = ""
         if (state_model) {
             function formatDate(date) {
                 var d = new Date(date),
@@ -1211,10 +1216,21 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 var liminf_initial = $("#date_timepicker_start").val();
             }
 
-            
-
-
-
+            if(liminf_initial == todayDateToNextThirtyDays){
+              var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() +30))
+              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
+              var liminf = todayDateToNextThirtyDays;
+              var limsup = parsedTodayDatePlusThirtyDays;
+              var trainingStartTothirtyDays = new Date(todayDate.setDate(todayDate.getDate() -31))
+              var yesterdayDateToThirtyDays = new Date(todayDate.setDate(todayDate.getDate() -1))
+              console.log("liminfhekk😄: "+trainingStartTothirtyDays)
+              console.log("liminfhekk😄: "+trainingStartTothirtyDays)
+              parsedTrainingStartTothirtyDays = String(trainingStartTothirtyDays.getFullYear() + "-"+(Number((trainingStartTothirtyDays.getMonth()+1)) < 10 ? "0" + (trainingStartTothirtyDays.getMonth()+1) : (trainingStartTothirtyDays.getMonth()+1)) + "-"+ (Number(trainingStartTothirtyDays.getDate()) < 10 ? "0" + trainingStartTothirtyDays.getDate():trainingStartTothirtyDays.getDate()));
+              parsedYesterdayDateToThirtyDays = String(yesterdayDateToThirtyDays.getFullYear() + "-"+(Number((yesterdayDateToThirtyDays.getMonth()+1)) < 10 ? "0" + (yesterdayDateToThirtyDays.getMonth()+1) : (yesterdayDateToThirtyDays.getMonth()+1)) + "-"+ (Number(yesterdayDateToThirtyDays.getDate()) < 10 ? "0" + yesterdayDateToThirtyDays.getDate():yesterdayDateToThirtyDays.getDate()));
+              console.log("liminf😄: "+liminf)
+              console.log("limsup😄: "+limsup )
+    
+            } else {
 
             var liminf_splited = liminf_initial.split("-");
             var month = liminf_splited[1]
@@ -1255,12 +1271,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
             var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
             console.log("liminf😄: "+liminf)
               console.log("limsup😄: "+limsup )
-            var train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
+            train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
+            }
             console.log("liminf: " + liminf);
             console.log("limsup: " + limsup);
             if ($("#pred_des_control")[0].checked) {
-                mydate = liminf_splited[0] + "-" + train_month + "-01";
-                mydate2 = liminf_splited[0] + "-" + train_month + "-" + endMonthDay;
+                mydate = train_month ? (liminf_splited[0] + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
+                mydate2 = train_month ? (liminf_splited[0] + "-" + train_month + "-" + endMonthDay) : parsedYesterdayDateToThirtyDays;
                 console.log(data_request);
                 data_request["lim_inf"] = mydate;
                 data_request["lim_sup"] = mydate2;
