@@ -2423,9 +2423,14 @@ input:checked+.slider:before {
 }
 
 #targetVariableSelectorId {
-    background-color: aquamarine;
+    background: #fff;
     position: absolute;
     z-index: 11;
+    width: 50%;
+    top: 20%;
+    left: 100%;
+    text-align: center;
+    border-radius: 15px;
 }
 
 .dimmed {
@@ -2438,4 +2443,12 @@ input:checked+.slider:before {
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.5);
+}
+
+#targetVariableButton {
+    margin-bottom: 5%;
+}
+
+#targetVariableSelectorId {
+    margin-top: 5%;
 }
