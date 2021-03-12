@@ -1037,7 +1037,7 @@ var module_nicho = (function() {
         //Cambios Gpos Interes Target
         $("#tuto_taxon_sp_target").remove();
         $("#tuto_nav_tabs_target").css("margin-bottom", "4px");
-        $("#lb_range_fecha")[0].innerText = "Periodo de Entrenamiento";
+        $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
         $("#lb_range_fecha").css("width", "10px");
         $("#lb_range_fecha").css("margin-bottom", "15px");
         $("#btn_variable_fuente").remove()
@@ -1078,7 +1078,7 @@ var module_nicho = (function() {
                     let status = $("#pred_des_control")[0].checked;
                     console.log(status);
                     if (status == false) {
-                        $("#lb_range_fecha")[0].innerText = "Periodo de Entrenamiento";
+                        $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
                         if ($("#pred_des_control")[0].checked == true) {
                             document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
                             setTimeout(function() {
