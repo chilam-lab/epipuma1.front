@@ -92,6 +92,7 @@ var module_nicho = (function() {
         sessionStorage.setItem("covar", "");
         sessionStorage.setItem("flag_target_added", "false")
         sessionStorage.setItem("count_anlys", 0)
+        sessionStorage.setItem("light_traffic", "");
 
 
         // Definicion Fuciones
@@ -833,6 +834,7 @@ var module_nicho = (function() {
 
         };
         const generateNewFlow = () => {
+            sessionStorage.setItem("light_traffic", "");
             $('select option[value="model_default"]').attr("selected", true);
             document.getElementById("targetVariableSelectorOverlay").hidden = false;
             document.getElementById("targetVariableSelectorId").hidden = false;
@@ -919,11 +921,10 @@ var module_nicho = (function() {
                             $("#enfoqueSelect").change(function() {
                                 document.getElementById("button_section").hidden = false;
                                 let enfoque = $("#enfoqueSelect").val();
-                                let traffic_light;
                                 if (enfoque == "Mejoramiento") {
-                                    traffic_light = "green";
+                                    sessionStorage.setItem("light_traffic", "green");
                                 } else {
-                                    traffic_light = "red";
+                                    sessionStorage.setItem("light_traffic", "red");
                                 }
 
                             });

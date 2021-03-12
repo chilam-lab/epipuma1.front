@@ -852,9 +852,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var lin_sup = _rangofechas ? _rangofechas[1] : undefined;
         var sin_fecha = $("#chkFecha").is(':checked') ? true : false;
 
-        let todayDate =  new Date();
-        let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
-        
+        let todayDate = new Date();
+        let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
+
         var lim_inf_valtemp = undefined;
         var lim_inf_valtemp = undefined;
 
@@ -863,50 +863,50 @@ var res_display_module = (function(verbose, url_zacatuche) {
             console.log("Limites para validacion tamporal");
 
             var selectedDate = $("#date_timepicker_start_val").val();
-            if(selectedDate == todayDateToNextThirtyDays){
-              var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() +30))
-              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
-              var lim_inf_valtemp = todayDateToNextThirtyDays;
-              var lim_sup_valtemp = parsedTodayDatePlusThirtyDays;
-    
-            } else { 
-              var liminf_splited = selectedDate.split("-");
-              var month = liminf_splited[1]
-              var endMonthDay = "";
-              switch (month) {
-                  case "01":
-                      endMonthDay = "31";
-                      break;
-                  case "02":
-                      endMonthDay = "28";
-                      break;
-                  case "03":
-                      endMonthDay = "31";
-                      break;
-                  case "05":
-                      endMonthDay = "31";
-                      break;
-                  case "07":
-                      endMonthDay = "31";
-                      break;
-                  case "08":
-                      endMonthDay = "31";
-                      break;
-                  case "10":
-                      endMonthDay = "31";
-                      break;
-                  case "12":
-                      endMonthDay = "31";
-                      break;
+            if (selectedDate == todayDateToNextThirtyDays) {
+                var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() + 30))
+                let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-" + (Number((todayDatePlusThirtyDays.getMonth() + 1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth() + 1) : (todayDatePlusThirtyDays.getMonth() + 1)) + "-" + (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate() : todayDatePlusThirtyDays.getDate()));
+                var lim_inf_valtemp = todayDateToNextThirtyDays;
+                var lim_sup_valtemp = parsedTodayDatePlusThirtyDays;
 
-                  default:
-                      endMonthDay = "30";
+            } else {
+                var liminf_splited = selectedDate.split("-");
+                var month = liminf_splited[1]
+                var endMonthDay = "";
+                switch (month) {
+                    case "01":
+                        endMonthDay = "31";
+                        break;
+                    case "02":
+                        endMonthDay = "28";
+                        break;
+                    case "03":
+                        endMonthDay = "31";
+                        break;
+                    case "05":
+                        endMonthDay = "31";
+                        break;
+                    case "07":
+                        endMonthDay = "31";
+                        break;
+                    case "08":
+                        endMonthDay = "31";
+                        break;
+                    case "10":
+                        endMonthDay = "31";
+                        break;
+                    case "12":
+                        endMonthDay = "31";
+                        break;
 
-                      break;
-              }
+                    default:
+                        endMonthDay = "30";
 
-              lim_inf_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-              lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+                        break;
+                }
+
+                lim_inf_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+                lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
             }
         } else {
             var lim_inf_valtemp = ""
@@ -1188,24 +1188,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var modifiers_flag_verb = sessionStorage.getItem("modifiers_flag");
         var state_model = $("#pred_des_control")[0].checked;
         var train_month = "";
-        let todayDate =  new Date();
-        let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
+        let todayDate = new Date();
+        let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
         let parsedTrainingStartTothirtyDays = ""
         let parsedYesterdayDateToThirtyDays = ""
         if (state_model) {
-            function formatDate(date) {
-                var d = new Date(date),
-                    month = '' + (d.getMonth() + 1),
-                    day = '' + d.getDate(),
-                    year = d.getFullYear();
 
-                if (month.length < 2)
-                    month = '0' + month;
-                if (day.length < 2)
-                    day = '0' + day;
-
-                return String([year, month, day].join('-'));
-            }
             var verbo = "countsTaxonsGroupTimeValidation";
             if ($("#pred_des_control")[0].checked) {
                 var liminf_initial = $("#date_timepicker_start_val").val();
@@ -1214,56 +1202,56 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 var liminf_initial = $("#date_timepicker_start").val();
             }
 
-            if(liminf_initial == todayDateToNextThirtyDays){
-              var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() +30))
-              let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-"+(Number((todayDatePlusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth()+1) : (todayDatePlusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate():todayDatePlusThirtyDays.getDate()));
-              var liminf = todayDateToNextThirtyDays;
-              var limsup = parsedTodayDatePlusThirtyDays;
-              var yesterdayDateToThirtyDays = new Date(todayDate.setDate(todayDate.getDate() -31))
-              var trainingStartTothirtyDays = new Date(todayDate.setDate(todayDate.getDate() -30))
-              parsedYesterdayDateToThirtyDays = String(yesterdayDateToThirtyDays.getFullYear() + "-"+(Number((yesterdayDateToThirtyDays.getMonth()+1)) < 10 ? "0" + (yesterdayDateToThirtyDays.getMonth()+1) : (yesterdayDateToThirtyDays.getMonth()+1)) + "-"+ (Number(yesterdayDateToThirtyDays.getDate()) < 10 ? "0" + yesterdayDateToThirtyDays.getDate():yesterdayDateToThirtyDays.getDate()));
-              parsedTrainingStartTothirtyDays = String(trainingStartTothirtyDays.getFullYear() + "-"+(Number((trainingStartTothirtyDays.getMonth()+1)) < 10 ? "0" + (trainingStartTothirtyDays.getMonth()+1) : (trainingStartTothirtyDays.getMonth()+1)) + "-"+ (Number(trainingStartTothirtyDays.getDate()) < 10 ? "0" + trainingStartTothirtyDays.getDate():trainingStartTothirtyDays.getDate()));
-    
+            if (liminf_initial == todayDateToNextThirtyDays) {
+                var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() + 30))
+                let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-" + (Number((todayDatePlusThirtyDays.getMonth() + 1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth() + 1) : (todayDatePlusThirtyDays.getMonth() + 1)) + "-" + (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate() : todayDatePlusThirtyDays.getDate()));
+                var liminf = todayDateToNextThirtyDays;
+                var limsup = parsedTodayDatePlusThirtyDays;
+                var yesterdayDateToThirtyDays = new Date(todayDate.setDate(todayDate.getDate() - 31))
+                var trainingStartTothirtyDays = new Date(todayDate.setDate(todayDate.getDate() - 30))
+                parsedYesterdayDateToThirtyDays = String(yesterdayDateToThirtyDays.getFullYear() + "-" + (Number((yesterdayDateToThirtyDays.getMonth() + 1)) < 10 ? "0" + (yesterdayDateToThirtyDays.getMonth() + 1) : (yesterdayDateToThirtyDays.getMonth() + 1)) + "-" + (Number(yesterdayDateToThirtyDays.getDate()) < 10 ? "0" + yesterdayDateToThirtyDays.getDate() : yesterdayDateToThirtyDays.getDate()));
+                parsedTrainingStartTothirtyDays = String(trainingStartTothirtyDays.getFullYear() + "-" + (Number((trainingStartTothirtyDays.getMonth() + 1)) < 10 ? "0" + (trainingStartTothirtyDays.getMonth() + 1) : (trainingStartTothirtyDays.getMonth() + 1)) + "-" + (Number(trainingStartTothirtyDays.getDate()) < 10 ? "0" + trainingStartTothirtyDays.getDate() : trainingStartTothirtyDays.getDate()));
+
             } else {
 
-              var liminf_splited = liminf_initial.split("-");
-              var month = liminf_splited[1]
-              var endMonthDay = "";
-              switch (month) {
-                  case "01":
-                      endMonthDay = "31";
-                      break;
-                  case "02":
-                      endMonthDay = "28";
-                      break;
-                  case "03":
-                      endMonthDay = "31";
-                      break;
-                  case "05":
-                      endMonthDay = "31";
-                      break;
-                  case "07":
-                      endMonthDay = "31";
-                      break;
-                  case "08":
-                      endMonthDay = "31";
-                      break;
-                  case "10":
-                      endMonthDay = "31";
-                      break;
-                  case "12":
-                      endMonthDay = "31";
-                      break;
+                var liminf_splited = liminf_initial.split("-");
+                var month = liminf_splited[1]
+                var endMonthDay = "";
+                switch (month) {
+                    case "01":
+                        endMonthDay = "31";
+                        break;
+                    case "02":
+                        endMonthDay = "28";
+                        break;
+                    case "03":
+                        endMonthDay = "31";
+                        break;
+                    case "05":
+                        endMonthDay = "31";
+                        break;
+                    case "07":
+                        endMonthDay = "31";
+                        break;
+                    case "08":
+                        endMonthDay = "31";
+                        break;
+                    case "10":
+                        endMonthDay = "31";
+                        break;
+                    case "12":
+                        endMonthDay = "31";
+                        break;
 
-                  default:
-                      endMonthDay = "30";
+                    default:
+                        endMonthDay = "30";
 
-                      break;
-              }
+                        break;
+                }
 
-              var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-              var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
-              train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
+                var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+                var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+                train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
             }
             console.log("liminf: " + liminf);
             console.log("limsup: " + limsup);
@@ -1279,12 +1267,15 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 data_request["lim_inf"] = liminf;
                 data_request["lim_sup"] = limsup;
             }
+            let enfoque = sessionStorage.getItem("light_traffic");
+            console.log(enfoque);
+            data_request["light_traffic"] = enfoque;
             data_request["period_config"] = ['*', '*', '1'];
             console.log(data_request);
 
 
         }
-        var url = _url_zacatuche + "/niche/" + verbo
+        var url = _url_zacatuche + "dev/niche/" + verbo
 
 
 
@@ -1456,7 +1447,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         total_request.decil_selected = [_default_decil]
 
                         verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
-
 
                         fetch(_url_zacatuche + "/niche/" + verbo, {
                                 method: "POST",
