@@ -270,7 +270,7 @@
                             <div>
                                 <h5>1. Tipo de Modelo</h5>
                                 <select name=" " id="modelSelect" style="margin-bottom:5%">
-                                    <option selected disabled>Seleccione Tipo de Modelo</option>
+                                    <option value ="model_default" selected disabled>Seleccione Tipo de Modelo</option>
                                     <option value="Perfilado">Perfilado</option>
                                     <option value="Predictivo">Predictivo</option>
                                 </select>
@@ -278,7 +278,7 @@
                             <div id="variableObjetivoSection" hidden>
                                 <h5>2. Variables Objetivo</h5>
                                 <select name=" " id="targetVariableSelect" style="margin-bottom:5%">
-                                    <option selected disabled>Seleccione Variable Objetivo</option>
+                                    <option value="var_default" selected disabled>Seleccione Variable Objetivo</option>
                                     <option value="COVID-19 Confirmado">COVID-19 Confirmado</option>
                                     <option value="COVID-19 Negativo">COVID-19 Fallecido</option>
                                     <option value="COVID-19 Pruebas">COVID-19 Pruebas</option>
@@ -287,19 +287,21 @@
                             <div id="modif_section" hidden>
                                 <h5>3. Modificadores</h5>
                                 <select name="" id="modifiersSelect" style="margin-bottom:5%">
-                                    <option selected disabled>Seleccione Modificador</option>
+                                    <option  value ="mod_default" selected disabled>Seleccione Modificador</option>
                                     <option value="Sin Modificador">Sin Modificador</option>
                                 </select>
                             </div>
                             <div id="enfoque_section" hidden>
                                 <h5>4. Enfoque</h5>
                                 <select name="" id="enfoqueSelect" style="margin-bottom:5%">
-                                    <option selected disabled>Seleccione Enfoque</option>
+                                    <option value ="enf_default" selected disabled>Seleccione Enfoque</option>
                                     <option selected>Mejoramiento</option>
                                     <option >Empeoramiento</option>
 
                                 </select>
-                                <br>
+
+                            </div>
+                            <div id="button_section" style="margin-bottom:5%;margin-top: 5%;" hidden>
                                 <button id="targetVariableButton" class="btn btn-primary">Confirmar Modelo</button>
                             </div>
 

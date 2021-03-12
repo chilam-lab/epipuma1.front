@@ -833,9 +833,11 @@ var module_nicho = (function() {
 
         };
         const generateNewFlow = () => {
+            $('select option[value="model_default"]').attr("selected", true);
             document.getElementById("targetVariableSelectorOverlay").hidden = false;
             document.getElementById("targetVariableSelectorId").hidden = false;
             $("#modelSelect").change(function() {
+                $('select option[value="var_default"]').attr("selected", true);
                 document.getElementById("variableObjetivoSection").hidden = false;
             })
             $("#targetVariableSelect").change(function() {
@@ -889,6 +891,7 @@ var module_nicho = (function() {
                         console.log(resp);
                         let modif = resp["modifiers"];
                         var select = document.getElementById("modifiersSelect");
+                        $('select option[value="mod_default"]').attr("selected", true);
                         document.getElementById("modif_section").hidden = false;
                         try {
                             let actual_modifiers =
@@ -905,11 +908,32 @@ var module_nicho = (function() {
                             opt.value = modif[index]["modifier"];
                             opt.innerHTML = modif[index]["label"];
                             select.appendChild(opt);
-                        }
-                        $("#modifiersSelect").click(function() {
-                            document.getElementById("enfoque_section").hidden = false;
+                        };
+                        let model_enfo = $("#modelSelect").val();
+                        console.log(model_enfo);
+                        if (model_enfo == "Predictivo") {
+                            $("#modifiersSelect").change(function() {
+                                $('select option[value="enf_default"]').attr("selected", true);
+                                document.getElementById("enfoque_section").hidden = false;
+                            });
+                            $("#enfoqueSelect").change(function() {
+                                document.getElementById("button_section").hidden = false;
+                                let enfoque = $("#enfoqueSelect").val();
+                                let traffic_light;
+                                if (enfoque == "Mejoramiento") {
+                                    traffic_light = "green";
+                                } else {
+                                    traffic_light = "red";
+                                }
 
-                        });
+                            });
+                        } else {
+                            $("#modifiersSelect").change(function() {
+                                document.getElementById("button_section").hidden = false;
+
+                            });
+                        }
+
 
 
                     }
@@ -920,8 +944,8 @@ var module_nicho = (function() {
                 ///// SELECCION VARIABLES EN FLUJO NUEVO
                 let obj_var = $("#targetVariableSelect").val();
                 let modif = $("#modifiersSelect").val();
-                let enfoque = $("#enfoqueSelect").val();
                 let model = $("#modelSelect").val();
+
                 /////SELECCION  MODELO
                 if (model == 'Predictivo') {
                     _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
