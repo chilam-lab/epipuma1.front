@@ -2225,6 +2225,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             console.log(modifier);
             url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
             //url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
+            let enfoque = sessionStorage.getItem("light_traffic");
 
             var data = {
                 "name": "k",
@@ -2238,7 +2239,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "region": region,
                 "modifier": modifier[0],
                 "liminf": liminf,
-                "limsup": limsup
+                "limsup": limsup,
+                "light_traffic": enfoque,
 
             }
         } else {
