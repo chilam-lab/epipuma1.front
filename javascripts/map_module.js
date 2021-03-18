@@ -2240,7 +2240,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "modifier": modifier[0],
                 "liminf": liminf,
                 "limsup": limsup,
-                "light_traffic": enfoque,
+                "traffic_light": enfoque,
 
             }
         } else {
@@ -2261,7 +2261,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "region": region,
                 "liminf": liminf,
                 "limsup": limsup,
-                "light_traffic": enfoque,
+                "traffic_light": enfoque,
 
             }
 
