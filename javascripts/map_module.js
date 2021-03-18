@@ -2103,52 +2103,52 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         } else {
             var liminf_initial = $("#date_timepicker_start").val();
         }
-        if(liminf_initial == todayDateToNextThirtyDays){
-          var todayDateMinusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() -30))
-          let parsedTodayDateMinusThirtyDays = String(todayDateMinusThirtyDays.getFullYear() + "-"+(Number((todayDateMinusThirtyDays.getMonth()+1)) < 10 ? "0" + (todayDateMinusThirtyDays.getMonth()+1) : (todayDateMinusThirtyDays.getMonth()+1)) + "-"+ (Number(todayDateMinusThirtyDays.getDate()) < 10 ? "0" + todayDateMinusThirtyDays.getDate():todayDateMinusThirtyDays.getDate()));
-          var liminf = parsedTodayDateMinusThirtyDays;
-          var limsup = todayDateToNextThirtyDays;
+        if (liminf_initial == todayDateToNextThirtyDays) {
+            var todayDateMinusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() - 30))
+            let parsedTodayDateMinusThirtyDays = String(todayDateMinusThirtyDays.getFullYear() + "-" + (Number((todayDateMinusThirtyDays.getMonth() + 1)) < 10 ? "0" + (todayDateMinusThirtyDays.getMonth() + 1) : (todayDateMinusThirtyDays.getMonth() + 1)) + "-" + (Number(todayDateMinusThirtyDays.getDate()) < 10 ? "0" + todayDateMinusThirtyDays.getDate() : todayDateMinusThirtyDays.getDate()));
+            var liminf = parsedTodayDateMinusThirtyDays;
+            var limsup = todayDateToNextThirtyDays;
 
-        } else { 
-          var liminf_splited = liminf_initial.split("-");
-          var month = liminf_splited[1]
-          var endMonthDay = "";
-          switch (month) {
-              case "01":
-                  endMonthDay = "31";
-                  break;
-              case "02":
-                  endMonthDay = "28";
-                  break;
-              case "03":
-                  endMonthDay = "31";
-                  break;
-              case "05":
-                  endMonthDay = "31";
-                  break;
-              case "07":
-                  endMonthDay = "31";
-                  break;
-              case "08":
-                  endMonthDay = "31";
-                  break;
-              case "10":
-                  endMonthDay = "31";
-                  break;
-              case "12":
-                  endMonthDay = "31";
-                  break;
+        } else {
+            var liminf_splited = liminf_initial.split("-");
+            var month = liminf_splited[1]
+            var endMonthDay = "";
+            switch (month) {
+                case "01":
+                    endMonthDay = "31";
+                    break;
+                case "02":
+                    endMonthDay = "28";
+                    break;
+                case "03":
+                    endMonthDay = "31";
+                    break;
+                case "05":
+                    endMonthDay = "31";
+                    break;
+                case "07":
+                    endMonthDay = "31";
+                    break;
+                case "08":
+                    endMonthDay = "31";
+                    break;
+                case "10":
+                    endMonthDay = "31";
+                    break;
+                case "12":
+                    endMonthDay = "31";
+                    break;
 
-              default:
-                  endMonthDay = "30";
+                default:
+                    endMonthDay = "30";
 
-                  break;
-          }
+                    break;
+            }
 
-          var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-          var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
-          console.log("liminf: " + liminf)
-          console.log("limsup: " + limsup)
+            var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+            var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+            console.log("liminf: " + liminf)
+            console.log("limsup: " + limsup)
         }
 
         var rango_fechas = []
@@ -2204,15 +2204,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         } else {
             var liminf_initial = $("#date_timepicker_start").val();
         }
-        if(liminf_initial == todayDateToNextThirtyDays){
-          let parsedTodayDateMinusThirtyDays = String(todayDate.getFullYear() + "-"+(Number((todayDate.getMonth()+1)) < 10 ? "0" + (todayDate.getMonth()+1) : (todayDate.getMonth()+1)) + "-"+ (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate():todayDate.getDate()));
-          var liminf = parsedTodayDateMinusThirtyDays;
-          var limsup = todayDateToNextThirtyDays;
+        if (liminf_initial == todayDateToNextThirtyDays) {
+            let parsedTodayDateMinusThirtyDays = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
+            var liminf = parsedTodayDateMinusThirtyDays;
+            var limsup = todayDateToNextThirtyDays;
 
-        } else{
-          var liminf_splited = liminf_initial.split("-");
-          var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-          var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+        } else {
+            var liminf_splited = liminf_initial.split("-");
+            var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+            var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
         }
         var url_mod;
 
@@ -2245,7 +2245,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             console.log("getGridSpeciesTaxon");
             url_mod = _url_zacatuche + "niche/especie/getGridSpeciesTaxon";
             var tar_var = taxones[0]["value"];
-            console.log(tar_var)
+            console.log(tar_var);
+            let enfoque = sessionStorage.getItem("light_traffic");
             var data = {
                 "name": "k",
                 "target_taxons": taxones,
@@ -2257,7 +2258,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "grid_res": grid_res,
                 "region": region,
                 "liminf": liminf,
-                "limsup": limsup
+                "limsup": limsup,
+                "light_traffic": enfoque,
 
             }
 
