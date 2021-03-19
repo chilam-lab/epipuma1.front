@@ -883,8 +883,7 @@ var module_nicho = (function() {
                         break;
                 }
                 console.log(data);
-                var _url_zacatuche = "http://covid19.c3.unam.mx/api"
-                    //var _url_zacatuche = "http://covid19.c3.unam.mx/api/dev"
+                var _url_zacatuche = "http://covid19.c3.unam.mx/api/dev"
                 $.ajax({
                     url: _url_zacatuche + "/niche/especie/getModifiersByTarget",
                     data: data,
