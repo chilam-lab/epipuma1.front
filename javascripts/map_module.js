@@ -2298,6 +2298,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 })
 
                 console.log(_data_sp_occ)
+                sessionStorage.setItem("res_modif",JSON.stringify(_data_sp_occ))
                 console.log("num_cell_occ: " + num_cell_occ)
                 console.log("num_occ: " + num_occ)
 

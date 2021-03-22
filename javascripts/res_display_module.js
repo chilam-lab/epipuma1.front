@@ -3025,6 +3025,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         var data = respuesta.data;
 
                         _VERBOSE ? console.log(data) : _VERBOSE;
+                        let res_modif = sessionStorage.getItem("res_modif");
+                        console.log(JSON.parse(res_modif))
 
                         if (data.length > 0) {
 
@@ -3057,13 +3059,17 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
     function _createOccTableFromData(json_data) {
+      let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
+      let mod = Object.keys(modifiers)
+      var htmltable = "";
+      var table_sp = "";
 
+    // console.log(modifiers);
+    // console.log(mod[0]);
 
-        var htmltable = "";
-        var table_sp = "";
-
-        //TODO: falta nombre de especie en la petición
-
+    // switch (mod[0]) {
+    //   case "cases":
+    //     console.log("Si es un string y no se que esta pasando")
         htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
             '<div class="panel-primary">' +
             '<div class="panel-heading no-padding header-title-cell">' +
@@ -3080,6 +3086,32 @@ var res_display_module = (function(verbose, url_zacatuche) {
             '</tr>' +
             '</thead>' +
             '<tbody>';
+        
+      //   break;
+    
+      // default:
+        // htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+        //     '<div class="panel-primary">' +
+        //     '<div class="panel-heading no-padding header-title-cell">' +
+        //     '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+        //     '</div>' +
+        //     '<table class="table table-striped">' +
+        //     '<thead>' +
+        //     '<tr>' +
+        //     '<th>Nombre</th>' +
+        //     '<th>Edad</th>' +
+        //     '<th>Genero</th>' +
+        //     '<th>Fecha Colecta</th>' +
+        //     // '<th>Info</th>'+                                 
+        //     '</tr>' +
+        //     '</thead>' +
+        //     '<tbody>';
+    //     break;
+    // }
+
+  
+
+        //TODO: falta nombre de especie en la petición
 
         json_data.forEach(function(item, index) {
 

@@ -93,6 +93,7 @@ var module_nicho = (function() {
         sessionStorage.setItem("flag_target_added", "false")
         sessionStorage.setItem("count_anlys", 0)
         sessionStorage.setItem("light_traffic", "");
+        sessionStorage.setItem("res_modif","");
 
 
         // Definicion Fuciones
