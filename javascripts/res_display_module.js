@@ -3058,7 +3058,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
     function _createOccTableFromData(json_data) {
-        let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
+        try {
+            var modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
+
+        } catch (error) {
+            var modifiers = "sin_modifiers";
+        }
         let mod = Object.keys(modifiers)
         var htmltable = "";
         var table_sp = "";
@@ -3075,7 +3080,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         console.log(res_list);
         switch (mod[0]) {
             case "cases":
-                console.log("Si es un string y no se que esta pasando")
+
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
@@ -3097,6 +3102,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 break;
 
             default:
+                console.log("Entro en la parte del defailt")
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
@@ -3134,6 +3140,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '</tr>';
                 break;
             default:
+                console.log("Antes de entrar al forEach");
                 json_data.forEach(function(item, index) {
 
                     var gen = item.genero === "M" ? "Masculino" : "Femenino"
