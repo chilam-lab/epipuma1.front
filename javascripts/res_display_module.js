@@ -3080,7 +3080,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
         console.log(res_list);
         switch (mod[0]) {
             case "cases":
-
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
@@ -3098,7 +3097,46 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
-
+                break;
+            case "incidence":
+                htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                    '<div class="panel-primary">' +
+                    '<div class="panel-heading no-padding header-title-cell">' +
+                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '</div>' +
+                    '<table class="table table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Casos</th>' +
+                    '<th>población total </th>' +
+                    '<th> no. de casos en el primer periodo </th>' +
+                    '<th> decil de incidencia en el primer periodo </th>' +
+                    '<th> no. de casos en el primer periodo de entrenamiento </th>' +
+                    '<th> decil de casos en el primer periodo de entrenamiento </th>' +
+                    // '<th>Info</th>'+                                 
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+                break;
+            case "prevalence":
+                htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                    '<div class="panel-primary">' +
+                    '<div class="panel-heading no-padding header-title-cell">' +
+                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '</div>' +
+                    '<table class="table table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Casos</th>' +
+                    '<th>población total </th>' +
+                    '<th> no. de casos en el primer periodo </th>' +
+                    '<th> decil de prevalencia en el primer periodo </th>' +
+                    '<th> no. de casos en el primer periodo de entrenamiento </th>' +
+                    '<th> decil de casos en el primer periodo de entrenamiento </th>' +
+                    // '<th>Info</th>'+                                 
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
                 break;
 
             default:
@@ -3136,7 +3174,26 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + res_list[0]["fb"] + '</td>' +
                     '<td>' + res_list[0]["tv"] + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
-                    // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
+                    '</tr>';
+                break;
+            case "incidence":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + "help" + '</td>' +
+                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + "help" + '</td>' +
+                    '<td>' + "help" + '</td>' +
+                    '</tr>';
+                break;
+            case "prevalence":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + "help" + '</td>' +
+                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + "help" + '</td>' +
+                    '<td>' + "help" + '</td>' +
                     '</tr>';
                 break;
             default:
