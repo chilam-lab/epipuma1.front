@@ -3063,27 +3063,16 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var htmltable = "";
         var table_sp = "";
         let gridid = json_data[0].gridid;
+        let species = json_data[0].species;
         let list_mod_gridid = [];
         let res_modif = JSON.parse(sessionStorage.getItem("res_modif"));
-        console.log(res_modif)
         let res_list = [];
 
-        for (var i; i < res_modif.length; i++) {
-            res_modif[i].gridid == gridid ? console.log("Si entro") : ""
+        for (let i = 0; i < res_modif.length; i++) {
+            res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
 
-        }
-
-
-
-
-        /////
-
-
-        /////
-
-        console.log(modifiers);
-        console.log(mod[0]);
-
+        };
+        console.log(res_list);
         switch (mod[0]) {
             case "cases":
                 console.log("Si es un string y no se que esta pasando")
@@ -3096,9 +3085,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<thead>' +
                     '<tr>' +
                     '<th>Casos</th>' +
-                    '<th>Edad</th>' +
-                    '<th>Genero</th>' +
-                    '<th>Fecha Colecta</th>' +
+                    '<th>no. de casos en el primer periodo</th>' +
+                    '<th> decil de casos en el primer periodo </th>' +
+                    '<th> no. de casos en el segundo periodo </th>' +
+                    '<th> decil de casos en el segundo periodo </th>' +
                     // '<th>Info</th>'+                                 
                     '</tr>' +
                     '</thead>' +
@@ -3129,22 +3119,38 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
         //TODO: falta nombre de especie en la petición
+        console.log(json_data);
+        console.log(res_list);
 
-        json_data.forEach(function(item, index) {
-            console.log("la vieja confiable");
-            console.log(item);
-            console.log(index);
+        switch (mod[0]) {
+            case "cases":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
+                    // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
+                    '</tr>';
+                break;
+            default:
+                json_data.forEach(function(item, index) {
 
-            var gen = item.genero === "M" ? "Masculino" : "Femenino"
+                    var gen = item.genero === "M" ? "Masculino" : "Femenino"
+                    htmltable += '<tr>' +
+                        '<td>' + item.species + '</td>' +
+                        '<td>' + item.edad + '</td>' +
+                        '<td>' + gen + '</td>' +
+                        '<td>' + item.fechacolecta + '</td>' +
+                        // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
+                        '</tr>';
 
-            htmltable += '<tr>' +
-                '<td>' + item.species + '</td>' +
-                '<td>' + item.edad + '</td>' +
-                '<td>' + gen + '</td>' +
-                '<td>' + item.fechacolecta + '</td>' +
-                // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
-                '</tr>';
-        })
+                })
+                break;
+        }
+
+
+
 
         htmltable += '</tbody>' +
             '</table>' +
