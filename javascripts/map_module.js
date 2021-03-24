@@ -1306,7 +1306,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             if (index_grid != -1) {
 
-                console.log("entra")
+                //console.log("entra")
 
                 grid_array.features[i].properties.opacity = 1;
                 if (deletecells) {
@@ -2223,8 +2223,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             console.log("getGridGeneratedSpecies");
             console.log(modifier);
-            ///url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
-            url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
+            url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
+            //url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
             let enfoque = sessionStorage.getItem("light_traffic");
 
             var data = {
@@ -2298,7 +2298,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 })
 
                 console.log(_data_sp_occ)
-                sessionStorage.setItem("res_modif",JSON.stringify(_data_sp_occ))
+                sessionStorage.setItem("res_modif", JSON.stringify(_data_sp_occ))
                 console.log("num_cell_occ: " + num_cell_occ)
                 console.log("num_occ: " + num_occ)
 

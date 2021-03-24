@@ -1327,8 +1327,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         if (modifiers_flag_verb == "true") {
             var verbo = "generateTarget";
-            var url = _url_zacatuche + "/niche/" + verbo;
-            //var url = _url_zacatuche + "/dev/niche/" + verbo;
+            //var url = _url_zacatuche + "/niche/" + verbo;
+            var url = _url_zacatuche + "/dev/niche/" + verbo;
             //data_request['period_config'] = ["*", "*", "'1'"];
         }
         // cambiando peticiones ajax por promesas y fetch api
@@ -3025,8 +3025,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         var data = respuesta.data;
 
                         _VERBOSE ? console.log(data) : _VERBOSE;
-                        let res_modif = sessionStorage.getItem("res_modif");
-                        console.log(JSON.parse(res_modif))
+
 
                         if (data.length > 0) {
 
@@ -3059,61 +3058,82 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
     function _createOccTableFromData(json_data) {
-      let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
-      let mod = Object.keys(modifiers)
-      var htmltable = "";
-      var table_sp = "";
+        let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
+        let mod = Object.keys(modifiers)
+        var htmltable = "";
+        var table_sp = "";
+        let gridid = json_data[0].gridid;
+        let list_mod_gridid = [];
+        let res_modif = JSON.parse(sessionStorage.getItem("res_modif"));
+        console.log(res_modif)
+        let res_list = [];
 
-    // console.log(modifiers);
-    // console.log(mod[0]);
+        for (var i; i < res_modif.length; i++) {
+            res_modif[i].gridid == gridid ? console.log("Si entro") : ""
 
-    // switch (mod[0]) {
-    //   case "cases":
-    //     console.log("Si es un string y no se que esta pasando")
-        htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
-            '<div class="panel-primary">' +
-            '<div class="panel-heading no-padding header-title-cell">' +
-            '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
-            '</div>' +
-            '<table class="table table-striped">' +
-            '<thead>' +
-            '<tr>' +
-            '<th>Nombre</th>' +
-            '<th>Edad</th>' +
-            '<th>Genero</th>' +
-            '<th>Fecha Colecta</th>' +
-            // '<th>Info</th>'+                                 
-            '</tr>' +
-            '</thead>' +
-            '<tbody>';
-        
-      //   break;
-    
-      // default:
-        // htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
-        //     '<div class="panel-primary">' +
-        //     '<div class="panel-heading no-padding header-title-cell">' +
-        //     '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
-        //     '</div>' +
-        //     '<table class="table table-striped">' +
-        //     '<thead>' +
-        //     '<tr>' +
-        //     '<th>Nombre</th>' +
-        //     '<th>Edad</th>' +
-        //     '<th>Genero</th>' +
-        //     '<th>Fecha Colecta</th>' +
-        //     // '<th>Info</th>'+                                 
-        //     '</tr>' +
-        //     '</thead>' +
-        //     '<tbody>';
-    //     break;
-    // }
+        }
 
-  
+
+
+
+        /////
+
+
+        /////
+
+        console.log(modifiers);
+        console.log(mod[0]);
+
+        switch (mod[0]) {
+            case "cases":
+                console.log("Si es un string y no se que esta pasando")
+                htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                    '<div class="panel-primary">' +
+                    '<div class="panel-heading no-padding header-title-cell">' +
+                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '</div>' +
+                    '<table class="table table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Casos</th>' +
+                    '<th>Edad</th>' +
+                    '<th>Genero</th>' +
+                    '<th>Fecha Colecta</th>' +
+                    // '<th>Info</th>'+                                 
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+                break;
+
+            default:
+                htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                    '<div class="panel-primary">' +
+                    '<div class="panel-heading no-padding header-title-cell">' +
+                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '</div>' +
+                    '<table class="table table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Nombre</th>' +
+                    '<th>Edad</th>' +
+                    '<th>Genero</th>' +
+                    '<th>Fecha Colecta</th>' +
+                    // '<th>Info</th>'+                                 
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+                break;
+        }
+
+
 
         //TODO: falta nombre de especie en la petición
 
         json_data.forEach(function(item, index) {
+            console.log("la vieja confiable");
+            console.log(item);
+            console.log(index);
 
             var gen = item.genero === "M" ? "Masculino" : "Femenino"
 
