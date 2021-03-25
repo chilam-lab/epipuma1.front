@@ -3056,7 +3056,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
     }
 
-
+  var total_population = [];
     function _createOccTableFromData(json_data) {
         try {
             var modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
@@ -3072,6 +3072,53 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let list_mod_gridid = [];
         let res_modif = JSON.parse(sessionStorage.getItem("res_modif"));
         let res_list = [];
+
+        var data_body_request = {"grid_resolution":"mun","columns":["population"],"gridids":[]};
+
+     
+
+        console.log("Antes del request 😱")
+        console.log(total_population[0])
+        fetch(_url_zacatuche + "/niche/especie/getColumnsGrid", {
+          method: "POST",
+          body: JSON.stringify(data_body_request),
+          headers: {
+              "Content-Type": "application/json"
+          }
+      })
+      .then(resp => resp.json())
+      .then(respuesta => {
+
+          if (respuesta.ok) {
+
+              var data = respuesta.data;
+
+              _VERBOSE ? console.log(data) : _VERBOSE;
+
+
+              if (data.length > 0) {
+                alert("teeest")
+                  total_population.push(data);
+                  // if (htmltable === "")
+                  //     return;
+                  // _map_module_nicho.showPopUp(htmltable, [lat, long], true)
+
+              }
+
+          }
+
+          // $('#map2').loading('stop');
+
+
+      })
+      .catch(err => {
+          // $('#map2').loading('stop');
+          _VERBOSE ? console.log("error: " + err) : _VERBOSE;
+      });
+
+
+      console.log("Lo que tiene la lista: 😱")
+      console.log(total_population)
 
         for (let i = 0; i < res_modif.length; i++) {
             res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
