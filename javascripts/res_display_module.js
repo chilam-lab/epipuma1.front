@@ -3072,6 +3072,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let list_mod_gridid = [];
         let res_modif = JSON.parse(sessionStorage.getItem("res_modif"));
         let res_list = [];
+        let pop_list = [];
 
         var data_body_request = {"grid_resolution":"mun","columns":["population"],"gridids":[]};
 
@@ -3117,14 +3118,22 @@ var res_display_module = (function(verbose, url_zacatuche) {
       });
 
 
-      console.log("Lo que tiene la lista: 😱")
-      console.log(total_population)
+     console.log("Lo que tiene la lista: 😱")
+     console.log(total_population[0])
+     console.log(total_population[0].length)
+      for (let i = 0; i < total_population.length; i++) {
+        console.log("El total grid id!" )
+        console.log(total_population["data"][i].gridid_munkm)
+        total_population["data"][i].gridid_munkm == gridid ? pop_list.push(total_population["data"][i]) : ""
 
+    };
         for (let i = 0; i < res_modif.length; i++) {
             res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
 
         };
         console.log(res_list);
+        console.log(pop_list);
+        console.log("\U0001F600");
         switch (mod[0]) {
             case "cases":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
