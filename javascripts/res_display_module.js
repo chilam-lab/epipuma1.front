@@ -3025,14 +3025,53 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         var data = respuesta.data;
 
                         _VERBOSE ? console.log(data) : _VERBOSE;
+                        let data_body_request_pop = { "grid_resolution": "mun", "columns": ["population"], "gridids": [] };
 
 
                         if (data.length > 0) {
+                            fetch(_url_zacatuche + "/niche/especie/getColumnsGrid", {
+                                    method: "POST",
+                                    body: JSON.stringify(data_body_request_pop),
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    }
+                                })
+                                .then(resp => resp.json())
+                                .then(respuesta => {
 
-                            var htmltable = _createOccTableFromData(data);
-                            if (htmltable === "")
-                                return;
-                            _map_module_nicho.showPopUp(htmltable, [lat, long], true);
+                                    if (respuesta.ok) {
+
+                                        var data = respuesta.data;
+
+                                        _VERBOSE ? console.log(data) : _VERBOSE;
+                                        sessionStorage.setItem("modif_pop", JSON.stringify(data));
+
+
+                                        if (data.length > 0) {
+
+                                            // if (htmltable === "")
+                                            //     return;
+                                            // _map_module_nicho.showPopUp(htmltable, [lat, long], true)
+
+                                        }
+
+                                    }
+
+                                    // $('#map2').loading('stop');
+
+
+                                })
+                                .catch(err => {
+                                    // $('#map2').loading('stop');
+                                    _VERBOSE ? console.log("error: " + err) : _VERBOSE;
+                                });
+                            setTimeout(function() {
+                                var htmltable = _createOccTableFromData(data);
+                                if (htmltable === "")
+                                    return;
+                                _map_module_nicho.showPopUp(htmltable, [lat, long], true);
+                            }, 2000)
+
 
 
                         }
@@ -3056,7 +3095,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
     }
 
-  var total_population = [];
+
     function _createOccTableFromData(json_data) {
         try {
             var modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
@@ -3074,59 +3113,23 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let res_list = [];
         let pop_list = [];
 
-        var data_body_request = {"grid_resolution":"mun","columns":["population"],"gridids":[]};
-
-     
-
-        console.log("Antes del request 😱")
-        console.log(total_population[0])
-        fetch(_url_zacatuche + "/niche/especie/getColumnsGrid", {
-          method: "POST",
-          body: JSON.stringify(data_body_request),
-          headers: {
-              "Content-Type": "application/json"
-          }
-      })
-      .then(resp => resp.json())
-      .then(respuesta => {
-
-          if (respuesta.ok) {
-
-              var data = respuesta.data;
-
-              _VERBOSE ? console.log(data) : _VERBOSE;
 
 
-              if (data.length > 0) {
-                alert("teeest")
-                  total_population.push(data);
-                  // if (htmltable === "")
-                  //     return;
-                  // _map_module_nicho.showPopUp(htmltable, [lat, long], true)
-
-              }
-
-          }
-
-          // $('#map2').loading('stop');
 
 
-      })
-      .catch(err => {
-          // $('#map2').loading('stop');
-          _VERBOSE ? console.log("error: " + err) : _VERBOSE;
-      });
 
 
-     console.log("Lo que tiene la lista: 😱")
-     console.log(total_population[0])
-     console.log(total_population[0].length)
-      for (let i = 0; i < total_population.length; i++) {
-        console.log("El total grid id!" )
-        console.log(total_population["data"][i].gridid_munkm)
-        total_population["data"][i].gridid_munkm == gridid ? pop_list.push(total_population["data"][i]) : ""
+        let total_population = sessionStorage.getItem("modif_pop");
+        let total_population_2 = JSON.parse(total_population)
+        console.log(total_population);
+        console.log(total_population_2);
 
-    };
+        // for (let i = 0; i < total_population.length; i++) {
+        //     console.log("El total grid id!")
+        //     console.log(total_population["data"][i].gridid_munkm)
+        //     total_population["data"][i].gridid_munkm == gridid ? pop_list.push(total_population["data"][i]) : ""
+
+        // };
         for (let i = 0; i < res_modif.length; i++) {
             res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
 
