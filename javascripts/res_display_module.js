@@ -3152,7 +3152,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th> decil de casos en el primer periodo </th>' +
                     '<th> no. de casos en el segundo periodo </th>' +
                     '<th> decil de casos en el segundo periodo </th>' +
-                    // '<th>Info</th>'+                                 
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3197,6 +3196,27 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '</thead>' +
                     '<tbody>';
                 break;
+              case "lethality":
+                htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                    '<div class="panel-primary">' +
+                    '<div class="panel-heading no-padding header-title-cell">' +
+                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '</div>' +
+                    '<table class="table table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Letalidad</th>' +
+                    '<th>Población Total </th>' +
+                    '<th> Letalidad en el 1º Periodo </th>' +
+                    '<th> Decil de Letalidad en el 1º Periodo </th>' +
+                    '<th> Letalidad en el 1º Periodo de Entrenamiento </th>' +
+                    '<th> Decil de Letalidad en el 1º Periodo de Entrenamiento </th>' +
+                    // '<th>Info</th>'+                                 
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+                break;
+              
 
             default:
                 console.log("Entro en la parte del defailt")
@@ -3253,6 +3273,16 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
                     '<td>' + res_list[0]["tv"]+ '</td>' +
+                    '<td>' + res_list[0]["tb"]+ '</td>' +
+                    '</tr>';
+                break;
+              case "lethality":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
+                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["tv"]  + '</td>' +
                     '<td>' + res_list[0]["tb"]+ '</td>' +
                     '</tr>';
                 break;
