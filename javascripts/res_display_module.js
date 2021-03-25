@@ -3119,23 +3119,23 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
 
-        let total_population = sessionStorage.getItem("modif_pop");
-        let total_population_2 = JSON.parse(total_population)
+        let total_population = JSON.parse(sessionStorage.getItem("modif_pop"));
         console.log(total_population);
-        console.log(total_population_2);
+        console.log(total_population.length);
 
-        // for (let i = 0; i < total_population.length; i++) {
-        //     console.log("El total grid id!")
-        //     console.log(total_population["data"][i].gridid_munkm)
-        //     total_population["data"][i].gridid_munkm == gridid ? pop_list.push(total_population["data"][i]) : ""
+        for (let i = 0; i < total_population.length; i++) {
+            total_population[i].gridid_munkm == gridid ? pop_list.push(total_population[i]) : ""
 
-        // };
+        };
         for (let i = 0; i < res_modif.length; i++) {
             res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
 
         };
         console.log(res_list);
         console.log(pop_list);
+        console.log(pop_list[0]);
+        console.log(pop_list[0]["population"]);
+        
         console.log("\U0001F600");
         switch (mod[0]) {
             case "cases":
@@ -3224,6 +3224,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         //TODO: falta nombre de especie en la petición
         console.log(json_data);
         console.log(res_list);
+       
 
         switch (mod[0]) {
             case "cases":
@@ -3238,21 +3239,21 @@ var res_display_module = (function(verbose, url_zacatuche) {
             case "incidence":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
-                    '<td>' + "help" + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + "help" + '</td>' +
-                    '<td>' + "help" + '</td>' +
+                    '<td>' + res_list[0]["tv"]  + '</td>' +
+                    '<td>' + res_list[0]["tb"]+ '</td>' +
                     '</tr>';
                 break;
             case "prevalence":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
-                    '<td>' + "help" + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + "help" + '</td>' +
-                    '<td>' + "help" + '</td>' +
+                    '<td>' + res_list[0]["tv"]+ '</td>' +
+                    '<td>' + res_list[0]["tb"]+ '</td>' +
                     '</tr>';
                 break;
             default:
