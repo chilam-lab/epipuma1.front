@@ -1286,6 +1286,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         // var color_escale = colorbrewer.RdPu[9]
         var color_escale = colorbrewer.YlOrRd[5]
+            //var color_escale = ["#0000ff", "#ffffff"]
             // var color_escale = colorbrewer.OrRd[5]
             // var color_escale = colorbrewer.PuBuGn[5]
 
@@ -2223,8 +2224,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             console.log("getGridGeneratedSpecies");
             console.log(modifier);
-            //url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
-            url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
+            url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
+            //url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
             let enfoque = sessionStorage.getItem("light_traffic");
 
             var data = {
@@ -2317,8 +2318,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 // Se activa boton de siguiente paso
                 $("#specie_next").css('visibility', 'visible');
                 $("#specie_next").show("slow");
+                console.log(_data_sp_occ)
+                alert("test")
+                for (let i = 0; i < _data_sp_occ.length; i++) {
 
+                    _data_sp_occ[i].occ = _data_sp_occ[i].tv
 
+                };
                 colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
 
                 clearAllLayers();
