@@ -3108,35 +3108,21 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var table_sp = "";
         let gridid = json_data[0].gridid;
         let species = json_data[0].species;
-        let list_mod_gridid = [];
         let res_modif = JSON.parse(sessionStorage.getItem("res_modif"));
+        let total_population = JSON.parse(sessionStorage.getItem("modif_pop"));
+        let tar_var = JSON.parse(sessionStorage.getItem("selectedData"));
         let res_list = [];
         let pop_list = [];
 
-
-
-
-
-
-
-        let total_population = JSON.parse(sessionStorage.getItem("modif_pop"));
-        console.log(total_population);
-        console.log(total_population.length);
-
         for (let i = 0; i < total_population.length; i++) {
             total_population[i].gridid_munkm == gridid ? pop_list.push(total_population[i]) : ""
-
         };
         for (let i = 0; i < res_modif.length; i++) {
             res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
-
         };
-        console.log(res_list);
-        console.log(pop_list);
-        console.log(pop_list[0]);
-        console.log(pop_list[0]["population"]);
-        
-        console.log("\U0001F600");
+        if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "incidence")) {
+            mod[0] = "morthality";
+        };
         switch (mod[0]) {
             case "cases":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
@@ -3196,7 +3182,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '</thead>' +
                     '<tbody>';
                 break;
-              case "lethality":
+            case "lethality":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
@@ -3211,13 +3197,29 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th> Decil de Letalidad en el 1º Periodo </th>' +
                     '<th> Letalidad en el 1º Periodo de Entrenamiento </th>' +
                     '<th> Decil de Letalidad en el 1º Periodo de Entrenamiento </th>' +
-                    // '<th>Info</th>'+                                 
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
                 break;
-              
-
+            case "morthality":
+                htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                    '<div class="panel-primary">' +
+                    '<div class="panel-heading no-padding header-title-cell">' +
+                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '</div>' +
+                    '<table class="table table-striped">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Mortalidad</th>' +
+                    '<th>Población Total </th>' +
+                    '<th> Mortalidad en el 1º Periodo </th>' +
+                    '<th> Decil de Mortalidad en el 1º Periodo </th>' +
+                    '<th> Mortalidad en el 1º Periodo de Entrenamiento </th>' +
+                    '<th> Decil de Mortalidad en el 1º Periodo de Entrenamiento </th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+                break;
             default:
                 console.log("Entro en la parte del defailt")
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
@@ -3239,12 +3241,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 break;
         }
 
-
-
         //TODO: falta nombre de especie en la petición
         console.log(json_data);
         console.log(res_list);
-       
+
 
         switch (mod[0]) {
             case "cases":
@@ -3262,8 +3262,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + res_list[0]["tv"]  + '</td>' +
-                    '<td>' + res_list[0]["tb"]+ '</td>' +
+                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
             case "prevalence":
@@ -3272,18 +3272,28 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + res_list[0]["tv"]+ '</td>' +
-                    '<td>' + res_list[0]["tb"]+ '</td>' +
+                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
-              case "lethality":
+            case "lethality":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + res_list[0]["tv"]  + '</td>' +
-                    '<td>' + res_list[0]["tb"]+ '</td>' +
+                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
+                    '</tr>';
+                break;
+            case "morthality":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
+                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
             default:
