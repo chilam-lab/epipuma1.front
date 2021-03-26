@@ -3154,12 +3154,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Casos</th>' +
-                    '<th>población total </th>' +
-                    '<th> no. de casos en el primer periodo </th>' +
-                    '<th> decil de incidencia en el primer periodo </th>' +
-                    '<th> no. de casos en el primer periodo de entrenamiento </th>' +
-                    '<th> decil de casos en el primer periodo de entrenamiento </th>' +
+                    '<th>Incidencia</th>' +
+                    '<th>Población total </th>' +
+                    '<th> No. Incidencia 1º Periodo </th>' +
+                    '<th> Decil Incidencia 1º Periodo </th>' +
+                    '<th> No. Incidencia 1º Periodo Entrenamiento </th>' +
+                    '<th> Decil Incidencia 1º Periodo de Entrenamiento </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3173,12 +3173,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Casos</th>' +
-                    '<th>población total </th>' +
-                    '<th> no. de casos en el primer periodo </th>' +
-                    '<th> decil de prevalencia en el primer periodo </th>' +
-                    '<th> no. de casos en el primer periodo de entrenamiento </th>' +
-                    '<th> decil de casos en el primer periodo de entrenamiento </th>' +
+                    '<th>Prevalencia</th>' +
+                    '<th>Población total </th>' +
+                    '<th> No. Prevalencia 1º Periodo </th>' +
+                    '<th> Decil Prevalencia 1º Periodo </th>' +
+                    '<th> No. Prevalencia 1º Periodo Entrenamiento </th>' +
+                    '<th> Decil Prevalencia 1º Periodo de Entrenamiento </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
