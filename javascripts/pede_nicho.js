@@ -916,7 +916,7 @@ var module_nicho = (function() {
                         };
                         let model_enfo = $("#modelSelect").val();
                         console.log(model_enfo);
-                        if (model_enfo == "Predictivo") {
+                        // if (model_enfo == "Predictivo") {
                             $("#modifiersSelect").change(function() {
                                 $('select option[value="enf_default"]').attr("selected", true);
                                 document.getElementById("enfoque_section").hidden = false;
@@ -931,12 +931,12 @@ var module_nicho = (function() {
                                 }
 
                             });
-                        } else {
+                        // } else {
                             $("#modifiersSelect").change(function() {
                                 document.getElementById("button_section").hidden = false;
 
                             });
-                        }
+                        // }
 
 
 

@@ -1285,8 +1285,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         console.log("max_occ: " + max_occ)
 
         // var color_escale = colorbrewer.RdPu[9]
-        var color_escale = colorbrewer.YlOrRd[5]
-            //var color_escale = ["#0000ff", "#ffffff"]
+        //var color_escale = colorbrewer.YlOrRd[5]
+            var color_escale = ["#0000ff", "#ffffff"]
             // var color_escale = colorbrewer.OrRd[5]
             // var color_escale = colorbrewer.PuBuGn[5]
 
