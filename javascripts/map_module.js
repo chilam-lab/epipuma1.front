@@ -1286,7 +1286,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         // var color_escale = colorbrewer.RdPu[9]
         //var color_escale = colorbrewer.YlOrRd[5]
-            var color_escale = ["#0000ff", "#ffffff"]
+            var color_escale = ["#0000ff"]
             // var color_escale = colorbrewer.OrRd[5]
             // var color_escale = colorbrewer.PuBuGn[5]
 
@@ -2319,13 +2319,107 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 $("#specie_next").css('visibility', 'visible');
                 $("#specie_next").show("slow");
                 console.log(_data_sp_occ)
-                alert("test")
-                for (let i = 0; i < _data_sp_occ.length; i++) {
+                console.log("como a la fucnion")
 
-                    _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                let selectedData = JSON.parse(sessionStorage.getItem("selectedData"));
+                let specie = Object.values(selectedData)[0];
+                let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
+                let modifier = Object.values(modifiers)[0];
+                let focus = sessionStorage.getItem("light_traffic");
 
-                };
-                colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+                console.log("A ver, el specie ", specie["label"])
+                console.log("A ver, el modifier ", modifier)
+                console.log("A ver, el focus ", focus)
+
+
+                const colorized_by_modifier = (specie, modifier, focus ) => {
+                  console.log("Entramos a la fucnion")
+                
+                  switch (specie["label"]) {
+                    case "COVID-19 CONFIRMADO":
+                      console.log("Parece que entramos al caso de covid")
+                      switch (modifier) {
+                        case "cases":
+                          console.log("Parece que entramos al caso de cases")
+                          switch (focus) {
+                            case "green":
+                              console.log("Parece que entramos al caso de green")
+                              var lalistadelosazules = []
+                              console.log("Esto esta miy raro")
+                              for (let i = 0; i < _data_sp_occ.length; i++) {
+                                console.log("Sigue muy raro")
+                                if((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1)){
+                                  console.log("En verdad jamas llega a entrar aqui??")
+                                  _data_sp_occ[i].occ = 100
+                                  lalistadelosazules.push(_data_sp_occ[i]) 
+                                }
+                              };
+                              
+              
+                              // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+                              console.log("Esto es lo que trae los azules")
+                              console.log(lalistadelosazules)
+                              colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules)
+                              
+                              break;
+                          
+                            case "red":
+                              
+                              break;
+                          }
+                          break;
+                        case "incidence":
+                          switch (focus) {
+                            case "green":
+                              
+                              break;
+                          
+                            case "red":
+                              
+                              break;
+                          }
+                          break;
+                        case "prevalence":
+                          switch (focus) {
+                            case "green":
+                              
+                              break;
+                          
+                            case "red":
+                              
+                              break;
+                          }
+                          break;
+                        }
+                      break;
+                    
+                    case "COVID-19 FALLECIDO":
+                      
+                      break;
+                  
+                    default:
+                      var lalistadelosazules = []
+                      console.log("Esto esta miy raro")
+                      for (let i = 0; i < _data_sp_occ.length; i++) {
+                        console.log("Sigue muy raro")
+                        if((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)){
+                          console.log("En verdad jamas llega a entrar aqui??")
+                          _data_sp_occ[i].occ = _data_sp_occ[i].tv 
+                          lalistadelosazules.push(_data_sp_occ[i]) 
+                        }
+                      };
+                      
+      
+                      // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+                      console.log("Esto es lo que trae los azules")
+                      console.log(lalistadelosazules)
+                      colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules)
+                      break;
+                  }
+
+                }
+                colorized_by_modifier(specie, modifier, focus)
+                //colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
 
                 clearAllLayers();
 
@@ -2386,8 +2480,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             .catch(err => {
 
                 // _VERBOSE ? console.log("error: " + textStatus) : _VERBOSE;
-                _VERBOSE ? console.log(errorThrown) : _VERBOSE;
-                _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
+                // _VERBOSE ? console.log(errorThrown) : _VERBOSE;
+                // _VERBOSE ? console.log(jqXHR.responseText) : _VERBOSE;
 
                 $('#tuto_mapa_occ').loading('stop');
                 $('#hist_fecha_container').loading('stop');
