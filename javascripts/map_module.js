@@ -1335,8 +1335,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 }
 
             }
-            _tileLayer.redraw();
-            _tileLayerSP.redraw();
+            // _tileLayer.redraw();
+            // _tileLayerSP.redraw();
+            // map.addLayer(_tileLayer);
+            // map.addLayer(_tileLayerSP);
 
             // enviando datos para creación de barra de gradiente
             var values_occ = scale_color_function.quantiles()
@@ -1376,8 +1378,12 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             }
             var values_occ = scale_color_function.quantiles()
             _cargaPaletaColorMapaOcc(color_escale, values_occ)
-                // L.marker(array_ids).addTo(map);
-                // L.marker(_tileLayerSP).addTo(map);
+                //L.marker(array_ids).addLayer(map);
+                //L.marker(_tileLayerSP).addLayer(map);
+            map.addLayer(_tileLayer);
+            map.addLayer(_tileLayerSP);
+            //_tileLayer.addLayer(map);
+            //  _tileLayerSP.addLayer(map);
 
             // enviando datos para creación de barra de gradiente
 
@@ -2378,20 +2384,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                     switch (specie["label"]) {
                         case "COVID-19 CONFIRMADO":
-                            console.log("Parece que entramos al caso de covid")
                             switch (modifier) {
                                 case "cases":
-                                    console.log("Parece que entramos al caso de cases")
                                     switch (focus) {
                                         case "green":
-                                            console.log("Parece que entramos al caso de green")
                                             var lalistadelosazules = [];
                                             var lalistadelosblancos = []
-                                            console.log("Esto esta miy raro")
                                             for (let i = 0; i < _data_sp_occ.length; i++) {
-                                                console.log("Sigue muy raro")
                                                 if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1)) {
-                                                    console.log("En verdad jamas llega a entrar aqui??")
                                                     _data_sp_occ[i].occ = 100
                                                     lalistadelosazules.push(_data_sp_occ[i])
                                                 } else {
