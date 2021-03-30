@@ -1261,7 +1261,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {array} grid_array - Referencia de la malla total
      * @param {type} data_sp - json con gridiid y conteos por celda
      */
-    function colorizeFeaturesByJSON(grid_array, data_sp, deletecells = false) {
+    function colorizeFeaturesByJSON(grid_array, data_sp, deletecells = false, Colorblue = false) {
 
         _VERBOSE ? console.log("colorizeFeaturesByJSON") : _VERBOSE;
 
@@ -1286,9 +1286,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         // var color_escale = colorbrewer.RdPu[9]
         //var color_escale = colorbrewer.YlOrRd[5]
+        // var color_escale = colorbrewer.OrRd[5]
+        // var color_escale = colorbrewer.PuBuGn[5]
+        console.log(Colorblue);
+        if (Colorblue) {
             var color_escale = ["#0000ff"]
-            // var color_escale = colorbrewer.OrRd[5]
-            // var color_escale = colorbrewer.PuBuGn[5]
+
+        } else {
+            var color_escale = colorbrewer.YlOrRd[5]
+        }
 
         console.log(color_escale)
 
@@ -2332,94 +2338,94 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 console.log("A ver, el focus ", focus)
 
 
-                const colorized_by_modifier = (specie, modifier, focus ) => {
-                  console.log("Entramos a la fucnion")
-                
-                  switch (specie["label"]) {
-                    case "COVID-19 CONFIRMADO":
-                      console.log("Parece que entramos al caso de covid")
-                      switch (modifier) {
-                        case "cases":
-                          console.log("Parece que entramos al caso de cases")
-                          switch (focus) {
-                            case "green":
-                              console.log("Parece que entramos al caso de green")
-                              var lalistadelosazules = []
-                              console.log("Esto esta miy raro")
-                              for (let i = 0; i < _data_sp_occ.length; i++) {
+                const colorized_by_modifier = (specie, modifier, focus) => {
+                    console.log("Entramos a la fucnion")
+
+                    switch (specie["label"]) {
+                        case "COVID-19 CONFIRMADO":
+                            console.log("Parece que entramos al caso de covid")
+                            switch (modifier) {
+                                case "cases":
+                                    console.log("Parece que entramos al caso de cases")
+                                    switch (focus) {
+                                        case "green":
+                                            console.log("Parece que entramos al caso de green")
+                                            var lalistadelosazules = []
+                                            console.log("Esto esta miy raro")
+                                            for (let i = 0; i < _data_sp_occ.length; i++) {
+                                                console.log("Sigue muy raro")
+                                                if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1)) {
+                                                    console.log("En verdad jamas llega a entrar aqui??")
+                                                    _data_sp_occ[i].occ = 100
+                                                    lalistadelosazules.push(_data_sp_occ[i])
+                                                }
+                                            };
+
+
+                                            // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+                                            console.log("Esto es lo que trae los azules")
+                                            console.log(lalistadelosazules)
+                                            colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules, false, true);
+
+                                            break;
+
+                                        case "red":
+
+                                            break;
+                                    }
+                                    break;
+                                case "incidence":
+                                    switch (focus) {
+                                        case "green":
+
+                                            break;
+
+                                        case "red":
+
+                                            break;
+                                    }
+                                    break;
+                                case "prevalence":
+                                    switch (focus) {
+                                        case "green":
+
+                                            break;
+
+                                        case "red":
+
+                                            break;
+                                    }
+                                    break;
+                            }
+                            break;
+
+                        case "COVID-19 FALLECIDO":
+
+                            break;
+
+                        default:
+                            var lalistadelosazules = []
+                            console.log("Esto esta miy raro")
+                            for (let i = 0; i < _data_sp_occ.length; i++) {
                                 console.log("Sigue muy raro")
-                                if((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1)){
-                                  console.log("En verdad jamas llega a entrar aqui??")
-                                  _data_sp_occ[i].occ = 100
-                                  lalistadelosazules.push(_data_sp_occ[i]) 
+                                if ((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)) {
+                                    console.log("En verdad jamas llega a entrar aqui??")
+                                    _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                                    lalistadelosazules.push(_data_sp_occ[i])
                                 }
-                              };
-                              
-              
-                              // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
-                              console.log("Esto es lo que trae los azules")
-                              console.log(lalistadelosazules)
-                              colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules)
-                              
-                              break;
-                          
-                            case "red":
-                              
-                              break;
-                          }
-                          break;
-                        case "incidence":
-                          switch (focus) {
-                            case "green":
-                              
-                              break;
-                          
-                            case "red":
-                              
-                              break;
-                          }
-                          break;
-                        case "prevalence":
-                          switch (focus) {
-                            case "green":
-                              
-                              break;
-                          
-                            case "red":
-                              
-                              break;
-                          }
-                          break;
-                        }
-                      break;
-                    
-                    case "COVID-19 FALLECIDO":
-                      
-                      break;
-                  
-                    default:
-                      var lalistadelosazules = []
-                      console.log("Esto esta miy raro")
-                      for (let i = 0; i < _data_sp_occ.length; i++) {
-                        console.log("Sigue muy raro")
-                        if((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)){
-                          console.log("En verdad jamas llega a entrar aqui??")
-                          _data_sp_occ[i].occ = _data_sp_occ[i].tv 
-                          lalistadelosazules.push(_data_sp_occ[i]) 
-                        }
-                      };
-                      
-      
-                      // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
-                      console.log("Esto es lo que trae los azules")
-                      console.log(lalistadelosazules)
-                      colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules)
-                      break;
-                  }
+                            };
+
+
+                            // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+                            console.log("Esto es lo que trae los azules")
+                            console.log(lalistadelosazules)
+                            colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules)
+                            break;
+                    }
 
                 }
                 colorized_by_modifier(specie, modifier, focus)
-                //colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
+                    //colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
 
                 clearAllLayers();
 
