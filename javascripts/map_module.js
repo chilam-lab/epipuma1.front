@@ -1261,9 +1261,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {array} grid_array - Referencia de la malla total
      * @param {type} data_sp - json con gridiid y conteos por celda
      */
-    function colorizeFeaturesByJSON(grid_array, data_sp, deletecells = false, Colorblue = false) {
+    function colorizeFeaturesByJSON(grid_array, data_sp, deletecells = false, Color = "normal", iteracion = 0) {
 
         _VERBOSE ? console.log("colorizeFeaturesByJSON") : _VERBOSE;
+        console.log(data_sp);
 
         var new_data = []
         $.each(data_sp, function(index, item) {
@@ -1288,66 +1289,100 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         //var color_escale = colorbrewer.YlOrRd[5]
         // var color_escale = colorbrewer.OrRd[5]
         // var color_escale = colorbrewer.PuBuGn[5]
-        console.log(Colorblue);
-        if (Colorblue) {
+        alert(Color);
+        if (Color == "azul") {
             var color_escale = ["#0000ff"]
-
-        } else {
+        }
+        if (Color == "blanco") {
+            var color_escale = ["#ffffff"]
+        }
+        if (Color == "normal") {
             var color_escale = colorbrewer.YlOrRd[5]
+
         }
 
         console.log(color_escale)
+        if (iteracion == 0) {
+            var scale_color_function = d3.scale.quantile()
+                .domain([min_occ, max_occ])
+                .range(color_escale)
 
-        var scale_color_function = d3.scale.quantile()
-            .domain([min_occ, max_occ])
-            .range(color_escale)
-
-        var array_ids = new_data.map(function(d) { return parseFloat(d.gridid); });
-        // console.log("array_ids: " + array_ids.length)
-
-
-        for (var i = 0; i < grid_array.features.length; i++) {
+            var array_ids = new_data.map(function(d) { return parseFloat(d.gridid); });
+            // console.log("array_ids: " + array_ids.length)
 
 
-            var index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
+            for (var i = 0; i < grid_array.features.length; i++) {
 
-            if (index_grid != -1) {
 
-                //console.log("entra")
+                var index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
 
-                grid_array.features[i].properties.opacity = 1;
-                if (deletecells) {
-                    grid_array.features[i].properties.color = "#ff0000";
+                if (index_grid != -1) {
+                    //console.log("entra")
+                    grid_array.features[i].properties.opacity = 1;
+                    if (deletecells) {
+                        grid_array.features[i].properties.color = "#ff0000";
+                    } else {
+                        grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
+                    }
+                    grid_array.features[i].properties.stroke = 'rgba(0,0,0,0.4)';
+
+
                 } else {
-                    grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
+                    // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                    grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
+                    grid_array.features[i].properties.score = null;
+                    grid_array.features[i].properties.stroke = 'rgba(0,0,0,0)';
                 }
 
+            }
+            _tileLayer.redraw();
+            _tileLayerSP.redraw();
 
-                grid_array.features[i].properties.stroke = 'rgba(0,0,0,0.4)';
+            // enviando datos para creación de barra de gradiente
+            var values_occ = scale_color_function.quantiles()
+            _cargaPaletaColorMapaOcc(color_escale, values_occ)
+
+        } else {
+            console.log("addTo");
+            var scale_color_function = d3.scale.quantile()
+                .domain([min_occ, max_occ])
+                .range(color_escale)
+
+            var array_ids = new_data.map(function(d) { return parseFloat(d.gridid); });
+            // console.log("array_ids: " + array_ids.length)
+            for (var i = 0; i < grid_array.features.length; i++) {
 
 
-            } else {
+                var index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
 
-                // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
-                grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
-                grid_array.features[i].properties.score = null;
+                if (index_grid != -1) {
+                    //console.log("entra")
+                    grid_array.features[i].properties.opacity = 1;
+                    if (deletecells) {
+                        grid_array.features[i].properties.color = "#ff0000";
+                    } else {
+                        grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
+                    }
+                    grid_array.features[i].properties.stroke = 'rgba(0,0,0,0.4)';
 
-                grid_array.features[i].properties.stroke = 'rgba(0,0,0,0)';
 
+                } else {
+                    // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                    grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
+                    grid_array.features[i].properties.score = null;
+                    grid_array.features[i].properties.stroke = 'rgba(0,0,0,0)';
+                }
 
             }
+            var values_occ = scale_color_function.quantiles()
+            _cargaPaletaColorMapaOcc(color_escale, values_occ)
+                // L.marker(array_ids).addTo(map);
+                // L.marker(_tileLayerSP).addTo(map);
+
+            // enviando datos para creación de barra de gradiente
 
         }
 
-
-        _tileLayer.redraw();
-        _tileLayerSP.redraw();
-
-
-
-        // enviando datos para creación de barra de gradiente
-        var values_occ = scale_color_function.quantiles()
-        _cargaPaletaColorMapaOcc(color_escale, values_occ)
 
 
     }
@@ -2350,7 +2385,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             console.log("Parece que entramos al caso de green")
-                                            var lalistadelosazules = []
+                                            var lalistadelosazules = [];
+                                            var lalistadelosblancos = []
                                             console.log("Esto esta miy raro")
                                             for (let i = 0; i < _data_sp_occ.length; i++) {
                                                 console.log("Sigue muy raro")
@@ -2358,6 +2394,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                                     console.log("En verdad jamas llega a entrar aqui??")
                                                     _data_sp_occ[i].occ = 100
                                                     lalistadelosazules.push(_data_sp_occ[i])
+                                                } else {
+                                                    // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
+                                                    _data_sp_occ[i].occ = 100
+                                                    lalistadelosblancos.push(_data_sp_occ[i])
                                                 }
                                             };
 
@@ -2365,7 +2405,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
                                             console.log("Esto es lo que trae los azules")
                                             console.log(lalistadelosazules)
-                                            colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules, false, true);
+                                            colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules, false, "azul");
+                                            setTimeout(function() {
+                                                colorizeFeaturesByJSON(_grid_map_occ, lalistadelosblancos, false, "normal", 1);
+                                            }, 2000)
 
                                             break;
 
