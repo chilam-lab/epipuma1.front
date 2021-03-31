@@ -1594,6 +1594,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     function _drawingTargetOnCanvas(canvasOverlay, params) {
 
         // console.log("_drawingTargetOnCanvas")
+        console.log("🙃")
+        console.log(params)
+        console.log("🙃")
 
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
@@ -1782,7 +1785,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {json} params - Json con los parámetros para configurar la malla
      */
     function _drawingOnCanvasOcc(canvasOverlay, params) {
-
+      console.log("😱")
+      console.log(params)
+      console.log("😱")
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
             elemLeft = params.canvas.offsetLeft,
