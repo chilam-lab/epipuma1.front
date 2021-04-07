@@ -11,7 +11,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     var _first_loaded = true;
 
     var _grid_d3;
-    var _grid_map, _grid_map_target, _grid_map_occ, _grid_map_epipuma, _grid_map_occ_epipuma, _grid_map_state_mun = undefined
+    var _grid_map, _grid_map_target, _grid_map_occ, _grid_map_epipuma, _grid_map_occ_epipuma, _grid_map_epipuma_white,_grid_map_occ_epipuma_white, _grid_map_state_mun = undefined
     var _grid_res = undefined;
     var _data_sp_occ, _scale_color_function_occ = undefined;
     var _excludedcells = [];
@@ -344,7 +344,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
     // ******************************************************************* geojson-vt
-    var _tileIndex, _tileIndexSP, _tileIndexSpecies, _tileIndexDecil, _tileIndexStateMun, titleIndexEpipuma;
+    var _tileIndex, _tileIndexSP, _tileIndexSpecies, _tileIndexDecil, _tileIndexStateMun, titleIndexEpipuma, titleIndexEpipumaWhite;
 
     var _tileOptions = {
         maxZoom: 20, // max zoom to preserve detail on
@@ -357,7 +357,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         indexMaxPoints: 100000, // max number of points per tile in the index
     };
 
-    var _tileLayer, _tileLayerSP, _tileLayerSpecies, _tileDecilLayer, _tileLayerStateMun, titleLayerEpipuma;
+    var _tileLayer, _tileLayerSP, _tileLayerSpecies, _tileDecilLayer, _tileLayerStateMun, titleLayerEpipuma, titleLayerEpipumaWhite;
     var _pad;
 
     function whenClicked(e) {
@@ -580,6 +580,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 onEachFeature: onEachFeature
             })
             .drawing(_drawingOnCanvasOcc);
+        
+          titleIndexEpipumaWhite = geojsonvt([], _tileOptions);
+          titleLayerEpipumaWhite = L.canvasTiles()
+                .params({
+                    debug: false,
+                    padding: 5,
+                    onEachFeature: onEachFeature
+                })
+                .drawing(_drawingOnCanvasOcc)
 
 
         // _OSMSP_layer = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
@@ -622,7 +631,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             layers: [
                 _OSMSP_layer,
                 _tileLayerSP,
-                titleLayerEpipuma
+                titleLayerEpipuma,
+                titleLayerEpipumaWhite
             ],
             zoomControl: false
         });
@@ -633,7 +643,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         _overlaySP_Maps = {
             "Grid": _tileLayerSP,
-            "Result": titleLayerEpipuma 
+            "Result": titleLayerEpipuma,
+            "ResultWhite": titleLayerEpipumaWhite
         };
 
         _layer_SP_control = L.control.layers(_baseSP_Maps, _overlaySP_Maps).addTo(map_sp);
@@ -740,6 +751,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     _grid_map_state_mun = jQuery.extend(true, {}, json) // se genera un clon del gridmap
                     _grid_map_epipuma = jQuery.extend(true, {}, json)
                     _grid_map_occ_epipuma = jQuery.extend(true, {}, json)
+                    _grid_map_epipuma_white = jQuery.extend(true, {}, json)
+                    _grid_map_occ_epipuma_white = jQuery.extend(true, {}, json)
 
                     // console.log(_grid_map_occ);
                     // console.log(_grid_map_target);
@@ -769,6 +782,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     colorizeFeaturesEpipuma([], _grid_map_epipuma, titleLayerEpipuma);
                     titleIndexEpipuma = geojsonvt(_grid_map_epipuma, _tileOptions);
                     titleLayerEpipuma.redraw();
+
+
+                    colorizeFeaturesEpipumaWhite([], _grid_map_epipuma_white, titleLayerEpipumaWhite);
+                    titleIndexEpipumaWhite = geojsonvt(_grid_map_epipuma_white, _tileOptions);
+                    titleLayerEpipumaWhite.redraw();
 
 
                 }
@@ -1190,6 +1208,79 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
   }
 
 
+  /**
+     * Asigna color y borde a las celdas que componen la malla en nicho ecológico.
+     *
+     * @function Epipuma
+     * @public
+     * @memberof! map_module
+     * 
+     * @param {json} grid_map_color - funciones de color
+     * @param {json} grid_map - GeoJson de la malla
+     */
+   function colorizeFeaturesEpipumaWhite(grid_map_color, grid_map = _grid_map, tileLayer = titleLayerEpipumaWhite) {
+
+    _VERBOSE ? console.log("colorizeFeatures") : _VERBOSE;
+
+    console.log(grid_map_color)
+    console.log(grid_map)
+
+    if (_first_loaded) {
+        _VERBOSE ? console.log("first loaded") : _VERBOSE;
+
+        for (var i = 0; i < grid_map.features.length; i++) {
+
+            // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+            grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
+            grid_map.features[i].properties.score = null;
+
+        }
+
+    } else {
+
+
+        for (var i = 0; i < grid_map.features.length; i++) {
+
+            if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
+
+                // if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
+                //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
+
+                //     console.log("es mun 268")
+                //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
+                //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+
+                // }
+                // else{
+                //     console.log("no es mun")
+                //      console.log(grid_map.features[i].properties.gridid)       
+                //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
+                // }
+
+
+                grid_map.features[i].properties.opacity = 1;
+                grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
+
+
+            } else {
+
+                grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+                // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                grid_map.features[i].properties.score = null;
+                // _grid_map.features[i].properties.opacity = 0;
+            }
+
+
+        }
+
+    }
+
+    tileLayer.redraw();
+
+}
+
+
 
 
 
@@ -1436,7 +1527,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var values_occ = scale_color_function.quantiles()
             _cargaPaletaColorMapaOcc(color_escale, values_occ)
 
-        } else {
+        } 
+        if (iteracion == 1) {
             console.log("addTo");
             var scale_color_function = d3.scale.quantile()
                 .domain([min_occ, max_occ])
@@ -1474,13 +1566,58 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 //L.marker(_tileLayerSP).addLayer(map);
            // map.addLayer(_tileLayer);
            // map.addLayer(_tileLayerSP);
-            titleLayerEpipuma.redraw();
+            titleLayerEpipumaWhite.redraw();
             //_tileLayer.addLayer(map);
             //  _tileLayerSP.addLayer(map);
 
             // enviando datos para creación de barra de gradiente
 
         }
+        if (iteracion == 2) {
+          console.log("addTo");
+          var scale_color_function = d3.scale.quantile()
+              .domain([min_occ, max_occ])
+              .range(color_escale)
+
+          var array_ids = new_data.map(function(d) { return parseFloat(d.gridid); });
+          // console.log("array_ids: " + array_ids.length)
+          for (var i = 0; i < grid_array.features.length; i++) {
+
+
+              var index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
+
+              if (index_grid != -1) {
+                  //console.log("entra")
+                  grid_array.features[i].properties.opacity = 1;
+                  if (deletecells) {
+                      grid_array.features[i].properties.color = "#ff0000";
+                  } else {
+                      grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
+                  }
+                  grid_array.features[i].properties.stroke = 'rgba(0,0,0,0.4)';
+
+
+              } else {
+                  // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                  grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
+                  grid_array.features[i].properties.score = null;
+                  grid_array.features[i].properties.stroke = 'rgba(0,0,0,0)';
+              }
+
+          }
+          var values_occ = scale_color_function.quantiles()
+          _cargaPaletaColorMapaOcc(color_escale, values_occ)
+              //L.marker(array_ids).addLayer(map);
+              //L.marker(_tileLayerSP).addLayer(map);
+         // map.addLayer(_tileLayer);
+         // map.addLayer(_tileLayerSP);
+          titleLayerEpipuma.redraw();
+          //_tileLayer.addLayer(map);
+          //  _tileLayerSP.addLayer(map);
+
+          // enviando datos para creación de barra de gradiente
+
+      }
 
 
 
@@ -2580,16 +2717,26 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             var lalistadelosazules = [];
-                                            var lalistadelosblancos = []
+                                            var lalistadelosblancos = [];
+                                            var lalistadelosgradientes= [];
+
                                             for (let i = 0; i < _data_sp_occ.length; i++) {
                                                 if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1)) {
                                                     _data_sp_occ[i].occ = 100
                                                     lalistadelosazules.push(_data_sp_occ[i])
-                                                } else {
+                                                }
+                                                else if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                                     // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                                     _data_sp_occ[i].occ = 100
                                                     lalistadelosblancos.push(_data_sp_occ[i])
+                                                } 
+                                                else {
+                                                  _data_sp_occ[i].occ =_data_sp_occ[i].tv 
+                                                  lalistadelosgradientes.push(_data_sp_occ[i])
+
                                                 }
+
+                                                
                                             };
 
 
@@ -2598,8 +2745,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             console.log(lalistadelosazules)
                                             colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules, false, "azul");
                                             setTimeout(function() {
-                                                colorizeFeaturesByJSON(_grid_map_occ, lalistadelosblancos, false, "normal", 1);
+                                                colorizeFeaturesByJSON(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
                                             }, 2000)
+                                            setTimeout(function() {
+                                              colorizeFeaturesByJSON(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
+                                          }, 2000)
 
                                             break;
 
