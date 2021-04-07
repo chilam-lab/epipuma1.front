@@ -621,7 +621,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             zoom: _zoom_module,
             layers: [
                 _OSMSP_layer,
-                _tileLayerSP
+                _tileLayerSP,
+                titleLayerEpipuma
             ],
             zoomControl: false
         });
@@ -631,7 +632,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         };
 
         _overlaySP_Maps = {
-            "Grid": _tileLayerSP
+            "Grid": _tileLayerSP,
+            "Result": titleLayerEpipuma 
         };
 
         _layer_SP_control = L.control.layers(_baseSP_Maps, _overlaySP_Maps).addTo(map_sp);
@@ -736,6 +738,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     _grid_map_target = jQuery.extend(true, {}, json) // se genera un clon del gridmap
                     _grid_map_decil = jQuery.extend(true, {}, json) // se genera un clon del gridmap
                     _grid_map_state_mun = jQuery.extend(true, {}, json) // se genera un clon del gridmap
+                    _grid_map_epipuma = jQuery.extend(true, {}, json)
+                    _grid_map_occ_epipuma = jQuery.extend(true, {}, json)
 
                     // console.log(_grid_map_occ);
                     // console.log(_grid_map_target);
@@ -760,6 +764,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     colorizeFeaturesSelectedStateMun([], _grid_map_state_mun, _tileLayerStateMun);
                     _tileIndexStateMun = geojsonvt(_grid_map_state_mun, _tileOptions);
                     _tileLayerStateMun.redraw();
+                    
+
+                    colorizeFeaturesEpipuma([], _grid_map_epipuma, titleLayerEpipuma);
+                    titleIndexEpipuma = geojsonvt(_grid_map_epipuma, _tileOptions);
+                    titleLayerEpipuma.redraw();
 
 
                 }
@@ -1108,6 +1117,80 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
 
+    /**
+     * Asigna color y borde a las celdas que componen la malla en nicho ecológico.
+     *
+     * @function Epipuma
+     * @public
+     * @memberof! map_module
+     * 
+     * @param {json} grid_map_color - funciones de color
+     * @param {json} grid_map - GeoJson de la malla
+     */
+     function colorizeFeaturesEpipuma(grid_map_color, grid_map = _grid_map, tileLayer = titleLayerEpipuma) {
+
+      _VERBOSE ? console.log("colorizeFeatures") : _VERBOSE;
+
+      console.log(grid_map_color)
+      console.log(grid_map)
+
+      if (_first_loaded) {
+          _VERBOSE ? console.log("first loaded") : _VERBOSE;
+
+          for (var i = 0; i < grid_map.features.length; i++) {
+
+              // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+              grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
+              grid_map.features[i].properties.score = null;
+
+          }
+
+      } else {
+
+
+          for (var i = 0; i < grid_map.features.length; i++) {
+
+              if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
+
+                  // if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
+                  //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
+
+                  //     console.log("es mun 268")
+                  //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
+                  //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+
+                  // }
+                  // else{
+                  //     console.log("no es mun")
+                  //      console.log(grid_map.features[i].properties.gridid)       
+                  //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
+                  // }
+
+
+                  grid_map.features[i].properties.opacity = 1;
+                  grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                  grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
+
+
+              } else {
+
+                  grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+                  // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                  grid_map.features[i].properties.score = null;
+                  // _grid_map.features[i].properties.opacity = 0;
+              }
+
+
+          }
+
+      }
+
+      tileLayer.redraw();
+
+  }
+
+
+
 
 
 
@@ -1344,8 +1427,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 }
 
             }
-            // _tileLayer.redraw();
-            // _tileLayerSP.redraw();
+            _tileLayer.redraw();
+            _tileLayerSP.redraw();
             // map.addLayer(_tileLayer);
             // map.addLayer(_tileLayerSP);
 
@@ -1389,8 +1472,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             _cargaPaletaColorMapaOcc(color_escale, values_occ)
                 //L.marker(array_ids).addLayer(map);
                 //L.marker(_tileLayerSP).addLayer(map);
-            map.addLayer(_tileLayer);
-            map.addLayer(_tileLayerSP);
+           // map.addLayer(_tileLayer);
+           // map.addLayer(_tileLayerSP);
+            titleLayerEpipuma.redraw();
             //_tileLayer.addLayer(map);
             //  _tileLayerSP.addLayer(map);
 
@@ -1872,6 +1956,99 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         }
 
     }
+
+
+
+    /**
+     * Crea y configura la malla embebida en la capa del mapa.
+     *
+     * @function _drawingOnCanvas
+     * @private
+     * @memberof! map_module
+     * 
+     * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
+     * @param {json} params - Json con los parámetros para configurar la malla
+     */
+     function _drawingOnCanvasOccEpipuma(canvasOverlay, params) {
+        var bounds = params.bounds;
+        params.tilePoint.z = params.zoom,
+            elemLeft = params.canvas.offsetLeft,
+            elemTop = params.canvas.offsetTop;
+
+        var ctx = params.canvas.getContext('2d');
+        ctx.globalCompositeOperation = 'source-over';
+
+        ctx.canvas.addEventListener('click', function(event) {
+
+            var x = event.pageX - elemLeft,
+                y = event.pageY - elemTop;
+
+            //            console.log(event);
+            //            console.log(x);
+            //            console.log(y);
+
+        }, false);
+
+        var tile = _tileIndexSP.getTile(params.tilePoint.z, params.tilePoint.x, params.tilePoint.y);
+        if (!tile) {
+            return;
+        }
+
+        ctx.clearRect(0, 0, params.canvas.width, params.canvas.height);
+
+        var features = tile.features;
+
+        // borde de la malla
+        // se agrega borde de la malla
+        // ctx.strokeStyle = 'rgba(0,0,0,0)';
+        // ctx.strokeStyle = 'rgba(255,0,0,0)';
+        // ctx.strokeStyle = 'grey'; // hace malla visible
+
+
+        for (var i = 0; i < features.length; i++) {
+            var feature = features[i],
+                type = feature.type;
+
+            // background de la celda
+            ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(0,0,0,0)';
+            ctx.strokeStyle = feature.tags.stroke ? feature.tags.stroke : 'rgba(0,0,0,0)';
+
+
+            ctx.beginPath();
+
+            for (var j = 0; j < feature.geometry.length; j++) {
+                var geom = feature.geometry[j];
+
+                if (type === 1) {
+                    ctx.arc(geom[0] * ratio + _pad, geom[1] * ratio + _pad, 2, 0, 2 * Math.PI, false);
+                    continue;
+                }
+
+                for (var k = 0; k < geom.length; k++) {
+                    var p = geom[k];
+                    var extent = 4096;
+
+                    var x = p[0] / extent * 256;
+                    var y = p[1] / extent * 256;
+                    if (k)
+                        ctx.lineTo(x + _pad, y + _pad);
+                    else
+                        ctx.moveTo(x + _pad, y + _pad);
+                }
+            }
+
+            if (type === 3 || type === 1) {
+                ctx.fill('evenodd');
+            }
+
+            ctx.stroke();
+        }
+
+    }
+
+
+
+
 
 
     /**
