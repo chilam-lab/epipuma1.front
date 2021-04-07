@@ -11,7 +11,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     var _first_loaded = true;
 
     var _grid_d3;
-    var _grid_map, _grid_map_target, _grid_map_occ, _grid_map_state_mun = undefined;
+    var _grid_map, _grid_map_target, _grid_map_occ, _grid_map_epipuma, _grid_map_occ_epipuma, _grid_map_state_mun = undefined
     var _grid_res = undefined;
     var _data_sp_occ, _scale_color_function_occ = undefined;
     var _excludedcells = [];
@@ -344,7 +344,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
     // ******************************************************************* geojson-vt
-    var _tileIndex, _tileIndexSP, _tileIndexSpecies, _tileIndexDecil, _tileIndexStateMun;
+    var _tileIndex, _tileIndexSP, _tileIndexSpecies, _tileIndexDecil, _tileIndexStateMun, titleIndexEpipuma;
 
     var _tileOptions = {
         maxZoom: 20, // max zoom to preserve detail on
@@ -357,7 +357,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         indexMaxPoints: 100000, // max number of points per tile in the index
     };
 
-    var _tileLayer, _tileLayerSP, _tileLayerSpecies, _tileDecilLayer, _tileLayerStateMun;
+    var _tileLayer, _tileLayerSP, _tileLayerSpecies, _tileDecilLayer, _tileLayerStateMun, titleLayerEpipuma;
     var _pad;
 
     function whenClicked(e) {
@@ -572,6 +572,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     function _mapSPConfigure() {
 
         _VERBOSE ? console.log("_mapSPConfigure") : _VERBOSE;
+        titleIndexEpipuma = geojsonvt([], _tileOptions);
+        titleLayerEpipuma = L.canvasTiles()
+            .params({
+                debug: false,
+                padding: 5,
+                onEachFeature: onEachFeature
+            })
+            .drawing(_drawingOnCanvasOcc);
 
 
         // _OSMSP_layer = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
@@ -604,6 +612,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 onEachFeature: onEachFeature
             })
             .drawing(_drawingOnCanvasOcc);
+        
 
 
 
