@@ -2850,11 +2850,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                 case "incidence":
                                     switch (focus) {
                                         case "green":
-
+                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
                                             break;
 
                                         case "red":
-
+                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
                                             break;
                                     }
                                     break;
