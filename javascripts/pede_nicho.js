@@ -1353,8 +1353,22 @@ var module_nicho = (function() {
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode2, 'last', false, false);
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode3, 'last', false, false);
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode4, 'last', false, false);
+                setTimeout(function() {
+                    console.log("loaded fixed covars")
+                    $(".jstree-anchor")[1].click()
+
+                    // Dinamica Menu Covariables
+                    $(".jstree-anchor").click(function() {
+                        ///BUG COVARIABLES!!!! :`(
+                        dinamica_menu_covariables();
+
+                    })
+                    $(".jstree-anchor")[1].click()
+
+                }, 1000)
 
             });
+
 
 
 
@@ -1363,18 +1377,7 @@ var module_nicho = (function() {
         /////
 
         ////////////////////////////
-        setTimeout(function() {
-            $(".jstree-anchor")[1].click()
 
-            // Dinamica Menu Covariables
-            $(".jstree-anchor").click(function() {
-                ///BUG COVARIABLES!!!! :`(
-                dinamica_menu_covariables();
-
-            })
-            $(".jstree-anchor")[1].click()
-
-        }, 6500)
 
 
         // Boton Agregar

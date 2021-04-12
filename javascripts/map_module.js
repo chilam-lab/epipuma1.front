@@ -2800,6 +2800,35 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
                 const colorized_by_modifier = (specie, modifier, focus) => {
+                    const getColorizedData = (_data_sp_occ, fp, tp, exclude1, exclude2) => {
+                        var lalistadelosazules = [];
+                        var lalistadelosblancos = [];
+                        var lalistadelosgradientes = [];
+
+                        for (let i = 0; i < _data_sp_occ.length; i++) {
+                            if ((_data_sp_occ[i].fp == fp) && (_data_sp_occ[i].tp == tp)) {
+                                _data_sp_occ[i].occ = 100
+                                lalistadelosazules.push(_data_sp_occ[i])
+                            } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
+                                // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
+                                _data_sp_occ[i].occ = 100
+                                lalistadelosblancos.push(_data_sp_occ[i])
+                            } else {
+                                _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                                lalistadelosgradientes.push(_data_sp_occ[i])
+
+                            }
+
+
+                        };
+
+
+                        console.log("Esto es lo que trae los azules")
+                        console.log(lalistadelosazules)
+                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
+                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
+                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
+                    }
                     console.log("Entramos a la fucnion")
 
                     switch (specie["label"]) {
@@ -2808,37 +2837,12 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                 case "cases":
                                     switch (focus) {
                                         case "green":
-                                            var lalistadelosazules = [];
-                                            var lalistadelosblancos = [];
-                                            var lalistadelosgradientes = [];
-
-                                            for (let i = 0; i < _data_sp_occ.length; i++) {
-                                                if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1)) {
-                                                    _data_sp_occ[i].occ = 100
-                                                    lalistadelosazules.push(_data_sp_occ[i])
-                                                } else if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
-                                                    // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
-                                                    _data_sp_occ[i].occ = 100
-                                                    lalistadelosblancos.push(_data_sp_occ[i])
-                                                } else {
-                                                    _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                                    lalistadelosgradientes.push(_data_sp_occ[i])
-
-                                                }
-
-
-                                            };
-
-
-                                            console.log("Esto es lo que trae los azules")
-                                            console.log(lalistadelosazules)
-                                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
-                                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
-                                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
+                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
 
                                             break;
 
                                         case "red":
+                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
 
                                             break;
                                     }
