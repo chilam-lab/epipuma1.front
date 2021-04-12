@@ -11,7 +11,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     var _first_loaded = true;
 
     var _grid_d3;
-    var _grid_map, _grid_map_target, _grid_map_occ, _grid_map_epipuma, _grid_map_occ_epipuma, _grid_map_epipuma_white,_grid_map_occ_epipuma_white, _grid_map_state_mun = undefined
+    var _grid_map, _grid_map_target, _grid_map_occ, _grid_map_epipuma, _grid_map_occ_epipuma, _grid_map_epipuma_white, _grid_map_occ_epipuma_white, _grid_map_state_mun = undefined
     var _grid_res = undefined;
     var _data_sp_occ, _scale_color_function_occ = undefined;
     var _excludedcells = [];
@@ -580,15 +580,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 onEachFeature: onEachFeature
             })
             .drawing(_drawingOnCanvasOcc);
-        
-          titleIndexEpipumaWhite = geojsonvt([], _tileOptions);
-          titleLayerEpipumaWhite = L.canvasTiles()
-                .params({
-                    debug: false,
-                    padding: 5,
-                    onEachFeature: onEachFeature
-                })
-                .drawing(_drawingOnCanvasOcc)
+
+        titleIndexEpipumaWhite = geojsonvt([], _tileOptions);
+        titleLayerEpipumaWhite = L.canvasTiles()
+            .params({
+                debug: false,
+                padding: 5,
+                onEachFeature: onEachFeature
+            })
+            .drawing(_drawingOnCanvasOcc)
 
 
         // _OSMSP_layer = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
@@ -621,7 +621,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 onEachFeature: onEachFeature
             })
             .drawing(_drawingOnCanvasOcc);
-        
+
 
 
 
@@ -777,7 +777,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     colorizeFeaturesSelectedStateMun([], _grid_map_state_mun, _tileLayerStateMun);
                     _tileIndexStateMun = geojsonvt(_grid_map_state_mun, _tileOptions);
                     _tileLayerStateMun.redraw();
-                    
+
 
                     colorizeFeaturesEpipuma([], _grid_map_epipuma, titleLayerEpipuma);
                     titleIndexEpipuma = geojsonvt(_grid_map_epipuma, _tileOptions);
@@ -1145,70 +1145,70 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {json} grid_map_color - funciones de color
      * @param {json} grid_map - GeoJson de la malla
      */
-     function colorizeFeaturesEpipuma(grid_map_color, grid_map = _grid_map, tileLayer = titleLayerEpipuma) {
+    function colorizeFeaturesEpipuma(grid_map_color, grid_map = _grid_map, tileLayer = titleLayerEpipuma) {
 
-      _VERBOSE ? console.log("colorizeFeatures") : _VERBOSE;
+        _VERBOSE ? console.log("colorizeFeatures") : _VERBOSE;
 
-      console.log(grid_map_color)
-      console.log(grid_map)
+        console.log(grid_map_color)
+        console.log(grid_map)
 
-      if (_first_loaded) {
-          _VERBOSE ? console.log("first loaded") : _VERBOSE;
+        if (_first_loaded) {
+            _VERBOSE ? console.log("first loaded") : _VERBOSE;
 
-          for (var i = 0; i < grid_map.features.length; i++) {
+            for (var i = 0; i < grid_map.features.length; i++) {
 
-              // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
-              grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
-              grid_map.features[i].properties.score = null;
+                // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
+                grid_map.features[i].properties.score = null;
 
-          }
+            }
 
-      } else {
-
-
-          for (var i = 0; i < grid_map.features.length; i++) {
-
-              if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
-
-                  // if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
-                  //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
-
-                  //     console.log("es mun 268")
-                  //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
-                  //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
-
-                  // }
-                  // else{
-                  //     console.log("no es mun")
-                  //      console.log(grid_map.features[i].properties.gridid)       
-                  //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
-                  // }
+        } else {
 
 
-                  grid_map.features[i].properties.opacity = 1;
-                  grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
-                  grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
+            for (var i = 0; i < grid_map.features.length; i++) {
+
+                if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
+
+                    // if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
+                    //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
+
+                    //     console.log("es mun 268")
+                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
+                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+
+                    // }
+                    // else{
+                    //     console.log("no es mun")
+                    //      console.log(grid_map.features[i].properties.gridid)       
+                    //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
+                    // }
 
 
-              } else {
-
-                  grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
-                  // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
-                  grid_map.features[i].properties.score = null;
-                  // _grid_map.features[i].properties.opacity = 0;
-              }
+                    grid_map.features[i].properties.opacity = 1;
+                    grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                    grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
 
 
-          }
+                } else {
 
-      }
+                    grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+                    // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                    grid_map.features[i].properties.score = null;
+                    // _grid_map.features[i].properties.opacity = 0;
+                }
 
-      tileLayer.redraw();
 
-  }
+            }
+
+        }
+
+        tileLayer.redraw();
+
+    }
 
 
-  /**
+    /**
      * Asigna color y borde a las celdas que componen la malla en nicho ecológico.
      *
      * @function Epipuma
@@ -1218,67 +1218,67 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {json} grid_map_color - funciones de color
      * @param {json} grid_map - GeoJson de la malla
      */
-   function colorizeFeaturesEpipumaWhite(grid_map_color, grid_map = _grid_map, tileLayer = titleLayerEpipumaWhite) {
+    function colorizeFeaturesEpipumaWhite(grid_map_color, grid_map = _grid_map, tileLayer = titleLayerEpipumaWhite) {
 
-    _VERBOSE ? console.log("colorizeFeatures") : _VERBOSE;
+        _VERBOSE ? console.log("colorizeFeatures") : _VERBOSE;
 
-    console.log(grid_map_color)
-    console.log(grid_map)
+        console.log(grid_map_color)
+        console.log(grid_map)
 
-    if (_first_loaded) {
-        _VERBOSE ? console.log("first loaded") : _VERBOSE;
+        if (_first_loaded) {
+            _VERBOSE ? console.log("first loaded") : _VERBOSE;
 
-        for (var i = 0; i < grid_map.features.length; i++) {
+            for (var i = 0; i < grid_map.features.length; i++) {
 
-            // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
-            grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
-            grid_map.features[i].properties.score = null;
-
-        }
-
-    } else {
-
-
-        for (var i = 0; i < grid_map.features.length; i++) {
-
-            if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
-
-                // if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
-                //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
-
-                //     console.log("es mun 268")
-                //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
-                //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
-
-                // }
-                // else{
-                //     console.log("no es mun")
-                //      console.log(grid_map.features[i].properties.gridid)       
-                //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
-                // }
-
-
-                grid_map.features[i].properties.opacity = 1;
-                grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
-                grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
-
-
-            } else {
-
-                grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
                 // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                grid_map.features[i].properties.color = 'rgba(0,0,0,0)';
                 grid_map.features[i].properties.score = null;
-                // _grid_map.features[i].properties.opacity = 0;
+
             }
 
+        } else {
+
+
+            for (var i = 0; i < grid_map.features.length; i++) {
+
+                if (grid_map_color.has(grid_map.features[i].properties.gridid)) {
+
+                    // if(grid_map.features[i].properties.gridid == 268 || grid_map.features[i].properties.gridid == "268"
+                    //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
+
+                    //     console.log("es mun 268")
+                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
+                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+
+                    // }
+                    // else{
+                    //     console.log("no es mun")
+                    //      console.log(grid_map.features[i].properties.gridid)       
+                    //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
+                    // }
+
+
+                    grid_map.features[i].properties.opacity = 1;
+                    grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                    grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
+
+
+                } else {
+
+                    grid_map.features[i].properties.color = 'rgba(255,0,0,0)';
+                    // grid_map.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                    grid_map.features[i].properties.score = null;
+                    // _grid_map.features[i].properties.opacity = 0;
+                }
+
+
+            }
 
         }
 
+        tileLayer.redraw();
+
     }
-
-    tileLayer.redraw();
-
-}
 
 
 
@@ -1432,8 +1432,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
     }
-
-
     /**
      * Asigna color y borde a las celdas que componen la malla en comunidad ecológica.
      *
@@ -1444,7 +1442,101 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {array} grid_array - Referencia de la malla total
      * @param {type} data_sp - json con gridiid y conteos por celda
      */
-    function colorizeFeaturesByJSON(grid_array, data_sp, deletecells = false, Color = "normal", iteracion = 0) {
+    function colorizeFeaturesByJSON(grid_array, data_sp, deletecells = false) {
+
+        _VERBOSE ? console.log("colorizeFeaturesByJSON") : _VERBOSE;
+
+        var new_data = []
+        $.each(data_sp, function(index, item) {
+            if (_excludedcells.indexOf(item.gridid) === -1)
+                new_data.push(item)
+        })
+
+        console.log("new_data: " + new_data.length)
+
+
+        var min_occ = d3.min(new_data.map(function(d) {
+            return parseFloat(d.occ);
+        }));
+        console.log("min_occ: " + min_occ)
+
+        var max_occ = d3.max(new_data.map(function(d) {
+            return parseFloat(d.occ);
+        }));
+        console.log("max_occ: " + max_occ)
+
+        // var color_escale = colorbrewer.RdPu[9]
+        var color_escale = colorbrewer.YlOrRd[5]
+            // var color_escale = colorbrewer.OrRd[5]
+            // var color_escale = colorbrewer.PuBuGn[5]
+
+        console.log(color_escale)
+
+        var scale_color_function = d3.scale.quantile()
+            .domain([min_occ, max_occ])
+            .range(color_escale)
+
+        var array_ids = new_data.map(function(d) { return parseFloat(d.gridid); });
+        // console.log("array_ids: " + array_ids.length)
+
+
+        for (var i = 0; i < grid_array.features.length; i++) {
+
+
+            var index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
+
+            if (index_grid != -1) {
+
+                //console.log("entra")
+
+                grid_array.features[i].properties.opacity = 1;
+                if (deletecells) {
+                    grid_array.features[i].properties.color = "#ff0000";
+                } else {
+                    grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
+                }
+
+
+                grid_array.features[i].properties.stroke = 'rgba(0,0,0,0.4)';
+
+
+            } else {
+
+                // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
+                grid_array.features[i].properties.score = null;
+
+                grid_array.features[i].properties.stroke = 'rgba(0,0,0,0)';
+
+
+            }
+
+        }
+
+
+        _tileLayer.redraw();
+        _tileLayerSP.redraw();
+
+
+
+        // enviando datos para creación de barra de gradiente
+        var values_occ = scale_color_function.quantiles()
+        _cargaPaletaColorMapaOcc(color_escale, values_occ)
+
+
+    }
+
+    /**
+     * Asigna color y borde a las celdas que componen la malla en comunidad ecológica.
+     *
+     * @function colorizeFeaturesByJSONEPIPUMA
+     * @public
+     * @memberof! map_module
+     * 
+     * @param {array} grid_array - Referencia de la malla total
+     * @param {type} data_sp - json con gridiid y conteos por celda
+     */
+    function colorizeFeaturesByJSONEPIPUMA(grid_array, data_sp, deletecells = false, Color = "normal", iteracion = 0) {
 
         _VERBOSE ? console.log("colorizeFeaturesByJSON") : _VERBOSE;
         console.log(data_sp);
@@ -1472,7 +1564,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         //var color_escale = colorbrewer.YlOrRd[5]
         // var color_escale = colorbrewer.OrRd[5]
         // var color_escale = colorbrewer.PuBuGn[5]
-        alert(Color);
+        //alert(Color);
         if (Color == "azul") {
             var color_escale = ["#0000ff"]
         }
@@ -1527,7 +1619,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var values_occ = scale_color_function.quantiles()
             _cargaPaletaColorMapaOcc(color_escale, values_occ)
 
-        } 
+        }
         if (iteracion == 1) {
             console.log("addTo");
             var scale_color_function = d3.scale.quantile()
@@ -1564,8 +1656,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             _cargaPaletaColorMapaOcc(color_escale, values_occ)
                 //L.marker(array_ids).addLayer(map);
                 //L.marker(_tileLayerSP).addLayer(map);
-           // map.addLayer(_tileLayer);
-           // map.addLayer(_tileLayerSP);
+                // map.addLayer(_tileLayer);
+                // map.addLayer(_tileLayerSP);
             titleLayerEpipumaWhite.redraw();
             //_tileLayer.addLayer(map);
             //  _tileLayerSP.addLayer(map);
@@ -1574,50 +1666,50 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         }
         if (iteracion == 2) {
-          console.log("addTo");
-          var scale_color_function = d3.scale.quantile()
-              .domain([min_occ, max_occ])
-              .range(color_escale)
+            console.log("addTo");
+            var scale_color_function = d3.scale.quantile()
+                .domain([min_occ, max_occ])
+                .range(color_escale)
 
-          var array_ids = new_data.map(function(d) { return parseFloat(d.gridid); });
-          // console.log("array_ids: " + array_ids.length)
-          for (var i = 0; i < grid_array.features.length; i++) {
-
-
-              var index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
-
-              if (index_grid != -1) {
-                  //console.log("entra")
-                  grid_array.features[i].properties.opacity = 1;
-                  if (deletecells) {
-                      grid_array.features[i].properties.color = "#ff0000";
-                  } else {
-                      grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
-                  }
-                  grid_array.features[i].properties.stroke = 'rgba(0,0,0,0.4)';
+            var array_ids = new_data.map(function(d) { return parseFloat(d.gridid); });
+            // console.log("array_ids: " + array_ids.length)
+            for (var i = 0; i < grid_array.features.length; i++) {
 
 
-              } else {
-                  // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
-                  grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
-                  grid_array.features[i].properties.score = null;
-                  grid_array.features[i].properties.stroke = 'rgba(0,0,0,0)';
-              }
+                var index_grid = array_ids.indexOf(grid_array.features[i].properties.gridid);
 
-          }
-          var values_occ = scale_color_function.quantiles()
-          _cargaPaletaColorMapaOcc(color_escale, values_occ)
-              //L.marker(array_ids).addLayer(map);
-              //L.marker(_tileLayerSP).addLayer(map);
-         // map.addLayer(_tileLayer);
-         // map.addLayer(_tileLayerSP);
-          titleLayerEpipuma.redraw();
-          //_tileLayer.addLayer(map);
-          //  _tileLayerSP.addLayer(map);
+                if (index_grid != -1) {
+                    //console.log("entra")
+                    grid_array.features[i].properties.opacity = 1;
+                    if (deletecells) {
+                        grid_array.features[i].properties.color = "#ff0000";
+                    } else {
+                        grid_array.features[i].properties.color = scale_color_function(new_data[index_grid].occ);
+                    }
+                    grid_array.features[i].properties.stroke = 'rgba(0,0,0,0.4)';
 
-          // enviando datos para creación de barra de gradiente
 
-      }
+                } else {
+                    // grid_array.features[i].properties.color = 'rgba(219, 219, 219, 1)';
+                    grid_array.features[i].properties.color = 'rgba(255,0,0,0)';
+                    grid_array.features[i].properties.score = null;
+                    grid_array.features[i].properties.stroke = 'rgba(0,0,0,0)';
+                }
+
+            }
+            var values_occ = scale_color_function.quantiles()
+            _cargaPaletaColorMapaOcc(color_escale, values_occ)
+                //L.marker(array_ids).addLayer(map);
+                //L.marker(_tileLayerSP).addLayer(map);
+                // map.addLayer(_tileLayer);
+                // map.addLayer(_tileLayerSP);
+            titleLayerEpipuma.redraw();
+            //_tileLayer.addLayer(map);
+            //  _tileLayerSP.addLayer(map);
+
+            // enviando datos para creación de barra de gradiente
+
+        }
 
 
 
@@ -2015,9 +2107,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {json} params - Json con los parámetros para configurar la malla
      */
     function _drawingOnCanvasOcc(canvasOverlay, params) {
-      console.log("😱")
-      console.log(params)
-      console.log("😱")
+        console.log("😱")
+        console.log(params)
+        console.log("😱")
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
             elemLeft = params.canvas.offsetLeft,
@@ -2106,7 +2198,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
      * @param {json} params - Json con los parámetros para configurar la malla
      */
-     function _drawingOnCanvasOccEpipuma(canvasOverlay, params) {
+    function _drawingOnCanvasOccEpipuma(canvasOverlay, params) {
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
             elemLeft = params.canvas.offsetLeft,
@@ -2718,38 +2810,31 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "green":
                                             var lalistadelosazules = [];
                                             var lalistadelosblancos = [];
-                                            var lalistadelosgradientes= [];
+                                            var lalistadelosgradientes = [];
 
                                             for (let i = 0; i < _data_sp_occ.length; i++) {
                                                 if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1)) {
                                                     _data_sp_occ[i].occ = 100
                                                     lalistadelosazules.push(_data_sp_occ[i])
-                                                }
-                                                else if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
+                                                } else if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                                     // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                                     _data_sp_occ[i].occ = 100
                                                     lalistadelosblancos.push(_data_sp_occ[i])
-                                                } 
-                                                else {
-                                                  _data_sp_occ[i].occ =_data_sp_occ[i].tv 
-                                                  lalistadelosgradientes.push(_data_sp_occ[i])
+                                                } else {
+                                                    _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                                                    lalistadelosgradientes.push(_data_sp_occ[i])
 
                                                 }
 
-                                                
+
                                             };
 
 
-                                            // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
                                             console.log("Esto es lo que trae los azules")
                                             console.log(lalistadelosazules)
-                                            colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules, false, "azul");
-                                            setTimeout(function() {
-                                                colorizeFeaturesByJSON(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
-                                            }, 2000)
-                                            setTimeout(function() {
-                                              colorizeFeaturesByJSON(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
-                                          }, 2000)
+                                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
+                                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
+                                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
 
                                             break;
 
@@ -2800,17 +2885,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                             };
 
 
-                            // colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
                             console.log("Esto es lo que trae los azules")
                             console.log(lalistadelosazules)
-                            colorizeFeaturesByJSON(_grid_map_occ, lalistadelosazules)
                             break;
                     }
 
                 }
                 colorized_by_modifier(specie, modifier, focus)
-                    //colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
 
+                //colorizeFeaturesByJSON(_grid_map_occ, _data_sp_occ)
                 clearAllLayers();
 
                 if (_tipo_modulo === _MODULO_NICHO) {

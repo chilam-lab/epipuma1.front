@@ -917,25 +917,25 @@ var module_nicho = (function() {
                         let model_enfo = $("#modelSelect").val();
                         console.log(model_enfo);
                         // if (model_enfo == "Predictivo") {
-                            $("#modifiersSelect").change(function() {
-                                $('select option[value="enf_default"]').attr("selected", true);
-                                document.getElementById("enfoque_section").hidden = false;
-                            });
-                            $("#enfoqueSelect").change(function() {
-                                document.getElementById("button_section").hidden = false;
-                                let enfoque = $("#enfoqueSelect").val();
-                                if (enfoque == "Mejoramiento") {
-                                    sessionStorage.setItem("light_traffic", "green");
-                                } else {
-                                    sessionStorage.setItem("light_traffic", "red");
-                                }
+                        $("#modifiersSelect").change(function() {
+                            $('select option[value="enf_default"]').attr("selected", true);
+                            document.getElementById("enfoque_section").hidden = false;
+                        });
+                        $("#enfoqueSelect").change(function() {
+                            document.getElementById("button_section").hidden = false;
+                            let enfoque = $("#enfoqueSelect").val();
+                            if (enfoque == "Mejoramiento") {
+                                sessionStorage.setItem("light_traffic", "green");
+                            } else {
+                                sessionStorage.setItem("light_traffic", "red");
+                            }
 
-                            });
+                        });
                         // } else {
-                            $("#modifiersSelect").change(function() {
-                                document.getElementById("button_section").hidden = false;
+                        $("#modifiersSelect").change(function() {
+                            document.getElementById("button_section").hidden = false;
 
-                            });
+                        });
                         // }
 
 
@@ -1368,12 +1368,13 @@ var module_nicho = (function() {
 
             // Dinamica Menu Covariables
             $(".jstree-anchor").click(function() {
+                ///BUG COVARIABLES!!!! :`(
                 dinamica_menu_covariables();
 
             })
             $(".jstree-anchor")[1].click()
 
-        }, 1500)
+        }, 6500)
 
 
         // Boton Agregar
