@@ -2861,11 +2861,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                 case "prevalence":
                                     switch (focus) {
                                         case "green":
-
+                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
                                             break;
 
                                         case "red":
-
+                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
                                             break;
                                     }
                                     break;
@@ -2873,24 +2873,40 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                             break;
 
                         case "COVID-19 FALLECIDO":
+                        case "cases":
+                            switch (focus) {
+                                case "green":
+                                    getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                    break;
 
+                                case "red":
+                                    getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                    break;
+                            }
+                            break;
+                        case "prevalence":
+                            switch (focus) {
+                                case "green":
+                                    getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                    break;
+
+                                case "red":
+                                    getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                    break;
+                            }
+                            break;
+                        case "lethality":
+                            switch (focus) {
+                                case "green":
+                                    getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                    break;
+
+                                case "red":
+                                    getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                    break;
+                            }
                             break;
 
-                        default:
-                            var lalistadelosazules = []
-                            console.log("Esto esta miy raro")
-                            for (let i = 0; i < _data_sp_occ.length; i++) {
-                                console.log("Sigue muy raro")
-                                if ((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)) {
-                                    console.log("En verdad jamas llega a entrar aqui??")
-                                    _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                    lalistadelosazules.push(_data_sp_occ[i])
-                                }
-                            };
-
-
-                            console.log("Esto es lo que trae los azules")
-                            console.log(lalistadelosazules)
                             break;
                     }
 
