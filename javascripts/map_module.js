@@ -1575,6 +1575,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var color_escale = colorbrewer.YlOrRd[5]
 
         }
+        if (Color == "verde") {
+          var color_escale = ["#008000"]
+
+      }
+      if (Color == "rojo") {
+        var color_escale = colorbrewer.YlOrRd[5]
+
+      }
 
         console.log(color_escale)
         if (iteracion == 0) {
@@ -2713,7 +2721,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             }
         } else {
             console.log("getGridSpeciesTaxon");
-            url_mod = _url_zacatuche + "niche/especie/getGridSpeciesTaxon";
+            url_mod = _url_zacatuche + "dev/niche/especie/getGridSpeciesTaxon";
             var tar_var = taxones[0]["value"];
             console.log(tar_var);
             let enfoque = sessionStorage.getItem("light_traffic");
@@ -2790,8 +2798,17 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                 let selectedData = JSON.parse(sessionStorage.getItem("selectedData"));
                 let specie = Object.values(selectedData)[0];
-                let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
-                let modifier = Object.values(modifiers)[0];
+                var modifiers_flag = sessionStorage.getItem("modifiers_flag") 
+                console.log("La bandera del modificador")
+                console.log(modifiers_flag)
+                if(modifiers_flag == "true"){
+                  let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
+                  var modifier = Object.values(modifiers)[0];
+                  
+                }else{
+                  console.log("Deberia entrar aqui")
+                  var modifier = "sin_modificador";
+                }
                 let focus = sessionStorage.getItem("light_traffic");
 
                 console.log("A ver, el specie ", specie["label"])
@@ -2800,34 +2817,68 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
                 const colorized_by_modifier = (specie, modifier, focus) => {
-                    const getColorizedData = (_data_sp_occ, fp, tp, exclude1, exclude2) => {
+                  console.log("Entra?")
+                    const getColorizedData = (_data_sp_occ, fp, tp, exclude1, exclude2, modifier=true, modifierFocus) => {
                         var lalistadelosazules = [];
                         var lalistadelosblancos = [];
                         var lalistadelosgradientes = [];
+                        var lalistadelosverdes = [];
+                        if(modifier){
 
-                        for (let i = 0; i < _data_sp_occ.length; i++) {
-                            if ((_data_sp_occ[i].fp == fp) && (_data_sp_occ[i].tp == tp)) {
+                          for (let i = 0; i < _data_sp_occ.length; i++) {
+                              if ((_data_sp_occ[i].fp == fp) && (_data_sp_occ[i].tp == tp)) {
+                                  _data_sp_occ[i].occ = 100
+                                  lalistadelosazules.push(_data_sp_occ[i])
+                              } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
+                                  // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
+                                  _data_sp_occ[i].occ = 100
+                                  lalistadelosblancos.push(_data_sp_occ[i])
+                              } else {
+                                  _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                                  lalistadelosgradientes.push(_data_sp_occ[i])
+
+                              }
+                            
+
+
+                          };
+                          console.log("Esto es lo que trae los azules")
+                          console.log(lalistadelosazules)
+                          colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
+                          colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
+                          colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
+                        } else {
+                          console.log("Debria entrar aqui como falso, ya para colorear")
+                          for (let i = 0; i < _data_sp_occ.length; i++) {
+                            if (_data_sp_occ[i].fp == fp) {
                                 _data_sp_occ[i].occ = 100
-                                lalistadelosazules.push(_data_sp_occ[i])
+                                lalistadelosblancos.push(_data_sp_occ[i])
                             } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                 // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                 _data_sp_occ[i].occ = 100
-                                lalistadelosblancos.push(_data_sp_occ[i])
-                            } else {
-                                _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                lalistadelosgradientes.push(_data_sp_occ[i])
+                                lalistadelosverdes.push(_data_sp_occ[i])
+                            } else if (modifierFocus){
+                              if(((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1))){
+                                _data_sp_occ[i].occ = 100
+                                lalistadelosazules.push(_data_sp_occ[i])
+                              } else if((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)){
+                                _data_sp_occ[i].occ = 100
+                                lalistadelosazules.push(_data_sp_occ[i])
+                              }
 
                             }
-
-
                         };
-
-
-                        console.log("Esto es lo que trae los azules")
+                        console.log("La lista  de los azules")
                         console.log(lalistadelosazules)
+                        console.log("La lista  de los blanco")
+                        console.log(lalistadelosblancos)
+                        console.log("La lista  de los verde")
+                        console.log(lalistadelosverdes)
                         colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
-                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
-                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
+                          colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
+                          modifierFocus ? colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "verde", 2) : colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "rojo", 2)
+
+                        }
                     }
                     console.log("Entramos a la fucnion")
 
@@ -2869,46 +2920,60 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             break;
                                     }
                                     break;
-                            }
+                                default:
+                                    switch (focus) {
+                                      case "green":
+                                        console.log("Estamos esntrando al switch correspondiente")
+                                          getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                          break;
+          
+                                      case "red":
+                                          getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
+                                          break;
+                                    }
+                                    break;
+                                  }
                             break;
 
                         case "COVID-19 FALLECIDO":
-                        case "cases":
-                            switch (focus) {
-                                case "green":
-                                    getColorizedData(_data_sp_occ, 1, 1, 1, 0);
-                                    break;
+                        switch (modifier) {
+                          case "cases":
+                              switch (focus) {
+                                  case "green":
+                                      getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                      break;
 
-                                case "red":
-                                    getColorizedData(_data_sp_occ, 0, 0, 1, 0);
-                                    break;
-                            }
-                            break;
-                        case "prevalence":
-                            switch (focus) {
-                                case "green":
-                                    getColorizedData(_data_sp_occ, 1, 1, 1, 0);
-                                    break;
+                                  case "red":
+                                      getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                      break;
+                              }
+                              break;
+                          case "prevalence":
+                              switch (focus) {
+                                  case "green":
+                                      getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                      break;
 
-                                case "red":
-                                    getColorizedData(_data_sp_occ, 0, 0, 1, 0);
-                                    break;
-                            }
-                            break;
-                        case "lethality":
-                            switch (focus) {
-                                case "green":
-                                    getColorizedData(_data_sp_occ, 1, 1, 1, 0);
-                                    break;
+                                  case "red":
+                                      getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                      break;
+                              }
+                              break;
+                          case "lethality":
+                              switch (focus) {
+                                  case "green":
+                                      getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                      break;
 
-                                case "red":
-                                    getColorizedData(_data_sp_occ, 0, 0, 1, 0);
-                                    break;
-                            }
+                                  case "red":
+                                      getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                      break;
+                              }
                             break;
+                          }
+                        break;
 
-                            break;
-                    }
+                      }
 
                 }
                 colorized_by_modifier(specie, modifier, focus)
