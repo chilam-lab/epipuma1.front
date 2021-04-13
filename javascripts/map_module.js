@@ -1580,7 +1580,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
       }
       if (Color == "rojo") {
-        var color_escale = colorbrewer.YlOrRd[5]
+        var color_escale = ["#FF0000"]
 
       }
 
@@ -2970,7 +2970,20 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                       break;
                               }
                             break;
+                          default:
+                              switch (focus) {
+                                case "green":
+                                  console.log("Estamos esntrando al switch correspondiente")
+                                    getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                    break;
+    
+                                case "red":
+                                    getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
+                                    break;
+                              }
+                              break; 
                           }
+                        
                         break;
 
                       }
