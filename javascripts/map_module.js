@@ -2953,9 +2953,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     break;
                             }
                             break;
-
-
-
                     }
 
                 }
