@@ -484,39 +484,7 @@ var module_nicho = (function() {
                 }
             });
         }
-        const generateInput = (node, value, text) => {
-            if ((value == "prevalence") || (value == "lethality") || (value == "negativity")) {
-                let d = document.createElement("div");
-                d.setAttribute("id", value);
-                let i = document.createElement("input");
-                i.setAttribute("type", "radio");
-                i.setAttribute("class", "grupo1");
-                i.setAttribute("name", "grupo1");
-                i.setAttribute("value", value);
-                let l = document.createElement("label");
-                let textnode = document.createTextNode(text);
-                l.appendChild(textnode);
-                l.setAttribute("style", "margin-left: 2%");
-                d.appendChild(i);
-                d.appendChild(l);
-                node.appendChild(d);
-            } else {
-                let b = document.createElement("br");
-                let i = document.createElement("input");
-                i.setAttribute("type", "radio");
-                i.setAttribute("class", "grupo1");
-                i.setAttribute("name", "grupo1");
-                i.setAttribute("value", value);
-                let l = document.createElement("label");
-                let textnode = document.createTextNode(text);
-                l.appendChild(textnode);
-                l.setAttribute("style", "margin-left: 2%")
-                node.appendChild(i);
-                node.appendChild(l);
-                node.appendChild(b);
-            }
 
-        };
         // INICIA DINAMICA MENU MODIFICADORES
         const dinamica_menu_covariables = () => {
             setTimeout(function() {

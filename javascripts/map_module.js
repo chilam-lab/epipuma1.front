@@ -1576,13 +1576,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         }
         if (Color == "verde") {
-          var color_escale = ["#008000"]
+            var color_escale = ["#008000"]
 
-      }
-      if (Color == "rojo") {
-        var color_escale = ["#FF0000"]
+        }
+        if (Color == "rojo") {
+            var color_escale = ["#FF0000"]
 
-      }
+        }
 
         console.log(color_escale)
         if (iteracion == 0) {
@@ -1923,11 +1923,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      */
     function _drawingTargetOnCanvas(canvasOverlay, params) {
 
-        // console.log("_drawingTargetOnCanvas")
-        console.log("🙃")
-        console.log(params)
-        console.log("🙃")
-
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
             elemLeft = params.canvas.offsetLeft,
@@ -2115,9 +2110,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @param {json} params - Json con los parámetros para configurar la malla
      */
     function _drawingOnCanvasOcc(canvasOverlay, params) {
-        console.log("😱")
-        console.log(params)
-        console.log("😱")
         var bounds = params.bounds;
         params.tilePoint.z = params.zoom,
             elemLeft = params.canvas.offsetLeft,
@@ -2193,100 +2185,6 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         }
 
     }
-
-
-
-    /**
-     * Crea y configura la malla embebida en la capa del mapa.
-     *
-     * @function _drawingOnCanvas
-     * @private
-     * @memberof! map_module
-     * 
-     * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
-     * @param {json} params - Json con los parámetros para configurar la malla
-     */
-    function _drawingOnCanvasOccEpipuma(canvasOverlay, params) {
-        var bounds = params.bounds;
-        params.tilePoint.z = params.zoom,
-            elemLeft = params.canvas.offsetLeft,
-            elemTop = params.canvas.offsetTop;
-
-        var ctx = params.canvas.getContext('2d');
-        ctx.globalCompositeOperation = 'source-over';
-
-        ctx.canvas.addEventListener('click', function(event) {
-
-            var x = event.pageX - elemLeft,
-                y = event.pageY - elemTop;
-
-            //            console.log(event);
-            //            console.log(x);
-            //            console.log(y);
-
-        }, false);
-
-        var tile = _tileIndexSP.getTile(params.tilePoint.z, params.tilePoint.x, params.tilePoint.y);
-        if (!tile) {
-            return;
-        }
-
-        ctx.clearRect(0, 0, params.canvas.width, params.canvas.height);
-
-        var features = tile.features;
-
-        // borde de la malla
-        // se agrega borde de la malla
-        // ctx.strokeStyle = 'rgba(0,0,0,0)';
-        // ctx.strokeStyle = 'rgba(255,0,0,0)';
-        // ctx.strokeStyle = 'grey'; // hace malla visible
-
-
-        for (var i = 0; i < features.length; i++) {
-            var feature = features[i],
-                type = feature.type;
-
-            // background de la celda
-            ctx.fillStyle = feature.tags.color ? feature.tags.color : 'rgba(0,0,0,0)';
-            ctx.strokeStyle = feature.tags.stroke ? feature.tags.stroke : 'rgba(0,0,0,0)';
-
-
-            ctx.beginPath();
-
-            for (var j = 0; j < feature.geometry.length; j++) {
-                var geom = feature.geometry[j];
-
-                if (type === 1) {
-                    ctx.arc(geom[0] * ratio + _pad, geom[1] * ratio + _pad, 2, 0, 2 * Math.PI, false);
-                    continue;
-                }
-
-                for (var k = 0; k < geom.length; k++) {
-                    var p = geom[k];
-                    var extent = 4096;
-
-                    var x = p[0] / extent * 256;
-                    var y = p[1] / extent * 256;
-                    if (k)
-                        ctx.lineTo(x + _pad, y + _pad);
-                    else
-                        ctx.moveTo(x + _pad, y + _pad);
-                }
-            }
-
-            if (type === 3 || type === 1) {
-                ctx.fill('evenodd');
-            }
-
-            ctx.stroke();
-        }
-
-    }
-
-
-
-
-
 
     /**
      * Modifica el color de celdas en el mapa, segun decil del histograma seleccionado.
@@ -2798,16 +2696,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                 let selectedData = JSON.parse(sessionStorage.getItem("selectedData"));
                 let specie = Object.values(selectedData)[0];
-                var modifiers_flag = sessionStorage.getItem("modifiers_flag") 
+                var modifiers_flag = sessionStorage.getItem("modifiers_flag")
                 console.log("La bandera del modificador")
                 console.log(modifiers_flag)
-                if(modifiers_flag == "true"){
-                  let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
-                  var modifier = Object.values(modifiers)[0];
-                  
-                }else{
-                  console.log("Deberia entrar aqui")
-                  var modifier = "sin_modificador";
+                if (modifiers_flag == "true") {
+                    let modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
+                    var modifier = Object.values(modifiers)[0];
+
+                } else {
+                    console.log("Deberia entrar aqui")
+                    var modifier = "sin_modificador";
                 }
                 let focus = sessionStorage.getItem("light_traffic");
 
@@ -2815,41 +2713,62 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 console.log("A ver, el modifier ", modifier)
                 console.log("A ver, el focus ", focus)
 
+                const editResumenTable = (row_number, texts, numbers) => {
+                    for (let index = 0; index < row_number; index++) {
+                        let d = document.createElement("div");
+                        d.setAttribute("class", "col-md-6 margin-top-five");
+                        let d2 = document.createElement("div");
+                        d2.setAttribute("class", "col-md-6 margin-top-five");
+                        let d3 = document.createElement("div");
+                        d3.setAttribute("class", "row");
+                        //LABEL
+                        let h = document.createElement("h5");
+                        let textnode = document.createTextNode(texts[index]);
+                        h.appendChild(textnode);
+                        h.setAttribute("id", "lb_occ_celda");
+                        h.setAttribute("class", "summary_lb");
+                        d.appendChild(h);
+                        //NUMBER
+                        let h2 = document.createElement("h5");
+                        let textnode2 = document.createTextNode(numbers[index]);
+                        h2.appendChild(textnode2);
+                        h2.setAttribute("id", "num_occ_celda");
+                        h2.setAttribute("class", "summary_lb");
+                        d2.appendChild(h2);
+                        d3.appendChild(d);
+                        d3.appendChild(d2);
+                        $("#res_tabla_epipuma").append(d3);
+                    };
+                };
+                const getColorizedData = (_data_sp_occ, fp, tp, exclude1, exclude2, modifier = true, modifierFocus) => {
+                    var lalistadelosazules = [];
+                    var lalistadelosblancos = [];
+                    var lalistadelosgradientes = [];
+                    var lalistadelosverdes = [];
+                    var sum_tv = 0;
+                    for (let i = 0; i < _data_sp_occ.length; i++) {
+                        sum_tv += parseInt(_data_sp_occ[i].tv);
+                    }
+                    if (modifier) {
+                        for (let i = 0; i < _data_sp_occ.length; i++) {
+                            if ((_data_sp_occ[i].fp == fp) && (_data_sp_occ[i].tp == tp)) {
+                                _data_sp_occ[i].occ = 100
+                                lalistadelosazules.push(_data_sp_occ[i])
+                            } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
+                                // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
+                                _data_sp_occ[i].occ = 100
+                                lalistadelosblancos.push(_data_sp_occ[i])
+                            } else {
+                                _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                                lalistadelosgradientes.push(_data_sp_occ[i])
 
-                const colorized_by_modifier = (specie, modifier, focus) => {
-                  console.log("Entra?")
-                    const getColorizedData = (_data_sp_occ, fp, tp, exclude1, exclude2, modifier=true, modifierFocus) => {
-                        var lalistadelosazules = [];
-                        var lalistadelosblancos = [];
-                        var lalistadelosgradientes = [];
-                        var lalistadelosverdes = [];
-                        if(modifier){
-
-                          for (let i = 0; i < _data_sp_occ.length; i++) {
-                              if ((_data_sp_occ[i].fp == fp) && (_data_sp_occ[i].tp == tp)) {
-                                  _data_sp_occ[i].occ = 100
-                                  lalistadelosazules.push(_data_sp_occ[i])
-                              } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
-                                  // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
-                                  _data_sp_occ[i].occ = 100
-                                  lalistadelosblancos.push(_data_sp_occ[i])
-                              } else {
-                                  _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                  lalistadelosgradientes.push(_data_sp_occ[i])
-
-                              }
-                            
-
-
-                          };
-                          console.log("Esto es lo que trae los azules")
-                          console.log(lalistadelosazules)
-                          colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
-                          colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
-                          colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
-                        } else {
-                          console.log("Debria entrar aqui como falso, ya para colorear")
-                          for (let i = 0; i < _data_sp_occ.length; i++) {
+                            }
+                        };
+                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
+                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
+                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
+                    } else {
+                        for (let i = 0; i < _data_sp_occ.length; i++) {
                             if (_data_sp_occ[i].fp == fp) {
                                 _data_sp_occ[i].occ = 100
                                 lalistadelosblancos.push(_data_sp_occ[i])
@@ -2857,44 +2776,38 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                 // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                 _data_sp_occ[i].occ = 100
                                 lalistadelosverdes.push(_data_sp_occ[i])
-                            } else if (modifierFocus){
-                              if(((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1))){
-                                _data_sp_occ[i].occ = 100
-                                lalistadelosazules.push(_data_sp_occ[i])
-                              } else if((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)){
-                                _data_sp_occ[i].occ = 100
-                                lalistadelosazules.push(_data_sp_occ[i])
-                              }
+                            } else if (modifierFocus) {
+                                if (((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1))) {
+                                    _data_sp_occ[i].occ = 100
+                                    lalistadelosazules.push(_data_sp_occ[i])
+                                } else if ((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)) {
+                                    _data_sp_occ[i].occ = 100
+                                    lalistadelosazules.push(_data_sp_occ[i])
+                                }
 
                             }
                         };
-                        console.log("La lista  de los azules")
-                        console.log(lalistadelosazules)
-                        console.log("La lista  de los blanco")
-                        console.log(lalistadelosblancos)
-                        console.log("La lista  de los verde")
-                        console.log(lalistadelosverdes)
                         colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
-                          colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
-                          modifierFocus ? colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "verde", 2) : colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "rojo", 2)
-
-                        }
-                    }
-                    console.log("Entramos a la fucnion")
-
+                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
+                        modifierFocus ? colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "verde", 2) : colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "rojo", 2)
+                    };
+                    return [lalistadelosazules.length, lalistadelosblancos.length, lalistadelosgradientes.length, lalistadelosverdes.length, sum_tv]
+                };
+                const colorized_by_modifier = (specie, modifier, focus) => {
                     switch (specie["label"]) {
                         case "COVID-19 CONFIRMADO":
                             switch (modifier) {
                                 case "cases":
                                     switch (focus) {
                                         case "green":
-                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
-
+                                            let numbers, listed_numbers;
+                                            let texts = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers = getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            listed_numbers = [numbers[4], numbers[0], 2458 - numbers[0], numbers[1]]
+                                            editResumenTable(4, texts, listed_numbers)
                                             break;
-
                                         case "red":
                                             getColorizedData(_data_sp_occ, 0, 0, 1, 0);
-
                                             break;
                                     }
                                     break;
@@ -2922,71 +2835,71 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     break;
                                 default:
                                     switch (focus) {
-                                      case "green":
-                                        console.log("Estamos esntrando al switch correspondiente")
-                                          getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
-                                          break;
-          
-                                      case "red":
-                                          getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
-                                          break;
+                                        case "green":
+                                            console.log("Estamos esntrando al switch correspondiente")
+                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                            break;
+
+                                        case "red":
+                                            getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
+                                            break;
                                     }
                                     break;
-                                  }
+                            }
                             break;
 
                         case "COVID-19 FALLECIDO":
-                        switch (modifier) {
-                          case "cases":
-                              switch (focus) {
-                                  case "green":
-                                      getColorizedData(_data_sp_occ, 1, 1, 1, 0);
-                                      break;
+                            switch (modifier) {
+                                case "cases":
+                                    switch (focus) {
+                                        case "green":
+                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            break;
 
-                                  case "red":
-                                      getColorizedData(_data_sp_occ, 0, 0, 1, 0);
-                                      break;
-                              }
-                              break;
-                          case "prevalence":
-                              switch (focus) {
-                                  case "green":
-                                      getColorizedData(_data_sp_occ, 1, 1, 1, 0);
-                                      break;
+                                        case "red":
+                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            break;
+                                    }
+                                    break;
+                                case "prevalence":
+                                    switch (focus) {
+                                        case "green":
+                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            break;
 
-                                  case "red":
-                                      getColorizedData(_data_sp_occ, 0, 0, 1, 0);
-                                      break;
-                              }
-                              break;
-                          case "lethality":
-                              switch (focus) {
-                                  case "green":
-                                      getColorizedData(_data_sp_occ, 1, 1, 1, 0);
-                                      break;
+                                        case "red":
+                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            break;
+                                    }
+                                    break;
+                                case "lethality":
+                                    switch (focus) {
+                                        case "green":
+                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            break;
 
-                                  case "red":
-                                      getColorizedData(_data_sp_occ, 0, 0, 1, 0);
-                                      break;
-                              }
+                                        case "red":
+                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            break;
+                                    }
+                                    break;
+                                default:
+                                    switch (focus) {
+                                        case "green":
+                                            console.log("Estamos esntrando al switch correspondiente")
+                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                            break;
+
+                                        case "red":
+                                            getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
+                                            break;
+                                    }
+                                    break;
+                            }
+
                             break;
-                          default:
-                              switch (focus) {
-                                case "green":
-                                  console.log("Estamos esntrando al switch correspondiente")
-                                    getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
-                                    break;
-    
-                                case "red":
-                                    getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
-                                    break;
-                              }
-                              break; 
-                          }
-                        
-                        break;
 
-                      }
+                    }
 
                 }
                 colorized_by_modifier(specie, modifier, focus)
