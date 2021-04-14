@@ -2803,101 +2803,158 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers, listed_numbers;
                                             let texts = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
                                             numbers = getColorizedData(_data_sp_occ, 1, 1, 1, 0);
-                                            listed_numbers = [numbers[4], numbers[0], 2458 - numbers[0], numbers[1]]
+                                            listed_numbers = [numbers[4], numbers[0], 2458 - numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
                                         case "red":
-                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            let numbers2, listed_numbers2;
+                                            let texts2 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers2 = getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            listed_numbers2 = [numbers2[4], numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                     }
                                     break;
                                 case "incidence":
                                     switch (focus) {
                                         case "green":
-                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            let numbers, listed_numbers;
+                                            let texts = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers = getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            listed_numbers = [numbers[0], 2458 - numbers[0], numbers[1]];
+                                            editResumenTable(3, texts, listed_numbers)
                                             break;
 
                                         case "red":
-                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            let numbers2, listed_numbers2;
+                                            let texts2 = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers2 = getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            listed_numbers2 = [numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                     }
                                     break;
                                 case "prevalence":
                                     switch (focus) {
                                         case "green":
-                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            let numbers, listed_numbers;
+                                            let texts = ["No. Municipios en la Clase", "No. Municipios Excluidos"];
+                                            numbers = getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            listed_numbers = [numbers[0], numbers[1]];
+                                            editResumenTable(2, texts, listed_numbers)
                                             break;
 
                                         case "red":
-                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            let numbers2, listed_numbers2;
+                                            let texts2 = ["No. Municipios en la Clase", "No. Municipios Excluidos"];
+                                            numbers2 = getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            listed_numbers2 = [numbers2[0], numbers2[1]]
+                                            editResumenTable(2, texts2, listed_numbers2)
                                             break;
                                     }
                                     break;
                                 default:
                                     switch (focus) {
                                         case "green":
-                                            console.log("Estamos esntrando al switch correspondiente")
-                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                            let numbers, listed_numbers;
+                                            let texts = ["No. Municipios en Verde", "No. Municipios en Azul", "No. Municipios Excluidos"];
+                                            numbers = getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                            listed_numbers = [numbers[3], numbers[0], numbers[1]];
+                                            editResumenTable(3, texts, listed_numbers)
                                             break;
 
                                         case "red":
-                                            getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
+                                            let numbers2, listed_numbers2;
+                                            let texts2 = ["No. Municipios en Rojo", "No. Municipios en Azul", "No. Municipios Excluidos"];
+                                            numbers2 = getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
+                                            listed_numbers2 = [numbers2[3], numbers2[0], numbers2[1]];
+                                            editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                     }
                                     break;
                             }
                             break;
-
                         case "COVID-19 FALLECIDO":
                             switch (modifier) {
                                 case "cases":
                                     switch (focus) {
                                         case "green":
-                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            let numbers, listed_numbers;
+                                            let texts = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers = getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            listed_numbers = [numbers[4], numbers[0], 2458 - numbers[0], numbers[1]];
+                                            editResumenTable(4, texts, listed_numbers)
                                             break;
-
                                         case "red":
-                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            let numbers2, listed_numbers2;
+                                            let texts2 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers2 = getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            listed_numbers2 = [numbers2[4], numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                     }
                                     break;
-                                case "prevalence":
+                                case "incidence":
                                     switch (focus) {
                                         case "green":
-                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            let numbers, listed_numbers;
+                                            let texts = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers = getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            listed_numbers = [numbers[0], 2458 - numbers[0], numbers[1]];
+                                            editResumenTable(3, texts, listed_numbers)
                                             break;
 
                                         case "red":
-                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            let numbers2, listed_numbers2;
+                                            let texts2 = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers2 = getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            listed_numbers2 = [numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                     }
                                     break;
                                 case "lethality":
                                     switch (focus) {
                                         case "green":
-                                            getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            let numbers, listed_numbers;
+                                            let texts = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers = getColorizedData(_data_sp_occ, 1, 1, 1, 0);
+                                            listed_numbers = [numbers[0], 2458 - numbers[0], numbers[1]];
+                                            editResumenTable(3, texts, listed_numbers)
                                             break;
 
                                         case "red":
-                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            let numbers2, listed_numbers2;
+                                            let texts2 = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers2 = getColorizedData(_data_sp_occ, 0, 0, 1, 0);
+                                            listed_numbers2 = [numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                     }
                                     break;
                                 default:
                                     switch (focus) {
                                         case "green":
-                                            console.log("Estamos esntrando al switch correspondiente")
-                                            getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                            let numbers, listed_numbers;
+                                            let texts = ["No. Municipios en Verde", "No. Municipios en Azul", "No. Municipios Excluidos"];
+                                            numbers = getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                            listed_numbers = [numbers[3], numbers[0], numbers[1]];
+                                            editResumenTable(3, texts, listed_numbers)
                                             break;
 
                                         case "red":
-                                            getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
+                                            let numbers2, listed_numbers2;
+                                            let texts2 = ["No. Municipios en Rojo", "No. Municipios en Azul", "No. Municipios Excluidos"];
+                                            numbers2 = getColorizedData(_data_sp_occ, 0, 0, 0, 1, false, false);
+                                            listed_numbers2 = [numbers2[3], numbers2[0], numbers2[1]];
+                                            editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                     }
                                     break;
                             }
-
                             break;
+
+
 
                     }
 
