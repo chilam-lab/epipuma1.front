@@ -1400,10 +1400,26 @@ var module_nicho = (function() {
                         text_switch = "Casos";
                         break;
                 }
+                let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
+                var focus_switch;
+                console.log(enfoque)
+                switch (enfoque) {
+                  case '"green"':
+                    focus_switch = ("Enfoque: Mejoramiento");    
+                    break;
+                  case '"red"':
+                      focus_switch = ("Enfoque: Empeoramiento");    
+                      break;
+                
+                  default:
+                    break;
+                }
+                
+                console.log(focus_switch)
 
                 let modifier_text = "Modificador: " +
                     text_switch
-                $(".cell_item")[0].innerText = original_text + " >> " + modifier_text
+                $(".cell_item")[0].innerText = original_text + " >> " + modifier_text + " >> " + focus_switch ;
 
             }
         });
