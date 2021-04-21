@@ -891,6 +891,7 @@ var module_nicho = (function() {
                         });
                         $("#enfoqueSelect").change(function() {
                             document.getElementById("button_section").hidden = false;
+                            $("#targetVariableButton").css("visibility", "visible")
                             let enfoque = $("#enfoqueSelect").val();
                             if (enfoque == "Mejoramiento") {
                                 sessionStorage.setItem("light_traffic", "green");
@@ -900,92 +901,12 @@ var module_nicho = (function() {
 
                         });
                         // } else {
-                        $("#modifiersSelect").change(function() {
-                            document.getElementById("button_section").hidden = false;
 
-                        });
                         // }
-
-
 
                     }
                 });
-            })
-
-            $("#targetVariableButton").click(function() {
-                ///// SELECCION VARIABLES EN FLUJO NUEVO
-                let obj_var = $("#targetVariableSelect").val();
-                let modif = $("#modifiersSelect").val();
-                let model = $("#modelSelect").val();
-
-                /////SELECCION  MODELO
-                if (model == 'Predictivo') {
-                    _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
-
-                    $("#pred_des_control").click()
-                } else {
-                    console.log("Perfilado");
-                }
-                ///// SELECCION MODIFICADORES
-                if (modif == "Sin Modificador") {
-                    console.log("Sin Modificador")
-                } else {
-                    flag_modifiers = true;
-                    console.log(flag_modifiers);
-                    list_modifiers.push([modif]);
-                    _module_toast.showToast_BottomCenter(_iTrans.prop('Modelo con Modificadores Seleccionado'), "info");
-
-                }
-                if (obj_var == "COVID-19 Confirmado") {
-                    var selected_var = [{
-                        label: "COVID-19 CONFIRMADO",
-                        level: "Especie",
-                        numlevel: 8,
-                        parent: "COVID-19",
-                        type: 0,
-                    }];
-                } else if (obj_var == "COVID-19 Negativo") {
-                    var selected_var = [{
-                        label: "COVID-19 FALLECIDO",
-                        level: "Especie",
-                        numlevel: 8,
-                        parent: "COVID-19",
-                        type: 0,
-                    }];
-                } else if (obj_var == "COVID-19 Pruebas") {
-                    var selected_var = [{
-                            label: "COVID-19 CONFIRMADO",
-                            level: "Especie",
-                            numlevel: 8,
-                            parent: "COVID-19",
-                            type: 0,
-                        },
-                        {
-                            label: "COVID-19 NEGATIVO",
-                            level: "Especie",
-                            numlevel: 8,
-                            parent: "COVID-19",
-                            type: 0,
-                        }
-                    ];
-                };
-                ////PASANDO VARIABLES A SESSION STORAGE Y RESETEANDO ELEMENTOS
-                console.log(selected_var);
-                sessionStorage.setItem("selectedData", JSON.stringify(selected_var));
-                $("#add_group_target").css("visibility", "visible");
-                $("#add_group_target").click();
-                $("#add_group_target").css("visibility", "hidden");
-                document.getElementById("variableObjetivoSection").hidden = true;
-                document.getElementById("modif_section").hidden = true;
-                document.getElementById("enfoque_section").hidden = true;
-                document.getElementById("targetVariableSelectorId").hidden = true;
-                document.getElementById("targetVariableSelectorOverlay").hidden = true;
-            })
-
-
-
-
-
+            });
         };
         const dateRange = (startDate, endDate) => {
             var start = startDate.split('-');
@@ -1045,12 +966,94 @@ var module_nicho = (function() {
         $("#tuto_fil_fecha").css("top", "27%");
         $("#tuto_fil_fecha").css("margin-left", "5%");
 
+
         //////NEW FLOW
         genrateDynamicButton();
         $("#boton_seleccion_grupo").click(function() {
                 generateNewFlow();
             })
-            /// DATE  MONTHS ONLY
+            ///BOTON CONFIRMAR MODELO
+        $("#targetVariableButton").click(function() {
+            ///// SELECCION VARIABLES EN FLUJO NUEVO
+            let obj_var = $("#targetVariableSelect").val();
+            let modif = $("#modifiersSelect").val();
+            let model = $("#modelSelect").val();
+
+            /////SELECCION  MODELO
+            if (model == 'Predictivo') {
+                _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
+
+                $("#pred_des_control").click()
+            } else {
+                console.log("Perfilado");
+            }
+            ///// SELECCION MODIFICADORES
+            if (modif == "Sin Modificador") {
+                console.log("Sin Modificador")
+            } else {
+                flag_modifiers = true;
+                console.log(flag_modifiers);
+                list_modifiers.push([modif]);
+                _module_toast.showToast_BottomCenter(_iTrans.prop('Modelo con Modificadores Seleccionado'), "info");
+
+            }
+            if (obj_var == "COVID-19 Confirmado") {
+                var selected_var = [{
+                    label: "COVID-19 CONFIRMADO",
+                    level: "Especie",
+                    numlevel: 8,
+                    parent: "COVID-19",
+                    type: 0,
+                }];
+            } else if (obj_var == "COVID-19 Negativo") {
+                var selected_var = [{
+                    label: "COVID-19 FALLECIDO",
+                    level: "Especie",
+                    numlevel: 8,
+                    parent: "COVID-19",
+                    type: 0,
+                }];
+            } else if (obj_var == "COVID-19 Pruebas") {
+                var selected_var = [{
+                        label: "COVID-19 CONFIRMADO",
+                        level: "Especie",
+                        numlevel: 8,
+                        parent: "COVID-19",
+                        type: 0,
+                    },
+                    {
+                        label: "COVID-19 NEGATIVO",
+                        level: "Especie",
+                        numlevel: 8,
+                        parent: "COVID-19",
+                        type: 0,
+                    }
+                ];
+            };
+            ////PASANDO VARIABLES A SESSION STORAGE Y RESETEANDO ELEMENTOS
+            console.log(selected_var);
+            sessionStorage.setItem("selectedData", JSON.stringify(selected_var));
+            $("#add_group_target").css("visibility", "visible");
+            $("#add_group_target").click();
+            $("#add_group_target").css("visibility", "hidden");
+            document.getElementById("variableObjetivoSection").hidden = true;
+            document.getElementById("modif_section").hidden = true;
+            document.getElementById("enfoque_section").hidden = true;
+            document.getElementById("targetVariableSelectorId").hidden = true;
+            document.getElementById("targetVariableSelectorOverlay").hidden = true;
+            $("#boton_seleccion_grupo").css("visibility", "hidden");
+            $("#tuto_fil_fecha").css("top", "21%");
+        });
+        /// BOTON CANCELAR MODELO
+        $("#cancelVariableButton").click(function() {
+            document.getElementById("variableObjetivoSection").hidden = true;
+            document.getElementById("modif_section").hidden = true;
+            document.getElementById("enfoque_section").hidden = true;
+            document.getElementById("targetVariableSelectorId").hidden = true;
+            document.getElementById("targetVariableSelectorOverlay").hidden = true;
+            $("#targetVariableButton").css("visibility", "hidden")
+        });
+        /// DATE  MONTHS ONLY
         let todayDate = new Date();
         let parsedTodayDate = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
         var fechas = dateRange("2020-01-01", parsedTodayDate);
@@ -1404,22 +1407,22 @@ var module_nicho = (function() {
                 var focus_switch;
                 console.log(enfoque)
                 switch (enfoque) {
-                  case '"green"':
-                    focus_switch = ("Enfoque: Mejoramiento");    
-                    break;
-                  case '"red"':
-                      focus_switch = ("Enfoque: Empeoramiento");    
-                      break;
-                
-                  default:
-                    break;
+                    case '"green"':
+                        focus_switch = ("Enfoque: Mejoramiento");
+                        break;
+                    case '"red"':
+                        focus_switch = ("Enfoque: Empeoramiento");
+                        break;
+
+                    default:
+                        break;
                 }
-                
+
                 console.log(focus_switch)
 
                 let modifier_text = "Modificador: " +
                     text_switch
-                $(".cell_item")[0].innerText = original_text + " >> " + modifier_text + " >> " + focus_switch ;
+                $(".cell_item")[0].innerText = original_text + " >> " + modifier_text + " >> " + focus_switch;
 
             }
         });
@@ -1448,7 +1451,6 @@ var module_nicho = (function() {
         });
         $("#add_group_fuente").click(function() {
             sessionStorage.setItem("covar", "")
-
         })
 
         /// Acaban cambios EpiPuma
