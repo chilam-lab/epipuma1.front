@@ -179,6 +179,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         fn_avg: "fn_" + _id_scr_decil
     }
 
+
     var _requestReturned = 2;
 
     var _current_data_score_cell;
@@ -900,17 +901,20 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
         if (_val_process_temp) {
-
+            console.log("test")
             console.log("Limites para validacion tamporal");
 
             var selectedDate = $("#date_timepicker_start_val").val();
             if (selectedDate == todayDateToNextThirtyDays) {
+                console.log(todayDateToNextThirtyDays)
                 var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() + 30))
                 let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-" + (Number((todayDatePlusThirtyDays.getMonth() + 1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth() + 1) : (todayDatePlusThirtyDays.getMonth() + 1)) + "-" + (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate() : todayDatePlusThirtyDays.getDate()));
                 var lim_inf_valtemp = todayDateToNextThirtyDays;
                 var lim_sup_valtemp = parsedTodayDatePlusThirtyDays;
 
             } else {
+                console.log(todayDateToNextThirtyDays)
+                console.log("no")
                 var liminf_splited = selectedDate.split("-");
                 var month = liminf_splited[1]
                 var endMonthDay = returnTheEndMonthDayByTheNumberOfMonth(month);
@@ -919,6 +923,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
             }
         } else {
+            console.log("si")
             var selectedDate = $("#date_timepicker_start").val()
 
 
@@ -1300,7 +1305,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             }
             console.log("liminf: " + liminf);
             console.log("limsup: " + limsup);
-            if ($("#pred_des_control")[0].checked) {
+            if ($("#chkValidationTemp").is(':checked')) {
                 mydate = train_month ? (liminf_splited[0] + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
                 mydate2 = train_month ? (liminf_splited[0] + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
                 console.log(data_request);
@@ -1492,8 +1497,28 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         total_request.decil_selected = [_default_decil]
 
                         verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
+                        var modifiers_flag_verb = sessionStorage.getItem("modifiers_flag");
+                        if (modifiers_flag_verb == "true") {
+                            verbo = "generateTarget";
+                        }
+                        if ($("#chkValidationTemp").is(':checked')) {
+                            mydate = train_month ? (liminf_splited[0] + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
+                            mydate2 = train_month ? (liminf_splited[0] + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
+                            total_request["lim_inf"] = mydate;
+                            total_request["lim_sup"] = mydate2;
+                            total_request["lim_inf_validation"] = liminf;
+                            total_request["lim_sup_validation"] = limsup;
+                        }
+                        let enfoque2 = sessionStorage.getItem("traffic_light");
+                        if (enfoque2 == "star") {
+                            enfoque2 = "'none'"
+                        }
+                        total_request["traffic_light"] = enfoque2
+                        console.log(total_request);
+
 
                         fetch(_url_zacatuche + "/niche/" + verbo, {
+                                //fetch(_url_zacatuche + "/dev/niche/" + verbo, {
                                 method: "POST",
                                 body: JSON.stringify(total_request),
                                 headers: {
@@ -2491,7 +2516,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                     father.item.forEach(function(decil_item) {
 
-
                         // if there's no decil data in son, coninue for the next one
                         if (!son.item[son_index])
                             return;
@@ -2680,7 +2704,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @param {array} decil_total - Array resultante del total de los grupos de variables seleccionados por el usuario.
      */
     function _addDataChartTotal(data_chart, decil_total) {
-
         _VERBOSE ? console.log("addDataChartTotal") : _VERBOSE
 
         if (data_chart[0].names.length > 1) {
@@ -2884,7 +2907,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         var verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
 
-        console.log("verbo: " + verbo)
 
         fetch(_url_zacatuche + "/niche/" + verbo, {
                 method: "POST",

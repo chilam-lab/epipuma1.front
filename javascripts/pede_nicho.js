@@ -95,6 +95,7 @@ var module_nicho = (function() {
         sessionStorage.setItem("light_traffic", "");
         sessionStorage.setItem("res_modif", "");
         sessionStorage.setItem("modif_pop", "");
+        sessionStorage.setItem("modelo_test", "");
 
 
 
@@ -897,8 +898,8 @@ var module_nicho = (function() {
                                 sessionStorage.setItem("light_traffic", "green");
                             } else if (enfoque == "Empeoramiento") {
                                 sessionStorage.setItem("light_traffic", "red");
-                            } else{
-                              sessionStorage.setItem("light_traffic","star");
+                            } else {
+                                sessionStorage.setItem("light_traffic", "star");
                             }
 
                         });
@@ -984,10 +985,12 @@ var module_nicho = (function() {
             /////SELECCION  MODELO
             if (model == 'Predictivo') {
                 _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
-
+                sessionStorage.setItem("modelo_test", "predictivo");
                 $("#pred_des_control").click()
             } else {
                 console.log("Perfilado");
+                sessionStorage.setItem("modelo_test", "perfilado");
+
             }
             ///// SELECCION MODIFICADORES
             if (modif == "Sin Modificador") {
@@ -1045,6 +1048,13 @@ var module_nicho = (function() {
             document.getElementById("targetVariableSelectorOverlay").hidden = true;
             $("#boton_seleccion_grupo").css("visibility", "hidden");
             $("#tuto_fil_fecha").css("top", "21%");
+            ////CCHECK FOR $("#chkValidationTemp").is(':checked')
+            var modelo2 = sessionStorage.getItem("modelo_test")
+            if (modelo2 == "predictivo") {
+                $("#chkValidationTemp").attr('checked', true);
+            } else {
+                $("#chkValidationTemp").attr('checked', false);
+            }
         });
         /// BOTON CANCELAR MODELO
         $("#cancelVariableButton").click(function() {
@@ -1055,6 +1065,7 @@ var module_nicho = (function() {
             document.getElementById("targetVariableSelectorOverlay").hidden = true;
             $("#targetVariableButton").css("visibility", "hidden")
         });
+
         /// DATE  MONTHS ONLY
         let todayDate = new Date();
         let parsedTodayDate = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
@@ -1072,7 +1083,11 @@ var module_nicho = (function() {
             $("#pred_des_control")[0].checked = false;
             $(".texto_switch").css("margin-left", "105%");
             $(".texto_switch").css("width", "875%");
-            $("#tuto_val").remove();
+            $("#tuto_val").css("position", "absolute");
+            $("#tuto_val").css("top", "500px");
+            $("#tuto_val").css("visibility", "hidden");
+
+
             $("#pred_des_control").click(function() {
 
                 setTimeout(function() {
@@ -1338,7 +1353,7 @@ var module_nicho = (function() {
                     })
                     $(".jstree-anchor")[1].click()
 
-                }, 1000)
+                }, 1500)
 
             });
 
@@ -1416,8 +1431,8 @@ var module_nicho = (function() {
                         focus_switch = ("Enfoque: Empeoramiento");
                         break;
                     case '"star"':
-                          focus_switch = ("Enfoque: Estrella");
-                          break;
+                        focus_switch = ("Enfoque: Estrella");
+                        break;
                 }
 
                 console.log(focus_switch)

@@ -2715,13 +2715,24 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 console.log("A ver, el focus ", focus)
 
                 const editResumenTable = (row_number, texts, numbers) => {
+                    try {
+                        $("#resumen_div_1").remove();
+                        $("#resumen_div_2").remove();
+                        $("#resumen_div_3").remove();
+
+                    } catch (error) {
+                        console.log("primera vez")
+                    }
                     for (let index = 0; index < row_number; index++) {
                         let d = document.createElement("div");
                         d.setAttribute("class", "col-md-6 margin-top-five");
+                        d.setAttribute("id", "resumen_div_1");
                         let d2 = document.createElement("div");
                         d2.setAttribute("class", "col-md-6 margin-top-five");
+                        d2.setAttribute("id", "resumen_div_2");
                         let d3 = document.createElement("div");
                         d3.setAttribute("class", "row");
+                        d3.setAttribute("id", "resumen_div_3");
                         //LABEL
                         let h = document.createElement("h5");
                         let textnode = document.createTextNode(texts[index]);
@@ -2741,7 +2752,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                         $("#res_tabla_epipuma").append(d3);
                     };
                 };
-                const getColorizedData = (_data_sp_occ, fp, tp, exclude1, exclude2, modifier = true, modifierFocus, modifierStar=false) => {
+                const getColorizedData = (_data_sp_occ, fp, tp, exclude1, exclude2, modifier = true, modifierFocus, modifierStar = false) => {
                     var lalistadelosazules = [];
                     var lalistadelosblancos = [];
                     var lalistadelosgradientes = [];
@@ -2769,44 +2780,44 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                         colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
                         colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
                     } else {
-                      if(modifierStar){
-                        for (let i = 0; i < _data_sp_occ.length; i++) {
-                          if (_data_sp_occ[i].tp == tp) {
-                              _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                              lalistadelosgradientes.push(_data_sp_occ[i])
-                          } else {
-                              _data_sp_occ[i].occ = 100
-                              lalistadelosazules.push(_data_sp_occ[i])
-
-                          }
-                        };
-                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
-                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
-
-                      } else {
-                        for (let i = 0; i < _data_sp_occ.length; i++) {
-                            if (_data_sp_occ[i].fp == fp) {
-                                _data_sp_occ[i].occ = 100
-                                lalistadelosblancos.push(_data_sp_occ[i])
-                            } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
-                                // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
-                                _data_sp_occ[i].occ = 100
-                                lalistadelosverdes.push(_data_sp_occ[i])
-                            } else if (modifierFocus) {
-                                if (((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1))) {
+                        if (modifierStar) {
+                            for (let i = 0; i < _data_sp_occ.length; i++) {
+                                if (_data_sp_occ[i].tp == tp) {
+                                    _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                                    lalistadelosgradientes.push(_data_sp_occ[i])
+                                } else {
                                     _data_sp_occ[i].occ = 100
                                     lalistadelosazules.push(_data_sp_occ[i])
-                                } else if ((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)) {
-                                    _data_sp_occ[i].occ = 100
-                                    lalistadelosazules.push(_data_sp_occ[i])
+
                                 }
+                            };
+                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
+                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
 
-                            }
-                        };
-                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
-                        colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
-                        modifierFocus ? colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "verde", 2) : colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "rojo", 2)
-                      }
+                        } else {
+                            for (let i = 0; i < _data_sp_occ.length; i++) {
+                                if (_data_sp_occ[i].fp == fp) {
+                                    _data_sp_occ[i].occ = 100
+                                    lalistadelosblancos.push(_data_sp_occ[i])
+                                } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
+                                    // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
+                                    _data_sp_occ[i].occ = 100
+                                    lalistadelosverdes.push(_data_sp_occ[i])
+                                } else if (modifierFocus) {
+                                    if (((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1))) {
+                                        _data_sp_occ[i].occ = 100
+                                        lalistadelosazules.push(_data_sp_occ[i])
+                                    } else if ((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)) {
+                                        _data_sp_occ[i].occ = 100
+                                        lalistadelosazules.push(_data_sp_occ[i])
+                                    }
+
+                                }
+                            };
+                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
+                            colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosblancos, false, "blanco", 1);
+                            modifierFocus ? colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "verde", 2) : colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosverdes, false, "rojo", 2)
+                        }
                     };
                     return [lalistadelosazules.length, lalistadelosblancos.length, lalistadelosgradientes.length, lalistadelosverdes.length, sum_tv]
                 };
@@ -2834,10 +2845,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers3, listed_numbers3;
                                             let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
-                                            listed_numbers3 = [numbers3[4], numbers3[0], 2458 - numbers3[0], numbers3[1]]
+                                            listed_numbers3 = [numbers3[4], 2458 - numbers3[0], numbers3[0], numbers3[1]]
                                             editResumenTable(4, texts3, listed_numbers3)
                                             break;
-                  
+
                                     }
                                     break;
                                 case "incidence":
@@ -2858,11 +2869,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                         case "star":
-                                              let numbers3, listed_numbers3;
-                                              let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                              numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
-                                              listed_numbers3 = [numbers3[4], numbers3[0], 2458 - numbers3[0], numbers3[1]]
-                                              editResumenTable(4, texts3, listed_numbers3)
+                                            let numbers3, listed_numbers3;
+                                            let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
+                                            listed_numbers3 = [numbers3[4], 2458 - numbers3[0], numbers3[0], numbers3[1]]
+                                            editResumenTable(4, texts3, listed_numbers3)
                                             break;
                                     }
                                     break;
@@ -2887,7 +2898,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers3, listed_numbers3;
                                             let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
-                                            listed_numbers3 = [numbers3[4], numbers3[0], 2458 - numbers3[0], numbers3[1]]
+                                            listed_numbers3 = [numbers3[4], 2458 - numbers3[0], numbers3[0], numbers3[1]]
                                             editResumenTable(4, texts3, listed_numbers3)
                                             break;
                                     }
@@ -2913,7 +2924,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers3, listed_numbers3;
                                             let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
-                                            listed_numbers3 = [numbers3[4], numbers3[0], 2458 - numbers3[0], numbers3[1]]
+                                            listed_numbers3 = [numbers3[4], 2458 - numbers3[0], numbers3[0], numbers3[1]]
                                             editResumenTable(4, texts3, listed_numbers3)
                                             break;
                                     }
@@ -2939,12 +2950,12 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
-                                              let numbers3, listed_numbers3;
-                                              let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                              numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
-                                              listed_numbers3 = [numbers3[4], numbers3[0], 2458 - numbers3[0], numbers3[1]]
-                                              editResumenTable(4, texts3, listed_numbers3)
-                                              break;
+                                            let numbers3, listed_numbers3;
+                                            let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
+                                            listed_numbers3 = [numbers3[4], 2458 - numbers3[0], numbers3[0], numbers3[1]]
+                                            editResumenTable(4, texts3, listed_numbers3)
+                                            break;
                                     }
                                     break;
                                 case "incidence":
@@ -2968,7 +2979,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers3, listed_numbers3;
                                             let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
-                                            listed_numbers3 = [numbers3[4], numbers3[0], 2458 - numbers3[0], numbers3[1]]
+                                            listed_numbers3 = [numbers3[4], 2458 - numbers3[0], numbers3[0], numbers3[1]]
                                             editResumenTable(4, texts3, listed_numbers3)
                                             break;
                                     }
@@ -2994,7 +3005,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers3, listed_numbers3;
                                             let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
-                                            listed_numbers3 = [numbers3[4], numbers3[0], 2458 - numbers3[0], numbers3[1]]
+                                            listed_numbers3 = [numbers3[4], 2458 - numbers3[0], numbers3[0], numbers3[1]]
                                             editResumenTable(4, texts3, listed_numbers3)
                                             break;
                                     }
@@ -3017,12 +3028,12 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                         case "star":
-                                              let numbers3, listed_numbers3;
-                                              let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                              numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
-                                              listed_numbers3 = [numbers3[4], numbers3[0], 2458 - numbers3[0], numbers3[1]]
-                                              editResumenTable(4, texts3, listed_numbers3)
-                                              break;
+                                            let numbers3, listed_numbers3;
+                                            let texts3 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
+                                            listed_numbers3 = [numbers3[4], 2458 - numbers3[0], numbers3[0], numbers3[1]]
+                                            editResumenTable(4, texts3, listed_numbers3)
+                                            break;
                                     }
                                     break;
                             }
