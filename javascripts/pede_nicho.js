@@ -895,8 +895,10 @@ var module_nicho = (function() {
                             let enfoque = $("#enfoqueSelect").val();
                             if (enfoque == "Mejoramiento") {
                                 sessionStorage.setItem("light_traffic", "green");
-                            } else {
+                            } else if (enfoque == "Empeoramiento") {
                                 sessionStorage.setItem("light_traffic", "red");
+                            } else{
+                              sessionStorage.setItem("light_traffic","star");
                             }
 
                         });
@@ -1413,9 +1415,9 @@ var module_nicho = (function() {
                     case '"red"':
                         focus_switch = ("Enfoque: Empeoramiento");
                         break;
-
-                    default:
-                        break;
+                    case '"star"':
+                          focus_switch = ("Enfoque: Estrella");
+                          break;
                 }
 
                 console.log(focus_switch)
