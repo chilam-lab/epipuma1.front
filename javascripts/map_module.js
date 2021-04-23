@@ -2716,23 +2716,22 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                 const editResumenTable = (row_number, texts, numbers) => {
                     try {
-                        $("#resumen_div_1").remove();
-                        $("#resumen_div_2").remove();
-                        $("#resumen_div_3").remove();
+                        for (let index = 0; index < row_number; index++) {
+                            $("#row_table_resumen").remove()
+                        }
 
                     } catch (error) {
                         console.log("primera vez")
-                    }
+                    };
+
                     for (let index = 0; index < row_number; index++) {
                         let d = document.createElement("div");
                         d.setAttribute("class", "col-md-6 margin-top-five");
-                        d.setAttribute("id", "resumen_div_1");
                         let d2 = document.createElement("div");
                         d2.setAttribute("class", "col-md-6 margin-top-five");
-                        d2.setAttribute("id", "resumen_div_2");
                         let d3 = document.createElement("div");
                         d3.setAttribute("class", "row");
-                        d3.setAttribute("id", "resumen_div_3");
+                        d3.setAttribute("id", "row_table_resumen");
                         //LABEL
                         let h = document.createElement("h5");
                         let textnode = document.createTextNode(texts[index]);
