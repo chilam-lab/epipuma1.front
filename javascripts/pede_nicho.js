@@ -1693,6 +1693,9 @@ var module_nicho = (function() {
 
 
         });
+        setTimeout(function() {
+          $("#histcontainer_row").hide()
+        },1000)
 
 
         $("#specie_before").click(function() {
