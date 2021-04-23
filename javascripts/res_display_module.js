@@ -1318,6 +1318,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 data_request["lim_sup"] = limsup;
             }
             let enfoque = sessionStorage.getItem("light_traffic");
+            if (enfoque == "star") {
+                enfoque = "none";
+            }
             console.log(enfoque);
             data_request["traffic_light"] = enfoque;
             data_request["period_config"] = ['*', '*', '1'];
@@ -1509,12 +1512,21 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             total_request["lim_inf_validation"] = liminf;
                             total_request["lim_sup_validation"] = limsup;
                         }
-                        let enfoque2 = sessionStorage.getItem("traffic_light");
+                        let enfoque2 = sessionStorage.getItem("light_traffic");
                         if (enfoque2 == "star") {
-                            enfoque2 = "'none'"
+                            enfoque2 = "none";
                         }
-                        total_request["traffic_light"] = enfoque2
+                        let modifiers2 = JSON.parse(sessionStorage.getItem("modifiers"));
+                        let texto = Object.values(modifiers2);
+                        let texto2 = (texto[0])
+                        console.log(texto2);
+                        console.log(enfoque2);
+                        total_request["traffic_light"] = enfoque2;
+                        total_request["modifier"] = texto2;
+                        total_request["period_config"] = ['*', '*', '1'];
+
                         console.log(total_request);
+
 
 
                         fetch(_url_zacatuche + "/niche/" + verbo, {
