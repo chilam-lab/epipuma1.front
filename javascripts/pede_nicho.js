@@ -1389,6 +1389,7 @@ var module_nicho = (function() {
                 //Manejo de Modificadores
                 //Eliminar grupo modificadores
             if (flag_modifiers) {
+                ///VAR OBJ CON MODIF
                 let obj_fix = {}
                 sessionStorage.setItem("modifiers_flag", "true");
                 for (let index = 0; index < list_modifiers.length; index++) {
@@ -1441,8 +1442,50 @@ var module_nicho = (function() {
                     text_switch
                 $(".cell_item")[0].innerText = original_text + " >> " + modifier_text + " >> " + focus_switch;
 
+            } else {
+                ///VAR OBJ SIN MODIF
+                $(".row_var_item").click();
+                fix_tar_var_without_mod();
+
+
+                setTimeout(function() {
+                    $(".row_var_item").click(function() {
+                        fix_tar_var_without_mod();
+                    });
+                }, 1000)
+
             }
         });
+        const fix_tar_var_without_mod = () => {
+            console.log("jelp")
+            let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
+            var focus_switch;
+            console.log(enfoque)
+            switch (enfoque) {
+                case '"green"':
+                    focus_switch = ("Enfoque: Mejoramiento");
+                    break;
+                case '"red"':
+                    focus_switch = ("Enfoque: Empeoramiento");
+                    break;
+                case '"star"':
+                    focus_switch = ("Enfoque: Estrella");
+                    break;
+            }
+
+            console.log(focus_switch);
+            try {
+                let original_text = $(".cell_item")[0].innerText;
+                let original_text_2 = original_text.split("Especie >>")[1];
+                $(".cell_item")[0].innerText = original_text_2 + " >> " + focus_switch;
+            } catch (error) {
+                console.log("minimizado")
+            }
+
+
+
+
+        };
         // Boton Borrar
         $("#clean_var_target").click(function() {
             getFixedData("target", data_target);
@@ -1694,8 +1737,8 @@ var module_nicho = (function() {
 
         });
         setTimeout(function() {
-          $("#histcontainer_row").hide()
-        },1000)
+            $("#histcontainer_row").hide()
+        }, 1000)
 
 
         $("#specie_before").click(function() {
