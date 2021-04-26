@@ -800,7 +800,7 @@ var module_nicho = (function() {
             button_flow.setAttribute("class", "btn btn-primary");
             button_flow.setAttribute("id", "boton_seleccion_grupo");
             button_flow.setAttribute("style", "width:80%;border-radius: 5px;font-size: 90%;margin-left:11%;margin-top:2%;margin-bottom:2%");
-            let textnode = document.createTextNode("Agregar Variable Objetivo");
+            let textnode = document.createTextNode("Seleccionar variable de interés");
             button_flow.append(textnode);
             document.getElementById("treeVariable_target").appendChild(button_flow);
 
@@ -953,8 +953,102 @@ var module_nicho = (function() {
             }
             $("#date_timepicker_start")[0].value = "";
         };
-        // Implementación Funciones
-        //Cambios Gpos Interes Target
+        const fix_tar_var_without_mod = () => {
+            let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
+            var focus_switch;
+            console.log(enfoque)
+            switch (enfoque) {
+                case '"green"':
+                    focus_switch = ("Enfoque: Mejoramiento");
+                    break;
+                case '"red"':
+                    focus_switch = ("Enfoque: Empeoramiento");
+                    break;
+                case '"star"':
+                    focus_switch = ("Enfoque: Estrella");
+                    break;
+            }
+            try {
+                let original_text = $(".cell_item")[0].innerText;
+                let original_text_2 = original_text.split("Especie >>")[1];
+                $(".cell_item")[0].innerText = original_text_2 + " >> " + focus_switch;
+                let a = $(".row_var_item")[0].innerHTML;
+                if (a[0] == "G") {
+                    let b = a.split("Gpo Bio 1");
+                    let c = "Var. Objetivo" + b[1]
+                    $(".row_var_item")[0].innerHTML = c
+                }
+            } catch (error) {
+                console.log("minimizado");
+                $(".row_var_item")[0].innerHTML = "Var. Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
+            }
+        };
+        const fix_tar_var_with_mod = () => {
+                let obj_fix = {}
+                sessionStorage.setItem("modifiers_flag", "true");
+                for (let index = 0; index < list_modifiers.length; index++) {
+                    obj_fix[list_modifiers[index]] = list_modifiers[index][0];
+                }
+                console.log(obj_fix)
+                sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
+                let modifier_value = JSON.parse(sessionStorage.getItem("modifiers"));
+                let texto = Object.values(modifier_value);
+                let text_switch
+                let texto2 = (texto[0])
+                console.log(texto2)
+                switch (texto2) {
+                    case "prevalence":
+                        text_switch = "Prevalencia";
+                        break;
+                    case "incidence":
+                        text_switch = "Incidencia";
+                        break;
+                    case "lethality":
+                        text_switch = "Letalidad";
+                        break;
+                    case "negativity":
+                        text_switch = "Negatividad";
+                        break;
+                    default:
+                        text_switch = "Casos";
+                        break;
+                }
+                let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
+                var focus_switch;
+                console.log(enfoque)
+                switch (enfoque) {
+                    case '"green"':
+                        focus_switch = ("Enfoque: Mejoramiento");
+                        break;
+                    case '"red"':
+                        focus_switch = ("Enfoque: Empeoramiento");
+                        break;
+                    case '"star"':
+                        focus_switch = ("Enfoque: Estrella");
+                        break;
+                }
+
+                console.log(focus_switch)
+
+                let modifier_text = "Modificador: " +
+                    text_switch
+                try {
+                    let original_text = $(".cell_item")[0].innerText;
+                    let original_text_2 = original_text.split("Especie >>")[1];
+                    $(".cell_item")[0].innerText = original_text_2 + " >> " + modifier_text + " >> " + focus_switch;
+                    let a = $(".row_var_item")[0].innerHTML;
+                    if (a[0] == "G") {
+                        let b = a.split("Gpo Bio 1");
+                        let c = "Var. Objetivo" + b[1]
+                        $(".row_var_item")[0].innerHTML = c
+                    }
+                } catch (error) {
+                    console.log("minimizado");
+                    $(".row_var_item")[0].innerHTML = "Var. Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
+                }
+            }
+            // Implementación Funciones
+            //Cambios Gpos Interes Target
         $("#tuto_taxon_sp_target").remove();
         $("#tuto_nav_tabs_target").css("margin-bottom", "4px");
         $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
@@ -1390,57 +1484,13 @@ var module_nicho = (function() {
                 //Eliminar grupo modificadores
             if (flag_modifiers) {
                 ///VAR OBJ CON MODIF
-                let obj_fix = {}
-                sessionStorage.setItem("modifiers_flag", "true");
-                for (let index = 0; index < list_modifiers.length; index++) {
-                    obj_fix[list_modifiers[index]] = list_modifiers[index][0];
-                }
-                console.log(obj_fix)
-                sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
                 $(".row_var_item").click()
-                let original_text = $(".cell_item")[0].innerText;
-                let modifier_value = JSON.parse(sessionStorage.getItem("modifiers"));
-                let texto = Object.values(modifier_value);
-                let text_switch
-                let texto2 = (texto[0])
-                console.log(texto2)
-                switch (texto2) {
-                    case "prevalence":
-                        text_switch = "Prevalencia";
-                        break;
-                    case "incidence":
-                        text_switch = "Incidencia";
-                        break;
-                    case "lethality":
-                        text_switch = "Letalidad";
-                        break;
-                    case "negativity":
-                        text_switch = "Negatividad";
-                        break;
-                    default:
-                        text_switch = "Casos";
-                        break;
-                }
-                let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
-                var focus_switch;
-                console.log(enfoque)
-                switch (enfoque) {
-                    case '"green"':
-                        focus_switch = ("Enfoque: Mejoramiento");
-                        break;
-                    case '"red"':
-                        focus_switch = ("Enfoque: Empeoramiento");
-                        break;
-                    case '"star"':
-                        focus_switch = ("Enfoque: Estrella");
-                        break;
-                }
-
-                console.log(focus_switch)
-
-                let modifier_text = "Modificador: " +
-                    text_switch
-                $(".cell_item")[0].innerText = original_text + " >> " + modifier_text + " >> " + focus_switch;
+                fix_tar_var_with_mod();
+                setTimeout(function() {
+                    $(".row_var_item").click(function() {
+                        fix_tar_var_with_mod();
+                    });
+                }, 1000)
 
             } else {
                 ///VAR OBJ SIN MODIF
@@ -1456,36 +1506,7 @@ var module_nicho = (function() {
 
             }
         });
-        const fix_tar_var_without_mod = () => {
-            console.log("jelp")
-            let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
-            var focus_switch;
-            console.log(enfoque)
-            switch (enfoque) {
-                case '"green"':
-                    focus_switch = ("Enfoque: Mejoramiento");
-                    break;
-                case '"red"':
-                    focus_switch = ("Enfoque: Empeoramiento");
-                    break;
-                case '"star"':
-                    focus_switch = ("Enfoque: Estrella");
-                    break;
-            }
 
-            console.log(focus_switch);
-            try {
-                let original_text = $(".cell_item")[0].innerText;
-                let original_text_2 = original_text.split("Especie >>")[1];
-                $(".cell_item")[0].innerText = original_text_2 + " >> " + focus_switch;
-            } catch (error) {
-                console.log("minimizado")
-            }
-
-
-
-
-        };
         // Boton Borrar
         $("#clean_var_target").click(function() {
             getFixedData("target", data_target);
