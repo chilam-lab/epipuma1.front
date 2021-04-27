@@ -671,20 +671,30 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr('type', 'button')
                     .addClass('btn btn-primary glyphicon glyphicon-plus pull-left no-mg-top')
                     .click(function(e) {
-                        ////Restriccion Covars
-                        let number_checked = $(".jstree-clicked").length;
-                        if (number_checked > 1) {
-                            alert("Seleccione cada variable por separado.");
-                            return;
-                        }
                         let flag_covars = JSON.stringify(sessionStorage.getItem("covar")).length;
 
                         let var_array = JSON.parse(sessionStorage.getItem("selectedData"));
-                        self.addOtherGroup('jstree_variables_species_' + id, var_array, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+                        let first = JSON.stringify(var_array[0]);
+                        let condition = first.includes("COVID")
+                        console.log(condition);
+                        console.log(var_array);
+                        if(condition){
+                          self.addOtherGroup('jstree_variables_species_' + id, var_array, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+
+                        }else{
+                
+                          for (let index = 0; index < var_array.length; index++) {
+                            console.log(var_array[index])
+                            console.log(index)
+                            self.addOtherGroup('jstree_variables_species_' + id, [var_array[index]], 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+                            
+                          }
+                        }
+                       
 
 
 
-                        // $('#jstree_variables_species_' + id).jstree("destroy").empty();
+                        //$('#jstree_variables_species_' + id).jstree("destroy").empty();
                         $('#jstree_variables_species_' + id).off('open_node.jstree', self.getTreeVar);
                         $("#jstree_variables_species_" + id).off('changed.jstree', self.getChangeTreeVar);
                         $("#jstree_variables_species_" + id).off('ready.jstree', self.loadNodes);
