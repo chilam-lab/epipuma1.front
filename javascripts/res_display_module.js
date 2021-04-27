@@ -1529,8 +1529,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
 
-                        fetch(_url_zacatuche + "/niche/" + verbo, {
-                                //fetch(_url_zacatuche + "/dev/niche/" + verbo, {
+                        ////fetch(_url_zacatuche + "/niche/" + verbo, {
+                                fetch(_url_zacatuche + "/dev/niche/" + verbo, {
                                 method: "POST",
                                 body: JSON.stringify(total_request),
                                 headers: {
