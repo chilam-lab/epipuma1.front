@@ -678,19 +678,19 @@ var variable_module = (function(verbose, url_zacatuche) {
                         let condition = first.includes("COVID")
                         console.log(condition);
                         console.log(var_array);
-                        if(condition){
-                          self.addOtherGroup('jstree_variables_species_' + id, var_array, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+                        if (condition) {
+                            self.addOtherGroup('jstree_variables_species_' + id, var_array, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
 
-                        }else{
-                
-                          for (let index = 0; index < var_array.length; index++) {
-                            console.log(var_array[index])
-                            console.log(index)
-                            self.addOtherGroup('jstree_variables_species_' + id, [var_array[index]], 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
-                            
-                          }
+                        } else {
+
+                            for (let index = 0; index < var_array.length; index++) {
+                                console.log(var_array[index])
+                                console.log(index)
+                                self.addOtherGroup('jstree_variables_species_' + id, [var_array[index]], 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+
+                            }
                         }
-                       
+
 
 
 
@@ -1543,6 +1543,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                     self.updateVarSelArray(gpo_deleted, _BORRADO);
 
+
                 });
 
 
@@ -1554,6 +1555,53 @@ var variable_module = (function(verbose, url_zacatuche) {
 
             // se envia solo el elemento agregado
             self.updateVarSelArray(temp_grupo, _AGREGADO);
+            /////EPIPUMA MODIFCACION CUADRITO AZUL COVARIABLE
+            console.log(arraySelected)
+            console.log("El array")
+            if (arraySelected[0]["label"].includes("COVID")) {
+                console.log("es problema del front")
+            } else {
+                console.log("Es problema del back")
+
+                const fixed_covar = () => {
+                    let pos_blue = $(".row_var_item").length;
+                    let pos_blue_opened = $(".cell_item").length;
+
+                    try {
+                        let original_text = $(".cell_item")[pos_blue_opened - 1].innerText;
+                        let original_text_2 = original_text.split(">>")[1]
+
+                        $(".cell_item")[pos_blue_opened - 1].innerText = original_text_2;
+
+                        let a = $(".row_var_item")[pos_blue - 1].innerHTML;
+                        if (a[0] == "G") {
+                            let b = a.split("Gpo Bio 1");
+                            let c = "Covariable" + b[1]
+                            $(".row_var_item")[pos_blue - 1].innerHTML = c
+                        }
+                    } catch (error) {
+                        console.log("minimizado");
+                        $(".row_var_item")[pos_blue - 1].innerHTML = "Covariable <button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
+                    }
+                };
+                let pos_blue = $(".row_var_item").length;
+                $(".row_var_item")[pos_blue - 1].click();
+                setTimeout(function() {
+                    fixed_covar();
+                }, 50)
+                setTimeout(function() {
+                    $(".row_var_item").click(function() {
+                        let a = $(this);
+                        console.log(a[0]);
+                        console.log(a[0].innerText);
+                        fixed_covar();
+                    });
+                })
+            }
+
+
+
+
 
         }
 

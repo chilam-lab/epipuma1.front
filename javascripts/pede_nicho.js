@@ -975,12 +975,12 @@ var module_nicho = (function() {
                 let a = $(".row_var_item")[0].innerHTML;
                 if (a[0] == "G") {
                     let b = a.split("Gpo Bio 1");
-                    let c = "Var. Objetivo" + b[1]
+                    let c = "Variable Objetivo" + b[1]
                     $(".row_var_item")[0].innerHTML = c
                 }
             } catch (error) {
                 console.log("minimizado");
-                $(".row_var_item")[0].innerHTML = "Var. Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
+                $(".row_var_item")[0].innerHTML = "Variable Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
             }
         };
         const fix_tar_var_with_mod = () => {
@@ -1039,12 +1039,12 @@ var module_nicho = (function() {
                     let a = $(".row_var_item")[0].innerHTML;
                     if (a[0] == "G") {
                         let b = a.split("Gpo Bio 1");
-                        let c = "Var. Objetivo" + b[1]
+                        let c = "Variable Objetivo" + b[1]
                         $(".row_var_item")[0].innerHTML = c
                     }
                 } catch (error) {
                     console.log("minimizado");
-                    $(".row_var_item")[0].innerHTML = "Var. Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
+                    $(".row_var_item")[0].innerHTML = "Variable Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
                 }
             }
             // Implementación Funciones
