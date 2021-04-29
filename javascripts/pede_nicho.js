@@ -1509,10 +1509,15 @@ var module_nicho = (function() {
 
         // Boton Borrar
         $("#clean_var_target").click(function() {
-            getFixedData("target", data_target);
+            //getFixedData("target", data_target);
             sessionStorage.setItem("flag_target_added", "false")
             flag_modifiers = false;
+            sessionStorage.setItem("modelo_test", "")
+            sessionStorage.setItem("modifiers", "");
+            sessionStorage.setItem("selectedData", JSON.stringify([]))
+            sessionStorage.setItem("flag_target_added", false)
             sessionStorage.setItem("modifiers_flag", false);
+            sessionStorage.setItem("light_traffic", "")
             list_modifiers.length = 0;
             let count = sessionStorage.getItem("count_anlys");
             if (count == 1) {
