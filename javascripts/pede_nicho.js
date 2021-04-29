@@ -1517,17 +1517,20 @@ var module_nicho = (function() {
             sessionStorage.setItem("selectedData", JSON.stringify([]))
             sessionStorage.setItem("flag_target_added", false)
             sessionStorage.setItem("modifiers_flag", false);
+            sessionStorage.setItem("covar", "");
             sessionStorage.setItem("light_traffic", "")
-            list_modifiers.length = 0;
-            let count = sessionStorage.getItem("count_anlys");
-            if (count == 1) {
-                location.reload();
-            }
-            if (self.arrayVarSelected.length == 0) {
-                console.log("No species selected");
-                _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
-                return;
-            }
+            $("#boton_seleccion_grupo").css("visibility", "visible");
+            $("#tuto_fil_fecha").css("top", "27%");
+            //list_modifiers.length = 0;
+            //let count = sessionStorage.getItem("count_anlys");
+            // if (count == 1) {
+            //     location.reload();
+            // }
+            // if (self.arrayVarSelected.length == 0) {
+            //     console.log("No species selected");
+            //     _module_toast.showToast_BottomCenter(_iTrans.prop('msg_noespecies_selected'), "warning");
+            //     return;
+            // }
         });
         $("#reload_map").click(function() {
             sessionStorage.setItem("covar", "")

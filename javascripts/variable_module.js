@@ -1602,9 +1602,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                 var flag_modifiers = false;
                 let covar = sessionStorage.getItem("covar");
                 let mod_flag = JSON.stringify(sessionStorage.getItem("modifiers_flag"));
-                if ((covar == "COVID-19") || ((mod_flag == '"true"'))) {
-                    $(".jstree-icon").click()
-                }
+                //if ((covar == "COVID-19") || ((mod_flag == '"true"'))) {
+                 //   $(".jstree-icon").click()
+                //}
 
 
                 setTimeout(function() {
