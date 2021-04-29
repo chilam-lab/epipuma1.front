@@ -1114,7 +1114,7 @@ var module_nicho = (function() {
 
         };
         // Implementación Funciones
-        //Cambios Gpos Interes Target
+        //Cambios ESTATICOS
         $("#tuto_taxon_sp_target").remove();
         $("#tuto_nav_tabs_target").css("margin-bottom", "4px");
         $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
@@ -1124,10 +1124,15 @@ var module_nicho = (function() {
         $("#text_variable_fuente").remove()
         $("#tuto_nav_tabs_fuente").css("margin-bottom", "4px");
         $("#jstree_variables_species_target").remove();
-        $("#add_group_target").css("visibility", "hidden");
         $("#tuto_fil_fecha").css("position", "absolute");
-        $("#tuto_fil_fecha").css("top", "27%");
+        $("#tuto_fil_fecha").css("top", "22%");
         $("#tuto_fil_fecha").css("margin-left", "5%");
+        $("#tuto_nav_tabs_target").remove();
+        $("#add_group_target").css("position", "absolute");
+        $("#add_group_target").css("top", "86%");
+        $("#add_group_target").css("margin-left", "16%");
+        $("#add_group_target").css("visibility", "hidden");
+
 
 
         //////NEW FLOW
@@ -1207,7 +1212,7 @@ var module_nicho = (function() {
             document.getElementById("targetVariableSelectorId").hidden = true;
             document.getElementById("targetVariableSelectorOverlay").hidden = true;
             $("#boton_seleccion_grupo").css("visibility", "hidden");
-            $("#tuto_fil_fecha").css("top", "21%");
+            $("#tuto_fil_fecha").css("top", "17%");
             ////CCHECK FOR $("#chkValidationTemp").is(':checked')
             var modelo2 = sessionStorage.getItem("modelo_test")
             if (modelo2 == "predictivo") {
