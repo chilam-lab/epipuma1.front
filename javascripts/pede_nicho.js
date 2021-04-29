@@ -558,8 +558,6 @@ var module_nicho = (function() {
                             }, ];
                             parsed_data = JSON.stringify(data);
                             sessionStorage.setItem("selectedData", parsed_data)
-                            console.log(parsed_data)
-                            console.log("*😂*")
                         }
 
                         /////2
@@ -953,7 +951,7 @@ var module_nicho = (function() {
             }
             $("#date_timepicker_start")[0].value = "";
         };
-        const fix_tar_var_without_mod = () => {
+        const fix_tar_var_without_mod_tags = () => {
             let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
             var focus_switch;
             console.log(enfoque)
@@ -983,72 +981,140 @@ var module_nicho = (function() {
                 $(".row_var_item")[0].innerHTML = "Variable Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
             }
         };
-        const fix_tar_var_with_mod = () => {
-                let obj_fix = {}
-                sessionStorage.setItem("modifiers_flag", "true");
-                for (let index = 0; index < list_modifiers.length; index++) {
-                    obj_fix[list_modifiers[index]] = list_modifiers[index][0];
-                }
-                console.log(obj_fix)
-                sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
-                let modifier_value = JSON.parse(sessionStorage.getItem("modifiers"));
-                let texto = Object.values(modifier_value);
-                let text_switch
-                let texto2 = (texto[0])
-                console.log(texto2)
-                switch (texto2) {
-                    case "prevalence":
-                        text_switch = "Prevalencia";
-                        break;
-                    case "incidence":
-                        text_switch = "Incidencia";
-                        break;
-                    case "lethality":
-                        text_switch = "Letalidad";
-                        break;
-                    case "negativity":
-                        text_switch = "Negatividad";
-                        break;
-                    default:
-                        text_switch = "Casos";
-                        break;
-                }
-                let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
-                var focus_switch;
-                console.log(enfoque)
-                switch (enfoque) {
-                    case '"green"':
-                        focus_switch = ("Enfoque: Mejoramiento");
-                        break;
-                    case '"red"':
-                        focus_switch = ("Enfoque: Empeoramiento");
-                        break;
-                    case '"star"':
-                        focus_switch = ("Enfoque: Estrella");
-                        break;
-                }
-
-                console.log(focus_switch)
-
-                let modifier_text = "Modificador: " +
-                    text_switch
-                try {
-                    let original_text = $(".cell_item")[0].innerText;
-                    let original_text_2 = original_text.split("Especie >>")[1];
-                    $(".cell_item")[0].innerText = original_text_2 + " >> " + modifier_text + " >> " + focus_switch;
-                    let a = $(".row_var_item")[0].innerHTML;
-                    if (a[0] == "G") {
-                        let b = a.split("Gpo Bio 1");
-                        let c = "Variable Objetivo" + b[1]
-                        $(".row_var_item")[0].innerHTML = c
-                    }
-                } catch (error) {
-                    console.log("minimizado");
-                    $(".row_var_item")[0].innerHTML = "Variable Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
-                }
+        const fix_tar_var_with_mod_tags = () => {
+            let obj_fix = {}
+            sessionStorage.setItem("modifiers_flag", "true");
+            for (let index = 0; index < list_modifiers.length; index++) {
+                obj_fix[list_modifiers[index]] = list_modifiers[index][0];
             }
-            // Implementación Funciones
-            //Cambios Gpos Interes Target
+            console.log(obj_fix)
+            sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
+            let modifier_value = JSON.parse(sessionStorage.getItem("modifiers"));
+            let texto = Object.values(modifier_value);
+            let text_switch
+            let texto2 = (texto[0])
+            console.log(texto2)
+            switch (texto2) {
+                case "prevalence":
+                    text_switch = "Prevalencia";
+                    break;
+                case "incidence":
+                    text_switch = "Incidencia";
+                    break;
+                case "lethality":
+                    text_switch = "Letalidad";
+                    break;
+                case "negativity":
+                    text_switch = "Negatividad";
+                    break;
+                default:
+                    text_switch = "Casos";
+                    break;
+            }
+            let enfoque = JSON.stringify(sessionStorage.getItem("light_traffic"));
+            var focus_switch;
+            console.log(enfoque)
+            switch (enfoque) {
+                case '"green"':
+                    focus_switch = ("Enfoque: Mejoramiento");
+                    break;
+                case '"red"':
+                    focus_switch = ("Enfoque: Empeoramiento");
+                    break;
+                case '"star"':
+                    focus_switch = ("Enfoque: Estrella");
+                    break;
+            }
+
+            console.log(focus_switch)
+
+            let modifier_text = "Modificador: " +
+                text_switch
+            try {
+                let original_text = $(".cell_item")[0].innerText;
+                let original_text_2 = original_text.split("Especie >>")[1];
+                $(".cell_item")[0].innerText = original_text_2 + " >> " + modifier_text + " >> " + focus_switch;
+                let a = $(".row_var_item")[0].innerHTML;
+                if (a[0] == "G") {
+                    let b = a.split("Gpo Bio 1");
+                    let c = "Variable Objetivo" + b[1]
+                    $(".row_var_item")[0].innerHTML = c
+                }
+            } catch (error) {
+                console.log("minimizado");
+                $(".row_var_item")[0].innerHTML = "Variable Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
+            }
+        };
+        const fixed_covar_tags = (title) => {
+            console.log("fixed_covar_tags")
+            let node, node2;
+
+            try {
+                console.log(title);
+                let number = title.split("Covariable")[1][1];
+                for (let index = 0; index < $(".cell_item").length; index++) {
+                    let a = $(".cell_item")[index]["parentNode"]["textContent"];
+                    if (a.includes("COVID")) {
+                        console.log("variable objetivo no entra a este analisis")
+                    } else {
+                        let b = a.split("Covariable");
+                        let c = b[1][1]
+                        if (number == c) {
+                            node = $(".cell_item")[index];
+                        }
+                    }
+
+                }
+                for (let index = 0; index < $(".row_var_item").length; index++) {
+                    let d = $(".row_var_item")[index].innerText;
+                    let e = d.replace(/[^\d.]/g, '');
+                    let f = parseInt(e);
+                    let g = title.replace(/[^\d.]/g, '');
+                    let h = parseInt(g)
+                    console.log(h, f)
+                    console.log(h == f)
+                    if (g == f) {
+                        node2 = $(".row_var_item")[index];
+                    }
+                }
+                let original_text_covar = node.innerText;
+                console.log(node)
+                if ((original_text_covar[0] == "R") || (original_text_covar[0] == "G")) {
+                    let original_text_2_covar = original_text_covar.split(">> ")[1];
+                    node.innerText = original_text_2_covar;
+                }
+                let ab = node2.innerHTML;
+                if (ab[0] == "G") {
+                    let bb = ab.split("Gpo Bio 1");
+                    let cb = title + bb[1]
+                    node2.innerHTML = cb
+                }
+
+            } catch {
+                for (let index = 0; index < $(".row_var_item").length; index++) {
+                    let d = $(".row_var_item")[index].innerText;
+                    let e = d.replace(/[^\d.]/g, '');
+                    let f = parseInt(e);
+                    let g = title.replace(/[^\d.]/g, '');
+                    let h = parseInt(g)
+                    console.log(h, f)
+                    console.log(h == f)
+                    if (g == f) {
+                        node2 = $(".row_var_item")[index];
+                    }
+                }
+                console.log("covar minimizada");
+                console.log(node2);
+                let final_name = "Covariable " + title.split(" ")[2];
+                let final_html = final_name + "<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>";
+                console.log(final_html);
+                node2.innerHTML = final_html;
+            }
+
+
+        };
+        // Implementación Funciones
+        //Cambios Gpos Interes Target
         $("#tuto_taxon_sp_target").remove();
         $("#tuto_nav_tabs_target").css("margin-bottom", "4px");
         $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
@@ -1485,22 +1551,22 @@ var module_nicho = (function() {
             if (flag_modifiers) {
                 ///VAR OBJ CON MODIF
                 $(".row_var_item").click()
-                fix_tar_var_with_mod();
+                fix_tar_var_with_mod_tags();
                 setTimeout(function() {
                     $(".row_var_item").click(function() {
-                        fix_tar_var_with_mod();
+                        fix_tar_var_with_mod_tags();
                     });
                 }, 1000)
 
             } else {
                 ///VAR OBJ SIN MODIF
                 $(".row_var_item").click();
-                fix_tar_var_without_mod();
+                fix_tar_var_without_mod_tags();
 
 
                 setTimeout(function() {
                     $(".row_var_item").click(function() {
-                        fix_tar_var_without_mod();
+                        fix_tar_var_without_mod_tags();
                     });
                 }, 1000)
 
@@ -1533,6 +1599,22 @@ var module_nicho = (function() {
             //     return;
             // }
         });
+        ////Boton Agregar Covariables
+        $("#add_group_fuente").click(function() {
+            setTimeout(function() {
+                $(".row_var_item").click(function() {
+                    let element = $(this);
+                    let a = element[0].innerHTML;
+                    let b = a.split("<b")[0];
+                    console.log(element);
+                    console.log(element[0].textContent);
+                    let data_session = JSON.parse(sessionStorage.getItem("selectedData"));
+                    if (!(data_session[0]["label"].includes("COVID"))) {
+                        fixed_covar_tags(b);
+                    }
+                })
+            }, 1000);
+        })
         $("#reload_map").click(function() {
             sessionStorage.setItem("covar", "")
         });

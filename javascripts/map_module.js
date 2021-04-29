@@ -1566,7 +1566,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         // var color_escale = colorbrewer.PuBuGn[5]
         //alert(Color);
         if (Color == "azul") {
-            var color_escale = ["#0000ff"]
+            var color_escale = ["#87CEEB"]
         }
         if (Color == "blanco") {
             var color_escale = ["#ffffff"]
