@@ -1151,7 +1151,7 @@ var module_nicho = (function() {
             if (model == 'Predictivo') {
                 _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
                 sessionStorage.setItem("modelo_test", "predictivo");
-                $("#pred_des_control").click()
+                //$("#pred_des_control").click()
             } else {
                 console.log("Perfilado");
                 sessionStorage.setItem("modelo_test", "perfilado");
@@ -1592,7 +1592,12 @@ var module_nicho = (function() {
             sessionStorage.setItem("light_traffic", "")
             $("#boton_seleccion_grupo").css("visibility", "visible");
             $("#targetVariableButton").css("visibility", "hidden");
-            $("#tuto_fil_fecha").css("top", "27%");
+            $("#tuto_fil_fecha").css("top", "21%");
+            try {
+                document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
+            } catch {
+                console.log("Bug boton basura")
+            }
             //list_modifiers.length = 0;
             //let count = sessionStorage.getItem("count_anlys");
             // if (count == 1) {
