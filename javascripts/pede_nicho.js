@@ -1520,6 +1520,7 @@ var module_nicho = (function() {
             sessionStorage.setItem("covar", "");
             sessionStorage.setItem("light_traffic", "")
             $("#boton_seleccion_grupo").css("visibility", "visible");
+            $("#targetVariableButton").css("visibility", "hidden");
             $("#tuto_fil_fecha").css("top", "27%");
             //list_modifiers.length = 0;
             //let count = sessionStorage.getItem("count_anlys");
