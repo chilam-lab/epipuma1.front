@@ -1151,9 +1151,10 @@ var module_nicho = (function() {
             if (model == 'Predictivo') {
                 _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
                 sessionStorage.setItem("modelo_test", "predictivo");
-                //$("#pred_des_control").click()
+                $("#pred_des_control").click()
             } else {
                 console.log("Perfilado");
+                $("#pred_des_control")[0].checked = false;
                 sessionStorage.setItem("modelo_test", "perfilado");
 
             }
