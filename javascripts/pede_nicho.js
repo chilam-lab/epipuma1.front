@@ -1113,185 +1113,7 @@ var module_nicho = (function() {
 
 
         };
-        // Implementación Funciones
-        //Cambios ESTATICOS
-        $("#tuto_taxon_sp_target").remove();
-        $("#tuto_nav_tabs_target").css("margin-bottom", "4px");
-        $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
-        $("#lb_range_fecha").css("width", "10px");
-        $("#lb_range_fecha").css("margin-bottom", "15px");
-        $("#btn_variable_fuente").remove()
-        $("#text_variable_fuente").remove()
-        $("#tuto_nav_tabs_fuente").css("margin-bottom", "4px");
-        $("#jstree_variables_species_target").remove();
-        $("#tuto_fil_fecha").css("position", "absolute");
-        $("#tuto_fil_fecha").css("top", "22%");
-        $("#tuto_fil_fecha").css("margin-left", "5%");
-        $("#tuto_nav_tabs_target").remove();
-        $("#add_group_target").css("position", "absolute");
-        $("#add_group_target").css("top", "86%");
-        $("#add_group_target").css("margin-left", "16%");
-        $("#add_group_target").css("visibility", "hidden");
-
-
-
-        //////NEW FLOW
-        genrateDynamicButton();
-        $("#boton_seleccion_grupo").click(function() {
-                generateNewFlow();
-            })
-            ///BOTON CONFIRMAR MODELO
-        $("#targetVariableButton").click(function() {
-            ///// SELECCION VARIABLES EN FLUJO NUEVO
-            let obj_var = $("#targetVariableSelect").val();
-            let modif = $("#modifiersSelect").val();
-            let model = $("#modelSelect").val();
-
-            /////SELECCION  MODELO
-            if (model == 'Predictivo') {
-                _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
-                sessionStorage.setItem("modelo_test", "predictivo");
-                $("#pred_des_control").click()
-            } else {
-                console.log("Perfilado");
-                $("#pred_des_control")[0].checked = false;
-                sessionStorage.setItem("modelo_test", "perfilado");
-
-            }
-            ///// SELECCION MODIFICADORES
-            if (modif == "Sin Modificador") {
-                console.log("Sin Modificador")
-            } else {
-                flag_modifiers = true;
-                console.log(flag_modifiers);
-                list_modifiers.push([modif]);
-                _module_toast.showToast_BottomCenter(_iTrans.prop('Modelo con Modificadores Seleccionado'), "info");
-
-            }
-            if (obj_var == "COVID-19 Confirmado") {
-                var selected_var = [{
-                    label: "COVID-19 CONFIRMADO",
-                    level: "Especie",
-                    numlevel: 8,
-                    parent: "COVID-19",
-                    type: 0,
-                }];
-            } else if (obj_var == "COVID-19 Negativo") {
-                var selected_var = [{
-                    label: "COVID-19 FALLECIDO",
-                    level: "Especie",
-                    numlevel: 8,
-                    parent: "COVID-19",
-                    type: 0,
-                }];
-            } else if (obj_var == "COVID-19 Pruebas") {
-                var selected_var = [{
-                        label: "COVID-19 CONFIRMADO",
-                        level: "Especie",
-                        numlevel: 8,
-                        parent: "COVID-19",
-                        type: 0,
-                    },
-                    {
-                        label: "COVID-19 NEGATIVO",
-                        level: "Especie",
-                        numlevel: 8,
-                        parent: "COVID-19",
-                        type: 0,
-                    }
-                ];
-            };
-            ////PASANDO VARIABLES A SESSION STORAGE Y RESETEANDO ELEMENTOS
-            console.log(selected_var);
-            sessionStorage.setItem("selectedData", JSON.stringify(selected_var));
-            $("#add_group_target").css("visibility", "visible");
-            $("#add_group_target").click();
-            $("#add_group_target").css("visibility", "hidden");
-            document.getElementById("variableObjetivoSection").hidden = true;
-            document.getElementById("modif_section").hidden = true;
-            document.getElementById("enfoque_section").hidden = true;
-            document.getElementById("targetVariableSelectorId").hidden = true;
-            document.getElementById("targetVariableSelectorOverlay").hidden = true;
-            $("#boton_seleccion_grupo").css("visibility", "hidden");
-            $("#tuto_fil_fecha").css("top", "17%");
-            ////CCHECK FOR $("#chkValidationTemp").is(':checked')
-            var modelo2 = sessionStorage.getItem("modelo_test")
-            if (modelo2 == "predictivo") {
-                $("#chkValidationTemp").attr('checked', true);
-            } else {
-                $("#chkValidationTemp").attr('checked', false);
-            }
-        });
-        /// BOTON CANCELAR MODELO
-        $("#cancelVariableButton").click(function() {
-            document.getElementById("variableObjetivoSection").hidden = true;
-            document.getElementById("modif_section").hidden = true;
-            document.getElementById("enfoque_section").hidden = true;
-            document.getElementById("targetVariableSelectorId").hidden = true;
-            document.getElementById("targetVariableSelectorOverlay").hidden = true;
-            $("#targetVariableButton").css("visibility", "hidden")
-        });
-
-        /// DATE  MONTHS ONLY
-        let todayDate = new Date();
-        let parsedTodayDate = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
-        var fechas = dateRange("2020-01-01", parsedTodayDate);
-        addOptionsSelect("date_timepicker_start", fechas);
-
-        //PREDICTIVO/DESCRIPTIVO
-        setTimeout(function() {
-            generatePredictiveDescriptiveToggleSwith("switch", "texto_switch", "Quiero Crear un Modelo Predictivo");
-            ////NEW NEW FLOW
-            document.getElementsByClassName("slider round")[0].hidden = true;
-            $(".texto_switch").remove();
-            /////
-            $(".switch").css("margin-top", "-35%");
-            $("#pred_des_control")[0].checked = false;
-            $(".texto_switch").css("margin-left", "105%");
-            $(".texto_switch").css("width", "875%");
-            $("#tuto_val").css("position", "absolute");
-            $("#tuto_val").css("top", "500px");
-            $("#tuto_val").css("visibility", "hidden");
-
-
-            $("#pred_des_control").click(function() {
-
-                setTimeout(function() {
-                    let status = $("#pred_des_control")[0].checked;
-                    console.log(status);
-                    if (status == false) {
-                        $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
-                        if ($("#pred_des_control")[0].checked == true) {
-                            document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
-                            setTimeout(function() {
-                                $("#date_timepicker_start").removeAttr("disabled");
-                            }, 550);
-
-                        }
-                        $(".col-lg-12").css("margin-top", "-1%");
-
-
-                    } else {
-                        $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
-                        document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
-                        $(".col-lg-12").css("margin-top", "-40%");
-                        setTimeout(function() {
-                            $("#date_timepicker_start_val").removeAttr("disabled");
-                        }, 550);
-
-                    }
-
-
-                }, 500);
-
-
-            });
-            //CSS
-            $("#id_toggle").css("position", "absolute");
-            $("#id_toggle").css("top", "400%");
-        }, 1000)
-
-        setTimeout(function() {
+        const create_fixed_covars_three = () => {
             var tree_reinos = [{
                 "text": "Grupos de Interes",
                 "id": "root_covar",
@@ -1313,7 +1135,7 @@ var module_nicho = (function() {
             });
             var default_son = [{
                 text: "cargando..."
-            }]
+            }];
             $('#jstree_variables_species_fuente').on('open_node.jstree', function(e, d) {
                 let _url_zacatuche = "http://covid19.c3.unam.mx/api";
                 let id = "fuente"
@@ -1522,10 +1344,211 @@ var module_nicho = (function() {
                 }, 1500)
 
             });
+        };
+        const toogle_predictive_profiling = () => {
+            let status = $("#pred_des_control")[0].checked;
+            console.log(status);
+            if (status == false) {
+                $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
+                if ($("#pred_des_control")[0].checked == true) {
+                    document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
+                    setTimeout(function() {
+                        $("#date_timepicker_start").removeAttr("disabled");
+                    }, 550);
+
+                }
+                $(".col-lg-12").css("margin-top", "-1%");
+
+
+            } else {
+                $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
+                document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
+                $(".col-lg-12").css("margin-top", "-40%");
+                setTimeout(function() {
+                    $("#date_timepicker_start_val").removeAttr("disabled");
+                }, 550);
+
+            }
+        };
+        const hide_selected_covars = (covar) => {
+            let covar_list = []
+            let covar_selected_2
+            for (let index = 0; index < covar.length; index++) {
+                let covar_selected = "#" + covar[index]["label"].toLowerCase();
+                covar_selected_2 = covar_selected.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                covar_list.push(covar_selected_2);
+                $(covar_selected_2).css("position", "absolute");
+                $(covar_selected_2).css("visibility", "hidden");
+            }
+            sessionStorage.setItem("covars_selected_menu", JSON.stringify(covar_list));
+        };
+        const unhide_selected_covars = () => {
+                let covar_list = JSON.parse(sessionStorage.getItem("covars_selected_menu"));
+                for (let index = 0; index < covar_list.length; index++) {
+                    let covar_selected_2 = covar_list[index];
+                    $(covar_selected_2).css("position", "relative");
+                    $(covar_selected_2).css("visibility", "visible");
+                    $(covar_selected_2)[0].children[2].children[0].click()
+                }
+
+            }
+            //Termina Modularización Funciones
+            // Implementación Funciones
+            //Cambios ESTATICOS
+        $("#tuto_taxon_sp_target").remove();
+        $("#tuto_nav_tabs_target").css("margin-bottom", "4px");
+        $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
+        $("#lb_range_fecha").css("width", "10px");
+        $("#lb_range_fecha").css("margin-bottom", "15px");
+        $("#btn_variable_fuente").remove()
+        $("#text_variable_fuente").remove()
+        $("#tuto_nav_tabs_fuente").css("margin-bottom", "4px");
+        $("#jstree_variables_species_target").remove();
+        $("#tuto_fil_fecha").css("position", "absolute");
+        $("#tuto_fil_fecha").css("top", "22%");
+        $("#tuto_fil_fecha").css("margin-left", "5%");
+        $("#tuto_nav_tabs_target").remove();
+        $("#add_group_target").css("position", "absolute");
+        $("#add_group_target").css("top", "86%");
+        $("#add_group_target").css("margin-left", "16%");
+        $("#add_group_target").css("visibility", "hidden");
 
 
 
+        //////NEW FLOW
+        genrateDynamicButton();
+        $("#boton_seleccion_grupo").click(function() {
+                generateNewFlow();
+            })
+            ///BOTON CONFIRMAR MODELO
+        $("#targetVariableButton").click(function() {
+            ///// SELECCION VARIABLES EN FLUJO NUEVO
+            let obj_var = $("#targetVariableSelect").val();
+            let modif = $("#modifiersSelect").val();
+            let model = $("#modelSelect").val();
 
+            /////SELECCION  MODELO
+            if (model == 'Predictivo') {
+                _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
+                sessionStorage.setItem("modelo_test", "predictivo");
+                $("#pred_des_control").click()
+            } else {
+                console.log("Perfilado");
+                $("#pred_des_control")[0].checked = false;
+                sessionStorage.setItem("modelo_test", "perfilado");
+
+            }
+            ///// SELECCION MODIFICADORES
+            if (modif == "Sin Modificador") {
+                console.log("Sin Modificador")
+            } else {
+                flag_modifiers = true;
+                console.log(flag_modifiers);
+                list_modifiers.push([modif]);
+                _module_toast.showToast_BottomCenter(_iTrans.prop('Modelo con Modificadores Seleccionado'), "info");
+
+            }
+            if (obj_var == "COVID-19 Confirmado") {
+                var selected_var = [{
+                    label: "COVID-19 CONFIRMADO",
+                    level: "Especie",
+                    numlevel: 8,
+                    parent: "COVID-19",
+                    type: 0,
+                }];
+            } else if (obj_var == "COVID-19 Negativo") {
+                var selected_var = [{
+                    label: "COVID-19 FALLECIDO",
+                    level: "Especie",
+                    numlevel: 8,
+                    parent: "COVID-19",
+                    type: 0,
+                }];
+            } else if (obj_var == "COVID-19 Pruebas") {
+                var selected_var = [{
+                        label: "COVID-19 CONFIRMADO",
+                        level: "Especie",
+                        numlevel: 8,
+                        parent: "COVID-19",
+                        type: 0,
+                    },
+                    {
+                        label: "COVID-19 NEGATIVO",
+                        level: "Especie",
+                        numlevel: 8,
+                        parent: "COVID-19",
+                        type: 0,
+                    }
+                ];
+            };
+            ////PASANDO VARIABLES A SESSION STORAGE Y RESETEANDO ELEMENTOS
+            console.log(selected_var);
+            sessionStorage.setItem("selectedData", JSON.stringify(selected_var));
+            $("#add_group_target").css("visibility", "visible");
+            $("#add_group_target").click();
+            $("#add_group_target").css("visibility", "hidden");
+            document.getElementById("variableObjetivoSection").hidden = true;
+            document.getElementById("modif_section").hidden = true;
+            document.getElementById("enfoque_section").hidden = true;
+            document.getElementById("targetVariableSelectorId").hidden = true;
+            document.getElementById("targetVariableSelectorOverlay").hidden = true;
+            $("#boton_seleccion_grupo").css("visibility", "hidden");
+            $("#tuto_fil_fecha").css("top", "17%");
+            ////CCHECK FOR $("#chkValidationTemp").is(':checked')
+            var modelo2 = sessionStorage.getItem("modelo_test")
+            if (modelo2 == "predictivo") {
+                $("#chkValidationTemp").attr('checked', true);
+            } else {
+                $("#chkValidationTemp").attr('checked', false);
+            }
+        });
+        /// BOTON CANCELAR MODELO
+        $("#cancelVariableButton").click(function() {
+            document.getElementById("variableObjetivoSection").hidden = true;
+            document.getElementById("modif_section").hidden = true;
+            document.getElementById("enfoque_section").hidden = true;
+            document.getElementById("targetVariableSelectorId").hidden = true;
+            document.getElementById("targetVariableSelectorOverlay").hidden = true;
+            $("#targetVariableButton").css("visibility", "hidden")
+        });
+
+        /// DATE  MONTHS ONLY
+        let todayDate = new Date();
+        let parsedTodayDate = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
+        var fechas = dateRange("2020-01-01", parsedTodayDate);
+        addOptionsSelect("date_timepicker_start", fechas);
+
+        //PREDICTIVO/DESCRIPTIVO
+        setTimeout(function() {
+            generatePredictiveDescriptiveToggleSwith("switch", "texto_switch", "Quiero Crear un Modelo Predictivo");
+            ////NEW NEW FLOW
+            document.getElementsByClassName("slider round")[0].hidden = true;
+            $(".texto_switch").remove();
+            /////
+            $(".switch").css("margin-top", "-35%");
+            $("#pred_des_control")[0].checked = false;
+            $(".texto_switch").css("margin-left", "105%");
+            $(".texto_switch").css("width", "875%");
+            $("#tuto_val").css("position", "absolute");
+            $("#tuto_val").css("top", "500px");
+            $("#tuto_val").css("visibility", "hidden");
+
+
+            $("#pred_des_control").click(function() {
+
+                setTimeout(function() {
+                    toogle_predictive_profiling();
+                }, 500);
+
+
+            });
+            //CSS
+            $("#id_toggle").css("position", "absolute");
+            $("#id_toggle").css("top", "400%");
+        }, 1000)
+
+        setTimeout(function() {
+            create_fixed_covars_three();
         }, 1000)
 
         /////
@@ -1534,7 +1557,7 @@ var module_nicho = (function() {
 
 
 
-        // Boton Agregar
+        // Boton Agregar Variable Objetivo
         $("#add_group_target").click(function() {;
             sessionStorage.setItem("flag_target_added", "true");
             //Manejo del arbol de variables
@@ -1579,7 +1602,7 @@ var module_nicho = (function() {
             }
         });
 
-        // Boton Borrar
+        // Boton Borrar Variable Objetivo
         $("#clean_var_target").click(function() {
             //getFixedData("target", data_target);
             sessionStorage.setItem("flag_target_added", "false")
@@ -1612,6 +1635,10 @@ var module_nicho = (function() {
         });
         ////Boton Agregar Covariables
         $("#add_group_fuente").click(function() {
+            let data_session = JSON.parse(sessionStorage.getItem("selectedData"));
+            if (!(data_session[0]["label"].includes("COVID"))) {
+                hide_selected_covars(data_session);
+            }
             setTimeout(function() {
                 $(".row_var_item").click(function() {
                     let element = $(this);
@@ -1623,8 +1650,12 @@ var module_nicho = (function() {
                     if (!(data_session[0]["label"].includes("COVID"))) {
                         fixed_covar_tags(b);
                     }
-                })
+                });
             }, 1000);
+        });
+        // Boton Borrar Variable Objetivo
+        $("#clean_var_fuente").click(function() {
+            unhide_selected_covars();
         })
         $("#reload_map").click(function() {
             sessionStorage.setItem("covar", "")
