@@ -3178,6 +3178,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th> Decil Casos 1º Periodo </th>' +
                     '<th> No. Casos 2º Periodo </th>' +
                     '<th> Decil Casos 2º Periodo </th>' +
+                    '<th>Población total </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3300,6 +3301,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
         console.log(json_data);
         console.log(res_list);
 
+        const parse_only_three_decimals = (number) =>{
+          return parseFloat(number).toFixed(3)
+        }
+
 
         switch (mod[0]) {
             case "cases":
@@ -3310,6 +3315,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + res_list[0]["fb"] + '</td>' +
                     '<td>' + res_list[0]["tv"] + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
                     '</tr>';
                 break;
             case "incidence":
@@ -3318,7 +3324,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
@@ -3326,9 +3332,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
-                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
@@ -3336,9 +3342,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
-                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
@@ -3346,18 +3352,18 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
-                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
             case "fallecidos":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
-                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
-                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
