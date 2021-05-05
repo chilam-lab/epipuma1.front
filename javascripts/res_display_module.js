@@ -3173,6 +3173,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<thead>' +
                     '<tr>' +
                     '<th>Casos</th>' +
+                    '<th> No. Casos </th>' +
                     '<th>No. Casos 1º Periodo</th>' +
                     '<th> Decil Casos 1º Periodo </th>' +
                     '<th> No. Casos 2º Periodo </th>' +
@@ -3304,6 +3305,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             case "cases":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
+                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
                     '<td>' + res_list[0]["tv"] + '</td>' +
