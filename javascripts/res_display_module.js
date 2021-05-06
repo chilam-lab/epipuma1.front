@@ -3149,6 +3149,15 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let tar_var = JSON.parse(sessionStorage.getItem("selectedData"));
         let res_list = [];
         let pop_list = [];
+        var periodSelectedShort
+        if ($("#pred_des_control")[0].checked) {
+          var periodSelectedComplete = $("#date_timepicker_start_val").val();
+          periodSelectedShort = periodSelectedComplete.match(/....-../)[0]
+
+        } else {
+          var periodSelectedComplete = $("#date_timepicker_start").val();
+          periodSelectedShort = periodSelectedComplete.match(/....-../)[0] 
+        }
 
         for (let i = 0; i < total_population.length; i++) {
             total_population[i].gridid_munkm == gridid ? pop_list.push(total_population[i]) : ""
@@ -3175,8 +3184,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Casos</th>' +
                     '<th>Población total </th>' +
                     '<th> No. Casos </th>' +
-                    '<th>No. Casos 1º Periodo</th>' +
-                    '<th> Decil Casos 1º Periodo </th>' +
+                    '<th>No. Casos '+ periodSelectedShort +'</th>' +
+                    '<th> Decil Casos '+ periodSelectedShort +' </th>' +
                     '<th> No. Casos 2º Periodo </th>' +
                     '<th> Decil Casos 2º Periodo </th>' +
                     '</tr>' +
@@ -3195,10 +3204,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Incidencia</th>' +
                     '<th>Población total </th>' +
                     '<th> No. Casos </th>' +
-                    '<th> No. Incidencia 1º Periodo </th>' +
-                    '<th> Decil Incidencia 1º Periodo </th>' +
-                    '<th> No. Incidencia 1º Periodo Entrenamiento </th>' +
-                    '<th> Decil Incidencia 1º Periodo de Entrenamiento </th>' +
+                    '<th> No. Incidencia ' + periodSelectedShort + '</th>' +
+                    '<th> Decil Incidencia ' + periodSelectedShort + '</th>' +
+                    '<th> No. Incidencia ' + periodSelectedShort + ' Entrenamiento </th>' +
+                    '<th> Decil Incidencia ' + periodSelectedShort + ' de Entrenamiento </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3215,10 +3224,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Prevalencia</th>' +
                     '<th>Población total </th>' +
                     '<th> No. Casos </th>' +
-                    '<th> No. Prevalencia 1º Periodo </th>' +
-                    '<th> Decil Prevalencia 1º Periodo </th>' +
-                    '<th> No. Prevalencia 1º Periodo Entrenamiento </th>' +
-                    '<th> Decil Prevalencia 1º Periodo de Entrenamiento </th>' +
+                    '<th> No. Prevalencia ' + periodSelectedShort + ' </th>' +
+                    '<th> Decil Prevalencia ' + periodSelectedShort + ' </th>' +
+                    '<th> No. Prevalencia ' + periodSelectedShort + ' Entrenamiento </th>' +
+                    '<th> Decil Prevalencia ' + periodSelectedShort + ' de Entrenamiento </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3235,10 +3244,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Letalidad</th>' +
                     '<th>Población Total </th>' +
                     '<th> No. Casos </th>' +
-                    '<th> Letalidad en el 1º Periodo </th>' +
-                    '<th> Decil de Letalidad en el 1º Periodo </th>' +
-                    '<th> Letalidad en el 1º Periodo de Entrenamiento </th>' +
-                    '<th> Decil de Letalidad en el 1º Periodo de Entrenamiento </th>' +
+                    '<th> Letalidad en ' + periodSelectedShort + ' </th>' +
+                    '<th> Decil de Letalidad en' + periodSelectedShort + ' </th>' +
+                    '<th> Letalidad en ' + periodSelectedShort + ' Periodo de Entrenamiento </th>' +
+                    '<th> Decil de Letalidad en ' + periodSelectedShort + ' de Entrenamiento </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3255,10 +3264,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Mortalidad</th>' +
                     '<th>Población Total </th>' +
                     '<th> No. Casos </th>' +
-                    '<th> Mortalidad en el 1º Periodo </th>' +
-                    '<th> Decil de Mortalidad en el 1º Periodo </th>' +
-                    '<th> Mortalidad en el 1º Periodo de Entrenamiento </th>' +
-                    '<th> Decil de Mortalidad en el 1º Periodo de Entrenamiento </th>' +
+                    '<th> Mortalidad en ' + periodSelectedShort + ' </th>' +
+                    '<th> Decil de Mortalidad en ' + periodSelectedShort + ' Periodo </th>' +
+                    '<th> Mortalidad en ' + periodSelectedShort + ' Periodo de Entrenamiento </th>' +
+                    '<th> Decil de Mortalidad en ' + periodSelectedShort + ' de Entrenamiento </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3273,8 +3282,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<thead>' +
                     '<tr>' +
                     '<th>Fallecidos</th>' +
-                    '<th>No. Fallecidos 1º Periodo</th>' +
-                    '<th> Decil Fallecidos 1º Periodo </th>' +
+                    '<th>No. Fallecidos ' + periodSelectedShort + '</th>' +
+                    '<th> Decil Fallecidos ' + periodSelectedShort + ' </th>' +
                     '<th> No. Fallecidos 2º Periodo </th>' +
                     '<th> Decil Fallecidos 2º Periodo </th>' +
                     '</tr>' +
