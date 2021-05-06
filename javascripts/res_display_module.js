@@ -3150,13 +3150,20 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let res_list = [];
         let pop_list = [];
         var periodSelectedShort
+        var nextPeriodSelectedShort
         if ($("#pred_des_control")[0].checked) {
           var periodSelectedComplete = $("#date_timepicker_start_val").val();
           periodSelectedShort = periodSelectedComplete.match(/....-../)[0]
+          var periodDate= new Date(periodSelectedComplete);
+          var nextPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth() + 1))
+          nextPeriodSelectedShort = nextPeriodDate.getFullYear()+"-"+ (Number((nextPeriodDate.getMonth() + 1)) < 10 ? "0" + (nextPeriodDate.getMonth() + 1) : (nextPeriodDate.getMonth() + 1))
 
         } else {
           var periodSelectedComplete = $("#date_timepicker_start").val();
           periodSelectedShort = periodSelectedComplete.match(/....-../)[0] 
+          var periodDate= new Date(periodSelectedComplete);
+          var nextPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth() + 1))
+          nextPeriodSelectedShort = nextPeriodDate.getFullYear()+"-"+ (Number((nextPeriodDate.getMonth() + 1)) < 10 ? "0" + (nextPeriodDate.getMonth() + 1) : (nextPeriodDate.getMonth() + 1))
         }
 
         for (let i = 0; i < total_population.length; i++) {
@@ -3186,8 +3193,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th> No. Casos </th>' +
                     '<th>No. Casos '+ periodSelectedShort +'</th>' +
                     '<th> Decil Casos '+ periodSelectedShort +' </th>' +
-                    '<th> No. Casos 2º Periodo </th>' +
-                    '<th> Decil Casos 2º Periodo </th>' +
+                    '<th> No. Casos '+nextPeriodSelectedShort+'</th>' +
+                    '<th> Decil Casos '+nextPeriodSelectedShort+'</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3284,8 +3291,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Fallecidos</th>' +
                     '<th>No. Fallecidos ' + periodSelectedShort + '</th>' +
                     '<th> Decil Fallecidos ' + periodSelectedShort + ' </th>' +
-                    '<th> No. Fallecidos 2º Periodo </th>' +
-                    '<th> Decil Fallecidos 2º Periodo </th>' +
+                    '<th> No. Fallecidos '+nextPeriodSelectedShort+'</th>' +
+                    '<th> Decil Fallecidos '+nextPeriodSelectedShort+'</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
