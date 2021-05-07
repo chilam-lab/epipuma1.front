@@ -3252,7 +3252,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Población Total </th>' +
                     '<th> No. Casos </th>' +
                     '<th> Letalidad en ' + periodSelectedShort + ' </th>' +
-                    '<th> Decil de Letalidad en' + periodSelectedShort + ' </th>' +
+                    '<th> Decil de Letalidad en ' + periodSelectedShort + ' </th>' +
                     '<th> Letalidad en ' + periodSelectedShort + ' Periodo de Entrenamiento </th>' +
                     '<th> Decil de Letalidad en ' + periodSelectedShort + ' de Entrenamiento </th>' +
                     '</tr>' +
