@@ -2757,20 +2757,18 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     var lalistadelosgradientes = [];
                     var lalistadelosverdes = [];
                     var sum_tv = 0;
-                    for (let i = 0; i < _data_sp_occ.length; i++) {
-                        sum_tv += parseInt(_data_sp_occ[i].tv);
-                    }
                     if (modifier) {
                         for (let i = 0; i < _data_sp_occ.length; i++) {
                             if (_data_sp_occ[i].fp == fp) {
                                 _data_sp_occ[i].occ = 100
-                                lalistadelosazules.push(_data_sp_occ[i])
+                                lalistadelosblancos.push(_data_sp_occ[i])
                             } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                 // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                 _data_sp_occ[i].occ = 100
-                                lalistadelosblancos.push(_data_sp_occ[i])
+                                lalistadelosazules.push(_data_sp_occ[i])
                             } else {
                                 _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                                sum_tv += parseInt(_data_sp_occ[i].tv);
                                 lalistadelosgradientes.push(_data_sp_occ[i])
 
                             }
@@ -2830,14 +2828,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers, listed_numbers;
                                             let texts = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
-                                            listed_numbers = [numbers[4], numbers[0], 2458 - numbers[0], numbers[1]];
+                                            listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
                                         case "red":
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 1, 0);
-                                            listed_numbers2 = [numbers2[4], numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 0);
+                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -2855,16 +2853,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "green":
                                             let numbers, listed_numbers;
                                             let texts = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
-                                            listed_numbers = [numbers[0], 2458 - numbers[0], numbers[1]];
+                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
+                                            listed_numbers = [numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(3, texts, listed_numbers)
                                             break;
 
                                         case "red":
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 1, 0);
-                                            listed_numbers2 = [numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 0);
+                                            listed_numbers2 = [numbers2[2],numbers2[0], numbers2[1]]
                                             editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -2881,16 +2879,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "green":
                                             let numbers, listed_numbers;
                                             let texts = ["No. Municipios en la Clase", "No. Municipios Excluidos"];
-                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
-                                            listed_numbers = [numbers[0], numbers[1]];
+                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
+                                            listed_numbers = [numbers[2], numbers[1]];
                                             editResumenTable(2, texts, listed_numbers)
                                             break;
 
                                         case "red":
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Municipios en la Clase", "No. Municipios Excluidos"];
-                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 1, 0);
-                                            listed_numbers2 = [numbers2[0], numbers2[1]]
+                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 0);
+                                            listed_numbers2 = [numbers2[2], numbers2[1]]
                                             editResumenTable(2, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -2937,15 +2935,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "green":
                                             let numbers, listed_numbers;
                                             let texts = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
-                                            listed_numbers = [numbers[4], numbers[0], 2458 - numbers[0], numbers[1]];
+                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
+                                            listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
                                         case "red":
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Total Casos en los Municipios de la Clase", "No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 1, 0);
-                                            listed_numbers2 = [numbers2[4], numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 0);
+                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -2962,16 +2960,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "green":
                                             let numbers, listed_numbers;
                                             let texts = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
-                                            listed_numbers = [numbers[0], 2458 - numbers[0], numbers[1]];
+                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
+                                            listed_numbers = [numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(3, texts, listed_numbers)
                                             break;
 
                                         case "red":
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 1, 0);
-                                            listed_numbers2 = [numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 0);
+                                            listed_numbers2 = [numbers2[2],numbers2[0], numbers2[1]]
                                             editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -2988,16 +2986,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "green":
                                             let numbers, listed_numbers;
                                             let texts = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
-                                            listed_numbers = [numbers[0], 2458 - numbers[0], numbers[1]];
+                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
+                                            listed_numbers = [numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(3, texts, listed_numbers)
                                             break;
 
                                         case "red":
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
-                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 1, 0);
-                                            listed_numbers2 = [numbers2[0], 2458 - numbers2[0], numbers2[1]]
+                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 0);
+                                            listed_numbers2 = [numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(3, texts2, listed_numbers2)
                                             break;
                                         case "star":
