@@ -943,14 +943,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 var month = liminf_splited[1]
                 var endMonthDay = returnTheEndMonthDayByTheNumberOfMonth(month);
 
-                var lim_inf_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
-                var lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+                //var lim_inf_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+                //var lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
                 train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
             }
 
 
-            var lin_inf = train_month ? (liminf_splited[0] + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
-            var lin_sup = train_month ? (liminf_splited[0] + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
+            var lin_inf = train_month ? (liminf_splited[0] + "-" + liminf_splited[1] + "-01") : parsedTrainingStartTothirtyDays;
+            var lin_sup = train_month ? (liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay) : parsedYesterdayDateToThirtyDays;
 
         }
 
