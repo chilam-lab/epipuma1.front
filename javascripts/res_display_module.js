@@ -914,7 +914,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             } else {
                 console.log(todayDateToNextThirtyDays)
-                console.log("no")
                 var liminf_splited = selectedDate.split("-");
                 var month = liminf_splited[1]
                 var endMonthDay = returnTheEndMonthDayByTheNumberOfMonth(month);
@@ -923,7 +922,6 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 lim_sup_valtemp = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
             }
         } else {
-            console.log("si")
             var selectedDate = $("#date_timepicker_start").val()
 
 
@@ -1306,8 +1304,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             console.log("liminf: " + liminf);
             console.log("limsup: " + limsup);
             if ($("#chkValidationTemp").is(':checked')) {
-                mydate = train_month ? (liminf_splited[0] + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
-                mydate2 = train_month ? (liminf_splited[0] + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
+                mydate = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
+                mydate2 = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
                 console.log(data_request);
                 data_request["lim_inf"] = mydate;
                 data_request["lim_sup"] = mydate2;
@@ -1505,8 +1503,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             verbo = "generateTarget";
                         }
                         if ($("#chkValidationTemp").is(':checked')) {
-                            mydate = train_month ? (liminf_splited[0] + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
-                            mydate2 = train_month ? (liminf_splited[0] + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
+                          
+                            mydate = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
+                            mydate2 = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
                             total_request["lim_inf"] = mydate;
                             total_request["lim_sup"] = mydate2;
                             total_request["lim_inf_validation"] = liminf;
