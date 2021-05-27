@@ -2856,10 +2856,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Municipios en la Clase", "No. Municipios en la No-Clase", "No. Municipios Excluidos"];
+                                            let texts = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
-                                            listed_numbers = [numbers[2], numbers[0], numbers[1]];
-                                            editResumenTable(3, texts, listed_numbers)
+                                            listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
+                                            editResumenTable(4, texts, listed_numbers)
                                             break;
 
                                         case "red":
@@ -2882,10 +2882,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Municipios en la Clase", "No. Municipios Excluidos"];
+                                            let texts = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
-                                            listed_numbers = [numbers[2], numbers[1]];
-                                            editResumenTable(2, texts, listed_numbers)
+                                            listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
+                                            editResumenTable(4, texts, listed_numbers)
                                             break;
 
                                         case "red":
