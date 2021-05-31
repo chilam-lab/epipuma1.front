@@ -3149,20 +3149,23 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let res_list = [];
         let pop_list = [];
         var periodSelectedShort
-        var nextPeriodSelectedShort
+        var previousPeriodSelectedShort
+        var enfoque = sessionStorage.getItem("light_traffic"); 
         if ($("#pred_des_control")[0].checked) {
           var periodSelectedComplete = $("#date_timepicker_start_val").val();
           periodSelectedShort = periodSelectedComplete.match(/....-../)[0]
           var periodDate= new Date(periodSelectedComplete);
-          var nextPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth() + 1))
-          nextPeriodSelectedShort = nextPeriodDate.getFullYear()+"-"+ (Number((nextPeriodDate.getMonth() + 1)) < 10 ? "0" + (nextPeriodDate.getMonth() + 1) : (nextPeriodDate.getMonth() + 1))
+          var previousPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth()))
+          let fullyearOfPreviousPeriod = (previousPeriodDate.getMonth() == "12" ? Number(previousPeriodDate.getFullYear() - 1) : previousPeriodDate.getFullYear())
+          previousPeriodSelectedShort = fullyearOfPreviousPeriod + "-" + (Number(previousPeriodDate.getMonth()) < 10 ? "0" + (previousPeriodDate.getMonth()) : (previousPeriodDate.getMonth()))
 
         } else {
           var periodSelectedComplete = $("#date_timepicker_start").val();
           periodSelectedShort = periodSelectedComplete.match(/....-../)[0] 
           var periodDate= new Date(periodSelectedComplete);
-          var nextPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth() + 1))
-          nextPeriodSelectedShort = nextPeriodDate.getFullYear()+"-"+ (Number((nextPeriodDate.getMonth() + 1)) < 10 ? "0" + (nextPeriodDate.getMonth() + 1) : (nextPeriodDate.getMonth() + 1))
+          var previousPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth()-1))
+          //let fullyearOfPreviousPeriod = (previousPeriodDate.getMonth() == "12" ? Number(previousPeriodDate.getFullYear() - 1) : previousPeriodDate.getFullYear())
+          previousPeriodSelectedShort = previousPeriodDate.getFullYear() + "-" + (Number((previousPeriodDate.getMonth()+1)) < 10 ? "0" + (previousPeriodDate.getMonth()+1) : (previousPeriodDate.getMonth()+1))
         }
 
         for (let i = 0; i < total_population.length; i++) {
@@ -3177,6 +3180,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
         if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "cases")) {
             mod[0] = "fallecidos";
         };
+        if ((tar_var[0]["label"] == "COVID-19 CONFIRMADO") && (mod[0] == "cases") && (enfoque == "star")) {
+          mod[0] = "cases_star";
+        };
+        if ((tar_var[0]["label"] == "COVID-19 CONFIRMADO") && (mod[0] == "incidence") && (enfoque == "star")) {
+          mod[0] = "incidence_star";
+        };
         switch (mod[0]) {
             case "cases":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
@@ -3188,16 +3197,32 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<thead>' +
                     '<tr>' +
                     '<th>Casos</th>' +
-                    '<th>Población total </th>' +
-                    '<th> No. Casos </th>' +
-                    '<th>No. Casos '+ periodSelectedShort +'</th>' +
-                    '<th> Decil Casos '+ periodSelectedShort +' </th>' +
-                    '<th> No. Casos '+nextPeriodSelectedShort+'</th>' +
-                    '<th> Decil Casos '+nextPeriodSelectedShort+'</th>' +
+                    '<th>Población Total </th>' +
+                    '<th>No. Casos en '+ previousPeriodSelectedShort +'</th>' +
+                    '<th> Decil Casos en '+ previousPeriodSelectedShort +' </th>' +
+                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
+                    '<th> Decil Casos en '+periodSelectedShort+'</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
                 break;
+            case "cases_star":
+                  htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                      '<div class="panel-primary">' +
+                      '<div class="panel-heading no-padding header-title-cell">' +
+                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '</div>' +
+                      '<table class="table table-striped">' +
+                      '<thead>' +
+                      '<tr>' +
+                      '<th>Casos</th>' +
+                      '<th>Población Total </th>' +
+                      '<th> No. Casos en '+periodSelectedShort+'</th>' +
+                      '<th> Decil Casos en '+periodSelectedShort+'</th>' +
+                      '</tr>' +
+                      '</thead>' +
+                      '<tbody>';
+                  break;
             case "incidence":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
@@ -3208,16 +3233,34 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<thead>' +
                     '<tr>' +
                     '<th>Incidencia</th>' +
-                    '<th>Población total </th>' +
+                    '<th>Población Total </th>' +
                     '<th> No. Casos </th>' +
-                    '<th> No. Incidencia ' + periodSelectedShort + '</th>' +
-                    '<th> Decil Incidencia ' + periodSelectedShort + '</th>' +
-                    '<th> No. Incidencia ' + periodSelectedShort + ' Entrenamiento </th>' +
-                    '<th> Decil Incidencia ' + periodSelectedShort + ' de Entrenamiento </th>' +
+                    '<th> No. Incidencia en ' + previousPeriodSelectedShort + '</th>' +
+                    '<th> Decil Incidencia en ' + previousPeriodSelectedShort + '</th>' +
+                    '<th> No. Incidencia en ' + periodSelectedShort + '</th>' +
+                    '<th> Decil Incidencia en ' + periodSelectedShort + '</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
                 break;
+            case "incidence_star":
+                  htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                      '<div class="panel-primary">' +
+                      '<div class="panel-heading no-padding header-title-cell">' +
+                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '</div>' +
+                      '<table class="table table-striped">' +
+                      '<thead>' +
+                      '<tr>' +
+                      '<th>Casos</th>' +
+                      '<th>Población Total </th>' +
+                      '<th> No. Casos </th>' +
+                      '<th> No. Incidencia en '+periodSelectedShort+'</th>' +
+                      '<th> Decil Incidencia en '+periodSelectedShort+'</th>' +
+                      '</tr>' +
+                      '</thead>' +
+                      '<tbody>';
+                  break;
             case "prevalence":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
@@ -3329,10 +3372,17 @@ var res_display_module = (function(verbose, url_zacatuche) {
             case "cases":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
-                    '<td>' + pop_list[0]["population"] + '</td>' +
-                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' + 
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
+                    '</tr>';
+                break;
+            case "cases_star":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' + 
                     '<td>' + res_list[0]["tv"] + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
@@ -3345,6 +3395,15 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
+                    '</tr>';
+                break;
+            case "incidence_star":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' + 
+                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
+                    '<td>' + res_list[0]["tv"] + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
