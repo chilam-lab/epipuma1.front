@@ -3177,6 +3177,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
         if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "incidence") && (enfoque == "star")) {
           mod[0] = "morthality_star";
         };
+        if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "cases") && (enfoque == "star" )) {
+          mod[0] = "fallecidos_star";
+        };
         if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "incidence")) {
             mod[0] = "morthality";
         };
@@ -3374,14 +3377,32 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<thead>' +
                     '<tr>' +
                     '<th>Fallecidos</th>' +
-                    '<th>No. Fallecidos ' + periodSelectedShort + '</th>' +
-                    '<th> Decil Fallecidos ' + periodSelectedShort + ' </th>' +
-                    '<th> No. Fallecidos '+nextPeriodSelectedShort+'</th>' +
-                    '<th> Decil Fallecidos '+nextPeriodSelectedShort+'</th>' +
+                    '<th>Población Total </th>' +
+                    '<th>No. Fallecidos ' + previousPeriodSelectedShort + '</th>' +
+                    '<th> Decil Fallecidos ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> No. Fallecidos '+periodSelectedShort+'</th>' +
+                    '<th> Decil Fallecidos '+periodSelectedShort+'</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
                 break;
+            case "fallecidos_star":
+                  htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                      '<div class="panel-primary">' +
+                      '<div class="panel-heading no-padding header-title-cell">' +
+                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '</div>' +
+                      '<table class="table table-striped">' +
+                      '<thead>' +
+                      '<tr>' +
+                      '<th>Fallecidos</th>' +
+                      '<th> No. Casos </th>' +
+                      '<th> No. Fallecidos '+periodSelectedShort+'</th>' +
+                      '<th> Decil Fallecidos '+periodSelectedShort+'</th>' +
+                      '</tr>' +
+                      '</thead>' +
+                      '<tbody>';
+                  break;
             default:
                 console.log("Entro en la parte del defailt")
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
@@ -3504,8 +3525,17 @@ var res_display_module = (function(verbose, url_zacatuche) {
             case "fallecidos":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
+                    '</tr>';
+                break;
+            case "fallecidos_star":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
