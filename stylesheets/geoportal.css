@@ -2426,23 +2426,11 @@ input:checked+.slider:before {
     background: #fff;
     position: absolute;
     z-index: 11;
-    width: 50%;
-    top: 20%;
-    left: 100%;
+    width: 60%;
+    top: 25%;
+    left: 5%;
     text-align: center;
     border-radius: 15px;
-}
-
-.dimmed {
-    content: " ";
-    z-index: 10;
-    position: absolute;
-    height: 10000%;
-    width: 1000%;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.5);
 }
 
 #targetVariableButton {

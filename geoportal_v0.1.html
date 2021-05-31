@@ -264,61 +264,88 @@
                                 </select>
                             <!--</div>-->
                         </div>
-                        <div id="targetVariableSelectorOverlay" class="dimmed" hidden>
-                        </div>
-                        <div id="targetVariableSelectorId" class="targetVariableSelector" hidden>
-                            <div>
-                                <h5>1. Tipo de Modelo</h5>
-                                <select name=" " id="modelSelect" style="margin-bottom:5%">
+                    </div>
+
+                    <div id="targetVariableSelectorId" class="targetVariableSelector">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h5>Tipo de Modelo</h5>
+                                </td>
+                                <td>
+                                    <select name=" " id="modelSelect" style="">
                                     <option value ="model_default" selected disabled>Seleccione Tipo de Modelo</option>
                                     <option value="Perfilado">Perfilado</option>
                                     <option value="Predictivo">Predictivo</option>
                                 </select>
-                            </div>
-                            <div id="variableObjetivoSection" hidden>
-                                <h5>2. Variables Objetivo</h5>
-                                <select name=" " id="targetVariableSelect" style="margin-bottom:5%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Variables Objetivo</h5>
+                                </td>
+                                <td>
+                                    <select name=" " id="targetVariableSelect" style="margin-bottom:5%">
                                     <option value="var_default" selected disabled>Seleccione Variable Objetivo</option>
                                     <option value="COVID-19 Confirmado">COVID-19 Confirmado</option>
                                     <option value="COVID-19 Negativo">COVID-19 Fallecido</option>
                                     <option value="COVID-19 Pruebas">COVID-19 Pruebas</option>
                                 </select>
-                            </div>
-                            <div id="modif_section" hidden>
-                                <h5>3. Modificadores</h5>
-                                <select name="" id="modifiersSelect" style="margin-bottom:5%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Modificadores</h5>
+                                </td>
+                                <td>
+                                    <select name="" id="modifiersSelect" style="margin-bottom:5%">
                                     <option  value ="mod_default" selected disabled>Seleccione Modificador</option>
                                     <option value="Sin Modificador">Sin Modificador</option>
                                 </select>
-                            </div>
-                            <div id="enfoque_section" hidden>
-                                <h5>4. Enfoque</h5>
-                                <select name="" id="enfoqueSelect" style="margin-bottom:5%">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5> Enfoque</h5>
+                                </td>
+                                <td>
+                                    <select name="" id="enfoqueSelect" style="margin-bottom:5%">
                                     <option value ="enf_default" selected disabled>Seleccione Enfoque</option>
                                     <option selected>Mejoramiento</option>
                                     <option >Empeoramiento</option>
                                     <option >Estrella</option>
 
                                 </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <div id="button_section" style="position:absolute; top:100%">
+                                    <button id="targetVariableButton" class="btn btn-primary">Confirmar Modelo</button>
+                                </div>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Periodo de Validación
+                                </td>
+                                <td>
+                                    <!-- <input id="date_timepicker_start" type="text" value="" style="width: 100px;"> -->
+                                    <select id="date_timepicker_start"></select>
+                                </td>
+                            </tr>
+                        </table>
 
-                            </div>
-                            <div id="button_section" style="margin-bottom:5%;margin-top: 5%;" hidden>
-                                <button id="targetVariableButton" class="btn btn-primary">Confirmar Modelo</button>
-                            </div>
-                            <div>
-                                <button id="cancelVariableButton" class="btn btn-danger" style="margin-bottom: 5%">Cancelar</button>
-
-                            </div>
-
-                        </div>
 
 
-                        <div id="tuto_resolution" class="col-md-6 col-sm-12 col-xs-12">
 
-                            <div class="form-group">
+                    </div>
 
-                                <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
-                                <select class="form-control" id="grid_resolution">
+
+                    <div id="tuto_resolution" class="col-md-6 col-sm-12 col-xs-12">
+
+                        <div class="form-group">
+
+                            <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
+                            <select class="form-control" id="grid_resolution">
                                         <!-- <option value="state">Estados</option> -->
                                         <option value="mun">Municipios</option>
                                         <!-- <option value="ageb">AGEBs</option> -->
@@ -328,12 +355,12 @@
                                         <option value="64">64 km</option> -->
                                     </select>
 
-                            </div>
-
                         </div>
 
-
                     </div>
+
+
+
                     <!-- container de 40% seteado en componete -->
                     <div id="var_target" class="row ">
                         <!-- <div class="modifiers_covid" id="modifiers_covid" style="position: relative; width: 50%; top:89%;left:2%; font-size: 80%; background-color: aquamarine;z-index:3; border-radius: 10px;" hidden>
@@ -353,48 +380,12 @@
                         <div id="tuto_fil_fecha" class="col-md-12 col-sm-12 col-xs-12">
 
 
-                            <div class="row">
-
-
-                                <div class="col-md-1 col-sm-1 col-xs-1 margin-top-five">
-                                    <div class="ttip">
-                                        <button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button>
-                                        <div class="ttext">
-                                            <h5></h5>
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-8 col-sm-10 col-xs-10">
-                                    <label class="text-sm" id="lb_range_fecha" for="sliderFecha"></label>
-                                </div>
-
-
-                            </div>
 
 
 
 
-                            <div class="row">
 
-                                <div class="col-md-12 col-sm-12 col-xs-12">
 
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                        Inicio:
-                                        <!-- <input id="date_timepicker_start" type="text" value="" style="width: 100px;"> -->
-                                        <select id="date_timepicker_start"></select>
-                                    </div>
-                                    <!-- 
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                        Fin:
-                                        <input id="date_timepicker_end" type="text" value="" style="width: 100px;"> 
-
-                                    </div> -->
-
-                                </div>
-
-                            </div>
 
 
                             <!-- <div class="col-md-12 col-sm-12 col-xs-12">

@@ -793,24 +793,12 @@ var module_nicho = (function() {
             document.getElementById("tuto_fil_fecha").appendChild(div);
 
         };
-        const genrateDynamicButton = () => {
-            let button_flow = document.createElement("button");
-            button_flow.setAttribute("class", "btn btn-primary");
-            button_flow.setAttribute("id", "boton_seleccion_grupo");
-            button_flow.setAttribute("style", "width:80%;border-radius: 5px;font-size: 90%;margin-left:11%;margin-top:2%;margin-bottom:2%");
-            let textnode = document.createTextNode("Seleccionar variable de interés");
-            button_flow.append(textnode);
-            document.getElementById("treeVariable_target").appendChild(button_flow);
 
-        };
         const generateNewFlow = () => {
             sessionStorage.setItem("light_traffic", "");
             $('select option[value="model_default"]').attr("selected", true);
-            document.getElementById("targetVariableSelectorOverlay").hidden = false;
-            document.getElementById("targetVariableSelectorId").hidden = false;
             $("#modelSelect").change(function() {
                 $('select option[value="var_default"]').attr("selected", true);
-                document.getElementById("variableObjetivoSection").hidden = false;
             })
             $("#targetVariableSelect").change(function() {
                 let var_obj = $(this).val();
@@ -864,7 +852,6 @@ var module_nicho = (function() {
                         let modif = resp["modifiers"];
                         var select = document.getElementById("modifiersSelect");
                         $('select option[value="mod_default"]').attr("selected", true);
-                        document.getElementById("modif_section").hidden = false;
                         try {
                             let actual_modifiers =
                                 $(".modif_opt").remove();
@@ -886,10 +873,8 @@ var module_nicho = (function() {
                         // if (model_enfo == "Predictivo") {
                         $("#modifiersSelect").change(function() {
                             $('select option[value="enf_default"]').attr("selected", true);
-                            document.getElementById("enfoque_section").hidden = false;
                         });
                         $("#enfoqueSelect").change(function() {
-                            document.getElementById("button_section").hidden = false;
                             $("#targetVariableButton").css("visibility", "visible")
                             let enfoque = $("#enfoqueSelect").val();
                             if (enfoque == "Mejoramiento") {
@@ -1349,7 +1334,7 @@ var module_nicho = (function() {
             let status = $("#pred_des_control")[0].checked;
             console.log(status);
             if (status == false) {
-                $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
+                //$("#lb_range_fecha")[0].innerText = "Periodo de Validación";
                 if ($("#pred_des_control")[0].checked == true) {
                     document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
                     setTimeout(function() {
@@ -1361,7 +1346,7 @@ var module_nicho = (function() {
 
 
             } else {
-                $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
+                //$("#lb_range_fecha")[0].innerText = "Periodo de Validación";
                 document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
                 $(".col-lg-12").css("margin-top", "-40%");
                 setTimeout(function() {
@@ -1397,9 +1382,6 @@ var module_nicho = (function() {
             //Cambios ESTATICOS
         $("#tuto_taxon_sp_target").remove();
         $("#tuto_nav_tabs_target").css("margin-bottom", "4px");
-        $("#lb_range_fecha")[0].innerText = "Periodo de Validación";
-        $("#lb_range_fecha").css("width", "10px");
-        $("#lb_range_fecha").css("margin-bottom", "15px");
         $("#btn_variable_fuente").remove()
         $("#text_variable_fuente").remove()
         $("#tuto_nav_tabs_fuente").css("margin-bottom", "4px");
@@ -1412,15 +1394,18 @@ var module_nicho = (function() {
         $("#add_group_target").css("top", "86%");
         $("#add_group_target").css("margin-left", "16%");
         $("#add_group_target").css("visibility", "hidden");
+        $("#treeAddedPanel_target").css("visibility", "hidden");
+        $("#treeVariable_target").css("visibility", "hidden");
+        $("#clean_var_target").css("visibility", "hidden");
+        $("#reload_map").css("visibility", "hidden");
+
+
 
 
 
         //////NEW FLOW
-        genrateDynamicButton();
-        $("#boton_seleccion_grupo").click(function() {
-                generateNewFlow();
-            })
-            ///BOTON CONFIRMAR MODELO
+        generateNewFlow();
+        ///BOTON CONFIRMAR MODELO
         $("#targetVariableButton").click(function() {
             ///// SELECCION VARIABLES EN FLUJO NUEVO
             let obj_var = $("#targetVariableSelect").val();
@@ -1487,12 +1472,6 @@ var module_nicho = (function() {
             $("#add_group_target").css("visibility", "visible");
             $("#add_group_target").click();
             $("#add_group_target").css("visibility", "hidden");
-            document.getElementById("variableObjetivoSection").hidden = true;
-            document.getElementById("modif_section").hidden = true;
-            document.getElementById("enfoque_section").hidden = true;
-            document.getElementById("targetVariableSelectorId").hidden = true;
-            document.getElementById("targetVariableSelectorOverlay").hidden = true;
-            $("#boton_seleccion_grupo").css("visibility", "hidden");
             $("#tuto_fil_fecha").css("top", "17%");
             ////CCHECK FOR $("#chkValidationTemp").is(':checked')
             var modelo2 = sessionStorage.getItem("modelo_test")
@@ -1501,16 +1480,10 @@ var module_nicho = (function() {
             } else {
                 $("#chkValidationTemp").attr('checked', false);
             }
+            $("#reload_map").click();
+
         });
-        /// BOTON CANCELAR MODELO
-        $("#cancelVariableButton").click(function() {
-            document.getElementById("variableObjetivoSection").hidden = true;
-            document.getElementById("modif_section").hidden = true;
-            document.getElementById("enfoque_section").hidden = true;
-            document.getElementById("targetVariableSelectorId").hidden = true;
-            document.getElementById("targetVariableSelectorOverlay").hidden = true;
-            $("#targetVariableButton").css("visibility", "hidden")
-        });
+
 
         /// DATE  MONTHS ONLY
         let todayDate = new Date();
@@ -1614,8 +1587,6 @@ var module_nicho = (function() {
             sessionStorage.setItem("modifiers_flag", false);
             sessionStorage.setItem("covar", "");
             sessionStorage.setItem("light_traffic", "")
-            $("#boton_seleccion_grupo").css("visibility", "visible");
-            $("#targetVariableButton").css("visibility", "hidden");
             $("#tuto_fil_fecha").css("top", "21%");
             try {
                 document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';

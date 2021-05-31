@@ -1340,8 +1340,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         if (modifiers_flag_verb == "true") {
             var verbo = "generateTarget";
-            var url = _url_zacatuche + "/niche/" + verbo;
-            //var url = _url_zacatuche + "/dev/niche/" + verbo;
+            //var url = _url_zacatuche + "/niche/" + verbo;
+            var url = _url_zacatuche + "/dev/niche/" + verbo;
             //data_request['period_config'] = ["*", "*", "'1'"];
         }
         // cambiando peticiones ajax por promesas y fetch api
@@ -1535,8 +1535,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
 
-                        fetch(_url_zacatuche + "/niche/" + verbo, {
-                                //fetch(_url_zacatuche + "/dev/niche/" + verbo, {
+                        //fetch(_url_zacatuche + "/niche/" + verbo, {
+                        fetch(_url_zacatuche + "/dev/niche/" + verbo, {
                                 method: "POST",
                                 body: JSON.stringify(total_request),
                                 headers: {
@@ -3455,8 +3455,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
         console.log(json_data);
         console.log(res_list);
 
-        const parse_only_three_decimals = (number) =>{
-          return parseFloat(number).toFixed(3)
+        const parse_only_three_decimals = (number) => {
+            return parseFloat(number).toFixed(3)
         }
 
 
