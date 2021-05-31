@@ -3174,6 +3174,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
         for (let i = 0; i < res_modif.length; i++) {
             res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
         };
+        if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "incidence") && (enfoque == "star")) {
+          mod[0] = "morthality_star";
+        };
         if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "incidence")) {
             mod[0] = "morthality";
         };
@@ -3189,6 +3192,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         if ((tar_var[0]["label"] == "COVID-19 CONFIRMADO") && (mod[0] == "prevalence") && (enfoque == "star")) {
           mod[0] = "prevalence_star";
         };
+        
         switch (mod[0]) {
             case "cases":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
@@ -3334,14 +3338,32 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Mortalidad</th>' +
                     '<th>Población Total </th>' +
                     '<th> No. Casos </th>' +
+                    '<th> Mortalidad en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> Decil de Mortalidad en ' + previousPeriodSelectedShort + ' </th>' +
                     '<th> Mortalidad en ' + periodSelectedShort + ' </th>' +
-                    '<th> Decil de Mortalidad en ' + periodSelectedShort + ' Periodo </th>' +
-                    '<th> Mortalidad en ' + periodSelectedShort + ' Periodo de Entrenamiento </th>' +
-                    '<th> Decil de Mortalidad en ' + periodSelectedShort + ' de Entrenamiento </th>' +
+                    '<th> Decil de Mortalidad en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
                 break;
+            case "morthality_star":
+                  htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                      '<div class="panel-primary">' +
+                      '<div class="panel-heading no-padding header-title-cell">' +
+                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '</div>' +
+                      '<table class="table table-striped">' +
+                      '<thead>' +
+                      '<tr>' +
+                      '<th>Mortalidad</th>' +
+                      '<th>Población Total </th>' +
+                      '<th> No. Casos </th>' +
+                      '<th> Mortalidad en ' + periodSelectedShort + ' </th>' +
+                      '<th> Decil de Mortalidad en ' + periodSelectedShort + ' </th>' +
+                      '</tr>' +
+                      '</thead>' +
+                      '<tbody>';
+                  break;
             case "fallecidos":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
@@ -3466,6 +3488,15 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
+                    '</tr>';
+                break;
+            case "morthality_star":
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
+                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
