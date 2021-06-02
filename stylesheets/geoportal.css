@@ -2421,22 +2421,3 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
-
-#targetVariableSelectorId {
-    background: #fff;
-    position: absolute;
-    z-index: 11;
-    width: 60%;
-    top: 25%;
-    left: 5%;
-    text-align: center;
-    border-radius: 15px;
-}
-
-#targetVariableButton {
-    margin-bottom: 5%;
-}
-
-#targetVariableSelectorId {
-    margin-top: 5%;
-}

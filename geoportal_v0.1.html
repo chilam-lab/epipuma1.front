@@ -255,109 +255,123 @@
                     <!-- No eliminar, utilizado para enlace de regeneración! -->
                     <div id="result"></div>
 
-                    <div class="row pd-top20 container_15p">
+                    <!-- TABLA NUEVO DISEÑO UI -->
 
-                        <div id="tuto_region" class="col-md-6 col-sm-12 col-xs-12">
-                            <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
-                            <label class="text-sm" id="footprint_region"></label>
-                            <select id="footprint_region_select" class="form-control">
-                                </select>
-                            <!--</div>-->
-                        </div>
-                    </div>
+                    <table style="width:480px">
+                        <tr>
+                            <td style="width:55%">
+                                <h3 style="text-align:left;">I. Criterios del Modelo </h3>
 
-                    <div id="targetVariableSelectorId" class="targetVariableSelector">
-                        <table>
-                            <tr>
-                                <td>
-                                    <h5>Tipo de Modelo</h5>
-                                </td>
-                                <td>
-                                    <select name=" " id="modelSelect" style="">
-                                    <option value ="model_default" selected disabled>Seleccione Tipo de Modelo</option>
-                                    <option value="Perfilado">Perfilado</option>
-                                    <option value="Predictivo">Predictivo</option>
-                                </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5>Variables Objetivo</h5>
-                                </td>
-                                <td>
-                                    <select name=" " id="targetVariableSelect" style="margin-bottom:5%">
-                                    <option value="var_default" selected disabled>Seleccione Variable Objetivo</option>
-                                    <option value="COVID-19 Confirmado">COVID-19 Confirmado</option>
-                                    <option value="COVID-19 Negativo">COVID-19 Fallecido</option>
-                                    <option value="COVID-19 Pruebas">COVID-19 Pruebas</option>
-                                </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5>Modificadores</h5>
-                                </td>
-                                <td>
-                                    <select name="" id="modifiersSelect" style="margin-bottom:5%">
-                                    <option  value ="mod_default" selected disabled>Seleccione Modificador</option>
-                                    <option value="Sin Modificador">Sin Modificador</option>
-                                </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h5> Enfoque</h5>
-                                </td>
-                                <td>
-                                    <select name="" id="enfoqueSelect" style="margin-bottom:5%">
-                                    <option value ="enf_default" selected disabled>Seleccione Enfoque</option>
-                                    <option selected>Mejoramiento</option>
-                                    <option >Empeoramiento</option>
-                                    <option >Estrella</option>
+                            </td>
+                            <td style="width:50%">
 
-                                </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <div id="button_section" style="position:absolute; top:100%">
+                                <p style="text-align:left;font-size:10px;margin-top: 12%;">(Todos los campos son obligatorios) </p>
+                            </td>
+
+                        </tr>
+                    </table>
+                    <table style="width:670px">
+
+                        <tr>
+                            <td>
+                                <p>1. Definición del area de estudio</p>
+                            </td>
+                            <td>
+                                <div class="row pd-top20 container_15p">
+
+                                    <div id="tuto_region" class="col-md-6 col-sm-12 col-xs-12">
+                                        <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
+                                        <label class="text-sm" id="footprint_region"></label>
+                                        <select id="footprint_region_select" class="form-control">
+                                                </select>
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+
+
+                                <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
+                                <select class="form-control" id="grid_resolution">
+                                                        <!-- <option value="state">Estados</option> -->
+                                                        <option value="mun">Municipios</option>
+                                                        <!-- <option value="ageb">AGEBs</option> -->
+                                                        <!-- <option value="8">8 km</option>
+                                                        <option selected="selected" value="16">16 km</option>
+                                                        <option value="32">32 km</option>
+                                                        <option value="64">64 km</option> -->
+                                                    </select>
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>2. Características del Modelo</p>
+                            </td>
+                            <td>
+                                Tipo
+                                <select class="form-control" id="modelSelect" style="">
+                                        <option value ="model_default" selected disabled>Seleccione Tipo de Modelo</option>
+                                        <option value="Perfilado">Perfilado</option>
+                                        <option value="Predictivo">Predictivo</option>
+                                    </select>
+                            </td>
+                            <td>
+                                Variable Objetivo
+                                <select class="form-control" id="targetVariableSelect" style="margin-bottom:5%">
+                                        <option value="var_default" selected disabled>Seleccione Variable Objetivo</option>
+                                        <option value="COVID-19 Confirmado">COVID-19 Confirmado</option>
+                                        <option value="COVID-19 Negativo">COVID-19 Fallecido</option>
+                                        <option value="COVID-19 Pruebas">COVID-19 Pruebas</option>
+                                    </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                Modificadores
+                                <select class="form-control" id="modifiersSelect" style="margin-bottom:5%">
+                                        <option  value ="mod_default" selected disabled>Seleccione Modificador</option>
+                                        <option value="Sin Modificador">Sin Modificador</option>
+                                    </select>
+                            </td>
+                            <td>
+                                Enfoque
+                                <select class="form-control" id="enfoqueSelect" style="margin-bottom:5%">
+                                        <option value ="enf_default" selected disabled>Seleccione Enfoque</option>
+                                        <option selected>Mejoramiento</option>
+                                        <option >Empeoramiento</option>
+                                        <option >Estrella</option>
+                                    </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                3. Selección del periodo
+                            </td>
+                            <td>
+                                Periodo de Validación
+                                <!-- <input id="date_timepicker_start" type="text" value="" style="width: 100px;"> -->
+                                <select class="form-control" id="date_timepicker_start"></select>
+
+                            </td>
+                            <td>
+                                <div id="button_section">
                                     <button id="targetVariableButton" class="btn btn-primary">Confirmar Modelo</button>
                                 </div>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Periodo de Validación
-                                </td>
-                                <td>
-                                    <!-- <input id="date_timepicker_start" type="text" value="" style="width: 100px;"> -->
-                                    <select id="date_timepicker_start"></select>
-                                </td>
-                            </tr>
-                        </table>
+                            </td>
+                        </tr>
+                    </table>
 
 
 
 
-                    </div>
 
 
-                    <div id="tuto_resolution" class="col-md-6 col-sm-12 col-xs-12">
 
-                        <div class="form-group">
-
-                            <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
-                            <select class="form-control" id="grid_resolution">
-                                        <!-- <option value="state">Estados</option> -->
-                                        <option value="mun">Municipios</option>
-                                        <!-- <option value="ageb">AGEBs</option> -->
-                                        <!-- <option value="8">8 km</option>
-                                        <option selected="selected" value="16">16 km</option>
-                                        <option value="32">32 km</option>
-                                        <option value="64">64 km</option> -->
-                                    </select>
-
-                        </div>
-
-                    </div>
 
 
 
