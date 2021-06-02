@@ -2793,21 +2793,20 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                             colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
 
                         } else {
-                            for (let i = 0; i < _data_sp_occ.length; i++) {
-                                //Excluidos
-                                if (_data_sp_occ[i].fp == fp) {
-                                    _data_sp_occ[i].occ = 100
-                                    lalistadelosblancos.push(_data_sp_occ[i])
+                            for (let i = 0; i < _data_sp_occ.length; i++) {                                
                                 //La clase
-                                } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
-                                    // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
+                                if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                     _data_sp_occ[i].occ = 100
-                                    sum_tv += 1
+                                    sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
                                     lalistadelosverdes.push(_data_sp_occ[i])
                                 //No clase
                                 } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude1)) {
                                         _data_sp_occ[i].occ = 100
                                         lalistadelosazules.push(_data_sp_occ[i])
+                                //Excluidos
+                                } else if (_data_sp_occ[i].fp == fp) {
+                                  _data_sp_occ[i].occ = 100
+                                  lalistadelosblancos.push(_data_sp_occ[i])
                                 }
                             };
                             colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
@@ -2918,7 +2917,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Surgieron Casos en "+periodSelectedShort, "No. Municipios Donde no Surgieron Casos en "+periodSelectedShort, "No. de Municipios en Donde Había Casos en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1, false, false);
-                                            listed_numbers2 = [numbers2[3], numbers2[0], numbers2[1]];
+                                            listed_numbers2 = [numbers2[4], numbers2[3], numbers2[0], numbers2[1]];
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -3023,10 +3022,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Municipios en Rojo", "No. Municipios en Azul", "No. Municipios Excluidos"];
+                                            let texts2 = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Surgieron Casos en "+periodSelectedShort, "No. Municipios Donde no Surgieron Casos en "+periodSelectedShort, "No. de Municipios en Donde Había Casos en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1, false, false);
-                                            listed_numbers2 = [numbers2[3], numbers2[0], numbers2[1]];
-                                            editResumenTable(3, texts2, listed_numbers2)
+                                            listed_numbers2 = [numbers2[4], numbers2[3], numbers2[0], numbers2[1]];
+                                            editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
