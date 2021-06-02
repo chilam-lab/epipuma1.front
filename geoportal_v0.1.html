@@ -256,7 +256,7 @@
                     <div id="result"></div>
 
                     <!-- TABLA NUEVO DISEÑO UI -->
-
+                    <!-- TABLA 1 -->
                     <table style="width:480px">
                         <tr>
                             <td style="width:55%">
@@ -270,29 +270,26 @@
 
                         </tr>
                     </table>
+                    <!-- TABLA 2 -->
                     <table style="width:670px">
-
                         <tr>
                             <td>
                                 <p>1. Definición del area de estudio</p>
                             </td>
                             <td>
-                                <div class="row pd-top20 container_15p">
-
-                                    <div id="tuto_region" class="col-md-6 col-sm-12 col-xs-12">
-                                        <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
-                                        <label class="text-sm" id="footprint_region"></label>
-                                        <select id="footprint_region_select" class="form-control">
+                                <div id="tuto_region" style="width:90%">
+                                    <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
+                                    <label class="text-sm" id="footprint_region"></label>
+                                    <select id="footprint_region_select" class="form-control">
                                                 </select>
-                                        <!--</div>-->
-                                    </div>
+                                    <!--</div>-->
                                 </div>
                             </td>
                             <td>
 
-
-                                <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
-                                <select class="form-control" id="grid_resolution">
+                                <div style="width:90%">
+                                    <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
+                                    <select class="form-control" id="grid_resolution">
                                                         <!-- <option value="state">Estados</option> -->
                                                         <option value="mun">Municipios</option>
                                                         <!-- <option value="ageb">AGEBs</option> -->
@@ -301,6 +298,8 @@
                                                         <option value="32">32 km</option>
                                                         <option value="64">64 km</option> -->
                                                     </select>
+                                </div>
+
 
 
                             </td>
@@ -561,9 +560,11 @@
 
         <div id="section1" class=" margin-top-15 ">
 
-            <div id="tuto_variables" class="col-lg-9 col-md-9 margin-top-15 " style="padding-left: 0px">
+            <div id="tuto_variables" style="position: absolute;top:40%;width: 40%;">
 
-                <div class="col-md-12 box_shadow padding-sides-zero container_85p" id="variables"></div>
+                <div id="variables"></div>
+                <button id="get_esc_ep" class="btn btn-success " type="button" style=""></button>
+
 
             </div>
 
@@ -574,7 +575,7 @@
 
                 <h2 id="lb_params_variables" class="sidebar-header-species"></h2>
 
-                <div id="tuto_val" class="row container_20p ">
+                <div id="tuto_val" class="row container_20p">
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-sides-zero">
 
@@ -762,7 +763,6 @@
 
 
 
-                    <button id="get_esc_ep" class="btn btn-success " type="button"></button>
                     <button id="show_gen" class="btn btn-primary margin-left-two" type="button" title="" style="visibility: hidden"></button>
                     <button id="btn_tuto_steps_result" type="button" title="" class="btn btn-warning  display-marker " style="visibility: hidden"></button>
 
@@ -774,172 +774,174 @@
         </div>
 
 
+        <div style="position:relative;top:-105%">
 
-        <div id="section2" class="row-fluid margin-top-35">
+            <div id="section2" class="">
 
-            <div class="col-md-12 margin-top-15">
+                <div class="col-md-12 margin-top-15">
 
-                <div class="row">
+                    <div class="row">
 
-                    <div class="col-lg-1">
-                        <h3 id="lb_resultados" class="sidebar-header-species"></h3>
+                        <div class="col-lg-1">
+                            <h3 id="lb_resultados" class="sidebar-header-species"></h3>
+                        </div>
+
                     </div>
 
-                </div>
-
-                <div class="row">
+                    <div class="row">
 
 
 
-                    <div class="col-lg-1 margin-top-20 margin-right-90  pull-right">
+                        <div class="col-lg-1 margin-top-20 margin-right-90  pull-right">
 
-                        <label for="basic-url">Visualización</label>
-
-
-                        <div class=" dropdown_group ">
+                            <label for="basic-url">Visualización</label>
 
 
-
-                            <div class="input-group-btn ">
+                            <div class=" dropdown_group ">
 
 
 
-                                <button id="btn_map_type" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="deviation">Standard deviation <span class="caret"></span></button>
+                                <div class="input-group-btn ">
 
-                                <ul class="dropdown-menu dropdown_idioma">
-                                    <li><a class="map_type" label="Equal range" value="range">Equal range </a></li>
-                                    <li><a class="map_type" label="Standard deviation" value="deviation" ">Standard deviation </a></li>
+
+
+                                    <button id="btn_map_type" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="deviation">Standard deviation <span class="caret"></span></button>
+
+                                    <ul class="dropdown-menu dropdown_idioma">
+                                        <li><a class="map_type" label="Equal range" value="range">Equal range </a></li>
+                                        <li><a class="map_type" label="Standard deviation" value="deviation" ">Standard deviation </a></li>
                                         <li><a class="map_type " label="Natural Breaks " value="jenks " ">Natural Breaks </a>
-                                    </li>
+                                        </li>
 
-                                </ul>
+                                    </ul>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+                        <div class="col-lg-3 margin-top-20 pull-right">
 
-                    <div class="col-lg-3 margin-top-20 pull-right">
+                            <label for="basic-url">Buscador</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon3">Ej: Monterrey</span>
+                                <input id="area_search" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                            </div>
 
-                        <label for="basic-url">Buscador</label>
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon3">Ej: Monterrey</span>
-                            <input id="area_search" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
                         </div>
 
+
+
                     </div>
 
 
+
+                    <div id="map" class="margin-top-15 box_shadow">
+
+                        <div class="link_shape">
+                            <button id="return_map" type="button" title="Deshacer highlight" class="btn btn-primary glyphicon glyphicon-refresh" data-toggle="modal" data-target="#" style="right: 50px;"></button>
+                        </div>
+                        <div class="link_shape">
+                            <button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
+                        </div>
+
+                        <div id="escala_color" class="link_shape_map pull-right">
+                        </div>
+
+                        <div id="escala_color_decil" class="link_shape_decil pull-right">
+                        </div>
+
+                        <div id="map_text"></div>
+
+                    </div>
 
                 </div>
 
-
-
-                <div id="map" class="margin-top-15 box_shadow">
-
-                    <div class="link_shape">
-                        <button id="return_map" type="button" title="Deshacer highlight" class="btn btn-primary glyphicon glyphicon-refresh" data-toggle="modal" data-target="#" style="right: 50px;"></button>
-                    </div>
-                    <div class="link_shape">
-                        <button id="dShape" type="button" title="Descarga mapa (.shp)" class="btn btn-primary glyphicon glyphicon-download-alt" data-toggle="modal" data-target="#modalMailShape"></button>
-                    </div>
-
-                    <div id="escala_color" class="link_shape_map pull-right">
-                    </div>
-
-                    <div id="escala_color_decil" class="link_shape_decil pull-right">
-                    </div>
-
-                    <div id="map_text"></div>
-
-                </div>
 
             </div>
 
 
-        </div>
 
 
+            <div class="row-fluid margin-top-35" id="tbl_hist">
 
-        <div class="row-fluid margin-top-35" id="tbl_hist">
+                <div class="margin-top-15">
 
-            <div class="margin-top-15">
+                    <div id="myScrollableBlockEpsilonDecil" class="row-fluid myScrollableBlockEpsilonDecil margin-top-15 box_shadow bg-card">
 
-                <div id="myScrollableBlockEpsilonDecil" class="row-fluid myScrollableBlockEpsilonDecil margin-top-15 box_shadow bg-card">
-
-                    <button id="btn_msg_hist_decil" type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist ' onclick="$('#modalInfo').modal()">
+                        <button id="btn_msg_hist_decil" type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist ' onclick="$('#modalInfo').modal()">
                         </button>
 
-                    <div id="chartdiv_score_decil"></div>
-                </div>
+                        <div id="chartdiv_score_decil"></div>
+                    </div>
 
-                <div class="row">
-
-
-                </div>
-
-                <div id="div_example" class="row-fluid myScrollableBlockDecilList box_shadow bg-card">
-
-                    <table id="example" class="display compact cell-border" cellspacing="0"></table>
-
-                </div>
+                    <div class="row">
 
 
-                <div class="row">
+                    </div>
 
+                    <div id="div_example" class="row-fluid myScrollableBlockDecilList box_shadow bg-card">
 
-                    <div id="div_munlist" class="row-fluid myScrollableBlockDecilList box_shadow bg-card">
-
-                        <table id="tbl_munlist" class="display compact cell-border" cellspacing="0"></table>
+                        <table id="example" class="display compact cell-border" cellspacing="0"></table>
 
                     </div>
 
 
-                </div>
+                    <div class="row">
 
 
+                        <div id="div_munlist" class="row-fluid myScrollableBlockDecilList box_shadow bg-card">
 
-                <div class="row">
+                            <table id="tbl_munlist" class="display compact cell-border" cellspacing="0"></table>
 
-                    <div id="histcontainer_row" class="row-fluid histcontainer_row  ">
-
-                        <div id="hst_esp_eps" class="myScrollableBlockEpsilonSmallHist w13 bg-card">
-
-                            <button type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist pull-right' title="Histograma Epsilon Especie" data-trigger="hover" data-placement="auto" data-container="body" data-toggle="popover" data-content="Muestra la frecuencia por rango donde estan las especies por su valor de epsilon."></button>
-
-                            <div id="chartdiv_epsilon"></div>
                         </div>
 
-                        <div id="hst_esp_scr" class="myScrollableBlockEpsilonSmallHist w13 bg-card">
-                            <button type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist pull-right' title="Histograma Score Especie" data-trigger="hover" data-placement="auto" data-container="body" data-toggle="popover" data-content="Muestra la frecuencia por rango donde estan las especies por su valor de score."></button>
-
-                            <div id="chartdiv_score"></div>
-                        </div>
-                        <div id="hst_cld_scr" class="myScrollableBlockEpsilonSmallHist w13 bg-card">
-                            <button type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist pull-right' title="Histograma Score Celda" data-trigger="hover" data-placement="auto" data-container="body" data-toggle="popover" data-content="Muestra la frecuencia por rango donde estan las celdas por su valor de score."></button>
-
-                            <div id="chartdiv_score_celda"></div>
-                        </div>
 
                     </div>
 
 
-                </div>
+
+                    <div class="row">
+
+                        <div id="histcontainer_row" class="row-fluid histcontainer_row  ">
+
+                            <div id="hst_esp_eps" class="myScrollableBlockEpsilonSmallHist w13 bg-card">
+
+                                <button type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist pull-right' title="Histograma Epsilon Especie" data-trigger="hover" data-placement="auto" data-container="body" data-toggle="popover" data-content="Muestra la frecuencia por rango donde estan las especies por su valor de epsilon."></button>
+
+                                <div id="chartdiv_epsilon"></div>
+                            </div>
+
+                            <div id="hst_esp_scr" class="myScrollableBlockEpsilonSmallHist w13 bg-card">
+                                <button type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist pull-right' title="Histograma Score Especie" data-trigger="hover" data-placement="auto" data-container="body" data-toggle="popover" data-content="Muestra la frecuencia por rango donde estan las especies por su valor de score."></button>
+
+                                <div id="chartdiv_score"></div>
+                            </div>
+                            <div id="hst_cld_scr" class="myScrollableBlockEpsilonSmallHist w13 bg-card">
+                                <button type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column_hist pull-right' title="Histograma Score Celda" data-trigger="hover" data-placement="auto" data-container="body" data-toggle="popover" data-content="Muestra la frecuencia por rango donde estan las celdas por su valor de score."></button>
+
+                                <div id="chartdiv_score_celda"></div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
 
 
 
 
-                <div id="treeAddedPanel" class="row-fluid myScrollableBlockDecilList box_shadow bg-card">
-                    <table id="tdisplay" class="display compact cell-border"></table>
+                    <div id="treeAddedPanel" class="row-fluid myScrollableBlockDecilList box_shadow bg-card">
+                        <table id="tdisplay" class="display compact cell-border"></table>
+                    </div>
+
+
                 </div>
 
 
             </div>
-
-
         </div>
-
 
     </div>
     <!-- close main_container -->

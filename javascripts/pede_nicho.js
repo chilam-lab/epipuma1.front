@@ -1015,6 +1015,8 @@ var module_nicho = (function() {
         $("#clean_var_target").css("visibility", "hidden");
         $("#reload_map").css("visibility", "hidden");
         $("#tuto_params").css("visibility", "hidden");
+        $("#myScrollableBlockEpsilonDecil").css("position", "relative");
+        $("#myScrollableBlockEpsilonDecil").css("top", "-62%");
 
 
 
@@ -1237,7 +1239,7 @@ var module_nicho = (function() {
                     console.log(element[0].textContent);
                     let data_session = JSON.parse(sessionStorage.getItem("selectedData"));
                     if (!(data_session[0]["label"].includes("COVID"))) {
-                        fixed_covar_tags(b);
+                        //fixed_covar_tags(b);
                     }
                 });
             }, 1000);
