@@ -2916,10 +2916,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Municipios en Rojo", "No. Municipios en Azul", "No. Municipios Excluidos"];
+                                            let texts2 = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Surgieron Casos en "+periodSelectedShort, "No. Municipios Donde no Surgieron Casos en "+periodSelectedShort, "No. de Municipios en Donde Había Casos en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1, false, false);
                                             listed_numbers2 = [numbers2[3], numbers2[0], numbers2[1]];
-                                            editResumenTable(3, texts2, listed_numbers2)
+                                            editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
