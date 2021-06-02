@@ -2802,6 +2802,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                 } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                     // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                     _data_sp_occ[i].occ = 100
+                                    sum_tv += 1
                                     lalistadelosverdes.push(_data_sp_occ[i])
                                 //No clase
                                 } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude1)) {
@@ -2909,7 +2910,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers, listed_numbers;
                                             let texts = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Dejaron de Haber Casos en "+periodSelectedShort, "No. Municipios Donde Siguieron Habiendo Casos en "+periodSelectedShort, "No. de Municipios en Donde no Había Casos en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
-                                            listed_numbers = [numbers[3], numbers[0], numbers[1]];
+                                            listed_numbers = [numbers[4], numbers[3], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
 
@@ -3014,10 +3015,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Municipios en Verde", "No. Municipios en Azul", "No. Municipios Excluidos"];
+                                            let texts = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Dejaron de Haber Casos en "+periodSelectedShort, "No. Municipios Donde Siguieron Habiendo Casos en "+periodSelectedShort, "No. de Municipios en Donde no Había Casos en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
-                                            listed_numbers = [numbers[3], numbers[0], numbers[1]];
-                                            editResumenTable(3, texts, listed_numbers)
+                                            listed_numbers = [numbers[4], numbers[3], numbers[0], numbers[1]];
+                                            editResumenTable(4, texts, listed_numbers)
                                             break;
 
                                         case "red":
