@@ -2794,22 +2794,19 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                         } else {
                             for (let i = 0; i < _data_sp_occ.length; i++) {
+                                //Excluidos
                                 if (_data_sp_occ[i].fp == fp) {
                                     _data_sp_occ[i].occ = 100
                                     lalistadelosblancos.push(_data_sp_occ[i])
+                                //La clase
                                 } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                     // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
                                     _data_sp_occ[i].occ = 100
                                     lalistadelosverdes.push(_data_sp_occ[i])
-                                } else if (modifierFocus) {
-                                    if (((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 1))) {
+                                //No clase
+                                } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude1)) {
                                         _data_sp_occ[i].occ = 100
                                         lalistadelosazules.push(_data_sp_occ[i])
-                                    } else if ((_data_sp_occ[i].fp == 0) && (_data_sp_occ[i].tp == 0)) {
-                                        _data_sp_occ[i].occ = 100
-                                        lalistadelosazules.push(_data_sp_occ[i])
-                                    }
-
                                 }
                             };
                             colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
@@ -2821,8 +2818,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 };
                 const colorized_by_modifier = (specie, modifier, focus) => {
                   var periodSelectedShort = liminf_initial.match(/....-../)[0]
-                  var periodSelectedToDate= new Date(periodSelectedShort)
-                  var previousPeriodSelected = String(periodSelectedToDate.getFullYear() + "-" + (Number(todayDate.getMonth()) < 10 ? "0" + (todayDate.getMonth()) : (todayDate.getMonth() + 1)))
+                  var periodSelectedToDate= new Date(liminf_initial)
+                  var periodSelectedToDateMinusAMonth = new Date(periodSelectedToDate.setDate(periodSelectedToDate.getMonth()-1))
+                  var previousPeriodSelected = String(periodSelectedToDateMinusAMonth.getFullYear() + "-" + (Number(periodSelectedToDateMinusAMonth.getMonth()) < 10 ? "0" + (periodSelectedToDateMinusAMonth.getMonth()) : (periodSelectedToDateMinusAMonth.getMonth() + 1)))
 
                     switch (specie["label"]) {
                         case "COVID-19 CONFIRMADO":
@@ -2909,10 +2907,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Municipios en Verde", "No. Municipios en Azul", "No. Municipios Excluidos"];
+                                            let texts = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Dejaron de Haber Casos en "+periodSelectedShort, "No. Municipios Donde Siguieron Habiendo Casos en "+periodSelectedShort, "No. de Municipios en Donde no Había Casos en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
                                             listed_numbers = [numbers[3], numbers[0], numbers[1]];
-                                            editResumenTable(3, texts, listed_numbers)
+                                            editResumenTable(4, texts, listed_numbers)
                                             break;
 
                                         case "red":
