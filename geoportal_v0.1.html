@@ -280,7 +280,7 @@
                                 <div id="tuto_region" style="width:90%">
                                     <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
                                     <label class="text-sm" id="footprint_region"></label>
-                                    <select id="footprint_region_select" class="form-control">
+                                    <select id="footprint_region_select" class="form-control" style="width:220px">
                                                 </select>
                                     <!--</div>-->
                                 </div>
@@ -289,7 +289,7 @@
 
                                 <div style="width:90%">
                                     <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
-                                    <select class="form-control" id="grid_resolution">
+                                    <select class="form-control" id="grid_resolution" style="width:220px">
                                                         <!-- <option value="state">Estados</option> -->
                                                         <option value="mun">Municipios</option>
                                                         <!-- <option value="ageb">AGEBs</option> -->
@@ -310,7 +310,7 @@
                             </td>
                             <td>
                                 Tipo
-                                <select class="form-control" id="modelSelect" style="">
+                                <select class="form-control" id="modelSelect" style="width:220px">
                                         <option value ="model_default" selected disabled>Seleccione Tipo de Modelo</option>
                                         <option value="Perfilado">Perfilado</option>
                                         <option value="Predictivo">Predictivo</option>
@@ -318,7 +318,7 @@
                             </td>
                             <td>
                                 Variable Objetivo
-                                <select class="form-control" id="targetVariableSelect" style="margin-bottom:5%">
+                                <select class="form-control" id="targetVariableSelect" style="width:220px">
                                         <option value="var_default" selected disabled>Seleccione Variable Objetivo</option>
                                         <option value="COVID-19 Confirmado">COVID-19 Confirmado</option>
                                         <option value="COVID-19 Negativo">COVID-19 Fallecido</option>
@@ -331,14 +331,14 @@
                             </td>
                             <td>
                                 Modificadores
-                                <select class="form-control" id="modifiersSelect" style="margin-bottom:5%">
+                                <select class="form-control" id="modifiersSelect" style="width:220px">
                                         <option  value ="mod_default" selected disabled>Seleccione Modificador</option>
                                         <option value="Sin Modificador">Sin Modificador</option>
                                     </select>
                             </td>
                             <td>
                                 Enfoque
-                                <select class="form-control" id="enfoqueSelect" style="margin-bottom:5%">
+                                <select class="form-control" id="enfoqueSelect" style="width:220px">
                                         <option value ="enf_default" selected disabled>Seleccione Enfoque</option>
                                         <option selected>Mejoramiento</option>
                                         <option >Empeoramiento</option>
@@ -354,12 +354,12 @@
                             <td>
                                 Periodo de Validación
                                 <!-- <input id="date_timepicker_start" type="text" value="" style="width: 100px;"> -->
-                                <select class="form-control" id="date_timepicker_start"></select>
+                                <select class="form-control" id="date_timepicker_start" style="width:220px"></select>
 
                             </td>
                             <td>
                                 <div id="button_section">
-                                    <button id="targetVariableButton" class="btn btn-primary">Confirmar Modelo</button>
+                                    <button id="targetVariableButton" class="btn btn-primary" style="width:220px">Confirmar Modelo</button>
                                 </div>
                             </td>
                         </tr>
@@ -560,10 +560,10 @@
 
         <div id="section1" class=" margin-top-15 ">
 
-            <div id="tuto_variables" style="position: absolute;top:40%;width: 40%;">
+            <div id="tuto_variables" style="position: absolute;top:35%;width: 25%;height: 60%;">
 
                 <div id="variables"></div>
-                <button id="get_esc_ep" class="btn btn-success " type="button" style=""></button>
+                <button id="get_esc_ep" class="btn btn-success " type="button" style="margin-left:20%;margin-bottom: 10%;"></button>
 
 
             </div>
