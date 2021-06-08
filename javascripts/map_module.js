@@ -2758,6 +2758,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     var lalistadelosverdes = [];
                     var light_traffic = sessionStorage.getItem("light_traffic")
                     var sum_tv = 0;
+                    var mod = JSON.parse(sessionStorage.getItem("modifiers"))
+                    var modifierSelected = Object.values(mod);
                     if (modifier) {
                         for (let i = 0; i < _data_sp_occ.length; i++) {
                             if (_data_sp_occ[i].fp == fp) {
@@ -2765,13 +2767,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                 lalistadelosblancos.push(_data_sp_occ[i])
                             } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                 // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
-                                light_traffic =="green" ? _data_sp_occ[i].occ = _data_sp_occ[i].tv : _data_sp_occ[i].occ = 100
-                                light_traffic =="green" ?  sum_tv += parseInt(_data_sp_occ[i].tv) : "";
-                                light_traffic =="green" ? lalistadelosgradientes.push(_data_sp_occ[i]) : lalistadelosazules.push(_data_sp_occ[i])  
+                                if(light_traffic =="green" && modifierSelected == "cases" ) { _data_sp_occ[i].occ = _data_sp_occ[i].tv } else { _data_sp_occ[i].occ = 100}
+                                if(light_traffic =="green" && modifierSelected == "cases") {  sum_tv += parseInt(_data_sp_occ[i].tv)} else { "";}
+                                if(light_traffic =="green" && modifierSelected == "cases") { lalistadelosgradientes.push(_data_sp_occ[i]) } else{ lalistadelosazules.push(_data_sp_occ[i])}
                             } else {
-                                light_traffic =="green" ? _data_sp_occ[i].occ = 100 : _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                light_traffic =="green" ? "" : sum_tv += parseInt(_data_sp_occ[i].tv);
-                                light_traffic =="green" ? lalistadelosazules.push(_data_sp_occ[i]) : lalistadelosgradientes.push(_data_sp_occ[i]) 
+                                if(light_traffic =="green" && modifierSelected == "cases") { _data_sp_occ[i].occ = 100 } else { _data_sp_occ[i].occ = _data_sp_occ[i].tv}
+                                if(light_traffic =="green" && modifierSelected == "cases") { "" }else{ sum_tv += parseInt(_data_sp_occ[i].tv);}
+                                if(light_traffic =="green" && modifierSelected == "cases") { lalistadelosazules.push(_data_sp_occ[i])} else{ lalistadelosgradientes.push(_data_sp_occ[i]) }
 
                             }
                         };
