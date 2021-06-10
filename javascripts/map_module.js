@@ -2758,8 +2758,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     var lalistadelosverdes = [];
                     var light_traffic = sessionStorage.getItem("light_traffic")
                     var sum_tv = 0;
-                    var mod = JSON.parse(sessionStorage.getItem("modifiers"))
-                    var modifierSelected = Object.values(mod);
+                    var mod = sessionStorage.getItem("modifiers") == "" ? undefined :JSON.parse(sessionStorage.getItem("modifiers"))
+                    var modifierSelected = mod == undefined ? "" : Object.values(mod);
                     var selectedDataSession = JSON.parse(sessionStorage.getItem("selectedData"));
                     var specieSeleceted = Object.values(selectedDataSession)[0]
                     if (modifier) {
