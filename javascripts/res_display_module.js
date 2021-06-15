@@ -3153,11 +3153,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var enfoque = sessionStorage.getItem("light_traffic"); 
         if ($("#pred_des_control")[0].checked) {
           var periodSelectedComplete = $("#date_timepicker_start_val").val();
-          periodSelectedShort = periodSelectedComplete.match(/....-../)[0]
           var periodDate= new Date(periodSelectedComplete);
-          var previousPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth()))
-          let fullyearOfPreviousPeriod = (previousPeriodDate.getMonth() == "12" ? Number(previousPeriodDate.getFullYear() - 1) : previousPeriodDate.getFullYear())
-          previousPeriodSelectedShort = fullyearOfPreviousPeriod + "-" + (Number(previousPeriodDate.getMonth()) < 10 ? "0" + (previousPeriodDate.getMonth()) : (previousPeriodDate.getMonth()))
+          var previousPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth()-1))
+          var twoMonthsPreviousPeriodDate =  new Date(periodDate.setMonth(periodDate.getMonth()-2))
+          previousPeriodSelectedShortAux = previousPeriodDate.getFullYear() + "-" + (Number((previousPeriodDate.getMonth()+1)) < 10 ? "0" + (previousPeriodDate.getMonth()+1) : (previousPeriodDate.getMonth()+1))
+          twoMonthsPreviousPeriodSelectedShortAux = twoMonthsPreviousPeriodDate.getFullYear() + "-" + (Number((twoMonthsPreviousPeriodDate.getMonth()+2)) < 10 ? "0" + (twoMonthsPreviousPeriodDate.getMonth()+2) : (twoMonthsPreviousPeriodDate.getMonth()+2))
+          periodSelectedShort = previousPeriodSelectedShortAux
+          previousPeriodSelectedShort = twoMonthsPreviousPeriodSelectedShortAux
 
         } else {
           var periodSelectedComplete = $("#date_timepicker_start").val();
