@@ -2756,27 +2756,19 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     var lalistadelosblancos = [];
                     var lalistadelosgradientes = [];
                     var lalistadelosverdes = [];
-                    var light_traffic = sessionStorage.getItem("light_traffic")
                     var sum_tv = 0;
-                    var mod = sessionStorage.getItem("modifiers") == "" ? undefined :JSON.parse(sessionStorage.getItem("modifiers"))
-                    var modifierSelected = mod == undefined ? "" : Object.values(mod);
-                    var selectedDataSession = JSON.parse(sessionStorage.getItem("selectedData"));
-                    var specieSeleceted = Object.values(selectedDataSession)[0]
                     if (modifier) {
                         for (let i = 0; i < _data_sp_occ.length; i++) {
                             if (_data_sp_occ[i].fp == fp) {
                                 _data_sp_occ[i].occ = 100
                                 lalistadelosblancos.push(_data_sp_occ[i])
                             } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
-                                // if ((_data_sp_occ[i].fp == 1) && (_data_sp_occ[i].tp == 0)) {
-                                if(light_traffic =="green" && modifierSelected == "cases" &&  specieSeleceted["label"] == "COVID-19 CONFIRMADO" ) { _data_sp_occ[i].occ = _data_sp_occ[i].tv } else { _data_sp_occ[i].occ = 100}
-                                if(light_traffic =="green" && modifierSelected == "cases" &&  specieSeleceted["label"] == "COVID-19 CONFIRMADO") {  sum_tv += parseInt(_data_sp_occ[i].tv)} else { "";}
-                                if(light_traffic =="green" && modifierSelected == "cases" &&  specieSeleceted["label"] == "COVID-19 CONFIRMADO") { lalistadelosgradientes.push(_data_sp_occ[i]) } else{ lalistadelosazules.push(_data_sp_occ[i])}
+                                _data_sp_occ[i].occ = _data_sp_occ[i].tv
+                                sum_tv += parseInt(_data_sp_occ[i].tv);
+                                lalistadelosgradientes.push(_data_sp_occ[i])
                             } else {
-                                if(light_traffic =="green" && modifierSelected == "cases" &&  specieSeleceted["label"] == "COVID-19 CONFIRMADO") { _data_sp_occ[i].occ = 100 } else { _data_sp_occ[i].occ = _data_sp_occ[i].tv}
-                                if(light_traffic =="green" && modifierSelected == "cases" &&  specieSeleceted["label"] == "COVID-19 CONFIRMADO") { "" }else{ sum_tv += parseInt(_data_sp_occ[i].tv);}
-                                if(light_traffic =="green" && modifierSelected == "cases" &&  specieSeleceted["label"] == "COVID-19 CONFIRMADO") { lalistadelosazules.push(_data_sp_occ[i])} else{ lalistadelosgradientes.push(_data_sp_occ[i]) }
-
+                              _data_sp_occ[i].occ = 100
+                              lalistadelosazules.push(_data_sp_occ[i])
                             }
                         };
                         colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
@@ -2857,7 +2849,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "green":
                                             let numbers, listed_numbers;
                                             let texts = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
-                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
+                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
