@@ -1307,10 +1307,17 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 mydate = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
                 mydate2 = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
                 console.log(data_request);
-                data_request["lim_inf"] = mydate;
-                data_request["lim_sup"] = mydate2;
-                data_request["lim_inf_validation"] = liminf;
-                data_request["lim_sup_validation"] = limsup;
+
+                var periodSelectedComplete = $("#date_timepicker_start_val").val();
+                var periodDate= new Date(periodSelectedComplete);
+                var twoMonthsPreviousPeriodDate =  new Date(periodDate.setMonth(periodDate.getMonth()-2))
+                twoMonthsPreviousPeriodSelectedShortAux = twoMonthsPreviousPeriodDate.getFullYear() + "-" + (Number((twoMonthsPreviousPeriodDate.getMonth()+1)) < 10 ? "0" + (twoMonthsPreviousPeriodDate.getMonth()+1) : (twoMonthsPreviousPeriodDate.getMonth()+1))
+                liminf = twoMonthsPreviousPeriodSelectedShortAux + "-01"
+                limsup = twoMonthsPreviousPeriodSelectedShortAux + "-" + returnTheEndMonthDayByTheNumberOfMonth(liminf.split("-")[1])
+                data_request["lim_inf"] = liminf;
+                data_request["lim_sup"] = limsup;
+                data_request["lim_inf_validation"] = mydate;
+                data_request["lim_sup_validation"] = mydate2;
             } else {
                 data_request["lim_inf"] = liminf;
                 data_request["lim_sup"] = limsup;
