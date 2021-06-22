@@ -3443,10 +3443,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Nombre</th>' +
-                    '<th>Edad</th>' +
-                    '<th>Genero</th>' +
-                    '<th>Fecha Colecta</th>' +
+                    '<th>¿Tuvo Casos en el Periodo '+previousPeriodSelectedShort+'?</th>' +
+                    '<th>No. Casos en '+periodSelectedShort+'</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3580,18 +3578,22 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '</tr>';
                 break;
             default:
-                json_data.forEach(function(item, index) {
+              htmltable += '<tr>' +
+                    '<td>' + (res_list[0]["fp"] == "1" ? "Si": "No")  + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["occ"]) + '</td>' +
+                    '</tr>';
+                // json_data.forEach(function(item, index) {
 
-                    var gen = item.genero === "M" ? "Masculino" : "Femenino"
-                    htmltable += '<tr>' +
-                        '<td>' + item.species + '</td>' +
-                        '<td>' + item.edad + '</td>' +
-                        '<td>' + gen + '</td>' +
-                        '<td>' + item.fechacolecta + '</td>' +
-                        // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+                                 
-                        '</tr>';
+                //     var gen = item.genero === "M" ? "Masculino" : "Femenino"
+                //     htmltable += '<tr>' +
+                //         '<td>' + item.species + '</td>' +
+                //         '<td>' + item.edad + '</td>' +
+                //         '<td>' + gen + '</td>' +
+                //         '<td>' + item.fechacolecta + '</td>' +
+                //         // '<td><a target="_blank" href="' + item.urlejemplar + '">Mas info</a></td>'+
+                //         '</tr>';
 
-                })
+                // })
                 break;
         }
 
