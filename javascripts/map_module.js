@@ -2875,7 +2875,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "green":
                                             let numbers, listed_numbers;
                                             let texts = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
-                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 1);
+                                            numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
@@ -2883,7 +2883,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                         case "red":
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
-                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 0);
+                                            numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
                                             listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]] 
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
