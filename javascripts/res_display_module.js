@@ -3256,9 +3256,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<tr>' +
                     '<th>Incidencia</th>' +
                     '<th>Población Total </th>' +
-                    '<th> No. Casos </th>' +
                     '<th> No. Incidencia en ' + previousPeriodSelectedShort + '</th>' +
                     '<th> Decil Incidencia en ' + previousPeriodSelectedShort + '</th>' +
+                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
                     '<th> No. Incidencia en ' + periodSelectedShort + '</th>' +
                     '<th> Decil Incidencia en ' + periodSelectedShort + '</th>' +
                     '</tr>' +
@@ -3294,9 +3294,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<tr>' +
                     '<th>Prevalencia</th>' +
                     '<th>Población total </th>' +
-                    '<th> No. Casos </th>' +
                     '<th> No. Prevalencia en ' + previousPeriodSelectedShort + ' </th>' +
                     '<th> Decil Prevalencia en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
                     '<th> No. Prevalencia en ' + periodSelectedShort + ' </th>' +
                     '<th> Decil Prevalencia en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
@@ -3332,9 +3332,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<tr>' +
                     '<th>Letalidad</th>' +
                     '<th>Población Total </th>' +
-                    '<th> No. Casos </th>' +
                     '<th> Letalidad en ' + previousPeriodSelectedShort + ' </th>' +
                     '<th> Decil de Letalidad en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
                     '<th> Letalidad en ' + periodSelectedShort + ' </th>' +
                     '<th> Decil de Letalidad en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
@@ -3370,9 +3370,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<tr>' +
                     '<th>Mortalidad</th>' +
                     '<th>Población Total </th>' +
-                    '<th> No. Casos </th>' +
                     '<th> Mortalidad en ' + previousPeriodSelectedShort + ' </th>' +
                     '<th> Decil de Mortalidad en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
                     '<th> Mortalidad en ' + periodSelectedShort + ' </th>' +
                     '<th> Decil de Mortalidad en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
@@ -3483,9 +3483,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
-                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
@@ -3503,9 +3503,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
-                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
@@ -3523,9 +3523,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
-                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
@@ -3543,9 +3543,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
-                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["fv"]) + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
@@ -3580,7 +3580,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             default:
               htmltable += '<tr>' +
                     '<td>' + (res_list[0]["fp"] == "1" ? "Si": "No")  + '</td>' +
-                    '<td>' + parse_only_three_decimals(res_list[0]["occ"]) + '</td>' +
+                    '<td>' + res_list[0]["occ"] + '</td>' +
                     '</tr>';
                 // json_data.forEach(function(item, index) {
 
