@@ -257,14 +257,14 @@
 
                     <!-- TABLA NUEVO DISEÑO UI -->
                     <!-- TABLA 1 -->
-                    <div class="container-sm">
+                    <div class="container ">
                     <div class="row">
-                    <table style="width:480px">
+                    <table >
                         <tr>
-                            <td style="width:55%">
-                                <h3 style="text-align:left;">I. Criterios del Modelo </h3>
+                            <td>
+                                <h3>I. Criterios del Modelo </h3>
                             </td>
-                            <td style="width:50%">
+                            <td>
                                 <p style="text-align:left;font-size:10px;margin-top: 12%;">(Todos los campos son obligatorios) </p>
                             </td>
 
@@ -272,25 +272,27 @@
                     </table>
                     </div>
                     <!-- TABLA 2 -->
-                    <table style="width:670px">
+                    <div class="row">
+                    <div class="col col-sm-6">
+                    <table class="table table-sm">
                         <tr>
                             <td>
                                 <p>1. Definición del area de estudio</p>
                             </td>
                             <td>
-                                <div id="tuto_region" style="width:90%">
+                                <div id="tuto_region" >
                                     <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
                                     <label class="text-sm" id="footprint_region"></label>
-                                    <select id="footprint_region_select" class="form-control" style="width:220px">
+                                    <select id="footprint_region_select" class="form-control">
                                                 </select>
                                     <!--</div>-->
                                 </div>
                             </td>
                             <td>
 
-                                <div style="width:90%">
+                                <div >
                                     <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
-                                    <select class="form-control" id="grid_resolution" style="width:220px">
+                                    <select class="form-control" id="grid_resolution" >
                                                         <!-- <option value="state">Estados</option> -->
                                                         <option value="mun">Municipios</option>
                                                         <!-- <option value="ageb">AGEBs</option> -->
@@ -311,7 +313,7 @@
                             </td>
                             <td>
                                 Tipo
-                                <select class="form-control" id="modelSelect" style="width:220px">
+                                <select class="form-control" id="modelSelect" >
                                         <option value ="model_default" selected disabled>Seleccione Tipo de Modelo</option>
                                         <option value="Perfilado">Perfilado</option>
                                         <option value="Predictivo">Predictivo</option>
@@ -319,7 +321,7 @@
                             </td>
                             <td>
                                 Variable Objetivo
-                                <select class="form-control" id="targetVariableSelect" style="width:220px">
+                                <select class="form-control" id="targetVariableSelect" >
                                         <option value="var_default" selected disabled>Seleccione Variable Objetivo</option>
                                         <option value="COVID-19 Confirmado">COVID-19 Confirmado</option>
                                         <option value="COVID-19 Negativo">COVID-19 Fallecido</option>
@@ -332,14 +334,14 @@
                             </td>
                             <td>
                                 Modificadores
-                                <select class="form-control" id="modifiersSelect" style="width:220px">
+                                <select class="form-control" id="modifiersSelect" >
                                         <option  value ="mod_default" selected disabled>Seleccione Modificador</option>
                                         <option value="Sin Modificador">Sin Modificador</option>
                                     </select>
                             </td>
                             <td>
                                 Enfoque
-                                <select class="form-control" id="enfoqueSelect" style="width:220px">
+                                <select class="form-control" id="enfoqueSelect" >
                                         <option value ="enf_default" selected disabled>Seleccione Enfoque</option>
                                         <option selected>Mejoramiento</option>
                                         <option >Empeoramiento</option>
@@ -355,16 +357,18 @@
                             <td>
                                 Periodo de Validación
                                 <!-- <input id="date_timepicker_start" type="text" value="" style="width: 100px;"> -->
-                                <select class="form-control" id="date_timepicker_start" style="width:220px"></select>
+                                <select class="form-control" id="date_timepicker_start" ></select>
 
                             </td>
                             <td><br>
-                                <div id="button_section">
-                                    <button id="targetVariableButton" class="btn btn-primary" style="width:220px">Confirmar Modelo</button>
+                                <div id="button_section" class="text-center">
+                                    <button id="targetVariableButton" class="btn btn-primary">Confirmar Modelo</button>
                                 </div>
                             </td>
                         </tr>
                     </table>
+                    </div>
+                    </div>
                     </div>
 
 
@@ -377,7 +381,7 @@
 
 
                     <!-- container de 40% seteado en componete -->
-                    <div id="var_target" class="row "style="height: 53%;">
+                    <div id="var_target" class="row "style="height: 45%;">
                         <!-- <div class="modifiers_covid" id="modifiers_covid" style="position: relative; width: 50%; top:89%;left:2%; font-size: 80%; background-color: aquamarine;z-index:3; border-radius: 10px;" hidden>
                             <h3>Modificadores de Target</h3>
                             <input type="radio" class="grupo1" name="grupo1" value="incidence">
@@ -558,15 +562,15 @@
 
 
         </div>
+        <br>
 
 
         <div id="section1" class="row margin-top-15 ">
-          sports
 
-            <div id="tuto_variables" style="position: absolute;top:48%;width: 40%;height: 45%;">
+            <div id="tuto_variables" style="position: absolute;top:51%;width: 40%;height: 45%;">
 
                 <div id="variables"></div>
-                <button id="get_esc_ep" class="btn btn-success " type="button" style="margin-left:20%;margin-bottom: 10%;"></button>
+                <button id="get_esc_ep" class="btn btn-success " type="button" style="margin-left:40%;margin-bottom: 10%;"></button>
 
 
             </div>
