@@ -1027,11 +1027,19 @@ var module_nicho = (function() {
         generateNewFlow();
         ///BOTON CONFIRMAR MODELO
         $("#targetVariableButton").click(function() {
-            ///// SELECCION VARIABLES EN FLUJO NUEVO
-            let obj_var = $("#targetVariableSelect").val();
-            let modif = $("#modifiersSelect").val();
-            let model = $("#modelSelect").val();
+          ///// SELECCION VARIABLES EN FLUJO NUEVO
+          let obj_var = $("#targetVariableSelect").val();
+          let modif = $("#modifiersSelect").val();
+          let model = $("#modelSelect").val();
+          let enfoqueSelect = $("#enfoqueSelect").val();
+          if ($("#pred_des_control")[0].checked) {
+            var date_timepicker_start = $("#date_timepicker_start_val").val();
 
+          } else {
+            var date_timepicker_start = $("#date_timepicker_start").val();
+          }
+          ////VALIDACION ANTES DE MANDAR LA PETICION
+          if(obj_var && modif && model && enfoqueSelect && date_timepicker_start){
             /////SELECCION  MODELO
             if (model == 'Predictivo') {
                 _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
@@ -1101,6 +1109,13 @@ var module_nicho = (function() {
                 $("#chkValidationTemp").attr('checked', false);
             }
             $("#reload_map").click();
+          } else {
+            model ? "" : alert("Por Favor Seleccione el Tipo")
+            obj_var ? "" : alert("Por Favor Seleccione la Variable Objetivo")
+            modif ? "" : alert("Por Favor Seleccione el Modificador")
+            enfoqueSelect ? "" : alert("Por Favor Seleccione el Enfoque")
+            date_timepicker_start ? "" : alert("Por Favor Seleccione Periodo")
+          }
 
         });
 
