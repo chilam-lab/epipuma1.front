@@ -415,6 +415,8 @@ var module_nicho = (function() {
             $('select option[value="model_default"]').attr("selected", true);
             $("#modelSelect").change(function() {
                 $('select option[value="var_default"]').attr("selected", true);
+                //$("#date_timepicker_start_val").attr("disabled", "disabled") 
+
             })
             $("#targetVariableSelect").change(function() {
                 let var_obj = $(this).val();
@@ -1044,9 +1046,18 @@ var module_nicho = (function() {
             if (model == 'Predictivo') {
                 _module_toast.showToast_BottomCenter(_iTrans.prop('Proceso de Validación Activado'), "info");
                 sessionStorage.setItem("modelo_test", "predictivo");
-                $("#pred_des_control").click()
+                if ($("#pred_des_control")[0].checked == false) {
+                  $("#pred_des_control").click()
+                }
             } else {
                 console.log("Perfilado");
+                if ($("#pred_des_control")[0].checked == true) {
+                  document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
+                  setTimeout(function() {
+                      $("#date_timepicker_start").removeAttr("disabled");
+                  }, 550)
+                }
+                $(".col-lg-12").css("margin-top", "-1%");
                 $("#pred_des_control")[0].checked = false;
                 sessionStorage.setItem("modelo_test", "perfilado");
 
