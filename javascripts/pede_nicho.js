@@ -1065,6 +1065,8 @@ var module_nicho = (function() {
             ///// SELECCION MODIFICADORES
             if (modif == "Sin Modificador") {
                 console.log("Sin Modificador")
+                flag_modifiers = false;
+                sessionStorage.setItem("modifiers_flag", false);
             } else {
                 flag_modifiers = true;
                 console.log(flag_modifiers);
