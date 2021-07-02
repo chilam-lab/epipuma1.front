@@ -2623,6 +2623,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             //url_mod = _url_zacatuche + "dev/niche/especie/getGridSpeciesTaxon";
             var tar_var = taxones[0]["value"];
             console.log(tar_var);
+            let newDate = new Date(liminf)
+            let selectedDateMinusThirtyDaysInf = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-01");
+            let selectedDateMinusThirtyDaysSup = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-" + (Number(newDate.getDate()) < 10 ? "0" + newDate.getDate() : newDate.getDate()));
             let enfoque = sessionStorage.getItem("light_traffic");
             var data = {
                 "name": "k",
@@ -2638,6 +2641,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "limsup": limsup,
                 "traffic_light": enfoque,
 
+            }
+            if(enfoque != "star") {
+              data.liminf_first = selectedDateMinusThirtyDaysInf 
+              data.limsup_first = selectedDateMinusThirtyDaysSup 
             }
 
         }
