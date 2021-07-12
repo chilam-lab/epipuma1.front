@@ -459,7 +459,7 @@ var module_nicho = (function() {
                         break;
                 }
                 console.log(data);
-                var _url_zacatuche = "http://covid19.c3.unam.mx/api/dev"
+                var _url_zacatuche = "https://covid19.c3.unam.mx/api/dev"
                 $.ajax({
                     url: _url_zacatuche + "/niche/especie/getModifiersByTarget",
                     data: data,
@@ -740,7 +740,7 @@ var module_nicho = (function() {
                 text: "cargando..."
             }];
             $('#jstree_variables_species_fuente').on('open_node.jstree', function(e, d) {
-                let _url_zacatuche = "http://covid19.c3.unam.mx/api";
+                let _url_zacatuche = "https://covid19.c3.unam.mx/api";
                 let id = "fuente"
                 _VERBOSE ? console.log("self.getTreeVar") : _VERBOSE;
 
