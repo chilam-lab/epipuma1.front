@@ -932,15 +932,31 @@ var module_nicho = (function() {
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode2, 'last', false, false);
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode3, 'last', false, false);
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode4, 'last', false, false);
+                
                 setTimeout(function() {
                     console.log("loaded fixed covars")
                     $(".jstree-anchor")[1].click()
-
-                    // Dinamica Menu Covariables
-                    $(".jstree-anchor").click(function() {
-                        ///BUG COVARIABLES!!!! :`(
-                        dinamica_menu_covariables();
-
+                    $('#jstree_variables_species_fuente').on('changed.jstree', function (e, data) {
+                      let list =[]
+                      var headers_selected = $('#jstree_variables_species_fuente').jstree(true).get_top_selected().length;
+                      for (i = 0; i < headers_selected; i++) {
+                        var node_temp = $('#jstree_variables_species_fuente').jstree(true).get_node($('#jstree_variables_species_fuente').jstree(true).get_top_selected()[i]).original;
+                        var level = ""
+                        if(node_temp.text == "Demográficos" || node_temp.text == "Pobreza" || node_temp.text == "Movilidad") {
+                          level = "Reino"
+                        } else {
+                          level = "Género"
+                        }
+                        let data = {
+                          label: node_temp.text,
+                          level: level,
+                          numlevel: node_temp.attr.nivel,
+                          type: node_temp.attr.type
+                        };
+                        list.push(data)
+                        parsed_data = JSON.stringify(list);
+                        sessionStorage.setItem("selectedData", parsed_data)
+                      }
                     })
                     $(".jstree-anchor")[1].click()
 
