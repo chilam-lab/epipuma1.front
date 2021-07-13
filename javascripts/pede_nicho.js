@@ -947,8 +947,9 @@ var module_nicho = (function() {
                         } else {
                           level = "Género"
                         }
+                        var nameWithoutSpaces = node_temp.text.split(" ")
                         let data = {
-                          label: node_temp.text,
+                          label: nameWithoutSpaces[0],
                           level: level,
                           numlevel: node_temp.attr.nivel,
                           type: node_temp.attr.type
