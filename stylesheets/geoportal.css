@@ -110,6 +110,14 @@ section {
     border-color: #3B6A93;
 }
 
+#sp_section {
+  height: 95%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #3B6A93;
+  left: 13
+}
+
 .sidebar-header-species {
     font-size: 25px;
     font-weight: bold;
