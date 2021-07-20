@@ -103,6 +103,24 @@ var module_nicho = (function() {
 
 
         // INICIA DINAMICA MENU MODIFICADORES
+        const get_interest_group_level = (selected_interest_group) => {
+          var level = "";
+          switch (selected_interest_group.attr.nivel) {
+            case 2:
+              level = "Reino"
+              break;
+            case 6:
+                level = "Familia"
+                break;
+            case 7:
+                level = "Género"
+                break;
+            case 8:
+                level = "Especie"
+                break;
+          }
+          return level
+        }
         const dinamica_menu_covariables = () => {
             setTimeout(function() {
                 let number_checked = $(".jstree-clicked").length;
@@ -933,26 +951,25 @@ var module_nicho = (function() {
 
                 setTimeout(function() {
                     console.log("loaded fixed covars")
+                    var parsed_data = ""
                     $(".jstree-anchor")[1].click()
                     $('#jstree_variables_species_fuente').on('changed.jstree', function (e, data) {
                       let list =[]
                       var headers_selected = $('#jstree_variables_species_fuente').jstree(true).get_top_selected().length;
                       for (i = 0; i < headers_selected; i++) {
                         var node_temp = $('#jstree_variables_species_fuente').jstree(true).get_node($('#jstree_variables_species_fuente').jstree(true).get_top_selected()[i]).original;
-                        var level = ""
-                        if(node_temp.text == "Demográficos" || node_temp.text == "Pobreza" || node_temp.text == "Movilidad") {
-                          level = "Reino"
+                        if(headers_selected == 1 && node_temp.attr.nivel == "root"){
+                          list = [{"label":"Demográficos","level":"Reino","numlevel":2,"type":0},{"label":"Pobreza","level":"Reino","numlevel":2,"type":0},{"label":"Movilidad","level":"Reino","numlevel":2,"type":0},{"label":"Vulnerabilidad","level":"Género","numlevel":7,"type":0}]
                         } else {
-                          level = "Género"
+                          var level = get_interest_group_level(node_temp)
+                          let data = {
+                            label: node_temp.text,
+                            level: level,
+                            numlevel: node_temp.attr.nivel,
+                            type: node_temp.attr.type
+                          };
+                          list.push(data)
                         }
-                        var nameWithoutSpaces = node_temp.text.split(" ")
-                        let data = {
-                          label: nameWithoutSpaces[0],
-                          level: level,
-                          numlevel: node_temp.attr.nivel,
-                          type: node_temp.attr.type
-                        };
-                        list.push(data)
                         parsed_data = JSON.stringify(list);
                         sessionStorage.setItem("selectedData", parsed_data)
                       }
