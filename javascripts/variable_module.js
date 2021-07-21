@@ -1441,9 +1441,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                 // se elimita el spp del label cuando es tipo BIO
                 if (typeVar == _TYPE_BIO) {
                     var label_taxon = arraySelected[i].numlevel == 8 ? arraySelected[i].label : arraySelected[i].label.split(" ")[0]
-                    subgroup.push({ label: arraySelected[i].level + " >> " + label_taxon, level: arraySelected[i].numlevel, type: arraySelected[i].type });
+                    subgroup.push({ label: arraySelected[i].level + " >> " + label_taxon, level: arraySelected[i].numlevel, type: arraySelected[i].type, name: arraySelected[i].label  });
                 } else {
-                    subgroup.push({ value: arraySelected[i].id, label: arraySelected[i].parent + " >> " + arraySelected[i].label, level: arraySelected[i].level, type: arraySelected[i].type });
+                    subgroup.push({ value: arraySelected[i].id, label: arraySelected[i].parent + " >> " + arraySelected[i].label, level: arraySelected[i].level, type: arraySelected[i].type, name: arraySelected[i].label  });
                 }
 
             }
@@ -1452,7 +1452,7 @@ var variable_module = (function(verbose, url_zacatuche) {
             console.log("maxGroup: " + maxGroup);
             console.log("groupid: " + groupid);
 
-            var temp_grupo = { title: "Gpo " + gpoName + " " + groupid, elements: subgroup, groupid: groupid, close: true, type: typeVar };
+            var temp_grupo = { title: "Covariable "  + groupid, elements: subgroup, groupid: groupid, close: true, type: typeVar };
             self.groupDatasetTotal.push(temp_grupo);
 
 
@@ -1487,7 +1487,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                             .append("div")
                             .attr("class", "cell_item")
                             .text(function(t) {
-                                return t.label;
+                                return t.name;
                             })
                             .style("text-align", "left");
 
