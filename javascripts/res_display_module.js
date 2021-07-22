@@ -202,7 +202,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function get_cData
      * @public
      * @memberof! res_display_module
-     * 
+     *
      */
     function get_cData() {
         return _cdata;
@@ -215,7 +215,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function get_cData
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {integer} idreg - Identificador de la región seleccionada para el análisis de nicho ecológico.
      */
     function set_idReg(idreg) {
@@ -228,7 +228,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_spid
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {integer} spid - Identificador de la especie objetivo para el análisis de nicho ecológico
      */
     function set_spid(spid) {
@@ -241,7 +241,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_spid
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {integer} spid - Identificador de la especie objetivo para el análisis de nicho ecológico
      */
     function set_taxones(taxones) {
@@ -254,7 +254,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_subGroups
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} subgroups - Array de los grupos seleccionados para el análisis de nicho ecológico
      */
     function set_subGroups(subgroups) {
@@ -267,7 +267,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_typeBioclim
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {boolean} type_time - Bandera para considerar las variables climáticas futuras en el análisis de nicho ecológico
      */
     function set_typeBioclim(type_time) {
@@ -280,7 +280,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_allowedPoints
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} allowedPoints - Ocurrencias de la especie considerada en el análisis de nicho ecológico
      */
     function set_allowedPoints(allowedPoints) {
@@ -293,7 +293,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_discardedPoints
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} discardedPoints - Ocurrencias de la especie descartadas en el análisis de nicho ecológico
      */
     function set_discardedPoints(discardedPoints) {
@@ -306,7 +306,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_discardedPointsFilter
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} discardedPointsFilter - Ocurrencias de la especie descartadas por filtros en el análisis de nicho ecológico
      */
     function set_discardedPointsFilter(discardedPointsFilter) {
@@ -320,7 +320,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_discardedCellFilter
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} computed_discarded_cells - Celdas descartadas por filtros en el análisis de nicho ecológico
      */
     function set_discardedCellFilter(computed_discarded_cells) {
@@ -333,7 +333,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function set_allowedCells
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} computed_occ_cells - Celdas consideradas por proceso de validación en el análisis de nicho ecológico
      */
     function set_allowedCells(computed_occ_cells) {
@@ -346,7 +346,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function setMapModule
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {object} map_module - Módulo mapa
      */
     function setMapModule(map_module) {
@@ -359,7 +359,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function setHistogramModule
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {object} histogram_module - Módulo histograma
      */
     function setHistogramModule(histogram_module) {
@@ -372,7 +372,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function setTableModule
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {object} tableModule - Módulo table
      */
     function setTableModule(tableModule) {
@@ -386,7 +386,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _initilizeElementsForDisplay
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {object} map_module - Módulo mapa
      * @param {object} histogram_module - Módulo histograma
      * @param {object} table_module - Módulo tabla
@@ -546,7 +546,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function refreshData
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {integer} num_items - Número de grupos de variables seleccionado
      * @param {boolean} val_process - Bandera que indica si será ejecutado el proceso de validación
      * @param {integer} slider_value - Porcentaje que será utilzado para el conjunto de prueba en el proceso de validación
@@ -612,7 +612,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function callDisplayProcess
      * @public
      * @memberof! res_display_module
-     * 
+     *
      */
     function callDisplayProcess(val_process, val_process_temp = false) {
 
@@ -670,12 +670,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
     /**
-     * Éste método ejecuta el Store Procedure que genera la tabla temporal donde se realizará el proceso de validación. 
+     * Éste método ejecuta el Store Procedure que genera la tabla temporal donde se realizará el proceso de validación.
      *
      * @function _initializeValidationTables
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {String} idtemptable - Nombre de la tabla temporal que debe ser eliminada
      *
      */
@@ -726,7 +726,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _deleteValidationTables
      * @public
      * @memberof! res_display_module
-     * 
+     *
      */
     function _deleteValidationTables() {
 
@@ -763,7 +763,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _countRequest
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {String} idtemptable - Nombre de la tabla temporal que debe ser eliminada
      *
      */
@@ -786,7 +786,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _cleanPanel
      * @private
      * @memberof! res_display_module
-     * 
+     *
      */
     function _cleanPanel() {
 
@@ -830,7 +830,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _confDataRequest
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {integer} num_items - Número de grupos de variables seleccionado
      * @param {boolean} val_process - Bandera que indica si será ejecutado el proceso de validación
      */
@@ -1028,7 +1028,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _panelGeneration
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} discardedGridids - Array con los ids de celda que son descartados cuando existe proceso de validación
      */
     function _panelGeneration(idtemptable = "") {
@@ -1199,10 +1199,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _createScore_Decil
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {josn} decildata - Json con la configuración seleccionada por el usuario
      * @param {boolean} hasChildren - Bandera que indica si la configuración enviada es un conjunto de las variables seleccionadas o es una variable del grupo
-     * @param {boolean} isTotal - Bandera que indica si la configuración enviada es el total de los conjuntos de las variables seleccionadas 
+     * @param {boolean} isTotal - Bandera que indica si la configuración enviada es el total de los conjuntos de las variables seleccionadas
      */
     function _createScore_Decil(decildata) {
 
@@ -1486,7 +1486,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     if (_TREE_GENERATED.hasTotal) {
 
 
-                        //TODO: se tiene que realizar la petición del análisis completo y agregar 
+                        //TODO: se tiene que realizar la petición del análisis completo y agregar
                         var total_request = { time: new Date().getTime() };
 
                         $.each(_TREE_GENERATED.groups, function(i, grupo) {
@@ -1510,7 +1510,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             verbo = "generateTarget";
                         }
                         if ($("#chkValidationTemp").is(':checked')) {
-                          
+
                             mydate = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
                             mydate2 = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
                             total_request["lim_inf"] = mydate;
@@ -2135,10 +2135,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _createTableEpSc
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {json} tdata - Json con la configuración seleccionada por el usuario
      * @param {String} idtemptable - Nombre de la tabla temporal creada cuando es proceso de validación
-     * 
+     *
      */
     function _createTableEpSc(data) {
 
@@ -2180,7 +2180,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 item_list.push(d.description + ' ' + d.especieepiteto)
             }
 
-            // var namesp = d.reinovalido === "" ? d.type +" "+ d.layer : 
+            // var namesp = d.reinovalido === "" ? d.type +" "+ d.layer :
             // item_list.push(namesp)
             item_list.push(d.nij)
             item_list.push(d.nj)
@@ -2231,7 +2231,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _configureStyleMap
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {json} data - JSON con los resultados de id de celda y valor de total score
      */
     function _configureStyleMap() {
@@ -2250,7 +2250,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var map_type = $("#btn_map_type").val()
 
         // if(map_type == "range"){
-        //     grid_map_color = _map_module_nicho.createDecilColor(_current_data_score_cell, _mapa_prob);    
+        //     grid_map_color = _map_module_nicho.createDecilColor(_current_data_score_cell, _mapa_prob);
         // }
         // else{
         // console.log(_current_data_score_cell)
@@ -2287,7 +2287,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _createHistEpScr_Especie
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {json} ddata - Json con la configuración seleccionada por el usuario
      */
     function _createHistEpScr_Especie(data) {
@@ -2344,7 +2344,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function updateLabels
      * @public
      * @memberof! res_display_module
-     * 
+     *
      */
     function updateLabels() {
 
@@ -2469,7 +2469,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _createHistScore_Celda
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {json} cdata - Json con la configuración seleccionada por el usuario
      */
     function _createHistScore_Celda(data) {
@@ -2511,7 +2511,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _createSetStructure
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} fathers - Array resultante de los grupos de variables seleccionados por el usuario.
      * @param {array} sons - Array resultante de las variables seleccionadas por el usuario.
      */
@@ -2717,7 +2717,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _addDataChartTotal
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} data_chart - Array resultante de los grupos de variables seleccionados por el usuario y con la estrucutra necesaria para ser desplegados en los componentes visuales.
      * @param {array} decil_total - Array resultante del total de los grupos de variables seleccionados por el usuario.
      */
@@ -2828,12 +2828,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
     /**
-     * DEPRECATED. Éste método elimina las especies repetidas devueltas por el servidor en los cálculos, así como contabilizar el porcentaje de ocurrencias de una especies por decil.	
+     * DEPRECATED. Éste método elimina las especies repetidas devueltas por el servidor en los cálculos, así como contabilizar el porcentaje de ocurrencias de una especies por decil.
      *
      * @function _deleteRepetedElements
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {array} arraynames - Array con el nombre de las especies que componen cada decil de las variables y grupos de variables seleccionados
      */
     function _deleteRepetedElements(arraynames) {
@@ -2882,7 +2882,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function showGetFeatureInfo
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {float} lat - Latitud del punto sleccionado por el usuario
      * @param {float} long - Longitud del punto sleccionado por el usuario
      */
@@ -2974,7 +2974,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function showGetFeatureInfo
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {float} lat - Latitud del punto sleccionado por el usuario
      * @param {float} long - Longitud del punto sleccionado por el usuario
      */
@@ -3157,7 +3157,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let pop_list = [];
         var periodSelectedShort
         var previousPeriodSelectedShort
-        var enfoque = sessionStorage.getItem("light_traffic"); 
+        var enfoque = sessionStorage.getItem("light_traffic");
         if ($("#pred_des_control")[0].checked) {
           var periodSelectedComplete = $("#date_timepicker_start_val").val();
           var periodDate= new Date(periodSelectedComplete);
@@ -3170,7 +3170,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         } else {
           var periodSelectedComplete = $("#date_timepicker_start").val();
-          periodSelectedShort = periodSelectedComplete.match(/....-../)[0] 
+          periodSelectedShort = periodSelectedComplete.match(/....-../)[0]
           var periodDate= new Date(periodSelectedComplete);
           var previousPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth()-1))
           //let fullyearOfPreviousPeriod = (previousPeriodDate.getMonth() == "12" ? Number(previousPeriodDate.getFullYear() - 1) : previousPeriodDate.getFullYear())
@@ -3207,7 +3207,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         if ((tar_var[0]["label"] == "COVID-19 CONFIRMADO") && (mod[0] == "prevalence") && (enfoque == "star")) {
           mod[0] = "prevalence_star";
         };
-        
+
         switch (mod[0]) {
             case "cases":
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
@@ -3464,7 +3464,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             case "cases":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
-                    '<td>' + pop_list[0]["population"] + '</td>' + 
+                    '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["fv"] + '</td>' +
                     '<td>' + res_list[0]["fb"] + '</td>' +
                     '<td>' + res_list[0]["tv"] + '</td>' +
@@ -3474,7 +3474,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             case "cases_star":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
-                    '<td>' + pop_list[0]["population"] + '</td>' + 
+                    '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["tv"] + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
@@ -3493,7 +3493,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             case "incidence_star":
                 htmltable += '<tr>' +
                     '<td>' + species + '</td>' +
-                    '<td>' + pop_list[0]["population"] + '</td>' + 
+                    '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["cases_trainig"] + '</td>' +
                     '<td>' + res_list[0]["tv"] + '</td>' +
                     '<td>' + res_list[0]["tb"] + '</td>' +
@@ -3618,7 +3618,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
      * @function _createTableFromData
      * @private
      * @memberof! res_display_module
-     * 
+     *
      * @param {json} json_data - Json con el valor resultante de la celda seleccionada
      */
     function _createTableFromData(json_data, info_cell) {
@@ -3859,7 +3859,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
             // if (json_data.hasbio !== false || json_data.hasraster !== false) {
-            //     htmltable += 
+            //     htmltable +=
             //                 "<tr>\
             //                     <th>" + $.i18n.prop('lb_pp_rbio') + "</th>\
             //                     <th>" + json_data.bios + "</th>\
@@ -3896,12 +3896,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
     }
 
     /**
-     * Éste método llama a la función que inicializa las variables necesarias para el despliegue de los componentes visuales. 
+     * Éste método llama a la función que inicializa las variables necesarias para el despliegue de los componentes visuales.
      *
      * @function startResDisplay
      * @public
      * @memberof! res_display_module
-     * 
+     *
      * @param {object} map_module - Módulo mapa para gestionar las funciones que son requeridas en el análisis de nicho ecológico
      * @param {object} histogram_module - Módulo histograma para gestionar las funciones que son requeridas en el análisis de nicho ecológico
      * @param {object} table_module - Módulo table para gestionar las funciones que son requeridas en el análisis de nicho ecológico

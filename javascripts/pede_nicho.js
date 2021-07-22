@@ -81,7 +81,7 @@ var module_nicho = (function() {
 
         $("#lb_do_apriori").text(_iTrans.prop('lb_no'));
         $("#lb_mapa_prob").text(_iTrans.prop('lb_no'));
-        // CAMBIOS EPIPUMA 
+        // CAMBIOS EPIPUMA
         var diccionario_conceptos = [{}]
         var list_modifiers = [];
         var flag_modifiers = false;
@@ -282,7 +282,7 @@ var module_nicho = (function() {
                             parsed_data = JSON.stringify(data);
                             sessionStorage.setItem("selectedData", parsed_data)
                         }
-                        ////2 
+                        ////2
                         if ((covar_checked == "Demográficos") && (covar_checked2 == "Pobreza") && (covar_checked3 == "Movilidad") || (covar_checked == "Pobreza") && (covar_checked2 == "Demográficos") && (covar_checked3 == "Movilidad") && (covar_checked == "Demográficos") || (covar_checked2 == "Movilidad") && (covar_checked3 == "Pobreza")) {
                             let data = [{
                                 label: "Demográficos",
@@ -387,7 +387,6 @@ var module_nicho = (function() {
 
         };
         // TERMINA DINAMICA MENU MODIFICADORES
-
         const generatePredictiveDescriptiveToggleSwith = (clase, clase_texto, texto) => {
             let div = document.createElement("div");
             div.setAttribute("id", "id_toggle");
@@ -409,13 +408,12 @@ var module_nicho = (function() {
             document.getElementById("tuto_fil_fecha").appendChild(div);
 
         };
-
         const generateNewFlow = () => {
             sessionStorage.setItem("light_traffic", "");
             $('select option[value="model_default"]').attr("selected", true);
             $("#modelSelect").change(function() {
                 $('select option[value="var_default"]').attr("selected", true);
-                //$("#date_timepicker_start_val").attr("disabled", "disabled") 
+                //$("#date_timepicker_start_val").attr("disabled", "disabled")
 
             })
             $("#targetVariableSelect").change(function() {
@@ -932,7 +930,7 @@ var module_nicho = (function() {
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode2, 'last', false, false);
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode3, 'last', false, false);
                 $('#jstree_variables_species_fuente').jstree("create_node", current_node, newNode4, 'last', false, false);
-                
+
                 setTimeout(function() {
                     console.log("loaded fixed covars")
                     $(".jstree-anchor")[1].click()
@@ -1046,6 +1044,7 @@ var module_nicho = (function() {
         generateNewFlow();
         ///BOTON CONFIRMAR MODELO
         $("#targetVariableButton").click(function() {
+
           ///// SELECCION VARIABLES EN FLUJO NUEVO
           let obj_var = $("#targetVariableSelect").val();
           let modif = $("#modifiersSelect").val();
@@ -1517,7 +1516,7 @@ var module_nicho = (function() {
 
             _SCROLL_INDEX = _SCROLL_INDEX + 1;
 
-            // console.log(_SCROLL_SECTIONS[_SCROLL_INDEX]) 
+            // console.log(_SCROLL_SECTIONS[_SCROLL_INDEX])
 
             $('html, body').animate({
                 scrollTop: $("#" + _SCROLL_SECTIONS[_SCROLL_INDEX]).offset().top - 40
@@ -1538,7 +1537,7 @@ var module_nicho = (function() {
 
             _SCROLL_INDEX = _SCROLL_INDEX - 1;
 
-            // console.log(_SCROLL_SECTIONS[_SCROLL_INDEX]) 
+            // console.log(_SCROLL_SECTIONS[_SCROLL_INDEX])
 
             $('html, body').animate({
                 scrollTop: $("#" + _SCROLL_SECTIONS[_SCROLL_INDEX]).offset().top - 40
@@ -1762,9 +1761,9 @@ var module_nicho = (function() {
      * @function _getLinkToken
      * @private
      * @memberof! module_nicho
-     * 
+     *
      * @param {String} data_link - Cadena que contiene los parametros selecicoandos por el usuario en el análisis.
-     * 
+     *
      */
     function _getLinkToken(data_link) {
 
@@ -1802,9 +1801,9 @@ var module_nicho = (function() {
      * @function _getValuesFromToken
      * @private
      * @memberof! module_nicho
-     * 
+     *
      * @param {String} token - token relacionado a un conjunto de paramétros utilizados en un análisis de nicho.
-     * 
+     *
      */
     function _getValuesFromToken(token) {
 
@@ -1917,9 +1916,9 @@ var module_nicho = (function() {
      * @function _parseURL
      * @private
      * @memberof! module_nicho
-     * 
+     *
      * @param {string} url - URL en formato cadena para ser parseado.
-     * 
+     *
      */
     function _parseURL(url) {
         //        console.log(url);
@@ -1941,7 +1940,7 @@ var module_nicho = (function() {
      * @function _genLinkURL
      * @private
      * @memberof! module_nicho
-     * 
+     *
      */
     function _genLinkURL() {
 
@@ -1995,7 +1994,7 @@ var module_nicho = (function() {
      * @function _procesaValoresEnlace
      * @private
      * @memberof! module_nicho
-     * 
+     *
      * @param {json} sp_data - JSON con la información de la especie objetivo
      * @param {json} subgroups - JSON  con el grupo de variables seleccionado
      * @param {boleano} chkVal - Bandera si esta activado el proceso de validación
@@ -2322,7 +2321,7 @@ var module_nicho = (function() {
 
 
 
-            // Falta agregar la condición makesense. 
+            // Falta agregar la condición makesense.
             // Cuando se realiza una consulta por region seleccioanda se verica que la especie objetivo se encuentre dentro de esta area
             _res_display_module_nicho.refreshData(num_items, val_process, slider_value, min_occ, mapa_prob, rango_fechas, chkFecha, fossil, grid_res, footprint_region, val_process_temp);
 
@@ -2338,7 +2337,7 @@ var module_nicho = (function() {
      * @function startModule
      * @public
      * @memberof! module_nicho
-     * 
+     *
      * @param {string} tipo_modulo - Identificador del módulo 0 para nicho y 1 para comunidad
      * @param {string} verbose - Bandera para desplegar modo verbose
      */
@@ -2362,7 +2361,7 @@ var module_nicho = (function() {
      * @function loadModules
      * @public
      * @memberof! module_nicho
-     * 
+     *
      */
     function loadModules() {
 
@@ -2431,7 +2430,7 @@ var module_nicho = (function() {
      * @function setUrlApi
      * @public
      * @memberof! module_nicho
-     * 
+     *
      * @param {string} url_api - URL del servidor
      */
     function setUrlApi(url_api) {
@@ -2444,7 +2443,7 @@ var module_nicho = (function() {
      * @function setUrlFront
      * @public
      * @memberof! module_nicho
-     * 
+     *
      * @param {string} url_front - URL del cliente
      */
     function setUrlFront(url_front) {
@@ -2457,7 +2456,7 @@ var module_nicho = (function() {
      * @function setUrlNicho
      * @public
      * @memberof! module_nicho
-     * 
+     *
      * @param {string} url_nicho - URL del cliente en nicho ecológico
      */
     function setUrlNicho(url_nicho) {

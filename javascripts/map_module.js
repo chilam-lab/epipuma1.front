@@ -192,7 +192,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function get_layerControl
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function get_layerControl() {
         return _layer_control;
@@ -204,7 +204,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function get_specieTarget
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function get_specieTarget() {
         return _specie_target;
@@ -226,7 +226,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function set_specieTarget
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {json} specie_target - Json con la información de la especie objetivo seleccionada
      */
     // Asigna el valor de una especie seleccionada a una variable global del módulo.
@@ -241,7 +241,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function setDecilCells
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {array} decil_cells - array de celdas que tiene presencia el decil seleccionado
      */
     function setDecilCells(decil_cells) {
@@ -258,7 +258,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function get_allowedPoints
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function get_allowedPoints() {
         return _allowedPoints;
@@ -271,7 +271,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function get_allowedPoints
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function get_discardedPoints() {
         return _discardedPoints;
@@ -284,7 +284,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function get_discardedPointsFilter
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function get_discardedPointsFilter() {
         return _discardedPointsFilter;
@@ -296,7 +296,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function get_discardedCellFilter
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function get_discardedCellFilter() {
         return _computed_discarded_cells;
@@ -308,7 +308,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function get_allowedCells
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function get_allowedCells() {
         return _computed_occ_cells;
@@ -321,7 +321,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function getMap
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function getMap() {
         return map;
@@ -334,7 +334,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function setDisplayModule
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {object} display_module - Referencia al controlador de nicho o comunidad ecológica
      */
     function setDisplayModule(display_module) {
@@ -364,7 +364,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         // e = event
         console.log(e);
         // You can make your ajax call declaration here
-        //$.ajax(... 
+        //$.ajax(...
     }
 
     function onEachFeature(feature, layer) {
@@ -383,10 +383,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _mapConfigure
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {object} language_module - Módulo lenguaje
-     * @param {integer} tipo_modulo - Tipo de módulo donde será asignado el mapa, nicho o comunidad ecológica  
-     * @param {object} histogram_module - Módulo histograma 
+     * @param {integer} tipo_modulo - Tipo de módulo donde será asignado el mapa, nicho o comunidad ecológica
+     * @param {object} histogram_module - Módulo histograma
      */
     function _mapConfigure(language_module, tipo_modulo, histogram_module) {
 
@@ -532,7 +532,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             _overlayMaps = {
                 "Result": _tileLayer,
                 "Target": _tileLayerSpecies,
-                // "Decile": _tileDecilLayer 
+                // "Decile": _tileDecilLayer
             }
 
         } else {
@@ -653,7 +653,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
         map_sp.scrollWheelZoom.disable();
 
-        // Agregando controles cuando es análsis de nicho        
+        // Agregando controles cuando es análsis de nicho
         if (_tipo_modulo === _MODULO_NICHO) {
             _addControls();
 
@@ -691,7 +691,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _loadD3GridMX
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function loadD3GridMX(val_process, grid_res, region_selected, taxones = []) {
 
@@ -880,7 +880,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function clearMap
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function clearMap() {
 
@@ -898,7 +898,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         }
 
 
-        // Variable para highlight 
+        // Variable para highlight
         _highlight_obj = { "cells": [], "decil": null };
 
         // _VERBOSE ? console.log(_grid_map) : _VERBOSE;
@@ -924,7 +924,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function clearMap
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function clearMapOcc() {
 
@@ -951,8 +951,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         var cells_map = _decil_cells.map(function(d) { return d.cell })
         var decile_map = _decil_cells.map(function(d) { return d.decile })
 
-        // var min_score = d3.min(score_map)  
-        // var max_score = d3.max(score_map)  
+        // var min_score = d3.min(score_map)
+        // var max_score = d3.max(score_map)
 
         // var verdes = colorbrewer.Greens[9]
         // var verdes = ["#41ab5d","#238b45","#006d2c"]
@@ -1067,7 +1067,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function colorizeFeatures
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {json} grid_map_color - funciones de color
      * @param {json} grid_map - GeoJson de la malla
      */
@@ -1100,19 +1100,19 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
 
                     //     console.log("es mun 268")
-                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
-                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid)
+                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
 
                     // }
                     // else{
                     //     console.log("no es mun")
-                    //      console.log(grid_map.features[i].properties.gridid)       
+                    //      console.log(grid_map.features[i].properties.gridid)
                     //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
                     // }
 
 
                     grid_map.features[i].properties.opacity = 1;
-                    grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                    grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)';
                     grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
 
 
@@ -1141,7 +1141,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function Epipuma
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {json} grid_map_color - funciones de color
      * @param {json} grid_map - GeoJson de la malla
      */
@@ -1174,19 +1174,19 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
 
                     //     console.log("es mun 268")
-                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
-                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid)
+                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
 
                     // }
                     // else{
                     //     console.log("no es mun")
-                    //      console.log(grid_map.features[i].properties.gridid)       
+                    //      console.log(grid_map.features[i].properties.gridid)
                     //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
                     // }
 
 
                     grid_map.features[i].properties.opacity = 1;
-                    grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                    grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)';
                     grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
 
 
@@ -1214,7 +1214,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function Epipuma
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {json} grid_map_color - funciones de color
      * @param {json} grid_map - GeoJson de la malla
      */
@@ -1247,19 +1247,19 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     //     || grid_map.features[i].properties.gridid == 269 || grid_map.features[i].properties.gridid == "269"){
 
                     //     console.log("es mun 268")
-                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid) 
-                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)   
+                    //     console.log("** gridid: " + grid_map.features[i].properties.gridid)
+                    //     console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
 
                     // }
                     // else{
                     //     console.log("no es mun")
-                    //      console.log(grid_map.features[i].properties.gridid)       
+                    //      console.log(grid_map.features[i].properties.gridid)
                     //      console.log(grid_map_color.get(grid_map.features[i].properties.gridid).color)
                     // }
 
 
                     grid_map.features[i].properties.opacity = 1;
-                    grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                    grid_map.features[i].properties.color = grid_map_color.get(grid_map.features[i].properties.gridid).color; //'hsl(' + 360 * Math.random() + ', 50%, 50%)';
                     grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
 
 
@@ -1320,7 +1320,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                     // grid_map.features[i].properties.opacity = 1;
                     grid_map.features[i].properties.stroke = 'rgba(0,255,0,0.6)';
-                    // grid_map.features[i].properties.color = 'rgba(255,0,0,0)' //grid_map_color.get(grid_map.features[i].properties.gridid).color;  //'hsl(' + 360 * Math.random() + ', 50%, 50%)'; 
+                    // grid_map.features[i].properties.color = 'rgba(255,0,0,0)' //grid_map_color.get(grid_map.features[i].properties.gridid).color;  //'hsl(' + 360 * Math.random() + ', 50%, 50%)';
                     // grid_map.features[i].properties.score = grid_map_color.get(grid_map.features[i].properties.gridid).score;
 
 
@@ -1349,7 +1349,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function colorizeFeaturesNet
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {array} arg_gridid - Array con los ids de la malla
      * @param {type} arg_count - Número de ocurrencias por celda contenidas en la malla
      * @param {function} link_color_brewer - Función que asigna color a cada celda de la malla
@@ -1438,7 +1438,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function colorizeFeaturesByJSON
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {array} grid_array - Referencia de la malla total
      * @param {type} data_sp - json con gridiid y conteos por celda
      */
@@ -1532,7 +1532,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function colorizeFeaturesByJSONEPIPUMA
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {array} grid_array - Referencia de la malla total
      * @param {type} data_sp - json con gridiid y conteos por celda
      */
@@ -1730,7 +1730,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _drawingOnCanvas
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
      * @param {json} params - Json con los parámetros para configurar la malla
      */
@@ -1775,7 +1775,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var feature = features[i],
                 type = feature.type;
 
-            // if(i == 0)      
+            // if(i == 0)
             //     console.log(feature)
 
             // background de la celda
@@ -1824,7 +1824,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _drawingOnCanvas
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
      * @param {json} params - Json con los parámetros para configurar la malla
      */
@@ -1868,7 +1868,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var feature = features[i],
                 type = feature.type;
 
-            // if(i == 0)      
+            // if(i == 0)
             //     console.log(feature)
 
             // background de la celda
@@ -1917,7 +1917,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _drawingOnCanvas
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
      * @param {json} params - Json con los parámetros para configurar la malla
      */
@@ -1959,7 +1959,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var feature = features[i],
                 type = feature.type;
 
-            // if(i == 0)      
+            // if(i == 0)
             //     console.log(feature)
 
             // background de la celda
@@ -2010,7 +2010,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _drawingOnCanvas
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
      * @param {json} params - Json con los parámetros para configurar la malla
      */
@@ -2054,7 +2054,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var feature = features[i],
                 type = feature.type;
 
-            // if(i == 0)      
+            // if(i == 0)
             //     console.log(feature)
 
             // background de la celda
@@ -2105,7 +2105,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _drawingOnCanvas
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {object} canvasOverlay - Objecto canvas donde esta contenida la malla
      * @param {json} params - Json con los parámetros para configurar la malla
      */
@@ -2188,13 +2188,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
     /**
      * Modifica el color de celdas en el mapa, segun decil del histograma seleccionado.
-     * 
+     *
      * @function set_colorCellsDecilMap
      * @public
      * @memberof! map_module
-     * 
+     *
      *@param {array} tbl - arreglo donde se obtien los Gridid del decil seleccionado
-     *@param {integer} dec - Numero del decil que se escogió 
+     *@param {integer} dec - Numero del decil que se escogió
      */
     function set_colorCellsDecilMap(tbl = _highlight_obj["cells"], dec = _highlight_obj["decil"]) {
 
@@ -2248,7 +2248,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function addMapLayer
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {object} layer - Capa para ser agregada al controlador de capas
      * @param {String} name - Nombre de la capa
      */
@@ -2268,7 +2268,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function removeMapLayer
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {object} layer - Capa para ser agregada al controlador de capas
      * @param {String} name - Nombre de la capa
      */
@@ -2287,7 +2287,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function addMapControl
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {object} control - Objeto tipo control
      */
     function addMapControl(control) {
@@ -2303,7 +2303,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function removeMapControl
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {object} control - Objeto tipo control
      */
     function removeMapControl(control) {
@@ -2322,7 +2322,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function showPopUp
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {String} htmltable - Tabla estructurada en formato HTML con la información por celda del análisis de nicho ecológico
      * @param {object} latlng - Objeto que contiene las coordenadas donde fue seleccionada la celda
      */
@@ -2344,7 +2344,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _addControls
      * @private
      * @memberof! map_module
-     * 
+     *
      */
     function _addControls() {
 
@@ -2394,7 +2394,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function clearAllLayers
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function clearAllLayers() {
 
@@ -2418,7 +2418,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function busca_especie_grupo
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {array} taxones - Array con taxones seleccionados
      */
 
@@ -2643,8 +2643,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             }
             if(enfoque != "star") {
-              data.liminf_first = selectedDateMinusThirtyDaysInf 
-              data.limsup_first = selectedDateMinusThirtyDaysSup 
+              data.liminf_first = selectedDateMinusThirtyDaysInf
+              data.limsup_first = selectedDateMinusThirtyDaysSup
             }
 
         }
@@ -2783,7 +2783,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                         colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
                     } else {
                         if (modifierStar) {
-                            for (let i = 0; i < _data_sp_occ.length; i++) { 
+                            for (let i = 0; i < _data_sp_occ.length; i++) {
                               if(modifierFocus) {
                                 if (_data_sp_occ[i].target == true) {
                                     _data_sp_occ[i].occ = _data_sp_occ[i].cases_trainig
@@ -2802,13 +2802,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                   _data_sp_occ[i].occ = 100
                                   lalistadelosazules.push(_data_sp_occ[i])
                                 }
-                              }                                
+                              }
                             };
                             colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosazules, false, "azul");
                             colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
 
                         } else {
-                            for (let i = 0; i < _data_sp_occ.length; i++) {                                
+                            for (let i = 0; i < _data_sp_occ.length; i++) {
                                 //La clase
                                 if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                     _data_sp_occ[i].occ = 100
@@ -2845,7 +2845,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     var periodSelectedShort = liminf_initial.match(/....-../)[0]
                     var periodSelectedToDate= new Date(liminf_initial)
                     var periodSelectedToDateMinusAMonth = new Date(periodSelectedToDate.setDate(periodSelectedToDate.getMonth()-1))
-                    var previousPeriodSelected = String(periodSelectedToDateMinusAMonth.getFullYear() + "-" + (Number(periodSelectedToDateMinusAMonth.getMonth()) < 10 ? "0" + (periodSelectedToDateMinusAMonth.getMonth()) : (periodSelectedToDateMinusAMonth.getMonth() + 1))) 
+                    var previousPeriodSelected = String(periodSelectedToDateMinusAMonth.getFullYear() + "-" + (Number(periodSelectedToDateMinusAMonth.getMonth()) < 10 ? "0" + (periodSelectedToDateMinusAMonth.getMonth()) : (periodSelectedToDateMinusAMonth.getMonth() + 1)))
                   }
 
                     switch (specie["label"]) {
@@ -2891,7 +2891,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
-                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]] 
+                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -2917,7 +2917,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
-                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]] 
+                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -2998,7 +2998,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
-                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]] 
+                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -3024,7 +3024,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                             let numbers2, listed_numbers2;
                                             let texts2 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
-                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]] 
+                                            listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
@@ -3146,7 +3146,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function busca_especie
      * @public
      * @memberof! map_module
-     * 
+     *
      */
     function busca_especie(dPoints, region, arg_spids = []) {
 
@@ -3323,7 +3323,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _clearFieldsSP
      * @private
      * @memberof! map_module
-     * 
+     *
      */
     function _clearFieldsSP() {
         $("#lb_sum_reino_res").text("");
@@ -3345,7 +3345,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _fillSpeciesData
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {integer} occ - Número de ocurrencias de la especie
      * @param {integer} occ_cell - Número de celdas ocupadas por la especie
      */
@@ -3415,7 +3415,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _addClusterLayer
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {markerClusterGroup} marker_layer Variable tipo Cluster de leaflet para ser añadida al mapa.
      */
     function _addClusterLayer(marker_layer) {
@@ -3444,7 +3444,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _addPointLayer
      * @private
      * @memberof! map_module
-     * 
+     *
      */
     function _addPointLayer() {
 
@@ -3459,7 +3459,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _deleteCells
      * @private
      * @memberof! map_module
-     * 
+     *
      */
     function _deleteCells() {
 
@@ -3501,7 +3501,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function deleteCellFromOccGrid
      * @private
      * @memberof! map_module
-     * 
+     *
      */
     function deleteCellFromOccGrid(gridid) {
 
@@ -3522,7 +3522,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _getMessagePopup
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {object} feature - Objeto tipo punto de la ocucurrencia seleccionada para el análisis de nicho ecológico
      */
     function _getMessagePopup(feature) {
@@ -3557,7 +3557,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function createRankColor
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {json} json - Json con el conjunto de celdas y score asignado resultado del análisis de nicho ecológico
      * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
      */
@@ -3615,7 +3615,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             // Calculo de rangos para coloración EQUAL RANGE
             var equal_range_values = []
-                // solo positivos 
+                // solo positivos
             if (min_scr > 0) {
                 console.log("positivos")
                     // Revisar: chear si el minimo debe ser min_src o cero [0, max_src]
@@ -3662,7 +3662,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 console.log(inverse_temp)
 
                 equal_range_values = equal_range_values.concat([0].concat(inverse_temp.reverse()))
-                    // equal_range_colors = jQuery.extend(true, [], colorbrewer.Blues[equal_range_sections]); 
+                    // equal_range_colors = jQuery.extend(true, [], colorbrewer.Blues[equal_range_sections]);
 
             }
             // positivo absoluto es mayor que negativo absoluto
@@ -3806,7 +3806,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _cargaPaletaColorMapaOcc
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
      */
     function _cargaPaletaColorMapaOcc(colors_array, values_array) {
@@ -3874,7 +3874,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _cargaPaletaColor
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
      */
     function _cargaPaletaColorDecil(colors_array, values_array) {
@@ -3943,7 +3943,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _cargaPaletaColor
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
      */
     function _cargaPaletaColorNet(colors_array, values_array, center_lb = true) {
@@ -4018,7 +4018,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _cargaPaletaColor
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {boolean} mapa_prob - Bandera para saber si el mapa despliega el color con probalidad por celda
      */
     function _cargaPaletaColor(colors_array, values_array, mapa_prob = false) {
@@ -4090,7 +4090,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _cargaPaletaColor
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {array} arg_1 - Array de valores positivos o negativos resultado del análisis de nicho ecológico.
      * @param {array} arg_2 - Array de valores positivos o negativos resultado del análisis de nicho ecológico.
      * @param {boolean} first_pos - Bandera para indicar que array de valores esta en el primer parámetro de la función, true para positivos y false para negativos
@@ -4308,7 +4308,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function _cargaPaletaColor
      * @private
      * @memberof! map_module
-     * 
+     *
      * @param {array} a - Array de celdas y score relacionado
      * @param {integer} n - Núemro de particiones
      * @param {boolean} balanced - Bandera para indicar si las particiones serán balanceadas
@@ -4453,7 +4453,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
      * @function startMap
      * @public
      * @memberof! map_module
-     * 
+     *
      * @param {array} language_module - Módulo lenguaje
      * @param {integer} tipo_modulo - Tipo de módulo donde será creado el mapa, nicho o comunidad ecológica
      * @param {boolean} histogram_module - Módulo histograma
@@ -4466,7 +4466,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         }
 
     }
-
+    $("#targetVariableButton").click(function() {
+      console.log("clearing map layers")
+      clearAllLayers();
+    });
     return {
         map: map,
         get_spTaxon: get_spTaxon,
