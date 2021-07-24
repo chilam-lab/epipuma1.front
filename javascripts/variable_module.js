@@ -666,6 +666,25 @@ var variable_module = (function(verbose, url_zacatuche) {
                 // 	.appendTo(tree_nav_container);
 
 
+                const get_interest_group_level = (selected_interest_group) => {
+                  var level = "";
+                  switch (selected_interest_group.attr.nivel) {
+                    case 2:
+                      level = "Reino"
+                      break;
+                    case 6:
+                        level = "Familia"
+                        break;
+                    case 7:
+                        level = "Género"
+                        break;
+                    case 8:
+                        level = "Especie"
+                        break;
+                  }
+                  return level
+                }
+
                 var btn_add = $('<button/>')
                     .attr('id', 'add_group' + "_" + id)
                     .attr('type', 'button')
@@ -676,12 +695,45 @@ var variable_module = (function(verbose, url_zacatuche) {
                         let var_array = JSON.parse(sessionStorage.getItem("selectedData"));
                         let first = JSON.stringify(var_array[0]);
                         let condition = first.includes("COVID")
-                        console.log(condition);
-                        console.log(var_array);
+                        var headers_selected = $('#jstree_variables_species_fuente').jstree(true).get_top_selected().length;
+
+                        var saveSelectedData = JSON.parse(sessionStorage.getItem("selectedData2"))
+                        let list =[]
+                        if(headers_selected > 0){
+                          alert("Pero no deberia tener problema")
+                          
+                          for (i = 0; i < headers_selected; i++) {
+                            var node_temp = $('#jstree_variables_species_fuente').jstree(true).get_node($('#jstree_variables_species_fuente').jstree(true).get_top_selected()[i]).original;
+                            if(headers_selected == 1 && node_temp.attr.nivel == "root"){
+                              list = [{"label":"Demográficos","level":"Reino","numlevel":2,"type":0},{"label":"Pobreza","level":"Reino","numlevel":2,"type":0},{"label":"Movilidad","level":"Reino","numlevel":2,"type":0},{"label":"Vulnerabilidad","level":"Género","numlevel":7,"type":0}]
+                            } else {
+                              var level = get_interest_group_level(node_temp)
+                              let data = {
+                                label: node_temp.text,
+                                level: level,
+                                numlevel: node_temp.attr.nivel,
+                                type: node_temp.attr.type
+                              };
+                              list.push(data)
+                              saveSelectedData.push(data)
+                              }
+                            }
+                            parsed_data = JSON.stringify(list);
+                            parsed_data2 = JSON.stringify(saveSelectedData);
+                            sessionStorage.setItem("selectedData", parsed_data)
+                            sessionStorage.setItem("selectedData2", parsed_data2)
+                            var_array = JSON.parse(sessionStorage.getItem("selectedData"));
+                        }
                         if (condition) {
                             self.addOtherGroup('jstree_variables_species_' + id, var_array, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
 
                         } else {
+                          var new_element = self.existsGroup(var_array)
+                          if (!new_element) {
+                            // _VERBOSE ? console.log(self.var_sel_array) : _VERBOSE;
+                            _toastr.warning(_iTrans.prop('lb_existente'));
+                            return;
+                            }
 
                             for (let index = 0; index < var_array.length; index++) {
                                 console.log(var_array[index])
@@ -710,8 +762,8 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr('type', 'button')
                     .addClass('btn btn-primary glyphicon glyphicon-trash pull-left no-mg-top')
                     .click(function(e) {
-                        self.arrayVarSelected = JSON.parse(sessionStorage.getItem("selectedData"));
-                        self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
+                        self.arrayVarSelected = JSON.parse(sessionStorage.getItem("selectedData2"));
+                        //self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
 
                         if (self.arrayVarSelected.length == 0) {
                             return;
@@ -1418,11 +1470,11 @@ var variable_module = (function(verbose, url_zacatuche) {
             var new_element = self.existsGroup(arraySelected);
             // _VERBOSE ? console.log(new_element) : _VERBOSE;
 
-            if (!new_element) {
-                // _VERBOSE ? console.log(self.var_sel_array) : _VERBOSE;
-                _toastr.warning(_iTrans.prop('lb_existente'));
-                return;
-            }
+            // if (!new_element) {
+            //     // _VERBOSE ? console.log(self.var_sel_array) : _VERBOSE;
+            //     _toastr.warning(_iTrans.prop('lb_existente'));
+            //     return;
+            // }
 
             var maxGroup = 0;
 

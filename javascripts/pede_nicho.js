@@ -85,7 +85,7 @@ var module_nicho = (function() {
         var diccionario_conceptos = [{}]
         var list_modifiers = [];
         var flag_modifiers = false;
-        self.arrayVarSelected = [];
+        self.arrayVarSelected = [{}];
         sessionStorage.setItem("selectedData", JSON.stringify(self.arrayVarSelected));
         sessionStorage.setItem("modifiers_flag", "false");
         sessionStorage.setItem("modifiers", "");
@@ -96,6 +96,8 @@ var module_nicho = (function() {
         sessionStorage.setItem("res_modif", "");
         sessionStorage.setItem("modif_pop", "");
         sessionStorage.setItem("modelo_test", "");
+        sessionStorage.setItem("covars_selected_menu", "[]")
+        sessionStorage.setItem("selectedData2", "[]")
 
 
 
@@ -103,307 +105,7 @@ var module_nicho = (function() {
 
 
         // INICIA DINAMICA MENU MODIFICADORES
-        const get_interest_group_level = (selected_interest_group) => {
-          var level = "";
-          switch (selected_interest_group.attr.nivel) {
-            case 2:
-              level = "Reino"
-              break;
-            case 6:
-                level = "Familia"
-                break;
-            case 7:
-                level = "Género"
-                break;
-            case 8:
-                level = "Especie"
-                break;
-          }
-          return level
-        }
-        const dinamica_menu_covariables = () => {
-            setTimeout(function() {
-                let number_checked = $(".jstree-clicked").length;
-                //let covar = $(this)[0].innerText;
-                //sessionStorage.setItem("covar", covar);
-                if (number_checked == 1) {
-                    let covar_checked = $(".jstree-clicked")[0].innerText;
-                    let covars_list = ["Demográficos", "Pobreza", "Movilidad", "Vulnerabilidad"];
-                    if (covars_list.includes(covar_checked)) {
-                        ///// SELECCION DE COVARIABLES FIJAS
-                        if (covar_checked == "Demográficos") {
-                            let data = [{
-                                label: "Demográficos",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            console.log("test")
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        } else if (covar_checked == "Pobreza") {
-                            let data = [{
-                                label: "Pobreza",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-
-                        } else if (covar_checked == "Movilidad") {
-                            let data = [{
-                                label: "Movilidad",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        } else if (covar_checked == "Vulnerabilidad") {
-                            let data = [{
-                                label: "Vulnerabilidad",
-                                level: "Género",
-                                numlevel: "7",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                    }
-
-                } else {
-                    if ((number_checked == 2)) {
-                        let covar_checked = $(".jstree-clicked")[0].innerText;
-                        let covar_checked2 = $(".jstree-clicked")[1].innerText;
-
-                        /////1
-                        if ((covar_checked == "Demográficos") && (covar_checked2 == "Pobreza") || ((covar_checked == "Pobreza") && (covar_checked2 == "Demográficos"))) {
-                            let data = [{
-                                label: "Demográficos",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Pobreza",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, ];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-
-                        /////2
-                        if ((covar_checked == "Demográficos") && (covar_checked2 == "Vulnerabilidad") || ((covar_checked == "Vulnerabilidad") && (covar_checked2 == "Demográficos"))) {
-                            let data = [{
-                                label: "Demográficos",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Vulnerabilidad",
-                                level: "Género",
-                                numlevel: "7",
-                                type: 0
-                            }, ];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                        /////3
-                        if ((covar_checked == "Demográficos") && (covar_checked2 == "Movilidad") || ((covar_checked == "Movilidad") && (covar_checked2 == "Demográficos"))) {
-                            let data = [{
-                                label: "Demográficos",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Movilidad",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, ];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                        /////4
-                        if ((covar_checked == "Pobreza") && (covar_checked2 == "Vulnerabilidad") || ((covar_checked == "Vulnerabilidad") && (covar_checked2 == "Pobreza"))) {
-                            let data = [{
-                                label: "Vulnerabilidad",
-                                level: "Género",
-                                numlevel: "7",
-                                type: 0
-                            }, {
-                                label: "Pobreza",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, ];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                        /////5
-                        if ((covar_checked == "Pobreza") && (covar_checked2 == "Movilidad") || ((covar_checked == "Movilidad") && (covar_checked2 == "Pobreza"))) {
-                            let data = [{
-                                label: "Movilidad",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Pobreza",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, ];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                        /////6
-                        if ((covar_checked == "Vulnerabilidad") && (covar_checked2 == "Movilidad") || ((covar_checked == "Movilidad") && (covar_checked2 == "Vulnerabilidad"))) {
-                            let data = [{
-                                label: "Movilidad",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Vulnerabilidad",
-                                level: "Género",
-                                numlevel: "7",
-                                type: 0
-                            }, ];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                    }
-                    if (number_checked == 3) {
-                        let covar_checked = $(".jstree-clicked")[0].innerText;
-                        let covar_checked2 = $(".jstree-clicked")[1].innerText;
-                        let covar_checked3 = $(".jstree-clicked")[2].innerText;
-                        ///1
-                        if ((covar_checked == "Demográficos") && (covar_checked2 == "Pobreza") && (covar_checked3 == "Vulnerabilidad") || (covar_checked == "Pobreza") && (covar_checked2 == "Demográficos") && (covar_checked3 == "Vulnerabilidad") && (covar_checked == "Demográficos") || (covar_checked2 == "Vulnerabilidad") && (covar_checked3 == "Pobreza")) {
-                            let data = [{
-                                label: "Demográficos",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Pobreza",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Vulnerabilidad",
-                                level: "Género",
-                                numlevel: "7",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                        ////2
-                        if ((covar_checked == "Demográficos") && (covar_checked2 == "Pobreza") && (covar_checked3 == "Movilidad") || (covar_checked == "Pobreza") && (covar_checked2 == "Demográficos") && (covar_checked3 == "Movilidad") && (covar_checked == "Demográficos") || (covar_checked2 == "Movilidad") && (covar_checked3 == "Pobreza")) {
-                            let data = [{
-                                label: "Demográficos",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Pobreza",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Movilidad",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                        ////3
-                        if ((covar_checked == "Demográficos") && (covar_checked2 == "Vulnerabilidad") && (covar_checked3 == "Movilidad") || (covar_checked == "Vulnerabilidad") && (covar_checked2 == "Demográficos") && (covar_checked3 == "Movilidad") || (covar_checked == "Demográficos") && (covar_checked2 == "Movilidad") && (covar_checked3 == "Vulnerabilidad")) {
-                            let data = [{
-                                label: "Demográficos",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Vulnerabilidad",
-                                level: "Género",
-                                numlevel: "7",
-                                type: 0
-                            }, {
-                                label: "Movilidad",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                        //4
-                        if ((covar_checked == "Pobreza") && (covar_checked2 == "Vulnerabilidad") && (covar_checked3 == "Movilidad") || (covar_checked == "Vulnerabilidad") && (covar_checked2 == "Pobreza") && (covar_checked3 == "Movilidad") || (covar_checked == "Pobreza") && (covar_checked2 == "Movilidad") && (covar_checked3 == "Vulnerabilidad")) {
-                            let data = [{
-                                label: "Pobreza",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }, {
-                                label: "Vulnerabilidad",
-                                level: "Género",
-                                numlevel: "7",
-                                type: 0
-                            }, {
-                                label: "Movilidad",
-                                level: "Reino",
-                                numlevel: "2",
-                                type: 0
-                            }];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-
-
-
-
-                    }
-                    if (number_checked == 5) {
-                        let covar_checked = $(".jstree-clicked")[0].innerText;
-
-                        if (covar_checked == "Grupos de Interes") {
-                            let data = [{
-                                    label: "Demográficos",
-                                    level: "Reino",
-                                    numlevel: "2",
-                                    type: 0
-                                },
-                                {
-                                    label: "Pobreza",
-                                    level: "Reino",
-                                    numlevel: "2",
-                                    type: 0
-                                }, {
-                                    label: "Movilidad",
-                                    level: "Reino",
-                                    numlevel: "2",
-                                    type: 0
-                                },
-                                {
-                                    label: "Vulnerabilidad",
-                                    level: "Género",
-                                    numlevel: "7",
-                                    type: 0
-                                }
-                            ];
-                            parsed_data = JSON.stringify(data);
-                            sessionStorage.setItem("selectedData", parsed_data)
-                        }
-                    }
-                }
-            }, 1000)
-
-        };
+       
         // TERMINA DINAMICA MENU MODIFICADORES
         const generatePredictiveDescriptiveToggleSwith = (clase, clase_texto, texto) => {
             let div = document.createElement("div");
@@ -661,7 +363,7 @@ var module_nicho = (function() {
                 }
             } catch (error) {
                 console.log("minimizado");
-                $(".row_var_item")[0].innerHTML = "Variable Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
+                //$(".row_var_item")[0].innerHTML = "Variable Objetivo<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>"
             }
         };
         const fixed_covar_tags = (title) => {
@@ -845,10 +547,12 @@ var module_nicho = (function() {
                         $('#jstree_variables_species_' + id).removeAttr("title");
 
                         for (i = 0; i < data.length; i++) {
-
+                            var label_taxon = next_nivel < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
                             var idNode = "";
-                            var name_variable = data[i].name
-
+                            var name_variable_to_lowercase = label_taxon.toLowerCase()
+                            var name_variable_without_accents = name_variable_to_lowercase.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                            var name_variable_without_spaces = name_variable_without_accents.split(/\s|%|:|[(]|[)]/)
+                            var name_variable = name_variable_without_spaces.join("-")
                             console.log("name_variable: " + name_variable)
 
                             if ($("#" + data[i].id).length > 0) {
@@ -862,7 +566,6 @@ var module_nicho = (function() {
                             }
 
                             var default_son = next_nivel < 8 ? [{ text: "cargando..." }] : [];
-                            var label_taxon = next_nivel < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
 
                             var newNode = {
                                 id: idNode,
@@ -874,8 +577,9 @@ var module_nicho = (function() {
                             };
 
                             if (data[i].description + '' !== 'undefined') {
-                                newNode['li_attr'] = { "title": data[i].description + ' ' + data[i].name.split(' ')[1] };
+                                newNode['li_attr'] = { "title": data[i].description + ' ' + data[i].name.split(' ')[1], "id": name_variable };
                             }
+                            newNode['li_attr'] = {"id": name_variable}
 
                             $('#jstree_variables_species_' + id).jstree("create_node", d.node, newNode, 'last', false, false);
 
@@ -953,27 +657,6 @@ var module_nicho = (function() {
                     console.log("loaded fixed covars")
                     var parsed_data = ""
                     $(".jstree-anchor")[1].click()
-                    $('#jstree_variables_species_fuente').on('changed.jstree', function (e, data) {
-                      let list =[]
-                      var headers_selected = $('#jstree_variables_species_fuente').jstree(true).get_top_selected().length;
-                      for (i = 0; i < headers_selected; i++) {
-                        var node_temp = $('#jstree_variables_species_fuente').jstree(true).get_node($('#jstree_variables_species_fuente').jstree(true).get_top_selected()[i]).original;
-                        if(headers_selected == 1 && node_temp.attr.nivel == "root"){
-                          list = [{"label":"Demográficos","level":"Reino","numlevel":2,"type":0},{"label":"Pobreza","level":"Reino","numlevel":2,"type":0},{"label":"Movilidad","level":"Reino","numlevel":2,"type":0},{"label":"Vulnerabilidad","level":"Género","numlevel":7,"type":0}]
-                        } else {
-                          var level = get_interest_group_level(node_temp)
-                          let data = {
-                            label: node_temp.text,
-                            level: level,
-                            numlevel: node_temp.attr.nivel,
-                            type: node_temp.attr.type
-                          };
-                          list.push(data)
-                        }
-                        parsed_data = JSON.stringify(list);
-                        sessionStorage.setItem("selectedData", parsed_data)
-                      }
-                    })
                     $(".jstree-anchor")[1].click()
 
                 }, 1500)
@@ -1006,14 +689,12 @@ var module_nicho = (function() {
             }
         };
         const hide_selected_covars = (covar) => {
-            let covar_list = []
-            let covar_selected_2
+          var covar_list = JSON.parse(sessionStorage.getItem("covars_selected_menu"))
             for (let index = 0; index < covar.length; index++) {
-                let covar_selected = "#" + covar[index]["label"].toLowerCase();
-                covar_selected_2 = covar_selected.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                covar_list.push(covar_selected_2);
-                $(covar_selected_2).css("position", "absolute");
-                $(covar_selected_2).css("visibility", "hidden");
+                let covar_selected = "#" + covar[index].id;
+                covar_list.push(covar_selected);
+                $(covar_selected).css("position", "absolute");
+                $(covar_selected).css("visibility", "hidden");
             }
             sessionStorage.setItem("covars_selected_menu", JSON.stringify(covar_list));
         };
@@ -1263,7 +944,7 @@ var module_nicho = (function() {
             flag_modifiers = false;
             sessionStorage.setItem("modelo_test", "")
             sessionStorage.setItem("modifiers", "");
-            sessionStorage.setItem("selectedData", JSON.stringify([]))
+            sessionStorage.setItem("selectedData", JSON.stringify([{}]))
             sessionStorage.setItem("flag_target_added", false)
             sessionStorage.setItem("modifiers_flag", false);
             sessionStorage.setItem("covar", "");
@@ -1288,26 +969,35 @@ var module_nicho = (function() {
         ////Boton Agregar Covariables
         $("#add_group_fuente").click(function() {
             let data_session = JSON.parse(sessionStorage.getItem("selectedData"));
-            if (!(data_session[0]["label"].includes("COVID"))) {
-                hide_selected_covars(data_session);
+            let getSelectedData = $("#root_covar").jstree().get_top_checked(true)
+            if(getSelectedData.length == 0) {
+              return;
+            } else {
+              if (!(data_session[0]["label"].includes("COVID"))) {
+                  hide_selected_covars(getSelectedData);
+              }
+              setTimeout(function() {
+                  $(".row_var_item").click(function() {
+                      let element = $(this);
+                      let a = element[0].innerHTML;
+                      let b = a.split("<b")[0];
+                      console.log(element);
+                      console.log(element[0].textContent);
+                      //let data_session = JSON.parse(sessionStorage.getItem("selectedData"));
+                      //if (!(data_session[0]["label"].includes("COVID"))) {
+                          //fixed_covar_tags(b);
+                      //}
+                  });
+              }, 1000);
             }
-            setTimeout(function() {
-                $(".row_var_item").click(function() {
-                    let element = $(this);
-                    let a = element[0].innerHTML;
-                    let b = a.split("<b")[0];
-                    console.log(element);
-                    console.log(element[0].textContent);
-                    let data_session = JSON.parse(sessionStorage.getItem("selectedData"));
-                    if (!(data_session[0]["label"].includes("COVID"))) {
-                        //fixed_covar_tags(b);
-                    }
-                });
-            }, 1000);
+            $("#root_covar").jstree().uncheck_all(true)
         });
         // Boton Borrar Variable Objetivo
         $("#clean_var_fuente").click(function() {
+            sessionStorage.setItem("selectedData", JSON.stringify([{}]))
+            sessionStorage.setItem("selectedData2", JSON.stringify([]))
             unhide_selected_covars();
+            $('#jstree_variables_species_fuente').jstree().deselect_all()
         })
         $("#reload_map").click(function() {
             sessionStorage.setItem("covar", "")
@@ -1316,7 +1006,7 @@ var module_nicho = (function() {
             sessionStorage.setItem("count_anlys", 1)
         });
         $("#add_group_fuente").click(function() {
-            sessionStorage.setItem("covar", "")
+           // sessionStorage.setItem("covar", "")
         })
 
         /// Acaban cambios EpiPuma
