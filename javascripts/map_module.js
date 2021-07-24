@@ -2408,6 +2408,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         } catch (e) {
             _VERBOSE ? console.log("primera vez") : _VERBOSE;
         }
+        sessionStorage.setItem("selectedData","[{}]")
 
     }
 
