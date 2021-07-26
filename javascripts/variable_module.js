@@ -700,7 +700,6 @@ var variable_module = (function(verbose, url_zacatuche) {
                         var saveSelectedData = JSON.parse(sessionStorage.getItem("selectedData2"))
                         let list =[]
                         if(headers_selected > 0){
-                          alert("Pero no deberia tener problema")
                           
                           for (i = 0; i < headers_selected; i++) {
                             var node_temp = $('#jstree_variables_species_fuente').jstree(true).get_node($('#jstree_variables_species_fuente').jstree(true).get_top_selected()[i]).original;
