@@ -1711,6 +1711,44 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 //L.marker(_tileLayerSP).addLayer(map);
                 // map.addLayer(_tileLayer);
                 // map.addLayer(_tileLayerSP);
+          var legend = L.control({position: 'bottomleft'});
+          var modifiers = sessionStorage.getItem("modifiers_flag");
+          var focus = sessionStorage.getItem("light_traffic");
+                // legend.remove()
+                // legend = L.control({position: 'bottomleft'});
+          legend.onAdd = function (map_sp) {
+            var div = L.DomUtil.create('div', 'info legend');
+            labels = ['<strong>Categorias</strong>'],
+            legend_list = getCategories(modifiers, focus);
+            for (var i = 0; i < legend_list.categories.length; i++) {
+              div.innerHTML +=
+              labels.push(
+                '<i class="circle" style="background: '+ legend_list.color[i] + '"></i> ' +
+              (legend_list.categories[i] ? legend_list.categories[i] : '+'));
+            }
+            div.innerHTML = labels.join('<br>');
+            return div;
+          };
+          legend.addTo(map_sp);
+          function getCategories(modifiers, focus) {
+            //Casos estrella
+            if(focus == "star"){
+              return {"categories":['Clase', 'No Clase'], "color":["#fc8e3d", "#87ceeb"]}
+            }
+            //Casos sin modifcador
+            if(modifiers == "false") {
+              //mejoramiento
+              if(focus == "green"){
+                return {"categories":['Clase', 'No Clase', 'Excluidos'], "color": ["#008001","#87ceeb", "#fafaf8"]}
+                //empeoramiento
+              } else {
+                return {"categories":['Clase', 'No Clase', 'Excluidos'], "color": ["#ef3a20","#87ceeb", "#fafaf8"]}
+              }
+            //Casos con moficador
+            } else {
+              return {"categories":['Clase', 'No Clase', 'Excluidos'], "color": ["#fc8e3d","#87ceeb", "#fafaf8"]}
+            }
+          }
             titleLayerEpipuma.redraw();
             //_tileLayer.addLayer(map);
             //  _tileLayerSP.addLayer(map);
