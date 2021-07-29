@@ -63,7 +63,7 @@ var variable_module = (function(verbose, url_zacatuche) {
      * @function getVarSelArray
      * @public
      * @memberof! table_module
-     * 
+     *
      */
     function getVarSelArray() {
         return _var_sel_array;
@@ -75,7 +75,7 @@ var variable_module = (function(verbose, url_zacatuche) {
      * @function getSelectorVaribles
      * @public
      * @memberof! table_module
-     * 
+     *
      */
     function getSelectorVaribles() {
         return _selectors_created;
@@ -89,7 +89,7 @@ var variable_module = (function(verbose, url_zacatuche) {
      * @function VariableSelector
      * @public
      * @memberof! table_module
-     * 
+     *
      * @param {String} parent - Id del contenedor del selector de variables
      * @param {String} id - Id del selector de variables
      * @param {String} title - Título del selector de variables desplegado en la parte superior
@@ -700,7 +700,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                         var saveSelectedData = JSON.parse(sessionStorage.getItem("selectedData2"))
                         let list =[]
                         if(headers_selected > 0){
-                          
+
                           for (i = 0; i < headers_selected; i++) {
                             var node_temp = $('#jstree_variables_species_fuente').jstree(true).get_node($('#jstree_variables_species_fuente').jstree(true).get_top_selected()[i]).original;
                             if(headers_selected == 1 && node_temp.attr.nivel == "root"){
@@ -794,7 +794,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     //     .click(function (e) {
 
                     //         console.log(self.groupDatasetTotal);
-                    //         // console.log(self.getVarSelArray());                            
+                    //         // console.log(self.getVarSelArray());
 
                     //         if(self.groupDatasetTotal.length == 0){
                     //             console.log("No species selected");
@@ -838,7 +838,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                     //         e.preventDefault();
                     //     })
-                    //     .appendTo(tab_pane); 
+                    //     .appendTo(tab_pane);
                 }
 
 
@@ -911,7 +911,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
 
 
-        // Es un evento generado cuando se realiza la carga del árbol de selección (jstree: https://www.jstree.com/) que contiene el selector de variables. 
+        // Es un evento generado cuando se realiza la carga del árbol de selección (jstree: https://www.jstree.com/) que contiene el selector de variables.
         self.loadNodes = function() {
 
             _VERBOSE ? console.log("self.loadNodes") : _VERBOSE;
@@ -992,7 +992,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                             var newNode = {
                                 id: idNode,
-                                text: label_taxon, //data[i].name + " (spp: " + data[i].spp + ")", 
+                                text: label_taxon, //data[i].name + " (spp: " + data[i].spp + ")",
                                 icon: "plugins/jstree/images/dna.png",
                                 attr: {
                                     "nivel": self.level_vartree,
@@ -1228,9 +1228,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                         self.arrayVarSelected.push({ label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text });
 
                         //                        if (node_temp.attr.nivel == 8) {
-                        //                            
+                        //
                         //                            self.arrayVarSelected.push({label: node_temp.text, level: level, numlevel: node_temp.attr.nivel, type: node_temp.attr.type, parent: parent_node.text});
-                        //                            
+                        //
                         //                        }
                         //                        else {
                         //
@@ -1608,27 +1608,13 @@ var variable_module = (function(verbose, url_zacatuche) {
             self.updateVarSelArray(temp_grupo, _AGREGADO);
             /////EPIPUMA MODIFCACION CUADRITO AZUL COVARIABLE
 
-            if (arraySelected[0]["label"].includes("COVID")) {
-                console.log("VAR OBJ")
-            } else {
-                let pos_blue = $(".row_var_item").length;
+                let pos_blue = 0
                 for (let index = 0; index < pos_blue; index++) {
                     console.log(index);
                     console.log($(".row_var_item")[index]);
-                    if ($(".row_var_item")[index].innerHTML.includes("Variable Objetivo")) {
-                        console.log("pass")
-                    } else {
-                        $(".row_var_item")[index].innerHTML = `Covariable ${index}<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>`
-                    }
+                    $(".row_var_item")[index].innerHTML = `Covariable ${index}<button width=\"10px\" height=\"10px\" class=\"btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var\"></button>`
+
                 }
-            };
-
-
-
-
-
-
-
         }
 
         // Verifica que un grupo previamente seleccionado no sea subgrupo de otro grupo por añadir y viceversa.
@@ -1691,33 +1677,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                 //}
 
 
-                setTimeout(function() {
-                    $(".jstree-anchor").click(function() {
-                        let covar2 = $(this)[0].innerText;
-                        if (covar2 == "COVID-19") {
-                            return;
-                        }
-                        setTimeout(function() {
-                            let number_checked = $(".jstree-clicked").length;
-                            console.log(number_checked)
-                            let covar = $(this)[0].innerText;
-                            sessionStorage.setItem("covar", covar);
-                            if (number_checked == 1) {
-                                document.getElementById("modifiers_covid").hidden = false;
-                                let covar_checked = $(".jstree-clicked")[0].innerText;
-                                console.log(covar_checked)
-                                $(".grupo1").prop('checked', false);
-                                if (covar_checked == "COVID-19 CONFIRMADO") {
-                                    document.getElementById("prevalence").hidden = false;
-                                } else {
-                                    document.getElementById("prevalence").hidden = true;
-                                }
-                            } else {
-                                document.getElementById("modifiers_covid").hidden = true;
-                            }
-                        }, 100)
-                    })
-                }, 500)
+              
                 $(".grupo1").click(function() {
                     if (flag_modifiers) {
                         _module_toast.showToast_BottomCenter(_iTrans.prop('Solo puedes escoger un moddificador'), "warning");
@@ -1834,7 +1794,7 @@ var variable_module = (function(verbose, url_zacatuche) {
      * @function createSelectorComponent
      * @public
      * @memberof! table_module
-     * 
+     *
      * @param {String} parent - Id del contenedor del selector de variables
      * @param {String} id - Id del selector de variables
      * @param {String} title - Título del selector de variables desplegado en la parte superior
@@ -1859,9 +1819,9 @@ var variable_module = (function(verbose, url_zacatuche) {
      * @function _initializeVarComponents
      * @private
      * @memberof! table_module
-     * 
+     *
      * @param {object} language_module - Módulo de internacionalización
-     * @param {integer} tipo_modulo - Tipo de módulo donde serán asignados los selectores de variables, nicho o comunidad ecológica  
+     * @param {integer} tipo_modulo - Tipo de módulo donde serán asignados los selectores de variables, nicho o comunidad ecológica
      */
     function _initializeVarComponents(language_module, tipo_modulo, map_module) {
 
@@ -1897,10 +1857,10 @@ var variable_module = (function(verbose, url_zacatuche) {
      * @function startVar
      * @public
      * @memberof! table_module
-     * 
+     *
      * @param {String} id - Id del selector de variables
      * @param {object} language_module - Módulo de internacionalización
-     * @param {integer} tipo_modulo - Tipo de módulo donde serán asignados los selectores de variables, nicho o comunidad ecológica  
+     * @param {integer} tipo_modulo - Tipo de módulo donde serán asignados los selectores de variables, nicho o comunidad ecológica
      */
     function startVar(id, language_module, tipo_modulo, map_module) {
         _VERBOSE ? console.log("startVar") : _VERBOSE;

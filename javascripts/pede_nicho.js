@@ -105,7 +105,7 @@ var module_nicho = (function() {
 
 
         // INICIA DINAMICA MENU MODIFICADORES
-       
+
         // TERMINA DINAMICA MENU MODIFICADORES
         const generatePredictiveDescriptiveToggleSwith = (clase, clase_texto, texto) => {
             let div = document.createElement("div");
