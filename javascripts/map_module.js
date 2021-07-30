@@ -1718,6 +1718,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 // legend = L.control({position: 'bottomleft'});
           legend.onAdd = function (map_sp) {
             var div = L.DomUtil.create('div', 'info legend');
+            div.id = "model_categories"
             labels = ['<strong>Categorias</strong>'],
             legend_list = getCategories(modifiers, focus);
             for (var i = 0; i < legend_list.categories.length; i++) {
@@ -4507,6 +4508,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     }
     $("#targetVariableButton").click(function() {
       console.log("clearing map layers")
+      var categories = document.getElementById("model_categories")
+      categories != null ? document.getElementById("model_categories").remove() : ""
       clearAllLayers();
     });
     return {
