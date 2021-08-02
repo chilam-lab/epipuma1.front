@@ -3162,9 +3162,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
           var periodSelectedComplete = $("#date_timepicker_start_val").val();
           var periodDate= new Date(periodSelectedComplete);
           var previousPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth()-1))
-          var twoMonthsPreviousPeriodDate =  new Date(periodDate.setMonth(periodDate.getMonth()-2))
+          var twoMonthsPreviousPeriodDate =  new Date(periodDate.setMonth(periodDate.getMonth()-1))
           previousPeriodSelectedShortAux = previousPeriodDate.getFullYear() + "-" + (Number((previousPeriodDate.getMonth()+1)) < 10 ? "0" + (previousPeriodDate.getMonth()+1) : (previousPeriodDate.getMonth()+1))
-          twoMonthsPreviousPeriodSelectedShortAux = twoMonthsPreviousPeriodDate.getFullYear() + "-" + (Number((twoMonthsPreviousPeriodDate.getMonth()+2)) < 10 ? "0" + (twoMonthsPreviousPeriodDate.getMonth()+2) : (twoMonthsPreviousPeriodDate.getMonth()+2))
+          twoMonthsPreviousPeriodSelectedShortAux = twoMonthsPreviousPeriodDate.getFullYear() + "-" + (Number((twoMonthsPreviousPeriodDate.getMonth()+1)) < 10 ? "0" + (twoMonthsPreviousPeriodDate.getMonth()+1) : (twoMonthsPreviousPeriodDate.getMonth()+1))
           periodSelectedShort = previousPeriodSelectedShortAux
           previousPeriodSelectedShort = twoMonthsPreviousPeriodSelectedShortAux
 

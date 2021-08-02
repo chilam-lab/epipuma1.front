@@ -2876,16 +2876,17 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     var periodSelectedComplete = $("#date_timepicker_start_val").val();
                     var periodDate= new Date(periodSelectedComplete);
                     var previousPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth()-1))
-                    var twoMonthsPreviousPeriodDate =  new Date(periodDate.setMonth(periodDate.getMonth()-2))
+                    var twoMonthsPreviousPeriodDate =  new Date(periodDate.setMonth(periodDate.getMonth()-1))
                     previousPeriodSelectedShortAux = previousPeriodDate.getFullYear() + "-" + (Number((previousPeriodDate.getMonth()+1)) < 10 ? "0" + (previousPeriodDate.getMonth()+1) : (previousPeriodDate.getMonth()+1))
-                    twoMonthsPreviousPeriodSelectedShortAux = twoMonthsPreviousPeriodDate.getFullYear() + "-" + (Number((twoMonthsPreviousPeriodDate.getMonth()+2)) < 10 ? "0" + (twoMonthsPreviousPeriodDate.getMonth()+2) : (twoMonthsPreviousPeriodDate.getMonth()+2))
+                    twoMonthsPreviousPeriodSelectedShortAux = twoMonthsPreviousPeriodDate.getFullYear() + "-" + (Number((twoMonthsPreviousPeriodDate.getMonth()+1)) < 10 ? "0" + (twoMonthsPreviousPeriodDate.getMonth()+1) : (twoMonthsPreviousPeriodDate.getMonth()+1))
                     periodSelectedShort = previousPeriodSelectedShortAux
                     previousPeriodSelected = twoMonthsPreviousPeriodSelectedShortAux
                   } else {
-                    var periodSelectedShort = liminf_initial.match(/....-../)[0]
-                    var periodSelectedToDate= new Date(liminf_initial)
-                    var periodSelectedToDateMinusAMonth = new Date(periodSelectedToDate.setDate(periodSelectedToDate.getMonth()-1))
-                    var previousPeriodSelected = String(periodSelectedToDateMinusAMonth.getFullYear() + "-" + (Number(periodSelectedToDateMinusAMonth.getMonth()) < 10 ? "0" + (periodSelectedToDateMinusAMonth.getMonth()) : (periodSelectedToDateMinusAMonth.getMonth() + 1)))
+                    var periodSelectedComplete = $("#date_timepicker_start").val();
+                    periodSelectedShort = periodSelectedComplete.match(/....-../)[0]
+                    var periodDate= new Date(periodSelectedComplete);
+                    var previousPeriodDate = new Date(periodDate.setMonth(periodDate.getMonth()-1))
+                    previousPeriodSelected = previousPeriodDate.getFullYear() + "-" + (Number((previousPeriodDate.getMonth()+1)) < 10 ? "0" + (previousPeriodDate.getMonth()+1) : (previousPeriodDate.getMonth()+1))
                   }
 
                     switch (specie["label"]) {
