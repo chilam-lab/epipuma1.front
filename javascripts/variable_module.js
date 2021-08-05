@@ -1580,6 +1580,24 @@ var variable_module = (function(verbose, url_zacatuche) {
                 .attr("class", "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var")
                 .on("click", function(d) {
                     // _VERBOSE ? console.log("remove item") : _VERBOSE;
+                    var name_variable_to_lowercase = d.elements[0].name.toLowerCase()
+                    var name_variable_without_accents = name_variable_to_lowercase.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    var name_variable_without_spaces = name_variable_without_accents.split(/\s|%|:|[(]|[)]/)
+                    var id = name_variable_without_spaces.join("-")
+                    var covars_selected_menu = JSON.parse(sessionStorage.getItem("covars_selected_menu"))
+                    var selectedData = JSON.parse(sessionStorage.getItem("selectedData"))
+                    var selectedData2 = JSON.parse(sessionStorage.getItem("selectedData2"))
+                    var updated_cavar = covars_selected_menu.filter(function(covar) { return covar != "#"+id; })
+                    var updated_selectedData = selectedData.filter(function(el) { return el.label != d.elements[0].name; })
+                    var updated_selectedData2 = selectedData2.filter(function(el) { return el.label != d.elements[0].name; })
+                    updated_cavar.length == 0 ?  updated_cavar="[]" :""
+                    updated_selectedData.length == 0 ?  updated_selectedData="[{}]" :""
+                    updated_selectedData2.length == 0 ?  updated_selectedData2="[]" :""
+                    sessionStorage.setItem("covars_selected_menu",JSON.stringify(updated_cavar))
+                    sessionStorage.setItem("selectedData",JSON.stringify(updated_selectedData))
+                    sessionStorage.setItem("selectedData2",JSON.stringify(updated_selectedData2))
+                    $("#"+id).css("position", "relative");
+                    $("#"+id).css("visibility", "visible");
                     d3.select(this.parentNode).remove();
                     var gpo_deleted;
 
