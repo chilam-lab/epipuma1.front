@@ -104,9 +104,14 @@ var module_nicho = (function() {
         // Definicion Fuciones
 
 
-        // INICIA DINAMICA MENU MODIFICADORES
-
-        // TERMINA DINAMICA MENU MODIFICADORES
+        const delete_loading_banner = () => {
+          console.log("deleting banner");
+          try {
+            $(".loading-overlay").remove()
+          } catch (e) {
+            console.log(e,"banner has been deleted")
+          }
+        }
         const generatePredictiveDescriptiveToggleSwith = (clase, clase_texto, texto) => {
             let div = document.createElement("div");
             div.setAttribute("id", "id_toggle");
@@ -1004,6 +1009,10 @@ var module_nicho = (function() {
         });
         $("#get_esc_ep").click(function() {
             sessionStorage.setItem("count_anlys", 1)
+            setTimeout(function(){
+              delete_loading_banner();
+            },1500)
+
         });
         $("#add_group_fuente").click(function() {
            // sessionStorage.setItem("covar", "")
