@@ -103,11 +103,26 @@ var module_nicho = (function() {
 
         // Definicion Fuciones
 
-
+        const recharge_map = () => {
+          let ref_val = $("#modifiersSelect")[0].value;
+          if(ref_val=="mod_default"){
+            console.log("sin modifcador zoom")
+          }else{
+            $("#targetVariableButton").click();
+          }
+        }
         const delete_loading_banner = () => {
-          console.log("deleting banner");
+          console.log("deleting banner3");
           try {
-            $(".loading-overlay").remove()
+
+            document.getElementById("hst_esp_eps_loading-overlay").style.position="absoulte"
+            document.getElementById("hst_esp_scr_loading-overlay").style.position="absoulte"
+            document.getElementById("hst_cld_scr_loading-overlay").style.position="absoulte"
+            document.getElementById("hst_cld_scr_loading-overlay").style.top="10000px"
+            document.getElementById("hst_esp_scr_loading-overlay").style.top="10000px"
+            document.getElementById("hst_esp_eps_loading-overlay").style.top="10000px"
+
+
           } catch (e) {
             console.log(e,"banner has been deleted")
           }
@@ -739,6 +754,13 @@ var module_nicho = (function() {
         $("#myScrollableBlockEpsilonDecil").css("top", "-62%");
 
 
+        ////MAP ZOOM ISSUE
+        $(".leaflet-control-zoom-in").click(function(){
+          recharge_map();
+        });
+        $(".leaflet-control-zoom-out").click(function(){
+          recharge_map();
+        });
 
 
 
@@ -1011,7 +1033,7 @@ var module_nicho = (function() {
             sessionStorage.setItem("count_anlys", 1)
             setTimeout(function(){
               delete_loading_banner();
-            },1500)
+            },800)
 
         });
         $("#add_group_fuente").click(function() {
