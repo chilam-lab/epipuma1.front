@@ -2772,7 +2772,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                 const editResumenTable = (row_number, texts, numbers) => {
                     try {
-                        for (let index = 0; index < row_number; index++) {
+                        var count = $('#res_tabla_epipuma').children().length
+                        for (let index = 0; index < count; index++) {
                             $("#row_table_resumen").remove()
                         }
 

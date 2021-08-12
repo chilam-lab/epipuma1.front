@@ -456,6 +456,29 @@ var module_nicho = (function() {
 
 
         };
+        $('#modifiersSelect').on('change', function() {
+          var modifierSelected = {}
+          var value = this.value
+          modifierSelected[value] = value
+          sessionStorage.setItem("modifiers", JSON.stringify(modifierSelected))
+          value == "Sin Modificador" ? sessionStorage.setItem("modifiers_flag", JSON.stringify(false)) : sessionStorage.setItem("modifiers_flag", JSON.stringify(true))
+        });
+        $('#enfoqueSelect').on('change', function() {
+          var value = ""
+          switch (this.value) {
+            case "Mejoramiento":
+              value = "green"
+              break;
+            case "Empeoramiento":
+              value = "red"
+                break;
+            case "Estrella":
+              value = "star"
+                  break;
+          }
+         sessionStorage.setItem("light_traffic", JSON.stringify(value))
+        });
+
         const create_fixed_covars_three = () => {
             var tree_reinos = [{
                 "text": "Grupos de Interes",
