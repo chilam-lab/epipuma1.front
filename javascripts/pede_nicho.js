@@ -109,6 +109,8 @@ var module_nicho = (function() {
             console.log("sin modifcador zoom")
           }else{
             $("#targetVariableButton").click();
+            sessionStorage.setItem("zoom_counter","1");
+            $(".toast-info").remove()
           }
         }
         const delete_loading_banner = () => {
@@ -769,6 +771,7 @@ var module_nicho = (function() {
         generateNewFlow();
         ///BOTON CONFIRMAR MODELO
         $("#targetVariableButton").click(function() {
+          sessionStorage.setItem("zoom_counter","0");
 
           ///// SELECCION VARIABLES EN FLUJO NUEVO
           let obj_var = $("#targetVariableSelect").val();
@@ -1343,6 +1346,7 @@ var module_nicho = (function() {
             // _map_module_nicho.loadD3GridMX(val_process, grid_res, footprint_region, _taxones);
 
             _map_module_nicho.busca_especie_grupo(_taxones, footprint_region, val_process, grid_res);
+
 
         });
 

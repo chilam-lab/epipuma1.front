@@ -2723,6 +2723,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 sessionStorage.setItem("res_modif", JSON.stringify(_data_sp_occ))
                 console.log("num_cell_occ: " + num_cell_occ)
                 console.log("num_occ: " + num_occ)
+                let zoom_counter = sessionStorage.getItem("zoom_counter");
+                if(zoom_counter=="0"){
+                setTimeout(function(){
+                  console.log("click zoom")
+                  $(".leaflet-control-zoom-out")[0].click();
+                  sessionStorage.setItem("zoom_counter","1");
+                },500)
+
+                }
 
                 // rellena cuadro de resumen
                 _fillSpeciesData(num_occ, num_cell_occ);
