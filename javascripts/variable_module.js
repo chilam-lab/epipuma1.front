@@ -1662,6 +1662,9 @@ var variable_module = (function(verbose, url_zacatuche) {
             } else if (operacion == _AGREGADO) {
 
                 _VERBOSE ? console.log("elemento añadido") : _VERBOSE;
+                if(item.elements[0]["label"].includes("COVID-19")){
+                  self.var_sel_array = []
+                }
                 self.var_sel_array.push({ "value": item.elements, "type": item.type, "groupid": item.groupid, "title": item.title });
 
             }
