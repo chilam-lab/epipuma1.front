@@ -1620,6 +1620,18 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             $("#div_munlist").hide();
                         }
 
+                        var modelType = sessionStorage.getItem("modelo_test")
+                        $("#div_example").css('visibility', 'visible');
+                        if(modelType == "perfilado"){
+                          $("#div_example").css("position", "absolute");
+                          $("#div_example").css('visibility', 'hidden');
+                          $("#div_example_loading-overlay").css('visibility', 'hidden');
+                        }
+                        if(modelType == "predictivo"){
+                          $("#div_example").css("position", "relative");
+                          $("#div_example").css('visibility', 'visible');
+                          $("#div_example_loading-overlay").css('visibility', 'visible');
+                         }
                         _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
                         loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
