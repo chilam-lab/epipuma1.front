@@ -2837,7 +2837,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                               if(modifierFocus) {
                                 if (_data_sp_occ[i].target == true) {
                                     _data_sp_occ[i].occ = _data_sp_occ[i].cases_trainig
-                                    !modifierFocus ? sum_tv += parseInt(_data_sp_occ[i].tv) :sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
+                                    sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
                                     lalistadelosgradientes.push(_data_sp_occ[i])
                                 } else {
                                   _data_sp_occ[i].occ = 100
@@ -2846,7 +2846,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                               } else {
                                  if(_data_sp_occ[i].tp == tp) {
                                   _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                  !modifierFocus ? sum_tv += parseInt(_data_sp_occ[i].tv) :sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
+                                  sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
                                   lalistadelosgradientes.push(_data_sp_occ[i])
                                 } else {
                                   _data_sp_occ[i].occ = 100
