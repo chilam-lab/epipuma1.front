@@ -2643,7 +2643,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             var data = {
                 "name": "k",
-                "target_taxons": taxones,
+                "target_taxons": [taxones[taxones.length - 1]],
                 "idtime": milliseconds,
                 "liminf": _lin_inf,
                 "limsup": _lin_sup,
@@ -2669,7 +2669,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             let enfoque = sessionStorage.getItem("light_traffic");
             var data = {
                 "name": "k",
-                "target_taxons": taxones,
+                "target_taxons": [taxones[taxones.length - 1]],
                 "idtime": milliseconds,
                 "liminf": _lin_inf,
                 "limsup": _lin_sup,
@@ -2821,7 +2821,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                 lalistadelosblancos.push(_data_sp_occ[i])
                             } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                 _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                sum_tv += parseInt(_data_sp_occ[i].tv);
+                                sum_tv += parseInt(_data_sp_occ[i].cases_trainig);
                                 lalistadelosgradientes.push(_data_sp_occ[i])
                             } else {
                               _data_sp_occ[i].occ = 100
