@@ -1575,9 +1575,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                                     if (_val_process_temp) {
                                         $("#div_munlist").show();
+                                        $("#div_example").show();
                                         processTableMun(cell_summary);
+                                        $("#div_example_loading-overlay").show();
                                     } else {
                                         $("#div_munlist").hide();
+                                        $("#div_example").hide();
+                                    $("#div_example_loading-overlay").hide();
                                     }
 
 
@@ -1615,23 +1619,15 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                         if (_val_process_temp) {
                             $("#div_munlist").show();
+                            $("#div_example").show();
+                            $("#div_example_loading-overlay").show();
                             processTableMun(cell_summary);
                         } else {
                             $("#div_munlist").hide();
+                            $("#div_example").hide();
+                            $("#div_example_loading-overlay").hide();
                         }
 
-                        var modelType = sessionStorage.getItem("modelo_test")
-                        $("#div_example").css('visibility', 'visible');
-                        if(modelType == "perfilado"){
-                          $("#div_example").css("position", "absolute");
-                          $("#div_example").css('visibility', 'hidden');
-                          $("#div_example_loading-overlay").css('visibility', 'hidden');
-                        }
-                        if(modelType == "predictivo"){
-                          $("#div_example").css("position", "relative");
-                          $("#div_example").css('visibility', 'visible');
-                          $("#div_example_loading-overlay").css('visibility', 'visible');
-                         }
                         _histogram_module_nicho.createMultipleBarChart(_RESULTS_TODISPLAY, [], _id_chartscr_decil, d3.map([]));
 
                         loadDecilDataTable([_default_decil], "Total", true, percentage_avg, decil_cells);
