@@ -290,7 +290,7 @@
                             </td>
                             <td>
 
-                                <div >
+                                <div id="tuto_resolution" >
                                     <label class="text-sm" id="lb_mapa_res" for="grid_resolution"></label>
                                     <select class="form-control" id="grid_resolution" >
                                                         <!-- <option value="state">Estados</option> -->
@@ -312,14 +312,17 @@
                                 <p>2. Características del Modelo</p>
                             </td>
                             <td>
+                              <div id="tuto_tipo_modelo">
                                 Tipo
                                 <select class="form-control" id="modelSelect" >
                                         <option value ="model_default" selected disabled>Seleccione Tipo de Modelo</option>
                                         <option value="Perfilado">Perfilado</option>
                                         <option value="Predictivo">Predictivo</option>
                                     </select>
-                            </td>
+                                  </div>
+                                </td>
                             <td>
+                              <div id="tuto_var_obj">
                                 Variable Objetivo
                                 <select class="form-control" id="targetVariableSelect" >
                                         <option value="var_default" selected disabled>Seleccione Variable Objetivo</option>
@@ -327,19 +330,24 @@
                                         <option value="COVID-19 Negativo">COVID-19 Fallecido</option>
                                         <option value="COVID-19 Pruebas">COVID-19 Pruebas</option>
                                     </select>
+                                  </div>
+
                             </td>
                         </tr>
                         <tr>
                             <td>
                             </td>
                             <td>
+                              <div id="tuto_var_modif">
                                 Modificadores
                                 <select class="form-control" id="modifiersSelect" >
                                         <option  value ="mod_default" selected disabled>Seleccione Modificador</option>
                                         <option value="Sin Modificador">Sin Modificador</option>
                                     </select>
+                                  </div>
                             </td>
                             <td>
+                              <div id="tuto_var_enfo">
                                 Enfoque
                                 <select class="form-control" id="enfoqueSelect" >
                                         <option value ="enf_default" selected disabled>Seleccione Enfoque</option>
@@ -347,6 +355,7 @@
                                         <option >Empeoramiento</option>
                                         <option >Estrella</option>
                                     </select>
+                                  </div>
                             </td>
 
                         </tr>
@@ -355,15 +364,19 @@
                                 3. Selección del periodo
                             </td>
                             <td>
+                              <div id="tuto_var_datees">
                                 Periodo de Validación
                                 <!-- <input id="date_timepicker_start" type="text" value="" style="width: 100px;"> -->
                                 <select class="form-control" id="date_timepicker_start" ></select>
-
+                              </div>
                             </td>
-                            <td><br>
+                          <td>
+                        <br>
+                              <div id="tuto_var_bton">
                                 <div id="button_section" class="text-center">
                                     <button id="targetVariableButton" class="btn btn-primary">Confirmar Modelo</button>
                                 </div>
+                              </div>
                             </td>
                         </tr>
                     </table>

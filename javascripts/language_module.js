@@ -22,7 +22,7 @@ var language_module = (function (verbose) {
 
     var _VERBOSE = verbose;
 
-    
+
     function setDemoUseCase(demo_config){
         _demo_config = demo_config
     }
@@ -43,7 +43,7 @@ var language_module = (function (verbose) {
     }
 
     $("body").on('click','.btn-demo',function(){
-        
+
         _VERBOSE ? console.log("prueba") : _VERBOSE;
         console.log(this.id);
 
@@ -56,7 +56,7 @@ var language_module = (function (verbose) {
 
     });
 
-     
+
 
     /**
      * Éste método inicializa las variables necesarias para el proceso de internacionalización y realiza la carga de los archivos de idiomas.
@@ -64,7 +64,7 @@ var language_module = (function (verbose) {
      * @function _initilizeElementsForLanguage
      * @private
      * @memberof! language_module
-     * 
+     *
      * @param {object} main_pede - Referencia al controlador de nicho o communidad ecológica
      * @param {integer} tipo_modulo - Tipo de controlador para enlazar el módulo de internacionalización
      */
@@ -93,7 +93,7 @@ var language_module = (function (verbose) {
                 _language_selected = config.language
 //                    _VERBOSE ? console.log(_language_selected) : _VERBOSE;
                 _loadLabels(_first_load);
-                
+
                 _first_load = false;
 
                 // carga los modulos siguientes una vez que se han cargado los archivos de idiomas
@@ -112,7 +112,7 @@ var language_module = (function (verbose) {
             config.language = _language_selected;
 
             _demo_config = {}
-            
+
             if(_language_selected === "es_ES"){
                 _demo_config = demos.demos_es
             }
@@ -161,7 +161,7 @@ var language_module = (function (verbose) {
      * @function getI18
      * @public
      * @memberof! net_module
-     * 
+     *
      */
     function getI18() {
         return $.i18n;
@@ -179,7 +179,7 @@ var language_module = (function (verbose) {
      * @function _updateLanguageModules
      * @private
      * @memberof! language_module
-     * 
+     *
      * @param {boolean} first_load - Bandera que indica si es la primera carga del módulo de internacionalización
      */
     function _updateLanguageModules(first_load) {
@@ -206,7 +206,7 @@ var language_module = (function (verbose) {
      * @function addModuleForLanguage
      * @public
      * @memberof! language_module
-     * 
+     *
      * @param {object} res_display_module - Controlador de nicho ecológico
      * @param {object} histogram_module - Módulo histograma
      * @param {object} map_module - Módulo mapa
@@ -234,7 +234,7 @@ var language_module = (function (verbose) {
      * @function _loadLabels
      * @private
      * @memberof! language_module
-     * 
+     *
      * @param {boolean} first_load - Bandera que indica si es la primera carga del módulo de internacionalización
      */
     function _loadLabels(firstLoad) {
@@ -392,22 +392,22 @@ var language_module = (function (verbose) {
             // Tooltip variables analisis
             $("#tuto_val div:eq(2)").children("h5").text($.i18n.prop('label_esp_p34'));
             $("#tuto_val div:eq(2)").children("p").text($.i18n.prop('label_esp_p35'));
-            
+
             $("#tuto_min_occ div:eq(2)").children("h5").text($.i18n.prop('label_esp_p36'));
             $("#tuto_min_occ div:eq(2)").children("p").text($.i18n.prop('label_esp_p37'));
-            
+
             $("#tuto_apriori div:eq(2)").children("h5").text($.i18n.prop('label_esp_p38'));
             $("#tuto_apriori div:eq(2)").children("p").text($.i18n.prop('label_esp_p39'));
-            
+
             $("#tuto_map_prob div:eq(2)").children("h5").text($.i18n.prop('label_esp_p40'));
             $("#tuto_map_prob div:eq(2)").children("p").text($.i18n.prop('label_esp_p41'));
-            
+
             $("#tuto_fil_fecha div:eq(2)").children("h5").text($.i18n.prop('label_esp_p7'));
             $("#tuto_fil_fecha div:eq(2)").children("p").text($.i18n.prop('label_esp_p8'));
-            
+
             $("#tuto_reg_fecha div:eq(2)").children("h5").text($.i18n.prop('label_esp_p9'));
             $("#tuto_reg_fecha div:eq(2)").children("p").text($.i18n.prop('label_esp_p10'));
-            
+
             $("#tuto_reg_fosil div:eq(2)").children("h5").text($.i18n.prop('label_esp_p11'));
             $("#tuto_reg_fosil div:eq(2)").children("p").text($.i18n.prop('label_esp_p12'));
 
@@ -458,7 +458,7 @@ var language_module = (function (verbose) {
             $("#score_celda").text($.i18n.prop("score_celda"));
 
             $("#lb_decil_legend").text($.i18n.prop("lb_decil_legend"));
-            
+
 
             $("#hist_record").text($.i18n.prop('lb_reg_fecha') + ": ");
 
@@ -492,7 +492,7 @@ var language_module = (function (verbose) {
             $("#email_address_shp").attr("placeholder", $.i18n.prop('email_address_shp'));
 
 
-            
+
 
 
             if(_table_module){
@@ -501,7 +501,7 @@ var language_module = (function (verbose) {
                 _table_module.createDecilList()
 
                 // var table = $('#tdisplay').DataTable()
-                // console.log(table)                
+                // console.log(table)
                 // var title = table.columns(0).header()
                 // console.log(title)
 
@@ -513,7 +513,7 @@ var language_module = (function (verbose) {
                 $('#example tr:eq(0) th:eq(3)').text($.i18n.prop('tip_tbl_score'));
                 $('#example tr:eq(0) th:eq(4)').text($.i18n.prop('lb_procentaje_occ'));
 
-                $('#tdisplay tr:eq(0) th:eq(0)').text($.i18n.prop('lb_especie_tbl_eps'));    
+                $('#tdisplay tr:eq(0) th:eq(0)').text($.i18n.prop('lb_especie_tbl_eps'));
                 $('#tdisplay tr:eq(0) th:eq(1)').text($.i18n.prop('lb_nij'));
                 $('#tdisplay tr:eq(0) th:eq(2)').text($.i18n.prop('lb_nj'));
                 $('#tdisplay tr:eq(0) th:eq(3)').text($.i18n.prop('lb_ni'));
@@ -526,11 +526,11 @@ var language_module = (function (verbose) {
                 $('#tdisplay tr:eq(0) th:eq(10)').text($.i18n.prop('a_item_orden'));
                 $('#tdisplay tr:eq(0) th:eq(11)').text($.i18n.prop('a_item_familia'));
             }
-            
-            
 
-            
-            
+
+
+
+
 
             // $("#specie_next").text($.i18n.prop('label_next'));
 
@@ -546,7 +546,7 @@ var language_module = (function (verbose) {
 
             $("#btn_demo").text($.i18n.prop('caso_uso'));
 
-            
+
 
             _confLiveTutorialNiche();
             _confLiveTutorialResultsNiche();
@@ -568,7 +568,7 @@ var language_module = (function (verbose) {
             $("#lb_sub_titulo").text($.i18n.prop('lb_sub_titulo'));
             $("#a_espanol").text($.i18n.prop('a_espanol'));
             $("#a_ingles").text($.i18n.prop('a_ingles'));
-            
+
             if (firstLoad) {
                 $("#btn_idioma").text($.i18n.prop('btn_idioma') + " ");
             } else {
@@ -601,7 +601,7 @@ var language_module = (function (verbose) {
             $("#show_gen").text($.i18n.prop('show_gen'));
 
             // $("#lb_range_fecha").text($.i18n.prop('lb_range_fecha_hist') + ":");
-            
+
             $("#labelFecha").text($.i18n.prop('labelFecha', "1500", $.i18n.prop('val_actual')));
 
             $("#lb_epsilon_hist_net").text($.i18n.prop('lb_epsilon_hist_net'));
@@ -704,7 +704,7 @@ var language_module = (function (verbose) {
             $("#nicho_step1").text($.i18n.prop('nicho_step1'));
             $("#nicho_step2").text($.i18n.prop('nicho_step2'));
             $("#nicho_step3").text($.i18n.prop('nicho_step3'));
-            
+
             $("#link_nicho").text($.i18n.prop('link_nicho'));
             $("#link_nicho").append(" <i class='fa fa-arrow-right'></i>");
 
@@ -740,10 +740,10 @@ var language_module = (function (verbose) {
 
     function _confLiveTutorialNet() {
 
-        $('#btn_tuto_steps.display-marker').on('click', function () {            
-            
+        $('#btn_tuto_steps.display-marker').on('click', function () {
+
             var item_tab, item_tree, group_btn, clean_btn;
-            
+
             if ($("#a_taxon_fuente").parent().hasClass("active")) {
                 item_tab = {
                     el: '#tuto_taxon_sp_fuente',
@@ -833,7 +833,7 @@ var language_module = (function (verbose) {
 
             }
 
-            
+
             $.ptJs({
                 autoStart: true,
                 continueEnable: true,
@@ -1097,11 +1097,11 @@ var language_module = (function (verbose) {
                         }
                     },
 
-                    
 
-                    
 
-                    
+
+
+
                 ]
             })
 
@@ -1121,7 +1121,7 @@ var language_module = (function (verbose) {
         console.log(_demo_config)
         console.log(_demo_config[index])
 
-        var demo_params = _demo_config[index];        
+        var demo_params = _demo_config[index];
 
 
         // $('#btn_demo.display-marker').on('click', function () {
@@ -1199,9 +1199,9 @@ var language_module = (function (verbose) {
                         },
                         templateData: {
                             title: $.i18n.prop('demo_title_addsp'),
-                            content: $.i18n.prop('demo_intro_addsp') 
+                            content: $.i18n.prop('demo_intro_addsp')
                         }
-                    }, 
+                    },
                     {
                         el: '#tuto_fil_fecha',
                         position: {
@@ -1326,7 +1326,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('label_esp_p24'),
                             content: $.i18n.prop('demo_intro_tree2', demo_params.bio_covars, demo_params.bio_covars_name)
                         }
-                    },  
+                    },
 
 
                     {
@@ -1415,7 +1415,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('demo_title_btnres'),
                             content: $.i18n.prop('demo_intro_btnres')
                         }
-                    }, 
+                    },
 
 
                     // comienza proyección de resultados
@@ -1429,7 +1429,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('rmapa_title'),
                             content: $.i18n.prop('rmapa_descp', demo_params.rmapa)
                         }
-                    },    
+                    },
 
 
                     {
@@ -1453,7 +1453,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('rtabla_decil_title'),
                             content: $.i18n.prop('rtabla_decil_descp', demo_params.rtabla_decil)
                         }
-                    },  
+                    },
 
 
                     {
@@ -1465,7 +1465,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('rhist_freeps_title'),
                             content: $.i18n.prop('rhist_freeps_descp', demo_params.rhist_freeps)
                         }
-                    },  
+                    },
 
 
                     {
@@ -1477,7 +1477,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('rhist_frescr_title'),
                             content: $.i18n.prop('rhist_frescr_descp', demo_params.rhist_frescr)
                         }
-                    }, 
+                    },
 
                     {
                         el: '#hst_cld_scr',
@@ -1488,7 +1488,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('rhist_celdascr_title'),
                             content: $.i18n.prop('rhist_celdascr_descp', demo_params.rhist_celdascr)
                         }
-                    },  
+                    },
 
                     {
                         el: '#treeAddedPanel',
@@ -1499,7 +1499,7 @@ var language_module = (function (verbose) {
                             title: $.i18n.prop('rtabla_epsscr_title'),
                             content: $.i18n.prop('rtabla_epsscr_descp', demo_params.rtabla_epsscr)
                         }
-                    },   
+                    },
 
                 ]
 
@@ -1633,6 +1633,7 @@ var language_module = (function (verbose) {
                     'button-continue': $.i18n.prop('button_continue'),
                     'button-end': $.i18n.prop('button_end')
                 },
+                //////AQUI INICIA TUTO
                 steps: [
                     {
                         el: document,
@@ -1642,16 +1643,6 @@ var language_module = (function (verbose) {
                             content: $.i18n.prop('label_esp_p2')
                         }
                     },
-                    // {
-                    //     el: '#tuto_autocomplete',
-                    //     position: {
-                    //         location: 'rm-b'
-                    //     },
-                    //     templateData: {
-                    //         title: $.i18n.prop('label_esp_p3'),
-                    //         content: $.i18n.prop('label_esp_p4')
-                    //     }
-                    // },
                     {
                         el: '#tuto_region',
                         position: {
@@ -1673,182 +1664,250 @@ var language_module = (function (verbose) {
                         }
                     },
                     {
-                        el: '#var_target',
+                        el: '#tuto_tipo_modelo',
                         position: {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p80'),
-                            content: $.i18n.prop('label_esp_p81')
+                            title: $.i18n.prop('label_esp_66'),
+                            content: $.i18n.prop('label_esp_666')
                         }
-                    },                    
+                    },
                     {
-                        el: '#tuto_fil_fecha',
+                        el: '#tuto_var_obj',
                         position: {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p7'),
-                            content: $.i18n.prop('label_esp_p8')
+                            title: $.i18n.prop('label_esp_p771'),
+                            content: $.i18n.prop('label_esp_p777')
                         }
                     },
                     {
-                        el: '#tuto_reg_fecha',
+                        el: '#tuto_var_modif',
                         position: {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p9'),
-                            content: $.i18n.prop('label_esp_p10')
+                            title: $.i18n.prop('label_esp_p88'),
+                            content: $.i18n.prop('label_esp_p888')
                         }
                     },
                     {
-                        el: '#tuto_reg_fosil',
+                        el: '#tuto_var_enfo',
                         position: {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p11'),
-                            content: $.i18n.prop('label_esp_p12')
+                            title: $.i18n.prop('label_esp_p99'),
+                            content: $.i18n.prop('label_esp_p999')
                         }
                     },
                     {
-                        el: '#tuto_histo_reg',
+                        el: '#tuto_var_datees',
                         position: {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p13'),
-                            content: $.i18n.prop('label_esp_p46')
+                            title: $.i18n.prop('label_esp_p102'),
+                            content: $.i18n.prop('label_esp_p1022'),
                         }
                     },
                     {
-                        el: '#reload_map',
+                        el: '#tuto_var_bton',
                         position: {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p14'),
-                            content: $.i18n.prop('label_esp_p15')
+                            title: $.i18n.prop('label_esp_p101'),
+                            content: "Confirmación modelo"
                         }
                     },
                     {
-                        el: '#tuto_mapa_occ',
-                        position: {
-                            location: 'lt'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p16'),
-                            content: $.i18n.prop('label_esp_p17') + '<br><img style="width:100%" alt="Responsive image" src="images/img_reg2.png">'
-                        }
-                    },
-                    {
-                        el: '#tuto_variables',
-                        position: {
-                            location: 'rm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p18'),
-                            content: $.i18n.prop('label_esp_p19')
-                        }
-                    },
-                    {
-                        el: '#tuto_nav_tabs_fuente',
-                        position: {
-                            location: 'rm-b'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p20'),
-                            content: $.i18n.prop('label_esp_p21')
-                        }
-                    },
-                    // item_tab,
-                    // item_tree,
-                    group_btn,
-                    clean_btn,
-                    {
-                        el: '#treeAddedPanel_fuente',
-                        position: {
-                            location: 'rm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p30'),
-                            content: $.i18n.prop('label_esp_p31')
-                        }
-                    },
-                    {
-                        el: '#tuto_params',
-                        position: {
-                            location: 'lm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p32'),
-                            content: $.i18n.prop('label_esp_p33')
-                        }
-                    },
-                   {
-                       el: '#tuto_val',
+                       el: '#tuto_mapa_occ',
                        position: {
-                           location: 'lm-b'
+                           location: 'lt'
                        },
                        templateData: {
-                           title: $.i18n.prop('label_esp_p34'),
-                           content: $.i18n.prop('label_esp_p35')
+                           title: "Ver grupo de interés",
+                           content: "Se despliegue en el mapa aquellas celdas en tu grupo de interés conjuntamente con algunos datos correspondientes. "
                        }
                    },
-                    {
-                        el: '#tuto_min_occ',
-                        position: {
-                            location: 'lm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p36'),
-                            content: $.i18n.prop('label_esp_p37')
-                        }
-                    },
-                   {
-                       el: '#tuto_apriori',
-                       position: {
-                           location: 'lm-t'
-                       },
-                       templateData: {
-                           title: $.i18n.prop('label_esp_p38'),
-                           content: $.i18n.prop('label_esp_p39')
-                       }
-                   },
-                   {
-                       el: '#tuto_map_prob',
-                       position: {
-                           location: 'lm-t'
-                       },
-                       templateData: {
-                           title: $.i18n.prop('label_esp_p40'),
-                           content: $.i18n.prop('label_esp_p41')
-                       }
-                   },
-                    {
-                        el: '#get_esc_ep',
-                        position: {
-                            location: 'lm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p42'),
-                            content: $.i18n.prop('label_esp_p43')
-                        }
-                    },
-                    {
-                        el: '#show_gen',
-                        position: {
-                            location: 'lm-t'
-                        },
-                        templateData: {
-                            title: $.i18n.prop('label_esp_p44'),
-                            content: $.i18n.prop('label_esp_p45') + '<br><img style="width:100%" alt="Responsive image" src="images/img_gen_link' + $.i18n.prop('url_image_link') + '.png">'
-                        }
-                    }
-
-                   
-
+                    // {
+                    //     el: '#var_target',
+                    //     position: {
+                    //         location: 'rm-b'
+                    //     },
+                    //     templateData: {
+                    //         title: $.i18n.prop('label_esp_p80'),
+                    //         content: $.i18n.prop('label_esp_p81')
+                    //     }
+                    // },
+                   //  {
+                   //      el: '#tuto_fil_fecha',
+                   //      position: {
+                   //          location: 'rm-b'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p7'),
+                   //          content: $.i18n.prop('label_esp_p8')
+                   //      }
+                   //  },
+                   //  {
+                   //      el: '#tuto_reg_fecha',
+                   //      position: {
+                   //          location: 'rm-b'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p9'),
+                   //          content: $.i18n.prop('label_esp_p10')
+                   //      }
+                   //  },
+                   //  {
+                   //      el: '#tuto_reg_fosil',
+                   //      position: {
+                   //          location: 'rm-b'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p11'),
+                   //          content: $.i18n.prop('label_esp_p12')
+                   //      }
+                   //  },
+                   //  {
+                   //      el: '#tuto_histo_reg',
+                   //      position: {
+                   //          location: 'rm-b'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p13'),
+                   //          content: $.i18n.prop('label_esp_p46')
+                   //      }
+                   //  },
+                   //  {
+                   //      el: '#reload_map',
+                   //      position: {
+                   //          location: 'rm-b'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p14'),
+                   //          content: $.i18n.prop('label_esp_p15')
+                   //      }
+                   //  },
+                    //  {
+                    //     el: '#tuto_mapa_occ',
+                    //     position: {
+                    //         location: 'lt'
+                    //     },
+                    //     templateData: {
+                    //         title: $.i18n.prop('label_esp_p16'),
+                    //         content: $.i18n.prop('label_esp_p17') + '<br><img style="width:100%" alt="Responsive image" src="images/img_reg2.png">'
+                    //     }
+                    // },
+                   //  {
+                   //      el: '#tuto_variables',
+                   //      position: {
+                   //          location: 'rm-t'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p18'),
+                   //          content: $.i18n.prop('label_esp_p19')
+                   //      }
+                   //  },
+                   //  {
+                   //      el: '#tuto_nav_tabs_fuente',
+                   //      position: {
+                   //          location: 'rm-b'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p20'),
+                   //          content: $.i18n.prop('label_esp_p21')
+                   //      }
+                   //  },
+                   //  // item_tab,
+                   //  // item_tree,
+                   //  group_btn,
+                   //  clean_btn,
+                   //  {
+                   //      el: '#treeAddedPanel_fuente',
+                   //      position: {
+                   //          location: 'rm-t'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p30'),
+                   //          content: $.i18n.prop('label_esp_p31')
+                   //      }
+                   //  },
+                   //  {
+                   //      el: '#tuto_params',
+                   //      position: {
+                   //          location: 'lm-t'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p32'),
+                   //          content: $.i18n.prop('label_esp_p33')
+                   //      }
+                   //  },
+                   // {
+                   //     el: '#tuto_val',
+                   //     position: {
+                   //         location: 'lm-b'
+                   //     },
+                   //     templateData: {
+                   //         title: $.i18n.prop('label_esp_p34'),
+                   //         content: $.i18n.prop('label_esp_p35')
+                   //     }
+                   // },
+                   //  {
+                   //      el: '#tuto_min_occ',
+                   //      position: {
+                   //          location: 'lm-t'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p36'),
+                   //          content: $.i18n.prop('label_esp_p37')
+                   //      }
+                   //  },
+                   // {
+                   //     el: '#tuto_apriori',
+                   //     position: {
+                   //         location: 'lm-t'
+                   //     },
+                   //     templateData: {
+                   //         title: $.i18n.prop('label_esp_p38'),
+                   //         content: $.i18n.prop('label_esp_p39')
+                   //     }
+                   // },
+                   // {
+                   //     el: '#tuto_map_prob',
+                   //     position: {
+                   //         location: 'lm-t'
+                   //     },
+                   //     templateData: {
+                   //         title: $.i18n.prop('label_esp_p40'),
+                   //         content: $.i18n.prop('label_esp_p41')
+                   //     }
+                   // },
+                   //  {
+                   //      el: '#get_esc_ep',
+                   //      position: {
+                   //          location: 'lm-t'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p42'),
+                   //          content: $.i18n.prop('label_esp_p43')
+                   //      }
+                   //  },
+                   //  {
+                   //      el: '#show_gen',
+                   //      position: {
+                   //          location: 'lm-t'
+                   //      },
+                   //      templateData: {
+                   //          title: $.i18n.prop('label_esp_p44'),
+                   //          content: $.i18n.prop('label_esp_p45') + '<br><img style="width:100%" alt="Responsive image" src="images/img_gen_link' + $.i18n.prop('url_image_link') + '.png">'
+                   //      }
+                   //  }
+                    ///TERMINA TUTO
                 ]
             });
         });
@@ -1957,7 +2016,7 @@ var language_module = (function (verbose) {
      * @function startLanguageModule
      * @private
      * @memberof! language_module
-     * 
+     *
      * @param {object} main_pede - Referencia al controlador de nicho o communidad ecológica
      * @param {integer} tipo_modulo - Tipo de controlador para enlazar el módulo de internacionalización
      */
