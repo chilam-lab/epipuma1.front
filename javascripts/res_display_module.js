@@ -3160,7 +3160,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let species = json_data[0].species;
         let res_modif = JSON.parse(sessionStorage.getItem("res_modif"));
         let total_population = JSON.parse(sessionStorage.getItem("modif_pop"));
-        let tar_var = JSON.parse(sessionStorage.getItem("selectedData"));
+        let tar_var = $("#targetVariableSelect option:selected").text()
         let res_list = [];
         let pop_list = [];
         var periodSelectedShort
@@ -3191,28 +3191,28 @@ var res_display_module = (function(verbose, url_zacatuche) {
         for (let i = 0; i < res_modif.length; i++) {
             res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
         };
-        if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "lethality") && (enfoque == "star")) {
+        if ((tar_var == "COVID-19 Fallecido") && (mod[0] == "lethality") && (enfoque == "star")) {
           mod[0] = "lethality_star";
         };
-        if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "incidence") && (enfoque == "star")) {
+        if ((tar_var == "COVID-19 Fallecido") && (mod[0] == "incidence") && (enfoque == "star")) {
           mod[0] = "morthality_star";
         };
-        if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "cases") && (enfoque == "star" )) {
+        if ((tar_var == "COVID-19 Fallecido") && (mod[0] == "cases") && (enfoque == "star" )) {
           mod[0] = "fallecidos_star";
         };
-        if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "incidence")) {
+        if (tar_var == "COVID-19 Fallecido" && mod[0] == "incidence") {
             mod[0] = "morthality";
         };
-        if ((tar_var[0]["label"] == "COVID-19 FALLECIDO") && (mod[0] == "cases")) {
+        if ((tar_var == "COVID-19 Fallecido") && (mod[0] == "cases")) {
             mod[0] = "fallecidos";
         };
-        if ((tar_var[0]["label"] == "COVID-19 CONFIRMADO") && (mod[0] == "cases") && (enfoque == "star")) {
+        if ((tar_var == "COVID-19 Confirmado") && (mod[0] == "cases") && (enfoque == "star")) {
           mod[0] = "cases_star";
         };
-        if ((tar_var[0]["label"] == "COVID-19 CONFIRMADO") && (mod[0] == "incidence") && (enfoque == "star")) {
+        if ((tar_var == "COVID-19 Confirmado") && (mod[0] == "incidence") && (enfoque == "star")) {
           mod[0] = "incidence_star";
         };
-        if ((tar_var[0]["label"] == "COVID-19 CONFIRMADO") && (mod[0] == "prevalence") && (enfoque == "star")) {
+        if ((tar_var == "COVID-19 Confirmado") && (mod[0] == "prevalence") && (enfoque == "star")) {
           mod[0] = "prevalence_star";
         };
 
@@ -3380,7 +3380,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<th>Población Total </th>' +
                     '<th> Mortalidad en ' + previousPeriodSelectedShort + ' </th>' +
                     '<th> Decil de Mortalidad en ' + previousPeriodSelectedShort + ' </th>' +
-                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
+                    '<th> No. Defunciones en '+periodSelectedShort+'</th>' +
                     '<th> Mortalidad en ' + periodSelectedShort + ' </th>' +
                     '<th> Decil de Mortalidad en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
@@ -3398,7 +3398,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<tr>' +
                       '<th>Mortalidad</th>' +
                       '<th>Población Total </th>' +
-                      '<th> No. Casos </th>' +
+                      '<th> No. Defunciones </th>' +
                       '<th> Mortalidad en ' + periodSelectedShort + ' </th>' +
                       '<th> Decil de Mortalidad en ' + periodSelectedShort + ' </th>' +
                       '</tr>' +

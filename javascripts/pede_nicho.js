@@ -331,7 +331,7 @@ var module_nicho = (function() {
                 obj_fix[list_modifiers[index]] = list_modifiers[index][0];
             }
             console.log(obj_fix)
-            sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
+            //sessionStorage.setItem("modifiers", JSON.stringify(obj_fix))
             let modifier_value = JSON.parse(sessionStorage.getItem("modifiers"));
             let texto = Object.values(modifier_value);
             let text_switch
