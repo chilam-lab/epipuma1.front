@@ -1513,10 +1513,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                             mydate = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
                             mydate2 = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
-                            total_request["lim_inf"] = mydate;
-                            total_request["lim_sup"] = mydate2;
-                            total_request["lim_inf_validation"] = liminf;
-                            total_request["lim_sup_validation"] = limsup;
+                            total_request["lim_inf"] = liminf;
+                            total_request["lim_sup"] = limsup;
+                            total_request["lim_inf_validation"] = mydate;
+                            total_request["lim_sup_validation"] = mydate2;
                         }
                         let enfoque2 = sessionStorage.getItem("light_traffic");
                         if (enfoque2 == "star") {
