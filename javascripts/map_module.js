@@ -2659,14 +2659,12 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             }
         } else {
             console.log("getGridSpeciesTaxon");
-            //url_mod = _url_zacatuche + "niche/especie/getGridSpeciesTaxon";
-            url_mod = _url_zacatuche + "dev/niche/especie/getGridSpeciesTaxon";
+            url_mod = _url_zacatuche + "niche/especie/getGridSpeciesTaxon";
+            //url_mod = _url_zacatuche + "dev/niche/especie/getGridSpeciesTaxon";
             var tar_var = taxones[0]["value"];
             console.log(tar_var);
-            alert(liminf)
             let newDate = new Date(liminf)
             let selectedDateMinusThirtyDaysInf = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-01");
-            alert(selectedDateMinusThirtyDaysInf)            
             let selectedDateMinusThirtyDaysSup = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-" + (Number(newDate.getDate()) < 10 ? "0" + newDate.getDate() : newDate.getDate()));
             let enfoque = sessionStorage.getItem("light_traffic");
             var data = {

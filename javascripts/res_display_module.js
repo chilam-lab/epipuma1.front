@@ -1326,10 +1326,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
             if (enfoque == "star") {
                 enfoque = "none";
             }
-            let modifiers2 = JSON.parse(sessionStorage.getItem("modifiers"));
-            let texto = Object.values(modifiers2);
-            let texto2 = (texto[0])
-            data_request["modifier"] = texto2;
+            if(modifiers_flag_verb == "true"){
+              let modifiers2 = JSON.parse(sessionStorage.getItem("modifiers"));
+              let texto = Object.values(modifiers2);
+              let texto2 = (texto[0])
+              data_request["modifier"] = texto2;
+            }
             console.log(enfoque);
             data_request["traffic_light"] = enfoque;
             data_request["period_config"] = ['*', '*', '1'];
