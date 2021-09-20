@@ -6,7 +6,7 @@
  */
 var table_module = (function(verbose) {
 
-    
+
     var _VERBOSE = verbose;
     var _tbl_decil = false,
             _tbl = false,
@@ -35,7 +35,7 @@ var table_module = (function(verbose) {
      * @function _initilizeTableModule
      * @private
      * @memberof! table_module
-     * 
+     *
      * @param {boolean} tbl_net - Bandera que indica el estado incial de la tabla desplegada en comunidad ecológica
      */
     function _initilizeTableModule(tbl_net) {
@@ -50,7 +50,7 @@ var table_module = (function(verbose) {
      * @function setLanguageModule
      * @public
      * @memberof! table_module
-     * 
+     *
      * @param {object} language_module - Módulo de internacionalización
      */
     function setLanguageModule(language_module) {
@@ -65,7 +65,7 @@ var table_module = (function(verbose) {
      * @function createDecilList
      * @public
      * @memberof! table_module
-     * 
+     *
      * @param {array} list_elements - Array con el resultado del análisis de nicho ecológico del histograma decil
      */
     function createDecilList(list_elements = null) {
@@ -97,14 +97,14 @@ var table_module = (function(verbose) {
                     // console.log(tag)
                     // console.log("unidad: " + coeficiente)
                     // console.log("coeficiente: " + coeficiente)
-                    
+
                     var range = tag.split(":")
 
                     var min = (parseFloat(range[0]) * coeficiente).toFixed(3) + " " + unidad
                     var max = (parseFloat(range[1]) * coeficiente).toFixed(3) + " " + unidad
 
                     // value = _iTrans.prop(lb) + " (" + parseFloat(range[0]).toFixed(2) + " : " + parseFloat(range[1]).toFixed(2) + ") "
-                    
+
 		   if(range.length > 1){
                         value_abio = _iTrans.prop(lb) + " (" + min  + " : " + max +")";
                     }else{
@@ -116,12 +116,12 @@ var table_module = (function(verbose) {
 			}
 
                     }
-                } 
+                }
                 else {
                     value_abio = d.species
                 }
 
-                
+
                 var item_list = [];
                 item_list.push(d.decil)
 
@@ -134,12 +134,12 @@ var table_module = (function(verbose) {
                 item_list.push(d.epsilon)
                 item_list.push(d.score)
                 item_list.push(d.occ)
-                item_list.push(d.occ_perdecile)            
+                item_list.push(d.occ_perdecile)
                 _data_list_decil.push(item_list)
             })
 
         }
-        
+
 
         if (_tbl_decil != false) {
             // $('#example').dataTable().fnClearTable();
@@ -176,53 +176,53 @@ var table_module = (function(verbose) {
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext"><h5>' + _iTrans.prop('lb_procentaje_occdecil') + '</h5><p>' + _iTrans.prop('lb_msg_por_occdecil') + '</p></div></div>' + _iTrans.prop('lb_procentaje_occdecil')}
             ],
             buttons: [
-                { 
+                {
                     extend: 'copy',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'csv',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'excel',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'print',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
             ],
             language: {
-                "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                "sEmptyTable": _iTrans.prop('sEmptyTable'),
                 "info": _iTrans.prop('info'),
                 "search": _iTrans.prop('search') + " ",
                 "zeroRecords": _iTrans.prop('zeroRecords'),
@@ -248,7 +248,7 @@ var table_module = (function(verbose) {
      * @function addImageScore
      * @public
      * @memberof! table_module
-     * 
+     *
      */
     function addImageScore() {
 
@@ -262,23 +262,23 @@ var table_module = (function(verbose) {
      * @function addImageEpsilon
      * @public
      * @memberof! table_module
-     * 
+     *
      */
     function addImageEpsilon() {
 
         $("#div_formula").append("<img src=images/epsilon.png>");
 
     }
-    
-    
-    
+
+
+
     /**
      * Éste método limpia la tabla de resultados generales del análisis de nicho ecológico.
      *
      * @function clearEspList
      * @public
      * @memberof! table_module
-     * 
+     *
      */
     function clearEspList(){
         _VERBOSE ? console.log("clearEspList") : _VERBOSE;
@@ -287,19 +287,19 @@ var table_module = (function(verbose) {
             $('#tdisplay').dataTable().fnClearTable();
         }
     }
-    
-    
+
+
     /**
      * Éste método limpia la tabla de resultados generales del análisis de nicho ecológico.
      *
      * @function clearEspList
      * @public
      * @memberof! table_module
-     * 
+     *
      */
     function clearDecilList(){
         _VERBOSE ? console.log("clearDecilList") : _VERBOSE;
-        
+
         if (_tbl_decil) {
             $('#example').dataTable().fnClearTable();
         }
@@ -307,27 +307,27 @@ var table_module = (function(verbose) {
 
 
     /**
-     * Éste método genera la tabla de resultados totales para el análisis de nicho ecológico. 
+     * Éste método genera la tabla de resultados totales para el análisis de nicho ecológico.
      *
      * @function createEspList
      * @public
      * @memberof! table_module
-     * 
-     * @param {array} rawdata - Array con el resultado de epsilon y score por especie del análisis de nicho ecológico. 
+     *
+     * @param {array} rawdata - Array con el resultado de epsilon y score por especie del análisis de nicho ecológico.
      */
     function createEspList(rawdata = null) {
 
         _VERBOSE ? console.log("createEspList") : _VERBOSE;
 
-        // var data_list = rawdata.data;    
+        // var data_list = rawdata.data;
         _data_list_eps = rawdata ? rawdata.data : _data_list_eps
-        
+
         if (_tbl != false) {
             // $('#tdisplay').dataTable().fnClearTable();
             // $('#tdisplay').dataTable().fnAddData(data_list);
             $('#tdisplay').dataTable().fnDestroy();
         }
-        
+
 
         $('#tdisplay').dataTable({
             "dom": 'Bfrtip',
@@ -355,6 +355,8 @@ var table_module = (function(verbose) {
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext"><h5>' + _iTrans.prop('lb_nj') + '</h5><p>' + _iTrans.prop('lb_msg_nj') + '</p></div></div>' + _iTrans.prop('lb_nj')},
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext"><h5>' + _iTrans.prop('lb_ni') + '</h5><p>' + _iTrans.prop('lb_msg_ni') + '</p></div></div>' + _iTrans.prop('lb_ni')},
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext"><h5>' + _iTrans.prop('lb_n') + '</h5><p>' + _iTrans.prop('lb_msg_n') + '</p></div></div>' + _iTrans.prop('lb_n')},
+                {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext"><h5>' + "Pij = nij/nj" + '</h5><p>' + "Pij" + '</p></div></div>' + "Pij"},
+                {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext"><h5>' + "Pc = ni/n" + '</h5><p>' + "Pc" + '</p></div></div>' + "Pc"},
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext" style="width: 300px;"><h5>' + _iTrans.prop('lb_epsilon') + '</h5><p>' + _iTrans.prop('lb_msg_epsilon') + '</p><img src="images/epsilon.png"></div></div>' + _iTrans.prop('lb_epsilon')},
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext" style="width: 300px;"><h5>' + _iTrans.prop('tip_tbl_score') + '</h5><p>' + _iTrans.prop('lb_msg_score') + '</p><img src="images/score.png"></div></div>' + _iTrans.prop('tip_tbl_score')},
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext"><h5>' +_iTrans.prop('a_item_reino')+ '</h5><p>' + _iTrans.prop('lb_msg_reino') + '</p></div></div>' + _iTrans.prop('a_item_reino')},
@@ -364,53 +366,53 @@ var table_module = (function(verbose) {
                 {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext" ttip-left><h5>' +_iTrans.prop('a_item_familia')+ '</h5><p>' + _iTrans.prop('lb_msg_familia') + '</p></div></div>' + _iTrans.prop('a_item_familia')}
             ],
             buttons: [
-                { 
+                {
                     extend: 'copy',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'csv',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'excel',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'print',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
             ],
             language: {
-                "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                "sEmptyTable": _iTrans.prop('sEmptyTable'),
                 "info": _iTrans.prop('info'),
                 "search": _iTrans.prop('search') + " ",
                 "zeroRecords": _iTrans.prop('zeroRecords'),
@@ -426,12 +428,12 @@ var table_module = (function(verbose) {
     }
 
     /**
-     * Éste método ajusta los componentes visuales después de obtener lso resutlados del análisis de nicho ecológico. 
+     * Éste método ajusta los componentes visuales después de obtener lso resutlados del análisis de nicho ecológico.
      *
      * @function _adjustComponents
      * @private
      * @memberof! table_module
-     * 
+     *
      */
     function _adjustComponents() {
 
@@ -458,7 +460,7 @@ var table_module = (function(verbose) {
      * @function createListNet
      * @public
      * @memberof! table_module
-     * 
+     *
      * @param {json} json - Valores generados por el módulo histograma creado en comunidad ecológica
      * @param {object} display_obj - Referencia del controlador de comunidad ecológica
      */
@@ -467,7 +469,7 @@ var table_module = (function(verbose) {
         _VERBOSE ? console.log("createListNet") : _VERBOSE;
 
         _display_obj = display_obj;
-        
+
         var list_array = [EpsilonList];
         var list_component = d3.selectAll(".list")
                 .data(list_array);
@@ -475,7 +477,7 @@ var table_module = (function(verbose) {
         _json = json;
         _VERBOSE ? console.log(_json.links) : _VERBOSE;
 
-       
+
         return list_component;
 
     }
@@ -488,7 +490,7 @@ var table_module = (function(verbose) {
      * @function createListMun
      * @public
      * @memberof! table_module
-     * 
+     *
      */
     function createListMun(data) {
 
@@ -558,53 +560,53 @@ var table_module = (function(verbose) {
                 {title: 'Primer Periodo'}
             ],
             buttons: [
-                { 
+                {
                     extend: 'copy',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'csv',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'excel',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
-                { 
+                {
                     extend: 'print',
                     exportOptions: {
-                        format: { 
-                            header: function ( data, column, row ) 
+                        format: {
+                            header: function ( data, column, row )
                               {
-                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                               }
                          }
                     }
                 },
             ],
             language: {
-                "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                "sEmptyTable": _iTrans.prop('sEmptyTable'),
                 "info": _iTrans.prop('info'),
                 "search": _iTrans.prop('search') + " ",
                 "zeroRecords": _iTrans.prop('zeroRecords'),
@@ -615,7 +617,7 @@ var table_module = (function(verbose) {
 
         _tbl_mun = true;
 
-        
+
     }
 
 
@@ -626,7 +628,7 @@ var table_module = (function(verbose) {
      * @function createListMun
      * @public
      * @memberof! table_module
-     * 
+     *
      */
     function createTblSp(idTbl) {
 
@@ -658,53 +660,53 @@ var table_module = (function(verbose) {
                 "paging": false,
                 "scrollX": false,
                 buttons: [
-                    { 
+                    {
                         extend: 'copy',
                         exportOptions: {
-                            format: { 
-                                header: function ( data, column, row ) 
+                            format: {
+                                header: function ( data, column, row )
                                   {
-                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                                   }
                              }
                         }
                     },
-                    { 
+                    {
                         extend: 'csv',
                         exportOptions: {
-                            format: { 
-                                header: function ( data, column, row ) 
+                            format: {
+                                header: function ( data, column, row )
                                   {
-                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                                   }
                              }
                         }
                     },
-                    { 
+                    {
                         extend: 'excel',
                         exportOptions: {
-                            format: { 
-                                header: function ( data, column, row ) 
+                            format: {
+                                header: function ( data, column, row )
                                   {
-                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                                   }
                              }
                         }
                     },
-                    { 
+                    {
                         extend: 'print',
                         exportOptions: {
-                            format: { 
-                                header: function ( data, column, row ) 
+                            format: {
+                                header: function ( data, column, row )
                                   {
-                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                                   }
                              }
                         }
                     },
                 ],
                 language: {
-                    "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                    "sEmptyTable": _iTrans.prop('sEmptyTable'),
                     "info": _iTrans.prop('info'),
                     "search": _iTrans.prop('search') + " ",
                     "zeroRecords": _iTrans.prop('zeroRecords'),
@@ -713,7 +715,7 @@ var table_module = (function(verbose) {
                 }
             }
         );
-        
+
     }
 
 
@@ -725,7 +727,7 @@ var table_module = (function(verbose) {
      * @function EpsilonList
      * @public
      * @memberof! table_module
-     * 
+     *
      * @param {object} div - Contendor de la tabla de los resultados del análisis de comunidad ecológica y de los rangos enviados por el módulo histograma
      */
     function EpsilonList(div) {
@@ -733,7 +735,7 @@ var table_module = (function(verbose) {
         _VERBOSE ? console.log("EpsilonList: " + _tbl_net) : _VERBOSE;
 
         var epsilonByGender = _display_obj.nestByR.entries(dim_eps_freq.top(Infinity));
-        
+
         var temp_list = [];
         var link_counter = 0
         var max_link = _display_obj.max_num_link
@@ -750,16 +752,16 @@ var table_module = (function(verbose) {
                     link_counter++
 
                     if(_display_obj.hist_load || link_counter <= max_link){
-                        temp_list.push(item);    
+                        temp_list.push(item);
                     }
-                    
+
                 }
 
             })
 
         });
 
-        
+
         // epsilonByGender = temp;
 
         console.log("temp_list length: " + temp_list.length)
@@ -777,8 +779,8 @@ var table_module = (function(verbose) {
 
                 // item = d.values[0];
                 temp_list.forEach(function(val) {
-                    
-                    
+
+
                     // console.log(val)
                     // console.log(_json.nodes)
 
@@ -844,10 +846,12 @@ var table_module = (function(verbose) {
                     item_list.push(val.n);
 
                     item_list.push(val.value);
-                    
+
                     item_list.push(val.score);
 
                     data_list.push(item_list)
+
+
 
                 });
 
@@ -864,8 +868,8 @@ var table_module = (function(verbose) {
                 $('#relation-list').dataTable().fnDestroy();
             }
             _tbl_net = true;
-            
-            
+
+
             $('#relation-list').DataTable({
                 "dom": 'Bfrtip',
                 "info": true,
@@ -885,7 +889,7 @@ var table_module = (function(verbose) {
                 data: data_list,
                 columns: [
                     // { sTitle: "<input type='checkbox'></input>","mDataProp": null, "sWidth": "20px", "sDefaultContent": "<input type='checkbox' ></input>", "bSortable": false}
-    
+
                     {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext" id="tbl_net_src" style="left: 25%"><h5>' + _iTrans.prop('lb_fuente_tbl') + '</h5><p>' + _iTrans.prop('lb_msg_source') + '</p></div><span>' + _iTrans.prop('lb_fuente_tbl') + '</span></div>'},
                     {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext" id="tbl_net_trg" style="left: 25%"><h5>' + _iTrans.prop('lb_sumidero_tbl') + '</h5><p>' + _iTrans.prop('lb_msg_target') + '</p></div><span>' + _iTrans.prop('lb_sumidero_tbl') + '</span></div>'},
                     {title: ' <div class="ttip"><button type="button" class="btn btn-light glyphicon glyphicon-info-sign btn_column"></button><div class="ttext" id="tbl_net_nij"><h5>' + _iTrans.prop('lb_nij') +'</h5><p>' + _iTrans.prop('lb_msg_nij') + '</p></div></div>' + _iTrans.prop('lb_nij')},
@@ -896,53 +900,53 @@ var table_module = (function(verbose) {
                     // {title: " <button type='button' class='btn btn-light glyphicon glyphicon-info-sign btn_column' onclick=\" $('#div_formula').empty(); $('#lb_header_info').text('Score'); $('#lb_body_info').text('" + _iTrans.prop('lb_msg_score') + "'); table_module().addImageScore(); $('#modalInfo').modal()\" ></button> " + "Score"}
                 ],
                 buttons: [
-                    { 
+                    {
                         extend: 'copy',
                         exportOptions: {
-                            format: { 
-                                header: function ( data, column, row ) 
+                            format: {
+                                header: function ( data, column, row )
                                   {
-                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                                   }
                              }
                         }
                     },
-                    { 
+                    {
                         extend: 'csv',
                         exportOptions: {
-                            format: { 
-                                header: function ( data, column, row ) 
+                            format: {
+                                header: function ( data, column, row )
                                   {
-                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                                   }
                              }
                         }
                     },
-                    { 
+                    {
                         extend: 'excel',
                         exportOptions: {
-                            format: { 
-                                header: function ( data, column, row ) 
+                            format: {
+                                header: function ( data, column, row )
                                   {
-                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                                   }
                              }
                         }
                     },
-                    { 
+                    {
                         extend: 'print',
                         exportOptions: {
-                            format: { 
-                                header: function ( data, column, row ) 
+                            format: {
+                                header: function ( data, column, row )
                                   {
-                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>")); 
+                                    return data.substring(data.indexOf("<h5>")+4,data.indexOf("</h5>"));
                                   }
                              }
                         }
                     },
                 ],
                 language: {
-                    "sEmptyTable": _iTrans.prop('sEmptyTable'), 
+                    "sEmptyTable": _iTrans.prop('sEmptyTable'),
                     "info": _iTrans.prop('info'),
                     "search": _iTrans.prop('search') + " ",
                     "zeroRecords": _iTrans.prop('zeroRecords'),
@@ -963,7 +967,7 @@ var table_module = (function(verbose) {
      * @function startTableModules
      * @public
      * @memberof! table_module
-     * 
+     *
      * @param {boolean} tbl_net - Bandera que indica el estado incial de la tabla desplegada en comunidad ecológica
      */
     function startTableModule(tbl_net) {

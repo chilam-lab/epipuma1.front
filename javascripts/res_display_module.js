@@ -1691,7 +1691,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         console.log(map_result);
         console.log(data);
 
-        fetch(_url_zacatuche + "/niche/especie/getColumnsGrid", {
+        fetch(_url_zacatuche + "niche/especie/getColumnsGrid", {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
@@ -2196,10 +2196,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
             // var namesp = d.reinovalido === "" ? d.type +" "+ d.layer :
             // item_list.push(namesp)
+            let pij = (d.nij/d.nj).toFixed(3)
+            let pc = (d.ni/d.n).toFixed(3)
             item_list.push(d.nij)
             item_list.push(d.nj)
             item_list.push(d.ni)
             item_list.push(d.n)
+            item_list.push(pij)
+            item_list.push(pc)
             item_list.push(d.epsilon)
             item_list.push(d.score)
             item_list.push(d.reinovalido)
@@ -2209,7 +2213,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
             item_list.push(d.familiavalida)
 
             data_list.push(item_list)
+
+
+
         });
+
 
         var json_arg = { data: data_list }
 
