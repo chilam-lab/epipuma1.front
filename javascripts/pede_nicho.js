@@ -463,6 +463,16 @@ var module_nicho = (function() {
           sessionStorage.setItem("modifiers", JSON.stringify(modifierSelected))
           value == "Sin Modificador" ? sessionStorage.setItem("modifiers_flag", JSON.stringify(false)) : sessionStorage.setItem("modifiers_flag", JSON.stringify(true))
         });
+        $('#modelSelect').on('change', function() {
+          var model = $("#modelSelect").val()
+          if(model == 'Perfilado') {
+            $("#pred_des_control")[0].checked = false
+          }
+          if(model == 'Predictivo') {
+            $("#pred_des_control")[0].checked = true
+          }
+          toogle_predictive_profiling();
+        });
         $('#enfoqueSelect').on('change', function() {
           var value = ""
           switch (this.value) {
