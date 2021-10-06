@@ -722,25 +722,19 @@ var module_nicho = (function() {
             let status = $("#pred_des_control")[0].checked;
             console.log(status);
             if (status == false) {
-                //$("#lb_range_fecha")[0].innerText = "Periodo de Validación";
-                if ($("#pred_des_control")[0].checked == true) {
-                    document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
-                    setTimeout(function() {
-                        $("#date_timepicker_start").removeAttr("disabled");
-                    }, 550);
-
-                }
-                $(".col-lg-12").css("margin-top", "-1%");
-
-
+              //$("#lb_range_fecha")[0].innerText = "Periodo de Validación";
+              document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
+              setTimeout(function() {
+                  $("#date_timepicker_start").removeAttr("disabled");
+              }, 550);
+              $(".col-lg-12").css("margin-top", "-1%");
             } else {
-                //$("#lb_range_fecha")[0].innerText = "Periodo de Validación";
-                document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
-                $(".col-lg-12").css("margin-top", "-40%");
-                setTimeout(function() {
-                    $("#date_timepicker_start_val").removeAttr("disabled");
-                }, 550);
-
+              //$("#lb_range_fecha")[0].innerText = "Periodo de Validación";
+              document.getElementById('date_timepicker_start').id = 'date_timepicker_start_val';
+              $(".col-lg-12").css("margin-top", "-40%");
+              setTimeout(function() {
+                  $("#date_timepicker_start_val").removeAttr("disabled");
+              }, 550);
             }
         };
         const hide_selected_covars = (covar) => {
