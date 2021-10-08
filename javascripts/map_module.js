@@ -2816,12 +2816,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     var sum_tv = 0;
                     if (modifier) {
                         for (let i = 0; i < _data_sp_occ.length; i++) {
+                          sum_tv += parseInt(_data_sp_occ[i].cases_trainig);
                             if (_data_sp_occ[i].fp == fp) {
                                 _data_sp_occ[i].occ = 100
                                 lalistadelosblancos.push(_data_sp_occ[i])
                             } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                 _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                sum_tv += parseInt(_data_sp_occ[i].cases_trainig);
+                                //sum_tv += parseInt(_data_sp_occ[i].cases_trainig);
                                 lalistadelosgradientes.push(_data_sp_occ[i])
                             } else {
                               _data_sp_occ[i].occ = 100
@@ -2834,10 +2835,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     } else {
                         if (modifierStar) {
                             for (let i = 0; i < _data_sp_occ.length; i++) {
+                              sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
                               if(modifierFocus) {
                                 if (_data_sp_occ[i].target == true) {
                                     _data_sp_occ[i].occ = _data_sp_occ[i].cases_trainig
-                                    sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
+                                    //sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
                                     lalistadelosgradientes.push(_data_sp_occ[i])
                                 } else {
                                   _data_sp_occ[i].occ = 100
@@ -2846,7 +2848,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                               } else {
                                  if(_data_sp_occ[i].tp == tp) {
                                   _data_sp_occ[i].occ = _data_sp_occ[i].tv
-                                  sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
+                                  //sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
                                   lalistadelosgradientes.push(_data_sp_occ[i])
                                 } else {
                                   _data_sp_occ[i].occ = 100
