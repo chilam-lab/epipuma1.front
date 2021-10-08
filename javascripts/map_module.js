@@ -2858,11 +2858,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                             colorizeFeaturesByJSONEPIPUMA(_grid_map_occ, lalistadelosgradientes, false, "normal", 2);
 
                         } else {
+                            sum_tv= 0
                             for (let i = 0; i < _data_sp_occ.length; i++) {
+                              sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
                                 //La clase
                                 if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude2)) {
                                     _data_sp_occ[i].occ = 100
-                                    sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
+                                    //sum_tv += parseInt(_data_sp_occ[i].cases_trainig)
                                     lalistadelosverdes.push(_data_sp_occ[i])
                                 //No clase
                                 } else if ((_data_sp_occ[i].fp == exclude1) && (_data_sp_occ[i].tp == exclude1)) {
