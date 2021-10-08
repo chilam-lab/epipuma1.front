@@ -2630,6 +2630,10 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         }
         var url_mod;
 
+        let newDate = new Date(liminf)
+        let selectedDateMinusThirtyDaysInf = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-01");
+        let selectedDateMinusThirtyDaysSup = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-" + (Number(newDate.getDate()) < 10 ? "0" + newDate.getDate() : newDate.getDate()));
+        let enfoque = sessionStorage.getItem("light_traffic");
         if (flag_modifiers == "true") {
             let modifiers = JSON.parse(sessionStorage.getItem("modifiers"))
             let modifier = Object.values(modifiers);
@@ -2657,16 +2661,16 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "traffic_light": enfoque,
 
             }
+            if(enfoque != "star") {
+              data.liminf_first = selectedDateMinusThirtyDaysInf
+              data.limsup_first = selectedDateMinusThirtyDaysSup
+            }
         } else {
             console.log("getGridSpeciesTaxon");
             url_mod = _url_zacatuche + "niche/especie/getGridSpeciesTaxon";
             //url_mod = _url_zacatuche + "dev/niche/especie/getGridSpeciesTaxon";
             var tar_var = taxones[0]["value"];
             console.log(tar_var);
-            let newDate = new Date(liminf)
-            let selectedDateMinusThirtyDaysInf = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-01");
-            let selectedDateMinusThirtyDaysSup = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-" + (Number(newDate.getDate()) < 10 ? "0" + newDate.getDate() : newDate.getDate()));
-            let enfoque = sessionStorage.getItem("light_traffic");
             var data = {
                 "name": "k",
                 "target_taxons": [taxones[taxones.length - 1]],
