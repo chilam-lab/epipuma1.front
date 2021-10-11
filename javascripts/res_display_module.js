@@ -1271,7 +1271,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
 
-        if (state_model) {
+        //if (state_model) {
 
             var verbo = "countsTaxonsGroupTimeValidation";
             if ($("#pred_des_control")[0].checked) {
@@ -1338,7 +1338,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             console.log(data_request);
 
 
-        }
+        //}
         var url = _url_zacatuche + "/niche/" + verbo
 
 
@@ -1513,7 +1513,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
                         var modifiers_flag_verb = sessionStorage.getItem("modifiers_flag");
                         if (modifiers_flag_verb == "true") {
-                            verbo = "generateTarget";
+                          verbo = "generateTarget";
+                          let modifiers2 = JSON.parse(sessionStorage.getItem("modifiers"));
+                          let texto = Object.values(modifiers2);
+                          let texto2 = (texto[0])
+                          total_request["modifier"] = texto2;
+                          console.log(texto2);
                         }
                         if ($("#chkValidationTemp").is(':checked')) {
 
