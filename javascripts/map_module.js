@@ -2452,6 +2452,43 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
     }
 
 
+    function returnTheEndMonthDayByTheNumberOfMonth(numberOfTheMonth) {
+      var endMonthDay = "";
+      switch (numberOfTheMonth) {
+          case "01":
+              endMonthDay = "31";
+              break;
+          case "02":
+              endMonthDay = "28";
+              break;
+          case "03":
+              endMonthDay = "31";
+              break;
+          case "05":
+              endMonthDay = "31";
+              break;
+          case "07":
+              endMonthDay = "31";
+              break;
+          case "08":
+              endMonthDay = "31";
+              break;
+          case "10":
+              endMonthDay = "31";
+              break;
+          case "12":
+              endMonthDay = "31";
+              break;
+
+          default:
+              endMonthDay = "30";
+
+              break;
+      }
+      return endMonthDay;
+
+  }
+
     /**
      * Busca las ocurrencias de un grupo de especies.
      *
@@ -2629,16 +2666,17 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
         }
         var url_mod;
-
         let newDate = new Date(liminf)
+        let newDate2 = new Date(liminf_initial)
+        let newDate3 = new Date(newDate2.setMonth(newDate2.getMonth() - 2))
         let selectedDateMinusThirtyDaysInf = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-01");
         let selectedDateMinusThirtyDaysSup = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-" + (Number(newDate.getDate()) < 10 ? "0" + newDate.getDate() : newDate.getDate()));
+        let selectedDateMinusTwoMonthsInf = String(newDate3.getFullYear() + "-" + (Number((newDate3.getMonth() )) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1 )) + "-01");
+        let selectedDateMinusTwoMonthSup = String(newDate3.getFullYear() + "-" + (Number((newDate3.getMonth() )) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1)) + "-" + (returnTheEndMonthDayByTheNumberOfMonth(String(Number(newDate3.getMonth()+1) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1)))));
         let enfoque = sessionStorage.getItem("light_traffic");
         if (flag_modifiers == "true") {
             let modifiers = JSON.parse(sessionStorage.getItem("modifiers"))
             let modifier = Object.values(modifiers);
-
-
             console.log("getGridGeneratedSpecies");
             console.log(modifier);
             //url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
@@ -2656,14 +2694,23 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "grid_res": grid_res,
                 "region": region,
                 "modifier": modifier[0],
-                "liminf": liminf,
-                "limsup": limsup,
                 "traffic_light": enfoque,
 
             }
-            if(enfoque != "star") {
-              data.liminf_first = selectedDateMinusThirtyDaysInf
-              data.limsup_first = selectedDateMinusThirtyDaysSup
+            if (state_model) {
+              data.liminf = selectedDateMinusThirtyDaysInf;
+              data.limsup = selectedDateMinusThirtyDaysSup;
+              if(enfoque != "star") {
+                data.liminf_first = selectedDateMinusTwoMonthsInf;
+                data.limsup_first = selectedDateMinusTwoMonthSup;
+              }
+            } else {
+              data.liminf = liminf;
+              data.limsup = limsup;
+              if(enfoque != "star") {
+                data.liminf_first = selectedDateMinusThirtyDaysInf;
+                data.limsup_first = selectedDateMinusThirtyDaysSup;
+              }
             }
         } else {
             console.log("getGridSpeciesTaxon");
@@ -2681,14 +2728,23 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                 "sfosil": _con_fosil,
                 "grid_res": grid_res,
                 "region": region,
-                "liminf": liminf,
-                "limsup": limsup,
                 "traffic_light": enfoque,
 
             }
-            if(enfoque != "star") {
-              data.liminf_first = selectedDateMinusThirtyDaysInf
-              data.limsup_first = selectedDateMinusThirtyDaysSup
+            if (state_model) {
+              data.liminf = selectedDateMinusThirtyDaysInf;
+              data.limsup = selectedDateMinusThirtyDaysSup;
+              if(enfoque != "star") {
+                data.liminf_first = selectedDateMinusTwoMonthsInf;
+                data.limsup_first = selectedDateMinusTwoMonthSup;
+              }
+            } else {
+              data.liminf = liminf;
+              data.limsup = limsup;
+              if(enfoque != "star") {
+                data.liminf_first = selectedDateMinusThirtyDaysInf;
+                data.limsup_first = selectedDateMinusThirtyDaysSup;
+              }
             }
 
         }
