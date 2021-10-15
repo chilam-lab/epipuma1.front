@@ -3701,7 +3701,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 if (json_data[i].icat === "") {
 
-                    table_sp += "<tr><td>" + json_data[i].generovalido + " " + json_data[i].especieepiteto + "</td><td>" + parseFloat(json_data[i].score).toFixed(2) + "</td></tr>";
+                    table_sp += "<tr><td>" + json_data[i].description + " " + json_data[i].especieepiteto + "</td><td>" + parseFloat(json_data[i].score).toFixed(2) + "</td></tr>";
 
                 } else {
 
