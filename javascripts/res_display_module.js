@@ -2213,8 +2213,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             item_list.push(d.score)
             item_list.push(d.reinovalido)
             item_list.push(d.phylumdivisionvalido)
-            item_list.push(d.clasevalida)
-            item_list.push(d.ordenvalido)
+            // item_list.push(d.clasevalida)
+            // item_list.push(d.ordenvalido)
             item_list.push(d.familiavalida)
 
             data_list.push(item_list)
