@@ -1566,14 +1566,21 @@ var variable_module = (function(verbose, url_zacatuche) {
                                 // _VERBOSE ? console.log("remove item") : _VERBOSE;
                                 d3.select(this.parentNode).remove();
                                 var gpo_deleted;
+                                var list_without_removed_covars = []
+                                var covars_selected_raster = JSON.parse(sessionStorage.getItem("covars_selected_menu_raster"))
 
                                 $.each(self.groupDatasetTotal, function(index, obj) {
+                                  var remove_covar = "#" + obj.elements[0].value
+                                  $(remove_covar).css("position", "relative");
+                                  $(remove_covar).css("visibility", "visible");
+                                  list_without_removed_covars = covars_selected_raster.filter(covar => covar !== remove_covar);
                                     if (obj.groupid == d.groupid) {
                                         // _VERBOSE ? console.log(d) : _VERBOSE;
                                         gpo_deleted = self.groupDatasetTotal.splice(index, 1);
                                         return false;
                                     }
                                 })
+                                sessionStorage.setItem("covars_selected_menu_raster",JSON.stringify(list_without_removed_covars))
                                 _VERBOSE ? console.log(gpo_deleted) : _VERBOSE;
 
                                 self.updateVarSelArray(gpo_deleted, _BORRADO);
