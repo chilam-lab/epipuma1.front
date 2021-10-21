@@ -97,6 +97,7 @@ var module_nicho = (function() {
         sessionStorage.setItem("modif_pop", "");
         sessionStorage.setItem("modelo_test", "");
         sessionStorage.setItem("covars_selected_menu", "[]")
+        sessionStorage.setItem("covars_selected_menu_raster", "[]")
         sessionStorage.setItem("selectedData2", "[]")
 
 
@@ -1048,6 +1049,18 @@ var module_nicho = (function() {
               }, 1000);
             }
             $("#root_covar").jstree().uncheck_all(true)
+        });
+        ////Boton Agregar Covariables Raster
+        $("#add_group_bioclim_fuente").click(function() {
+          let getSelectedDataRaster= JSON.parse(sessionStorage.getItem("covars_selected_menu_raster"));
+          if(getSelectedDataRaster.length == 0) {
+            return;
+          } else {
+            for (let index = 0; index < getSelectedDataRaster.length; index++) {
+              $(getSelectedDataRaster[index]).css("position", "absolute");
+                $(getSelectedDataRaster[index]).css("visibility", "hidden");
+            }
+          }
         });
         // Boton Borrar Variable Objetivo
         $("#clean_var_fuente").click(function() {

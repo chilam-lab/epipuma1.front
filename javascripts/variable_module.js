@@ -38,6 +38,7 @@ var variable_module = (function(verbose, url_zacatuche) {
 
     var _REGION_SELECTED = 1;
     var _GRID_RES = "state";
+    sessionStorage.setItem("covars_selected_menu_raster", "[]")
 
     // var map_taxon = new Map()
     // map_taxon.set("reino", "kingdom");
@@ -881,10 +882,15 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
                     .click(function(e) {
                        let array = self.arrayBioclimSelected
+                       var list_covariable_selected = JSON.parse(sessionStorage.getItem("covars_selected_menu_raster"))
                        for (let index = 0; index < array.length; index++) {
+                        let covar_id = "#" + array[index].id 
+                        list_covariable_selected.push(covar_id)
                         self.addOtherGroup('jstree_variables_bioclim_' + id, [array[index]], 'Raster', 'treeAddedPanel_' + id, _TYPE_ABIO);
                        }
+                        sessionStorage.setItem("covars_selected_menu_raster",JSON.stringify(list_covariable_selected))
                        // e.preventDefault();
+                       //
 
                     })
                     .appendTo(tab_pane);
