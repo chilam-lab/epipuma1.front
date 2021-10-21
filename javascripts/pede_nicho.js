@@ -1069,6 +1069,15 @@ var module_nicho = (function() {
             unhide_selected_covars();
             $('#jstree_variables_species_fuente').jstree().deselect_all()
         })
+        // Boton Borrar Variable Objetivo Raster
+        $("#clean_var_bioclim_fuente").click(function() {
+          var all_covars_selected = JSON.parse(sessionStorage.getItem("covars_selected_menu_raster"))
+          for (let index = 0; index < all_covars_selected.length; index++) {
+            $(all_covars_selected[index]).css("position", "relative");
+            $(all_covars_selected[index]).css("visibility", "visible");
+          }
+          sessionStorage.setItem("covars_selected_menu_raster","[]")
+      })
         $("#reload_map").click(function() {
             sessionStorage.setItem("covar", "")
         });
