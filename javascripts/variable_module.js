@@ -880,9 +880,11 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr('type', 'button')
                     .addClass('btn btn-primary glyphicon glyphicon-plus pull-left')
                     .click(function(e) {
-
-                        self.addOtherGroup('jstree_variables_bioclim_' + id, self.arrayBioclimSelected, 'Raster', 'treeAddedPanel_' + id, _TYPE_ABIO);
-                        e.preventDefault();
+                       let array = self.arrayBioclimSelected
+                       for (let index = 0; index < array.length; index++) {
+                        self.addOtherGroup('jstree_variables_bioclim_' + id, [array[index]], 'Raster', 'treeAddedPanel_' + id, _TYPE_ABIO);
+                       }
+                       // e.preventDefault();
 
                     })
                     .appendTo(tab_pane);
