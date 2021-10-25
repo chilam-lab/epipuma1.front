@@ -219,6 +219,9 @@ var module_nicho = (function() {
                         }
 
                         for (let index = 0; index < modif.length; index++) {
+                          if(modif[index]["label"] == "Prevalencia"){
+                            modif[index]["label"] = "Positividad"
+                          }
                             console.log(modif[index]["label"])
                             console.log(modif[index]["modifier"])
                             var opt = document.createElement('option');

@@ -883,6 +883,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .click(function(e) {
                        let array = self.arrayBioclimSelected
                        var list_covariable_selected = JSON.parse(sessionStorage.getItem("covars_selected_menu_raster"))
+                       if(array.length == 1 && array[0]["label"] == "Raster"){
+                         array = [{"label":"Centro de Ciencias de la Atmosfera - Climáticas","id":"CentrodeCienciasdelaAtmosfera-Climáticas","parent":"Raster","level":1,"type":12},{"label":"Worldclim 2.1","id":"Worldclim21","parent":"Raster","level":1,"type":13},{"label":"Centro de Ciencias de la Atmosfera - Contaminación","id":"CentrodeCienciasdelaAtmosfera-Contaminación","parent":"Raster","level":1,"type":14}]
+                       }
                        for (let index = 0; index < array.length; index++) {
                         let covar_id = "#" + array[index].id 
                         list_covariable_selected.push(covar_id)

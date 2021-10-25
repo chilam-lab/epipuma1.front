@@ -3319,13 +3319,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Prevalencia</th>' +
+                    '<th>Positividad</th>' +
                     '<th>Población total </th>' +
-                    '<th> No. Prevalencia en ' + previousPeriodSelectedShort + ' </th>' +
-                    '<th> Decil Prevalencia en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> No. Positividad en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> Decil Positividad en ' + previousPeriodSelectedShort + ' </th>' +
                     '<th> No. Casos en '+periodSelectedShort+'</th>' +
-                    '<th> No. Prevalencia en ' + periodSelectedShort + ' </th>' +
-                    '<th> Decil Prevalencia en ' + periodSelectedShort + ' </th>' +
+                    '<th> No. Positividad en ' + periodSelectedShort + ' </th>' +
+                    '<th> Decil Positividad en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3339,11 +3339,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<table class="table table-striped">' +
                       '<thead>' +
                       '<tr>' +
-                      '<th>Prevalencia</th>' +
+                      '<th>Positividad</th>' +
                       '<th>Población total </th>' +
                       '<th> No. Casos </th>' +
-                      '<th> No. Prevalencia en ' + periodSelectedShort + ' </th>' +
-                      '<th> Decil Prevalencia en ' + periodSelectedShort + ' </th>' +
+                      '<th> No. Positividad en ' + periodSelectedShort + ' </th>' +
+                      '<th> Decil Positividad en ' + periodSelectedShort + ' </th>' +
                       '</tr>' +
                       '</thead>' +
                       '<tbody>';
