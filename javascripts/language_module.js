@@ -1719,8 +1719,9 @@ var language_module = (function (verbose) {
                             location: 'rm-b'
                         },
                         templateData: {
-                            title: $.i18n.prop('label_esp_p101'),
-                            content: "Confirmación modelo"
+                          title: "Ver grupo de interés",
+                          content: "Se despliegue en el mapa aquellas celdas en tu grupo de interés conjuntamente con algunos datos correspondientes. "
+
                         }
                     },
                     {
@@ -1730,9 +1731,90 @@ var language_module = (function (verbose) {
                        },
                        templateData: {
                            title: "Ver grupo de interés",
-                           content: "Se despliegue en el mapa aquellas celdas en tu grupo de interés conjuntamente con algunos datos correspondientes. "
-                       }
+                           content: "El mapa se divide en 3 grupos: los municipios que forman el grupo de interés, los municipios que forman el complemento del grupo de interés y los municipios excluidos que no forman parte del análisis. Por ejemplo, en el caso de predicción de aquellos municipios con empeoramiento en la Incidencia de confirmados, el grupo de interés será aquellos municipios que NO estaban en el top 10% de peores municipios pero pasaron al top 10% en el próximo mes, mientras el complemento del grupo será aquellos municipios que se quedaron en el 90% de municipios con las incidencias mas bajas. Los excluidos en este caso serán aquellos municipios que estaban en el top 10% de más alta incidencia y se quedaron ahi en el próximo mes.Al hacer clic en cualquier municipio se presenta información particular de ese municipio relevante para la clase de interés."                       }
                    },
+                   {
+                      el: '#tlt_resumen',
+                      position: {
+                          location: 'lt'
+                      },
+                      templateData: {
+                          title: "Resumen",
+                          content: "El Resumen da información sobre la clase de interés asociado con el periodo de interés"                       }
+                  },
+                  {
+                      el: '#tuto_variables',
+                      position: {
+                          location: 'rm-b'
+                      },
+                      templateData: {
+                        title: " Seleccionar covariables (factores de riesgo/predictores)",
+                        content: "Aquí se puede seleccionar las variables para usar como predictores. Se puede desplegar en un árbol las variables y seleccionar cualquier combinación, incluyendo factores socio-económicos, socio-demográficos, movilidad, pobreza y en Rasters - datos climáticos y de contaminación "
+
+                      }
+                  },
+                  {
+                     el: '#get_esc_ep',
+                     position: {
+                         location: 'lt'
+                     },
+                     templateData: {
+                         title: "Ejecutar análisis",
+                         content: "Al hacer clic en “Ejecutar análisis” EpI-PUMA producirá en modelo Bayesiano que calcula la correlación entre el grupo de interés y cada predictor y luego  calcula la probabilidad que un municipio estará en el grupo de interés."
+                       }
+                 },
+                 {
+                    el: '#map',
+                    position: {
+                        location: 'lt-b'
+                    },
+                    templateData: {
+                        title: "Mapa de riesgo ",
+                        content: "Se produce un mapa de riesgo (más rojo/azul = más/menos riesgo). Al hacer clic en cualquier municipio se despliega su “nicho de riesgo”. Cada predictor esta asociado con un peso (score). Lo más positivo/negativo es el score lo más indica un factor que correlaciona/anti-correlaciona con el grupo de interés. Scores cerca a cero representan factores que no son prodictivos."
+                       }
+                },
+
+                {
+                   el: '#myScrollableBlockEpsilonDecil',
+                   position: {
+                       location: 'lt-b'
+                   },
+                   templateData: {
+                       title: "Histograma",
+                       content: "Se muestra los scores promedios del territorio geográfico dividido en deciles representando ese 10% de los municipios en un cierto rango de score (riesgo). P.ej. decile 10/1 representan los 10% de municipios de mayor/menor score (riesgo). La curva de “recall” es una medida de desempeño del modelo de predicción. Da el total de municipios del grupo de interés identificado correctamente por el modelo como función del score (riesgo). P.ej. 40% de recall en el top 10% significa que el modelo predice 400% (4X) mejor que chance."
+                      }
+               },
+
+                {
+                   el: '#div_example',
+                   position: {
+                       location: 'lt-b'
+                   },
+                   templateData: {
+                       title: "Tabla Predictores Asociados al Decil",
+                       content: "Tabla que representa los predictores asociados con el decir de score seleccionado. Así, se puede contrastar por ejemplo los principales factores de riesgo en el 10% de municipios de más alto/bajo riesgo."
+                      }
+               },
+                {
+                   el: '#div_munlist',
+                   position: {
+                       location: 'lt-b'
+                   },
+                   templateData: {
+                       title: "Tabla Municipios",
+                       content: "Lista de municipios por estado y su score para pertenecer al grupo de interés, juntamente con los 5 factores de más alto y más bajo score asociado con el municipio. "
+                      }
+               },
+                {
+                   el: '#treeAddedPanel',
+                   position: {
+                       location: 'lt-b'
+                   },
+                   templateData: {
+                       title: "Tabla Covariables",
+                       content: "Lista de todas las covariables seleccionadas y su correlación con el grupo de interés y el significado estadístico correspondiente. "
+                      }
+               },
                     // {
                     //     el: '#var_target',
                     //     position: {
