@@ -1743,7 +1743,7 @@ var language_module = (function (verbose) {
                           content: "El Resumen da información sobre la clase de interés asociado con el periodo de interés"                       }
                   },
                   {
-                      el: '#tuto_variables',
+                      el: '#treeVariable_fuente',
                       position: {
                           location: 'rm-b'
                       },
