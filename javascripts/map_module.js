@@ -2674,6 +2674,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         let selectedDateMinusTwoMonthsInf = String(newDate3.getFullYear() + "-" + (Number((newDate3.getMonth() )) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1 )) + "-01");
         let selectedDateMinusTwoMonthSup = String(newDate3.getFullYear() + "-" + (Number((newDate3.getMonth() )) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1)) + "-" + (returnTheEndMonthDayByTheNumberOfMonth(String(Number(newDate3.getMonth()+1) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1)))));
         let enfoque = sessionStorage.getItem("light_traffic");
+        var lastTaxonTitle = taxones[taxones.length - 1].title
+        var listOfLastTaxonsToSend= taxones.filter(function(taxon) { return taxon.title == lastTaxonTitle })
         if (flag_modifiers == "true") {
             let modifiers = JSON.parse(sessionStorage.getItem("modifiers"))
             let modifier = Object.values(modifiers);
@@ -2685,7 +2687,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
             var data = {
                 "name": "k",
-                "target_taxons": [taxones[taxones.length - 1]],
+                "target_taxons": listOfLastTaxonsToSend,
                 "idtime": milliseconds,
                 //"liminf": _lin_inf,
                 //"limsup": _lin_sup,
@@ -2720,7 +2722,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             console.log(tar_var);
             var data = {
                 "name": "k",
-                "target_taxons": [taxones[taxones.length - 1]],
+                "target_taxons": listOfLastTaxonsToSend,
                 "idtime": milliseconds,
                 //"liminf": _lin_inf,
                 //"limsup": _lin_sup,
