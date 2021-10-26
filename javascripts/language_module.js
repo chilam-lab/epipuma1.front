@@ -1749,20 +1749,20 @@ var language_module = (function (verbose) {
                       },
                       templateData: {
                         title: " Seleccionar covariables (factores de riesgo/predictores)",
-                        content: "Aquí se puede seleccionar las variables para usar como predictores. Se puede desplegar en un árbol las variables y seleccionar cualquier combinación, incluyendo factores socio-económicos, socio-demográficos, movilidad, pobreza y en Rasters - datos climáticos y de contaminación "
+                        content: "Aquí se puede seleccionar las variables para usar como predictores. Se puede desplegar en un árbol las variables y seleccionar cualquier combinación, incluyendo factores socio-económicos, socio-demográficos, movilidad, pobreza y en Rasters - datos climáticos y de contaminación.Al hacer clic en “Ejecutar análisis” EpI-PUMA producirá en modelo Bayesiano que calcula la correlación entre el grupo de interés y cada predictor y luego  calcula la probabilidad que un municipio estará en el grupo de interés "
 
                       }
                   },
-                  {
-                     el: '#get_esc_ep',
-                     position: {
-                         location: 'lt'
-                     },
-                     templateData: {
-                         title: "Ejecutar análisis",
-                         content: "Al hacer clic en “Ejecutar análisis” EpI-PUMA producirá en modelo Bayesiano que calcula la correlación entre el grupo de interés y cada predictor y luego  calcula la probabilidad que un municipio estará en el grupo de interés."
-                       }
-                 },
+                 //  {
+                 //     el: '#get_esc_ep',
+                 //     position: {
+                 //         location: 'lt'
+                 //     },
+                 //     templateData: {
+                 //         title: "Ejecutar análisis",
+                 //         content: "Al hacer clic en “Ejecutar análisis” EpI-PUMA producirá en modelo Bayesiano que calcula la correlación entre el grupo de interés y cada predictor y luego  calcula la probabilidad que un municipio estará en el grupo de interés."
+                 //       }
+                 // },
                  {
                     el: '#map',
                     position: {
