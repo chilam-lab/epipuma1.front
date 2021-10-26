@@ -1745,7 +1745,7 @@ var language_module = (function (verbose) {
                   {
                       el: '#lb_panel_variables',
                       position: {
-                          location: 'rm-b'
+                          location: 'lt-b'
                       },
                       templateData: {
                         title: " Seleccionar covariables (factores de riesgo/predictores)",
