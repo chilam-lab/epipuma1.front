@@ -1597,6 +1597,18 @@ var variable_module = (function(verbose, url_zacatuche) {
                 .attr("height", "10px")
                 .attr("class", "btn btn-danger glyphicon glyphicon-remove pull-right btn_item_var")
                 .on("click", function(d) {
+                    //var activeTree =$('.nav .active');
+                    var activeNavTree = $(".nav").find(".active")
+                    var activeNavTreeId = activeNavTree[0]["firstChild"]["id"]
+                    if(activeNavTreeId == "a_raster_fuente"){
+                      var covars_raster = JSON.parse(sessionStorage.getItem("covars_selected_menu_raster"))
+                      var covariableToRemove = "#" + d.elements[0]["value"]
+                      var updateCovars= covars_raster.filter(function(covar) { return covar != covariableToRemove })
+                      $(covariableToRemove).css("position", "relative");
+                      $(covariableToRemove).css("visibility", "visible");
+                      sessionStorage.setItem("covars_selected_menu_raster",JSON.stringify(updateCovars))
+                    }
+
                     // _VERBOSE ? console.log("remove item") : _VERBOSE;
                     var name_variable_to_lowercase = d.elements[0].name.toLowerCase()
                     var name_variable_without_accents = name_variable_to_lowercase.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -1608,9 +1620,9 @@ var variable_module = (function(verbose, url_zacatuche) {
                     var updated_cavar = covars_selected_menu.filter(function(covar) { return covar != "#"+id; })
                     var updated_selectedData = selectedData.filter(function(el) { return el.label != d.elements[0].name; })
                     var updated_selectedData2 = selectedData2.filter(function(el) { return el.label != d.elements[0].name; })
-                    updated_cavar.length == 0 ?  updated_cavar="[]" :""
+                    updated_cavar.length == 0 ?  updated_cavar=[] :""
                     updated_selectedData.length == 0 ?  updated_selectedData="[{}]" :""
-                    updated_selectedData2.length == 0 ?  updated_selectedData2="[]" :""
+                    updated_selectedData2.length == 0 ?  updated_selectedData2=[] :""
                     sessionStorage.setItem("covars_selected_menu",JSON.stringify(updated_cavar))
                     sessionStorage.setItem("selectedData",JSON.stringify(updated_selectedData))
                     sessionStorage.setItem("selectedData2",JSON.stringify(updated_selectedData2))
