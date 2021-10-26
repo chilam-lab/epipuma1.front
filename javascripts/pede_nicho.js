@@ -99,6 +99,10 @@ var module_nicho = (function() {
         sessionStorage.setItem("covars_selected_menu", "[]")
         sessionStorage.setItem("covars_selected_menu_raster", "[]")
         sessionStorage.setItem("selectedData2", "[]")
+        sessionStorage.setItem("liminf_first",  "")
+        sessionStorage.setItem("limsup_first",  "")
+        sessionStorage.setItem("liminf",  "")
+        sessionStorage.setItem("limsup",  "")
 
 
 

@@ -1314,13 +1314,34 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 twoMonthsPreviousPeriodSelectedShortAux = twoMonthsPreviousPeriodDate.getFullYear() + "-" + (Number((twoMonthsPreviousPeriodDate.getMonth()+1)) < 10 ? "0" + (twoMonthsPreviousPeriodDate.getMonth()+1) : (twoMonthsPreviousPeriodDate.getMonth()+1))
                 liminf = twoMonthsPreviousPeriodSelectedShortAux + "-01"
                 limsup = twoMonthsPreviousPeriodSelectedShortAux + "-" + returnTheEndMonthDayByTheNumberOfMonth(liminf.split("-")[1])
-                data_request["lim_inf"] = liminf;
-                data_request["lim_sup"] = limsup;
-                data_request["lim_inf_validation"] = mydate;
-                data_request["lim_sup_validation"] = mydate2;
+                // data_request["lim_inf"] = liminf;
+                // data_request["lim_sup"] = limsup;
+                // data_request["lim_inf_validation"] = mydate;
+                // data_request["lim_sup_validation"] = mydate2;
+                ////IMPORTANDO FECHAS DEL PRIMER ANALISIS
+
+                data_request["lim_inf"] =  sessionStorage.getItem("liminf");
+                data_request["lim_sup"] = sessionStorage.getItem("limsup");
+                a = sessionStorage.getItem("liminf_first");
+                b =  sessionStorage.getItem("limsup_first");
+                var parts = a.split("-");
+                var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
+                var newDate = new Date(mydate.setMonth(mydate.getMonth()+2));
+                var final_date = newDate.toISOString().substring(0, 10);
+                var parts2 = b.split("-");
+                var mydate2 = new Date(parts2[0], parts2[1] - 1, parts2[2]);
+                var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
+                var final_date2 = newDate2.toISOString().substring(0, 10);
+                data_request["lim_inf_validation"] =final_date
+                data_request["lim_sup_validation"] =  final_date2
+
             } else {
-                data_request["lim_inf"] = liminf;
-                data_request["lim_sup"] = limsup;
+                // data_request["lim_inf"] = liminf;
+                // data_request["lim_sup"] = limsup;
+                ////IMPORTANDO FECHAS DEL PRIMER ANALISIS
+                data_request["lim_inf"] =  sessionStorage.getItem("liminf");
+                data_request["lim_sup"] =  sessionStorage.getItem("limsup");
+
             }
             let enfoque = sessionStorage.getItem("light_traffic");
             if (enfoque == "star") {
@@ -1350,6 +1371,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             //var url = _url_zacatuche + "/dev/niche/" + verbo;
             //data_request['period_config'] = ["*", "*", "'1'"];
         }
+
         // cambiando peticiones ajax por promesas y fetch api
         fetch(url, {
                 method: "POST",

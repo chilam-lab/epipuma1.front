@@ -2750,6 +2750,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             }
 
         }
+        sessionStorage.setItem("liminf_first",  data.liminf_first)
+        sessionStorage.setItem("limsup_first",  data.limsup_first)
+        sessionStorage.setItem("liminf",  data.liminf)
+        sessionStorage.setItem("limsup",  data.limsup)
+
         console.log(data)
         fetch(url_mod, {
                 method: "POST",
