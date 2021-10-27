@@ -3116,6 +3116,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         var data = respuesta.data;
 
                         _VERBOSE ? console.log(data) : _VERBOSE;
+                        if(data.length==0){
+                          alert("Municipio sin registros.")
+                        }
                         let data_body_request_pop = { "grid_resolution": "mun", "columns": ["population"], "gridids": [] };
 
 
