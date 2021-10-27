@@ -2671,8 +2671,8 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         let newDate3 = new Date(newDate2.setMonth(newDate2.getMonth() - 2))
         let selectedDateMinusThirtyDaysInf = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-01");
         let selectedDateMinusThirtyDaysSup = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-" + (Number(newDate.getDate()) < 10 ? "0" + newDate.getDate() : newDate.getDate()));
-        let selectedDateMinusTwoMonthsInf = String(newDate3.getFullYear() + "-" + (Number((newDate3.getMonth() )) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1 )) + "-01");
-        let selectedDateMinusTwoMonthSup = String(newDate3.getFullYear() + "-" + (Number((newDate3.getMonth() )) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1)) + "-" + (returnTheEndMonthDayByTheNumberOfMonth(String(Number(newDate3.getMonth()+1) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1)))));
+        let selectedDateMinusTwoMonthsInf = String(newDate3.getFullYear() + "-" + (Number((newDate3.getMonth() )) < 9 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1 )) + "-01");
+        let selectedDateMinusTwoMonthSup = String(newDate3.getFullYear() + "-" + (Number((newDate3.getMonth() )) < 9 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1)) + "-" + (returnTheEndMonthDayByTheNumberOfMonth(String(Number(newDate3.getMonth()+1) < 10 ? "0" + (newDate3.getMonth()+1) : (newDate3.getMonth()+1)))));
         let enfoque = sessionStorage.getItem("light_traffic");
         var lastTaxonTitle = taxones[taxones.length - 1].title
         var listOfLastTaxonsToSend= taxones.filter(function(taxon) { return taxon.title == lastTaxonTitle })

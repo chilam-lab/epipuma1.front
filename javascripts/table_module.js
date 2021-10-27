@@ -499,6 +499,31 @@ var table_module = (function(verbose) {
         if (_tbl_mun == true) {
             $('#tbl_munlist').dataTable().fnDestroy();
         }
+        const getExponentialText = (data) =>{
+          var text = data
+          var textSplitedBySpaces = text.split(" ")
+          var numbers = textSplitedBySpaces.pop()
+          var numbersSplitedByDots = numbers.split(":")
+          var minNumber = numbersSplitedByDots[0]
+          var maxNumber = numbersSplitedByDots[1]
+          var minNumberToExponential = Number.parseFloat(minNumber).toExponential(2)
+          var maxNumberToExponential = Number.parseFloat(maxNumber).toExponential(2)
+          var textToExponential = textSplitedBySpaces.join(" ") + " " + minNumberToExponential + ":" + maxNumberToExponential
+          return textToExponential
+        }
+
+        for (let index = 0; index < data.length; index++) {
+          if(data[index][6] != "-"){
+            var textUpdatedToSix= getExponentialText(data[index][6])
+            data[index][6] = textUpdatedToSix
+
+          }
+          if(data[index][8] != "-"){
+            var textUpdatedToEight = getExponentialText(data[index][8])
+            data[index][8] = textUpdatedToEight
+
+          }
+        }
 
         // var temp_data = data.slice(0, 10)
         // console.log(temp_data)

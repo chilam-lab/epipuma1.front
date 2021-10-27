@@ -336,6 +336,11 @@ var variable_module = (function(verbose, url_zacatuche) {
 
                             if (String(data[i].tag).split(":").length > 1) {
                                 ttext = min + " : " + max;
+                                if(data[i].unidad == "mol/cm2"){
+                                  min = (Number.parseFloat(tag[0]).toExponential(2)) + " " + data[i].unidad
+                                  max = (Number.parseFloat(tag[1]).toExponential(2)) + " " + data[i].unidad 
+                                  ttext = min + " : " + max;
+                                }
                             } else {
                                 ttext = data[i].tag;
                             }
