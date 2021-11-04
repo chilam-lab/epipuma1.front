@@ -2705,10 +2705,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
               if(enfoque != "star") {
                 data.liminf_first = selectedDateMinusTwoMonthsInf;
                 data.limsup_first = selectedDateMinusTwoMonthSup;
-                sessionStorage.setItem("liminf_first",  data.liminf_first)
-                sessionStorage.setItem("limsup_first",  data.limsup_first)
-                sessionStorage.setItem("liminf",  data.liminf)
-                sessionStorage.setItem("limsup",  data.limsup)
+
               }
             } else {
               data.liminf = liminf;
@@ -2716,12 +2713,13 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
               if(enfoque != "star") {
                 data.liminf_first = selectedDateMinusThirtyDaysInf;
                 data.limsup_first = selectedDateMinusThirtyDaysSup;
-                sessionStorage.setItem("liminf_first",  data.liminf_first)
-                sessionStorage.setItem("limsup_first",  data.limsup_first)
-                sessionStorage.setItem("liminf",  data.liminf)
-                sessionStorage.setItem("limsup",  data.limsup)
+
               }
             }
+            sessionStorage.setItem("liminf_first",  data.liminf_first)
+            sessionStorage.setItem("limsup_first",  data.limsup_first)
+            sessionStorage.setItem("liminf",  data.liminf)
+            sessionStorage.setItem("limsup",  data.limsup)
         } else {
             console.log("getGridSpeciesTaxon");
             url_mod = _url_zacatuche + "niche/especie/getGridSpeciesTaxon";
@@ -2747,10 +2745,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
               if(enfoque != "star") {
                 data.liminf_first = selectedDateMinusTwoMonthsInf;
                 data.limsup_first = selectedDateMinusTwoMonthSup;
-                sessionStorage.setItem("liminf_first",  data.liminf_first)
-                sessionStorage.setItem("limsup_first",  data.limsup_first)
-                sessionStorage.setItem("liminf",  data.liminf)
-                sessionStorage.setItem("limsup",  data.limsup)
+
               }
             } else {
               data.liminf = liminf;
@@ -2758,15 +2753,15 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
               if(enfoque != "star") {
                 data.liminf_first = selectedDateMinusThirtyDaysInf;
                 data.limsup_first = selectedDateMinusThirtyDaysSup;
-                sessionStorage.setItem("liminf_first",  data.liminf_first)
-                sessionStorage.setItem("limsup_first",  data.limsup_first)
-                sessionStorage.setItem("liminf",  data.liminf)
-                sessionStorage.setItem("limsup",  data.limsup)
+
               }
             }
+            sessionStorage.setItem("liminf_first",  data.liminf_first)
+            sessionStorage.setItem("limsup_first",  data.limsup_first)
+            sessionStorage.setItem("liminf",  data.liminf)
+            sessionStorage.setItem("limsup",  data.limsup)
 
         }
-
 
         console.log(data)
         fetch(url_mod, {

@@ -23,7 +23,7 @@ var histogram_module = (function(verbose) {
      * @function setTableModule
      * @public
      * @memberof! histogram_module
-     * 
+     *
      * @param {object} tableModule - Módulo table
      */
     function setTableModule(tableModule) {
@@ -37,7 +37,7 @@ var histogram_module = (function(verbose) {
      * @function setLanguageModule
      * @public
      * @memberof! histogram_module
-     * 
+     *
      * @param {object} languageModule - Módulo de internacionalización.
      */
     function setLanguageModule(languageModule) {
@@ -52,7 +52,7 @@ var histogram_module = (function(verbose) {
      * @function setLanguageModule
      * @public
      * @memberof! toast_module
-     * 
+     *
      * @param {object} toast_module - Módulo de mensajes.
      */
     function setToastModule(toast_module) {
@@ -65,7 +65,7 @@ var histogram_module = (function(verbose) {
      * @function _initilizeHistogram
      * @private
      * @memberof! histogram_module
-     * 
+     *
      */
     function _initilizeHistogram() {
 
@@ -91,7 +91,7 @@ var histogram_module = (function(verbose) {
                 //                            "<strong>" + _iTrans.prop('lb_conformado') + ":</strong><br/><br/>";
                 //
                 //                    d.value.s.forEach(function (item, index) {
-                //                        
+                //
                 //                        if(d.name.p === "Total"){
                 //                            var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + d.name.s[index] + "</span><br/>" +
                 //                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + item + "</span><br/><br/>";
@@ -100,7 +100,7 @@ var histogram_module = (function(verbose) {
                 //                            var_group_label += "<strong>" + _iTrans.prop('lb_grupo') + ":</strong> <span >" + d.name.s[index*10] + "</span><br/>" +
                 //                                "<strong>" + _iTrans.prop('tip_tbl_score') + ":</strong> <span >" + item + "</span><br/><br/>";
                 //                        }
-                //                        
+                //
                 //                    });
 
                 return var_group_label;
@@ -199,7 +199,7 @@ var histogram_module = (function(verbose) {
      * @function createMultipleBarChart
      * @public
      * @memberof! histogram_module
-     * 
+     *
      * @param {array} json_decil - Array con el resultado de los grupos de vartiables seleccionados por decil
      * @param {array} array_recall - Contiene los resultados por grupo de variables por decil. Contiene verdaderos positivos, falsos negativos y recall. Este array solo es utilizado en el proceso de validación
      * @param {String} idComponent - Id del contenedor del histograma
@@ -265,7 +265,7 @@ var histogram_module = (function(verbose) {
             .scale(y)
             .orient("left")
             .tickFormat(d3.format(".2s"));
-        // .ticks(10);  
+        // .ticks(10);
 
 
         var svg = d3.select("#" + idComponent.id).append("svg")
@@ -366,7 +366,7 @@ var histogram_module = (function(verbose) {
 
         // CREADO DATA VERTICAL.
         // NOTA: LOS DATOS ANTES DE ESTE PUNTO ESTAN ALMACENADOS POR GRUPO DE VARIABLES, PARA GENERAR EL HISTOGRAMA
-        // ES NECESARIO AGRUPAR POR DECIL LOS DIFERENTES GRUPOS DE VARIABLES 
+        // ES NECESARIO AGRUPAR POR DECIL LOS DIFERENTES GRUPOS DE VARIABLES
         var verticalData = groupDataByAtributte(json_decil);
 
         // INICIA CONSTRUCCIÓN DEL HISTOGRAMA
@@ -580,7 +580,7 @@ var histogram_module = (function(verbose) {
             .enter().append("g")
             .attr("class", "state")
             .attr("transform", function(d) {
-                //                    console.log(d.decil);            
+                //                    console.log(d.decil);
                 return "translate(" + x0(d.decil) + ",0)";
             });
 
@@ -595,7 +595,7 @@ var histogram_module = (function(verbose) {
 
                 //                    console.log(d.name)
                 //                    console.log(x1(d.name))
-                //                    console.log(x1.rangeBand())                    
+                //                    console.log(x1.rangeBand())
                 return x1(d.name);
             })
             .attr("y", function(d) {
@@ -989,7 +989,7 @@ var histogram_module = (function(verbose) {
      * @function createBarChartFecha
      * @public
      * @memberof! histogram_module
-     * 
+     *
      * @param {array} distinctPoints - Array con las ocurrencias que tiene la especie objetivo selecionada en el análisis de nicho ecológico.
      */
     function createBarChartFecha(data) {
@@ -1198,7 +1198,7 @@ var histogram_module = (function(verbose) {
      * @function createBarChart
      * @public
      * @memberof! histogram_module
-     * 
+     *
      * @param {String} idComponent - Id del contenedor del histograma
      * @param {array} data - Array con los resultados del histograma por especie y por celda en el análisis de nicho ecológico
      * @param {String} f_legend - Título del histograma
@@ -1354,7 +1354,7 @@ var histogram_module = (function(verbose) {
      * @function _randomColor
      * @private
      * @memberof! histogram_module
-     * 
+     *
      */
     var _randomColor = (function() {
         var golden_ratio_conjugate = 0.618033988749895;
@@ -1404,7 +1404,7 @@ var histogram_module = (function(verbose) {
      * @function createBarChartNet
      * @public
      * @memberof! histogram_module
-     * 
+     *
      * @param {json} json - Json que contiene los nodos y los enlaces resultado del análisis de communidad ecológica
      * @param {object} display_obj - Referencia al controlador de comunidad ecológica
      */
@@ -1440,7 +1440,7 @@ var histogram_module = (function(verbose) {
      * @function BarChart
      * @public
      * @memberof! histogram_module
-     * 
+     *
      * @param {json} json - Json que contiene los nodos y los enlaces resultado del análisis de communidad ecológica
      * @param {object} display_obj - Referencia al controlador de comunidad ecológica
      */
@@ -2042,7 +2042,7 @@ var histogram_module = (function(verbose) {
                         // .style("stroke", function(d,i){
                         //     if(i==2)
                         //         return "#000";
-                        // }) 
+                        // })
                         // .style("opacity", 0.7);
 
                     legend.append("text")
@@ -2444,7 +2444,7 @@ var histogram_module = (function(verbose) {
      * @function _sort_by
      * @private
      * @memberof! histogram_module
-     * 
+     *
      * @param {String} field - Nombre del parámetro para hacer el ordenamiento
      * @param {boolean} reverse - Bandera para hacer el ordenameinto descendiente o ascendente
      * @param {function} primer - Función para realizar el ordenamiento
@@ -2473,7 +2473,7 @@ var histogram_module = (function(verbose) {
      * @function startHistogramModule
      * @public
      * @memberof! histogram_module
-     * 
+     *
      */
     function startHistogramModule() {
         _VERBOSE ? console.log("startHistogramModule") : _VERBOSE;

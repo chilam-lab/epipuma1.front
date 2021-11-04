@@ -1322,18 +1322,23 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                 data_request["lim_inf"] =  sessionStorage.getItem("liminf");
                 data_request["lim_sup"] = sessionStorage.getItem("limsup");
-                a = sessionStorage.getItem("liminf_first");
-                b =  sessionStorage.getItem("limsup_first");
-                var parts = a.split("-");
-                var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
-                var newDate = new Date(mydate.setMonth(mydate.getMonth()+2));
-                var final_date = newDate.toISOString().substring(0, 10);
-                var parts2 = b.split("-");
-                var mydate2 = new Date(parts2[0], parts2[1] - 1, parts2[2]);
-                var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
-                var final_date2 = newDate2.toISOString().substring(0, 10);
-                data_request["lim_inf_validation"] =final_date
-                data_request["lim_sup_validation"] =  final_date2
+                let enfoque = sessionStorage.getItem("light_traffic");
+                if(enfoque != "star") {
+                  a = sessionStorage.getItem("liminf_first");
+                  b =  sessionStorage.getItem("limsup_first");
+                  var parts = a.split("-");
+                  var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
+                  var newDate = new Date(mydate.setMonth(mydate.getMonth()+2));
+                  var final_date = newDate.toISOString().substring(0, 10);
+                  var parts2 = b.split("-");
+                  var mydate2 = new Date(parts2[0], parts2[1] - 1, parts2[2]);
+                  var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
+                  var final_date2 = newDate2.toISOString().substring(0, 10);
+                  data_request["lim_inf_validation"] =final_date
+                  data_request["lim_sup_validation"] =  final_date2
+
+                }
+
 
             } else {
                 // data_request["lim_inf"] = liminf;
@@ -1553,6 +1558,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             ///MODDIF BUG FECHAS OCT 21
                             total_request["lim_inf"]  =  sessionStorage.getItem("liminf");
                             total_request["lim_sup"] = sessionStorage.getItem("limsup");
+                            let enfoque = sessionStorage.getItem("light_traffic");
+                            if(enfoque != "star") {
                             a = sessionStorage.getItem("liminf_first");
                             b =  sessionStorage.getItem("limsup_first");
                             var parts = a.split("-");
@@ -1565,6 +1572,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             var final_date2 = newDate2.toISOString().substring(0, 10);
                             total_request["lim_inf_validation"] = final_date
                             total_request["lim_sup_validation"] =  final_date2
+                          }
                         }
                         let enfoque2 = sessionStorage.getItem("light_traffic");
                         if (enfoque2 == "star") {
