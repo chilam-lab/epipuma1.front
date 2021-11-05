@@ -618,6 +618,7 @@ var utils_module = (function (verbose) {
 
               item.vvp += add.vvp
               item.vfn = item.vfn + add.vfn
+              item.vnull = item.vnull + add.vnull
               // item.nulo = item.nulo + add.nulo
               item.vrecall = item.vrecall + add.vrecall
               
@@ -633,6 +634,7 @@ var utils_module = (function (verbose) {
 
               item.vvp -= remove.vvp
               item.vfn = item.fn - remove.vfn
+              item.vnull = item.vnull - remove.vnull
               // item.vnulo = item.nulo - remove.nulo
               item.vrecall = item.vrecall - remove.vrecall
 
@@ -647,6 +649,7 @@ var utils_module = (function (verbose) {
                 recall: 0,
                 vvp: 0,
                 vfn: 0,
+                vnull: 0,
                 // nulo: 0,
                 vrecall: 0
               }
@@ -668,6 +671,7 @@ var utils_module = (function (verbose) {
                 recall: parseFloat((entry["value"].recall / entry["value"].count).toFixed(2)),
                 vvp: parseFloat((entry["value"].vvp / entry["value"].count).toFixed(2)),
                 vfn: parseFloat((entry["value"].vfn / entry["value"].count).toFixed(2)),
+                vnull: parseFloat((entry["value"].vnull / entry["value"].count).toFixed(2)),
                 // nulo: parseFloat((entry["value"].nulo / entry["value"].count).toFixed(2)),
                 vrecall: parseFloat((entry["value"].vrecall / entry["value"].count).toFixed(2))
                 

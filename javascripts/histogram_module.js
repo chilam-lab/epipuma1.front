@@ -816,6 +816,7 @@ var histogram_module = (function(verbose) {
                     recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
                         "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
                         "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>" +
+                        "<strong>" + "NULL" + ":</strong> <span >" + d.vnull + "</span><br/>" +
                         "<strong>" + null_lb + ":</strong> <span >" + parseFloat(d.recall_nulo).toFixed(2) + "</span><br/>"
 
                 } else {
@@ -824,7 +825,8 @@ var histogram_module = (function(verbose) {
 
                     recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
                         "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
-                        "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>"
+                        "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>" +
+                        "<strong>" + "NULL" + ":</strong> <span >" + d.vnull + "</span><br/>"
 
                 }
 
@@ -875,7 +877,8 @@ var histogram_module = (function(verbose) {
                         "recall": decil.vrecall,
                         "vp": decil.vvp,
                         "fn": decil.vfn,
-                        "decil": decil.decil
+                        "decil": decil.decil,
+                        "vnull": decil.vnull
                             // "recall_nulo": decil.nulo
                     }
 
