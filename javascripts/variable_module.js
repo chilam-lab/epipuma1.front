@@ -696,6 +696,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr('type', 'button')
                     .addClass('btn btn-primary glyphicon glyphicon-plus pull-left no-mg-top')
                     .click(function(e) {
+                      let getSelectedData = $("#root_covar").jstree().get_top_checked(true)
                         let flag_covars = JSON.stringify(sessionStorage.getItem("covar")).length;
 
                         let var_array = JSON.parse(sessionStorage.getItem("selectedData"));
@@ -711,6 +712,8 @@ var variable_module = (function(verbose, url_zacatuche) {
                             var node_temp = $('#jstree_variables_species_fuente').jstree(true).get_node($('#jstree_variables_species_fuente').jstree(true).get_top_selected()[i]).original;
                             if(headers_selected == 1 && node_temp.attr.nivel == "root"){
                               list = [{"label":"Demográficos","level":"Reino","numlevel":2,"type":0},{"label":"Pobreza","level":"Reino","numlevel":2,"type":0},{"label":"Movilidad","level":"Reino","numlevel":2,"type":0},{"label":"Vulnerabilidad","level":"Género","numlevel":7,"type":0}]
+                              saveSelectedData = [{"label":"Demográficos","level":"Reino","numlevel":2,"type":0},{"label":"Pobreza","level":"Reino","numlevel":2,"type":0},{"label":"Movilidad","level":"Reino","numlevel":2,"type":0},{"label":"Vulnerabilidad","level":"Género","numlevel":7,"type":0}]
+                              $("#root_covar").jstree().disable_node("root_covar")
                             } else {
                               var level = get_interest_group_level(node_temp)
                               let data = {
@@ -767,6 +770,7 @@ var variable_module = (function(verbose, url_zacatuche) {
                     .attr('type', 'button')
                     .addClass('btn btn-primary glyphicon glyphicon-trash pull-left no-mg-top')
                     .click(function(e) {
+                      $("#root_covar").jstree().enable_node("root_covar")
                         self.arrayVarSelected = JSON.parse(sessionStorage.getItem("selectedData2"));
                         //self.addOtherGroup('jstree_variables_species_' + id, self.arrayVarSelected, 'Bio', 'treeAddedPanel_' + id, _TYPE_BIO);
 

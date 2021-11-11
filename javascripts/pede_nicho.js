@@ -747,13 +747,21 @@ var module_nicho = (function() {
         };
         const hide_selected_covars = (covar) => {
           var covar_list = JSON.parse(sessionStorage.getItem("covars_selected_menu"))
+          if(covar[0].id == "root_covar"){
+            covar_list = ["#demograficos","#pobreza","#movilidad","#vulnerabilidad"]
+            for (let index = 0; index < covar_list.length; index++) {
+              $(covar_list[index]).css("position", "absolute");
+              $(covar_list[index]).css("visibility", "hidden");
+            }
+          } else {
             for (let index = 0; index < covar.length; index++) {
                 let covar_selected = "#" + covar[index].id;
                 covar_list.push(covar_selected);
                 $(covar_selected).css("position", "absolute");
                 $(covar_selected).css("visibility", "hidden");
             }
-            sessionStorage.setItem("covars_selected_menu", JSON.stringify(covar_list));
+          }
+          sessionStorage.setItem("covars_selected_menu", JSON.stringify(covar_list));
         };
         const unhide_selected_covars = () => {
                 let covar_list = JSON.parse(sessionStorage.getItem("covars_selected_menu"));
@@ -761,7 +769,7 @@ var module_nicho = (function() {
                     let covar_selected_2 = covar_list[index];
                     $(covar_selected_2).css("position", "relative");
                     $(covar_selected_2).css("visibility", "visible");
-                    $(covar_selected_2)[0].children[2].children[0].click()
+                    //$(covar_selected_2)[0].children[2].children[0].click()
                 }
 
             }
@@ -1015,6 +1023,7 @@ var module_nicho = (function() {
             sessionStorage.setItem("covar", "");
             sessionStorage.setItem("light_traffic", "")
             $("#tuto_fil_fecha").css("top", "21%");
+            $("#root_covar").jstree().enable_node("root_covar")
             try {
                 document.getElementById('date_timepicker_start_val').id = 'date_timepicker_start';
             } catch {
