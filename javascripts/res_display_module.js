@@ -3140,7 +3140,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                         _VERBOSE ? console.log(data) : _VERBOSE;
                         if(data.length==0){
-                          alert("Municipio sin registros.")
+                          console.log("Municipio sin registros.")
                         }
                         let data_body_request_pop = { "grid_resolution": "mun", "columns": ["population"], "gridids": [] };
 
@@ -3190,6 +3190,29 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             }, 2000)
 
 
+
+                        }else{
+                          setTimeout(function() {
+                            htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                               '<div class="panel-primary">' +
+                               '<div class="panel-heading no-padding header-title-cell">' +
+                               '<h3 class="h3-title-cell">' + "Mun" + '</h3>' +
+                               '</div>' +
+                               '<table class="table table-striped">' +
+                               '<thead>' +
+                               '<tr>' +
+                               '<th>No. Casos '+'</th>' +
+                               '</tr>' +
+                               '</thead>' +
+                               '<tbody>';
+                               htmltable += '<tr>' +
+                                   '<td>' + "0" + '</td>' +
+
+                                   '</tr>';
+                              if (htmltable === "")
+                                  return;
+                              _map_module_nicho.showPopUp(htmltable, [lat, long], true);
+                          }, 2000)
 
                         }
 
