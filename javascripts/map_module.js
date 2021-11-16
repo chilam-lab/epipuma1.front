@@ -829,9 +829,38 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                             if (_lin_sup === undefined)
                                 _lin_sup = rango_fechas[1]
 
+                            let todayDate = new Date();
+                            let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
+                            var state_model = $("#pred_des_control")[0].checked;
+                            var model = $("#modelSelect").val()
+                            if (state_model) {
+                                var liminf_initial = $("#date_timepicker_start_val").val();
+                    
+                            } else {
+                                var liminf_initial = $("#date_timepicker_start").val();
+                            }
+                            if (liminf_initial == todayDateToNextThirtyDays) {
+                                let parsedTodayDateMinusThirtyDays = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
+                                var liminf = parsedTodayDateMinusThirtyDays;
+                                var limsup = todayDateToNextThirtyDays;
+                    
+                            } else {
+                                var liminf_splited = liminf_initial.split("-");
+                                var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+                                var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + returnTheEndMonthDayByTheNumberOfMonth(liminf_splited[1]);
+                            }
+                            let newDate = new Date(liminf)
+                            let selectedDateMinusThirtyDaysInf = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-01");
+                            let selectedDateMinusThirtyDaysSup = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-" + (Number(newDate.getDate()) < 10 ? "0" + newDate.getDate() : newDate.getDate()));
 
-                            // console.log("_lin_inf: " + _lin_inf)
-                            // console.log("_lin_sup: " + _lin_sup)
+                            if (model == "Predictivo") {
+                              _lin_inf = selectedDateMinusThirtyDaysInf 
+                              _lin_sup = selectedDateMinusThirtyDaysSup
+                            }
+
+
+                            console.log("_lin_inf: " + _lin_inf)
+                            console.log("_lin_sup: " + _lin_sup)
                             // console.log("_sin_fecha: " + _sin_fecha)
                             // console.log("_con_fosil: " + _con_fosil)
                             console.log(_taxones)
