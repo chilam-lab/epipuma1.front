@@ -3124,7 +3124,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         } else {
 
-            fetch(_url_zacatuche + "/niche/especie/getCellOcurrences", {
+            //fetch(_url_zacatuche + "dev/niche/especie/getCellOcurrences", {
+            fetch(_url_zacatuche + "niche/especie/getCellOcurrences", {
                     method: "POST",
                     body: JSON.stringify(data_body_request),
                     headers: {
@@ -3137,15 +3138,17 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     if (respuesta.ok) {
 
                         var data = respuesta.data;
-
+                        var empty_flag = false;
                         _VERBOSE ? console.log(data) : _VERBOSE;
                         if(data.length==0){
-                          console.log("Municipio sin registros.")
+                          console.log("Municipio sin registros.");
+                          empty_flag = true;
+                          data = {"gridid":respuesta.gridid,"name":respuesta.name}
                         }
                         let data_body_request_pop = { "grid_resolution": "mun", "columns": ["population"], "gridids": [] };
 
 
-                        if (data.length > 0) {
+                        //if (data.length > 0) {
                             fetch(_url_zacatuche + "/niche/especie/getColumnsGrid", {
                                     method: "POST",
                                     body: JSON.stringify(data_body_request_pop),
@@ -3158,13 +3161,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                                     if (respuesta.ok) {
 
-                                        var data = respuesta.data;
+                                        var data2 = respuesta.data;
 
-                                        _VERBOSE ? console.log(data) : _VERBOSE;
-                                        sessionStorage.setItem("modif_pop", JSON.stringify(data));
+                                        _VERBOSE ? console.log(data2) : _VERBOSE;
+                                        sessionStorage.setItem("modif_pop", JSON.stringify(data2));
 
 
-                                        if (data.length > 0) {
+                                        if (data2.length > 0) {
 
                                             // if (htmltable === "")
                                             //     return;
@@ -3183,7 +3186,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                                     _VERBOSE ? console.log("error: " + err) : _VERBOSE;
                                 });
                             setTimeout(function() {
-                                var htmltable = _createOccTableFromData(data);
+                                var htmltable = _createOccTableFromData(data,empty_flag);
                                 if (htmltable === "")
                                     return;
                                 _map_module_nicho.showPopUp(htmltable, [lat, long], true);
@@ -3191,30 +3194,31 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
 
-                        }else{
-                          setTimeout(function() {
-                            htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
-                               '<div class="panel-primary">' +
-                               '<div class="panel-heading no-padding header-title-cell">' +
-                               '<h3 class="h3-title-cell">' + "Mun" + '</h3>' +
-                               '</div>' +
-                               '<table class="table table-striped">' +
-                               '<thead>' +
-                               '<tr>' +
-                               '<th>No. Casos '+'</th>' +
-                               '</tr>' +
-                               '</thead>' +
-                               '<tbody>';
-                               htmltable += '<tr>' +
-                                   '<td>' + "0" + '</td>' +
-
-                                   '</tr>';
-                              if (htmltable === "")
-                                  return;
-                              _map_module_nicho.showPopUp(htmltable, [lat, long], true);
-                          }, 2000)
-
-                        }
+                        //}
+                        // else{
+                        //   setTimeout(function() {
+                        //     htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                        //        '<div class="panel-primary">' +
+                        //        '<div class="panel-heading no-padding header-title-cell">' +
+                        //        '<h3 class="h3-title-cell">' + "Mun" + '</h3>' +
+                        //        '</div>' +
+                        //        '<table class="table table-striped">' +
+                        //        '<thead>' +
+                        //        '<tr>' +
+                        //        '<th>No. Casos '+'</th>' +
+                        //        '</tr>' +
+                        //        '</thead>' +
+                        //        '<tbody>';
+                        //        htmltable += '<tr>' +
+                        //            '<td>' + "0" + '</td>' +
+                        //
+                        //            '</tr>';
+                        //       if (htmltable === "")
+                        //           return;
+                        //       _map_module_nicho.showPopUp(htmltable, [lat, long], true);
+                        //   }, 2000)
+                        //
+                        // }
 
                     }
 
@@ -3236,7 +3240,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
     }
 
 
-    function _createOccTableFromData(json_data) {
+    function _createOccTableFromData(json_data,empty_data) {
         try {
             var modifiers = JSON.parse(sessionStorage.getItem("modifiers"));
 
@@ -3246,8 +3250,32 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let mod = Object.keys(modifiers)
         var htmltable = "";
         var table_sp = "";
-        let gridid = json_data[0].gridid;
-        let species = json_data[0].species;
+        let gridid;
+        let species;
+        let name;
+        console.log(json_data);
+        if(empty_data){
+          name = json_data.name;
+          gridid = json_data.gridid;
+          species = $("#targetVariableSelect")[0].value;
+          if(species == "COVID-19 Negativo"){
+            species = "COVID-19 FALLECIDO"
+          }
+          else if(species == "COVID-19 Confirmado"){
+            species = "COVID-19 CONFIRMADO"
+          }else{
+            species = "COVID-19 PRUEBAS"
+          }
+
+        }else{
+           gridid = json_data[0].gridid;
+           species = json_data[0].species;
+           name = json_data[0].entidad
+        }
+        console.log(gridid)
+        console.log(name)
+        console.log(species)
+
         let res_modif = JSON.parse(sessionStorage.getItem("res_modif"));
         let total_population = JSON.parse(sessionStorage.getItem("modif_pop"));
         let tar_var = $("#targetVariableSelect option:selected").text()
@@ -3311,7 +3339,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
-                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '<h3 class="h3-title-cell">' + name+ '</h3>' +
                     '</div>' +
                     '<table class="table table-striped">' +
                     '<thead>' +
@@ -3330,7 +3358,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                       '<div class="panel-primary">' +
                       '<div class="panel-heading no-padding header-title-cell">' +
-                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '<h3 class="h3-title-cell">' + name+ '</h3>' +
                       '</div>' +
                       '<table class="table table-striped">' +
                       '<thead>' +
@@ -3347,7 +3375,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
-                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '<h3 class="h3-title-cell">' + name+ '</h3>' +
                     '</div>' +
                     '<table class="table table-striped">' +
                     '<thead>' +
@@ -3367,7 +3395,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                       '<div class="panel-primary">' +
                       '<div class="panel-heading no-padding header-title-cell">' +
-                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '<h3 class="h3-title-cell">' + name+ '</h3>' +
                       '</div>' +
                       '<table class="table table-striped">' +
                       '<thead>' +
@@ -3385,7 +3413,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
-                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '<h3 class="h3-title-cell">' + name+ '</h3>' +
                     '</div>' +
                     '<table class="table table-striped">' +
                     '<thead>' +
@@ -3405,7 +3433,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                       '<div class="panel-primary">' +
                       '<div class="panel-heading no-padding header-title-cell">' +
-                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '<h3 class="h3-title-cell">' + name+ '</h3>' +
                       '</div>' +
                       '<table class="table table-striped">' +
                       '<thead>' +
@@ -3423,7 +3451,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
-                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '<h3 class="h3-title-cell">' + name+ '</h3>' +
                     '</div>' +
                     '<table class="table table-striped">' +
                     '<thead>' +
@@ -3443,7 +3471,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                       '<div class="panel-primary">' +
                       '<div class="panel-heading no-padding header-title-cell">' +
-                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '<h3 class="h3-title-cell">' + name+ '</h3>' +
                       '</div>' +
                       '<table class="table table-striped">' +
                       '<thead>' +
@@ -3461,7 +3489,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
-                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '<h3 class="h3-title-cell">' + name+ '</h3>' +
                     '</div>' +
                     '<table class="table table-striped">' +
                     '<thead>' +
@@ -3481,7 +3509,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                       '<div class="panel-primary">' +
                       '<div class="panel-heading no-padding header-title-cell">' +
-                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '<h3 class="h3-title-cell">' + name+ '</h3>' +
                       '</div>' +
                       '<table class="table table-striped">' +
                       '<thead>' +
@@ -3499,7 +3527,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
-                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '<h3 class="h3-title-cell">' + name+ '</h3>' +
                     '</div>' +
                     '<table class="table table-striped">' +
                     '<thead>' +
@@ -3518,7 +3546,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                       '<div class="panel-primary">' +
                       '<div class="panel-heading no-padding header-title-cell">' +
-                      '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                      '<h3 class="h3-title-cell">' + name+ '</h3>' +
                       '</div>' +
                       '<table class="table table-striped">' +
                       '<thead>' +
@@ -3536,7 +3564,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
-                    '<h3 class="h3-title-cell">' + json_data[0].entidad + '</h3>' +
+                    '<h3 class="h3-title-cell">' + name+ '</h3>' +
                     '</div>' +
                     '<table class="table table-striped">' +
                     '<thead>' +
