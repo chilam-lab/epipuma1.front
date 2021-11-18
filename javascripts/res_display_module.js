@@ -1313,6 +1313,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
             console.log("limsup: " + limsup);
             var liminf_user = liminf 
             var limsup_user = limsup
+            let enfoque = sessionStorage.getItem("light_traffic");
             if ($("#chkValidationTemp").is(':checked')) {
                 mydate = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
                 mydate2 = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
@@ -1344,6 +1345,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   var mydate2 = new Date(parts2[0], parts2[1] - 1, parts2[2]);
                   var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
                   var final_date2 = newDate2.toISOString().substring(0, 10);
+                  data_request["lim_inf_first"] =liminf
+                  data_request["lim_sup_first"] =limsup
                   data_request["lim_inf_validation"] =final_date
                   data_request["lim_sup_validation"] =  limsup_user
 
@@ -1354,11 +1357,14 @@ var res_display_module = (function(verbose, url_zacatuche) {
                 // data_request["lim_inf"] = liminf;
                 // data_request["lim_sup"] = limsup;
                 ////IMPORTANDO FECHAS DEL PRIMER ANALISIS
-                data_request["lim_inf"] =  sessionStorage.getItem("liminf");
-                data_request["lim_sup"] =  sessionStorage.getItem("limsup");
-
+                if (enfoque != "star") {
+                  data_request["lim_inf"] =  sessionStorage.getItem("liminf");
+                  data_request["lim_sup"] =  sessionStorage.getItem("limsup");
+                  data_request["lim_inf_first"] =  sessionStorage.getItem("liminf_first");
+                  data_request["lim_sup_first"] =  sessionStorage.getItem("limsup_first");
+                }
             }
-            let enfoque = sessionStorage.getItem("light_traffic");
+            
             if (enfoque == "star") {
                 enfoque = "none";
             }
@@ -1575,6 +1581,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       }
                       var liminf_user = liminf 
                       var limsup_user = limsup
+                      let enfoque2 = sessionStorage.getItem("light_traffic");
                         if (modifiers_flag_verb == "true") {
                           verbo = "generateTarget";
                           let modifiers2 = JSON.parse(sessionStorage.getItem("modifiers"));
@@ -1587,6 +1594,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                             mydate = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
                             mydate2 = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
+                            var periodSelectedComplete = $("#date_timepicker_start_val").val();
+                            var periodDate= new Date(periodSelectedComplete);
+                            var twoMonthsPreviousPeriodDate =  new Date(periodDate.setMonth(periodDate.getMonth()-2))
+                            twoMonthsPreviousPeriodSelectedShortAux = twoMonthsPreviousPeriodDate.getFullYear() + "-" + (Number((twoMonthsPreviousPeriodDate.getMonth()+1)) < 10 ? "0" + (twoMonthsPreviousPeriodDate.getMonth()+1) : (twoMonthsPreviousPeriodDate.getMonth()+1))
+                            liminf2 = twoMonthsPreviousPeriodSelectedShortAux + "-01"
+                            limsup2 = twoMonthsPreviousPeriodSelectedShortAux + "-" + returnTheEndMonthDayByTheNumberOfMonth(liminf.split("-")[1])
                             // total_request["lim_inf"] = liminf;
                             // total_request["lim_sup"] = limsup;
                             // total_request["lim_inf_validation"] = mydate;
@@ -1606,11 +1619,20 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             var mydate2 = new Date(parts2[0], parts2[1] - 1, parts2[2]);
                             var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
                             var final_date2 = newDate2.toISOString().substring(0, 10);
+                            total_request["lim_inf_first"] = liminf2
+                            total_request["lim_sup_first"] = limsup2
                             total_request["lim_inf_validation"] = final_date
                             total_request["lim_sup_validation"] =  limsup_user
                           }
+                        } else {
+                          if(enfoque2 != "star"){
+                            var lim_inf_first = sessionStorage.getItem("liminf_first")
+                            var lim_sup_first = sessionStorage.getItem("limsup_first")
+                            total_request["lim_inf_first"] = lim_inf_first
+                            total_request["lim_sup_first"] = lim_sup_first  
+                          }
                         }
-                        let enfoque2 = sessionStorage.getItem("light_traffic");
+                        
                         if (enfoque2 == "star") {
                             enfoque2 = "none";
                         }
