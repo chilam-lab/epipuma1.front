@@ -1303,6 +1303,8 @@ var res_display_module = (function(verbose, url_zacatuche) {
             }
             console.log("liminf: " + liminf);
             console.log("limsup: " + limsup);
+            var liminf_user = liminf 
+            var limsup_user = limsup
             if ($("#chkValidationTemp").is(':checked')) {
                 mydate = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-01") : parsedTrainingStartTothirtyDays;
                 mydate2 = train_month ? ((train_month == "12"? Number(liminf_splited[0] - 1) :liminf_splited[0]) + "-" + train_month + "-" + returnTheEndMonthDayByTheNumberOfMonth(train_month)) : parsedYesterdayDateToThirtyDays;
@@ -1335,7 +1337,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
                   var final_date2 = newDate2.toISOString().substring(0, 10);
                   data_request["lim_inf_validation"] =final_date
-                  data_request["lim_sup_validation"] =  final_date2
+                  data_request["lim_sup_validation"] =  limsup_user
 
                 }
 
@@ -1538,7 +1540,33 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         total_request.decil_selected = [_default_decil]
 
                         verbo = _val_process_temp ? "countsTaxonsGroupTimeValidation" : "countsTaxonsGroup"
-                        var modifiers_flag_verb = sessionStorage.getItem("modifiers_flag");
+                        let todayDate = new Date();
+                        let todayDateToNextThirtyDays = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));                
+ 
+                        if ($("#pred_des_control")[0].checked) {
+                          var liminf_initial = $("#date_timepicker_start_val").val();
+                      } else {
+                          var liminf_initial = $("#date_timepicker_start").val();
+                      }
+                      if (liminf_initial == todayDateToNextThirtyDays) {
+                          var todayDatePlusThirtyDays = new Date(todayDate.setDate(todayDate.getDate() + 30))
+                          let parsedTodayDatePlusThirtyDays = String(todayDatePlusThirtyDays.getFullYear() + "-" + (Number((todayDatePlusThirtyDays.getMonth() + 1)) < 10 ? "0" + (todayDatePlusThirtyDays.getMonth() + 1) : (todayDatePlusThirtyDays.getMonth() + 1)) + "-" + (Number(todayDatePlusThirtyDays.getDate()) < 10 ? "0" + todayDatePlusThirtyDays.getDate() : todayDatePlusThirtyDays.getDate()));
+                          var liminf = todayDateToNextThirtyDays;
+                          var limsup = parsedTodayDatePlusThirtyDays;
+                          var yesterdayDateToThirtyDays = new Date(todayDate.setDate(todayDate.getDate() - 31))
+                          var trainingStartTothirtyDays = new Date(todayDate.setDate(todayDate.getDate() - 30))
+                          parsedYesterdayDateToThirtyDays = String(yesterdayDateToThirtyDays.getFullYear() + "-" + (Number((yesterdayDateToThirtyDays.getMonth() + 1)) < 10 ? "0" + (yesterdayDateToThirtyDays.getMonth() + 1) : (yesterdayDateToThirtyDays.getMonth() + 1)) + "-" + (Number(yesterdayDateToThirtyDays.getDate()) < 10 ? "0" + yesterdayDateToThirtyDays.getDate() : yesterdayDateToThirtyDays.getDate()));
+                          parsedTrainingStartTothirtyDays = String(trainingStartTothirtyDays.getFullYear() + "-" + (Number((trainingStartTothirtyDays.getMonth() + 1)) < 10 ? "0" + (trainingStartTothirtyDays.getMonth() + 1) : (trainingStartTothirtyDays.getMonth() + 1)) + "-" + (Number(trainingStartTothirtyDays.getDate()) < 10 ? "0" + trainingStartTothirtyDays.getDate() : trainingStartTothirtyDays.getDate()));
+                      } else {
+                          var liminf_splited = liminf_initial.split("-");
+                          var month = liminf_splited[1]
+                          var endMonthDay = returnTheEndMonthDayByTheNumberOfMonth(month);
+                          var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
+                          var limsup = liminf_splited[0] + "-" + liminf_splited[1] + "-" + endMonthDay;
+                          train_month = liminf_splited[1] == 1 ? "12" : (liminf_splited[1] >= 10 ? +String(Number(liminf_splited[1]) - 1) : "0" + String(Number(liminf_splited[1]) - 1));
+                      }
+                      var liminf_user = liminf 
+                      var limsup_user = limsup
                         if (modifiers_flag_verb == "true") {
                           verbo = "generateTarget";
                           let modifiers2 = JSON.parse(sessionStorage.getItem("modifiers"));
@@ -1571,7 +1599,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
                             var final_date2 = newDate2.toISOString().substring(0, 10);
                             total_request["lim_inf_validation"] = final_date
-                            total_request["lim_sup_validation"] =  final_date2
+                            total_request["lim_sup_validation"] =  limsup_user
                           }
                         }
                         let enfoque2 = sessionStorage.getItem("light_traffic");
