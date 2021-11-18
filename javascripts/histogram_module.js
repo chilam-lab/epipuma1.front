@@ -808,7 +808,10 @@ var histogram_module = (function(verbose) {
 
                 // console.log(d)
                 var fn_lb, tp_lb, null_lb, recall_values;
-                if ($("#chkValidation").is(':checked')) {
+              //  if ($("#chkValidation").is(':checked')) {
+              let modifiers_flag = sessionStorage.getItem("modifiers");
+              if ($("#chkValidationTemp").is(':checked')&&(!(modifiers_flag == "{\"Sin Modificador\":\"Sin Modificador\"}"))) {
+
                     fn_lb = _iTrans.prop('lb_fn_avg')
                     tp_lb = _iTrans.prop('lb_vp_avg')
                     null_lb = _iTrans.prop('lb_nulos_avg')
@@ -816,8 +819,8 @@ var histogram_module = (function(verbose) {
                     recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
                         "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
                         "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>" +
-                        "<strong>" + "NULL" + ":</strong> <span >" + d.vnull + "</span><br/>" +
-                        "<strong>" + null_lb + ":</strong> <span >" + parseFloat(d.recall_nulo).toFixed(2) + "</span><br/>"
+                        "<strong>" + "NULL" + ":</strong> <span >" + d.vnull + "</span><br/>"
+                        //+"<strong>" + null_lb + ":</strong> <span >" + parseFloat(d.recall_nulo).toFixed(2) + "</span><br/>"
 
                 } else {
                     fn_lb = _iTrans.prop('lb_fn')
@@ -826,7 +829,7 @@ var histogram_module = (function(verbose) {
                     recall_values = "<strong>" + _iTrans.prop('lb_recall_avg') + ":</strong> <span >" + parseFloat(d.recall * 100).toFixed(2) + "%</span><br/><br/>" +
                         "<strong>" + tp_lb + ":</strong> <span >" + parseFloat(d.vp).toFixed(2) + "</span><br/>" +
                         "<strong>" + fn_lb + ":</strong> <span >" + parseFloat(d.fn).toFixed(2) + "</span><br/>" +
-                        "<strong>" + "NULL" + ":</strong> <span >" + d.vnull + "</span><br/>"
+                        "<strong>" + "NULL" + ":</strong> <span >" + d.null + "</span><br/>"
 
                 }
 
@@ -869,9 +872,9 @@ var histogram_module = (function(verbose) {
             $.each(item.deciles, function(index, decil) {
 
                 var item_decil = {}
-
-                if ($("#chkValidationTemp").is(':checked')) {
-
+                let modifiers_flag = sessionStorage.getItem("modifiers");
+                if ($("#chkValidationTemp").is(':checked')&&(!(modifiers_flag == "{\"Sin Modificador\":\"Sin Modificador\"}"))) {
+                  console.log("hist preedictivo/con_modif")
                     item_decil = {
                         "group_name": item.gpo_name,
                         "recall": decil.vrecall,
@@ -883,23 +886,28 @@ var histogram_module = (function(verbose) {
                     }
 
                 } else {
-
+                  console.log("hist perfilado/sin_modif")
                     item_decil = {
                         "group_name": item.gpo_name,
                         "recall": decil.recall,
                         "vp": decil.vp,
                         "fn": decil.fn,
                         "decil": decil.decil,
-                        "recall_nulo": decil.nulo
+                        "null": decil.null
+                        //"vnull": decil.nulo
+                        //"null": decil.null
+
                     }
 
                 }
 
                 item_recall.push(item_decil);
 
+
             })
 
             array_recall.push(item_recall);
+
 
         });
 

@@ -20,7 +20,7 @@ var utils_module = (function (verbose) {
         var min_scr = d3.min(data.map(function (d) {
             return parseFloat(d.score);
         }));
-        // debug("min_scr: " + min_scr)  
+        // debug("min_scr: " + min_scr)
         var max_scr = d3.max(data.map(function (d) {
             return parseFloat(d.score);
         }));
@@ -72,7 +72,7 @@ var utils_module = (function (verbose) {
 
         return data_freq;
     }
-    
+
 
     function processDataForFreqCell(data) {
 
@@ -103,7 +103,7 @@ var utils_module = (function (verbose) {
 
         var score_cell_data = groupByScoreCell.top(Infinity);
         score_cell_data.sort(_compare);
-        
+
 //        console.log(score_cell_data)
 
         var data_freq = [];
@@ -197,20 +197,20 @@ var utils_module = (function (verbose) {
         });
 
         var map_cell = groupByCell.top(Infinity);
-        
+
         var cell_score_array = [];
         for (var i = 0; i < map_cell.length; i++) {
 
             const entry = map_cell[i];
             var tscore = parseFloat(entry["value"]) - (val_apriori*(numr-1))
             var gridid = entry["key"]
-            
+
             cell_score_array.push({gridid: gridid, tscore: parseFloat(tscore.toFixed(3))})
 
         }
-        
+
        console.log(cell_score_array);
-        
+
         return cell_score_array;
 
     }
@@ -371,11 +371,11 @@ var utils_module = (function (verbose) {
                             'group_item': tfilters[0].group_item,
                             'is_parent': true})
             }
-            // else { 
+            // else {
             //   title_valor = JSON.stringify(
-            //     {'title':'Grupo Topo ' + groupid, 
-            //       'type': tfilters[0].type , 
-            //       'group_item': tfilters[0].group_item, 
+            //     {'title':'Grupo Topo ' + groupid,
+            //       'type': tfilters[0].type ,
+            //       'group_item': tfilters[0].group_item,
             //       'is_parent':true })
             // }
         } else if (tfilters[0].value) {
@@ -417,7 +417,7 @@ var utils_module = (function (verbose) {
             item["decile"] = dec > decile ? decile : dec
         })
         data_cell.reverse()
-        
+
         // console.log(data_cell)
         console.log(data_cell.length)
         // console.log(data_cell[0].decile)
@@ -427,9 +427,9 @@ var utils_module = (function (verbose) {
         // console.log(8 == decil_selected)
 
         var decil_array = data_cell.filter(function(item){
-            
-          return item.decile == decil_selected  
-             
+
+          return item.decile == decil_selected
+
         });
 
         // console.log(decil_array)
@@ -472,10 +472,10 @@ var utils_module = (function (verbose) {
         })
 
         return {
-            tbl_freq_decil: map_spid.values(), 
+            tbl_freq_decil: map_spid.values(),
             length_decil: decil_array.length,
             decil_array: decil_array
-        } 
+        }
 
 
     }
@@ -494,9 +494,9 @@ var utils_module = (function (verbose) {
             total_length = item.n
 
             item.cells.forEach(function (cell_item, index) {
-            
+
                 var name = item.reinovalido === "" ? (item.layer + " " + item.tag) : (item.generovalido +" "+item.especieepiteto+" "+item.nombreinfra)
-                
+
                 var item_map = {
                     cell: cell_item,
                     score: parseFloat(item.score),
@@ -506,7 +506,7 @@ var utils_module = (function (verbose) {
                 }
 
                 cells.set("" + cell_item + name, item_map)
-                
+
             })
         })
 
@@ -595,7 +595,7 @@ var utils_module = (function (verbose) {
         cell_score_array.sort(_compare_desc);
 
         // retorna y el total de celdas de la malla
-        return {array: cell_score_array, total_length: total_length} 
+        return {array: cell_score_array, total_length: total_length}
 
     }
 
@@ -605,28 +605,29 @@ var utils_module = (function (verbose) {
           cross_cells.groupAll();
 
           var decil_dimension = cross_cells.dimension(function(d) { return d.decil; });
-          
+
           var groupByDecil = decil_dimension.group().reduce(
             function(item,add){
               ++item.count
-              
-              item.vp += add.vp
-              item.fn = item.fn + add.fn
-              item.nulo = item.nulo + add.nulo
-              item.recall = item.recall + add.recall
+
+                item.vp += add.vp
+                item.fn = item.fn + add.fn
+                item.nulo = item.nulo + add.nulo
+                item.recall = item.recall + add.recall
 
 
-              item.vvp += add.vvp
-              item.vfn = item.vfn + add.vfn
-              item.vnull = item.vnull + add.vnull
-              // item.nulo = item.nulo + add.nulo
-              item.vrecall = item.vrecall + add.vrecall
-              
+                item.vvp += add.vvp
+                item.vfn = item.vfn + add.vfn
+                item.vnull = item.vnull + add.vnull
+                item.null = add.null
+                // item.nulo = item.nulo + add.nulo
+                item.vrecall = item.vrecall + add.vrecall
+
               return item
             },
             function(item,remove){
               --item.count
-              
+
               item.vp -= remove.vp
               item.fn = item.fn - remove.fn
               item.nulo = item.nulo - remove.nulo
@@ -672,9 +673,10 @@ var utils_module = (function (verbose) {
                 vvp: parseFloat((entry["value"].vvp / entry["value"].count).toFixed(2)),
                 vfn: parseFloat((entry["value"].vfn / entry["value"].count).toFixed(2)),
                 vnull: parseFloat((entry["value"].vnull / entry["value"].count).toFixed(2)),
+                null: parseFloat((entry["value"].null / entry["value"].count).toFixed(2)),
                 // nulo: parseFloat((entry["value"].nulo / entry["value"].count).toFixed(2)),
                 vrecall: parseFloat((entry["value"].vrecall / entry["value"].count).toFixed(2))
-                
+
               })
           }
 
@@ -750,7 +752,7 @@ var utils_module = (function (verbose) {
     }
 
 
-    
+
 
 
 
@@ -760,7 +762,7 @@ var utils_module = (function (verbose) {
      * @function startUtilsModule
      * @public
      * @memberof! utils_module
-     * 
+     *
      */
     function startUtilsModule() {
         _VERBOSE ? console.log("startUtilsModule") : _VERBOSE;

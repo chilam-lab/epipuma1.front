@@ -1381,6 +1381,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
         //}
+        //var url = _url_zacatuche + "dev/niche/" + verbo
         var url = _url_zacatuche + "/niche/" + verbo
 
 
@@ -1515,11 +1516,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
                         console.log(score_cell_bygroup)
                         console.log(validation_data_bygroup)
+                      //  alert("stop")
 
                         var data_cell_bygroup = _utils_module.reduceScoreCell(score_cell_bygroup);
 
                         // obtiene el promedio de las variables de un grupo
                         var data_reduce_decilgroup = _utils_module.reduceDecilGroups(validation_data_bygroup);
+                        console.log(data_reduce_decilgroup)
 
                         // agrega resultado por grupo a arraeglo de grupos
                         decil_total_results = decil_total_results.concat(data_reduce_decilgroup)
@@ -1527,6 +1530,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                         var data_decil_bygroup = { data: _utils_module.processDataForScoreDecil(data_cell_bygroup), gpo_name: group.name, names: names_bygroup, deciles: data_reduce_decilgroup };
 
                         _RESULTS_TODISPLAY.push(data_decil_bygroup);
+                        // console.log(data_reduce_decilgroup)
+                        // console.log(data_decil_bygroup)
+                        // console.log(_RESULTS_TODISPLAY)
+                        // alert("stop")
 
                     });
 
@@ -1667,6 +1674,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                                     var total_counts = resp.data;
 
                                     var validation_data = _val_process_temp ? resp.time_validation : resp.validation_data
+
 
                                     // var validation_data = resp.validation_data
 
