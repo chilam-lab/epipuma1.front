@@ -961,8 +961,16 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         // verbo: getFreqCelda // seleccion de celda
         var milliseconds = new Date().getTime();
+        var lastTaxonTitle = [taxones[taxones.length - 1], taxones[taxones.length - 2]]
+        var result = Array.from(new Set(lastTaxonTitle.map(s => s["value"])))
+          .map(value => {
+          return {
+            taxon_rank: lastTaxonTitle.find(s => s["value"] === value)["taxon_rank"],
+            value: value
+          };
+        });
         _cdata = {
-            "target_taxons": taxones,
+            "target_taxons": result,
             "idtime": milliseconds,
             "apriori": apriori,
             "mapa_prob": mapap,
@@ -993,7 +1001,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
 
         _decil_data = {
-            "target_taxons": taxones,
+            "target_taxons": result,
             "idtime": milliseconds,
             "apriori": apriori,
             "mapa_prob": mapap,
