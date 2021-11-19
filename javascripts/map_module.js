@@ -3003,6 +3003,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     return [lalistadelosazules.length, lalistadelosblancos.length, lalistadelosgradientes.length, lalistadelosverdes.length, sum_tv]
                 };
                 const colorized_by_modifier = (specie, modifier, focus) => {
+                  var variable_objetivo = $("#targetVariableSelect").val();
+                  if(variable_objetivo == "COVID-19 Pruebas"){
+                    specie["label"] = "COVID-19 Pruebas"
+                  }
+                  
                   if ($("#pred_des_control")[0].checked) {
                     var periodSelectedComplete = $("#date_timepicker_start_val").val();
                     var periodDate= new Date(periodSelectedComplete);
@@ -3236,6 +3241,88 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     break;
                             }
                             break;
+                        case "COVID-19 Pruebas":
+                          switch (modifier) {
+                            case "cases":
+                                switch (focus) {
+                                    case "green":
+                                        let numbers, listed_numbers;
+                                        let texts = ["No. Total Pruebas en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                        numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
+                                        listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
+                                        editResumenTable(4, texts, listed_numbers)
+                                        break;
+                                    case "red":
+                                        let numbers2, listed_numbers2;
+                                        let texts2 = ["No. Total Pruebas en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                        numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
+                                        listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
+                                        editResumenTable(4, texts2, listed_numbers2)
+                                        break;
+                                    case "star":
+                                        let numbers3, listed_numbers3;
+                                        let texts3 = ["No. Total Pruebas en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                        numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
+                                        listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
+                                        editResumenTable(3, texts3, listed_numbers3)
+                                        break;
+
+                                }
+                                break;
+                            case "incidence":
+                                switch (focus) {
+                                    case "green":
+                                        let numbers, listed_numbers;
+                                        let texts = ["No. Total Pruebas en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                        numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
+                                        listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
+                                        editResumenTable(4, texts, listed_numbers)
+                                        break;
+
+                                    case "red":
+                                        let numbers2, listed_numbers2;
+                                        let texts2 = ["No. Total Pruebas en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                        numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
+                                        listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
+                                        editResumenTable(4, texts2, listed_numbers2)
+                                        break;
+                                    case "star":
+                                        let numbers3, listed_numbers3;
+                                        let texts3 = ["No. Total Pruebas en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                        numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
+                                        listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
+                                        editResumenTable(3, texts3, listed_numbers3)
+                                        break;
+                                }
+                                break;
+                            default:
+                                switch (focus) {
+                                    case "green":
+                                        let numbers, listed_numbers;
+                                        let texts = ["No. Total de Pruebas en " +periodSelectedShort, "No. Municipios Donde Dejaron de Haber Pruebas en "+periodSelectedShort, "No. Municipios Donde Siguieron Habiendo Pruebas en "+periodSelectedShort, "No. de Municipios en Donde no Había Pruebas en "+previousPeriodSelected];
+                                        numbers = getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
+                                        listed_numbers = [numbers[4], numbers[3], numbers[0], numbers[1]];
+                                        editResumenTable(4, texts, listed_numbers)
+                                        break;
+
+                                    case "red":
+                                        let numbers2, listed_numbers2;
+                                        let texts2 = ["No. Total de Pruebas en " +periodSelectedShort, "No. Municipios Donde Surgieron Pruebas en "+periodSelectedShort, "No. Municipios Donde no Surgieron Pruebas en "+periodSelectedShort, "No. de Municipios en Donde Había Pruebas en "+previousPeriodSelected];
+                                        numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1, false, false);
+                                        listed_numbers2 = [numbers2[4], numbers2[3], numbers2[0], numbers2[1]];
+                                        editResumenTable(4, texts2, listed_numbers2)
+                                        break;
+                                    case "star":
+                                        let numbers3, listed_numbers3;
+                                        let texts3 = ["No. Total de Pruebas en "+periodSelectedShort, "No. Municipios con Pruebas en "+periodSelectedShort, "No. Municipios sin Pruebas en "+periodSelectedShort];
+                                        numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, true, true);
+                                        listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
+                                        editResumenTable(3, texts3, listed_numbers3)
+                                        break;
+                                }
+                                break;
+                        }
+                        break;
                     }
 
                 }
