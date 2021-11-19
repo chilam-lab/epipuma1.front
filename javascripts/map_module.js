@@ -3027,21 +3027,21 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
                                             listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                            let texts3 = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
@@ -3053,7 +3053,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total Incidencia en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
@@ -3061,14 +3061,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total Incidencia en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
                                             listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total Incidencia en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                            let texts3 = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
@@ -3079,7 +3079,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total Positividad en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
@@ -3087,14 +3087,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total Positividad en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
                                             listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total Positividad en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                            let texts3 = ["No. Total Confirmados en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
@@ -3105,7 +3105,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Dejaron de Haber Casos en "+periodSelectedShort, "No. Municipios Donde Siguieron Habiendo Casos en "+periodSelectedShort, "No. de Municipios en Donde no Había Casos en "+previousPeriodSelected];
+                                            let texts = ["No. Total de Confirmados en " +periodSelectedShort, "No. Municipios Donde Dejaron de Haber Confirmados en "+periodSelectedShort, "No. Municipios Donde Siguieron Habiendo Confirmados en "+periodSelectedShort, "No. de Municipios en Donde no Había Confirmados en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
                                             listed_numbers = [numbers[4], numbers[3], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
@@ -3113,14 +3113,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Surgieron Casos en "+periodSelectedShort, "No. Municipios Donde no Surgieron Casos en "+periodSelectedShort, "No. de Municipios en Donde Había Casos en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total de Confirmados en " +periodSelectedShort, "No. Municipios Donde Surgieron Confirmados en "+periodSelectedShort, "No. Municipios Donde no Surgieron Confirmados en "+periodSelectedShort, "No. de Municipios en Donde Había Confirmados en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1, false, false);
                                             listed_numbers2 = [numbers2[4], numbers2[3], numbers2[0], numbers2[1]];
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total de Casos Confirmados en "+periodSelectedShort, "No. Municipios con Casos en "+periodSelectedShort, "No. Municipios sin Casos en "+periodSelectedShort];
+                                            let texts3 = ["No. Total de Confirmados en "+periodSelectedShort, "No. Municipios con Confirmados en "+periodSelectedShort, "No. Municipios sin Confirmados en "+periodSelectedShort];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, true, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
@@ -3135,21 +3135,21 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
                                             listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                            let texts3 = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
@@ -3160,7 +3160,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total Mortalidad en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
@@ -3168,14 +3168,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total Mortalidad en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
                                             listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total Mortalidad en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                            let texts3 = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
@@ -3186,7 +3186,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total Letalidad en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
@@ -3194,14 +3194,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total Letalidad en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
                                             listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total Letalidad en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                            let texts3 = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
@@ -3212,7 +3212,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Dejaron de Haber Casos en "+periodSelectedShort, "No. Municipios Donde Siguieron Habiendo Casos en "+periodSelectedShort, "No. de Municipios en Donde no Había Casos en "+previousPeriodSelected];
+                                            let texts = ["No. Total de Fallecidos en " +periodSelectedShort, "No. Municipios Donde Dejaron de Haber Fallecidos en "+periodSelectedShort, "No. Municipios Donde Siguieron Habiendo Fallecidos en "+periodSelectedShort, "No. de Municipios en Donde no Había Fallecidos en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 0, 1, 0, false, true);
                                             listed_numbers = [numbers[4], numbers[3], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
@@ -3220,14 +3220,14 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total de Casos Confirmados en " +periodSelectedShort, "No. Municipios Donde Surgieron Casos en "+periodSelectedShort, "No. Municipios Donde no Surgieron Casos en "+periodSelectedShort, "No. de Municipios en Donde Había Casos en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total de Fallecidos en " +periodSelectedShort, "No. Municipios Donde Surgieron Fallecidos en "+periodSelectedShort, "No. Municipios Donde no Surgieron Fallecidos en "+periodSelectedShort, "No. de Municipios en Donde Había Fallecidos en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1, false, false);
                                             listed_numbers2 = [numbers2[4], numbers2[3], numbers2[0], numbers2[1]];
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total de Casos Confirmados en "+periodSelectedShort, "No. Municipios con Casos en "+periodSelectedShort, "No. Municipios sin Casos en "+periodSelectedShort];
+                                            let texts3 = ["No. Total de Fallecidos en "+periodSelectedShort, "No. Municipios con Fallecidos en "+periodSelectedShort, "No. Municipios sin Fallecidos en "+periodSelectedShort];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, true, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
