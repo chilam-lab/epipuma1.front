@@ -3370,6 +3370,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         var periodSelectedShort
         var previousPeriodSelectedShort
         var enfoque = sessionStorage.getItem("light_traffic");
+        var variable_objetivo = $("#targetVariableSelect").val();
         if ($("#pred_des_control")[0].checked) {
           var periodSelectedComplete = $("#date_timepicker_start_val").val();
           var periodDate= new Date(periodSelectedComplete);
@@ -3395,6 +3396,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
         for (let i = 0; i < res_modif.length; i++) {
             res_modif[i].gridid == gridid ? res_list.push(res_modif[i]) : ""
         };
+        var modifier = mod[0] 
+        if(variable_objetivo == "COVID-19 Pruebas"){
+          mod[0] = "tests"
+        }
         if ((tar_var == "COVID-19 Fallecido") && (mod[0] == "lethality") && (enfoque == "star")) {
           mod[0] = "lethality_star";
         };
@@ -3419,6 +3424,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
         if ((tar_var == "COVID-19 Confirmado") && (mod[0] == "prevalence") && (enfoque == "star")) {
           mod[0] = "prevalence_star";
         };
+        if ((tar_var == "COVID-19 Confirmado") && (mod[0] == "Sin Modificador")) {
+          mod[0] = "conf_sin_modif";
+        };
+        if ((tar_var == "COVID-19 Fallecido") && (mod[0] == "Sin Modificador")) {
+          mod[0] = "fallecido_sin_modif";
+        };
+
 
         switch (mod[0]) {
             case "cases":
@@ -3524,7 +3536,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<table class="table table-striped">' +
                       '<thead>' +
                       '<tr>' +
-                      '<th>Positividad</th>' +
+                      '<th>Confirmados</th>' +
                       '<th>Población total </th>' +
                       '<th> No. Confirmados </th>' +
                       '<th> No. Confirmados en ' + periodSelectedShort + ' </th>' +
@@ -3645,8 +3657,52 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '</thead>' +
                       '<tbody>';
                   break;
+            case "conf_sin_modif":
+                      htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                          '<div class="panel-primary">' +
+                          '<div class="panel-heading no-padding header-title-cell">' +
+                          '<h3 class="h3-title-cell">' + name+ '</h3>' +
+                          '</div>' +
+                          '<table class="table table-striped">' +
+                          '<thead>' +
+                          '<tr>' +
+                          '<th>¿Tuvo Confirmados en el Periodo '+previousPeriodSelectedShort+'?</th>' +
+                          '<th>No. Confirmados en '+periodSelectedShort+'</th>' +
+                          '</tr>' +
+                          '</thead>' +
+                          '<tbody>';
+                      break;
+            case "fallecido_sin_modif":
+                          htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                              '<div class="panel-primary">' +
+                              '<div class="panel-heading no-padding header-title-cell">' +
+                              '<h3 class="h3-title-cell">' + name+ '</h3>' +
+                              '</div>' +
+                              '<table class="table table-striped">' +
+                              '<thead>' +
+                              '<tr>' +
+                              '<th>¿Tuvo Fallecidos en el Periodo '+previousPeriodSelectedShort+'?</th>' +
+                              '<th>No. Fallecidos en '+periodSelectedShort+'</th>' +
+                              '</tr>' +
+                              '</thead>' +
+                              '<tbody>';
+                          break;
             default:
-                console.log("Entro en la parte del defailt")
+              if(modifier == "Sin Modificador"){
+                htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
+                '<div class="panel-primary">' +
+                '<div class="panel-heading no-padding header-title-cell">' +
+                '<h3 class="h3-title-cell">' + name+ '</h3>' +
+                '</div>' +
+                '<table class="table table-striped">' +
+                '<thead>' +
+                '<tr>' +
+                '<th>¿Tuvo Pruebas en el Periodo '+previousPeriodSelectedShort+'?</th>' +
+                '<th>No. Pruebas en '+periodSelectedShort+'</th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>';
+              } else {
                 htmltable = '<div class="myScrollableBlockPopupCovid mywidth_covid">' +
                     '<div class="panel-primary">' +
                     '<div class="panel-heading no-padding header-title-cell">' +
@@ -3655,11 +3711,18 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>¿Tuvo Casos en el Periodo '+previousPeriodSelectedShort+'?</th>' +
-                    '<th>No. Casos en '+periodSelectedShort+'</th>' +
+                    '<th>Pruebas</th>' +
+                    '<th>Población Total </th>' +
+                    '<th>No. Pruebas en '+ previousPeriodSelectedShort +'</th>' +
+                    '<th> Decil Pruebas en '+ previousPeriodSelectedShort +' </th>' +
+                    '<th> No. Pruebas en '+periodSelectedShort+'</th>' +
+                    '<th> Decil Pruebas en '+periodSelectedShort+'</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
+              }
+                console.log("Entro en la parte del defailt")
+                
                 break;
         }
 
@@ -3707,7 +3770,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<td>' + species + '</td>' +
                     '<td>' + pop_list[0]["population"] + '</td>' +
                     '<td>' + res_list[0]["cases_trainig"] + '</td>' +
-                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + parse_only_three_decimals(res_list[0]["tv"]) + '</td>' + 
                     '<td>' + res_list[0]["tb"] + '</td>' +
                     '</tr>';
                 break;
@@ -3790,10 +3853,22 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '</tr>';
                 break;
             default:
-              htmltable += '<tr>' +
+              if(modifier == "Sin Modificador"){
+                htmltable += '<tr>' +
                     '<td>' + (res_list[0]["fp"] == "1" ? "Si": "No")  + '</td>' +
                     '<td>' + res_list[0]["occ"] + '</td>' +
                     '</tr>';
+              } else {
+                htmltable += '<tr>' +
+                    '<td>' + species + '</td>' +
+                    '<td>' + pop_list[0]["population"] + '</td>' +
+                    '<td>' + res_list[0]["fv"] + '</td>' +
+                    '<td>' + res_list[0]["fb"] + '</td>' +
+                    '<td>' + res_list[0]["tv"] + '</td>' +
+                    '<td>' + res_list[0]["tb"] + '</td>' +
+                    '</tr>';
+
+              }
                 // json_data.forEach(function(item, index) {
 
                 //     var gen = item.genero === "M" ? "Masculino" : "Femenino"
