@@ -1345,6 +1345,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                   var mydate2 = new Date(parts2[0], parts2[1] - 1, parts2[2]);
                   var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
                   var final_date2 = newDate2.toISOString().substring(0, 10);
+                  if(limsup == "2020-02-28"){
+                    limsup = "2020-02-29"
+                  }
                   data_request["lim_inf_first"] =liminf
                   data_request["lim_sup_first"] =limsup
                   data_request["lim_inf_validation"] =final_date
@@ -1627,7 +1630,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                             var newDate2 = new Date(mydate2.setMonth(mydate2.getMonth()+2));
                             var final_date2 = newDate2.toISOString().substring(0, 10);
                             total_request["lim_inf_first"] = liminf2
-                            total_request["lim_sup_first"] = limsup2
+                            if(b == "2020-02-28"){
+                              b = "2020-02-29"
+                            }
+                            total_request["lim_sup_first"] = b
                             total_request["lim_inf_validation"] = final_date
                             total_request["lim_sup_validation"] =  limsup_user
                           }
