@@ -3430,12 +3430,12 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Casos</th>' +
+                    '<th>Confirmados</th>' +
                     '<th>Población Total </th>' +
-                    '<th>No. Casos en '+ previousPeriodSelectedShort +'</th>' +
-                    '<th> Decil Casos en '+ previousPeriodSelectedShort +' </th>' +
-                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
-                    '<th> Decil Casos en '+periodSelectedShort+'</th>' +
+                    '<th>No. Confirmados en '+ previousPeriodSelectedShort +'</th>' +
+                    '<th> Decil Confirmados en '+ previousPeriodSelectedShort +' </th>' +
+                    '<th> No. Confirmados en '+periodSelectedShort+'</th>' +
+                    '<th> Decil Confirmados en '+periodSelectedShort+'</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3449,10 +3449,10 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<table class="table table-striped">' +
                       '<thead>' +
                       '<tr>' +
-                      '<th>Casos</th>' +
+                      '<th>Confirmados</th>' +
                       '<th>Población Total </th>' +
-                      '<th> No. Casos en '+periodSelectedShort+'</th>' +
-                      '<th> Decil Casos en '+periodSelectedShort+'</th>' +
+                      '<th> No. Confirmados en '+periodSelectedShort+'</th>' +
+                      '<th> Decil Confirmados en '+periodSelectedShort+'</th>' +
                       '</tr>' +
                       '</thead>' +
                       '<tbody>';
@@ -3468,11 +3468,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<tr>' +
                     '<th>Incidencia</th>' +
                     '<th>Población Total </th>' +
-                    '<th> No. Incidencia en ' + previousPeriodSelectedShort + '</th>' +
-                    '<th> Decil Incidencia en ' + previousPeriodSelectedShort + '</th>' +
-                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
-                    '<th> No. Incidencia en ' + periodSelectedShort + '</th>' +
-                    '<th> Decil Incidencia en ' + periodSelectedShort + '</th>' +
+                    '<th> No. Confirmados en ' + previousPeriodSelectedShort + '</th>' +
+                    '<th> Decil Confirmados en ' + previousPeriodSelectedShort + '</th>' +
+                    '<th> No. Confirmados en '+periodSelectedShort+'</th>' +
+                    '<th> No. Confirmados en ' + periodSelectedShort + '</th>' +
+                    '<th> Decil Confirmados en ' + periodSelectedShort + '</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3486,11 +3486,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<table class="table table-striped">' +
                       '<thead>' +
                       '<tr>' +
-                      '<th>Casos</th>' +
+                      '<th>Confirmados</th>' +
                       '<th>Población Total </th>' +
-                      '<th> No. Casos </th>' +
-                      '<th> No. Incidencia en '+periodSelectedShort+'</th>' +
-                      '<th> Decil Incidencia en '+periodSelectedShort+'</th>' +
+                      '<th> No. Confirmados </th>' +
+                      '<th> No. Confirmados en '+periodSelectedShort+'</th>' +
+                      '<th> Decil Confirmados en '+periodSelectedShort+'</th>' +
                       '</tr>' +
                       '</thead>' +
                       '<tbody>';
@@ -3504,13 +3504,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Positividad</th>' +
+                    '<th>Confirmados</th>' +
                     '<th>Población total </th>' +
-                    '<th> No. Positividad en ' + previousPeriodSelectedShort + ' </th>' +
-                    '<th> Decil Positividad en ' + previousPeriodSelectedShort + ' </th>' +
-                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
-                    '<th> No. Positividad en ' + periodSelectedShort + ' </th>' +
-                    '<th> Decil Positividad en ' + periodSelectedShort + ' </th>' +
+                    '<th> No. Confirmados en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> Decil Confirmados en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> No. Confirmados en '+periodSelectedShort+'</th>' +
+                    '<th> No. Confirmados en ' + periodSelectedShort + ' </th>' +
+                    '<th> Decil Confirmados en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3526,9 +3526,9 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<tr>' +
                       '<th>Positividad</th>' +
                       '<th>Población total </th>' +
-                      '<th> No. Casos </th>' +
-                      '<th> No. Positividad en ' + periodSelectedShort + ' </th>' +
-                      '<th> Decil Positividad en ' + periodSelectedShort + ' </th>' +
+                      '<th> No. Confirmados </th>' +
+                      '<th> No. Confirmados en ' + periodSelectedShort + ' </th>' +
+                      '<th> Decil Confirmados en ' + periodSelectedShort + ' </th>' +
                       '</tr>' +
                       '</thead>' +
                       '<tbody>';
@@ -3542,13 +3542,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Letalidad</th>' +
+                    '<th>Fallecidos</th>' +
                     '<th>Población Total </th>' +
-                    '<th> Letalidad en ' + previousPeriodSelectedShort + ' </th>' +
-                    '<th> Decil de Letalidad en ' + previousPeriodSelectedShort + ' </th>' +
-                    '<th> No. Casos en '+periodSelectedShort+'</th>' +
-                    '<th> Letalidad en ' + periodSelectedShort + ' </th>' +
-                    '<th> Decil de Letalidad en ' + periodSelectedShort + ' </th>' +
+                    '<th> Fallecidos en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> Decil de Fallecidos en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> No. Fallecidos en '+periodSelectedShort+'</th>' +
+                    '<th> Fallecidos en ' + periodSelectedShort + ' </th>' +
+                    '<th> Decil de Fallecidos en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3562,11 +3562,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<table class="table table-striped">' +
                       '<thead>' +
                       '<tr>' +
-                      '<th>Letalidad</th>' +
+                      '<th>Fallecidos</th>' +
                       '<th>Población Total </th>' +
-                      '<th> No. Casos </th>' +
-                      '<th> Letalidad en ' + periodSelectedShort + ' </th>' +
-                      '<th> Decil de Letalidad en ' + periodSelectedShort + ' </th>' +
+                      '<th> No. Fallecidos </th>' +
+                      '<th> Fallecidos en ' + periodSelectedShort + ' </th>' +
+                      '<th> Decil de Fallecidos en ' + periodSelectedShort + ' </th>' +
                       '</tr>' +
                       '</thead>' +
                       '<tbody>';
@@ -3580,13 +3580,13 @@ var res_display_module = (function(verbose, url_zacatuche) {
                     '<table class="table table-striped">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Mortalidad</th>' +
+                    '<th>Fallecidos</th>' +
                     '<th>Población Total </th>' +
-                    '<th> Mortalidad en ' + previousPeriodSelectedShort + ' </th>' +
-                    '<th> Decil de Mortalidad en ' + previousPeriodSelectedShort + ' </th>' +
-                    '<th> No. Defunciones en '+periodSelectedShort+'</th>' +
-                    '<th> Mortalidad en ' + periodSelectedShort + ' </th>' +
-                    '<th> Decil de Mortalidad en ' + periodSelectedShort + ' </th>' +
+                    '<th> Fallecidos en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> Decil de Fallecidos en ' + previousPeriodSelectedShort + ' </th>' +
+                    '<th> No. Fallecidos en '+periodSelectedShort+'</th>' +
+                    '<th> Fallecidos en ' + periodSelectedShort + ' </th>' +
+                    '<th> Decil de Fallecidos en ' + periodSelectedShort + ' </th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -3600,11 +3600,11 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<table class="table table-striped">' +
                       '<thead>' +
                       '<tr>' +
-                      '<th>Mortalidad</th>' +
+                      '<th>Fallecidos</th>' +
                       '<th>Población Total </th>' +
-                      '<th> No. Defunciones </th>' +
-                      '<th> Mortalidad en ' + periodSelectedShort + ' </th>' +
-                      '<th> Decil de Mortalidad en ' + periodSelectedShort + ' </th>' +
+                      '<th> No. Fallecidos </th>' +
+                      '<th> Fallecidos en ' + periodSelectedShort + ' </th>' +
+                      '<th> Decil de Fallecidos en ' + periodSelectedShort + ' </th>' +
                       '</tr>' +
                       '</thead>' +
                       '<tbody>';
@@ -3638,7 +3638,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<thead>' +
                       '<tr>' +
                       '<th>Fallecidos</th>' +
-                      '<th> No. Casos </th>' +
+                      '<th> No. Fallecidos </th>' +
                       '<th> No. Fallecidos '+periodSelectedShort+'</th>' +
                       '<th> Decil Fallecidos '+periodSelectedShort+'</th>' +
                       '</tr>' +
