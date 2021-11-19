@@ -835,7 +835,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                             var model = $("#modelSelect").val()
                             if (state_model) {
                                 var liminf_initial = $("#date_timepicker_start_val").val();
-                    
+
                             } else {
                                 var liminf_initial = $("#date_timepicker_start").val();
                             }
@@ -843,7 +843,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                 let parsedTodayDateMinusThirtyDays = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
                                 var liminf = parsedTodayDateMinusThirtyDays;
                                 var limsup = todayDateToNextThirtyDays;
-                    
+
                             } else {
                                 var liminf_splited = liminf_initial.split("-");
                                 var liminf = liminf_splited[0] + "-" + liminf_splited[1] + "-01";
@@ -854,7 +854,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                             let selectedDateMinusThirtyDaysSup = String(newDate.getFullYear() + "-" + (Number((newDate.getMonth() + 1)) < 10 ? "0" + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)) + "-" + (Number(newDate.getDate()) < 10 ? "0" + newDate.getDate() : newDate.getDate()));
 
                             if (model == "Predictivo") {
-                              _lin_inf = selectedDateMinusThirtyDaysInf 
+                              _lin_inf = selectedDateMinusThirtyDaysInf
                               _lin_sup = selectedDateMinusThirtyDaysSup
                             }
 
@@ -3135,21 +3135,21 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                                     switch (focus) {
                                         case "green":
                                             let numbers, listed_numbers;
-                                            let texts = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios que Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Salieron del Top 10 en "+periodSelectedShort, "No. Municipios que no Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers = getColorizedData(_data_sp_occ, 0, 1, 1, 0);
                                             listed_numbers = [numbers[4], numbers[2], numbers[0], numbers[1]];
                                             editResumenTable(4, texts, listed_numbers)
                                             break;
                                         case "red":
                                             let numbers2, listed_numbers2;
-                                            let texts2 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
+                                            let texts2 = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios que Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que no Pasaron al Top 10 en "+periodSelectedShort, "No. Municipios que Estaban en el Top 10 en "+previousPeriodSelected];
                                             numbers2 = getColorizedData(_data_sp_occ, 1, 0, 0, 1);
                                             listed_numbers2 = [numbers2[4], numbers2[2], numbers2[0], numbers2[1]]
                                             editResumenTable(4, texts2, listed_numbers2)
                                             break;
                                         case "star":
                                             let numbers3, listed_numbers3;
-                                            let texts3 = ["No. Total Casos Confirmados en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
+                                            let texts3 = ["No. Total Fallecidos en " +periodSelectedShort, "No. Municipios en Top 10", "No. Municipios en Bottom 90"];
                                             numbers3 = getColorizedData(_data_sp_occ, 1, 1, 1, 0, false, false, true);
                                             listed_numbers3 = [numbers3[4], numbers3[2], numbers3[0]]
                                             editResumenTable(3, texts3, listed_numbers3)
