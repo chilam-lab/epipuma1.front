@@ -2733,6 +2733,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
               data.limsup = selectedDateMinusThirtyDaysSup;
               if(enfoque != "star") {
                 data.liminf_first = selectedDateMinusTwoMonthsInf;
+                if(selectedDateMinusTwoMonthSup == "2020-02-28"){
+                  selectedDateMinusTwoMonthSup = "2020-02-29"
+                }
                 data.limsup_first = selectedDateMinusTwoMonthSup;
 
               }
@@ -2741,7 +2744,11 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
               data.limsup = limsup;
               if(enfoque != "star") {
                 data.liminf_first = selectedDateMinusThirtyDaysInf;
+                if(selectedDateMinusThirtyDaysSup == "2020-02-28"){
+                  selectedDateMinusThirtyDaysSup = "2020-02-29"
+                }
                 data.limsup_first = selectedDateMinusThirtyDaysSup;
+
 
               }
             }
@@ -2773,6 +2780,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
               data.limsup = selectedDateMinusThirtyDaysSup;
               if(enfoque != "star") {
                 data.liminf_first = selectedDateMinusTwoMonthsInf;
+                if(selectedDateMinusTwoMonthSup == "2020-02-28"){
+                  selectedDateMinusTwoMonthSup = "2020-02-29"
+                }
                 data.limsup_first = selectedDateMinusTwoMonthSup;
 
               }
@@ -2781,6 +2791,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
               data.limsup = limsup;
               if(enfoque != "star") {
                 data.liminf_first = selectedDateMinusThirtyDaysInf;
+                if(selectedDateMinusThirtyDaysSup == "2020-02-28"){
+                  selectedDateMinusThirtyDaysSup = "2020-02-29"
+                }
                 data.limsup_first = selectedDateMinusThirtyDaysSup;
 
               }
