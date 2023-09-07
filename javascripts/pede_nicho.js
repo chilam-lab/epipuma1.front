@@ -527,6 +527,10 @@ var module_nicho = (function() {
 
                 _VERBOSE ? console.log(d.node.original.attr.nivel) : _VERBOSE;
                 _VERBOSE ? console.log(d.node.children) : _VERBOSE;
+                hiddingLoadingNodesInJsTree()
+                  
+                
+
 
                 if (d.node.children.length > 1) {
                     console.log("No se encontraron datos debajo de este nivel")
@@ -608,7 +612,6 @@ var module_nicho = (function() {
                         $('li').removeAttr("data-original-title");
                         $('#jstree_variables_species_' + id).removeAttr("data-original-title");
                         $('#jstree_variables_species_' + id).removeAttr("title");
-
                         for (i = 0; i < data.length; i++) {
                             var label_taxon = next_nivel < 8 ? data[i].name + " (spp: " + data[i].spp + ")" : data[i].name;
                             var idNode = "";
@@ -647,19 +650,16 @@ var module_nicho = (function() {
                             $('#jstree_variables_species_' + id).jstree("create_node", d.node, newNode, 'last', false, false);
 
                         }
-
-                        $("#jstree_variables_species_" + id).jstree(true).delete_node(d.node.children[0]);
                         $("#jstree_variables_species_" + id).jstree(true).set_icon(d.node.id, "./plugins/jstree/images/dna.png");
                         $("#jstree_variables_species_" + id).prop('title', data[0].description);
                         $("#jstree_variables_species_" + id).tooltip();
 
                         $('li').tooltip();
                         $('ul').tooltip();
-
+                        hiddingLoadingNodesInJsTree()
                     }
                 });
-
-
+                
             });
 
             $("#jstree_variables_species_fuente").on('loaded.jstree', function() {
@@ -2302,3 +2302,11 @@ $(document).ready(function() {
     module_nicho.startModule(config.verbose);
 
 });
+function hiddingLoadingNodesInJsTree() {
+  let getAllNodes = $('#demograficos').jstree(true).get_json('#', { flat: true });
+  let loadingNodes = getAllNodes.filter(node=> node.text == "cargando...")
+  loadingNodes.map(node => {
+    $("#"+ node.id).css("position", "absolute");
+    $("#"+ node.id).css("visibility", "hidden");
+  })
+}
