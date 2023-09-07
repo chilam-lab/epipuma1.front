@@ -1827,7 +1827,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         console.log(map_result);
         console.log(data);
 
-        fetch(_url_zacatuche + "niche/especie/getColumnsGrid", {
+        fetch(_url_zacatuche + "/niche/especie/getColumnsGrid", {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
@@ -3211,7 +3211,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         } else {
 
             //fetch(_url_zacatuche + "dev/niche/especie/getCellOcurrences", {
-            fetch(_url_zacatuche + "niche/especie/getCellOcurrences", {
+            fetch(_url_zacatuche + "/niche/especie/getCellOcurrences", {
                     method: "POST",
                     body: JSON.stringify(data_body_request),
                     headers: {

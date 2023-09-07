@@ -13,6 +13,7 @@ modified with the corresponding values:
 - `url_front`, URL for the current app deployment
 
 - `url_api`, URL where SNIB middleware is answering
+You must also change the geoportal's url  in index.html accordingly with your web server configuration
 
 ## Local running
 

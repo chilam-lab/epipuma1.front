@@ -2711,7 +2711,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             console.log("getGridGeneratedSpecies");
             console.log(modifier);
             //url_mod = _url_zacatuche + "dev/niche/especie/getGridGeneratedSpecies";
-            url_mod = _url_zacatuche + "niche/especie/getGridGeneratedSpecies";
+            url_mod = _url_zacatuche + "/niche/especie/getGridGeneratedSpecies";
             let enfoque = sessionStorage.getItem("light_traffic");
 
             var data = {
@@ -2758,7 +2758,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             sessionStorage.setItem("limsup",  data.limsup)
         } else {
             console.log("getGridSpeciesTaxon");
-            url_mod = _url_zacatuche + "niche/especie/getGridSpeciesTaxon";
+            url_mod = _url_zacatuche + "/niche/especie/getGridSpeciesTaxon";
             //url_mod = _url_zacatuche + "dev/niche/especie/getGridSpeciesTaxon";
             var tar_var = taxones[0]["value"];
             console.log(tar_var);
