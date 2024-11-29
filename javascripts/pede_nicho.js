@@ -921,7 +921,7 @@ var module_nicho = (function() {
         /// DATE  MONTHS ONLY
         let todayDate = new Date();
         let parsedTodayDate = String(todayDate.getFullYear() + "-" + (Number((todayDate.getMonth() + 1)) < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1)) + "-" + (Number(todayDate.getDate()) < 10 ? "0" + todayDate.getDate() : todayDate.getDate()));
-        var fechas = dateRange("2020-01-01", parsedTodayDate);
+        var fechas = dateRange("2020-01-01", "2023-03-31");
         addOptionsSelect("date_timepicker_start", fechas);
 
         //PREDICTIVO/DESCRIPTIVO
