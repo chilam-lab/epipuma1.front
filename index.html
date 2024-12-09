@@ -1,25 +1,31 @@
 <!DOCTYPE html>
-<html lang="es-MX">
-
-<head>
+<html lang="es-MX"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="EpI-PUMA - la Plataforma Universitaria de Inteligencia Epidemiológica de SARS-Cov-2">
+  <meta name="description" content="EpI-PUMA - la Plataforma Universitaria de Inteligencia Epidemiológica de SARS-Cov-2">
   <link rel="stylesheet" href="/stylesheets/new_landing.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
   <title>EpI-PUMA | UNAM-C3</title>
+
+  <style type="text/css">
+    ul.no-bullets {
+      list-style-type: none; /* Remove bullets */
+      padding: 0; /* Remove padding */
+      margin: 0; /* Remove margins */
+    }
+  </style>
 </head>
 
 <body>
   <header>
     <div id="header-logos">
-      <a class="logo" id="logoUNAM" href="https://www.unam.mx" target="_blank">Universidad Nacional Autónoma de México -
+      <a class="logo" id="logoUNAM" href="https://www.unam.mx/" target="_blank">Universidad Nacional Autónoma de México -
         UNAM</a>
-      <a class="logo" id="logoCIC" href="http://www.cic-ctic.unam.mx" target="_blank">Coordinación de la Investigación
+      <a class="logo" id="logoCIC" href="http://www.cic-ctic.unam.mx/" target="_blank">Coordinación de la Investigación
         Científica</a>
-      <a class="logo" id="logoC3" href="https://www.c3.unam.mx" target="_blank">Centro de Ciencias de la Cpmplejidad</a>
-      <a class="logo" id="logoChilam" href="https://chilam.c3.unam.mx">Chilam – Laboratorio para la simulación de
+      <a class="logo" id="logoC3" href="https://www.c3.unam.mx/" target="_blank">Centro de Ciencias de la Cpmplejidad</a>
+      <a class="logo" id="logoChilam" href="https://chilam.c3.unam.mx/">Chilam – Laboratorio para la simulación de
         Sistemas Complejos Adaptativos</a>
     </div>
     <a target="_blank" href="https://chilam.c3.unam.mx/proy-epipuma/acerca-de-epipuma" class="button-2">Más información
@@ -28,24 +34,31 @@
   </header>
   <section id="content">
     <br>
-    <h2>Bienvenido a EpI-PUMA<span>Plataforma Universitaria de Inteligencia Epidemiológica de SARS-Cov-2</span></h2>
-    <p>EpI-PUMA es una herramienta interactiva para el análisis del “nicho” epidemiológico de SARS-Cov-2 y la creación
-      de modelos predictivos para su dinámica espacio-temporal en México.</p>
+    <h2>Bienvenido a EpI-PUMA 1.0 <span>Plataforma Universitaria de Inteligencia Epidemiológica de SARS-Cov-2</span></h2>
+    <p>EpI-PUMA 1.0 es un sistema interactivo para la predicción de la evolución en espacio y tiempo de la pandemia de SARS-Cov en México. Está basado en modelos de aprendizaje de máquina que nos permiten predecir varias características clínicas y epidemiológicas asociados con la transmisión y letalidad de una enfermedad infecciosa como el Covid-19 en la población mexicana.</p>
+      <ul class = "no-bullets">
+        <li>¿Cuáles municipios tendrán más casos el próximo mes? </li>
+        <li>¿En cuáles municipios habrá el mayor incremento en fallecidos el próximo mes?</li>
+        <li>¿Por qué el modelo predice que habrá más casos el próximo mes?</li>
+      </ul>
+    <p>
+      Epi-PUMA 1.0 permite al usuario crear y validar sus propios modelos de predicción para contestar estas preguntas. Los modelos se entrenan con la información oficial sobre la pandemia y un gran número de predictores (factores de riesgo) socio-económicos, socio-demográficos, climáticos, de pobreza y de contaminantes para encontrar a la población vulnerable. 
+    </p>
+
     <h3>Análisis de nicho epidemiológico</h3>
     <p>Si deseas realizar un análisis de nicho epidemiológico basta con seguir los siguientes pasos:</p>
     <ul class="steps">
       <li>Seleccionar tu grupo objetivo</li>
       <li>Escoger tus covariables</li>
       <li>Analizar tus resultados</li>
-      <li><a class="btn btn-warning" href="geoportal_v0.1.html">Ir a Análisis de
+      <li><a class="btn btn-warning" href="/geoportal_v0.1.html">Ir a Análisis de
           Nicho</a></li>
     </ul>
-    <p>Si es la primera vez que utilizas la plataforma, te recomendamos dar clic en el botón de <b>Casos de uso</b> o el
-      botón de <b>Tutorial</b> que te orientara paso a paso como utilizar EpI-PUMA</p>
+    <p>Si es la primera vez que utilizas la plataforma, te recomendamos explorar el <b>Tutorial</b> que te orientara paso a paso como utilizar EpI-PUMA. También puedes encontrar documentación y ejemplos de uso aquí (<a href = "docs/EpIPUMA_1_ejemplos.pdf" tardet="_blank"><b>Casos de uso</b></a>). Escribenos tus dudas y comentarios al correo <font color="blue">chilam@c3.unam.mx</font></p>
   </section>
   <footer>
     <p class="copyright">©Todos los derechos reservados Chilam · C3 · UNAM - 2021.</p>
   </footer>
-</body>
 
-</html>
+
+</body></html>
