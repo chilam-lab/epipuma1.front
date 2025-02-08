@@ -3340,6 +3340,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
         let species;
         let name;
         console.log(json_data);
+        let specie_selected = $("#targetVariableSelect")[0].value;
         if(empty_data){
           name = json_data.name;
           gridid = json_data.gridid;
@@ -3355,7 +3356,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
 
         }else{
            gridid = json_data[0].gridid;
-           species = json_data[0].species;
+           specie_selected.includes('Pruebas')? species = "COVID-19 PRUEBAS" : species = json_data[0].species; 
            name = json_data[0].entidad
         }
         console.log(gridid)
@@ -3650,7 +3651,7 @@ var res_display_module = (function(verbose, url_zacatuche) {
                       '<thead>' +
                       '<tr>' +
                       '<th>Fallecidos</th>' +
-                      '<th> No. Fallecidos </th>' +
+                      '<th> Población Total </th>' +
                       '<th> No. Fallecidos '+periodSelectedShort+'</th>' +
                       '<th> Decil Fallecidos '+periodSelectedShort+'</th>' +
                       '</tr>' +
