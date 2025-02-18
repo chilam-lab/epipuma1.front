@@ -528,6 +528,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
                     _tileLayerStateMun // capa de staods y municipios
                 ]
             })
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
             _overlayMaps = {
                 "Result": _tileLayer,
@@ -636,6 +639,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
             ],
             zoomControl: false
         });
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map_sp);
 
         _baseSP_Maps = {
             "Open Street Maps": _OSMSP_layer
