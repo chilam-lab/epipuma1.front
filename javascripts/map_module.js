@@ -444,7 +444,7 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
 
 
         // _OSM_layer = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=ec5ffebe46bb43a5a9cb8700c882be4b');
-        _OSM_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png');
+        _OSM_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 
 
         // _OSM_layer.getAttribution = function () {
@@ -609,7 +609,9 @@ var map_module = (function(url_geoserver, workspace, verbose, url_zacatuche) {
         //         return '&copy; <a href="http://www.thunderforest.com/landscape">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         // };
 
-        _OSMSP_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png');
+        _OSMSP_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
 
 
 
